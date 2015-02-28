@@ -45,8 +45,7 @@ import li.klass.fhem.testutil.MockitoTestRule;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.SUM;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 public class YAxisTest {
@@ -99,7 +98,7 @@ public class YAxisTest {
         int totalNumberOfSeries = yAxis.getTotalNumberOfSeries();
 
         // then
-        assertThat(totalNumberOfSeries, is(4));
+        assertThat(totalNumberOfSeries).isEqualTo(4);
     }
 
     @Test
@@ -110,24 +109,24 @@ public class YAxisTest {
         // then
         Iterator<ViewableChartSeries> iterator = yAxis.iterator();
 
-        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.hasNext()).isTrue();
         assertIteratorValue(iterator, "Temperature", NORMAL);
 
-        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.hasNext()).isTrue();
         assertIteratorValue(iterator, "Temperature regression", REGRESSION);
 
-        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.hasNext()).isTrue();
         assertIteratorValue(iterator, "Humidity", NORMAL);
 
-        assertThat(iterator.hasNext(), is(true));
+        assertThat(iterator.hasNext()).isTrue();
         assertIteratorValue(iterator, "Humidity Sum", SUM);
 
-        assertThat(iterator.hasNext(), is(false));
+        assertThat(iterator.hasNext()).isFalse();
     }
 
     private void assertIteratorValue(Iterator<ViewableChartSeries> iterator, String name, ViewableChartSeries.ChartType type) {
         ViewableChartSeries next = iterator.next();
-        assertThat(next.getChartType(), is(type));
-        assertThat(next.getName(), is(name));
+        assertThat(next.getChartType()).isEqualTo(type);
+        assertThat(next.getName()).isEqualTo(name);
     }
 }

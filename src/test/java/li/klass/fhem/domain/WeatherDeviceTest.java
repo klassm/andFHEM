@@ -30,56 +30,54 @@ import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class WeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         WeatherDevice device = getDefaultDevice(WeatherDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getIcon(), is("cloudy.png"));
-        assertThat(device.getCondition(), is("Bewölkt"));
-        assertThat(device.getHumidity(), is("43 (%)"));
-        assertThat(device.getTemperature(), is("19 (°C)"));
-        assertThat(device.getWind(), is("NW mit 11 km/h"));
-        assertThat(device.getState(), is("T: 19  H: 43  W: 11"));
+        assertThat(device.getIcon()).isEqualTo("cloudy.png");
+        assertThat(device.getCondition()).isEqualTo("Bewölkt");
+        assertThat(device.getHumidity()).isEqualTo("43 (%)");
+        assertThat(device.getTemperature()).isEqualTo("19 (°C)");
+        assertThat(device.getWind()).isEqualTo("NW mit 11 km/h");
+        assertThat(device.getState()).isEqualTo("T: 19  H: 43  W: 11");
 
         List<WeatherDevice.WeatherDeviceForecast> forecasts = device.getForecasts();
-        assertThat(forecasts.size(), is(3));
+        assertThat(forecasts.size()).isEqualTo(3);
 
         WeatherDevice.WeatherDeviceForecast firstForecast = forecasts.get(0);
-        assertThat(firstForecast.getIcon(), is("chance_of_rain.png"));
-        assertThat(firstForecast.getDayOfWeek(), is("Mi."));
-        assertThat(firstForecast.getCondition(), is("Vereinzelt Regen"));
-        assertThat(firstForecast.getDate(), is("2012-05-02"));
-        assertThat(firstForecast.getHighTemperature(), is("20 (°C)"));
-        assertThat(firstForecast.getLowTemperature(), is("9 (°C)"));
+        assertThat(firstForecast.getIcon()).isEqualTo("chance_of_rain.png");
+        assertThat(firstForecast.getDayOfWeek()).isEqualTo("Mi.");
+        assertThat(firstForecast.getCondition()).isEqualTo("Vereinzelt Regen");
+        assertThat(firstForecast.getDate()).isEqualTo("2012-05-02");
+        assertThat(firstForecast.getHighTemperature()).isEqualTo("20 (°C)");
+        assertThat(firstForecast.getLowTemperature()).isEqualTo("9 (°C)");
 
         WeatherDevice.WeatherDeviceForecast secondForecast = forecasts.get(1);
-        assertThat(secondForecast.getIcon(), is("mostly_sunny.png"));
-        assertThat(secondForecast.getDayOfWeek(), is("Do."));
-        assertThat(secondForecast.getCondition(), is("Meist sonnig"));
-        assertThat(secondForecast.getDate(), is("2012-05-03"));
-        assertThat(secondForecast.getHighTemperature(), is("19 (°C)"));
-        assertThat(secondForecast.getLowTemperature(), is("8 (°C)"));
+        assertThat(secondForecast.getIcon()).isEqualTo("mostly_sunny.png");
+        assertThat(secondForecast.getDayOfWeek()).isEqualTo("Do.");
+        assertThat(secondForecast.getCondition()).isEqualTo("Meist sonnig");
+        assertThat(secondForecast.getDate()).isEqualTo("2012-05-03");
+        assertThat(secondForecast.getHighTemperature()).isEqualTo("19 (°C)");
+        assertThat(secondForecast.getLowTemperature()).isEqualTo("8 (°C)");
 
         WeatherDevice.WeatherDeviceForecast thirdForecast = forecasts.get(2);
-        assertThat(thirdForecast.getIcon(), is("sunny.png"));
-        assertThat(thirdForecast.getDayOfWeek(), is("Fr."));
-        assertThat(thirdForecast.getCondition(), is("Klar"));
-        assertThat(thirdForecast.getDate(), is("2012-05-04"));
-        assertThat(thirdForecast.getHighTemperature(), is("19 (°C)"));
-        assertThat(thirdForecast.getLowTemperature(), is("10 (°C)"));
+        assertThat(thirdForecast.getIcon()).isEqualTo("sunny.png");
+        assertThat(thirdForecast.getDayOfWeek()).isEqualTo("Fr.");
+        assertThat(thirdForecast.getCondition()).isEqualTo("Klar");
+        assertThat(thirdForecast.getDate()).isEqualTo("2012-05-04");
+        assertThat(thirdForecast.getHighTemperature()).isEqualTo("19 (°C)");
+        assertThat(thirdForecast.getLowTemperature()).isEqualTo("10 (°C)");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
     }
 
     @Override

@@ -29,27 +29,25 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SWAPDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         SWAPDevice device = getDefaultDevice(SWAPDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("27.3 (°C)"));
+        assertThat(device.getState()).isEqualTo("27.3 (°C)");
     }
 
     @Test
     public void testSwapDeviceWithExtendedXmllistTagAndRGB() {
         SWAPDevice device = getDeviceFor("SWAP_05", SWAPDevice.class);
-        assertThat(device, is(notNullValue()));
-        assertThat(device.supportsRGB(), is(true));
-        assertThat(device.getRgb(), is(hexToDecimal("FF00F0")));
+        assertThat(device).isNotNull();
+        assertThat(device.supportsRGB()).isTrue();
+        assertThat(device.getRgb()).isEqualTo(hexToDecimal("FF00F0"));
     }
 
     @Override

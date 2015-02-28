@@ -28,26 +28,24 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CULWSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULWSDevice device = getDefaultDevice(CULWSDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity(), is("45.8 (%)"));
-        assertThat(device.getTemperature(), is("13.6 (°C)"));
-        assertThat(device.getState(), is("T: 13.6  H: 45.8"));
+        assertThat(device.getHumidity()).isEqualTo("45.8 (%)");
+        assertThat(device.getTemperature()).isEqualTo("13.6 (°C)");
+        assertThat(device.getState()).isEqualTo("T: 13.6  H: 45.8");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
     }
 
     @Override

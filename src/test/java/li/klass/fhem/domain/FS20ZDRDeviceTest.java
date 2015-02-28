@@ -24,22 +24,21 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FS20ZDRDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testPropertiesSet() {
         FS20ZDRDevice device = getDefaultDevice(FS20ZDRDevice.class);
-        assertThat(device, is(notNullValue()));
+        assertThat(device).isNotNull();
 
-        assertThat(device.supportsToggle(), is(true));
-        assertThat(device.getState(), is("on"));
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.supportsToggle()).isTrue();
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.isOnByState()).isTrue();
     }
 
     @Override

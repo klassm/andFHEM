@@ -36,8 +36,7 @@ import li.klass.fhem.domain.FS20Device;
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FieldNameAddedToDetailTest {
 
@@ -65,21 +64,21 @@ public class FieldNameAddedToDetailTest {
     public void testSupportsDeviceOfDimmerNotificationType() {
         listener.setNotificationDeviceType(DIMMER);
 
-        assertThat(listener.supportsDevice(dimmableFS20Device), is(true));
-        assertThat(listener.supportsDevice(toggleableFS20Device), is(false));
+        assertThat(listener.supportsDevice(dimmableFS20Device)).isTrue();
+        assertThat(listener.supportsDevice(toggleableFS20Device)).isFalse();
     }
 
     @Test
     public void testSupportsDeviceOfToggleableAndNotDimmableNotificationType() {
         listener.setNotificationDeviceType(TOGGLEABLE_AND_NOT_DIMMABLE);
-        assertThat(listener.supportsDevice(dimmableFS20Device), is(false));
-        assertThat(listener.supportsDevice(toggleableFS20Device), is(true));
+        assertThat(listener.supportsDevice(dimmableFS20Device)).isFalse();
+        assertThat(listener.supportsDevice(toggleableFS20Device)).isTrue();
     }
 
     @Test
     public void testSupportsDeviceOfAllNotificationType() {
         listener.setNotificationDeviceType(ALL);
-        assertThat(listener.supportsDevice(dimmableFS20Device), is(true));
-        assertThat(listener.supportsDevice(toggleableFS20Device), is(true));
+        assertThat(listener.supportsDevice(dimmableFS20Device)).isTrue();
+        assertThat(listener.supportsDevice(toggleableFS20Device)).isTrue();
     }
 }

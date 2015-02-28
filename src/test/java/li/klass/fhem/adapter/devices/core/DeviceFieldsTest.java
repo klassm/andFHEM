@@ -33,10 +33,7 @@ import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.HCSDevice;
 
 import static li.klass.fhem.adapter.devices.core.DeviceFields.getSortedAnnotatedClassItems;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.core.IsNot.not;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 public class DeviceFieldsTest {
@@ -57,7 +54,7 @@ public class DeviceFieldsTest {
             fail("cannot find demandDevices attribute index.");
         }
 
-        assertThat(items.get(numberOfDemandDevicesIndex + 1).getName(), is("commaSeparatedDemandDevices"));
+        assertThat(items.get(numberOfDemandDevicesIndex + 1).getName()).isEqualTo("commaSeparatedDemandDevices");
     }
 
     @Test
@@ -87,15 +84,15 @@ public class DeviceFieldsTest {
             }
         }
 
-        assertThat(temperatureIndex, is(not(-1)));
-        assertThat(desiredTempIndex, is(not(-1)));
-        assertThat(windowOpenTempIndex, is(not(-1)));
-        assertThat(dayTempIndex, is(not(-1)));
-        assertThat(nightTempIndex, is(not(-1)));
+        assertThat(temperatureIndex).isNotEqualTo(-1);
+        assertThat(desiredTempIndex).isNotEqualTo(-1);
+        assertThat(windowOpenTempIndex).isNotEqualTo(-1);
+        assertThat(dayTempIndex).isNotEqualTo(-1);
+        assertThat(nightTempIndex).isNotEqualTo(-1);
 
-        assertThat(temperatureIndex, is(lessThan(desiredTempIndex)));
-        assertThat(desiredTempIndex, is(lessThan(dayTempIndex)));
-        assertThat(dayTempIndex, is(lessThan(nightTempIndex)));
-        assertThat(nightTempIndex, is(lessThan(windowOpenTempIndex)));
+        assertThat(temperatureIndex).isLessThan(desiredTempIndex);
+        assertThat(desiredTempIndex).isLessThan(dayTempIndex);
+        assertThat(dayTempIndex).isLessThan(nightTempIndex);
+        assertThat(nightTempIndex).isLessThan(windowOpenTempIndex);
     }
 }

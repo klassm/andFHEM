@@ -24,27 +24,27 @@
 
 package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MotionDetectorTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("motion"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.MOTION));
-        assertThat(device.getBrightness(), is("113"));
-        assertThat(device.getMotion(), is("on (to Wohnzimmer_Stecker_Multimedia)"));
+        assertThat(device.getState()).isEqualTo("motion");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.MOTION);
+        assertThat(device.getBrightness()).isEqualTo("113");
+        assertThat(device.getMotion()).isEqualTo("on (to Wohnzimmer_Stecker_Multimedia)");
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Override

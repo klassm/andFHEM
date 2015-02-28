@@ -24,21 +24,20 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ZWaveDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
         ZWaveDevice device = getDefaultDevice(ZWaveDevice.class);
-        assertThat(device, is(notNullValue()));
+        assertThat(device).isNotNull();
 
-        assertThat(device.getState(), is("off"));
+        assertThat(device.getState()).isEqualTo("off");
     }
 
     @Override

@@ -24,20 +24,18 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
-import li.klass.fhem.domain.MaxDevice;
-import li.klass.fhem.domain.heating.schedule.DayProfile;
-import li.klass.fhem.domain.heating.schedule.WeekProfile;
-import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
-import li.klass.fhem.util.DayUtil;
-import li.klass.fhem.util.Reject;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.domain.heating.schedule.DayProfile;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.util.DayUtil;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MAXConfigurationTest {
     private MAXConfiguration configuration = new MAXConfiguration();
@@ -45,7 +43,7 @@ public class MAXConfigurationTest {
 
     @Before
     public void before() {
-        weekProfile = new WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice>(configuration);
+        weekProfile = new WeekProfile<>(configuration);
     }
 
     @Test
@@ -55,21 +53,21 @@ public class MAXConfigurationTest {
         configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15 °C  /  22 °C /  15 °C");
         configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TIME", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime(), is("00:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).isTimeFixed(), is(true));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getSwitchTime(), is("07:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getSwitchTime(), is("23:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).getSwitchTime(), is("00:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).isTimeFixed(), is(true));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 1).getSwitchTime(), is("06:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 2).getSwitchTime(), is("23:00"));
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime()).isEqualTo("00:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).isTimeFixed()).isTrue();
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getSwitchTime()).isEqualTo("07:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getSwitchTime()).isEqualTo("23:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).getSwitchTime()).isEqualTo("00:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).isTimeFixed()).isTrue();
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 1).getSwitchTime()).isEqualTo("06:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 2).getSwitchTime()).isEqualTo("23:00");
 
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature(), is(15.0));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getTemperature(), is(22.0));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getTemperature(), is(15.5));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).getTemperature(), is(15.0));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 1).getTemperature(), is(22.0));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 2).getTemperature(), is(15.0));
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature()).isEqualTo(15.0);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getTemperature()).isEqualTo(22.0);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getTemperature()).isEqualTo(15.5);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).getTemperature()).isEqualTo(15.0);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 1).getTemperature()).isEqualTo(22.0);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.FRIDAY, 2).getTemperature()).isEqualTo(15.0);
     }
 
     @Test
@@ -87,16 +85,14 @@ public class MAXConfigurationTest {
 
         List<String> commands = configuration.generateScheduleCommands(device, weekProfile);
 
-        assertThat(commands, hasItem("set name weekProfile Sat 23.0,07:00,22.0,23:00,15.0"));
-        assertThat(commands, hasItem("set name weekProfile Fri 23.0,06:00,22.0,23:00,15.0"));
+        assertThat(commands).contains("set name weekProfile Sat 23.0,07:00,22.0,23:00,15.0")
+                .contains("set name weekProfile Fri 23.0,06:00,22.0,23:00,15.0");
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
         DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
-        Reject.ifNull(dayProfile);
+        assert dayProfile != null;
 
-        FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);
-        Reject.ifNull(interval);
-        return interval;
+        return dayProfile.getHeatingIntervalAt(position);
     }
 }

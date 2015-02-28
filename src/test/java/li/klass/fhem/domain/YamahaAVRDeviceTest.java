@@ -24,25 +24,23 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class YamahaAVRDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         YamahaAVRDevice device = getDefaultDevice(YamahaAVRDevice.class);
 
-        assertThat(device.isMuted(), is(true));
-        assertThat(device.isOnByState(), is(false));
-        assertThat(device.getInput(), is("netradio"));
-        assertThat(device.getSelectedInputPosition(), is(5));
-        assertThat(device.getVolume(), is(-53));
-        assertThat(device.getState(), is("off"));
+        assertThat(device.isMuted()).isTrue();
+        assertThat(device.isOnByState()).isFalse();
+        assertThat(device.getInput()).isEqualTo("netradio");
+        assertThat(device.getSelectedInputPosition()).isEqualTo(5);
+        assertThat(device.getVolume()).isEqualTo(-53);
+        assertThat(device.getState()).isEqualTo("off");
     }
 
     @Override

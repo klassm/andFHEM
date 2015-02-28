@@ -31,7 +31,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,15 +39,15 @@ import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.testutil.MockitoTestRule;
 
+import static java.util.Arrays.asList;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChartDataTest {
 
-    private static final List<GraphEntry> DUMMY_DATA = Arrays.asList(new GraphEntry(new DateTime(1), 0.3f));
+    private static final List<GraphEntry> DUMMY_DATA = asList(new GraphEntry(new DateTime(1), 0.3f));
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -67,7 +66,7 @@ public class ChartDataTest {
                         .withShowRegression(true)
                         .build(), DUMMY_DATA,
                 context);
-        assertThat(data.getNumberOfContainedSeries(), is(2));
+        assertThat(data.getNumberOfContainedSeries()).isEqualTo(2);
 
         data = new ChartData(
                 new ChartSeriesDescription.Builder()
@@ -80,7 +79,7 @@ public class ChartDataTest {
                         .build(),
                 DUMMY_DATA,
                 context);
-        assertThat(data.getNumberOfContainedSeries(), is(2));
+        assertThat(data.getNumberOfContainedSeries()).isEqualTo(2);
 
         data = new ChartData(
                 new ChartSeriesDescription.Builder()
@@ -91,7 +90,7 @@ public class ChartDataTest {
                         .build(),
                 DUMMY_DATA,
                 context);
-        assertThat(data.getNumberOfContainedSeries(), is(1));
+        assertThat(data.getNumberOfContainedSeries()).isEqualTo(1);
     }
 
     @Test
@@ -108,12 +107,12 @@ public class ChartDataTest {
                 context);
 
         Iterator<ViewableChartSeries> iterator = data.iterator();
-        assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next().getChartType(), is(NORMAL));
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next().getChartType()).isEqualTo(NORMAL);
 
-        assertThat(iterator.hasNext(), is(true));
-        assertThat(iterator.next().getChartType(), is(REGRESSION));
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next().getChartType()).isEqualTo(REGRESSION);
 
-        assertThat(iterator.hasNext(), is(false));
+        assertThat(iterator.hasNext()).isFalse();
     }
 }

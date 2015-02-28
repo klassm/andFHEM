@@ -29,30 +29,28 @@ import org.junit.Test;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingNumericText;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.number.IsCloseTo.closeTo;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 public class ValueExtractUtilTest {
 
     @Test
     public void testExtractLeadingNumericText() {
-        assertThat(extractLeadingNumericText("abc def", -1), is(""));
-        assertThat(extractLeadingNumericText("5 abc def ds", 1), is("5.0"));
-        assertThat(extractLeadingNumericText("5.0 abc def ds", 3), is("5.0"));
-        assertThat(extractLeadingNumericText("abc", 0), is(""));
+        assertThat(extractLeadingNumericText("abc def", -1)).isEqualTo("");
+        assertThat(extractLeadingNumericText("5 abc def ds", 1)).isEqualTo("5.0");
+        assertThat(extractLeadingNumericText("5.0 abc def ds", 3)).isEqualTo("5.0");
+        assertThat(extractLeadingNumericText("abc", 0)).isEqualTo("");
     }
 
     @Test
     public void testExtractLeadingInt() {
-        assertEquals(1, extractLeadingInt("1 abc"));
-        assertEquals(1, extractLeadingInt("1 23"));
+        assertThat(extractLeadingInt("1 abc")).isEqualTo(1);
+        assertThat(extractLeadingInt("1 23")).isEqualTo(1);
     }
 
     @Test
     public void testExtractLeadingDouble() {
-        assertThat(extractLeadingDouble("1.0 abc"), is(closeTo(1.0, 0.001)));
-        assertThat(extractLeadingDouble("2.5 23"), is(closeTo(2.5, 0.001)));
+        assertThat(extractLeadingDouble("1.0 abc")).isCloseTo(1.0, offset(0.001));
+        assertThat(extractLeadingDouble("2.5 23")).isCloseTo(2.5, offset(0.001));
     }
 }

@@ -24,12 +24,12 @@
 
 package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class KeyMaticTest extends DeviceXMLParsingBase {
 
@@ -37,13 +37,13 @@ public class KeyMaticTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("locked"));
-        assertThat(device.getBattery(), is("ok"));
+        assertThat(device.getState()).isEqualTo("locked");
+        assertThat(device.getBattery()).isEqualTo("ok");
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Override

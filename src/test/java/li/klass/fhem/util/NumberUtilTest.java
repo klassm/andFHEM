@@ -28,24 +28,22 @@ import org.junit.Test;
 
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class NumberUtilTest {
 
     @Test
     public void testToTwoDecimalDigits() {
-        assertEquals("01", toTwoDecimalDigits(1));
-        assertEquals("10", toTwoDecimalDigits(10));
-        assertEquals("100", toTwoDecimalDigits(100));
+        assertThat(toTwoDecimalDigits(1)).isEqualTo("01");
+        assertThat(toTwoDecimalDigits(10)).isEqualTo("10");
+        assertThat(toTwoDecimalDigits(100)).isEqualTo("100");
     }
 
     @Test
     public void testIsNumeric() {
-        assertThat(isDecimalNumber("123"), is(true));
-        assertThat(isDecimalNumber("123a"), is(false));
-        assertThat(isDecimalNumber(""), is(false));
+        assertThat(isDecimalNumber("123")).isTrue();
+        assertThat(isDecimalNumber("123a")).isFalse();
+        assertThat(isDecimalNumber("")).isFalse();
     }
 }

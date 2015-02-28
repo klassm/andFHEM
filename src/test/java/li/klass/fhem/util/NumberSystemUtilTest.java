@@ -29,16 +29,14 @@ import org.junit.Test;
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 import static li.klass.fhem.util.NumberSystemUtil.hexToQuaternary;
 import static li.klass.fhem.util.NumberSystemUtil.quaternaryToHex;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumberSystemUtilTest {
 
     @Test
     public void testHexToQuaternary() {
-        assertEquals("33222101", hexToQuaternary("FA91", 4));
-        assertEquals("0033222101", hexToQuaternary("FA91", 10));
+        assertThat(hexToQuaternary("FA91", 4)).isEqualTo("33222101");
+        assertThat(hexToQuaternary("FA91", 10)).isEqualTo("0033222101");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -48,7 +46,7 @@ public class NumberSystemUtilTest {
 
     @Test
     public void testQuaternaryToHex() {
-        assertEquals("FA91", quaternaryToHex("33222101"));
+        assertThat(quaternaryToHex("33222101")).isEqualTo("FA91");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -58,9 +56,9 @@ public class NumberSystemUtilTest {
 
     @Test
     public void testHexToDecimal() {
-        assertThat(hexToDecimal("F"), is(15));
-        assertThat(hexToDecimal("AB"), is(171));
-        assertThat(hexToDecimal("244EEB"), is(2379499));
-        assertThat(hexToDecimal("244eeb"), is(2379499));
+        assertThat(hexToDecimal("F")).isEqualTo(15);
+        assertThat(hexToDecimal("AB")).isEqualTo(171);
+        assertThat(hexToDecimal("244EEB")).isEqualTo(2379499);
+        assertThat(hexToDecimal("244eeb")).isEqualTo(2379499);
     }
 }

@@ -24,24 +24,22 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ESA2000DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         ESA2000Device device = getDefaultDevice(ESA2000Device.class);
 
-        assertThat(device.getCurrent(), is("81 (W)"));
-        assertThat(device.getDay(), is("1.04 (kWh)"));
-        assertThat(device.getDayLast(), is("4.78 (kWh)"));
-        assertThat(device.getMonth(), is("5.82 (kWh)"));
-        assertThat(device.getYear(), is("19.67 (kWh)"));
+        assertThat(device.getCurrent()).isEqualTo("81 (W)");
+        assertThat(device.getDay()).isEqualTo("1.04 (kWh)");
+        assertThat(device.getDayLast()).isEqualTo("4.78 (kWh)");
+        assertThat(device.getMonth()).isEqualTo("5.82 (kWh)");
+        assertThat(device.getYear()).isEqualTo("19.67 (kWh)");
     }
 
     @Override

@@ -28,29 +28,26 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class USBWXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         USBWXDevice device = getDefaultDevice(USBWXDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getDewpoint(), is("10.3 (°C)"));
-        assertThat(device.getHumidity(), is("60 (%)"));
-        assertThat(device.getTemperature(), is("18.2 (°C)"));
+        assertThat(device.getDewpoint()).isEqualTo("10.3 (°C)");
+        assertThat(device.getHumidity()).isEqualTo("60 (%)");
+        assertThat(device.getTemperature()).isEqualTo("18.2 (°C)");
 
-        assertThat(device.getState(), is("T: 18.2  H: 60"));
+        assertThat(device.getState()).isEqualTo("T: 18.2  H: 60");
 
-        assertThat(device.getSetList().size(), is(not(0)));
+        assertThat(device.getSetList().size()).isNotEqualTo(0);
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getLogDevices()).isNotEmpty();
+        assertThat(device.getDeviceCharts()).hasSize(2);
     }
 
     @Override

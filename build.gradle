@@ -178,7 +178,6 @@ dependencies {
     compile 'net.lingala.zip4j:zip4j:1.3.2'
 
 
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
     testCompile 'junit:junit:4.11'
     testCompile 'org.robolectric:robolectric:2.4'
     testCompile('com.squareup:fest-android:1.0.+') {

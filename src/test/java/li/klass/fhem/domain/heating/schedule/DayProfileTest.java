@@ -24,14 +24,14 @@
 
 package li.klass.fhem.domain.heating.schedule;
 
+import org.junit.Test;
+
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.util.DayUtil;
-import org.junit.Test;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DayProfileTest {
 
@@ -42,10 +42,10 @@ public class DayProfileTest {
         dayProfile.getHeatingIntervalAt(0).setFromTime("03:04");
         dayProfile.getHeatingIntervalAt(0).setToTime("05:23");
 
-        assertThat(dayProfile.isModified(), is(false));
+        assertThat(dayProfile.isModified()).isFalse();
 
         dayProfile.getHeatingIntervalAt(0).setChangedFromTime("06:32");
 
-        assertThat(dayProfile.isModified(), is(true));
+        assertThat(dayProfile.isModified()).isTrue();
     }
 }

@@ -24,37 +24,33 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SonosPlayerTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         SonosPlayerDevice device = getDefaultDevice(SonosPlayerDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getCurrentAlbum(), isEmptyOrNullString());
-        assertThat(device.getCurrentTitle(), isEmptyOrNullString());
-        assertThat(device.getCurrentTitle(), isEmptyOrNullString());
-        assertThat(device.getCurrentTrackDuration(), isEmptyOrNullString());
-        assertThat(device.getInfoSummarize1(), Matchers.is("WDR 2 Rhein und Ruhr:"));
-        assertThat(device.getInfoSummarize2(), Matchers.is("STOPPED => WDR 2 Rhein und Ruhr:"));
-        assertThat(device.getInfoSummarize3(), Matchers.is("Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer"));
-        assertThat(device.getMute(), Matchers.is("no"));
-        assertThat(device.getNumberOfTracks(), Matchers.is("2"));
-        assertThat(device.getRepeat(), Matchers.is("no"));
-        assertThat(device.getShuffle(), Matchers.is("no"));
-        assertThat(device.getVolume(), Matchers.is("24"));
-        assertThat(device.getCurrentSender(), is("WDR 2 Rhein und Ruhr"));
+        assertThat(device.getCurrentAlbum()).isNullOrEmpty();
+        assertThat(device.getCurrentTitle()).isNullOrEmpty();
+        assertThat(device.getCurrentTitle()).isNullOrEmpty();
+        assertThat(device.getCurrentTrackDuration()).isNullOrEmpty();
+        assertThat(device.getInfoSummarize1()).isEqualTo("WDR 2 Rhein und Ruhr:");
+        assertThat(device.getInfoSummarize2()).isEqualTo("STOPPED => WDR 2 Rhein und Ruhr:");
+        assertThat(device.getInfoSummarize3()).isEqualTo("Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer");
+        assertThat(device.getMute()).isEqualTo("no");
+        assertThat(device.getNumberOfTracks()).isEqualTo("2");
+        assertThat(device.getRepeat()).isEqualTo("no");
+        assertThat(device.getShuffle()).isEqualTo("no");
+        assertThat(device.getVolume()).isEqualTo("24");
+        assertThat(device.getCurrentSender()).isEqualTo("WDR 2 Rhein und Ruhr");
     }
 
     @Override

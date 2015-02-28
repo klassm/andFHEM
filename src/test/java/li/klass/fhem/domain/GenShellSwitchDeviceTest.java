@@ -24,21 +24,21 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GenShellSwitchDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
         GenShellSwitchDevice device1 = getDeviceFor("device1", GenShellSwitchDevice.class);
-        assertThat(device1.isOnByState(), is(true));
+        assertThat(device1.isOnByState()).isTrue();
 
         GenShellSwitchDevice device2 = getDeviceFor("device2", GenShellSwitchDevice.class);
-        assertThat(device2.isOnByState(), is(false));
+        assertThat(device2.isOnByState()).isFalse();
     }
 
     @Override

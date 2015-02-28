@@ -29,10 +29,8 @@ import org.junit.Test;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 public class KFM100Test extends DeviceXMLParsingBase {
 
@@ -40,28 +38,28 @@ public class KFM100Test extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("171.3 (l)"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.FILL_STATE));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.getState()).isEqualTo("171.3 (l)");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.FILL_STATE);
+        assertThat(device.supportsDim()).isFalse();
 
-        assertThat(device.getRawValue(), is("20"));
-        assertThat(device.getFillContentLitresMaximum(), is(4198));
-        assertThat(device.getFillContentPercentage(), is("4 (%)"));
-        assertThat(device.getFillContentPercentageRaw(), is(closeTo(0.04, 0.01)));
-        assertThat(device.getFillContentLitresRaw(), is(closeTo(171.3, 0.01)));
-        assertThat(device.getRawToReadable(), is("10:0 255:4198"));
+        assertThat(device.getRawValue()).isEqualTo("20");
+        assertThat(device.getFillContentLitresMaximum()).isEqualTo(4198);
+        assertThat(device.getFillContentPercentage()).isEqualTo("4 (%)");
+        assertThat(device.getFillContentPercentageRaw()).isCloseTo(0.04, offset(0.01));
+        assertThat(device.getFillContentLitresRaw()).isCloseTo(171.3, offset(0.01));
+        assertThat(device.getRawToReadable()).isEqualTo("10:0 255:4198");
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
 
         device.setContent("4300l");
         device.afterAllXMLRead();
-        assertThat(device.getFillContentPercentageRaw(), is(closeTo(1, 0.01)));
+        assertThat(device.getFillContentPercentageRaw()).isCloseTo(1, offset(0.01));
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Override

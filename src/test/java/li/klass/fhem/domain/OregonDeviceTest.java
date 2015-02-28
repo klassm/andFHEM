@@ -28,37 +28,35 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OregonDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         OregonDevice device = getDefaultDevice(OregonDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getBattery(), is("90 (%)"));
-        assertThat(device.getDewpoint(), is("4.3 (°C)"));
-        assertThat(device.getForecast(), is("rain"));
-        assertThat(device.getHumidity(), is("46 (%)"));
-        assertThat(device.getPressure(), is("1000 (hPa)"));
-        assertThat(device.getTemperature(), is("15.9 (°C)"));
-        assertThat(device.getRainRate(), is("0 (mm/h)"));
-        assertThat(device.getRainTotal(), is("976.2998 (l/m2)"));
-        assertThat(device.getWindAvgSpeed(), is("0 (km/h)"));
-        assertThat(device.getWindDirection(), is("245 SW"));
-        assertThat(device.getWindSpeed(), is("0 (km/h)"));
-        assertThat(device.getUvValue(), is("10"));
-        assertThat(device.getUvRisk(), is("high"));
-        assertThat(device.getState(), is("T: 15.9  H: 46"));
+        assertThat(device.getBattery()).isEqualTo("90 (%)");
+        assertThat(device.getDewpoint()).isEqualTo("4.3 (°C)");
+        assertThat(device.getForecast()).isEqualTo("rain");
+        assertThat(device.getHumidity()).isEqualTo("46 (%)");
+        assertThat(device.getPressure()).isEqualTo("1000 (hPa)");
+        assertThat(device.getTemperature()).isEqualTo("15.9 (°C)");
+        assertThat(device.getRainRate()).isEqualTo("0 (mm/h)");
+        assertThat(device.getRainTotal()).isEqualTo("976.2998 (l/m2)");
+        assertThat(device.getWindAvgSpeed()).isEqualTo("0 (km/h)");
+        assertThat(device.getWindDirection()).isEqualTo("245 SW");
+        assertThat(device.getWindSpeed()).isEqualTo("0 (km/h)");
+        assertThat(device.getUvValue()).isEqualTo("10");
+        assertThat(device.getUvRisk()).isEqualTo("high");
+        assertThat(device.getState()).isEqualTo("T: 15.9  H: 46");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(6));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(6);
     }
 
     @Override

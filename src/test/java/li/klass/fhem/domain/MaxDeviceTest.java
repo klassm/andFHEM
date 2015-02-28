@@ -24,17 +24,20 @@
 
 package li.klass.fhem.domain;
 
+import org.junit.Test;
+
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
-import org.junit.Test;
 
-import static li.klass.fhem.domain.MaxDevice.HeatingMode.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static li.klass.fhem.domain.MaxDevice.HeatingMode.AUTO;
+import static li.klass.fhem.domain.MaxDevice.HeatingMode.BOOST;
+import static li.klass.fhem.domain.MaxDevice.HeatingMode.MANUAL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 public class MaxDeviceTest extends DeviceXMLParsingBase {
 
@@ -43,56 +46,56 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         MaxDevice maxDevice = new MaxDevice();
 
         maxDevice.readMODE("auto");
-        assertThat(maxDevice.getHeatingMode(), is(AUTO));
+        assertThat(maxDevice.getHeatingMode()).isEqualTo(AUTO);
 
         maxDevice.readMODE("boost");
-        assertThat(maxDevice.getHeatingMode(), is(BOOST));
+        assertThat(maxDevice.getHeatingMode()).isEqualTo(BOOST);
 
         maxDevice.readMODE("manual");
-        assertThat(maxDevice.getHeatingMode(), is(MANUAL));
+        assertThat(maxDevice.getHeatingMode()).isEqualTo(MANUAL);
     }
 
     @Test
     public void testShutterContactDevice() {
         MaxDevice device = getDeviceFor("device", MaxDevice.class);
 
-        assertThat(device.getBattery(), is("ok"));
-        assertThat(device.getState(), is("closed"));
-        assertThat(device.getSubType(), is(MaxDevice.SubType.WINDOW));
+        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(device.getState()).isEqualTo("closed");
+        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.WINDOW);
     }
 
     @Test
     public void testCubeDevice() {
         MaxDevice device = getDeviceFor("device1", MaxDevice.class);
 
-        assertThat(device.getState(), is("connected"));
-        assertThat(device.getSubType(), is(MaxDevice.SubType.CUBE));
+        assertThat(device.getState()).isEqualTo("connected");
+        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.CUBE);
     }
 
     @Test
     public void testPushButtonDevice() {
         MaxDevice device = getDeviceFor("device2", MaxDevice.class);
 
-        assertThat(device.getState(), is("waiting for data"));
-        assertThat(device.getSubType(), is(MaxDevice.SubType.SWITCH));
+        assertThat(device.getState()).isEqualTo("waiting for data");
+        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.SWITCH);
     }
 
     @Test
     public void testHeatingThermostatDevice() {
         MaxDevice device = getDeviceFor("device3", MaxDevice.class);
 
-        assertThat(device.getState(), is("17.0 °C"));
-        assertThat(device.getSubType(), is(MaxDevice.SubType.TEMPERATURE));
-        assertThat(device.getBattery(), is("ok"));
-        assertThat(device.getActuator(), is("0 (%)"));
-        assertThat(device.getDesiredTempDesc(), is("on"));
-        assertThat(device.getDesiredTemp(), is(closeTo(30.5, 0.1)));
-        assertThat(device.getTemperature(), is("21 (°C)"));
-        assertThat(device.getWindowOpenTempDesc(), is("12.0 (°C)"));
-        assertThat(device.getEcoTempDesc(), is("16.5 (°C)"));
-        assertThat(device.getComfortTempDesc(), is("19.0 (°C)"));
+        assertThat(device.getState()).isEqualTo("17.0 °C");
+        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.TEMPERATURE);
+        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(device.getActuator()).isEqualTo("0 (%)");
+        assertThat(device.getDesiredTempDesc()).isEqualTo("on");
+        assertThat(device.getDesiredTemp()).isCloseTo(30.5, offset(0.1));
+        assertThat(device.getTemperature()).isEqualTo("21 (°C)");
+        assertThat(device.getWindowOpenTempDesc()).isEqualTo("12.0 (°C)");
+        assertThat(device.getEcoTempDesc()).isEqualTo("16.5 (°C)");
+        assertThat(device.getComfortTempDesc()).isEqualTo("19.0 (°C)");
 
-        assertThat(device.getHeatingMode(), is(BOOST));
+        assertThat(device.getHeatingMode()).isEqualTo(BOOST);
     }
 
     @Test
@@ -100,21 +103,21 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         MaxDevice device = getDeviceFor("journalDevice", MaxDevice.class);
 
         WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = device.getWeekProfile();
-        assertThat(weekProfile, is(notNullValue()));
+        assertThat(weekProfile).isNotNull();
 
         DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> tuesday = weekProfile.getDayProfileFor(DayUtil.Day.TUESDAY);
-        assertThat(tuesday.getHeatingIntervals().size(), is(6));
-        assertThat(tuesday.getHeatingIntervalAt(0).getSwitchTime(), is("00:00"));
-        assertThat(tuesday.getHeatingIntervalAt(0).getTemperature(), is(closeTo(17, 0.1)));
+        assertThat(tuesday.getHeatingIntervals().size()).isEqualTo(6);
+        assertThat(tuesday.getHeatingIntervalAt(0).getSwitchTime()).isEqualTo("00:00");
+        assertThat(tuesday.getHeatingIntervalAt(0).getTemperature()).isCloseTo(17, offset(0.1));
     }
 
     @Test
     public void testOnOffTemperatureDevice() {
         MaxDevice device = getDeviceFor("on_off", MaxDevice.class);
 
-        assertThat(device.getDesiredTemp(), is(closeTo(30.5, 0.01)));
-        assertThat(device.getWindowOpenTemp(), is(closeTo(4.5, 0.01)));
-        assertThat(device.getEcoTemp(), is(closeTo(30.5, 0.01)));
+        assertThat(device.getDesiredTemp()).isCloseTo(30.5, offset(0.01));
+        assertThat(device.getWindowOpenTemp()).isCloseTo(4.5, offset(0.01));
+        assertThat(device.getEcoTemp()).isCloseTo(30.5, offset(0.01));
     }
 
     @Override

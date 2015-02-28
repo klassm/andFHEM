@@ -11,16 +11,13 @@ import java.io.ObjectOutputStream;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.FhemDevice;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DummyDataXmlLoadTest extends DeviceXMLParsingBase {
     @Test
     public void testFunctionalityIsSetOnAllDevices() {
         for (FhemDevice device : roomDeviceList.getAllDevices()) {
-            assertThat(device.getDeviceGroup(), is(not(nullValue())));
+            assertThat(device.getDeviceGroup()).isNotNull();
         }
     }
 

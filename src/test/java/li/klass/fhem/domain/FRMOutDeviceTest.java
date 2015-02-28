@@ -24,19 +24,19 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FRMOutDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
         FRMOutDevice device = getDefaultDevice(FRMOutDevice.class);
-        assertThat(device.supportsToggle(), is(true));
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.supportsToggle()).isTrue();
+        assertThat(device.isOnByState()).isTrue();
     }
 
     @Override

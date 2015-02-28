@@ -30,10 +30,7 @@ import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RemoteControlDeviceTest extends DeviceXMLParsingBase {
 
@@ -41,56 +38,56 @@ public class RemoteControlDeviceTest extends DeviceXMLParsingBase {
     public void testAttributesDefaultDevice() {
         RemoteControlDevice device = getDefaultDevice(RemoteControlDevice.class);
 
-        assertThat(device, is(not(nullValue())));
+        assertThat(device).isNotNull();
 
-        assertThat(device.getIconPath(), is("icons/remotecontrol"));
-        assertThat(device.getIconPrefix(), is("black_btn_"));
+        assertThat(device.getIconPath()).isEqualTo("icons/remotecontrol");
+        assertThat(device.getIconPrefix()).isEqualTo("black_btn_");
 
-        assertThat(device.getChannel(), is("kabel eins"));
-        assertThat(device.getCurrentTitle(), is("Cold Case - Kein Opfer ist je vergessen"));
+        assertThat(device.getChannel()).isEqualTo("kabel eins");
+        assertThat(device.getCurrentTitle()).isEqualTo("Cold Case - Kein Opfer ist je vergessen");
 
         List<List<RemoteControlDevice.Entry>> rows = device.getRows();
-        assertThat(rows.size(), is(14));
+        assertThat(rows.size()).isEqualTo(14);
 
         List<RemoteControlDevice.Entry> row0 = rows.get(0);
-        assertThat(row0.size(), is(3));
-        assertThat(row0.get(0).command, is("POWEROFF"));
-        assertThat(row0.get(0).icon, is("POWEROFF"));
-        assertThat(row0.get(1).command, is("TV"));
-        assertThat(row0.get(2).command, is("HDMI"));
-        assertThat(row0.get(2).getIconPath(), is("/icons/remotecontrol/black_btn_HDMI.png"));
+        assertThat(row0.size()).isEqualTo(3);
+        assertThat(row0.get(0).command).isEqualTo("POWEROFF");
+        assertThat(row0.get(0).icon).isEqualTo("POWEROFF");
+        assertThat(row0.get(1).command).isEqualTo("TV");
+        assertThat(row0.get(2).command).isEqualTo("HDMI");
+        assertThat(row0.get(2).getIconPath()).isEqualTo("/icons/remotecontrol/black_btn_HDMI.png");
 
         List<RemoteControlDevice.Entry> row1 = rows.get(1);
-        assertThat(row1.size(), is(3));
-        assertThat(row1.get(0).command, is(""));
-        assertThat(row1.get(0).icon, is("blank"));
-        assertThat(row1.get(1).command, is(""));
-        assertThat(row1.get(2).command, is(""));
+        assertThat(row1.size()).isEqualTo(3);
+        assertThat(row1.get(0).command).isEqualTo("");
+        assertThat(row1.get(0).icon).isEqualTo("blank");
+        assertThat(row1.get(1).command).isEqualTo("");
+        assertThat(row1.get(2).command).isEqualTo("");
 
         List<RemoteControlDevice.Entry> row2 = rows.get(2);
-        assertThat(row2.size(), is(3));
-        assertThat(row2.get(0).command, is("1"));
-        assertThat(row2.get(1).command, is("2"));
-        assertThat(row2.get(2).command, is("3"));
+        assertThat(row2.size()).isEqualTo(3);
+        assertThat(row2.get(0).command).isEqualTo("1");
+        assertThat(row2.get(1).command).isEqualTo("2");
+        assertThat(row2.get(2).command).isEqualTo("3");
 
         List<RemoteControlDevice.Entry> row3 = rows.get(3);
-        assertThat(row3.size(), is(3));
-        assertThat(row3.get(0).command, is("4"));
-        assertThat(row3.get(1).command, is("5"));
-        assertThat(row3.get(2).command, is("6"));
+        assertThat(row3.size()).isEqualTo(3);
+        assertThat(row3.get(0).command).isEqualTo("4");
+        assertThat(row3.get(1).command).isEqualTo("5");
+        assertThat(row3.get(2).command).isEqualTo("6");
 
         List<RemoteControlDevice.Entry> row4 = rows.get(4);
-        assertThat(row4.size(), is(3));
-        assertThat(row4.get(0).command, is("7"));
-        assertThat(row4.get(1).command, is("8"));
-        assertThat(row4.get(2).command, is("9"));
+        assertThat(row4.size()).isEqualTo(3);
+        assertThat(row4.get(0).command).isEqualTo("7");
+        assertThat(row4.get(1).command).isEqualTo("8");
+        assertThat(row4.get(2).command).isEqualTo("9");
 
         List<RemoteControlDevice.Entry> row7 = rows.get(7);
-        assertThat(row7.size(), is(3));
-        assertThat(row7.get(0).command, is("VOLUP"));
-        assertThat(row7.get(1).command, is("MUTE"));
-        assertThat(row7.get(2).command, is("channelUP"));
-        assertThat(row7.get(2).icon, is("CHUP"));
+        assertThat(row7.size()).isEqualTo(3);
+        assertThat(row7.get(0).command).isEqualTo("VOLUP");
+        assertThat(row7.get(1).command).isEqualTo("MUTE");
+        assertThat(row7.get(2).command).isEqualTo("channelUP");
+        assertThat(row7.get(2).icon).isEqualTo("CHUP");
     }
 
     @Override

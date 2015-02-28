@@ -24,19 +24,19 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PresenceDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
         PresenceDevice device = getDefaultDevice(PresenceDevice.class);
-        assertThat(device.getState(), is("present"));
-        assertThat(device.getMode(), is("fritzbox"));
+        assertThat(device.getState()).isEqualTo("present");
+        assertThat(device.getMode()).isEqualTo("fritzbox");
     }
 
     @Override

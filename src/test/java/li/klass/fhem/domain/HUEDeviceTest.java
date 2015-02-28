@@ -28,37 +28,35 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HUEDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         HUEDevice device = getDefaultDevice(HUEDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-        assertThat(device.getAlias(), is("Extended color light 1"));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
+        assertThat(device.getAlias()).isEqualTo("Extended color light 1");
 
-        assertThat(device.getBrightness(), is(254));
-        assertThat(device.getBrightnessDesc(), is("254"));
+        assertThat(device.getBrightness()).isEqualTo(254);
+        assertThat(device.getBrightnessDesc()).isEqualTo("254");
 
-        assertThat(device.getSaturation(), is(144));
-        assertThat(device.getSaturationDesc(), is("144"));
+        assertThat(device.getSaturation()).isEqualTo(144);
+        assertThat(device.getSaturationDesc()).isEqualTo("144");
 
-        assertThat(device.getRgbDesc(), is("0xFFEE8B"));
-        assertThat(device.getRgb(), is(16772747));
+        assertThat(device.getRgbDesc()).isEqualTo("0xFFEE8B");
+        assertThat(device.getRgb()).isEqualTo(16772747);
 
-        assertThat(device.getXy(), is(new double[] {0.4595,0.4105}));
+        assertThat(device.getXy()).isEqualTo(new double[]{0.4595, 0.4105});
 
-        assertThat(device.getPositionForDimState("off"), is(0));
+        assertThat(device.getPositionForDimState("off")).isEqualTo(0);
     }
 
     @Test
     public void testDeviceWithoutXYAttribute() {
         HUEDevice device = getDeviceFor("device1", HUEDevice.class);
-        assertThat(device.getXy(), is(nullValue()));
+        assertThat(device.getXy()).isNull();
     }
 
     @Override

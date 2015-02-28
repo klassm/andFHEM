@@ -32,8 +32,7 @@ import java.util.List;
 
 import li.klass.fhem.testutil.MockitoTestRule;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GraphServiceTest {
 
@@ -57,6 +56,6 @@ public class GraphServiceTest {
 
         List<GraphEntry> graphEntries = graphService.findGraphEntries(content);
 
-        assertThat(graphEntries.size(), is(5));
+        assertThat(graphEntries).hasSize(5);
     }
 }

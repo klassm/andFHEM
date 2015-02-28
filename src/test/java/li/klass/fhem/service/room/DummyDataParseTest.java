@@ -42,11 +42,7 @@ import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.CloseableUtil;
 
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DummyDataParseTest {
     @Rule
@@ -61,17 +57,17 @@ public class DummyDataParseTest {
     @Test
     public void testParseDummyData() throws Exception {
         InputStream dummyDataStream = DummyDataConnection.class.getResourceAsStream("dummyData.xml");
-        assertThat(dummyDataStream, is(not(nullValue())));
+        assertThat(dummyDataStream).isNotNull();
 
         InputStreamReader reader = null;
         try {
             reader = new InputStreamReader(dummyDataStream);
             String xmlList = CharStreams.toString(reader);
-            assertNotNull(xmlList);
+            assertThat(xmlList).isNotNull();
 
             RoomDeviceList result = deviceListParser.parseAndWrapExceptions(xmlList, context);
 
-            assertNotNull(result);
+            assertThat(result).isNotNull();
         } finally {
             CloseableUtil.close(dummyDataStream, reader);
         }

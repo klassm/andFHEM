@@ -28,18 +28,17 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GCMSendDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testAttributesProperlySet() {
         GCMSendDevice device = getDeviceFor("gcm", GCMSendDevice.class);
-        assertThat(device.getApiKey(), is("AIzaSyCs7OxUcPp5"));
-        assertThat(device.getRegIds(), hasItemInArray("APA91bHTAy8Xp4uE4FyCJuMnAn"));
-        assertThat(device.getRegIds(), hasItemInArray("BAPA91bHTGy8Xp5uE4FyCJuMnAn"));
+        assertThat(device.getApiKey()).isEqualTo("AIzaSyCs7OxUcPp5");
+        assertThat(device.getRegIds())
+                .contains("APA91bHTAy8Xp4uE4FyCJuMnAn")
+                .contains("BAPA91bHTGy8Xp5uE4FyCJuMnAn");
     }
 
     @Override

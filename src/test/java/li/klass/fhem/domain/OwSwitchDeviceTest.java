@@ -29,21 +29,18 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static li.klass.fhem.domain.OwSwitchDevice.setStateForAB;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OwSwitchDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         OwSwitchDevice device = getDefaultDevice(OwSwitchDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.isOnA(), is(true));
-        assertThat(device.isOnB(), is(false));
+        assertThat(device.isOnA()).isTrue();
+        assertThat(device.isOnB()).isFalse();
     }
 
     @Test
@@ -58,16 +55,16 @@ public class OwSwitchDeviceTest extends DeviceXMLParsingBase {
         OwSwitchDevice device = new OwSwitchDevice();
 
         device.readGPIO(value);
-        assertThat(device.isOnA(), is(aExpect));
-        assertThat(device.isOnB(), is(bExpect));
+        assertThat(device.isOnA()).isEqualTo(aExpect);
+        assertThat(device.isOnB()).isEqualTo(bExpect);
     }
 
     @Test
     public void testSetStateForAB() {
-        assertThat(setStateForAB(true, true), is(0));
-        assertThat(setStateForAB(false, true), is(1));
-        assertThat(setStateForAB(true, false), is(2));
-        assertThat(setStateForAB(false, false), is(3));
+        assertThat(setStateForAB(true, true)).isEqualTo(0);
+        assertThat(setStateForAB(false, true)).isEqualTo(1);
+        assertThat(setStateForAB(true, false)).isEqualTo(2);
+        assertThat(setStateForAB(false, false)).isEqualTo(3);
     }
 
     @Override

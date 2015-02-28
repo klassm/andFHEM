@@ -24,20 +24,20 @@
 
 package li.klass.fhem.domain.heating.schedule.interval;
 
-import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FromToHeatingIntervalTest {
 
     @Test
     public void testIsModified() {
         FromToHeatingInterval heatingInterval = new FromToHeatingInterval(new FHTConfiguration());
-        assertThat(heatingInterval.isModified(), is(false));
+        assertThat(heatingInterval.isModified()).isFalse();
 
         heatingInterval.setChangedFromTime("03:35");
-        assertThat(heatingInterval.isModified(), is(true));
+        assertThat(heatingInterval.isModified()).isTrue();
     }
 }
