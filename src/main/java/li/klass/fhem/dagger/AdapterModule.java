@@ -44,6 +44,7 @@ import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
+import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
@@ -98,6 +99,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 PioneerAvrDeviceAdapter.class,
                 MiLightDeviceAdapter.class,
                 STVDeviceAdapter.class,
+                PioneerAvrZoneDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,

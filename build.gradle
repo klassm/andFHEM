@@ -186,6 +186,7 @@ dependencies {
     }
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'com.tngtech.java:junit-dataprovider:1.9.2'
+    testCompile 'org.assertj:assertj-core:1.7.1'
 }
 
 task readSigningPasswordsFromConsole(

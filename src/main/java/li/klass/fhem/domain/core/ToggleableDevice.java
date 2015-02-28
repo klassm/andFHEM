@@ -46,11 +46,11 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
     private ButtonHookType buttonHookType = NORMAL;
 
     public boolean isOnByState() {
-        return ! isOffByState();
+        return !isOffByState();
     }
 
     public boolean isOffByState() {
-        String internalState = getInternalState();
+        String internalState = getToggleStateValue();
         return internalState == null
                 || internalState.toLowerCase().contains(getOffStateName().toLowerCase())
                 || internalState.equalsIgnoreCase(eventMapReverse.get(getOffStateName()))
@@ -124,5 +124,9 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
 
     public String getOnStateName() {
         return onStateName;
+    }
+
+    public String getToggleStateValue() {
+        return getInternalState();
     }
 }

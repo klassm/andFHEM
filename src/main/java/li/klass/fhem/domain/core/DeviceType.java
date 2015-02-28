@@ -43,6 +43,7 @@ import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
+import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
@@ -163,7 +164,8 @@ public enum DeviceType {
     EMCDDEVICE("ECMDDevice", EMCDDevice.class, new ToggleableAdapterWithSwitchActionRow<>(EMCDDevice.class)),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
-    CO20("CO20", CO20Device.class)
+    CO20("CO20", CO20Device.class),
+    PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter())
     ;
 
     private String xmllistTag;
