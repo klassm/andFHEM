@@ -5,7 +5,7 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.util.NumberSystemUtil;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DMXDeviceTest extends DeviceXMLParsingBase {
     @Test

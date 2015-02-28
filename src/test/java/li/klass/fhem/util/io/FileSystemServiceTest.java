@@ -33,7 +33,7 @@ import java.io.File;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileSystemServiceTest {
 

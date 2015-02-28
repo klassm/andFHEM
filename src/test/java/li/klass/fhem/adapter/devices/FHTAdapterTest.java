@@ -35,7 +35,7 @@ import org.mockito.Mock;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.testutil.MockitoTestRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.DateTimeConstants.JANUARY;
 import static org.mockito.BDDMockito.given;
 

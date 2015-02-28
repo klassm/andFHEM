@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.EIBDevice;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
 public class ToggleableDeviceTest {
@@ -76,7 +76,7 @@ public class ToggleableDeviceTest {
         device2.setState(readState);
 
         // expect
-        assertThat(device.isOnRespectingInvertHook()).isEqualTo(! isOn);
+        assertThat(device.isOnRespectingInvertHook()).isEqualTo(!isOn);
         assertThat(device2.isOnRespectingInvertHook()).isEqualTo(isOn);
     }
 }

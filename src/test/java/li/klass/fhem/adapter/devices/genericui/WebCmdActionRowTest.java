@@ -34,7 +34,7 @@ import java.util.List;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.testutil.MockitoTestRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class WebCmdActionRowTest {
 

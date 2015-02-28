@@ -36,7 +36,7 @@ import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CULHMConfigurationTest {
     private CULHMConfiguration configuration = new CULHMConfiguration();

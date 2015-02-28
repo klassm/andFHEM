@@ -43,7 +43,7 @@ import org.mockito.stubbing.Answer;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static li.klass.fhem.billing.BillingService.OnLoadInventoryFinishedListener;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;

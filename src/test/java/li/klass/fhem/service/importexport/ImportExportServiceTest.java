@@ -39,7 +39,7 @@ import java.util.Map;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 public class ImportExportServiceTest {

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.gcm;
 
-import org.fest.assertions.data.MapEntry;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -33,7 +32,8 @@ import java.util.Map;
 
 import li.klass.fhem.testutil.MockitoTestRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 
 public class GCMIntentServiceTest {
 
@@ -49,6 +49,6 @@ public class GCMIntentServiceTest {
         Map<String, String> changes = service.extractChanges("device", "temperature:18.9<|>T:18.9 H: 61");
 
         // then
-        assertThat(changes).contains(MapEntry.entry("TEMPERATURE", "18.9"), MapEntry.entry("STATE", "T:18.9 H: 61"));
+        assertThat(changes).contains(entry("TEMPERATURE", "18.9"), entry("STATE", "T:18.9 H: 61"));
     }
 }

@@ -30,8 +30,8 @@ import java.util.Map;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.data.MapEntry.entry;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 
 public class PCF8574DeviceTest extends DeviceXMLParsingBase {
 

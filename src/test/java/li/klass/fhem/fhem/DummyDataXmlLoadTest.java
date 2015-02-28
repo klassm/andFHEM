@@ -1,6 +1,6 @@
 package li.klass.fhem.fhem;
 
-import org.fest.util.Files;
+import org.assertj.core.util.Files;
 import org.junit.Test;
 
 import java.io.File;

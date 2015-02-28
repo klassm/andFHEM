@@ -44,8 +44,8 @@ import static li.klass.fhem.util.DayUtil.Day.SUNDAY;
 import static li.klass.fhem.util.DayUtil.Day.THURSDAY;
 import static li.klass.fhem.util.DayUtil.Day.TUESDAY;
 import static li.klass.fhem.util.DayUtil.Day.WEDNESDAY;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.data.Offset.offset;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 public class ThermostatTest extends DeviceXMLParsingBase {
     @Test

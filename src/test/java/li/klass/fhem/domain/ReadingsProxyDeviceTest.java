@@ -29,7 +29,7 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 

@@ -30,7 +30,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.DIMMER;
 import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HM485DeviceTest extends DeviceXMLParsingBase {
 

@@ -41,7 +41,7 @@ import li.klass.fhem.domain.FS20Device;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
 public class FhemDeviceTest {
@@ -55,7 +55,7 @@ public class FhemDeviceTest {
 
     @DataProvider
     public static Object[][] SORT_DATAPOINT() {
-        return new Object[][] {
+        return new Object[][]{
                 {
                         asList(deviceFor("b", null, null), deviceFor("a", null, null), deviceFor("1", null, null)),
                         asList("1", "a", "b")

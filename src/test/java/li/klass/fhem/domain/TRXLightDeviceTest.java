@@ -30,7 +30,7 @@ import org.junit.experimental.categories.Category;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Category(DeviceTestBase.class)
 public class TRXLightDeviceTest extends DeviceXMLParsingBase {

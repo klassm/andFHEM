@@ -34,7 +34,7 @@ import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKDAY;
 import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKEND;
 import static li.klass.fhem.domain.AtDevice.TimerType.ABSOLUTE;
 import static li.klass.fhem.domain.AtDevice.TimerType.RELATIVE;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class AtDeviceTest extends DeviceXMLParsingBase {

@@ -28,8 +28,8 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.data.Offset.offset;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 public class CULEMDeviceTest extends DeviceXMLParsingBase {
     @Test

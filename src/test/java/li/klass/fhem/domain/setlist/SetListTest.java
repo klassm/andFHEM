@@ -27,11 +27,11 @@ package li.klass.fhem.domain.setlist;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SetListTest {
     private SetList setList;
-    
+
     @Before
     public void setUp() {
         setList = new SetList();

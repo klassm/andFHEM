@@ -30,7 +30,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DummyDeviceTest extends DeviceXMLParsingBase {
     @Test

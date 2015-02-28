@@ -55,7 +55,7 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
 import static li.klass.fhem.appwidget.WidgetConfiguration.fromSaveString;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
