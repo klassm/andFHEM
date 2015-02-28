@@ -1,0 +1,94 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://raw.github.com/eburtsev/gdata-maven/master' }
+    }
+
+    dependencies {
+        classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
+        classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
+    }
+}
+
+import com.google.gdata.client.sites.SitesService
+import com.google.gdata.data.PlainTextConstruct
+import com.google.gdata.data.media.MediaFileSource
+import com.google.gdata.data.sites.AttachmentEntry
+import com.google.gdata.data.sites.ContentFeed
+import com.google.gdata.data.sites.FileCabinetPageEntry
+
+import javax.activation.MimetypesFileTypeMap
+
+def uploadApkToGoogleSites() {
+    def attachmentContentFeedUrl = "https://sites.google.com/feeds/content/site/andfhem/"
+
+    def service = new SitesService("li.klass-andFHEM-v1");
+    service.setUserCredentials("andFHEM@klass.li", '' + android.signingConfigs.release.keyPassword);
+
+
+    def contentFeed = service.getFeed(new URL(attachmentContentFeedUrl), ContentFeed.class)
+
+    def entries = contentFeed.getEntries()
+
+    for (e in entries) {
+        def href = e.getRevisionLink().getHref()
+        def id = href.substring(href.lastIndexOf("/") + 1)
+
+        def fileTitle = e.getTitle().getText()
+        if (fileTitle.equals("google-release.apk")) {
+            deleteGoogleSitesAttachment(service, id)
+        }
+    }
+
+    updateGoogleSitesAPK(service)
+}
+
+def deleteGoogleSitesAttachment(service, id) {
+    def attachment = service.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/" + id + "?with-mappings=true"), FileCabinetPageEntry.class)
+    attachment.delete();
+}
+
+def updateGoogleSitesAPK(service) {
+    def title = "google-release.apk"
+    def description = ""
+
+    def mediaTypes = new MimetypesFileTypeMap()
+    mediaTypes.addMimeTypes("application/vnd.android.package-archive")
+
+    def file = new File("build/outputs/apk/andFHEM-inapp-release.apk")
+
+    def newAttachment = new AttachmentEntry();
+    newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
+    newAttachment.setTitle(new PlainTextConstruct(title));
+    newAttachment.setSummary(new PlainTextConstruct(description));
+
+    service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
+}
+
+task uploadToGoogleSites(dependsOn: 'readSigningKeyAliasPasswordFromConsole') << {
+    uploadApkToGoogleSites();
+}

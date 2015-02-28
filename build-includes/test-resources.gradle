@@ -9,6 +9,7 @@ buildscript {
 
 // workaround, see https://code.google.com/p/android/issues/detail?id=136013
 import org.apache.commons.lang3.StringUtils
+
 gradle.projectsEvaluated {
     def variants = android.applicationVariants.collect()
 
@@ -51,6 +52,7 @@ gradle.projectsEvaluated {
                     throw new Exception("Break") // Breaking the loop
                 }
             }
-        } catch (Exception e) {} // Just drop the exception
+        } catch (Exception e) {
+        } // Just drop the exception
     }
 }
