@@ -26,8 +26,11 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,10 +49,12 @@ import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;
 
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
+import static com.google.common.collect.FluentIterable.from;
+import static li.klass.fhem.constants.PreferenceKeys.FHEMWEB_DEVICE_NAME;
 
 @Singleton
 public class RoomListHolderService {
@@ -59,6 +64,9 @@ public class RoomListHolderService {
 
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    ConnectionService connectionService;
 
     private volatile RoomDeviceList cachedRoomList;
     private volatile boolean fileStoreNotFilled = false;
@@ -110,23 +118,46 @@ public class RoomListHolderService {
     }
 
     FHEMWEBDevice findFHEMWEBDevice(List<FhemDevice> devices, Context context) {
-        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER, context).toUpperCase(Locale.getDefault());
-        if (!devices.isEmpty()) {
-            FHEMWEBDevice foundDevice = null;
-            for (FhemDevice device : devices) {
-                if (device.getName() != null && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier)) {
-                    foundDevice = (FHEMWEBDevice) device;
-                    break;
-                }
+        if (devices.isEmpty()) return new FHEMWEBDevice();
+
+        String qualifier = StringUtils.stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null, context));
+
+        if (qualifier == null) {
+            int port = connectionService.getPortOfSelectedConnection(context);
+            Optional<FhemDevice> match = from(devices).filter(predicateFHEMWEBDeviceForPort(port)).first();
+            if (match.isPresent()) {
+                return (FHEMWEBDevice) match.get();
             }
-            if (foundDevice != null) {
-                return foundDevice;
-            } else {
-                return (FHEMWEBDevice) devices.get(0);
-            }
-        } else {
-            return new FHEMWEBDevice();
         }
+
+        qualifier = (qualifier == null ? DEFAULT_FHEMWEB_QUALIFIER : qualifier).toUpperCase(Locale.getDefault());
+
+        Optional<FhemDevice> match = from(devices).filter(predicateFHEMWEBDeviceForQualifier(qualifier)).first();
+        if (match.isPresent()) {
+            return (FHEMWEBDevice) match.get();
+        }
+        return (FHEMWEBDevice) devices.get(0);
+    }
+
+    private Predicate<FhemDevice> predicateFHEMWEBDeviceForQualifier(final String qualifier) {
+        return new Predicate<FhemDevice>() {
+            @Override
+            public boolean apply(FhemDevice device) {
+                return device instanceof FHEMWEBDevice && device.getName() != null
+                        && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier);
+            }
+        };
+    }
+
+    private Predicate<FhemDevice> predicateFHEMWEBDeviceForPort(final int port) {
+        return new Predicate<FhemDevice>() {
+            @Override
+            public boolean apply(FhemDevice device) {
+                if (!(device instanceof FHEMWEBDevice)) return false;
+                FHEMWEBDevice fhemwebDevice = (FHEMWEBDevice) device;
+                return fhemwebDevice.getPort().equals(port + "");
+            }
+        };
     }
 
     /**

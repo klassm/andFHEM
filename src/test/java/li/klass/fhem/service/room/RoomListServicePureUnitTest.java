@@ -49,7 +49,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.PreferenceKeys.FHEMWEB_DEVICE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -77,7 +77,7 @@ public class RoomListServicePureUnitTest {
 
     @Before
     public void before() {
-        given(applicationProperties.getStringSharedPreference(eq(DEVICE_NAME), eq("andFHEM"), eq(context))).willReturn("abc");
+        given(applicationProperties.getStringSharedPreference(eq(FHEMWEB_DEVICE_NAME), eq("andFHEM"), eq(context))).willReturn("abc");
         given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class), eq(context))).willCallRealMethod();
     }
 
@@ -96,7 +96,7 @@ public class RoomListServicePureUnitTest {
     public void should_sort_rooms(String sortRoomsAttribute, Set<String> roomNames, List<String> expectedRooms) {
         // given
         FHEMWEBDevice device = new FHEMWEBDevice();
-        device.readSORTROOMS(sortRoomsAttribute);
+        device.setSortRooms(sortRoomsAttribute);
 
         // when
         ArrayList<String> result = service.sortRooms(roomNames, device);

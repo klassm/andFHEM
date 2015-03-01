@@ -30,6 +30,7 @@ import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
@@ -39,30 +40,34 @@ import static li.klass.fhem.domain.core.DeviceFunctionality.FHEM;
 public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
 
     @ShowField(description = ResourceIdMapper.hiddenRooms)
+    @XmllistAttribute("HIDDENROOM")
     private String hiddenRoom;
 
     @ShowField(description = ResourceIdMapper.hiddenGroups)
+    @XmllistAttribute("HIDDENGROUP")
     private String hiddenGroup;
 
     @ShowField(description = ResourceIdMapper.sortRooms)
     private String sortRooms;
 
+
+    private String port;
+
     private boolean temporary = false;
 
-    public void readHIDDENROOM(String value) {
-        this.hiddenRoom = value;
-    }
-
-    public void readHIDDENGROUP(String value) {
-        this.hiddenGroup = value;
-    }
-
-    public void readSORTROOMS(String value) {
+    @XmllistAttribute("SORTROOMS")
+    public void setSortRooms(String value) {
         this.sortRooms = value;
     }
 
-    public void readTEMPORARY(String value) {
-        this.temporary = value.equals("1");
+    @XmllistAttribute("TEMPORARY")
+    public void setTemporary(String value) {
+        this.temporary = "1".equals(value);
+    }
+
+    @XmllistAttribute("PORT")
+    public void setPort(String port) {
+        this.port = port;
     }
 
     public String getHiddenRoom() {
@@ -85,6 +90,11 @@ public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
         }
     }
 
+    @Override
+    public boolean isSupported() {
+        return !temporary;
+    }
+
     public List<String> getHiddenGroups() {
         if (hiddenGroup == null) {
             return Collections.emptyList();
@@ -98,8 +108,7 @@ public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
         return FHEM;
     }
 
-    @Override
-    public boolean isSupported() {
-        return !temporary;
+    public String getPort() {
+        return port;
     }
 }

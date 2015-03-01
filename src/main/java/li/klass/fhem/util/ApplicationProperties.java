@@ -129,6 +129,10 @@ public class ApplicationProperties {
         }
     }
 
+    public boolean containsSharedPreference(Context context, String key) {
+        return getPreferences(context).contains(key);
+    }
+
     public String getStringSharedPreference(String key, Context context) {
         return getStringSharedPreference(key, null, context);
     }

@@ -38,7 +38,7 @@ public class PreferenceKeys {
     public static final String STARTUP_VIEW = "STARTUP_VIEW";
     public static final String CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT";
     public static final String COMMAND_EXECUTION_RETRIES = "COMMAND_EXECUTION_RETRIES";
-    public static final String DEVICE_NAME = "DEVICE_NAME";
+    public static final String FHEMWEB_DEVICE_NAME = "DEVICE_NAME";
     public static final String STARTUP_PASSWORD = "PASSWORD";
     public static final String SEND_APP_LOG = "SEND_APP_LOG";
     public static final String AUTO_UPDATE_TIME_IN_ACTIVITY = "AUTO_UPDATE_TIME";

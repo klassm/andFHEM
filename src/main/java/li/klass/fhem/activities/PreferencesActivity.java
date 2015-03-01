@@ -110,7 +110,7 @@ public class PreferencesActivity extends PreferenceActivity
         attachListSummaryListenerTo(PreferenceKeys.AUTO_UPDATE_TIME, R.array.updateRoomListTimeValues, R.array.updateRoomListTimeEntries, R.string.prefAutoUpdateSummary);
         attachIntSummaryListenerTo(PreferenceKeys.CONNECTION_TIMEOUT, R.string.prefConnectionTimeoutSummary);
         attachIntSummaryListenerTo(PreferenceKeys.COMMAND_EXECUTION_RETRIES, R.string.prefCommandExecutionRetriesSummary);
-        attachStringSummaryListenerTo(PreferenceKeys.DEVICE_NAME, R.string.prefDeviceNameSummary);
+        attachStringSummaryListenerTo(PreferenceKeys.FHEMWEB_DEVICE_NAME, R.string.prefFHEMWEBDeviceNameSummary);
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMinimumValue(200);

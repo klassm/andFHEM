@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -46,6 +48,7 @@ import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
@@ -149,7 +152,7 @@ public class ConnectionService {
         return context.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
-    String serialize(FHEMServerSpec serverSpec) {
+    static String serialize(FHEMServerSpec serverSpec) {
         return GSON.toJson(serverSpec);
     }
 
@@ -177,7 +180,7 @@ public class ConnectionService {
         return deserialize(json);
     }
 
-    FHEMServerSpec deserialize(String json) {
+    static FHEMServerSpec deserialize(String json) {
         return GSON.fromJson(json, FHEMServerSpec.class);
     }
 
@@ -239,5 +242,31 @@ public class ConnectionService {
     public void setSelectedId(String id, Context context) {
         if (!exists(id, context)) id = DUMMY_DATA_ID;
         applicationProperties.setSharedPreference(SELECTED_CONNECTION, id, context);
+    }
+
+    public int getPortOfSelectedConnection(Context context) {
+        FHEMServerSpec spec = getCurrentServer(context);
+        ServerType serverType = spec.getServerType();
+        if (serverType == ServerType.TELNET) {
+            return spec.getPort();
+        }
+        checkArgument(serverType == ServerType.FHEMWEB);
+
+        Pattern explicitPortPattern = Pattern.compile(":([\\d]+)");
+        String url = spec.getUrl();
+        Matcher matcher = explicitPortPattern.matcher(url);
+        if (matcher.find()) {
+            return Integer.valueOf(matcher.group(1));
+        }
+
+        if (url.startsWith("https://")) {
+            return 443;
+        }
+
+        if (url.startsWith("http://")) {
+            return 80;
+        }
+
+        return 0;
     }
 }

@@ -39,6 +39,7 @@ public class FHEMWEBDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getHiddenGroup()).isEqualTo("schalter,dimmer");
         assertThat(device.getHiddenRoom()).isEqualTo("haus,garten");
         assertThat(device.getSortRooms()).isEqualTo("bad,keller");
+        assertThat(device.getPort()).isEqualTo("8083");
     }
 
     @Override

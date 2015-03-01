@@ -24,23 +24,37 @@
 
 package li.klass.fhem.service.connection;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 
-import org.junit.Before;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.util.ApplicationProperties;
 
+import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 
+@RunWith(DataProviderRunner.class)
 public class ConnectionServiceTest {
 
     @Rule
@@ -52,10 +66,8 @@ public class ConnectionServiceTest {
     @Mock
     private Context applicationContext;
 
-    @Before
-    public void setUp() throws Exception {
-        connectionService = new ConnectionService();
-    }
+    @Mock
+    private ApplicationProperties applicationProperties;
 
     @Test
     public void testFHEMServerSpecSerializeDeserialize() {
@@ -68,10 +80,10 @@ public class ConnectionServiceTest {
         serverSpec.setPort(7072);
         serverSpec.setServerType(ServerType.FHEMWEB);
 
-        String json = connectionService.serialize(serverSpec);
+        String json = ConnectionService.serialize(serverSpec);
         assertThat(json, is(not(nullValue())));
 
-        FHEMServerSpec deserialized = connectionService.deserialize(json);
+        FHEMServerSpec deserialized = ConnectionService.deserialize(json);
 
         assertThat(deserialized.getUrl(), is("http://test.com"));
         assertThat(deserialized.getUsername(), is("hallowelt"));
@@ -80,5 +92,49 @@ public class ConnectionServiceTest {
         assertThat(deserialized.getIp(), is("192.168.0.1"));
         assertThat(deserialized.getPort(), is(7072));
         assertThat(deserialized.getServerType(), is(ServerType.FHEMWEB));
+    }
+
+    @DataProvider
+    public static Object[][] PORT_DATAPROVIDER() {
+        return new Object[][]{
+                {telnetSpecFor(8043), 8043},
+                {fhemwebSpecFor("http://192.168.0.1:8084/fhem"), 8084},
+                {fhemwebSpecFor("https://192.168.0.1:8084/fhem"), 8084},
+                {fhemwebSpecFor("https://192.168.0.1:8084"), 8084},
+                {fhemwebSpecFor("https://192.168.0.1/fhem"), 443},
+                {fhemwebSpecFor("http://192.168.0.1/fhem"), 80},
+        };
+    }
+
+    @Test
+    @UseDataProvider("PORT_DATAPROVIDER")
+    public void should_extract_port(FHEMServerSpec spec, int expectedPort) {
+        // given
+        Context context = mock(Context.class);
+        SharedPreferences sharedPreferences = mock(SharedPreferences.class);
+        given(applicationProperties.getStringSharedPreference(eq(SELECTED_CONNECTION), anyString(), eq(context))).willReturn("a");
+        given(context.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE)).willReturn(sharedPreferences);
+        given(sharedPreferences.contains("a")).willReturn(true);
+        given(sharedPreferences.getString("a", null)).willReturn(ConnectionService.serialize(spec));
+
+        // when
+        int port = connectionService.getPortOfSelectedConnection(context);
+
+        // then
+        assertThat(port).isEqualTo(expectedPort);
+    }
+
+    private static FHEMServerSpec telnetSpecFor(int port) {
+        FHEMServerSpec spec = new FHEMServerSpec("a");
+        spec.setServerType(ServerType.TELNET);
+        spec.setPort(port);
+        return spec;
+    }
+
+    private static FHEMServerSpec fhemwebSpecFor(String url) {
+        FHEMServerSpec spec = new FHEMServerSpec("a");
+        spec.setServerType(ServerType.FHEMWEB);
+        spec.setUrl(url);
+        return spec;
     }
 }

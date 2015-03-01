@@ -43,7 +43,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.PreferenceKeys.FHEMWEB_DEVICE_NAME;
 import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -76,7 +76,7 @@ public class RoomListServiceTest {
     @Before
     public void before() {
         roomDeviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
-        given(applicationProperties.getStringSharedPreference(eq(DEVICE_NAME), eq("andFHEM"), eq(context))).willReturn("abc");
+        given(applicationProperties.getStringSharedPreference(eq(FHEMWEB_DEVICE_NAME), eq("andFHEM"), eq(context))).willReturn("abc");
         given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class), eq(context))).willCallRealMethod();
         given(roomListHolderService.getCachedRoomDeviceListMap()).willReturn(roomDeviceList);
         doCallRealMethod().when(roomListHolderService).findFHEMWEBDevice(any(RoomDeviceList.class), eq(context));

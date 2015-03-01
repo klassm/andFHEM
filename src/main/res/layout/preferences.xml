@@ -188,7 +188,7 @@
             android:defaultValue=""
             android:inputType="text"
             android:key="DEVICE_NAME"
-            android:title="@string/prefDeviceName"/>
+            android:title="@string/prefFHEMWEBDeviceName" />
 
         <EditTextPreference
             android:defaultValue=""

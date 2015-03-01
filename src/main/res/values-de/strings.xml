@@ -342,8 +342,8 @@
     <string name="prefCommandExecutionRetries">Kommando Wiederholungen</string>
     <string name="prefCommandExecutionRetriesSummary">Versuche ein Kommando %1$s mal zu senden, wenn die Ausführung fehlschlägt.</string>
     <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
-    <string name="prefDeviceName">Gerätename</string>
-    <string name="prefDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung (%1$s), so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
+    <string name="prefFHEMWEBDeviceName">FHEMWEB-Gerätename</string>
+    <string name="prefFHEMWEBDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung (%1$s), so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
     <string name="prefApplicationPassword">Passwort</string>
     <string name="prefApplicationPasswordSummary">Passwort, welches beim Applikationsstart abgefragt wird.</string>
     <string name="prefClearTrustedCertificatesSummary">Entferne alle Zertifikate aus dem Applikations Trust-Store</string>
