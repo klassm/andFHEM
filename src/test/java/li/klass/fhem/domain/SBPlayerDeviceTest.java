@@ -22,33 +22,27 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui.multimedia;
+package li.klass.fhem.domain;
 
-import android.content.Context;
+import org.junit.Test;
 
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.StateChangingYesNoTwoButtonActionRow;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.multimedia.VolumeDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-public class MuteActionRow<V extends FhemDevice<V> & VolumeDevice> extends StateChangingYesNoTwoButtonActionRow<V> {
-    public MuteActionRow(StateUiService stateUiService) {
-        super(stateUiService, R.string.musicMute);
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class SBPlayerDeviceTest extends DeviceXMLParsingBase {
+
+    @Test
+    public void should_read_device_attributes() {
+        SBPlayerDevice device = getDeviceFor("Unten", SBPlayerDevice.class);
+        assertThat(device).isNotNull();
+        assertThat(device.isMuted()).isTrue();
+        assertThat(device.getVolumeAsInt()).isEqualTo(0);
+        assertThat(device.isOnByState()).isTrue();
     }
 
     @Override
-    protected String getOnStateName(V device, Context context) {
-        return "mute";
-    }
-
-    @Override
-    protected String getOffStateName(V device, Context context) {
-        return "volume " + device.getVolumeAsInt();
-    }
-
-    @Override
-    public boolean isYes(V device) {
-        return device.isMuted();
+    protected String getFileName() {
+        return "sb_player";
     }
 }

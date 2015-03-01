@@ -33,12 +33,10 @@ import li.klass.fhem.domain.core.FhemDevice;
 public abstract class StateChangingYesNoTwoButtonActionRow<T extends FhemDevice> extends OnOffActionRow<T> {
 
     private final StateUiService stateUiService;
-    private final String subState;
 
-    public StateChangingYesNoTwoButtonActionRow(StateUiService stateUiService, int description, String subState) {
+    public StateChangingYesNoTwoButtonActionRow(StateUiService stateUiService, int description) {
         super(OnOffActionRow.LAYOUT_DETAIL, description);
         this.stateUiService = stateUiService;
-        this.subState = subState;
     }
 
     @Override
@@ -53,7 +51,7 @@ public abstract class StateChangingYesNoTwoButtonActionRow<T extends FhemDevice>
 
     @Override
     public void onButtonClick(Context context, T device, String targetState) {
-        stateUiService.setSubState(device, subState, targetState, context);
+        stateUiService.setState(device, targetState, context);
     }
 
     @Override

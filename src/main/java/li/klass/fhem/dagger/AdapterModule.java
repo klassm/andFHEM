@@ -47,6 +47,7 @@ import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
+import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
@@ -100,6 +101,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 MiLightDeviceAdapter.class,
                 STVDeviceAdapter.class,
                 PioneerAvrZoneDeviceAdapter.class,
+                SBPlayerDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
