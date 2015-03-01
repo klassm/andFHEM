@@ -46,6 +46,7 @@ import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
+import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
@@ -166,7 +167,8 @@ public enum DeviceType {
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     CO20("CO20", CO20Device.class),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
-    MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapterWithSwitchActionRow<>(MySensorsDevice.class))
+    MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapterWithSwitchActionRow<>(MySensorsDevice.class)),
+    SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter())
     ;
 
     private String xmllistTag;
