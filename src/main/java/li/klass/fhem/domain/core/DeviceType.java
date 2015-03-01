@@ -165,7 +165,8 @@ public enum DeviceType {
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     CO20("CO20", CO20Device.class),
-    PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter())
+    PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
+    MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapterWithSwitchActionRow<>(MySensorsDevice.class))
     ;
 
     private String xmllistTag;

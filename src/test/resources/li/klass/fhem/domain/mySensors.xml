@@ -1,0 +1,260 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <MYSENSORS_DEVICE_LIST>
+        <MYSENSORS_DEVICE name="MYSENSOR_10_3" state="off"
+            sets="off on reboot switch:off,on time toggle off-till blink on-till intervals off-for-timer on-for-timer"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride Light Light_map structexclude userattr">
+            <INT key="DEF" value="10" />
+            <INT key="NAME" value="MYSENSOR_10_3" />
+            <INT key="NR" value="41" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="10" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="Light" value="KitchenLights01" />
+            <ATTR key="alias" value="Cabinet lighting 1" />
+            <ATTR key="devStateIcon" value="off:light_light on:light_light_dim_100" />
+            <ATTR key="group" value="Kitchen Cabinet" />
+            <ATTR key="icon" value="light_downlight" />
+            <ATTR key="mapReading_switch" value="3 switch" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Home,Kitchen" />
+            <ATTR key="setCommands" value="on:switch:on off:switch:off" />
+            <ATTR key="setReading_switch" value="off,on" />
+            <ATTR key="stateFormat" value="switch" />
+            <ATTR key="userattr" value="Light Light_map structexclude" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="switch" value="off" measured="2015-02-07 11:56:01" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_10_4" state="on"
+            sets="off on reboot switch:off,on time blink on-till toggle off-till on-for-timer off-for-timer intervals"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride Light Light_map structexclude userattr">
+            <INT key="DEF" value="10" />
+            <INT key="NAME" value="MYSENSOR_10_4" />
+            <INT key="NR" value="43" />
+            <INT key="STATE" value="on" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="10" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="Light" value="KitchenLights01" />
+            <ATTR key="alias" value="Cabinet lighting 2" />
+            <ATTR key="devStateIcon" value="off:light_light on:light_light_dim_100" />
+            <ATTR key="group" value="Kitchen Cabinet" />
+            <ATTR key="icon" value="light_downlight" />
+            <ATTR key="mapReading_switch" value="4 switch" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Home,Kitchen" />
+            <ATTR key="setCommands" value="on:switch:on off:switch:off" />
+            <ATTR key="setReading_switch" value="off,on" />
+            <ATTR key="stateFormat" value="switch" />
+            <ATTR key="userattr" value="Light Light_map structexclude" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="switch" value="on" measured="2015-02-07 12:52:32" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_10_5" state="off"
+            sets="off on reboot switch:off,on time off-till toggle on-till blink intervals off-for-timer on-for-timer"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride Light Light_map structexclude userattr">
+            <INT key="DEF" value="10" />
+            <INT key="NAME" value="MYSENSOR_10_5" />
+            <INT key="NR" value="45" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="10" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="Light" value="KitchenLights01" />
+            <ATTR key="alias" value="Cabinet lighting 4" />
+            <ATTR key="devStateIcon" value="off:light_light on:light_light_dim_100" />
+            <ATTR key="group" value="Kitchen Cabinet" />
+            <ATTR key="icon" value="light_downlight" />
+            <ATTR key="mapReading_switch" value="5 switch" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Home,Kitchen" />
+            <ATTR key="setCommands" value="on:switch:on off:switch:off" />
+            <ATTR key="setReading_switch" value="off,on" />
+            <ATTR key="stateFormat" value="switch" />
+            <ATTR key="userattr" value="Light Light_map structexclude" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="switch" value="off" measured="2015-02-07 11:56:01" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_10_6" state="off"
+            sets="off on reboot switch:off,on time toggle off-till blink on-till intervals off-for-timer on-for-timer"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride Light Light_map structexclude userattr">
+            <INT key="DEF" value="10" />
+            <INT key="NAME" value="MYSENSOR_10_6" />
+            <INT key="NR" value="47" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="10" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="Light" value="KitchenLights01" />
+            <ATTR key="alias" value="Cabinet lighting 3" />
+            <ATTR key="devStateIcon" value="off:light_light on:light_light_dim_100" />
+            <ATTR key="group" value="Kitchen Cabinet" />
+            <ATTR key="icon" value="light_downlight" />
+            <ATTR key="mapReading_switch" value="6 switch" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Home,Kitchen" />
+            <ATTR key="setCommands" value="on:switch:on off:switch:off" />
+
+            <ATTR key="setReading_switch" value="off,on" />
+            <ATTR key="stateFormat" value="switch" />
+            <ATTR key="userattr" value="Light Light_map structexclude" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="switch" value="off" measured="2015-02-07 11:56:01" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_10_7" state="off"
+            sets="off on reboot switch:off,on time off-for-timer intervals on-for-timer off-till toggle blink on-till"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride Light Light_map structexclude userattr">
+            <INT key="DEF" value="10" />
+            <INT key="NAME" value="MYSENSOR_10_7" />
+            <INT key="NR" value="49" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="10" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="Light" value="KitchenLights00" />
+            <ATTR key="alias" value="Lighting bar" />
+            <ATTR key="devStateIcon" value="off:light_light on:light_light_dim_100" />
+            <ATTR key="group" value="Kitchen Bar" />
+            <ATTR key="icon" value="light_downlight" />
+            <ATTR key="mapReading_switch" value="7 switch" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Home,Kitchen" />
+            <ATTR key="setCommands" value="on:switch:on off:switch:off" />
+            <ATTR key="setReading_switch" value="off,on" />
+            <ATTR key="stateFormat" value="switch" />
+            <ATTR key="userattr" value="Light Light_map structexclude" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="switch" value="off" measured="2015-02-07 12:49:14" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_11" state="off"
+            sets="dimmer:slider,0,1,100 off on reboot switch:off,on time on-for-timer intervals off-for-timer blink on-till toggle off-till"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride userattr">
+            <INT key="DEF" value="11" />
+            <INT key="NAME" value="MYSENSOR_11" />
+            <INT key="NR" value="39" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="11" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="comment" value="dimmer:slider,0,1,100 switch:off,on" />
+            <ATTR key="devStateIcon"
+                value="off:light_light on:light_light_dim_100 [0-9]:light_light 1[0-9]:light_light_dim_10 2[0-9]:light_light_dim_20  3[0-9]:light_light_dim_30  4[0-9]:light_light_dim_40  5[0-9]:light_light_dim_50  6[0-9]:light_light_dim_60  7[0-9]:light_light_dim_70  8[0-9]:light_light_dim_80  9[0-9]:light_light_dim_90  100:light_light_dim_100" />
+            <ATTR key="icon" value="light_ceiling" />
+            <ATTR key="mapReading_dimmer" value="0 dimmer" />
+            <ATTR key="mapReading_switch" value="0 switch" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Salon" />
+            <ATTR key="setCommands" value="on:switch:on off:switch:off" />
+            <ATTR key="setReading_dimmer" value="slider,0,1,100" />
+            <ATTR key="setReading_switch" value="off,on" />
+            <ATTR key="stateFormat" value="switch" />
+            <ATTR key="version" value="1.4.1" />
+            <ATTR key="webCmd" value="dimmer" />
+            <STATE key="dimmer" value="0" measured="2015-02-05 10:04:55" />
+            <STATE key="switch" value="off" measured="2015-01-30 20:07:41" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_1_0" state="22.0 C, 38.0%"
+            sets="reboot switch1:on,off time"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride userattr">
+            <INT key="DEF" value="1" />
+            <INT key="NAME" value="MYSENSOR_1_0" />
+            <INT key="NR" value="30" />
+            <INT key="STATE" value="22.0 C, 38.0%" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="1" />
+            <INT key="repeater" value="0" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="alias" value="Salon Temperature and Humidity" />
+            <ATTR key="event-min-interval" value="temperature:60, humidity:60" />
+            <ATTR key="event-on-change-reading" value="temperature,humidity" />
+            <ATTR key="event-on-update-reading" value="temperature,humidity" />
+            <ATTR key="group" value="Sensors" />
+            <ATTR key="icon" value="temperature_humidity" />
+            <ATTR key="mapReading_humidity" value="0 humidity" />
+            <ATTR key="mapReading_switch1" value="1 switch" />
+            <ATTR key="mapReading_temperature" value="1 temperature" />
+            <ATTR key="mode" value="node" />
+            <ATTR key="room" value="Home,Sensors" />
+            <ATTR key="setReading_switch1" value="on,off" />
+            <ATTR key="stateFormat" value="temperature C, humidity%" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="humidity" value="38.0" measured="2015-01-30 21:09:59" />
+            <STATE key="temperature" value="22.0" measured="2015-01-30 21:09:59" />
+        </MYSENSORS_DEVICE>
+        <MYSENSORS_DEVICE name="MYSENSOR_1_1" state="on"
+            sets="off on reboot switch1:off,on time blink on-till toggle off-till on-for-timer off-for-timer intervals"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings config:M,I mode:node,repeater version:1.4 setCommands setReading_.+ mapReadingType_.+ mapReading_.+ requestAck:1 IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 sortby structexclude webCmd widgetOverride userattr">
+            <INT key="DEF" value="1" />
+            <INT key="NAME" value="MYSENSOR_1_1" />
+            <INT key="NR" value="25" />
+            <INT key="STATE" value="on" />
+            <INT key="TYPE" value="MYSENSORS_DEVICE" />
+            <INT key="ack" value="0" />
+            <INT key="protocol" value="1.4.1" />
+            <INT key="radioId" value="1" />
+            <INT key="IODev" value="mysensorsGW" />
+            <ATTR key="IODev" value="mysensorsGW" />
+            <ATTR key="devStateIcon" value="off:message_socket_off on:message_socket_enabled" />
+            <ATTR key="group" value="Home" />
+            <ATTR key="icon" value="message_socket_off2" />
+            <ATTR key="mapReading_switch1" value="1 switch" />
+            <ATTR key="room" value="Home,Salon" />
+            <ATTR key="setCommands" value="on:switch1:on off:switch1:off" />
+            <ATTR key="setReading_switch1" value="off,on" />
+            <ATTR key="stateFormat" value="switch1" />
+            <ATTR key="version" value="1.4.1" />
+            <STATE key="switch1" value="on" measured="2015-02-05 12:07:09" />
+        </MYSENSORS_DEVICE>
+    </MYSENSORS_DEVICE_LIST>
+</FHZINFO>
