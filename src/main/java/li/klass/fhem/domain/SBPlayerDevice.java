@@ -44,7 +44,7 @@ public class SBPlayerDevice extends ToggleableDevice<SBPlayerDevice> implements 
 
     @XmllistAttribute("VOLUME")
     public void setVolume(String volume) {
-        if ("muted".equals(volume) && "0".equals(volume)) {
+        if ("muted".equals(volume) || "0".equals(volume)) {
             this.volume = "0";
             isMuted = true;
         } else {
