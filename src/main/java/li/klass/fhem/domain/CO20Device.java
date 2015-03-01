@@ -24,11 +24,19 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
+import java.util.List;
+
+import li.klass.fhem.R;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPpm;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
@@ -49,5 +57,19 @@ public class CO20Device extends FhemDevice<CO20Device> {
 
     public String getVoc() {
         return voc;
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.VOCGraph,
+                new ChartSeriesDescription.Builder()
+                        .withFileLogSpec("4:voc")
+                        .withDbLogSpec("voc::int1")
+                        .withSeriesType(SeriesType.VOC)
+                        .withColumnName(R.string.VOC, context)
+                        .withShowRegression(true)
+                        .build()), voc);
     }
 }

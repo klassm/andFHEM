@@ -55,6 +55,7 @@ public enum SeriesType {
     SUNSHINE(Color.BLUE, R.string.sunshine),
     IS_RAINING(Color.BLUE, R.string.isRaining),
     CO2(Color.RED, R.string.yAxisCO2),
+    VOC(Color.RED, R.string.yAxisVOC),
     WEIGHT(Color.RED, R.string.yAxisWeight),
     FAT_RATIO(Color.BLUE, R.string.yAxisFatRatio),
     WINDOW_OPEN(Color.BLUE, R.string.windowOpen),

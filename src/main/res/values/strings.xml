@@ -395,6 +395,7 @@
     <string name="co2Graph">CO2 Graph</string>
     <string name="weightGraph">Weight Graph</string>
     <string name="averagesGraph">Averages Graph</string>
+    <string name="VOCGraph">VOC Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
@@ -414,6 +415,7 @@
     <string name="yAxisEnergy">energy (W)</string>
     <string name="yAxisRaw">raw value</string>
     <string name="yAxisCO2">co2 (ppm)</string>
+    <string name="yAxisVOC" translatable="false">co2 (voc)</string>
     <string name="yAxisWeight">weight (kg)</string>
     <string name="yAxisFatRatio">fat ratio</string>
 
