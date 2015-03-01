@@ -49,10 +49,10 @@ public class SolarViewDevice extends FhemDevice<SolarViewDevice> {
     @ShowField(description = ResourceIdMapper.temperature)
     private String temperature;
 
-    @ShowField(description = ResourceIdMapper.totalEnergy, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.totalEnergy)
     private String totalEnergy;
 
-    @ShowField(description = ResourceIdMapper.totalEnergyDay)
+    @ShowField(description = ResourceIdMapper.totalEnergyDay, showInOverview = true)
     private String totalEnergyDay;
 
     @ShowField(description = ResourceIdMapper.totalEnergyMonth)
