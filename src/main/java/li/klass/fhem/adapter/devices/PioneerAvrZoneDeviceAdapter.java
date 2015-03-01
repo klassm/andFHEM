@@ -32,15 +32,12 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
+import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
+import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
-import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<PioneerAvrZoneDevice> {
@@ -63,27 +60,8 @@ public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapterWithSwitchActi
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final PioneerAvrZoneDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new OnOffActionRow<PioneerAvrZoneDevice>(OnOffActionRow.LAYOUT_DETAIL, R.string.musicMute) {
-                    @Override
-                    protected String getOnStateText(PioneerAvrZoneDevice device, Context context) {
-                        return context.getString(R.string.yes);
-                    }
-
-                    @Override
-                    protected String getOffStateText(PioneerAvrZoneDevice device, Context context) {
-                        return context.getString(R.string.no);
-                    }
-
-                    @Override
-                    public void onButtonClick(Context context, PioneerAvrZoneDevice device, String targetState) {
-                        stateUiService.setSubState(device, "mute", targetState, context);
-                    }
-
-                    @Override
-                    protected boolean isOn(PioneerAvrZoneDevice device) {
-                        return device.isMuted();
-                    }
-                }.createRow(getInflater(), device, context));
+                tableLayout.addView(new MuteActionRow<PioneerAvrZoneDevice>(stateUiService)
+                        .createRow(getInflater(), device, context));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow<PioneerAvrZoneDevice>(context,
@@ -95,10 +73,8 @@ public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapterWithSwitchActi
         registerFieldListener("volume", new FieldNameAddedToDetailListener<PioneerAvrZoneDevice>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrZoneDevice device, TableRow fieldTableRow) {
-                SetListSliderValue volumeSetListEntry = (SetListSliderValue) device.getSetList().get("volume");
-                tableLayout.addView(new StateChangingSeekBarFullWidth<PioneerAvrZoneDevice>(context, device.getVolumeAsInt(), volumeSetListEntry, "volume", fieldTableRow, applicationProperties) {
-
-                }.createRow(getInflater(), device));
+                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
     }

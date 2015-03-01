@@ -48,15 +48,13 @@ import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceCla
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
@@ -64,8 +62,14 @@ import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
     protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<>();
+
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
+
+    @Inject
+    protected
+    StateUiService stateUiService;
+
     private Class<D> deviceClass;
     private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<>();
     /**
@@ -109,6 +113,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
                 .createRow(context, inflater, layout, device));
     }
 
+    @SuppressWarnings("unchecked")
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(getOverviewLayout(), null);
@@ -370,19 +375,5 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     @Override
     public Class<? extends FhemDevice> getSupportedDeviceClass() {
         return deviceClass;
-    }
-
-    protected void sendStateAction(Context context, D device, String action) {
-        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, action);
-        putUpdateExtra(intent);
-
-        context.startService(intent);
-    }
-
-    public void putUpdateExtra(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()));
     }
 }

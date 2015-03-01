@@ -28,11 +28,12 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class STVDevice extends FhemDevice<STVDevice> {
+public class STVDevice extends FhemDevice<STVDevice> implements VolumeDevice {
     @XmllistAttribute("VOLUME")
     @ShowField(description = ResourceIdMapper.musicVolume)
     private String volume = "0";
@@ -53,18 +54,21 @@ public class STVDevice extends FhemDevice<STVDevice> {
         isMuted = "on".equals(muted);
     }
 
+    @Override
     public boolean isMuted() {
         return isMuted;
     }
 
+    @Override
     public int getVolumeAsInt() {
         SetListSliderValue setListSliderValue = (SetListSliderValue) getSetList().get("volume");
-        if ("on".equals(volume)) {
-            return setListSliderValue.getStop();
-        } else if ("off".equals(volume)) {
-            return setListSliderValue.getStart();
-        } else {
-            return ValueExtractUtil.extractLeadingInt(volume);
+        switch (volume) {
+            case "on":
+                return setListSliderValue.getStop();
+            case "off":
+                return setListSliderValue.getStart();
+            default:
+                return ValueExtractUtil.extractLeadingInt(volume);
         }
     }
 }

@@ -28,13 +28,13 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
-public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice> {
+public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice> implements VolumeDevice {
 
     @XmllistAttribute("input")
     private String input;
@@ -62,6 +62,7 @@ public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice>
         return mute;
     }
 
+    @Override
     public boolean isMuted() {
         return onOffToTrueFalse(mute);
     }
@@ -74,6 +75,7 @@ public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice>
         return volume;
     }
 
+    @Override
     public int getVolumeAsInt() {
         return extractLeadingInt(volume);
     }

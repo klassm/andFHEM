@@ -22,32 +22,10 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.multimedia;
 
-import org.junit.Test;
+public interface VolumeDevice {
+    public boolean isMuted();
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class OnkyoAvrDeviceTest extends DeviceXMLParsingBase {
-
-    @Test
-    public void should_read_avr_device() {
-        OnkyoAvrDevice device = getDeviceFor("avr", OnkyoAvrDevice.class);
-
-        assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
-        assertThat(device.getVolume()).isEqualTo("29");
-        assertThat(device.getVolumeAsInt()).isEqualTo(29);
-        assertThat(device.getMute()).isEqualTo("off");
-        assertThat(device.isMuted()).isFalse();
-        assertThat(device.getSleep()).isEqualTo("off");
-    }
-
-    @Override
-    protected String getFileName() {
-        return "onkyo_avr.xml";
-    }
+    public int getVolumeAsInt();
 }

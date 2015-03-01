@@ -22,32 +22,21 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.genericui.multimedia;
 
-import org.junit.Test;
+import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.StateChangingYesNoTwoButtonActionRow;
+import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class OnkyoAvrDeviceTest extends DeviceXMLParsingBase {
-
-    @Test
-    public void should_read_avr_device() {
-        OnkyoAvrDevice device = getDeviceFor("avr", OnkyoAvrDevice.class);
-
-        assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
-        assertThat(device.getVolume()).isEqualTo("29");
-        assertThat(device.getVolumeAsInt()).isEqualTo(29);
-        assertThat(device.getMute()).isEqualTo("off");
-        assertThat(device.isMuted()).isFalse();
-        assertThat(device.getSleep()).isEqualTo("off");
+public class MuteActionRow<V extends FhemDevice<V> & VolumeDevice> extends StateChangingYesNoTwoButtonActionRow<V> {
+    public MuteActionRow(StateUiService stateUiService) {
+        super(stateUiService, R.string.musicMute, "mute");
     }
 
     @Override
-    protected String getFileName() {
-        return "onkyo_avr.xml";
+    public boolean isYes(V device) {
+        return device.isMuted();
     }
 }

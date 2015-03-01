@@ -24,27 +24,22 @@
 
 package li.klass.fhem.domain;
 
-import java.util.Arrays;
-import java.util.List;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> {
+public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> implements VolumeDevice {
 
     private int volume;
     private boolean muted;
 
     private String input;
-
-    public static final List<String> AVAILABLE_INPUTS = Arrays.asList("audio1", "audio2", "av5", "av6", "bluetooth",
-            "netradio", "napster", "pc", "phono", "tuner", "uaw", "usb", "v-aux", "ipod", "ipod_usb");
 
     @Override
     public boolean supportsToggle() {
@@ -72,7 +67,8 @@ public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> {
         input = value;
     }
 
-    public int getVolume() {
+    @Override
+    public int getVolumeAsInt() {
         return volume;
     }
 
@@ -80,12 +76,9 @@ public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> {
         return muted;
     }
 
+
     public String getInput() {
         return input;
-    }
-
-    public int getSelectedInputPosition() {
-        return AVAILABLE_INPUTS.indexOf(input);
     }
 
     @Override

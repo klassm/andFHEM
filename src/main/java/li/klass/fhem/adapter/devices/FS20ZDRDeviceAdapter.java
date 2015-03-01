@@ -77,14 +77,14 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<F
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendStateAction(context, device, state);
+                stateUiService.setState(device, state, context);
             }
         });
         if (NumberUtils.isNumber(state)) {
             button.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    sendStateAction(context, device, "program_" + state);
+                    stateUiService.setState(device, "program_" + state, context);
                     Toast.makeText(context, String.format(context.getString(R.string.programChannelSuccess), state), Toast.LENGTH_SHORT).show();
                     return true;
                 }

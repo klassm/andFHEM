@@ -28,21 +28,16 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import com.google.common.base.Optional;
-
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
-import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
+import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
+import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class EnigmaDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<EnigmaDevice> {
@@ -63,28 +58,8 @@ public class EnigmaDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<En
         registerFieldListener("state", new FieldNameAddedToDetailListener<EnigmaDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, EnigmaDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ToggleActionRow<EnigmaDevice>(getInflater(), ToggleActionRow.LAYOUT_DETAIL) {
-                    @Override
-                    protected Optional<String> getOnStateText(Map<String, String> eventMap) {
-                        return Optional.of(getContext().getString(R.string.yes));
-                    }
-
-                    @Override
-                    protected Optional<String> getOffStateText(Map<String, String> eventMap) {
-                        return Optional.of(getContext().getString(R.string.no));
-                    }
-
-                    @Override
-                    protected boolean isOn(EnigmaDevice device) {
-                        return device.isMuted();
-                    }
-
-                    @Override
-                    protected void onButtonClick(Context context, EnigmaDevice device, boolean isChecked) {
-                        stateUiService.setSubState(device, "mute", isChecked ? "on" : "off", context);
-                    }
-                }
-                        .createRow(context, device, context.getString(R.string.musicMute)));
+                tableLayout.addView(new MuteActionRow<EnigmaDevice>(stateUiService)
+                        .createRow(getInflater(), device, context));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow<EnigmaDevice>(context,
@@ -101,9 +76,7 @@ public class EnigmaDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<En
         registerFieldListener("volume", new FieldNameAddedToDetailListener<EnigmaDevice>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, EnigmaDevice device, TableRow fieldTableRow) {
-                SetListSliderValue volumeSetList = (SetListSliderValue) device.getSetList().get("volume");
-                tableLayout.addView(new StateChangingSeekBarFullWidth<EnigmaDevice>(context,
-                        device.getVolumeProgress(), volumeSetList, "volume", fieldTableRow, applicationProperties)
+                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });

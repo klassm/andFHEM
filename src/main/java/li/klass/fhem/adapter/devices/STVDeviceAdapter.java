@@ -30,14 +30,12 @@ import android.widget.TableRow;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
+import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
+import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.STVDevice;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class STVDeviceAdapter extends GenericDeviceAdapter<STVDevice> {
@@ -59,37 +57,16 @@ public class STVDeviceAdapter extends GenericDeviceAdapter<STVDevice> {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final STVDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new OnOffActionRow<STVDevice>(OnOffActionRow.LAYOUT_DETAIL, R.string.musicMute) {
-                    @Override
-                    protected String getOnStateText(STVDevice device, Context context) {
-                        return context.getString(R.string.yes);
-                    }
-
-                    @Override
-                    protected String getOffStateText(STVDevice device, Context context) {
-                        return context.getString(R.string.no);
-                    }
-
-                    @Override
-                    public void onButtonClick(Context context, STVDevice device, String targetState) {
-                        stateUiService.setSubState(device, "mute", targetState, context);
-                    }
-
-                    @Override
-                    protected boolean isOn(STVDevice device) {
-                        return device.isMuted();
-                    }
-                }.createRow(getInflater(), device, context));
+                tableLayout.addView(new MuteActionRow<STVDevice>(stateUiService)
+                        .createRow(getInflater(), device, context));
             }
         });
 
         registerFieldListener("volume", new FieldNameAddedToDetailListener<STVDevice>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, STVDevice device, TableRow fieldTableRow) {
-                SetListSliderValue volumeSetListEntry = (SetListSliderValue) device.getSetList().get("volume");
-                tableLayout.addView(new StateChangingSeekBarFullWidth<STVDevice>(context, device.getVolumeAsInt(), volumeSetListEntry, "volume", fieldTableRow, applicationProperties) {
-
-                }.createRow(getInflater(), device));
+                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
     }

@@ -28,10 +28,11 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class OnkyoAvrDevice extends ToggleableDevice<OnkyoAvrDevice> {
+public class OnkyoAvrDevice extends ToggleableDevice<OnkyoAvrDevice> implements VolumeDevice {
     @XmllistAttribute("volume")
     @ShowField(description = ResourceIdMapper.musicVolume, showInOverview = true)
     private String volume;
@@ -54,7 +55,8 @@ public class OnkyoAvrDevice extends ToggleableDevice<OnkyoAvrDevice> {
         return volume;
     }
 
-    public int getVolumeProgress() {
+    @Override
+    public int getVolumeAsInt() {
         return ValueExtractUtil.extractLeadingInt(volume);
     }
 
@@ -62,9 +64,11 @@ public class OnkyoAvrDevice extends ToggleableDevice<OnkyoAvrDevice> {
         return mute;
     }
 
+    @Override
     public boolean isMuted() {
         return "on".equalsIgnoreCase(mute);
     }
+
 
     public String getInput() {
         return input;

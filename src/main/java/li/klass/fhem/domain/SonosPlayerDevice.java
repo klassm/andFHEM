@@ -24,17 +24,14 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @SuppressWarnings("unused")
-public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> {
+public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> implements VolumeDevice {
 
     @ShowField(description = ResourceIdMapper.musicMute)
     private String mute;
@@ -166,16 +163,20 @@ public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> {
     }
 
     private String yesNoForNumber(String number) {
-        Context context = AndFHEMApplication.getContext();
-        if (number.equals("0")) {
-            return context.getString(R.string.no);
-        } else {
-            return context.getString(R.string.yes);
-        }
+        return number.equals("0") ? "no" : "yes";
     }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
+    }
+
+    @Override
+    public boolean isMuted() {
+        return "yes".equals(mute);
+    }
+
+    public int getVolumeAsInt() {
+        return Integer.valueOf(volume);
     }
 }

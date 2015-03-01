@@ -22,32 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.genericui.multimedia;
 
-import org.junit.Test;
+import android.content.Context;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.util.ApplicationProperties;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class OnkyoAvrDeviceTest extends DeviceXMLParsingBase {
-
-    @Test
-    public void should_read_avr_device() {
-        OnkyoAvrDevice device = getDeviceFor("avr", OnkyoAvrDevice.class);
-
-        assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
-        assertThat(device.getVolume()).isEqualTo("29");
-        assertThat(device.getVolumeAsInt()).isEqualTo(29);
-        assertThat(device.getMute()).isEqualTo("off");
-        assertThat(device.isMuted()).isFalse();
-        assertThat(device.getSleep()).isEqualTo("off");
-    }
-
-    @Override
-    protected String getFileName() {
-        return "onkyo_avr.xml";
+public class VolumeActionRow<V extends FhemDevice<V> & VolumeDevice> extends StateChangingSeekBarFullWidth<V> {
+    public VolumeActionRow(Context context, V device, ApplicationProperties applicationProperties) {
+        super(context, device.getVolumeAsInt(), (SetListSliderValue) device.getSetList().get("volume"), "volume", applicationProperties);
     }
 }

@@ -25,9 +25,9 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center">
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
 
     <ImageButton
         android:id="@+id/rewind"
@@ -35,7 +35,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/player_rew"
-        android:contentDescription="@string/rewind"/>
+        android:contentDescription="@string/rewind" />
 
     <LinearLayout
         android:id="@+id/mid"
@@ -54,7 +54,7 @@
                 android:layout_width="60dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/player_pause"
-                android:contentDescription="@string/pause"/>
+                android:contentDescription="@string/pause" />
 
             <ImageButton
                 android:id="@+id/play"
@@ -62,7 +62,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:background="@drawable/player_play"
-                android:contentDescription="@string/play"/>
+                android:contentDescription="@string/play" />
 
         </LinearLayout>
 
@@ -72,7 +72,7 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:background="@drawable/player_stop"
-            android:contentDescription="@string/stop"/>
+            android:contentDescription="@string/stop" />
     </LinearLayout>
 
     <ImageButton
@@ -84,5 +84,5 @@
         android:layout_toEndOf="@+id/mid"
         android:layout_toRightOf="@+id/mid"
         android:background="@drawable/player_fwd"
-        android:contentDescription="@string/forward"/>
+        android:contentDescription="@string/forward" />
 </RelativeLayout>

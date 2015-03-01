@@ -28,10 +28,11 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class EnigmaDevice extends ToggleableDevice<EnigmaDevice> {
+public class EnigmaDevice extends ToggleableDevice<EnigmaDevice> implements VolumeDevice {
     @XmllistAttribute("channel")
     @ShowField(description = ResourceIdMapper.channel)
     private String channel;
@@ -191,11 +192,13 @@ public class EnigmaDevice extends ToggleableDevice<EnigmaDevice> {
         return volume;
     }
 
+    @Override
     public boolean isMuted() {
         return "on".equalsIgnoreCase(mute);
     }
 
-    public int getVolumeProgress() {
+    @Override
+    public int getVolumeAsInt() {
         return ValueExtractUtil.extractLeadingInt(volume);
     }
 }

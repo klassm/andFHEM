@@ -25,20 +25,15 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
+import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
+import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.util.ApplicationProperties;
@@ -58,52 +53,14 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
     @Override
     protected void afterPropertiesSet() {
         registerFieldListener("volume", new FieldNameAddedToDetailListener<SonosPlayerDevice>() {
+
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, SonosPlayerDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new SeekBarActionRowFullWidthAndButton<SonosPlayerDevice>(context, Integer.valueOf(device.getVolume()), 100) {
-
-                    @Override
-                    public void onButtonSetValue(SonosPlayerDevice device, int value) {
-                        onStopTrackingTouch(context, device, value);
-                    }
-
-                    @Override
-                    protected ApplicationProperties getApplicationProperties() {
-                        return applicationProperties;
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(Context context, SonosPlayerDevice device, int progress) {
-                        stateUiService.setSubState(device, "volume", progress + "", context);
-                    }
-                }.createRow(getInflater(), device));
+                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<SonosPlayerDevice>() {
-            @Override
-            public View createView(Context context, LayoutInflater inflater, SonosPlayerDevice device, LinearLayout parent) {
-                View view = inflater.inflate(R.layout.sonos_player_action, parent, false);
-
-                fillImageButtonWithAction(context, view, device, R.id.rewind, "Previous");
-                fillImageButtonWithAction(context, view, device, R.id.pause, "Pause");
-                fillImageButtonWithAction(context, view, device, R.id.stop, "Stop");
-                fillImageButtonWithAction(context, view, device, R.id.play, "Play");
-                fillImageButtonWithAction(context, view, device, R.id.forward, "Next");
-
-                return view;
-            }
-        });
-    }
-
-    private void fillImageButtonWithAction(final Context context, View view, final SonosPlayerDevice device,
-                                           int id, final String action) {
-        ImageButton button = (ImageButton) view.findViewById(id);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendStateAction(context, device, action);
-            }
-        });
+        detailActions.add(new PlayerDetailAction<SonosPlayerDevice>(stateUiService, "Previous", "Pause", "Stop", "Play", "Next"));
     }
 }
