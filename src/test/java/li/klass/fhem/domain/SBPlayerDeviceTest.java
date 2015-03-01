@@ -43,6 +43,6 @@ public class SBPlayerDeviceTest extends DeviceXMLParsingBase {
 
     @Override
     protected String getFileName() {
-        return "sb_player";
+        return "sb_player.xml";
     }
 }
