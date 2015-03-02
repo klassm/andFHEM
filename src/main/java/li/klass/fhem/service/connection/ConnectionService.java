@@ -52,6 +52,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
+import static li.klass.fhem.fhem.connection.ServerType.FHEMWEB;
 
 @Singleton
 public class ConnectionService {
@@ -247,11 +248,22 @@ public class ConnectionService {
     public int getPortOfSelectedConnection(Context context) {
         FHEMServerSpec spec = getCurrentServer(context);
         ServerType serverType = spec.getServerType();
-        if (serverType == ServerType.TELNET) {
-            return spec.getPort();
-        }
-        checkArgument(serverType == ServerType.FHEMWEB);
 
+        switch (serverType) {
+            case TELNET:
+                return spec.getPort();
+            case DUMMY:
+                return 0;
+            case FHEMWEB:
+                return getPortOfFHEMWEBSpec(spec);
+
+            default:
+                throw new IllegalArgumentException("unknown spec type: " + spec.getServerType());
+        }
+    }
+
+    private int getPortOfFHEMWEBSpec(FHEMServerSpec spec) {
+        checkArgument(spec.getServerType() == FHEMWEB);
         Pattern explicitPortPattern = Pattern.compile(":([\\d]+)");
         String url = spec.getUrl();
         Matcher matcher = explicitPortPattern.matcher(url);

@@ -103,6 +103,7 @@ public class ConnectionServiceTest {
                 {fhemwebSpecFor("https://192.168.0.1:8084"), 8084},
                 {fhemwebSpecFor("https://192.168.0.1/fhem"), 443},
                 {fhemwebSpecFor("http://192.168.0.1/fhem"), 80},
+                {dummySpec(), 0}
         };
     }
 
@@ -135,6 +136,12 @@ public class ConnectionServiceTest {
         FHEMServerSpec spec = new FHEMServerSpec("a");
         spec.setServerType(ServerType.FHEMWEB);
         spec.setUrl(url);
+        return spec;
+    }
+
+    private static FHEMServerSpec dummySpec() {
+        FHEMServerSpec spec = new FHEMServerSpec("a");
+        spec.setServerType(ServerType.DUMMY);
         return spec;
     }
 }
