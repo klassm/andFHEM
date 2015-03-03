@@ -182,19 +182,17 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
 
         switch (item.getItemId()) {
             case CONTEXT_MENU_DELETE:
-                Intent intent = new Intent(Actions.CONNECTION_DELETE);
-                intent.putExtra(CONNECTION_ID, clickedConnectionId);
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        super.onReceiveResult(resultCode, resultData);
-
-                        if (resultCode != ResultCodes.SUCCESS) return;
-
-                        update(false);
-                    }
-                });
-                getActivity().startService(intent);
+                getActivity().startService(new Intent(Actions.CONNECTION_DELETE)
+                        .setClass(getActivity(), ConnectionsIntentService.class)
+                        .putExtra(CONNECTION_ID, clickedConnectionId)
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                if (resultCode == ResultCodes.SUCCESS) {
+                                    update(false);
+                                }
+                            }
+                        }));
                 return true;
         }
         return false;

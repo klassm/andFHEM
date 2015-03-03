@@ -31,6 +31,7 @@ buildscript {
     dependencies {
         classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
+        classpath 'javax.mail:mail:1.4.7'
     }
 }
 
