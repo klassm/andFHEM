@@ -37,6 +37,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
@@ -45,7 +46,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
 @SupportsWidget(TemperatureWidgetView.class)
-public class OwthermDevice extends FhemDevice<OwthermDevice> {
+public class OwthermDevice extends FhemDevice<OwthermDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
@@ -91,7 +92,6 @@ public class OwthermDevice extends FhemDevice<OwthermDevice> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 0))
                         .build()
         ), temperature);
     }

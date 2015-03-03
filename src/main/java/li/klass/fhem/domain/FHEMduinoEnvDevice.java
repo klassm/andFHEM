@@ -119,7 +119,6 @@ public class FHEMduinoEnvDevice extends FhemDevice<FHEMduinoEnvDevice> implement
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0")
@@ -131,7 +130,6 @@ public class FHEMduinoEnvDevice extends FhemDevice<FHEMduinoEnvDevice> implement
                         .withColumnName(R.string.dewpoint, context).withFileLogSpec("4:taupunkttemp:0")
                         .withDbLogSpec("taupunkttemp")
                         .withSeriesType(DEWPOINT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("taupunkttemp", -10, 10))
                         .build()
         ), temperature, humidity, dewpoint);
     }

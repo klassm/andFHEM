@@ -33,6 +33,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
@@ -43,7 +44,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.append;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 @SuppressWarnings("unused")
-public class BMP180Device extends FhemDevice<BMP180Device> {
+public class BMP180Device extends FhemDevice<BMP180Device> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.pressure, showInOverview = true)
     private String pressure;
     @ShowField(description = ResourceIdMapper.pressureNN, showInOverview = true)
@@ -79,7 +80,6 @@ public class BMP180Device extends FhemDevice<BMP180Device> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 

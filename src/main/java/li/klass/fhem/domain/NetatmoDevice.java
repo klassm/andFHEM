@@ -28,6 +28,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.appendDb;
@@ -36,7 +37,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPpm;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
-public class NetatmoDevice extends FhemDevice<NetatmoDevice> {
+public class NetatmoDevice extends FhemDevice<NetatmoDevice> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     private String temperature;
 

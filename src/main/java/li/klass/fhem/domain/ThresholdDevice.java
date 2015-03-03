@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -40,10 +41,12 @@ public class ThresholdDevice extends FhemDevice<ThresholdDevice> implements Desi
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
+    @XmllistAttribute("DESIRED")
     public void readDESIRED(String value) {
         desiredTemp = ValueExtractUtil.extractLeadingDouble(value);
     }
 
+    @XmllistAttribute("DESIRED_VALUE")
     public void readDESIRED_VALUE(String value) {
         desiredTemp = ValueExtractUtil.extractLeadingDouble(value);
     }

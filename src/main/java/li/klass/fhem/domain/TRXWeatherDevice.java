@@ -36,6 +36,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -47,7 +48,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
-public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> {
+public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> implements TemperatureDevice {
 
     @WidgetTemperatureField
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
@@ -161,7 +162,6 @@ public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> {
                         .withDbLogSpec("temperature::int2")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.dewpoint, context).withFileLogSpec("4:dewpoint:0:")

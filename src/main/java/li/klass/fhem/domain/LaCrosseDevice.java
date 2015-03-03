@@ -33,6 +33,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -41,7 +42,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
-public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> {
+public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;
@@ -75,7 +76,6 @@ public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0:")

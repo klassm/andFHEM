@@ -680,7 +680,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.humidity, context).withFileLogSpec("6:H\\x3a:0:")
@@ -698,7 +697,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                     .withDbLogSpec("measured-temp")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
-                                    .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                     .build()
                     ), measuredTemp);
                 }
@@ -782,7 +780,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.humidity, context).withFileLogSpec("6:H\\x3a:0:")
@@ -799,7 +796,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.actuator, context).withFileLogSpec("4:actuator")

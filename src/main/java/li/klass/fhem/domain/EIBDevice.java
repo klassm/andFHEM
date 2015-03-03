@@ -138,7 +138,6 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
                                     .withDbLogSpec("state::int1")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
-                                    .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                                     .build()
                     ), getInternalState()
             );

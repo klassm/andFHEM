@@ -115,7 +115,6 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
                             .withDbLogSpec("temperature::int2")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build()
             ), temperature);
         }

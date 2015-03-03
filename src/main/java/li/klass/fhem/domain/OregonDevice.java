@@ -36,6 +36,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -49,7 +50,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.WIND;
 
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
-public class OregonDevice extends FhemDevice<OregonDevice> {
+public class OregonDevice extends FhemDevice<OregonDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     private String humidity;
@@ -198,7 +199,6 @@ public class OregonDevice extends FhemDevice<OregonDevice> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 

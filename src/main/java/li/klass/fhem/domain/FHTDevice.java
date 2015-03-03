@@ -283,14 +283,12 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
                                     .withDbLogSpec("measured-temp::int1")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
-                                    .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                     .build(),
                             new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature, context)
                                     .withFileLogSpec("4:desired-temp")
                                     .withDbLogSpec("desired-temp::int1")
                                     .withSeriesType(DESIRED_TEMPERATURE)
                                     .withShowDiscreteValues(true)
-                                    .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("desired-temp", 0, 30))
                                     .build(),
                             new ChartSeriesDescription.Builder().withColumnName(R.string.actuator, context)
                                     .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
@@ -309,7 +307,6 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
                                     .withDbLogSpec("desired-temp::int1")
                                     .withSeriesType(DESIRED_TEMPERATURE)
                                     .withShowDiscreteValues(true)
-                                    .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("desired-temp", 0, 100))
                                     .build(),
                             new ChartSeriesDescription.Builder().withColumnName(R.string.actuator, context)
                                     .withFileLogSpec("4:actuator.*[0-9]+%:0:int")

@@ -38,6 +38,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -51,7 +52,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 @SuppressWarnings("unused")
 @DetailViewSettings(showState = false)
-public class WithingsDevice extends FhemDevice<WithingsDevice> {
+public class WithingsDevice extends FhemDevice<WithingsDevice> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.fatFreeMass)
     private String fatFreeMass;
     @ShowField(description = ResourceIdMapper.fatMass)
@@ -187,7 +188,6 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> {
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
