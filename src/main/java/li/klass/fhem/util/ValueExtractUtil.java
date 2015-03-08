@@ -42,22 +42,16 @@ public class ValueExtractUtil {
 
     static String extractLeadingNumericText(String text, int digits) {
         if (StringUtil.isBlank(text)) return "";
-
-        text = text.trim();
-        text = text.replaceAll("[a-zA-Z%°]*", "");
-        int spacePosition = text.indexOf(" ");
-        if (spacePosition != -1) {
-            text = text.substring(0, spacePosition);
-        }
+        String numericText = new LeadingNumericTextExtractor(text).numericText();
 
         if (digits > 0) {
-            double number = Double.valueOf(text);
+            double number = Double.valueOf(numericText);
             double roundFactor = Math.pow(10, digits);
             double rounded = ((int) (number * roundFactor)) / roundFactor;
 
             return rounded + "";
         } else {
-            return text;
+            return numericText;
         }
     }
 
