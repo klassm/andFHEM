@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.CommandExecutionService;
@@ -77,14 +78,12 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         LOG.info("doRemoteUpdate() - remote device list update finished");
         if (result.isPresent()) {
             roomListHolderService.storeDeviceListMap(result.get(), this);
-            startService(new Intent(REMOTE_UPDATE_FINISHED).setClass(this, RoomListIntentService.class));
             LOG.info("doRemoteUpdate() - update was successful, sending result");
-            return STATE.DONE;
         } else {
-            startService(new Intent(REMOTE_UPDATE_FINISHED).setClass(this, RoomListIntentService.class));
             LOG.info("doRemoteUpdate() - update was not successful, sending empty device list");
-            return STATE.DONE;
         }
+        startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(BundleExtraKeys.SUCCESS, result.isPresent()).setClass(this, RoomListIntentService.class));
+        return STATE.DONE;
     }
 
     private synchronized Optional<RoomDeviceList> getRemoteRoomDeviceListMap() {

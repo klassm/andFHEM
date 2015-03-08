@@ -181,7 +181,8 @@ public class ErrorHolder {
                 "Device: " + android.os.Build.DEVICE,
                 "Manufacturer: " + Build.MANUFACTURER,
                 "Model: " + android.os.Build.MODEL,
-                "Product: " + android.os.Build.PRODUCT
+                "Product: " + android.os.Build.PRODUCT,
+                "App-version: " + AndFHEMApplication.getApplication().getCurrentApplicationVersion()
         ));
     }
 
