@@ -147,11 +147,13 @@ public class StartupActivity extends Activity {
 
         Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST)
                 .setClass(this, RoomListIntentService.class)
+                .putExtra(BundleExtraKeys.ORIGIN, StartupActivity.class.getName())
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode == ResultCodes.ERROR) {
                             Log.e(TAG, "loadDeviceList() : cannot load device list: " + resultData);
+                            gotoMainActivity(false);
                         } else {
                             Log.d(TAG, "loadDeviceList() : device list was loaded");
                             loadFavorites();

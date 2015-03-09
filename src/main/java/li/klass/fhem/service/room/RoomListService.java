@@ -26,6 +26,8 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
@@ -49,6 +51,7 @@ import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -225,27 +228,41 @@ public class RoomListService extends AbstractService {
      * Entry point for completed remote updates. See {@link #updateRoomDeviceListIfRequired} for
      * details on the process.
      */
-    public void remoteUpdateFinished(Context context) {
+    public void remoteUpdateFinished(Context context, boolean success) {
         try {
             LOG.info("remoteUpdateFinished() - starting after actions");
 
-            for (Intent resendIntent : resendIntents) {
-                resend(resendIntent, context);
+
+            if (success) {
+                LOG.info("remoteUpdateFinished() - requesting redraw of all appwidgets");
+
+                for (Intent resendIntent : resendIntents) {
+                    resend(resendIntent, context);
+                }
+
+                context.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
+                context.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
+                        .setClass(context, AppWidgetUpdateService.class)
+                        .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
+
+                LOG.info("remoteUpdateFinished() - remote update finished, device list is {}");
+            } else {
+                LOG.info("remoteUpdateFinished() - update was not successful");
+
+                for (Intent resendIntent : resendIntents) {
+                    answerError(resendIntent);
+                }
             }
             resendIntents.clear();
-
-            LOG.info("remoteUpdateFinished() - requesting redraw of all appwidgets");
-
-            context.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
-            context.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
-                    .setClass(context, AppWidgetUpdateService.class)
-                    .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
-
-            LOG.info("remoteUpdateFinished() - remote update finished, device list is {}");
         } finally {
             LOG.info("remoteUpdateFinished() - finished, dismissing executing dialog");
             resetUpdateProgress(context);
         }
+    }
+
+    private void answerError(Intent resendIntent) {
+        ResultReceiver receiver = resendIntent.getParcelableExtra(BundleExtraKeys.RESULT_RECEIVER);
+        receiver.send(ResultCodes.ERROR, new Bundle());
     }
 
     private void resend(Intent intent, Context context) {

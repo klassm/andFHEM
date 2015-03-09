@@ -200,6 +200,7 @@ public class ImportExportService {
 
     private File createZipFrom(Map<String, Map<String, ?>> toExport, Optional<String> password) {
 
+        ByteArrayInputStream stream = null;
         try {
             String exportedJson = new Gson().toJson(toExport);
 
@@ -218,12 +219,15 @@ public class ImportExportService {
                 parameters.setPassword(password.get());
             }
 
-            zipFile.addStream(new ByteArrayInputStream(exportedJson.getBytes(Charsets.UTF_8)), parameters);
+            stream = new ByteArrayInputStream(exportedJson.getBytes(Charsets.UTF_8));
+            zipFile.addStream(stream, parameters);
 
             return exportFile;
         } catch (ZipException e) {
             LOGGER.error("cannot create zip", e);
             throw new IllegalStateException(e);
+        } finally {
+            CloseableUtil.close(stream);
         }
     }
 
