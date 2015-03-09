@@ -36,7 +36,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     private String password;
     private String ip;
     private int port;
-    private Boolean altUrl;
+    private boolean altUrl = false;
     private String url;
     private String remoteUrl;
     private String username;
@@ -81,12 +81,11 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     }
 
     public String getCurrentUrl() {
-        if(altUrl == null) altUrl = false;
-        if(altUrl != true){
-            return url;
+        if(altUrl){
+            return remoteUrl;
         }
         else {
-            return remoteUrl;
+            return url;
         }
     }
 
