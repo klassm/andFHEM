@@ -256,6 +256,8 @@
     <string name="connectionShowPassword">Passwort anzeigen</string>
     <string name="connectionURL">URL</string>
     <string name="connectionURLDesc">z.B. http://192.168.0.1:8083/fhem</string>
+    <string name="connectionRemoteURL">Remote URL</string>
+    <string name="connectionRemoteURLDesc">z.B. http://example.dyndns.com:8083/fhem</string>
     <string name="connectionIP">IP</string>
     <string name="connectionIPDesc">z.B. 192.168.0.1</string>
     <string name="connectionPort">Port</string>

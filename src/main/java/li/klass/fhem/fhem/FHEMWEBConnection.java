@@ -65,6 +65,7 @@ public class FHEMWEBConnection extends FHEMConnection {
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
+    private Boolean altUrl = false;
 
     public FHEMWEBConnection() {
 
@@ -110,7 +111,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                                                       String command) {
         String url = null;
         try {
-            url = serverSpec.getUrl() + urlSuffix;
+            url = serverSpec.getCurrentUrl() + urlSuffix;
             URL requestUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
             connection.setConnectTimeout(SOCKET_TIMEOUT);
@@ -134,17 +135,44 @@ public class FHEMWEBConnection extends FHEMConnection {
         } catch (ConnectTimeoutException e) {
             Log.i(TAG, "connection timed out", e);
             setErrorInErrorHolderFor(e, url, command);
-            return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
+            if(altUrl){
+                return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
+            }
+            else {
+                return retryRequest(urlSuffix, command);
+            }
         } catch (ClientProtocolException e) {
             String errorText = "cannot connect, invalid URL? (" + url + ")";
             setErrorInErrorHolderFor(e, url, command);
             ErrorHolder.setError(e, errorText);
-            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+            if(altUrl){
+                return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+            }
+            else {
+                return retryRequest(urlSuffix, command);
+            }
         } catch (IOException e) {
             Log.i(TAG, "cannot connect to host", e);
             setErrorInErrorHolderFor(e, url, command);
-            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+            if(altUrl){
+                return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+            }
+            else {
+                return retryRequest(urlSuffix, command);
+            }
         }
+    }
+    private RequestResult<InputStream> retryRequest(String urlSuffix,
+                                                      String command) {
+        /* flag that we are retrying and an error should lead to an real error */
+        altUrl = true;
+        /* tell serverSpec to return the other url on next call */
+        serverSpec.toggleUrl();
+        /* store the result of the retry */
+        RequestResult<InputStream> res = executeRequest(urlSuffix,command);
+        /* reset the flag that indicated the retry */
+        altUrl = false;
+        return res;
     }
 
     public String getPassword() {
