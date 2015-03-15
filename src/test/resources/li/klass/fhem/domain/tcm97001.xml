@@ -1,0 +1,112 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<!--
+FileLog:
+2015-02-04_15:07:35 CUL_TCM97001_102
+2015-02-04_15:07:35 CUL_TCM97001_102 temperature: 5.9
+2015-02-04_15:07:35 CUL_TCM97001_102 Battery: Low
+2015-02-06_13:17:42 CUL_TCM97001_102 T: 5.9
+2015-02-06_13:17:42 CUL_TCM97001_102 temperature: 4.7
+2015-02-06_13:17:42 CUL_TCM97001_102 Battery: Low
+2015-02-06_20:48:30 CUL_TCM97001_102 T: 4.7
+2015-02-06_20:48:30 CUL_TCM97001_102 temperature: 1.3
+2015-02-06_20:48:30 CUL_TCM97001_102 Battery: Low
+2015-02-13_15:20:49 CUL_TCM97001_102 T: 1.3
+2015-02-13_15:20:49 CUL_TCM97001_102 temperature: 8.0
+2015-02-13_15:20:49 CUL_TCM97001_102 Battery: Low
+2015-02-13_16:25:13 CUL_TCM97001_102 T: 8.0
+2015-02-13_16:25:13 CUL_TCM97001_102 temperature: 7.2
+2015-02-13_16:25:13 CUL_TCM97001_102 Battery: Low
+2015-02-14_14:47:21 CUL_TCM97001_102 T: 7.2
+2015-02-14_14:47:21 CUL_TCM97001_102 temperature: 7.0
+2015-02-14_14:47:21 CUL_TCM97001_102 Battery: Low
+2015-02-15_13:58:56 CUL_TCM97001_102 T: 7.0
+2015-02-15_13:58:56 CUL_TCM97001_102 temperature: 8.9
+2015-02-15_13:58:56 CUL_TCM97001_102 Battery: Low
+2015-02-15_20:34:39 CUL_TCM97001_102 T: 8.9
+2015-02-15_20:34:39 CUL_TCM97001_102 temperature: 2.9
+2015-02-15_20:34:39 CUL_TCM97001_102 Battery: Low
+2015-02-20_14:46:12 CUL_TCM97001_102 T: 2.9
+2015-02-20_14:46:12 CUL_TCM97001_102 temperature: 4.9
+2015-02-20_14:46:12 CUL_TCM97001_102 Battery: Low
+-->
+<FHZINFO>
+    <CUL_TCM97001_LIST>
+        <CUL_TCM97001 name="CUL_TCM97001_102" state="T: 4.0" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Speicher icon sortby webCmd widgetOverride userattr">
+            <INT key="CFGFN" value="/opt/fhem/Nachbar.cfg" />
+            <INT key="CODE" value="102" />
+            <INT key="DEF" value="102" />
+            <INT key="LASTInputDev" value="SCC2" />
+            <INT key="MSGCNT" value="14" />
+            <INT key="NAME" value="CUL_TCM97001_102" />
+            <INT key="NR" value="402" />
+            <INT key="SCC2_MSGCNT" value="14" />
+            <INT key="SCC2_RAWMSG" value="s6640A7F3" />
+            <INT key="SCC2_TIME" value="2015-03-10 21:49:14" />
+            <INT key="STATE" value="T: 4.0" />
+            <INT key="TYPE" value="CUL_TCM97001" />
+            <INT key="lastH" value="0" />
+            <INT key="lastT" value="1426020554" />
+            <ATTR key="alias" value="Aussentemperatur" />
+            <ATTR key="room" value="Garten" />
+            <STATE key="Battery" value="Low" measured="2015-03-10 21:49:14" />
+            <STATE key="state" value="T: 4.0" measured="2015-03-10 21:49:14" />
+            <STATE key="temperature" value="4.1" measured="2015-03-10 21:49:14" />
+        </CUL_TCM97001>
+        <CUL_TCM97001 name="CUL_TCM97001_13" state="Defined" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Speicher icon sortby webCmd widgetOverride userattr">
+            <INT key="CODE" value="13" />
+            <INT key="DEF" value="13" />
+            <INT key="NAME" value="CUL_TCM97001_13" />
+            <INT key="NR" value="617" />
+            <INT key="STATE" value="Defined" />
+            <INT key="TYPE" value="CUL_TCM97001" />
+            <INT key="lastH" value="0" />
+            <INT key="lastT" value="0" />
+            <ATTR key="room" value="CUL_TCM97001" />
+        </CUL_TCM97001>
+    </CUL_TCM97001_LIST>
+    <FileLog_LIST>
+        <FileLog name="FileLog_CUL_TCM97001_102" state="active"
+            sets="absorb:FileLog_CUL_FHTTK_000000,FileLog_CUL_FHTTK_131ec7,FileLog_CUL_FHTTK_289e44,FileLog_CUL_FHTTK_3388cf,FileLog_CUL_FHTTK_4210c5,FileLog_CUL_FHTTK_42771c,FileLog_CUL_FHTTK_4376cf,FileLog_CUL_FHTTK_440000,FileLog_CUL_FHTTK_4ff59b,FileLog_CUL_FHTTK_645990,FileLog_CUL_FHTTK_6f6812,FileLog_CUL_FHTTK_91b866,FileLog_CUL_FHTTK_b60b8e,FileLog_CUL_FHTTK_f0befc,FileLog_CUL_HM_HM_CC_RT_DN_31341D,FileLog_CUL_HM_HM_SEC_SC_2_2ADC4E,FileLog_CUL_HM_HM_SEC_SC_2_2ADFFE,FileLog_CUL_TCM97001_103,FileLog_CUL_TCM97001_13,FileLog_CUL_TCM97001_142,FileLog_CUL_TCM97001_16,FileLog_CUL_TCM97001_179,FileLog_CUL_TCM97001_206,FileLog_CUL_TCM97001_207,FileLog_CUL_TCM97001_3,FileLog_CUL_TCM97001_48,FileLog_CUL_TCM97001_64,FileLog_CUL_TCM97001_76,FileLog_CUL_TCM97001_78,FileLog_CUL_TCM97001_79,FileLog_CUL_TX_0,FileLog_CUL_TX_101,FileLog_CUL_TX_127,FileLog_CUL_TX_16,FileLog_CUL_TX_24,FileLog_CUL_TX_4,FileLog_CUL_TX_64,FileLog_CUL_TX_68,FileLog_CUL_TX_8,FileLog_CUL_WS_1,FileLog_CUL_WS_6,FileLog_CUL_WS_8,FileLog_EIB_0000,FileLog_EIB_0001,FileLog_EIB_0003,FileLog_EIB_0004,FileLog_EIB_0005,FileLog_EIB_0006,FileLog_EIB_1000,FileLog_EIB_1001,FileLog_EIB_1002,FileLog_EIB_1003,FileLog_EIB_1004,FileLog_EIB_1005,FileLog_EIB_1006,FileLog_EIB_1007,FileLog_EIB_1008,FileLog_EIB_1009,FileLog_EIB_100a,FileLog_EIB_100b,FileLog_EIB_100c,FileLog_EIB_100d,FileLog_EIB_100e,FileLog_EIB_100f,FileLog_EIB_1010,FileLog_EIB_1011,FileLog_EIB_1012,FileLog_EIB_1013,FileLog_EIB_1014,FileLog_EIB_1015,FileLog_EIB_1016,FileLog_EIB_1018,FileLog_EIB_1019,FileLog_EIB_101b,FileLog_EIB_101c,FileLog_EIB_101d,FileLog_EIB_1023,FileLog_EIB_1024,FileLog_EIB_1029,FileLog_EIB_102a,FileLog_EIB_1100,FileLog_EIB_1101,FileLog_EIB_1102,FileLog_EIB_1103,FileLog_EIB_1104,FileLog_EIB_1105,FileLog_EIB_1106,FileLog_EIB_1107,FileLog_EIB_1108,FileLog_EIB_1109,FileLog_EIB_110a,FileLog_EIB_110b,FileLog_EIB_110d,FileLog_EIB_110e,FileLog_EIB_110f,FileLog_EIB_1110,FileLog_EIB_1112,FileLog_EIB_1114,FileLog_EIB_1115,FileLog_EIB_111b,FileLog_EIB_1128,FileLog_EIB_2007,FileLog_EIB_3001,FileLog_EIB_3003,FileLog_EIB_3100,FileLog_EIB_3101,FileLog_EIB_3220,FileLog_EIB_3221,FileLog_EIB_3222,FileLog_EIB_3223,FileLog_EIB_3224,FileLog_EIB_3225,FileLog_EIB_3226,FileLog_EIB_3227,FileLog_EIB_3228,FileLog_EIB_3229,FileLog_EIB_322a,FileLog_EIB_322b,FileLog_EIB_322c,FileLog_EIB_322d,FileLog_EIB_322e,FileLog_EIB_322f,FileLog_EIB_3230,FileLog_EIB_3231,FileLog_EIB_3232,FileLog_EIB_3234,FileLog_EIB_3235,FileLog_EIB_3236,FileLog_EIB_3237,FileLog_EIB_3238,FileLog_EIB_3239,FileLog_EIB_323a,FileLog_EIB_323b,FileLog_EIB_323c,FileLog_EIB_323d,FileLog_EIB_323e,FileLog_EIB_323f,FileLog_EIB_3240,FileLog_EIB_3241,FileLog_EIB_3242,FileLog_EIB_3243,FileLog_EIB_3244,FileLog_EIB_3245,FileLog_EIB_3246,FileLog_EIB_3247,FileLog_EIB_4000,FileLog_EIB_8015,FileLog_EIB_b722,FileLog_EIB_e806,FileLog_FHT_035b,FileLog_FHT_0518,FileLog_FHT_1409,FileLog_FHT_240c,FileLog_FHT_2a29,FileLog_FHT_4c37,FileLog_FHT_4c52,FileLog_FHT_5743,FileLog_FS20_000000,FileLog_FS20_140942,FileLog_HMS100TF_0000,FileLog_HMS100TF_0300,FileLog_IT_0000000000,FileLog_IT_0000000001,FileLog_IT_0000000011,FileLog_IT_000000001F,FileLog_IT_00000000F1,FileLog_IT_00000000FF,FileLog_IT_0000000101,FileLog_IT_0000000111,FileLog_IT_0000000F01,FileLog_IT_0000000F11,FileLog_IT_0000000FF0,FileLog_IT_0000001111,FileLog_IT_000000F000,FileLog_IT_000000F0F1,FileLog_IT_000000F111,FileLog_IT_000000FF11,FileLog_IT_0000010F11,FileLog_IT_0000011111,FileLog_IT_00000F0111,FileLog_IT_00000F0F0F,FileLog_IT_00000F10FF,FileLog_IT_00000F1111,FileLog_IT_00000FF111,FileLog_IT_0000111111,FileLog_IT_00001111F1,FileLog_IT_00001F1111,FileLog_IT_00001FFF11,FileLog_IT_0000F00000,FileLog_IT_0000F000F1,FileLog_IT_0000F00111,FileLog_IT_0000F0FF11,FileLog_IT_0000F11111,FileLog_IT_0000FF1111,FileLog_IT_0001100000011111011010001000000,FileLog_IT_0001100000011111011010001000001,FileLog_IT_0001100000011111011010001000010,FileLog_IT_0001100000011111011010001010000,FileLog_IT_0001111011,FileLog_IT_0001111111,FileLog_IT_000F000000,FileLog_IT_000F00F001,FileLog_IT_000F00F111,FileLog_IT_000F0FF111,FileLog_IT_000F111111,FileLog_IT_000FF1F111,FileLog_IT_0010000000,FileLog_IT_0011111111,FileLog_IT_001111111F,FileLog_IT_0011111F11,FileLog_IT_001111F111,FileLog_IT_00F0000111,FileLog_IT_00F0001F11,FileLog_IT_00F0F11111,FileLog_IT_00F1111111,FileLog_IT_00F11F1111,FileLog_IT_00FF000000,FileLog_IT_0111111111,FileLog_IT_011F111111,FileLog_IT_011FF11111,FileLog_IT_01F1111111,FileLog_IT_0F00000000,FileLog_IT_0F0F00FFFF,FileLog_IT_0F0F0F0FFF,FileLog_IT_0F0F0FF0FF,FileLog_IT_0F0F0FFF0F,FileLog_IT_0F0F0FFFFF,FileLog_IT_0F11111111,FileLog_IT_0F1111111F,FileLog_IT_0F111111F1,FileLog_IT_0F11111F11,FileLog_IT_0F1F111111,FileLog_IT_0FF1111111,FileLog_IT_0FFF0FFFFF,FileLog_IT_1010000100,FileLog_IT_1011111111,FileLog_IT_10111F1111,FileLog_IT_10F1111111,FileLog_IT_110111F111,FileLog_IT_1111011111,FileLog_IT_1111110000,FileLog_IT_1111110FF1,FileLog_IT_1111111011,FileLog_IT_1111111111,FileLog_IT_11111111F1,FileLog_IT_1111111F11,FileLog_IT_111111F111,FileLog_IT_11111F1111,FileLog_IT_1111F11101,FileLog_IT_1111F11111,FileLog_IT_111F111111,FileLog_IT_111F11111F,FileLog_IT_11F0111111,FileLog_IT_11F1101111,FileLog_IT_11F1111111,FileLog_IT_11F1FF1111,FileLog_IT_11FF111111,FileLog_IT_1F11111111,FileLog_IT_1F111111F1,FileLog_IT_1F111111FF,FileLog_IT_1F111F1111,FileLog_IT_1F1F111111,FileLog_IT_1F1F11F111,FileLog_IT_1FF1111111,FileLog_IT_F010000000,FileLog_IT_F011111111,FileLog_IT_F111111111,FileLog_IT_F1111111F1,FileLog_IT_F11111F111,FileLog_IT_F1111F1111,FileLog_IT_F1F1111111,FileLog_IT_FF11111111,FileLog_IT_FF111111F1,FileLog_IT_FFF1111111,FileLog_IT_schrank,FileLog_Revolt_2062,FileLog_Revolt_2178,FileLog_Revolt_21f8,FileLog_Revolt_6178,FileLog_Revolt_a178,FileLog_SP_Schlafzimmer_Fenster_rechts,Logfile addRegexpPart removeRegexpPart reopen"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 logtype nrarchive archivedir archivecmd addStateEvent:0,1 devStateIcon devStateStyle fp_Speicher icon sortby webCmd widgetOverride userattr">
+            <INT key="CFGFN" value="/opt/fhem/Nachbar.cfg" />
+            <INT key="DEF" value="/media/usb1/fhem/log/CUL_TCM97001_102-%Y.log CUL_TCM97001_102" />
+            <INT key="NAME" value="FileLog_CUL_TCM97001_102" />
+            <INT key="NOTIFYDEV" value="CUL_TCM97001_102" />
+            <INT key="NR" value="403" />
+            <INT key="NTFY_ORDER" value="50-FileLog_CUL_TCM97001_102" />
+            <INT key="REGEXP" value="CUL_TCM97001_102" />
+            <INT key="STATE" value="active" />
+            <INT key="TYPE" value="FileLog" />
+            <INT key="currentlogfile" value="/media/usb1/fhem/log/CUL_TCM97001_102-2015.log" />
+            <INT key="logfile" value="/media/usb1/fhem/log/CUL_TCM97001_102-%Y.log" />
+            <ATTR key="alias" value="Aussentemperatur" />
+            <ATTR key="logtype" value="temp4:Temp,text" />
+            <ATTR key="room" value="logfiles TCM TX" />
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

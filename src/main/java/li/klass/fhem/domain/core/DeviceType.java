@@ -168,7 +168,8 @@ public enum DeviceType {
     CO20("CO20", CO20Device.class),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapterWithSwitchActionRow<>(MySensorsDevice.class)),
-    SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter())
+    SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
+    TCM97001("CUL_TCM97001", TCM97001Device.class)
     ;
 
     private String xmllistTag;
