@@ -118,7 +118,7 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> implements TemperatureD
                             .withColumnName(R.string.humidity, context).withFileLogSpec("6:H:0")
                             .withDbLogSpec("humidity")
                             .withSeriesType(HUMIDITY)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 30))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                             .build()
             ), temperature, humidity);
         } else {

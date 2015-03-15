@@ -97,7 +97,7 @@ public class USBWXDevice extends FhemDevice<USBWXDevice> implements TemperatureD
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 0))
                         .build()
         ), temperature);
 

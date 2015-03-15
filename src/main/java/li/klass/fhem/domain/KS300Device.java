@@ -178,7 +178,7 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
                         .withColumnName(R.string.wind, context).withFileLogSpec("8::")
                         .withDbLogSpec("wind::int1")
                         .withSeriesType(WIND)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("wind", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("wind", 0, 0))
                         .build()
         ), wind);
 
@@ -187,7 +187,7 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
                         .withColumnName(R.string.rain, context).withFileLogSpec("10::")
                         .withDbLogSpec("rain::int1")
                         .withSeriesType(RAIN)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain", 0, 0))
                         .build()
         ), rain);
     }

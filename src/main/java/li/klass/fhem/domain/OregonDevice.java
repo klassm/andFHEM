@@ -225,7 +225,7 @@ public class OregonDevice extends FhemDevice<OregonDevice> implements Temperatur
                         .withColumnName(R.string.rainRate, context).withFileLogSpec("4:rain_rate:0:")
                         .withDbLogSpec("rain_rate::int2")
                         .withSeriesType(RAIN_RATE)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain_rate", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain_rate", 0, 0))
                         .build()
         ), rainRate);
 
@@ -234,7 +234,7 @@ public class OregonDevice extends FhemDevice<OregonDevice> implements Temperatur
                         .withColumnName(R.string.rainRate, context).withFileLogSpec("4:rain_total:0:")
                         .withDbLogSpec("rain_total::int2")
                         .withSeriesType(RAIN_TOTAL)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain_total", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain_total", 0, 0))
                         .build()
         ), rainTotal);
 
@@ -243,7 +243,7 @@ public class OregonDevice extends FhemDevice<OregonDevice> implements Temperatur
                         .withColumnName(R.string.rainRate, context).withFileLogSpec("4:wind_speed:0:")
                         .withDbLogSpec("wind_speed::int2")
                         .withSeriesType(WIND)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("wind_speed", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("wind_speed", 0, 0))
                         .build()
         ), windSpeed);
     }
