@@ -36,6 +36,7 @@ import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
+import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
@@ -47,12 +48,15 @@ public class PIDDevice extends FhemDevice<PIDDevice> implements DesiredTempDevic
     @WidgetTemperatureField
     private String temperature;
 
-    @ShowField(description = ResourceIdMapper.desiredTemperature)
+    @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
     private double desiredTemperature;
 
-    @ShowField(description = ResourceIdMapper.delta, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.delta, showInOverview = false)
     @WidgetTemperatureAdditionalField(description = ResourceIdMapper.delta)
     private String delta;
+
+    @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
+    private String actuator;
 
     public static final double MINIMUM_TEMPERATURE = 0;
     public static final double MAXIMUM_TEMPERATURE = 40;
@@ -79,6 +83,15 @@ public class PIDDevice extends FhemDevice<PIDDevice> implements DesiredTempDevic
     @XmllistAttribute("DESIRED")
     public void setDesired(String value) {
         desiredTemperature = extractLeadingDouble(value);
+    }
+
+    @XmllistAttribute("ACTUATION")
+    public void setActuator(String actuator) {
+        this.actuator = appendPercent(actuator);
+    }
+
+    public String getActuator() {
+        return actuator;
     }
 
     public String getTemperature() {

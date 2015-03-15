@@ -32,12 +32,13 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class WifiLightDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<WifiLightDevice> {
+public class WifiLightDeviceAdapter extends ToggleableAdapter<WifiLightDevice> {
     @Inject
     StateUiService stateUiService;
 

@@ -31,13 +31,14 @@ import android.widget.TableRow;
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class SBPlayerDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SBPlayerDevice> {
+public class SBPlayerDeviceAdapter extends ToggleableAdapter<SBPlayerDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 

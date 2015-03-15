@@ -32,12 +32,13 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class SwapDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SWAPDevice> {
+public class SwapDeviceAdapter extends ToggleableAdapter<SWAPDevice> {
     @Inject
     StateUiService stateUiService;
 

@@ -22,14 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.core;
 
-import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class ToggleableAdapterWithSwitchActionRow<D extends ToggleableDevice<D>> extends ToggleableAdapter<D> {
-    public ToggleableAdapterWithSwitchActionRow(Class<D> deviceClass) {
+public class GenericDeviceAdapterWithSwitchActionRow<D extends FhemDevice<D>> extends GenericDeviceAdapter<D> {
+    public GenericDeviceAdapterWithSwitchActionRow(Class<D> deviceClass) {
         super(deviceClass);
     }
 

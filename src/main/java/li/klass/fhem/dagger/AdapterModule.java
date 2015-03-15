@@ -53,7 +53,6 @@ import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
-import li.klass.fhem.adapter.devices.ToggleableAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
 import li.klass.fhem.adapter.devices.WOLAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
@@ -106,7 +105,6 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
                 DimmableAdapter.class,
-                ToggleableAdapterWithSwitchActionRow.class,
                 SwitchActionRowAdapter.class
 
         })
