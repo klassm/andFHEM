@@ -111,14 +111,14 @@ public class RevoltDevice extends FhemDevice<RevoltDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.energy_power, context)
-                        .withFileLogSpec("4::0:")
+                        .withFileLogSpec("4:power")
                         .withDbLogSpec("power")
                         .withSeriesType(CURRENT_POWER_WATT)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("power", 0, 1))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.currentUsage, context)
-                        .withFileLogSpec("6::0:")
+                        .withFileLogSpec("4:energy:")
                         .withDbLogSpec("energy")
                         .withSeriesType(CURRENT_USAGE_KILOWATT)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 1))
