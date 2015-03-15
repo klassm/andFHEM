@@ -41,7 +41,7 @@ import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
-import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
@@ -94,7 +94,8 @@ public enum DeviceType {
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
     HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapterWithSwitchActionRow<>(HOLDevice.class)),
-    PID("PID", PIDDevice.class, new PidAdapter(PIDDevice.class)),
+    PID("PID", PIDDevice.class, new PIDDeviceAdapter(PIDDevice.class)),
+    PID20("PID20", PIDDevice.class, new PIDDeviceAdapter(PIDDevice.class)),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<>(TRXLightDevice.class)),

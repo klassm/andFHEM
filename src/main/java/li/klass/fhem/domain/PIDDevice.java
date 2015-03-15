@@ -30,15 +30,17 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
+
+import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
+import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SupportsWidget(TemperatureWidgetView.class)
-@SuppressWarnings("unused")
 public class PIDDevice extends FhemDevice<PIDDevice> implements DesiredTempDevice, TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
@@ -55,20 +57,28 @@ public class PIDDevice extends FhemDevice<PIDDevice> implements DesiredTempDevic
     public static final double MINIMUM_TEMPERATURE = 0;
     public static final double MAXIMUM_TEMPERATURE = 40;
 
+    @XmllistAttribute("STATE")
     public void readSTATE(String value) {
         String content = value.trim();
         int firstBlank = content.indexOf(" ");
         if (firstBlank != -1 && !content.startsWith("desired")) {
-            temperature = ValueDescriptionUtil.appendTemperature(content.substring(0, firstBlank));
+            setTemperature(content.substring(0, firstBlank));
         }
     }
 
+    @XmllistAttribute("DELTA")
     public void readDELTA(String value) {
         delta = value;
     }
 
-    public void readDESIRED(String value) {
-        desiredTemperature = ValueExtractUtil.extractLeadingDouble(value);
+    @XmllistAttribute("MEASURED")
+    public void setTemperature(String value) {
+        temperature = appendTemperature(value);
+    }
+
+    @XmllistAttribute("DESIRED")
+    public void setDesired(String value) {
+        desiredTemperature = extractLeadingDouble(value);
     }
 
     public String getTemperature() {
@@ -85,7 +95,7 @@ public class PIDDevice extends FhemDevice<PIDDevice> implements DesiredTempDevic
 
     @Override
     public String getDesiredTempDesc() {
-        return ValueDescriptionUtil.desiredTemperatureToString(desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+        return desiredTemperatureToString(desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 
     @Override

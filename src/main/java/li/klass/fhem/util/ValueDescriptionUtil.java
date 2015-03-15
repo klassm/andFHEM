@@ -95,7 +95,7 @@ public class ValueDescriptionUtil {
         } else if (temperature == maxTemp) {
             return "on";
         } else {
-            return ValueDescriptionUtil.appendTemperature(temperature);
+            return appendTemperature(temperature);
         }
     }
 

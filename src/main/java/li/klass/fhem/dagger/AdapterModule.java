@@ -42,7 +42,7 @@ import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
-import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
@@ -81,7 +81,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 OwSwitchDeviceAdapter.class,
                 PCA9532DeviceAdapter.class,
                 PCF8574DeviceAdapter.class,
-                PidAdapter.class,
+                PIDDeviceAdapter.class,
                 ReadingsProxyDeviceAdapter.class,
                 RemoteControlAdapter.class,
                 SonosPlayerAdapter.class,

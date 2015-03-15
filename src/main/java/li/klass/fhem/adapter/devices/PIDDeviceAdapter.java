@@ -41,11 +41,11 @@ import li.klass.fhem.util.ApplicationProperties;
 import static li.klass.fhem.domain.PIDDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.PIDDevice.MINIMUM_TEMPERATURE;
 
-public class PidAdapter extends GenericDeviceAdapter<PIDDevice> {
+public class PIDDeviceAdapter extends GenericDeviceAdapter<PIDDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public PidAdapter(Class<PIDDevice> deviceClass) {
+    public PIDDeviceAdapter(Class<PIDDevice> deviceClass) {
         super(deviceClass);
     }
 

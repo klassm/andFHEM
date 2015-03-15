@@ -50,6 +50,16 @@ public class PIDDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
+    @Test
+    public void should_read_PID20_devices() {
+        PIDDevice device = getDeviceFor("eg.wohnen.pid", PIDDevice.class);
+        assertThat(device).isNotNull();
+
+        assertThat(device.getTemperature()).isEqualTo("21.37 (°C)");
+        assertThat(device.getDesiredTempDesc()).isEqualTo("21.5 (°C)");
+        assertThat(device.getDesiredTemp()).isEqualTo(21.5, offset(0.001));
+    }
+
     @Override
     protected String getFileName() {
         return "pid.xml";
