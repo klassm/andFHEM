@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:1.1.1'
 
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
@@ -64,7 +64,7 @@ android {
         targetSdkVersion 21
         minSdkVersion 9
         testApplicationId "li.klass.fhem.test"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
@@ -109,6 +109,8 @@ android {
     packagingOptions {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE.txt'
+        exclude 'APK LICENSE.txt'
+        exclude 'LICENSE.txt'
     }
 
     productFlavors {
@@ -181,6 +183,10 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'com.tngtech.java:junit-dataprovider:1.9.2'
     testCompile 'org.assertj:assertj-core:1.7.1'
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'com.squareup:javawriter:2.5.0'
 }
 
 task readSigningPasswordsFromConsole(

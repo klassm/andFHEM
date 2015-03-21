@@ -25,27 +25,28 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/connectionName"
+        android:contentDescription="@string/connectionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center_vertical|start"
         android:lines="1"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/connectionType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="-4dp"
         android:gravity="center_vertical|start"
         android:text=""
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
 </LinearLayout>
