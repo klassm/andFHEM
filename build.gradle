@@ -96,8 +96,11 @@ android {
     }
 
     sourceSets {
+        androidTest {
+            aidl.srcDirs = ['src/androidTest/java']
+        }
         test {
-            java.srcDirs = ['src/test/java', 'src/androidTest/java']
+            java.srcDirs = ['src/test/java']
             resources.srcDir file('src/test/resources')
         }
         main {
