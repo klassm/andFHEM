@@ -40,7 +40,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
@@ -52,7 +52,7 @@ public class YAxisTest {
     private static final List<GraphEntry> DUMMY_DATA = Arrays.asList(new GraphEntry(new DateTime(1), 0.3f));
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     private Context context;

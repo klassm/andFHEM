@@ -30,7 +30,7 @@ import org.mockito.InjectMocks;
 
 import java.io.File;
 
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FileSystemServiceTest {
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @InjectMocks
     public FileSystemService fileSystemService;

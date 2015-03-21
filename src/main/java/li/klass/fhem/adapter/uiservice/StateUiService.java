@@ -33,6 +33,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
@@ -56,6 +57,14 @@ public class StateUiService {
         context.startService(new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, value)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+    }
+
+    public void setDim(DimmableDevice<?> device, int progress, Context context) {
+        context.startService(new Intent(Actions.DEVICE_DIM)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }

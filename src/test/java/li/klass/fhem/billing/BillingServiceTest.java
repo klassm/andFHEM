@@ -40,7 +40,7 @@ import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static li.klass.fhem.billing.BillingService.OnLoadInventoryFinishedListener;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,7 +55,7 @@ import static org.mockito.Mockito.verify;
 public class BillingServiceTest {
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @InjectMocks
     @Spy

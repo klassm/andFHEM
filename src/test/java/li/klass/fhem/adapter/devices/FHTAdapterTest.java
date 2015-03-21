@@ -33,7 +33,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import li.klass.fhem.service.DateService;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.DateTimeConstants.JANUARY;
@@ -51,7 +51,7 @@ public class FHTAdapterTest {
     private FHTAdapter fhtAdapter;
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Test
     public void should_calculate_holidayShort_holiday1_time() {

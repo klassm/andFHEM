@@ -37,7 +37,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static java.util.Arrays.asList;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
@@ -50,7 +50,7 @@ public class ChartDataTest {
     private static final List<GraphEntry> DUMMY_DATA = asList(new GraphEntry(new DateTime(1), 0.3f));
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     private Context context;

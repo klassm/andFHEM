@@ -44,7 +44,7 @@ import java.util.Set;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -61,7 +61,7 @@ import static org.mockito.Matchers.eq;
 public class RoomListServicePureUnitTest {
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     private ConnectionService connectionService;

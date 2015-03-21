@@ -50,7 +50,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.CloseableUtil;
 
 import static org.mockito.BDDMockito.given;
@@ -73,7 +73,7 @@ public abstract class DeviceXMLParsingBase {
     protected DeviceListParser deviceListParser;
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     protected Context context;
