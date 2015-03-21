@@ -121,6 +121,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
 
     @Override
     protected void afterPropertiesSet() {
+        super.afterPropertiesSet();
         registerFieldListener("state", new FieldNameAddedToDetailListener<D>(TOGGLEABLE_AND_NOT_DIMMABLE) {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, android.widget.TableRow fieldTableRow) {
