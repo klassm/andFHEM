@@ -125,7 +125,7 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
                 .perform(click());
 
         // then
-        onView(withText(String.format(activity.getString(R.string.connectionEmptyError), "URL1")))
+        onView(withText(String.format(activity.getString(R.string.connectionEmptyError), "URL")))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()));
     }

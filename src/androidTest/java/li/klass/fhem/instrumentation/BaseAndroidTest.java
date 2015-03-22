@@ -66,9 +66,8 @@ public class BaseAndroidTest<A extends Activity> extends ActivityInstrumentation
         try {
             super.runTest();
         } catch (Exception e) {
-            onView(isRoot()).perform(new SpoonScreenshotAction("bla", getClass().getName(), getName()));
+            onView(isRoot()).perform(new SpoonScreenshotAction("error", getClass().getName(), getName()));
             throw e;
         }
     }
-
 }
