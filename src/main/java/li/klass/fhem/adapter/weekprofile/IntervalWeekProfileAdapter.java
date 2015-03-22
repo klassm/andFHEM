@@ -212,8 +212,8 @@ public class IntervalWeekProfileAdapter
             LinearLayout layout = (LinearLayout) contentView.findViewById(R.id.tableLayout);
 
             TableRow updateRow = (TableRow) contentView.findViewById(R.id.updateRow);
-            final TemperatureChangeTableRow temperatureChangeTableRow = new
-                    TemperatureChangeTableRow(context, interval.getChangedTemperature(),
+            final TemperatureChangeTableRow temperatureChangeTableRow =
+                    new TemperatureChangeTableRow(context, interval.getChangedTemperature(),
                             updateRow, 5.5, 30.0, applicationProperties) {
                         @Override
                         protected ApplicationProperties getApplicationProperties() {
