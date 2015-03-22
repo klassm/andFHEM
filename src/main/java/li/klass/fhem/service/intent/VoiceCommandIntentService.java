@@ -29,6 +29,8 @@ import android.os.ResultReceiver;
 
 import com.google.common.base.Optional;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.activities.CommandIndicatorActivity;
@@ -91,7 +93,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     }
 
     private boolean handleCommand(String command) {
-        command = command.toLowerCase();
+        command = command.toLowerCase(Locale.getDefault());
 
         Optional<VoiceResult> result = voiceCommandService.resultFor(command, this);
 

@@ -33,6 +33,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -74,7 +75,7 @@ public class VoiceCommandService {
     RoomListService roomListService;
 
     public Optional<VoiceResult> resultFor(String voiceCommand, Context context) {
-        voiceCommand = replaceArticles(voiceCommand.toLowerCase());
+        voiceCommand = replaceArticles(voiceCommand.toLowerCase(Locale.getDefault()));
 
         String[] parts = voiceCommand.split(" ");
 

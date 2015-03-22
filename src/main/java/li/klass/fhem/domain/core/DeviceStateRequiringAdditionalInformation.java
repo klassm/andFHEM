@@ -123,7 +123,7 @@ public enum DeviceStateRequiringAdditionalInformation {
                                                             DeviceStateRequiringAdditionalInformation specialDeviceState) {
 
         for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
-            if (type.matches(value.toLowerCase())) {
+            if (type.matches(value.toLowerCase(Locale.getDefault()))) {
                 return true;
             }
         }
