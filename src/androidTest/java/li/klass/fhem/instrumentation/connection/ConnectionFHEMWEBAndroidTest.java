@@ -68,6 +68,7 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
         instrumentation.waitForIdleSync();
     }
 
+    @SuppressWarnings("unchecked")
     public void test_create_FHEMWEB_connection() throws Exception {
         instrumentation.waitForIdleSync();
 
@@ -124,7 +125,7 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
                 .perform(click());
 
         // then
-        onView(withText(String.format(activity.getString(R.string.connectionEmptyError), "URL")))
+        onView(withText(String.format(activity.getString(R.string.connectionEmptyError), "URL1")))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()));
     }

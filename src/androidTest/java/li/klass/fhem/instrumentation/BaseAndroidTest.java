@@ -28,9 +28,12 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 
+import li.klass.fhem.instrumentation.infrastructure.matchers.SpoonScreenshotAction;
 import li.klass.fhem.service.connection.ConnectionService;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 
 public class BaseAndroidTest<A extends Activity> extends ActivityInstrumentationTestCase2<A> {
     protected A activity;
@@ -57,4 +60,15 @@ public class BaseAndroidTest<A extends Activity> extends ActivityInstrumentation
     private boolean deleteAllPreferences() {
         return activity.getSharedPreferences(ConnectionService.PREFERENCES_NAME, MODE_PRIVATE).edit().clear().commit();
     }
+
+    @Override
+    protected void runTest() throws Throwable {
+        try {
+            super.runTest();
+        } catch (Exception e) {
+            onView(isRoot()).perform(new SpoonScreenshotAction("bla", getClass().getName(), getName()));
+            throw e;
+        }
+    }
+
 }
