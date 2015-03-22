@@ -80,7 +80,11 @@ def updateGoogleSitesAPK(service) {
     def mediaTypes = new MimetypesFileTypeMap()
     mediaTypes.addMimeTypes("application/vnd.android.package-archive")
 
-    def file = new File("build/outputs/apk/andFHEM-inapp-release.apk")
+    def toUpload = getBuildProperties().get("sites-upload-apk")
+    if (toUpload == null) {
+        toUpload = "andFHEM-inapp-release.apk";
+    }
+    def file = new File("build/outputs/apk/" + toUpload)
 
     def newAttachment = new AttachmentEntry();
     newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
@@ -92,4 +96,12 @@ def updateGoogleSitesAPK(service) {
 
 task uploadToGoogleSites(dependsOn: 'readSigningKeyAliasPasswordFromConsole') << {
     uploadApkToGoogleSites();
+}
+
+def getBuildProperties() {
+    def props = new Properties()
+    new File(System.getProperty("user.home") + "/andFHEM.properties").withInputStream {
+        stream -> props.load(stream)
+    }
+    return props
 }
