@@ -50,6 +50,7 @@ repositories {
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
+apply plugin: 'findbugs'
 
 android {
     compileSdkVersion 21

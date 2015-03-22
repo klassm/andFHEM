@@ -82,7 +82,8 @@
                     android:paddingStart="0dp"
                     android:text="@string/timer_targetState"
                     android:textSize="20sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    tools:ignore="NewApi" />
 
                 <TextView
                     android:id="@+id/targetState"

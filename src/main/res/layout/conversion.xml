@@ -25,7 +25,8 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
     <LinearLayout
@@ -82,7 +83,8 @@
                 android:paddingStart="0dp"
                 android:text="@string/result"
                 android:textSize="20sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="NewApi" />
 
             <TextView
                 android:id="@+id/result"
