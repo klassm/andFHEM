@@ -22,21 +22,34 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.domain;
 
-import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import org.junit.Test;
 
-public class ToggleableAdapterWithSwitchActionRow<D extends ToggleableDevice<D>> extends ToggleableAdapter<D> {
-    public ToggleableAdapterWithSwitchActionRow(Class<D> deviceClass) {
-        super(deviceClass);
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class TCM97001DeviceTest extends DeviceXMLParsingBase {
+
+    @Test
+    public void should_read_device_attributes() throws Exception {
+        TCM97001Device device = getDeviceFor("CUL_TCM97001_102", TCM97001Device.class);
+        assertThat(device).isNotNull();
+        assertThat(device.getTemperature()).isEqualTo("4.1 (°C)");
+
+        assertThat(device.getLogDevices()).isNotEmpty();
+        assertThat(device.getDeviceCharts()).hasSize(1);
+    }
+
+    @Test
+    public void should_ignore_devices_without_temperature() {
+        TCM97001Device device = getDeviceFor("CUL_TCM97001_13", TCM97001Device.class);
+        assertThat(device).isNull();
     }
 
     @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
-
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<D>());
+    protected String getFileName() {
+        return "tcm97001.xml";
     }
 }

@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
@@ -40,7 +41,7 @@ import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<PioneerAvrZoneDevice> {
+public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapter<PioneerAvrZoneDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 

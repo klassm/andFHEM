@@ -42,7 +42,7 @@ import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
-import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
@@ -53,7 +53,6 @@ import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
-import li.klass.fhem.adapter.devices.ToggleableAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
 import li.klass.fhem.adapter.devices.WOLAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
@@ -81,7 +80,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 OwSwitchDeviceAdapter.class,
                 PCA9532DeviceAdapter.class,
                 PCF8574DeviceAdapter.class,
-                PidAdapter.class,
+                PIDDeviceAdapter.class,
                 ReadingsProxyDeviceAdapter.class,
                 RemoteControlAdapter.class,
                 SonosPlayerAdapter.class,
@@ -106,7 +105,6 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
                 DimmableAdapter.class,
-                ToggleableAdapterWithSwitchActionRow.class,
                 SwitchActionRowAdapter.class
 
         })

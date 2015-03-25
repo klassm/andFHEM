@@ -44,7 +44,7 @@ import java.util.List;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.FluentIterable.from;
@@ -69,7 +69,7 @@ public class RoomListHolderServiceTest {
     };
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     private ApplicationProperties applicationProperties;

@@ -198,7 +198,7 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> implements Temper
                         .withDbLogSpec("co2")
                         .withSeriesType(CO2)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("co2", 300, 400))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("co2", 0, 0))
                         .build()
         ), co2);
 
@@ -209,7 +209,7 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> implements Temper
                                 .withDbLogSpec("weight")
                                 .withSeriesType(WEIGHT)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("weight", 0, 70))
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("weight", 0, 0))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.fatRatio, context)

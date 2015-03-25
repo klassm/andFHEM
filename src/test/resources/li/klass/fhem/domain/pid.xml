@@ -75,4 +75,27 @@
             <STATE key="integrator" value="0" measured="2012-10-31 23:26:00"/>
         </PID>
     </PID_LIST>
+    <PID20_LIST>
+        <PID20 name="eg.wohnen.pid" state="processing" sets="stop:noArg start:noArg restart desired"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings pidActorValueDecPlaces:0,1,2,3,4,5 pidActorInterval pidActorTreshold pidActorErrorAction:freeze,errorPos pidActorErrorPos pidActorKeepAlive pidActorLimitLower pidActorLimitUpper pidCalcInterval pidDeltaTreshold pidDesiredName pidFactor_P pidFactor_I pidFactor_D pidMeasuredName pidSensorTimeout pidReverseAction pidUpdateInterval pidDebugSensor:0,1 pidDebugActuation:0,1 pidDebugCalc:0,1 pidDebugDelta:0,1 pidDebugUpdate:0,1 pidDebugNotify:0,1 disable:0,1 event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle device_timeout fp_EG icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="eg.wohnen.gesense:T0:([\d\.]*) eg.wohnen.stellantrieb.01:valve" />
+            <INT key="NAME" value="eg.wohnen.pid" />
+            <INT key="NR" value="69" />
+            <INT key="NTFY_ORDER" value="50-eg.wohnen.pid" />
+            <INT key="STATE" value="processing" />
+            <INT key="TYPE" value="PID20" />
+            <ATTR key="alias" value="PID Regelung Wohnzimmer Fenster" />
+            <ATTR key="icon" value="icoTool" />
+            <ATTR key="room" value="Wohnzimmer" />
+            <STATE key="actuation" value="27" measured="2015-02-22 17:18:47" />
+            <STATE key="actuationCalc" value="26.8124999999982" measured="2015-02-22 17:20:47" />
+            <STATE key="delta" value="0.129999999999999" measured="2015-02-22 17:20:47" />
+            <STATE key="desired" value="21.5" measured="2015-02-22 17:18:47" />
+            <STATE key="measured" value="21.37" measured="2015-02-22 17:18:47" />
+            <STATE key="p_d" value="0" measured="2015-02-22 17:20:47" />
+            <STATE key="p_i" value="23.5624999999982" measured="2015-02-22 17:20:47" />
+            <STATE key="p_p" value="3.24999999999998" measured="2015-02-22 17:20:47" />
+            <STATE key="state" value="processing" measured="2015-02-22 17:20:47" />
+        </PID20>
+    </PID20_LIST>
 </FHZINFO>

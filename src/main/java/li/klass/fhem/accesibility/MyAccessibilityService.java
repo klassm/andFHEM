@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -54,7 +55,7 @@ public class MyAccessibilityService extends AccessibilityService {
         if (texts.isEmpty()) return;
 
         String command = texts.get(0).toString();
-        command = command.toLowerCase();
+        command = command.toLowerCase(Locale.getDefault());
         startService(new Intent(Actions.RECOGNIZE_VOICE_COMMAND)
                 .setClass(this, VoiceCommandIntentService.class)
                 .putExtra(BundleExtraKeys.COMMAND, command));

@@ -12,7 +12,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import li.klass.fhem.billing.BillingService;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static org.mockito.BDDMockito.given;
@@ -40,7 +40,7 @@ public class LicenseIntentServiceTest {
     LicenseIntentService licenseIntentService;
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Test
     public void should_handle_is_premium_even_if_inventory_loading_was_not_successful() throws Exception {

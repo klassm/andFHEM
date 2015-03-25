@@ -759,7 +759,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("content")
                                 .withSeriesType(LITRE_CONTENT)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("content", 0, 1000))
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("content", 0, 0))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.rawValue, context).withFileLogSpec("4:rawValue:0:")
@@ -813,7 +813,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withColumnName(R.string.currentUsage, context).withFileLogSpec("4:current:0")
                                 .withDbLogSpec("current")
                                 .withSeriesType(CURRENT_USAGE_WATT)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 200))
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 0))
                                 .build()
                 ), power);
 
@@ -822,7 +822,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withColumnName(R.string.cumulativeUsage, context).withFileLogSpec("4:energy")
                                 .withDbLogSpec("energy")
                                 .withSeriesType(CUMULATIVE_USAGE_Wh)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 100))
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 0))
                                 .build()
                 ), cumulativeUsage);
                 break;
@@ -835,7 +835,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("temperature")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 0))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0")

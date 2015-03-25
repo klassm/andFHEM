@@ -33,16 +33,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         style="@style/fragmentContent">
+
         <TextView
             android:id="@+id/nameLabel"
             android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/connectionName"
-            style="@style/formLabel"/>
+            style="@style/formLabel" />
 
         <EditText
-            android:id="@+id/name"
+            android:id="@+id/connectionName"
             android:layout_width="fill_parent"
             android:layout_toLeftOf="@+id/connectionType"
             android:layout_toStartOf="@+id/connectionType"

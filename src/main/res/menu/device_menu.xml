@@ -25,47 +25,48 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_favorites_add"
         android:icon="@drawable/ic_menu_favorites_unselected"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_addtofavorites"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_favorites_remove"
         android:icon="@drawable/ic_menu_favorites_selected"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_removefavorite"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_rename"
         android:icon="@drawable/ic_menu_rename"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_rename"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_delete"
         android:icon="@android:drawable/ic_menu_delete"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_delete"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_room"
         android:icon="@drawable/ic_menu_room"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_move"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_alias"
         android:icon="@drawable/ic_menu_alias"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_alias"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_notification"
         android:icon="@drawable/ic_menu_notification"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/context_notification"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute" />
 </menu>

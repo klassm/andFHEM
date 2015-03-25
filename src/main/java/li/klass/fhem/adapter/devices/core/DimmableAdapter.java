@@ -25,26 +25,27 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.ToggleableAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimmableDeviceDimActionRowFullWidth;
 import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
-public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapterWithSwitchActionRow<D> {
+public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapter<D> {
+
+    @Inject
+    StateUiService stateUiService;
 
     public DimmableAdapter(Class<D> deviceClass) {
         super(deviceClass);
@@ -83,7 +84,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
                 tableLayout.addView(new DimmableDeviceDimActionRowFullWidth<>(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
                         .createRow(getInflater(), device));
-                tableLayout.addView(new DimUpDownRow()
+                tableLayout.addView(new DimUpDownRow<D>(stateUiService)
                         .createRow(context, getInflater(), device));
             }
 
@@ -94,31 +95,30 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         });
     }
 
-    private class DimUpDownRow extends UpDownButtonRow<D> {
+    public static class DimUpDownRow<D extends DimmableDevice<D>> extends UpDownButtonRow<D> {
 
-        public DimUpDownRow() {
+        private final StateUiService stateUiService;
+
+        public DimUpDownRow(StateUiService stateUiService) {
             super("");
+            this.stateUiService = stateUiService;
         }
 
         @Override
         public void onUpButtonClick(Context context, D device) {
-            sendTargetDimState(context, device, device.getDimUpPosition());
-        }
-
-        private void sendTargetDimState(final Context context, D device, int target) {
-
-            Intent intent = new Intent(Actions.DEVICE_DIM);
-            intent.setClass(context, DeviceIntentService.class);
-            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-            context.startService(intent);
+            dim(context, device, device.getDimUpPosition());
         }
 
         @Override
         public void onDownButtonClick(Context context, D device) {
-            sendTargetDimState(context, device, device.getDimDownPosition());
+            dim(context, device, device.getDimDownPosition());
+        }
+
+        protected void dim(Context context, D device, int newPosition) {
+            int currentPosition = device.getDimPosition();
+            if (currentPosition != newPosition) {
+                stateUiService.setDim(device, newPosition, context);
+            }
         }
     }
 

@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.PIDDevice;
@@ -41,16 +41,17 @@ import li.klass.fhem.util.ApplicationProperties;
 import static li.klass.fhem.domain.PIDDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.PIDDevice.MINIMUM_TEMPERATURE;
 
-public class PidAdapter extends GenericDeviceAdapter<PIDDevice> {
+public class PIDDeviceAdapter extends GenericDeviceAdapterWithSwitchActionRow<PIDDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public PidAdapter(Class<PIDDevice> deviceClass) {
+    public PIDDeviceAdapter(Class<PIDDevice> deviceClass) {
         super(deviceClass);
     }
 
     @Override
     protected void afterPropertiesSet() {
+        super.afterPropertiesSet();
         registerFieldListener("desiredTemperature", new FieldNameAddedToDetailListener<PIDDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PIDDevice device, TableRow fieldTableRow) {

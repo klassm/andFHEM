@@ -49,7 +49,7 @@ import java.util.Set;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
@@ -65,7 +65,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class AppWidgetDataHolderTest {
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
     @Mock
     private SharedPreferences sharedPreferences;
     @Mock

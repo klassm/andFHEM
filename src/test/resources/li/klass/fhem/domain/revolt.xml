@@ -22,11 +22,51 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
+<!--
+FileLog extract:
+2015-03-04_15:44:01 Revolt_a178 .lastenergy: 238.66
+2015-03-04_15:44:01 Revolt_a178 P:   4.6 E: 238.66 V: 235 C:   0.03 F: 50 Pf: 0.63
+2015-03-04_15:44:01 Revolt_a178 voltage: 235
+2015-03-04_15:44:01 Revolt_a178 current: 0.03
+2015-03-04_15:44:01 Revolt_a178 frequency: 50
+2015-03-04_15:44:01 Revolt_a178 power: 4.6
+2015-03-04_15:44:01 Revolt_a178 pf: 0.63
+2015-03-04_15:44:01 Revolt_a178 energy: 238.66
+2015-03-04_16:00:58 Revolt_a178 P:   0.0 E: 238.66 V: 236 C: 327.68 F: 50 Pf: 0.00
+2015-03-04_16:00:58 Revolt_a178 voltage: 236
+2015-03-04_16:00:58 Revolt_a178 current: 327.68
+2015-03-04_16:00:58 Revolt_a178 frequency: 50
+2015-03-04_16:00:58 Revolt_a178 power: 0
+2015-03-04_16:00:58 Revolt_a178 pf: 0
+2015-03-04_16:00:58 Revolt_a178 energy: 238.66
+2015-03-04_16:05:31 Revolt_a178 .lastenergy: 566.34
+2015-03-04_16:05:31 Revolt_a178 avgpower: 914145.56
+2015-03-04_16:05:31 Revolt_a178 P:  12.8 E: 566.34 V: 236 C:   0.00 F: 50 Pf: 1.28
+2015-03-04_16:05:31 Revolt_a178 voltage: 236
+2015-03-04_16:05:31 Revolt_a178 current: 0
+2015-03-04_16:05:31 Revolt_a178 frequency: 50
+2015-03-04_16:05:31 Revolt_a178 power: 12.8
+2015-03-04_16:05:31 Revolt_a178 pf: 1.28
+2015-03-04_16:05:31 Revolt_a178 energy: 566.34
+2015-03-04_16:31:34 Revolt_a178 .lastenergy: 238.66
+2015-03-04_16:31:34 Revolt_a178 avgpower: -754434.67
+2015-03-04_16:31:34 Revolt_a178 P:   0.0 E: 238.66 V: 232 C:   1.28 F: 50 Pf: 0.00
+2015-03-04_16:31:34 Revolt_a178 voltage: 232
+2015-03-04_16:31:34 Revolt_a178 current: 1.28
+2015-03-04_16:31:34 Revolt_a178 frequency: 50
+2015-03-04_16:31:34 Revolt_a178 power: 0
+2015-03-04_16:31:34 Revolt_a178 pf: 0
+2015-03-04_16:31:34 Revolt_a178 energy: 238.66
+2015-03-04_16:48:00 Revolt_a178 P:  12.8 E: 238.66 V: 232 C:   0.00 F: 50 Pf: 0.00
+2015-03-04_16:48:00 Revolt_a178 voltage: 232
+2015-03-04_16:48:00 Revolt_a178 current: 0
+2015-03-04_16:48:00 Revolt_a178 frequency: 50
+-->
 <FHZINFO>
     <Revolt_LIST>
         <Revolt name="Revolt_Kueche" state="P: 113.3 E:   1.25 V: 232 C:   0.50 F: 50 Pf: 0.98"
-                sets=""
-                attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride custom_graph userattr">
+            sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride custom_graph userattr">
             <INT key="CULduino_MSGCNT" value="2"/>
             <INT key="CULduino_RAWMSG" value="r0bcee8003232046d62007d"/>
             <INT key="CULduino_RSSI" value="-75"/>
@@ -50,7 +90,7 @@
             <STATE key="pf" value="0.98" measured="2014-11-13 14:09:32"/>
             <STATE key="power" value="113.3" measured="2014-11-13 14:09:32"/>
             <STATE key="state" value="P: 113.3 E:   1.25 V: 232 C:   0.50 F: 50 Pf: 0.98"
-                   measured="2014-11-13 14:09:32"/>
+                measured="2014-11-13 14:09:32" />
             <STATE key="voltage" value="232" measured="2014-11-13 14:09:32"/>
         </Revolt>
     </Revolt_LIST>

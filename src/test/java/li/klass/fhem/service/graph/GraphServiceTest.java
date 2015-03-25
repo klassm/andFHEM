@@ -30,14 +30,14 @@ import org.mockito.InjectMocks;
 
 import java.util.List;
 
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GraphServiceTest {
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @InjectMocks
     private GraphService graphService = new GraphService();

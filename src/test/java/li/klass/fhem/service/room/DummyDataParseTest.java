@@ -39,14 +39,14 @@ import java.io.InputStreamReader;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.CloseableUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DummyDataParseTest {
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
     @InjectMocks
     protected DeviceListParser deviceListParser = new DeviceListParser();
     @Mock

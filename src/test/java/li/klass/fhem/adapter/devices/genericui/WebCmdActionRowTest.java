@@ -32,13 +32,13 @@ import org.mockito.Mock;
 import java.util.List;
 
 import li.klass.fhem.domain.DummyDevice;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WebCmdActionRowTest {
 
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     private Context context;

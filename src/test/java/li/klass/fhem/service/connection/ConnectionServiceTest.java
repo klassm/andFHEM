@@ -40,7 +40,7 @@ import org.mockito.Mock;
 
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
@@ -58,7 +58,7 @@ import static org.mockito.Mockito.mock;
 public class ConnectionServiceTest {
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @InjectMocks
     private ConnectionService connectionService;

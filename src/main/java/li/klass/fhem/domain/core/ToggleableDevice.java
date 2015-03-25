@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import java.util.Locale;
+
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.OFF_DEVICE;
@@ -52,7 +54,7 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
     public boolean isOffByState() {
         String internalState = getToggleStateValue();
         return internalState == null
-                || internalState.toLowerCase().contains(getOffStateName().toLowerCase())
+                || internalState.toLowerCase().contains(getOffStateName().toLowerCase(Locale.getDefault()))
                 || internalState.equalsIgnoreCase(eventMapReverse.get(getOffStateName()))
                 || internalState.equals("???");
     }

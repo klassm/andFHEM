@@ -97,7 +97,7 @@ public class EMWZDevice extends FhemDevice<EMWZDevice> {
                                 .withDbLogSpec("energy::int3")
                                 .withSeriesType(POWER)
                                 .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 100))
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 0))
                                 .build()
                 )
         );

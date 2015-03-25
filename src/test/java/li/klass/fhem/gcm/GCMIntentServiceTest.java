@@ -30,7 +30,7 @@ import org.mockito.InjectMocks;
 
 import java.util.Map;
 
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
@@ -41,7 +41,7 @@ public class GCMIntentServiceTest {
     GCMIntentService service;
 
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Test
     public void should_read_device_state_updates_with_multiple_colons() {

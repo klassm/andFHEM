@@ -24,6 +24,8 @@
 
 package li.klass.fhem.activities.core;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -484,6 +486,8 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         setShowRefreshProgressIcon(false);
     }
 
+    @SuppressWarnings("NewApi")
+    @TargetApi(11)
     private void setShowRefreshProgressIcon(boolean show) {
         if (optionsMenu == null) return;
         showProgressIcon = show;
@@ -607,6 +611,8 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             return;
         }
 
+        // We commit later on. Static code analysis won't notice the call...
+        @SuppressLint("CommitTransaction")
         FragmentTransaction transaction = fragmentManager
                 .beginTransaction()
                 .addToBackStack(contentFragment.getClass().getName())
@@ -637,6 +643,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);

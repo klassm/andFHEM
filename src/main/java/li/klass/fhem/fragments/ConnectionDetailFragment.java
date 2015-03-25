@@ -216,7 +216,7 @@ public class ConnectionDetailFragment extends BaseFragment {
 
         intent.putExtra(BundleExtraKeys.CONNECTION_TYPE, connectionType.name());
 
-        String name = getTextViewContent(R.id.name);
+        String name = getTextViewContent(R.id.connectionName);
         if (enforceNotEmpty(R.string.connectionName, name)) return;
         intent.putExtra(BundleExtraKeys.CONNECTION_NAME, name);
 
@@ -411,7 +411,7 @@ public class ConnectionDetailFragment extends BaseFragment {
     }
 
     private void fillDetail(FHEMServerSpec connection) {
-        setTextViewContent(R.id.name, connection.getName());
+        setTextViewContent(R.id.connectionName, connection.getName());
 
         switch (connectionType) {
             case FHEMWEB:

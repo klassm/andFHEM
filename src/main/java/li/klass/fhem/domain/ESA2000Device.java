@@ -112,14 +112,14 @@ public class ESA2000Device extends FhemDevice<ESA2000Device> {
                         .withDbLogSpec("actual::int4")
                         .withSeriesType(CURRENT_USAGE_KILOWATT)
                         .withShowDiscreteValues(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actual", 0, 10))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actual", 0, 0))
                         .build(),
                 new ChartSeriesDescription.Builder().withColumnName(R.string.dayUsage, context)
                         .withFileLogSpec("4:day\\x3a\\s[0-9]:0:")
                         .withDbLogSpec("day::int2")
                         .withSeriesType(DAY_USAGE)
                         .withShowDiscreteValues(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("day", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("day", 0, 0))
                         .build()
         ), current);
     }

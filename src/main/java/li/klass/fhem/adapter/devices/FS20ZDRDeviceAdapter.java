@@ -34,10 +34,11 @@ import android.widget.Toast;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.domain.FS20ZDRDevice;
 
-public class FS20ZDRDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<FS20ZDRDevice> {
+public class FS20ZDRDeviceAdapter extends ToggleableAdapter<FS20ZDRDevice> {
     public FS20ZDRDeviceAdapter() {
         super(FS20ZDRDevice.class);
     }

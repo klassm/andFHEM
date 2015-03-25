@@ -51,7 +51,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="0dp"
             android:paddingStart="10dp"
-            android:text="@string/dummy_temperature"/>
+            android:text="@string/dummy_temperature"
+            tools:ignore="NewApi" />
 
         <Button
             android:id="@+id/delete"

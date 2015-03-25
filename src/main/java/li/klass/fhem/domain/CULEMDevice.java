@@ -121,7 +121,7 @@ public class CULEMDevice extends FhemDevice<CULEMDevice> {
                         .withSumDivisionFactor(getSumGraphDivisionFactor())
                         .withShowSum(true)
                         .withSeriesType(CURRENT_USAGE_KILOWATT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 10))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 0))
                         .build()
         ), currentUsage);
     }

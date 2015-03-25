@@ -102,7 +102,7 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
                         .withColumnName(R.string.power, context).withFileLogSpec("4:power")
                         .withDbLogSpec("power::int2")
                         .withSeriesType(POWER)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("power", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("power", 0, 0))
                         .build()
         ), energy);
     }

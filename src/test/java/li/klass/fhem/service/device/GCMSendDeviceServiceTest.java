@@ -32,7 +32,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import li.klass.fhem.domain.GCMSendDevice;
-import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.constants.BundleExtraKeys.GCM_REGISTRATION_ID;
@@ -43,7 +43,7 @@ import static org.mockito.Matchers.eq;
 
 public class GCMSendDeviceServiceTest {
     @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    public MockitoRule mockitoRule = new MockitoRule();
 
     @Mock
     private ApplicationProperties applicationProperties;
