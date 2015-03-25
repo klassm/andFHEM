@@ -86,7 +86,7 @@ public class ConnectionService {
     }
 
     public void create(final String name, final ServerType serverType, final String username,
-                       final String password, final String ip, final int port, final String url, final String remoteUrl,
+                       final String password, final String ip, final int port, final String url, final String alternateUrl,
                        final String clientCertificatePath, final String clientCertificatePassword, final Context context) {
         if (exists(name, context)) return;
 
@@ -97,7 +97,7 @@ public class ConnectionService {
 
                     FHEMServerSpec server = new FHEMServerSpec(newUniqueId(context));
 
-                    fillServerWith(name, server, serverType, username, password, ip, port, url, remoteUrl,
+                    fillServerWith(name, server, serverType, username, password, ip, port, url, alternateUrl,
                             clientCertificatePath, clientCertificatePassword);
 
                     saveToPreferences(server, context);
@@ -129,7 +129,7 @@ public class ConnectionService {
     }
 
     private void fillServerWith(String name, FHEMServerSpec server, ServerType serverType, String username,
-                                String password, String ip, int port, String url, String remoteUrl,
+                                String password, String ip, int port, String url, String alternateUrl,
                                 String clientCertificatePath, String clientCertificatePassword) {
         server.setName(name);
         server.setServerType(serverType);
@@ -138,7 +138,7 @@ public class ConnectionService {
         server.setPassword(password);
         server.setIp(ip);
         server.setUrl(url);
-        server.setRemoteUrl(remoteUrl);
+        server.setAlternateUrl(alternateUrl);
         server.setClientCertificatePath(clientCertificatePath);
         server.setClientCertificatePassword(clientCertificatePassword);
     }
@@ -159,12 +159,12 @@ public class ConnectionService {
     }
 
     public boolean update(String id, String name, ServerType serverType, String username, String password,
-                          String ip, int port, String url, String remoteUrl, String clientCertificatePath, String clientCertificatePassword, Context context) {
+                          String ip, int port, String url, String alternateUrl, String clientCertificatePath, String clientCertificatePassword, Context context) {
 
         FHEMServerSpec server = forId(id, context);
         if (server == null) return false;
 
-        fillServerWith(name, server, serverType, username, password, ip, port, url, remoteUrl,
+        fillServerWith(name, server, serverType, username, password, ip, port, url, alternateUrl,
                 clientCertificatePath, clientCertificatePassword);
 
         saveToPreferences(server, context);

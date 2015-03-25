@@ -38,7 +38,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     private int port;
     private boolean altUrl = false;
     private String url;
-    private String remoteUrl;
+    private String alternateUrl;
     private String username;
     private String clientCertificatePath;
     private String clientCertificatePassword;
@@ -82,7 +82,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     public String getCurrentUrl() {
         if(altUrl){
-            return remoteUrl;
+            return alternateUrl;
         }
         else {
             return url;
@@ -97,12 +97,12 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         this.url = url;
     }
 
-    public String getRemoteUrl() {
-        return remoteUrl;
+    public String getAlternateUrl() {
+        return alternateUrl;
     }
 
-    public void setRemoteUrl(String url) {
-        this.remoteUrl = url;
+    public void setAlternateUrl(String url) {
+        this.alternateUrl = url;
     }
 
     public String getUsername() {
@@ -176,7 +176,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         result = 31 * result + (ip != null ? ip.hashCode() : 0);
         result = 31 * result + port;
         result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (remoteUrl != null ? remoteUrl.hashCode() : 0);
+        result = 31 * result + (alternateUrl != null ? alternateUrl.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (clientCertificatePath != null ? clientCertificatePath.hashCode() : 0);
         result = 31 * result + (clientCertificatePassword != null ? clientCertificatePassword.hashCode() : 0);
@@ -193,7 +193,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", url='" + url + '\'' +
-                ", remoteUrl='" + remoteUrl + '\'' +
+                ", alternateUrl='" + alternateUrl + '\'' +
                 ", username='" + username + '\'' +
                 ", clientCertificatePath='" + clientCertificatePath + '\'' +
                 ", clientCertificatePassword='" + clientCertificatePassword + '\'' +
