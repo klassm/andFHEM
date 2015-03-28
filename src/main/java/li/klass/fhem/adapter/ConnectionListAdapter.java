@@ -51,10 +51,10 @@ public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
 
         assert convertView != null;
 
-        TextView nameView = (TextView) convertView.findViewById(R.id.connectionName);
+        TextView nameView = (TextView) convertView.findViewById(R.id.connectionListName);
         nameView.setText(server.getName());
 
-        TextView typeView = (TextView) convertView.findViewById(R.id.connectionType);
+        TextView typeView = (TextView) convertView.findViewById(R.id.connectionListType);
         if (server.getServerType() != null) {
             typeView.setText(server.getServerType().name());
         }

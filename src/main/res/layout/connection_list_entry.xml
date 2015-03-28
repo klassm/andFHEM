@@ -31,7 +31,7 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/connectionName"
+        android:id="@+id/connectionListName"
         android:contentDescription="@string/connectionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/connectionType"
+        android:id="@+id/connectionListType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="-4dp"
