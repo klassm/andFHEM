@@ -35,6 +35,7 @@ public class ValueDescriptionUtil {
     public static final String KWH = "kWh";
     public static final String LUX = "lux";
     public static final String PPM = "ppm";
+    public static final String EURO = "€";
     public static final String DB = "dB";
 
     public static String appendPercent(Object text) {
@@ -63,6 +64,10 @@ public class ValueDescriptionUtil {
 
     public static String appendPpm(Object text) {
         return append(text, PPM);
+    }
+
+    public static String appendEuro(Object text) {
+        return append(text, EURO);
     }
 
     public static String appendDb(Object text) {

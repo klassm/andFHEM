@@ -1,0 +1,109 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <HourCounter_LIST>
+        <HourCounter name="Gaszaehler"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 interval:1,2,3,4,5,10,15,20,30,60 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_henno icon sortby webCmd widgetOverride userattr"
+            sets="countsOverall countsPerDay pauseTimeIncrement pauseTimePerDay pauseTimeOverall pulseTimeIncrement pulseTimePerDay pulseTimeOverall clear:noArg forceHourChange:noArg forceDayChange:noArg forceWeekChange:noArg forceMonthChange:noArg forceYearChange:noArg calc:noArg "
+            state="184">
+            <INT key="CFGFN" value="/ram/fhem/FHEM/Gaszaehler.cfg" />
+            <INT key="DEF" value="Gascounter:count:.*" />
+            <INT key="NAME" value="Gaszaehler" />
+            <INT key="NR" value="91" />
+            <INT key="NTFY_ORDER" value="50-Gaszaehler" />
+            <INT key="STATE" value="184" />
+            <INT key="TYPE" value="HourCounter" />
+            <INT key="VERSION" value="1.0.1.2 - 24.12.2014" />
+            <ATTR key="room" value="Keller" />
+            <ATTR key="userReadings"
+                value="verbrauchTagkWh {sprintf(&quot;%.1f&quot;, ReadingsVal(&quot;Gaszaehler&quot;,&quot;countsPerDay&quot;,0)*0.01*10.0470) . &quot; kWh&quot;;; }, verbrauchTagEuro {sprintf(&quot;%.2f&quot;, ReadingsVal(&quot;Gaszaehler&quot;,&quot;countsPerDay&quot;,0)*0.01*10.0470*0.058) . &quot;&quot;;; }, verbrauchGesamtEuro {sprintf(&quot;%.2f&quot;, ReadingsVal(&quot;Gaszaehler&quot;,&quot;countsOverall&quot;,0)*0.01*10.0470*0.058) . &quot; €&quot;;; }, verbrauchTag {sprintf(&quot;%.3f&quot;, ReadingsVal(&quot;Gaszaehler&quot;,&quot;countsPerDay&quot;,0)*0.01) . &quot;&quot;;; }, Zaehlerstand {sprintf(&quot;%.2f&quot;, ReadingsVal(&quot;Gaszaehler&quot;,&quot;countsOverall&quot;,0)*0.01) . &quot; m³&quot;;; }" />
+            <ATTR key="verbose" value="1" />
+            <STATE key="Zaehlerstand" measured="2015-02-23 21:00:00" value="626.54 m³" />
+            <STATE key="clearDate" measured="2015-01-13 20:02:05" value="2015-01-13 20:02:05" />
+            <STATE key="countsOverall" measured="2015-02-23 21:00:00" value="62654" />
+            <STATE key="countsPerDay" measured="2015-02-23 21:00:00" value="184" />
+            <STATE key="pauseTimeIncrement" measured="2015-01-06 17:11:49" value="0" />
+            <STATE key="pauseTimeOverall" measured="2015-01-06 17:11:49" value="0" />
+            <STATE key="pauseTimePerDay" measured="2015-02-23 00:00:00" value="0" />
+            <STATE key="pulseTimeIncrement" measured="2015-01-06 17:11:49" value="0" />
+            <STATE key="pulseTimeOverall" measured="2015-01-06 17:11:49" value="0" />
+            <STATE key="pulseTimePerDay" measured="2015-02-23 00:00:00" value="0" />
+            <STATE key="state" measured="2015-02-23 21:00:00" value="184" />
+            <STATE key="tickChanged" measured="2015-02-23 20:39:43" value="658" />
+            <STATE key="tickDay" measured="2015-02-23 00:00:00" value="1" />
+            <STATE key="tickHour" measured="2015-02-23 21:00:00" value="37" />
+            <STATE key="tickMonth" measured="2015-02-22 08:33:59" value="0" />
+            <STATE key="tickUpdated" measured="2015-02-23 21:00:00" value="730" />
+            <STATE key="tickWeek" measured="2015-02-22 08:33:59" value="0" />
+            <STATE key="tickYear" measured="2015-02-22 08:33:59" value="0" />
+            <STATE key="value" measured="2015-02-23 21:00:00" value="1" />
+            <STATE key="verbrauchGesamtEuro" measured="2015-02-23 21:00:00" value="365.10 €" />
+            <STATE key="verbrauchTag" measured="2015-02-23 21:00:00" value="1.840" />
+            <STATE key="verbrauchTagEuro" measured="2015-02-23 21:00:00" value="1.07" />
+            <STATE key="verbrauchTagkWh" measured="2015-02-23 21:00:00" value="18.5 kWh" />
+        </HourCounter>
+        <HourCounter name="Stromzaehler"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 interval:1,2,3,4,5,10,15,20,30,60 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_henno icon sortby webCmd widgetOverride userattr"
+            sets="countsOverall countsPerDay pauseTimeIncrement pauseTimePerDay pauseTimeOverall pulseTimeIncrement pulseTimePerDay pulseTimeOverall clear:noArg forceHourChange:noArg forceDayChange:noArg forceWeekChange:noArg forceMonthChange:noArg forceYearChange:noArg calc:noArg "
+            state="4443">
+            <INT key="CFGFN" value="/ram/fhem/FHEM/Stromzaehler.cfg" />
+            <INT key="DEF" value="Stromcounter:reading:.off" />
+            <INT key="NAME" value="Stromzaehler" />
+            <INT key="NR" value="62" />
+            <INT key="NTFY_ORDER" value="50-Stromzaehler" />
+            <INT key="STATE" value="4443" />
+            <INT key="TYPE" value="HourCounter" />
+            <INT key="VERSION" value="1.0.1.2 - 24.12.2014" />
+            <ATTR key="fp_henno" value="400,10,1," />
+            <ATTR key="room" value="Keller" />
+            <ATTR key="userReadings"
+                value="verbrauchTagkWh {sprintf(&quot;%.0f&quot;, ReadingsVal(&quot;Stromzaehler&quot;,&quot;countsPerDay&quot;,0)*0.00125) . &quot;&quot;;; }, verbrauchTagEuro {sprintf(&quot;%.2f&quot;, ReadingsVal(&quot;Stromzaehler&quot;,&quot;countsPerDay&quot;,0)*0.00125*0.258) . &quot;&quot;;; }, verbrauchGesamtEuro {sprintf(&quot;%.2f&quot;, ReadingsVal(&quot;Stromzaehler&quot;,&quot;countsOverall&quot;,0)*0.00125*0.258) . &quot; €&quot;;; }, verbrauchTag {sprintf(&quot;%f&quot;, ReadingsVal(&quot;Stromzaehler&quot;,&quot;countsPerDay&quot;,0)*0.00125) . &quot;&quot;;; }, Zaehlerstand {sprintf(&quot;%.2f&quot;, ReadingsVal(&quot;Stromzaehler&quot;,&quot;countsOverall&quot;,0)*0.00125) . &quot; kW&quot;;; }" />
+            <ATTR key="verbose" value="1" />
+            <STATE key="Zaehlerstand" measured="2015-02-23 21:35:22" value="2304.53 kW" />
+            <STATE key="clearDate" measured="2015-01-06 17:11:47" value="2015-01-06 17:11:47" />
+            <STATE key="countsOverall" measured="2015-02-23 21:35:22" value="1843623" />
+            <STATE key="countsPerDay" measured="2015-02-23 21:35:22" value="4443" />
+            <STATE key="pauseTimeIncrement" measured="2015-01-06 17:11:47" value="0" />
+            <STATE key="pauseTimeOverall" measured="2015-01-06 17:11:47" value="0" />
+            <STATE key="pauseTimePerDay" measured="2015-02-23 00:00:00" value="0" />
+            <STATE key="pulseTimeIncrement" measured="2015-01-06 17:11:47" value="0" />
+            <STATE key="pulseTimeOverall" measured="2015-01-06 17:11:47" value="0" />
+            <STATE key="pulseTimePerDay" measured="2015-02-23 00:00:00" value="0" />
+            <STATE key="state" measured="2015-02-23 21:35:22" value="4443" />
+            <STATE key="tickChanged" measured="2015-02-23 21:35:22" value="348" />
+            <STATE key="tickDay" measured="2015-02-23 00:00:00" value="1" />
+            <STATE key="tickHour" measured="2015-02-23 21:00:00" value="37" />
+            <STATE key="tickMonth" measured="2015-02-22 08:33:58" value="0" />
+            <STATE key="tickUpdated" measured="2015-02-23 21:35:22" value="336" />
+            <STATE key="tickWeek" measured="2015-02-22 08:33:58" value="0" />
+            <STATE key="tickYear" measured="2015-02-22 08:33:58" value="0" />
+            <STATE key="value" measured="2015-02-23 21:35:22" value="1" />
+            <STATE key="verbrauchGesamtEuro" measured="2015-02-23 21:35:22" value="594.57 €" />
+            <STATE key="verbrauchTag" measured="2015-02-23 21:35:22" value="5.553750" />
+            <STATE key="verbrauchTagEuro" measured="2015-02-23 21:35:22" value="1.43" />
+            <STATE key="verbrauchTagkWh" measured="2015-02-23 21:35:22" value="6" />
+        </HourCounter>
+    </HourCounter_LIST>
+</FHZINFO>

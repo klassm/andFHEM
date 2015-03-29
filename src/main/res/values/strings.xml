@@ -161,6 +161,7 @@
     <string name="deleteConfirmIntervalText">Do you really want to delete the interval?</string>
     <string name="newInterval">New interval</string>
     <string name="price">Price</string>
+    <string name="pricePerDay">Price/day</string>
     <string name="energy">Energy</string>
     <string name="cumulativeUsage">Cumulative</string>
     <string name="voltage">Voltage</string>

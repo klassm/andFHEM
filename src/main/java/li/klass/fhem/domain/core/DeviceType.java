@@ -172,7 +172,8 @@ public enum DeviceType {
     MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapter<>(MySensorsDevice.class)),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
     TCM97001("CUL_TCM97001", TCM97001Device.class),
-    HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter());
+    HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
+    HOURCOUNTER("HourCounter", HourCounterDevice.class);
 
     private String xmllistTag;
     private Class<? extends FhemDevice> deviceClass;
