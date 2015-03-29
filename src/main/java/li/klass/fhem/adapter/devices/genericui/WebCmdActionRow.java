@@ -62,10 +62,9 @@ public class WebCmdActionRow<D extends FhemDevice<D>> extends HolderActionRow<D,
         button.setBackgroundDrawable(
                 context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
 
-        button.setText(command);
-        button.setTextOn(command);
-        button.setTextOff(command);
-
+        button.setText(device.getEventMapStateFor(command));
+        button.setTextOn(device.getEventMapStateFor(command));
+        button.setTextOff(device.getEventMapStateFor(command));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
