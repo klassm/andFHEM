@@ -29,6 +29,7 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 
+
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.1'
 
@@ -132,6 +133,10 @@ android {
         disable 'IconLocation'
         disable 'IconDensities'
     }
+}
+
+connectedAndroidTest {
+    ignoreFailures = true
 }
 
 unMock {
