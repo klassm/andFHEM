@@ -135,8 +135,10 @@ android {
     }
 }
 
-connectedAndroidTest {
-    ignoreFailures = true
+project.gradle.taskGraph.whenReady {
+    connectedAndroidTest {
+        ignoreFailures = true
+    }
 }
 
 unMock {
