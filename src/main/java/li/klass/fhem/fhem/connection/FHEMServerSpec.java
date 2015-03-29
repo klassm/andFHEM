@@ -36,7 +36,9 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     private String password;
     private String ip;
     private int port;
+    private boolean altUrl = false;
     private String url;
+    private String alternateUrl;
     private String username;
     private String clientCertificatePath;
     private String clientCertificatePassword;
@@ -78,12 +80,29 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         this.port = port;
     }
 
+    public String getCurrentUrl() {
+        if(altUrl){
+            return alternateUrl;
+        }
+        else {
+            return url;
+        }
+    }
+
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getAlternateUrl() {
+        return alternateUrl;
+    }
+
+    public void setAlternateUrl(String url) {
+        this.alternateUrl = url;
     }
 
     public String getUsername() {
@@ -157,6 +176,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         result = 31 * result + (ip != null ? ip.hashCode() : 0);
         result = 31 * result + port;
         result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (alternateUrl != null ? alternateUrl.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (clientCertificatePath != null ? clientCertificatePath.hashCode() : 0);
         result = 31 * result + (clientCertificatePassword != null ? clientCertificatePassword.hashCode() : 0);
@@ -173,10 +193,15 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", url='" + url + '\'' +
+                ", alternateUrl='" + alternateUrl + '\'' +
                 ", username='" + username + '\'' +
                 ", clientCertificatePath='" + clientCertificatePath + '\'' +
                 ", clientCertificatePassword='" + clientCertificatePassword + '\'' +
                 ", serverType=" + serverType +
                 '}';
+    }
+
+    public void toggleUrl() {
+        altUrl = !altUrl;
     }
 }

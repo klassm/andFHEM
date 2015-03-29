@@ -66,6 +66,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PATH;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
@@ -321,6 +322,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (enforceUrlStartsWithHttp(url)) return false;
 
         intent.putExtra(CONNECTION_URL, url);
+        intent.putExtra(CONNECTION_ALTERNATE_URL, getTextViewContent(R.id.alternate_url));
 
         String username = getTextViewContent(R.id.username);
         intent.putExtra(CONNECTION_USERNAME, username);
@@ -438,6 +440,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (view == null) return;
 
         setTextViewContent(view, R.id.url, connection.getUrl());
+        setTextViewContent(view, R.id.remote_url, connection.getAlternateUrl());
         setTextViewContent(view, R.id.username, connection.getUsername() + "");
         setTextViewContent(view, R.id.password, connection.getPassword());
         setTextViewContent(view, R.id.clientCertificatePath, connection.getClientCertificatePath());

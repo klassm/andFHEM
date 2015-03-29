@@ -112,6 +112,7 @@ public class BundleExtraKeys {
     public static final String CONNECTION_NAME = "CONNECTION_NAME";
     public static final String CONNECTION_TYPE = "CONNECTION_TYPE";
     public static final String CONNECTION_URL = "CONNECTION_URL";
+    public static final String CONNECTION_ALTERNATE_URL = "CONNECTION_ALTERNATE_URL";
     public static final String CONNECTION_USERNAME = "CONNECTION_USERNAME";
     public static final String CONNECTION_PASSWORD = "CONNECTION_PASSWORD";
     public static final String CONNECTION_PORT = "CONNECTION_PORT";

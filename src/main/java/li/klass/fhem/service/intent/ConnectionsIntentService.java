@@ -51,6 +51,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_PORT;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_TYPE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_URL;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
@@ -81,6 +82,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             String name = intent.getStringExtra(CONNECTION_NAME);
             ServerType serverType = ServerType.valueOf(intent.getStringExtra(CONNECTION_TYPE));
             String url = intent.getStringExtra(CONNECTION_URL);
+            String alternateUrl = intent.getStringExtra(CONNECTION_ALTERNATE_URL);
             String username = intent.getStringExtra(CONNECTION_USERNAME);
             String password = intent.getStringExtra(CONNECTION_PASSWORD);
             String ip = intent.getStringExtra(CONNECTION_IP);
@@ -93,10 +95,10 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             if (Actions.CONNECTION_CREATE.equals(action)) {
                 connectionService.create(name, serverType, username,
-                        password, ip, port, url, clientCertificatePath, clientCertificatePassword, this);
+                        password, ip, port, url, alternateUrl, clientCertificatePath, clientCertificatePassword, this);
             } else {
                 connectionService.update(id, name, serverType, username, password, ip,
-                        port, url, clientCertificatePath, clientCertificatePassword, this);
+                        port, url, alternateUrl, clientCertificatePath, clientCertificatePassword, this);
             }
 
             sendChangedBroadcast();
