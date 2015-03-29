@@ -62,6 +62,7 @@ import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 
 @Module(complete = false,
@@ -105,6 +106,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
                 DimmableAdapter.class,
+                GenericDeviceAdapterWithSwitchActionRow.class
         })
 public class AdapterModule {
 }
