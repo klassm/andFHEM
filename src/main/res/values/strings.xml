@@ -256,8 +256,10 @@
     <string name="connectionPassword">Password</string>
     <string name="connectionPasswordDesc">(optional)</string>
     <string name="connectionShowPassword">Show</string>
-    <string name="connectionURL">URL</string>
+    <string name="connectionURL">Primary URL</string>
     <string name="connectionURLDesc">i.e. http://192.168.0.1:8083/fhem</string>
+    <string name="connectionAlternateURL">Secondary URL</string>
+    <string name="connectionAlternateURLDesc">i.e. http://example.dyndns.com:8083/fhem</string>
     <string name="connectionIP">IP</string>
     <string name="connectionIPDesc">i.e. 192.168.0.1</string>
     <string name="connectionPort">Port</string>
