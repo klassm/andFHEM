@@ -259,8 +259,8 @@
     <string name="connectionShowPassword">Show</string>
     <string name="connectionURL">URL</string>
     <string name="connectionURLDesc">i.e. http://192.168.0.1:8083/fhem</string>
-    <string name="connectionAlternateURL">Secondary URL</string>
-    <string name="connectionAlternateURLPlaceholder">i.e. http://example.dyndns.com:8083/fhem</string>
+    <string name="connectionAlternateUrl">Secondary URL</string>
+    <string name="connectionAlternateUrlPlaceholder">i.e. http://example.dyndns.com:8083/fhem</string>
     <string name="connectionAlternateUrlDesc">If the app cannot establish a connection to the primary URL it will attempt to connect to the secondary URL. This is required for routers not capable of routing external requests back into its own network.</string>
     <string name="connectionIP">IP</string>
     <string name="connectionIPDesc">i.e. 192.168.0.1</string>
