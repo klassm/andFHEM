@@ -44,6 +44,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
+import static li.klass.fhem.fhem.connection.ServerType.FHEMWEB;
 import static li.klass.fhem.fragments.FragmentType.CONNECTION_LIST;
 import static li.klass.fhem.instrumentation.infrastructure.matchers.AdapterViewMatchers.isListView;
 import static li.klass.fhem.instrumentation.infrastructure.matchers.AdapterViewMatchers.withEmptyListView;
@@ -70,41 +71,50 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
 
     @SuppressWarnings("unchecked")
     public void test_create_FHEMWEB_connection() throws Exception {
+        // given
+        String primaryUrl = "http://www.google.de";
+        String secondaryUrl = "http://www.some-secondary-url.de";
+
         instrumentation.waitForIdleSync();
 
         onView(allOf(withId(R.id.create), withId(R.id.connectionList), withId(R.id.emptyText)));
-
         onView(withId(R.id.connectionList)).check(matches(withEmptyListView()));
 
         onView(withId(R.id.create))
                 .perform(click());
 
+        // when
         instrumentation.waitForIdleSync();
 
         onView(withId(R.id.connectionName)).perform(typeText("myName"));
 
-        selectServerType(ServerType.FHEMWEB);
+        selectServerType(FHEMWEB);
 
         onView(withId(R.id.url))
                 .perform(scrollTo())
-                .perform(typeText("http://www.google.de"));
+                .perform(typeText(primaryUrl));
+        onView(withId(R.id.alternate_url))
+                .perform(scrollTo())
+                .perform(typeText(secondaryUrl));
 
         onView(withId(R.id.save))
                 .perform(scrollTo())
                 .perform(click());
         instrumentation.waitForIdleSync();
 
+        // then
         onView(withId(R.id.connectionList))
                 .check(matches(isDisplayed()))
                 .check(matches(withListViewSize(1)));
-        onData(withServerSpec().withName("myName").withServerType(ServerType.FHEMWEB).build())
+        onData(withServerSpec().withName("myName").withServerType(FHEMWEB).build())
                 .inAdapterView(withId(R.id.connectionList))
                 .perform(click());
         instrumentation.waitForIdleSync();
 
         onView(withId(R.id.connectionName)).check(matches(withText("myName")));
-        onView(withId(R.id.connectionType)).check(matches(withSelectedItem(ServerType.FHEMWEB)));
-        onView(withId(R.id.url)).check(matches(withText("http://www.google.de")));
+        onView(withId(R.id.connectionType)).check(matches(withSelectedItem(FHEMWEB)));
+        onView(withId(R.id.url)).check(matches(withText(primaryUrl)));
+        onView(withId(R.id.alternate_url)).check(matches(withText(secondaryUrl)));
     }
 
     @SuppressWarnings("unchecked")
@@ -117,7 +127,7 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
         instrumentation.waitForIdleSync();
 
         onView(withId(R.id.connectionName)).perform(typeText("myName"));
-        selectServerType(ServerType.FHEMWEB);
+        selectServerType(FHEMWEB);
 
         // when
         onView(withId(R.id.save))
@@ -130,19 +140,44 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
                 .check(matches(isDisplayed()));
     }
 
-    public void test_FHEMWEB_URL_starts_with_http() {
+    public void test_URL_starts_with_http() {
         // given
         instrumentation.waitForIdleSync();
         onView(withId(R.id.create)).perform(click());
         instrumentation.waitForIdleSync();
         onView(withId(R.id.connectionName)).perform(typeText("myName"));
-        selectServerType(ServerType.FHEMWEB);
+        selectServerType(FHEMWEB);
 
+        // when
         onView(withId(R.id.url))
                 .perform(scrollTo())
                 .perform(typeText("www.google.de"));
+        onView(withId(R.id.save))
+                .perform(scrollTo())
+                .perform(click());
+
+        // then
+        onView(withText(R.string.connectionUrlHttp))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()));
+    }
+
+    public void test_alternate_URL_starts_with_http() {
+        // given
+        instrumentation.waitForIdleSync();
+        onView(withId(R.id.create)).perform(click());
+        instrumentation.waitForIdleSync();
+        onView(withId(R.id.connectionName)).perform(typeText("myName"));
+        selectServerType(FHEMWEB);
+
+        onView(withId(R.id.url))
+                .perform(scrollTo())
+                .perform(typeText("http://www.google.de"));
 
         // when
+        onView(withId(R.id.alternate_url))
+                .perform(scrollTo())
+                .perform(typeText("www.google.de"));
         onView(withId(R.id.save))
                 .perform(scrollTo())
                 .perform(click());

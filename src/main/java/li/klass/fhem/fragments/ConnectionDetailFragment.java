@@ -59,17 +59,18 @@ import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.ui.FileDialog;
-import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PATH;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
+import static li.klass.fhem.util.DialogUtil.showAlertDialog;
 
 public class ConnectionDetailFragment extends BaseFragment {
 
@@ -297,7 +298,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         String emptyError = context.getString(R.string.connectionEmptyError);
         String errorMessage = String.format(emptyError, context.getString(fieldName));
 
-        DialogUtil.showAlertDialog(context, R.string.error, errorMessage);
+        showAlertDialog(context, R.string.error, errorMessage);
 
         return true;
     }
@@ -321,16 +322,18 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (enforceNotEmpty(R.string.connectionURL, url)) return false;
         if (enforceUrlStartsWithHttp(url)) return false;
 
-        intent.putExtra(CONNECTION_URL, url);
-        intent.putExtra(CONNECTION_ALTERNATE_URL, getTextViewContent(R.id.alternate_url));
+        String alternateUrl = getTextViewContent(R.id.alternate_url);
+        if (enforceUrlStartsWithHttp(alternateUrl)) return false;
 
         String username = getTextViewContent(R.id.username);
-        intent.putExtra(CONNECTION_USERNAME, username);
-
         String clientCertificatePath = getTextViewContent(R.id.clientCertificatePath);
 
-        intent.putExtra(CONNECTION_CLIENT_CERTIFICATE_PATH, clientCertificatePath);
-        intent.putExtra(CONNECTION_CLIENT_CERTIFICATE_PASSWORD, getTextViewContent(R.id.clientCertificatePassword));
+        intent
+                .putExtra(CONNECTION_URL, url)
+                .putExtra(CONNECTION_ALTERNATE_URL, alternateUrl)
+                .putExtra(CONNECTION_USERNAME, username)
+                .putExtra(CONNECTION_CLIENT_CERTIFICATE_PATH, clientCertificatePath)
+                .putExtra(CONNECTION_CLIENT_CERTIFICATE_PASSWORD, getTextViewContent(R.id.clientCertificatePassword));
 
         return true;
     }
@@ -340,7 +343,7 @@ public class ConnectionDetailFragment extends BaseFragment {
             Context context = getActivity();
             String emptyError = context.getString(R.string.connectionUrlHttp);
 
-            DialogUtil.showAlertDialog(context, R.string.error, emptyError);
+            showAlertDialog(context, R.string.error, emptyError);
 
             return true;
         }
@@ -355,10 +358,10 @@ public class ConnectionDetailFragment extends BaseFragment {
             return;
         }
 
-        Intent intent = new Intent(Actions.CONNECTION_GET);
-        intent.setClass(getActivity(), ConnectionsIntentService.class);
-        intent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        Intent intent = new Intent(Actions.CONNECTION_GET)
+                .setClass(getActivity(), ConnectionsIntentService.class)
+                .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
 
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -440,7 +443,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (view == null) return;
 
         setTextViewContent(view, R.id.url, connection.getUrl());
-        setTextViewContent(view, R.id.remote_url, connection.getAlternateUrl());
+        setTextViewContent(view, R.id.alternate_url, connection.getAlternateUrl());
         setTextViewContent(view, R.id.username, connection.getUsername() + "");
         setTextViewContent(view, R.id.password, connection.getPassword());
         setTextViewContent(view, R.id.clientCertificatePath, connection.getClientCertificatePath());

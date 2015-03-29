@@ -28,12 +28,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -46,6 +48,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyStore;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
@@ -56,32 +59,39 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.error.ErrorHolder;
-import li.klass.fhem.util.CloseableUtil;
 
-import static com.google.common.base.Objects.firstNonNull;
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static li.klass.fhem.fhem.RequestResultError.AUTHENTICATION_ERROR;
+import static li.klass.fhem.fhem.RequestResultError.BAD_REQUEST;
+import static li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR;
+import static li.klass.fhem.fhem.RequestResultError.INTERNAL_ERROR;
+import static li.klass.fhem.fhem.RequestResultError.INTERNAL_SERVER_ERROR;
+import static li.klass.fhem.fhem.RequestResultError.INVALID_CONTENT;
+import static li.klass.fhem.fhem.RequestResultError.NOT_FOUND;
+import static li.klass.fhem.util.CloseableUtil.close;
 
 public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int SOCKET_TIMEOUT = 20000;
-    public static final String TAG = FHEMWEBConnection.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(FHEMWEBConnection.class);
+    public static final Map<Integer, RequestResultError> STATUS_CODE_MAP = ImmutableMap.<Integer, RequestResultError>builder()
+            .put(400, BAD_REQUEST)
+            .put(401, AUTHENTICATION_ERROR)
+            .put(403, AUTHENTICATION_ERROR)
+            .put(404, NOT_FOUND)
+            .put(500, INTERNAL_SERVER_ERROR)
+            .build();
+
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
-    private boolean altUrl = false;
 
-    public FHEMWEBConnection() {
-
+    private FHEMWEBConnection() {
     }
 
     @Override
     public RequestResult<String> executeCommand(String command, Context context) {
-        Log.i(TAG, "executeTask command " + command);
+        LOG.info("executeTask command " + command);
 
-        String urlSuffix = null;
-        try {
-            urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "unsupported encoding", e);
-        }
-
+        String urlSuffix = generateUrlSuffix(command);
 
         InputStreamReader reader = null;
         try {
@@ -93,86 +103,94 @@ public class FHEMWEBConnection extends FHEMConnection {
             reader = new InputStreamReader(response.content);
             String content = CharStreams.toString(reader);
             if (content.contains("<title>") || content.contains("<div id=")) {
-                Log.e(TAG, "found strange content: " + content);
+                LOG.error("found strange content: " + content);
                 ErrorHolder.setError("found strange content in URL " + urlSuffix + ": \r\n\r\n" + content);
-                return new RequestResult<>(RequestResultError.INVALID_CONTENT);
+                return new RequestResult<>(INVALID_CONTENT);
             }
 
             return new RequestResult<>(content);
         } catch (Exception e) {
-            Log.e(TAG, "cannot handle result", e);
-            return new RequestResult<>(RequestResultError.INTERNAL_ERROR);
+            LOG.error("cannot handle result", e);
+            return new RequestResult<>(INTERNAL_ERROR);
         } finally {
-            CloseableUtil.close(reader);
+            close(reader);
         }
+    }
+
+    protected String generateUrlSuffix(String command) {
+        String urlSuffix = null;
+        try {
+            urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("unsupported encoding", e);
+        }
+        return urlSuffix;
     }
 
     private RequestResult<InputStream> executeRequest(String urlSuffix,
                                                       String command) {
+        return executeRequest(serverSpec.getUrl(), urlSuffix, command, false);
+    }
+
+    private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix,
+                                                      String command, boolean isRetry) {
         String url = null;
         try {
-            url = serverSpec.getCurrentUrl() + urlSuffix;
+            url = serverUrl + urlSuffix;
             URL requestUrl = new URL(url);
+
+            LOG.info("accessing URL {}", url);
             HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
             connection.setConnectTimeout(SOCKET_TIMEOUT);
             connection.setReadTimeout(SOCKET_TIMEOUT);
+
             String authString = (serverSpec.getUsername() + ":" + serverSpec.getPassword());
             connection.addRequestProperty("Authorization", "Basic " +
                     Base64.encodeToString(authString.getBytes(), Base64.NO_WRAP));
-            Log.i(TAG, "accessing URL " + url);
+
             int statusCode = connection.getResponseCode();
-            Log.d(TAG, "response status code is " + statusCode);
+            LOG.debug("response status code is " + statusCode);
+
             RequestResult<InputStream> errorResult = handleHttpStatusCode(statusCode);
             if (errorResult != null) {
                 String msg = "found error " + errorResult.error.getDeclaringClass().getSimpleName() + " for " +
                         "status code " + statusCode;
-                Log.d(TAG, msg);
+                LOG.debug(msg);
                 ErrorHolder.setError(null, msg);
+
                 return errorResult;
             }
-            InputStream contentStream = new BufferedInputStream(connection.getInputStream());
-            return new RequestResult<>(contentStream);
+
+            return new RequestResult<>((InputStream) new BufferedInputStream(connection.getInputStream()));
         } catch (ConnectTimeoutException e) {
-            Log.i(TAG, "connection timed out", e);
-            setErrorInErrorHolderFor(e, url, command);
-            if(altUrl){
-                return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
-            }
-            else {
-                return retryRequest(urlSuffix, command);
-            }
+            LOG.info("connection timed out", e);
+            return handleError(urlSuffix, command, isRetry, url, e);
         } catch (ClientProtocolException e) {
-            String errorText = "cannot connect, invalid URL? (" + url + ")";
-            setErrorInErrorHolderFor(e, url, command);
-            ErrorHolder.setError(e, errorText);
-            if(altUrl){
-                return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
-            }
-            else {
-                return retryRequest(urlSuffix, command);
-            }
+            LOG.info("cannot connect, invalid URL? (" + url + ")", e);
+            return handleError(urlSuffix, command, isRetry, url, e);
         } catch (IOException e) {
-            Log.i(TAG, "cannot connect to host", e);
-            setErrorInErrorHolderFor(e, url, command);
-            if(altUrl){
-                return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
-            }
-            else {
-                return retryRequest(urlSuffix, command);
-            }
+            LOG.info("cannot connect to host", e);
+            return handleError(urlSuffix, command, isRetry, url, e);
         }
     }
+
+    private RequestResult<InputStream> handleError(String urlSuffix, String command, boolean isRetry, String url, Exception e) {
+        setErrorInErrorHolderFor(e, url, command);
+        return handleRetryIfRequired(isRetry, new RequestResult<InputStream>(HOST_CONNECTION_ERROR), urlSuffix, command);
+    }
+
+    private RequestResult<InputStream> handleRetryIfRequired(boolean isCurrentRequestRetry, RequestResult<InputStream> previousResult,
+                                                             String urlSuffix, String command) {
+        if (!serverSpec.canRetry() || isCurrentRequestRetry) {
+            return previousResult;
+        }
+        return retryRequest(urlSuffix, command);
+    }
+
     private RequestResult<InputStream> retryRequest(String urlSuffix,
-                                                      String command) {
-        /* flag that we are retrying and an error should lead to an real error */
-        altUrl = true;
-        /* tell serverSpec to return the other url on next call */
-        serverSpec.toggleUrl();
-        /* store the result of the retry */
-        RequestResult<InputStream> res = executeRequest(urlSuffix,command);
-        /* reset the flag that indicated the retry */
-        altUrl = false;
-        return res;
+                                                    String command) {
+        LOG.info("retrying request for alternate URL");
+        return executeRequest(serverSpec.getAlternateUrl(), urlSuffix, command, true);
     }
 
     public String getPassword() {
@@ -180,28 +198,10 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     static RequestResult<InputStream> handleHttpStatusCode(int statusCode) {
-        RequestResultError error;
-        switch (statusCode) {
-            case 400:
-                error = RequestResultError.BAD_REQUEST;
-                break;
-            case 401:
-                error = RequestResultError.AUTHENTICATION_ERROR;
-                break;
-            case 403:
-                error = RequestResultError.AUTHENTICATION_ERROR;
-                break;
-            case 404:
-                error = RequestResultError.NOT_FOUND;
-                break;
-            case 500:
-                error = RequestResultError.INTERNAL_SERVER_ERROR;
-                break;
-            default:
-                return null;
 
-        }
-        Log.i(TAG, "handleHttpStatusCode() : encountered http status code " + statusCode);
+        RequestResultError error = STATUS_CODE_MAP.get(statusCode);
+
+        LOG.info("handleHttpStatusCode() : encountered http status code {}", statusCode);
         return new RequestResult<>(error);
     }
 
@@ -212,10 +212,9 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<>(response.error);
         }
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream(response.content);
-            return new RequestResult<>(bitmap);
+            return new RequestResult<>(BitmapFactory.decodeStream(response.content));
         } finally {
-            CloseableUtil.close(response.content);
+            close(response.content);
         }
     }
 
@@ -230,9 +229,9 @@ public class FHEMWEBConnection extends FHEMConnection {
                 String clientCertificatePassword = serverSpec.getClientCertificatePassword();
                 if (clientCertificate.exists()) {
                     final KeyStore keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword);
-                    KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
-                    kmf.init(keyStore, firstNonNull(clientCertificatePassword, "").toCharArray());
-                    clientKeys = kmf.getKeyManagers();
+                    KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
+                    keyManagerFactory.init(keyStore, firstNonNull(clientCertificatePassword, "").toCharArray());
+                    clientKeys = keyManagerFactory.getKeyManagers();
                 }
             }
             sc.init(clientKeys, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
@@ -240,19 +239,19 @@ public class FHEMWEBConnection extends FHEMConnection {
             HttpsURLConnection.setDefaultHostnameVerifier(
                     mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
         } catch (Exception e) {
-            Log.e(TAG, "Error initializing HttpsUrlConnection", e);
+            LOG.error("Error initializing HttpsUrlConnection", e);
         }
     }
 
     private KeyStore loadPKCS12KeyStore(File certificateFile, String clientCertPassword) throws Exception {
         KeyStore keyStore = null;
-        FileInputStream fis = null;
+        FileInputStream fileInputStream = null;
         try {
             keyStore = KeyStore.getInstance("PKCS12");
-            fis = new FileInputStream(certificateFile);
-            keyStore.load(fis, clientCertPassword.toCharArray());
+            fileInputStream = new FileInputStream(certificateFile);
+            keyStore.load(fileInputStream, clientCertPassword.toCharArray());
         } finally {
-            CloseableUtil.close(fis);
+            close(fileInputStream);
         }
         return keyStore;
     }

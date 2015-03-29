@@ -146,8 +146,7 @@ public class ConnectionService {
     private void saveToPreferences(FHEMServerSpec server, Context context) {
         if (server.getServerType() == ServerType.DUMMY) return;
 
-        String json = serialize(server);
-        getPreferences(context).edit().putString(server.getId(), json).commit();
+        getPreferences(context).edit().putString(server.getId(), serialize(server)).commit();
     }
 
     private SharedPreferences getPreferences(Context context) {

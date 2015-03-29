@@ -24,11 +24,11 @@
 
 package li.klass.fhem.fhem.connection;
 
-import com.google.common.base.Strings;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable {
     private final String id;
@@ -36,7 +36,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     private String password;
     private String ip;
     private int port;
-    private boolean altUrl = false;
     private String url;
     private String alternateUrl;
     private String username;
@@ -78,15 +77,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public String getCurrentUrl() {
-        if(altUrl){
-            return alternateUrl;
-        }
-        else {
-            return url;
-        }
     }
 
     public String getUrl() {
@@ -147,6 +137,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     }
 
     @Override
+    @SuppressWarnings("RedundantIfStatement")
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -154,19 +145,22 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         FHEMServerSpec that = (FHEMServerSpec) o;
 
         if (port != that.port) return false;
+        if (alternateUrl != null ? !alternateUrl.equals(that.alternateUrl) : that.alternateUrl != null)
+            return false;
         if (clientCertificatePassword != null ? !clientCertificatePassword.equals(that.clientCertificatePassword) : that.clientCertificatePassword != null)
             return false;
         if (clientCertificatePath != null ? !clientCertificatePath.equals(that.clientCertificatePath) : that.clientCertificatePath != null)
             return false;
-        if (!id.equals(that.id)) return false;
         if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
-        if (serverType != that.serverType) {
+        if (serverType != that.serverType) return false;
+        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
-        }
-        return !(url != null ? !url.equals(that.url) : that.url != null) && !(username != null ? !username.equals(that.username) : that.username != null);
 
+        return true;
     }
 
     @Override
@@ -189,7 +183,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         return "FHEMServerSpec{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", password='" + (Strings.isNullOrEmpty(password) ? "empty" : "*****") + '\'' +
+                ", password='" + (isNullOrEmpty(password) ? "empty" : "*****") + '\'' +
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", url='" + url + '\'' +
@@ -201,7 +195,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
                 '}';
     }
 
-    public void toggleUrl() {
-        altUrl = !altUrl;
+    public boolean canRetry() {
+        return !isNullOrEmpty(alternateUrl);
     }
 }
