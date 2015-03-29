@@ -40,6 +40,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
@@ -52,6 +53,7 @@ import static li.klass.fhem.instrumentation.infrastructure.matchers.AdapterViewM
 import static li.klass.fhem.instrumentation.infrastructure.matchers.MyMatchers.withContent;
 import static li.klass.fhem.instrumentation.infrastructure.matchers.MyMatchers.withServerSpec;
 import static li.klass.fhem.instrumentation.infrastructure.matchers.SpinnerMatchers.withSelectedItem;
+import static li.klass.fhem.instrumentation.infrastructure.matchers.Waits.waitToFind;
 import static org.hamcrest.core.AllOf.allOf;
 
 public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainActivity> {
@@ -121,6 +123,8 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
     public void test_FHEMWEB_URL_not_blank() {
         // given
         instrumentation.waitForIdleSync();
+        onView(isRoot()).perform(waitToFind(withId(R.id.create), 15 * 1000));
+
         onView(allOf(withId(R.id.create), withId(R.id.connectionList), withId(R.id.emptyText)));
 
         onView(withId(R.id.create)).perform(click());
@@ -143,6 +147,8 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
     public void test_URL_starts_with_http() {
         // given
         instrumentation.waitForIdleSync();
+        onView(isRoot()).perform(waitToFind(withId(R.id.create), 15 * 1000));
+
         onView(withId(R.id.create)).perform(click());
         instrumentation.waitForIdleSync();
         onView(withId(R.id.connectionName)).perform(typeText("myName"));
@@ -165,6 +171,8 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
     public void test_alternate_URL_starts_with_http() {
         // given
         instrumentation.waitForIdleSync();
+        onView(isRoot()).perform(waitToFind(withId(R.id.create), 15 * 1000));
+
         onView(withId(R.id.create)).perform(click());
         instrumentation.waitForIdleSync();
         onView(withId(R.id.connectionName)).perform(typeText("myName"));
