@@ -235,6 +235,7 @@
     <string name="totalEnergyMonth">Energy (month)</string>
     <string name="totalEnergyYear">Energy (year)</string>
     <string name="waterDetect">Water detected?</string>
+    <string name="activity">Activity</string>
     <string name="VOC" translatable="false">VOC</string>
 
     <string name="event_duration_current_title">Runtime current title</string>
@@ -464,7 +465,7 @@
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
     <string name="premium_multipleConnections">AndFHEM Premium is required to use more than one connection.</string>
 
-    <string name="blank" translatable="false"/>
+    <string name="blank" translatable="false" />
     <string name="deviceListEmpty">No matching devices found!</string>
 
     <string name="widget_small">andFHEM Small</string>

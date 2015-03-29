@@ -34,6 +34,7 @@ import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
+import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
@@ -101,6 +102,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 STVDeviceAdapter.class,
                 PioneerAvrZoneDeviceAdapter.class,
                 SBPlayerDeviceAdapter.class,
+                HarmonyDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,

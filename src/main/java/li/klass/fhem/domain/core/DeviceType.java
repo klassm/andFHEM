@@ -33,6 +33,7 @@ import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
+import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
@@ -170,7 +171,8 @@ public enum DeviceType {
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapter<>(MySensorsDevice.class)),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
-    TCM97001("CUL_TCM97001", TCM97001Device.class);
+    TCM97001("CUL_TCM97001", TCM97001Device.class),
+    HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter());
 
     private String xmllistTag;
     private Class<? extends FhemDevice> deviceClass;

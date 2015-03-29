@@ -28,46 +28,39 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import javax.inject.Inject;
-
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
-import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.SonosPlayerDevice;
-import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.domain.HarmonyDevice;
+import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> {
-
-    @Inject
-    StateUiService stateUiService;
-
-    @Inject
-    ApplicationProperties applicationProperties;
-
-    public SonosPlayerAdapter() {
-        super(SonosPlayerDevice.class);
+public class HarmonyDeviceAdapter extends GenericDeviceAdapterWithSwitchActionRow<HarmonyDevice> {
+    public HarmonyDeviceAdapter() {
+        super(HarmonyDevice.class);
     }
 
     @Override
     protected void afterPropertiesSet() {
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<SonosPlayerDevice>() {
+        super.afterPropertiesSet();
 
+        registerFieldListener("state", new FieldNameAddedToDetailListener<HarmonyDevice>() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, SonosPlayerDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
-                        .createRow(getInflater(), device));
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HarmonyDevice device, TableRow fieldTableRow) {
+                SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("activity");
+                tableLayout.addView(new StateChangingSpinnerActionRow<HarmonyDevice>(context,
+                        R.string.activity, R.string.activity, inputSetList.getGroupStates(), device.getActivity(), "activity")
+                        .createRow(device, tableLayout));
             }
         });
 
         //noinspection unchecked
-        detailActions.add(PlayerDetailAction.builderFor(stateUiService, SonosPlayerDevice.class)
-                .withPreviousCommand("Previous")
-                .withPauseCommand("Pause")
-                .withStopCommand("Stop")
-                .withPlayCommand("Play")
-                .withNextCommand("Next")
+        detailActions.add(PlayerDetailAction.builderFor(stateUiService, HarmonyDevice.class)
+                .withPreviousCommand("special previousTrack")
+                .withStopCommand("special stop")
+                .withPlayCommand("special playPause")
+                .withNextCommand("special nextTrack")
                 .build());
     }
 }

@@ -1,0 +1,55 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <harmony_LIST>
+        <harmony name="hub"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 nossl:1 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_henno icon sortby webCmd widgetOverride userattr"
+            sets=" activity:Fernsehen,Rock.Antenne,Zocken,PowerOff autocreate:Panasonic-Fernseher,Sony.PS3,Vu+-DVR,Onkyo-AV-Receiver, command getConfig:noArg getCurrentActivity:noArg off:noArg reconnect:noArg sleeptimer sync:noArg text cursor:up,down,left,right,pageUp,pageDown,home,end special:previousTrack,nextTrack,stop,playPause,volumeUp,volumeDown,mute update:noArg"
+            state="Connected">
+            <INT key="CONNECTS" value="1" />
+            <INT key="ConnectionState" value="LoggedIn" />
+            <INT key="DEF" value="192.168.178.xxx" />
+            <INT key="FD" value="35" />
+            <INT key="LAST_CONNECT" value="2015-02-22 08:33:52" />
+            <INT key="NAME" value="hub" />
+            <INT key="NR" value="376" />
+            <INT key="NTFY_ORDER" value="50-hub" />
+            <INT key="STATE" value="Connected" />
+            <INT key="TYPE" value="harmony" />
+            <INT key="activityStatus" value="0" />
+            <INT key="currentActivityID" value="-1" />
+            <INT key="hubSwVersion" value="3.12.9" />
+            <INT key="hubUpdate" value="1" />
+            <INT key="ip" value="192.168.178.xxx" />
+            <INT key="previousActivityID" value="7900682" />
+            <INT key="syncStatus" value="0" />
+            <ATTR key="room" value="Wohnzimmer" />
+            <STATE key="activity" measured="2015-02-23 21:30:39" value="PowerOff" />
+            <STATE key="currentActivity" measured="2015-02-23 21:30:39" value="PowerOff" />
+            <STATE key="previousActivity" measured="2015-02-23 21:30:39" value="Fernsehen" />
+            <STATE key="state" measured="2015-02-22 08:33:52" value="Connected" />
+        </harmony>
+    </harmony_LIST>
+</FHZINFO>

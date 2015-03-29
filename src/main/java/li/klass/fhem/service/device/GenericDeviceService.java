@@ -86,21 +86,25 @@ public class GenericDeviceService {
 
     private boolean invokeDeviceUpdateForMethod(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz, Method method) {
         try {
-            if (method.getParameterTypes().length != 1 || !method.getParameterTypes()[0].isAssignableFrom(String.class)) {
+            if (method.getParameterTypes().length == 0 || !method.getParameterTypes()[0].isAssignableFrom(String.class)) {
                 return false;
             }
+
             if (method.isAnnotationPresent(XmllistAttribute.class)) {
                 String[] attributeValues = method.getAnnotation(XmllistAttribute.class).value();
                 for (String attributeValue : attributeValues) {
                     if (attributeValue.equalsIgnoreCase(subStateName)) {
-                        method.invoke(device, value);
+                        Object[] params = new Object[method.getParameterTypes().length];
+                        params[0] = value;
+                        method.invoke(device, params);
                         return true;
                     }
                 }
-            } else if (method.getName().equalsIgnoreCase("read" + subStateName)) {
+            } else if (method.getName().equalsIgnoreCase("read" + subStateName)
+                    && method.getParameterTypes().length == 1) {
                 method.invoke(device, value);
                 return true;
-            }
+                }
         } catch (Exception e) {
             Log.e(GenericDeviceService.class.getName(), "error during invoke of " + method.getName() + " for device " + clazz.getSimpleName(), e);
         }

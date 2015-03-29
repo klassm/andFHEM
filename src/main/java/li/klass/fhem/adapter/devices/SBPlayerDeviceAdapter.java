@@ -67,6 +67,13 @@ public class SBPlayerDeviceAdapter extends ToggleableAdapter<SBPlayerDevice> {
             }
         });
 
-        detailActions.add(new PlayerDetailAction<SBPlayerDevice>(stateUiService, "previous", "pause", "stop", "play", "next"));
+        //noinspection unchecked
+        detailActions.add(PlayerDetailAction.builderFor(stateUiService, SBPlayerDevice.class)
+                .withPreviousCommand("previous")
+                .withPauseCommand("pause")
+                .withStopCommand("stop")
+                .withPlayCommand("play")
+                .withNextCommand("next")
+                .build());
     }
 }

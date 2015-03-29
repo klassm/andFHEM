@@ -30,30 +30,32 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.google.common.base.Optional;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
+import static com.google.common.base.Optional.fromNullable;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailViewAction<T> {
 
     private final StateUiService stateUiService;
-    private final String previousCommand;
-    private final String pauseCommand;
-    private final String stopCommand;
-    private final String playCommand;
-    private final String nextCommand;
+    private final Optional<String> previousCommand;
+    private final Optional<String> pauseCommand;
+    private final Optional<String> stopCommand;
+    private final Optional<String> playCommand;
+    private final Optional<String> nextCommand;
 
-    public PlayerDetailAction(StateUiService stateUiService, String previousCommand,
-                              String pauseCommand, String stopCommand,
-                              String playCommand, String nextCommand) {
-        this.previousCommand = previousCommand;
-        this.pauseCommand = pauseCommand;
-        this.stopCommand = stopCommand;
-        this.playCommand = playCommand;
-        this.nextCommand = nextCommand;
-
-        this.stateUiService = stateUiService;
+    private PlayerDetailAction(Builder<T> builder) {
+        stateUiService = builder.stateUiService;
+        previousCommand = builder.previousCommand;
+        pauseCommand = builder.pauseCommand;
+        stopCommand = builder.stopCommand;
+        playCommand = builder.playCommand;
+        nextCommand = builder.nextCommand;
     }
 
     @Override
@@ -70,13 +72,64 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
     }
 
     private void fillImageButtonWithAction(final Context context, View view, final T device,
-                                           int id, final String action) {
+                                           int id, final Optional<String> action) {
         ImageButton button = (ImageButton) view.findViewById(id);
+        if (!action.isPresent()) {
+            button.setVisibility(View.GONE);
+            return;
+        }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stateUiService.setState(device, action, context);
+                stateUiService.setState(device, action.get(), context);
             }
         });
+    }
+
+    public static <T extends FhemDevice<T>> Builder<T> builderFor(StateUiService stateUiService, Class<T> deviceClazz) {
+        return new Builder<>(stateUiService, deviceClazz);
+    }
+
+    public static final class Builder<T extends FhemDevice<T>> {
+        private StateUiService stateUiService;
+        private Optional<String> previousCommand = Optional.absent();
+        private Optional<String> pauseCommand = Optional.absent();
+        private Optional<String> stopCommand = Optional.absent();
+        private Optional<String> playCommand = Optional.absent();
+        private Optional<String> nextCommand = Optional.absent();
+
+        public Builder(StateUiService stateUiService, @SuppressWarnings("UnusedParameters") Class<T> deviceClazz) {
+            checkNotNull(stateUiService);
+            this.stateUiService = stateUiService;
+        }
+
+        public Builder withPreviousCommand(final String previousCommand) {
+            this.previousCommand = fromNullable(previousCommand);
+            return this;
+        }
+
+        public Builder withPauseCommand(final String pauseCommand) {
+            this.pauseCommand = fromNullable(pauseCommand);
+            return this;
+        }
+
+        public Builder withStopCommand(final String stopCommand) {
+            this.stopCommand = fromNullable(stopCommand);
+            return this;
+        }
+
+        public Builder withPlayCommand(final String playCommand) {
+            this.playCommand = fromNullable(playCommand);
+            return this;
+        }
+
+        public Builder withNextCommand(final String nextCommand) {
+            this.nextCommand = fromNullable(nextCommand);
+            return this;
+        }
+
+        public PlayerDetailAction<T> build() {
+            return new PlayerDetailAction<>(this);
+        }
     }
 }

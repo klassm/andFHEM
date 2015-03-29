@@ -234,6 +234,7 @@
     <string name="totalEnergyMonth">Energie (Monat)</string>
     <string name="totalEnergyYear">Energie (Jahr)</string>
     <string name="waterDetect">Wasser erkannt?</string>
+    <string name="activity">Aktivität</string>
 
     <string name="event_duration_current_title">Laufzeit aktueller Titel</string>
     <string name="event_duration_next_title">Laufzeit folgender Titel</string>
