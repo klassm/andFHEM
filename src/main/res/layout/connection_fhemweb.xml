@@ -50,14 +50,14 @@
         android:layout_below="@+id/url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/connectionAlternateURL" />
+        android:text="@string/connectionAlternateUrl" />
 
     <EditText
         android:id="@+id/alternate_url"
         android:layout_width="match_parent"
         style="@style/formInput"
         android:layout_below="@+id/alternateUrlLabel"
-        android:hint="@string/connectionAlternateURLPlaceholder"
+        android:hint="@string/connectionAlternateUrlPlaceholder"
         android:inputType="textUri"/>
 
     <TextView
