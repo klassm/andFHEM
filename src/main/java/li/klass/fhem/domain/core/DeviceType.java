@@ -51,7 +51,6 @@ import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
-import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
 import li.klass.fhem.adapter.devices.WOLAdapter;
@@ -62,6 +61,7 @@ import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.*;
 
@@ -107,11 +107,11 @@ public enum DeviceType {
     AT("at", AtDevice.class, null),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter<>(EIBDevice.class)),
-    HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<>(HCSDevice.class)),
+    HCS("HCS", HCSDevice.class, new GenericDeviceAdapterWithSwitchActionRow<>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter<>(OwDevice.class)),
     UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
-    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new SwitchActionRowAdapter<>(TRXSecurityDevice.class)),
+    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new GenericDeviceAdapterWithSwitchActionRow<>(TRXSecurityDevice.class)),
     PRESENCE("PRESENCE", PresenceDevice.class),
     EMWZ("EMWZ", EMWZDevice.class),
     FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapter<>(FBDectDevice.class)),

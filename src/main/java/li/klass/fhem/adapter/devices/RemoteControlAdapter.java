@@ -55,8 +55,8 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
     }
 
     @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
+    protected List<DeviceDetailViewAction<RemoteControlDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<RemoteControlDevice>> detailActions = super.provideDetailActions();
 
         detailActions.add(new DeviceDetailViewAction<RemoteControlDevice>() {
             @Override
@@ -65,6 +65,8 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
                 return createRemoteControlTable(context, device, inflater, parent);
             }
         });
+
+        return detailActions;
     }
 
     private TableLayout createRemoteControlTable(Context context, RemoteControlDevice device,

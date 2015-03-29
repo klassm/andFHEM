@@ -33,6 +33,8 @@ import android.widget.Toast;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
@@ -44,8 +46,8 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapter<FS20ZDRDevice> {
     }
 
     @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
+    protected List<DeviceDetailViewAction<FS20ZDRDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<FS20ZDRDevice>> detailActions = super.provideDetailActions();
 
         detailActions.add(new DeviceDetailViewAction<FS20ZDRDevice>() {
             @Override
@@ -70,6 +72,8 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapter<FS20ZDRDevice> {
                 return view;
             }
         });
+
+        return detailActions;
     }
 
     private void registerActionHandlerFor(final Context context, View view, final FS20ZDRDevice device,

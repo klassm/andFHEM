@@ -28,10 +28,13 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
@@ -66,6 +69,11 @@ public class SBPlayerDeviceAdapter extends ToggleableAdapter<SBPlayerDevice> {
                         .createRow(getInflater(), device));
             }
         });
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction<SBPlayerDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<SBPlayerDevice>> detailActions = super.provideDetailActions();
 
         //noinspection unchecked
         detailActions.add(PlayerDetailAction.builderFor(stateUiService, SBPlayerDevice.class)
@@ -75,5 +83,7 @@ public class SBPlayerDeviceAdapter extends ToggleableAdapter<SBPlayerDevice> {
                 .withPlayCommand("play")
                 .withNextCommand("next")
                 .build());
+
+        return detailActions;
     }
 }

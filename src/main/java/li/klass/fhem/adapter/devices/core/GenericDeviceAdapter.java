@@ -36,6 +36,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -311,7 +313,8 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     private void addDetailActionButtons(Context context, View view, D device, LayoutInflater inflater) {
         LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
-        if (!hasDetailActions(device)) {
+        List<DeviceDetailViewAction<D>> actions = provideDetailActions();
+        if (!hasVisibleDetailActions(actions, device)) {
             actionLayout.setVisibility(View.GONE);
         }
         for (DeviceDetailViewAction<D> action : detailActions) {
@@ -347,10 +350,10 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         graphLayout.addView(button);
     }
 
-    private boolean hasDetailActions(D device) {
-        if (detailActions.size() == 0) return false;
+    private boolean hasVisibleDetailActions(List<DeviceDetailViewAction<D>> actions, D device) {
+        if (detailActions.isEmpty()) return false;
 
-        for (DeviceDetailViewAction<D> detailAction : detailActions) {
+        for (DeviceDetailViewAction<D> detailAction : actions) {
             if (detailAction.isVisible(device)) {
                 return true;
             }
@@ -375,5 +378,9 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     @Override
     public Class<? extends FhemDevice> getSupportedDeviceClass() {
         return deviceClass;
+    }
+
+    protected List<DeviceDetailViewAction<D>> provideDetailActions() {
+        return Lists.newArrayList();
     }
 }

@@ -38,14 +38,13 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
+public class LightSceneAdapter extends GenericDeviceAdapterWithSwitchActionRow<LightSceneDevice> {
     @Inject
     StateUiService stateUiService;
 
@@ -100,8 +99,6 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
                 }.createRow(context, getInflater(), tableLayout, device));
             }
         });
-
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
     }
 
     private void setSceneButtonProperties(final LightSceneDevice device, final String scene, Button button) {

@@ -29,12 +29,15 @@ import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
@@ -120,6 +123,11 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
                         .createRow(getInflater(), device));
             }
         });
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction<MaxDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<MaxDevice>> detailActions = super.provideDetailActions();
 
         detailActions.add(new DeviceDetailViewButtonAction<MaxDevice>(R.string.timetable) {
             @Override
@@ -132,6 +140,8 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
                 return device.getSubType() == MaxDevice.SubType.TEMPERATURE;
             }
         });
+
+        return detailActions;
     }
 
     private void putUpdateIntent(Intent intent) {

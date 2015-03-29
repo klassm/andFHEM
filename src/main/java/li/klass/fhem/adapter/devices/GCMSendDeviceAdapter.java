@@ -27,10 +27,13 @@ package li.klass.fhem.adapter.devices;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -38,7 +41,7 @@ import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
+public class GCMSendDeviceAdapter extends GenericDeviceAdapterWithSwitchActionRow<GCMSendDevice> {
     @Inject
     GCMSendDeviceService gcmSendDeviceService;
 
@@ -47,8 +50,8 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
     }
 
     @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
+    protected List<DeviceDetailViewAction<GCMSendDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<GCMSendDevice>> detailActions = super.provideDetailActions();
 
         detailActions.add(new DeviceDetailViewButtonAction<GCMSendDevice>(R.string.gcmRegisterThis) {
             @Override
@@ -63,6 +66,8 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
                 return !gcmSendDeviceService.isDeviceRegistered(device, getContext());
             }
         });
+
+        return detailActions;
     }
 
     @Override

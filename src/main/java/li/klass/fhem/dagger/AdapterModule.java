@@ -52,7 +52,6 @@ import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
-import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
 import li.klass.fhem.adapter.devices.WOLAdapter;
@@ -86,7 +85,6 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 RemoteControlAdapter.class,
                 SonosPlayerAdapter.class,
                 SwapDeviceAdapter.class,
-                SwitchActionRowAdapter.class,
                 ThresholdAdapter.class,
                 ToggleableAdapter.class,
                 UniRollAdapter.class,
@@ -107,8 +105,6 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
                 DimmableAdapter.class,
-                SwitchActionRowAdapter.class
-
         })
 public class AdapterModule {
 }

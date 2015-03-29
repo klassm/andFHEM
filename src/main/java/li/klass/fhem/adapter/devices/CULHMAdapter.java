@@ -31,12 +31,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
@@ -112,6 +115,16 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                 }
             }
         });
+    }
+
+    @Override
+    protected boolean isOverviewError(CULHMDevice device, long lastUpdate) {
+        return super.isOverviewError(device, lastUpdate) || !device.isLastCommandAccepted();
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction<CULHMDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<CULHMDevice>> detailActions = super.provideDetailActions();
 
         detailActions.add(new DeviceDetailViewButtonAction<CULHMDevice>(R.string.timetable) {
             @Override
@@ -127,10 +140,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                 return device.getSubType() == THERMOSTAT;
             }
         });
-    }
 
-    @Override
-    protected boolean isOverviewError(CULHMDevice device, long lastUpdate) {
-        return super.isOverviewError(device, lastUpdate) || !device.isLastCommandAccepted();
+        return detailActions;
     }
 }

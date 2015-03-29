@@ -28,21 +28,19 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> {
-
-    @Inject
-    StateUiService stateUiService;
-
+public class SonosPlayerAdapter extends GenericDeviceAdapterWithSwitchActionRow<SonosPlayerDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -60,14 +58,19 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
                         .createRow(getInflater(), device));
             }
         });
+    }
 
+    @Override
+    protected List<DeviceDetailViewAction<SonosPlayerDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<SonosPlayerDevice>> actions = super.provideDetailActions();
         //noinspection unchecked
-        detailActions.add(PlayerDetailAction.builderFor(stateUiService, SonosPlayerDevice.class)
+        actions.add(PlayerDetailAction.builderFor(stateUiService, SonosPlayerDevice.class)
                 .withPreviousCommand("Previous")
                 .withPauseCommand("Pause")
                 .withStopCommand("Stop")
                 .withPlayCommand("Play")
                 .withNextCommand("Next")
                 .build());
+        return actions;
     }
 }

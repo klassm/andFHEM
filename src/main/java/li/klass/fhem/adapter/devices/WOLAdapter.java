@@ -27,11 +27,14 @@ package li.klass.fhem.adapter.devices;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.constants.Actions;
@@ -39,7 +42,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
+public class WOLAdapter extends GenericDeviceAdapterWithSwitchActionRow<WOLDevice> {
     @Inject
     StateUiService stateUiService;
 
@@ -48,7 +51,9 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
     }
 
     @Override
-    protected void afterPropertiesSet() {
+    protected List<DeviceDetailViewAction<WOLDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<WOLDevice>> detailActions = super.provideDetailActions();
+
         detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.wake) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
@@ -76,5 +81,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
                         .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
             }
         });
+
+        return detailActions;
     }
 }

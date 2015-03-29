@@ -37,12 +37,14 @@ import android.widget.TimePicker;
 
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
@@ -71,7 +73,7 @@ import static li.klass.fhem.ui.AndroidBug.handleColorStateBug;
 import static li.klass.fhem.ui.AndroidBug.showMessageIfColorStateBugIsEncountered;
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
+public class FHTAdapter extends GenericDeviceAdapterWithSwitchActionRow<FHTDevice> {
 
     @Inject
     ApplicationProperties applicationProperties;
@@ -139,6 +141,12 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             }
         });
 
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction<FHTDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<FHTDevice>> detailActions = super.provideDetailActions();
+
         detailActions.add(new DeviceDetailViewButtonAction<FHTDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, FHTDevice device) {
@@ -159,7 +167,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             }
         });
 
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<FHTDevice>());
+        return detailActions;
     }
 
     private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow, TableLayout tableLayout) {

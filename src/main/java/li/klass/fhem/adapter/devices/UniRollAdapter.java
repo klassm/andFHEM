@@ -26,24 +26,24 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 
-import javax.inject.Inject;
+import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.UniRollDevice;
 
-public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
-    @Inject
-    StateUiService stateUiService;
+public class UniRollAdapter extends GenericDeviceAdapterWithSwitchActionRow<UniRollDevice> {
 
     public UniRollAdapter() {
         super(UniRollDevice.class);
     }
 
     @Override
-    protected void afterPropertiesSet() {
+    protected List<DeviceDetailViewAction<UniRollDevice>> provideDetailActions() {
+        List<DeviceDetailViewAction<UniRollDevice>> detailActions = super.provideDetailActions();
+
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.up) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
@@ -64,5 +64,7 @@ public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
                 stateUiService.setState(device, "down", context);
             }
         });
+
+        return detailActions;
     }
 }

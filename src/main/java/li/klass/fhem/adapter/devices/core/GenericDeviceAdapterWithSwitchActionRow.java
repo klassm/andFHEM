@@ -24,7 +24,10 @@
 
 package li.klass.fhem.adapter.devices.core;
 
+import java.util.List;
+
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class GenericDeviceAdapterWithSwitchActionRow<D extends FhemDevice<D>> extends GenericDeviceAdapter<D> {
@@ -33,9 +36,9 @@ public class GenericDeviceAdapterWithSwitchActionRow<D extends FhemDevice<D>> ex
     }
 
     @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
-
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<D>());
+    protected List<DeviceDetailViewAction<D>> provideDetailActions() {
+        List<DeviceDetailViewAction<D>> actions = super.provideDetailActions();
+        actions.add(new AvailableTargetStatesSwitchActionRow<D>());
+        return actions;
     }
 }
