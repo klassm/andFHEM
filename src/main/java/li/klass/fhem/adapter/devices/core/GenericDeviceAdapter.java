@@ -63,14 +63,12 @@ import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 
 public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
-    protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<>();
 
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
 
     @Inject
-    protected
-    StateUiService stateUiService;
+    protected StateUiService stateUiService;
 
     private Class<D> deviceClass;
     private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<>();
@@ -317,7 +315,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         if (!hasVisibleDetailActions(actions, device)) {
             actionLayout.setVisibility(View.GONE);
         }
-        for (DeviceDetailViewAction<D> action : detailActions) {
+        for (DeviceDetailViewAction<D> action : actions) {
             if (!action.isVisible(device)) continue;
 
             View actionView = action.createView(context, inflater, device, actionLayout);
@@ -351,7 +349,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     }
 
     private boolean hasVisibleDetailActions(List<DeviceDetailViewAction<D>> actions, D device) {
-        if (detailActions.isEmpty()) return false;
+        if (actions.isEmpty()) return false;
 
         for (DeviceDetailViewAction<D> detailAction : actions) {
             if (detailAction.isVisible(device)) {

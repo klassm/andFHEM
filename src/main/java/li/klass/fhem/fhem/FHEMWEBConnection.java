@@ -158,6 +158,8 @@ public class FHEMWEBConnection extends FHEMConnection {
                 LOG.debug(msg);
                 ErrorHolder.setError(null, msg);
 
+                close(connection.getInputStream());
+
                 return errorResult;
             }
 
@@ -200,6 +202,7 @@ public class FHEMWEBConnection extends FHEMConnection {
     static RequestResult<InputStream> handleHttpStatusCode(int statusCode) {
 
         RequestResultError error = STATUS_CODE_MAP.get(statusCode);
+        if (error == null) return null;
 
         LOG.info("handleHttpStatusCode() : encountered http status code {}", statusCode);
         return new RequestResult<>(error);

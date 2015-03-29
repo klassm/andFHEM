@@ -43,13 +43,15 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.LitreContentView;
 
+import static li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.domain.CULHMDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.CULHMDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
@@ -99,7 +101,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                 if (device.getSubType() != THERMOSTAT) return;
 
                 tableLayout.addView(new TemperatureChangeTableRow<CULHMDevice>(context, device.getDesiredTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
+                        DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
@@ -129,10 +131,10 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<CULHMDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, CULHMDevice device) {
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.sendBroadcast(intent);
+                context.sendBroadcast(
+                        new Intent(SHOW_FRAGMENT)
+                                .putExtra(FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
+                                .putExtra(DEVICE_NAME, device.getName()));
             }
 
             @Override
