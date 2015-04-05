@@ -67,10 +67,10 @@ public class ToggleableDeviceTest {
     public void should_handle_invert_state_hook(String readState, boolean isOn) {
         //  given
         ToggleableDevice device = new EIBDevice();
-        device.readINVERTSTATE("true");
+        device.setInvertState("true");
 
         ToggleableDevice device2 = new EIBDevice();
-        device2.readINVERTSTATE("false");
+        device2.setInvertState("false");
 
         device.setState(readState);
         device2.setState(readState);

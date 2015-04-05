@@ -46,7 +46,7 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
 
         assertThat(device.getPower()).isEqualTo("3 (W)");
         assertThat(device.getCurrentVoltage()).isEqualTo("228.7 (V)");
-        assertThat(device.getCumulativeUsage()).isEqualTo("0 (kWh)");
+        assertThat(device.getCumulativeUsage()).isEqualTo("0.0 (kWh)");
         assertThat(device.getFrequency()).isEqualTo("49.98 (Hz)");
         assertThat(device.getCurrent()).isEqualTo("376 (mA)");
 

@@ -48,10 +48,10 @@ public class MAXConfigurationTest {
 
     @Test
     public void testDayRead() {
-        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TIME", "00:00-07:00  /  07:00-23:00  /  23:00-00:00");
-        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TEMP", "15 °C  /  22 °C /  15.5 °C");
-        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15 °C  /  22 °C /  15 °C");
-        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TIME", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
+        configuration.readNode(weekProfile, "weekprofile-0-Sat-time", "00:00-07:00  /  07:00-23:00  /  23:00-00:00");
+        configuration.readNode(weekProfile, "weekprofile-0-Sat-temp", "15 °C  /  22 °C /  15.5 °C");
+        configuration.readNode(weekProfile, "weekprofile-6-Fri-temp", "15 °C  /  22 °C /  15 °C");
+        configuration.readNode(weekProfile, "weekprofile-6-Fri-time", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime()).isEqualTo("00:00");
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).isTimeFixed()).isTrue();
@@ -72,10 +72,10 @@ public class MAXConfigurationTest {
 
     @Test
     public void testGenerateCommand() {
-        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TIME", "00:00-07:00  /  07:00-23:00  /  23:00-00:00");
-        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TEMP", "15 °C  /  22 °C  /  15 °C");
-        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15 °C /  22 °C /  15 °C");
-        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TIME", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
+        configuration.readNode(weekProfile, "weekprofile-0-Sat-time", "00:00-07:00  /  07:00-23:00  /  23:00-00:00");
+        configuration.readNode(weekProfile, "weekprofile-0-Sat-temp", "15 °C  /  22 °C  /  15 °C");
+        configuration.readNode(weekProfile, "weekprofile-6-Fri-temp", "15 °C /  22 °C /  15 °C");
+        configuration.readNode(weekProfile, "weekprofile-6-Fri-time", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
         MaxDevice device = new MaxDevice();
         device.setName("name");

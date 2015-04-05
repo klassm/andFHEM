@@ -76,13 +76,14 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         LOG.info("doRemoteUpdate() - starting remote update");
         Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap();
         LOG.info("doRemoteUpdate() - remote device list update finished");
+        boolean success = false;
         if (result.isPresent()) {
-            roomListHolderService.storeDeviceListMap(result.get(), this);
-            LOG.info("doRemoteUpdate() - update was successful, sending result");
+            success = roomListHolderService.storeDeviceListMap(result.get(), this);
+            if (success) LOG.info("doRemoteUpdate() - update was successful, sending result");
         } else {
             LOG.info("doRemoteUpdate() - update was not successful, sending empty device list");
         }
-        startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(BundleExtraKeys.SUCCESS, result.isPresent()).setClass(this, RoomListIntentService.class));
+        startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(BundleExtraKeys.SUCCESS, success).setClass(this, RoomListIntentService.class));
         return STATE.DONE;
     }
 

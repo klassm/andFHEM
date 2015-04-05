@@ -31,6 +31,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -53,8 +54,11 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
                 internalState.equalsIgnoreCase("on-till");
     }
 
-    public void readMODEL(String value) {
-        if (value.equals("dpt10")) value = "time";
+    @XmllistAttribute("model")
+    public void setModel(String value) {
+        if (value.equals("dpt10")) {
+            value = "time";
+        }
         model = value;
     }
 

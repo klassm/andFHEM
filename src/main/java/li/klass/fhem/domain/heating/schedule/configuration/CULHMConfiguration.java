@@ -50,9 +50,9 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
 
     @Override
     public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile, String key, String value) {
-        if (!key.matches("(R_(P1_)?[0-9]_)?TEMPLIST([A-Z]{3})")) return;
+        if (!key.matches("(R_(P1_)?[0-9]_)?tempList([a-zA-Z]{3})")) return;
 
-        String shortName = key.replaceAll("(R_(P1_)?[0-9]_)?TEMPLIST", "");
+        String shortName = key.replaceAll("(R_(P1_)?[0-9]_)?tempList", "");
         DayUtil.Day day = DayUtil.getDayForShortName(shortName);
         if (day == null) return;
 

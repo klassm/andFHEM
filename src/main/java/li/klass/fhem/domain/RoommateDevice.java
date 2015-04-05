@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -33,6 +31,9 @@ import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showMeasured = true)
 @DetailViewSettings(showState = false)
@@ -54,11 +55,11 @@ public class RoommateDevice extends FhemDevice<RoommateDevice> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("STATE")) {
-            setMeasured(attributes.getNamedItem("measured").getNodeValue());
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        if (node.getType() == STATE && node.getKey().equalsIgnoreCase("STATE")) {
+            setMeasured(node.getMeasured());
         }
-        super.onChildItemRead(tagName, key, value, attributes);
+        super.onChildItemRead(type, key, value, node);
     }
 
     public String getMood() {

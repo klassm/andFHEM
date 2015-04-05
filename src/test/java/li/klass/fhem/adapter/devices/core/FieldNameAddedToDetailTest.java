@@ -54,10 +54,10 @@ public class FieldNameAddedToDetailTest {
         };
 
         dimmableFS20Device = new FS20Device();
-        dimmableFS20Device.readMODEL(FS20Device.DIM_MODELS.get(0));
+        dimmableFS20Device.setModel(FS20Device.DIM_MODELS.get(0));
 
         toggleableFS20Device = new FS20Device();
-        toggleableFS20Device.readMODEL("NOT_DIMMABLE");
+        toggleableFS20Device.setModel("NOT_DIMMABLE");
     }
 
     @Test

@@ -31,44 +31,42 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
-import static li.klass.fhem.util.ValueDescriptionUtil.appendDb;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendHPa;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendPpm;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 public class NetatmoDevice extends FhemDevice<NetatmoDevice> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("TEMPERATURE")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
+    @XmllistAttribute("humidity")
     private String humidity;
 
     @ShowField(description = ResourceIdMapper.co2, showInOverview = true)
+    @XmllistAttribute("co2")
     private String co2;
 
     @ShowField(description = ResourceIdMapper.noise)
+    @XmllistAttribute("noise")
     private String noise;
 
     @ShowField(description = ResourceIdMapper.pressure)
+    @XmllistAttribute("pressure")
     private String pressure;
 
+    @XmllistAttribute("SUBTYPE")
     private String subType;
 
     public String getTemperature() {
         return temperature;
     }
 
-    @XmllistAttribute("TEMPERATURE")
-    public void setTemperature(String temperature) {
-        this.temperature = appendTemperature(temperature);
-    }
 
     public String getHumidity() {
         return humidity;
     }
 
-    @XmllistAttribute("HUMIDITY")
+
     public void setHumidity(String humidity) {
         this.humidity = appendPercent(humidity);
     }
@@ -77,36 +75,16 @@ public class NetatmoDevice extends FhemDevice<NetatmoDevice> implements Temperat
         return co2;
     }
 
-    @XmllistAttribute("CO2")
-    public void setCo2(String co2) {
-        this.co2 = appendPpm(co2);
-    }
-
     public String getNoise() {
         return noise;
-    }
-
-    @XmllistAttribute("NOISE")
-    public void setNoise(String noise) {
-        this.noise = appendDb(noise);
     }
 
     public String getPressure() {
         return pressure;
     }
 
-    @XmllistAttribute("PRESSURE")
-    public void setPressure(String pressure) {
-        this.pressure = appendHPa(pressure);
-    }
-
     public String getSubType() {
         return subType;
-    }
-
-    @XmllistAttribute("SUBTYPE")
-    public void setSubType(String subtype) {
-        this.subType = subtype;
     }
 
     @Override

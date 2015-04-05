@@ -24,67 +24,48 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-import static li.klass.fhem.util.ValueDescriptionUtil.append;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
-@SuppressWarnings("unused")
 public class CM160Device extends FhemDevice<CM160Device> {
 
     @ShowField(description = ResourceIdMapper.energy_current, showInOverview = true)
+    @XmllistAttribute("A")
     private String current;
+
     @ShowField(description = ResourceIdMapper.energy_power, showInOverview = true)
+    @XmllistAttribute("W")
     private String power;
+
     @ShowField(description = ResourceIdMapper.cost, showInOverview = true)
+    @XmllistAttribute("C")
     private String cost;
+
     @ShowField(description = ResourceIdMapper.co2, showInOverview = true)
+    @XmllistAttribute("CO2")
     private String co2;
+
     @ShowField(description = ResourceIdMapper.dayUsage)
+    @XmllistAttribute("cumDay")
     private String cumDay;
+
     @ShowField(description = ResourceIdMapper.hourUsage)
+    @XmllistAttribute("cumHour")
     private String cumHour;
+
     @ShowField(description = ResourceIdMapper.monthUsage)
+    @XmllistAttribute("cumMonth")
     private String cumMonth;
+
     @ShowField(description = ResourceIdMapper.yearUsage)
+    @XmllistAttribute("cumYear")
     private String cumYear;
-
-    public void readA(String value) {
-        this.current = append(extractLeadingDouble(value), "A");
-    }
-
-    public void readW(String value) {
-        this.power = append(extractLeadingDouble(value), "W");
-    }
-
-    public void readC(String value) {
-        this.cost = append(extractLeadingDouble(value), "€/h");
-    }
-
-    public void readCO2(String value) {
-        this.co2 = append(extractLeadingDouble(value), "kg/h");
-    }
-
-    public void readCUMHOUR(String value) {
-        this.cumHour = value;
-    }
-
-    public void readCUMDAY(String value) {
-        this.cumDay = value;
-    }
-
-    public void readCUMMONTH(String value) {
-        this.cumMonth = value;
-    }
-
-    public void readCUMYEAR(String value) {
-        this.cumYear = value;
-    }
 
     public String getCurrent() {
         return current;
@@ -119,11 +100,11 @@ public class CM160Device extends FhemDevice<CM160Device> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
-        if ("STATE".equalsIgnoreCase(tagName) && "STATE".equalsIgnoreCase(key)) {
-            setMeasured(attributes.getNamedItem("measured").getNodeValue());
+        if (node.getType() == STATE && "STATE".equalsIgnoreCase(node.getKey())) {
+            setMeasured(node.getMeasured());
         }
     }
 

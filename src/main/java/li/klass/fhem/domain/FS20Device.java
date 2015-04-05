@@ -26,8 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
@@ -36,10 +34,12 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.NumberSystemUtil;
 
 import static java.util.Arrays.asList;
@@ -62,7 +62,8 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String model;
 
-    public void readMODEL(String value) {
+    @XmllistAttribute("model")
+    public void setModel(String value) {
         this.model = value.toUpperCase(Locale.getDefault());
     }
 
@@ -77,11 +78,10 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     @Override
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        super.readSTATE(tagName, attributes, value);
-        if (tagName.equals("STATE")) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+    public void setState(String value, DeviceNode node) {
+        super.setState(value, node);
+        if (node.isStateNode()) {
+            setMeasured(node.getMeasured());
         }
     }
 

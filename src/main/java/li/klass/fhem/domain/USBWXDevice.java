@@ -36,11 +36,11 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -51,26 +51,20 @@ public class USBWXDevice extends FhemDevice<USBWXDevice> implements TemperatureD
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetTemperatureAdditionalField
+    @XmllistAttribute("humidity")
     private String humidity;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
+    @XmllistAttribute("temperature")
     private String temperature;
+
     @ShowField(description = ResourceIdMapper.dewpoint, showInOverview = true)
+    @XmllistAttribute("dewpoint")
     private String dewpoint;
 
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readDEWPOINT(String value) {
-        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readTIME(String value) {
+    @XmllistAttribute("time")
+    public void setTime(String value) {
         setMeasured(value);
     }
 

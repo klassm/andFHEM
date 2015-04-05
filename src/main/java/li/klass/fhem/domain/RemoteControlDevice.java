@@ -24,7 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
+import android.content.Context;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -32,13 +34,30 @@ import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 @SuppressWarnings("unused")
 public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
+    public class Row implements Serializable, Comparable<Row> {
+        public final int index;
+        public final List<Entry> entries;
+
+        public Row(int index, List<Entry> entries) {
+            this.index = index;
+            this.entries = entries;
+        }
+
+        @Override
+        public int compareTo(@NotNull Row another) {
+            return Integer.compare(index, another.index);
+        }
+    }
+
     public class Entry implements Serializable {
         public final String command;
         public final String icon;
@@ -57,53 +76,51 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
         }
     }
 
+    @XmllistAttribute("RC_ICONPATH")
     private String iconPath = "icons/remotecontrol";
+
+    @XmllistAttribute("RC_ICONPREFIX")
     private String iconPrefix = "black_btn_";
 
     @ShowField(description = ResourceIdMapper.channel, showInOverview = true)
+    @XmllistAttribute("CHANNEL")
     private String channel;
-    @ShowField(description = ResourceIdMapper.currentTitle, showInOverview = true,
-            showAfter = "channel")
+
+    @ShowField(description = ResourceIdMapper.currentTitle, showInOverview = true, showAfter = "channel")
+    @XmllistAttribute("CURRENTTITLE")
     private String currentTitle;
 
-    private List<List<Entry>> rows = newArrayList();
-
-    public void readRC_ICONPATH(String value) {
-        iconPath = value;
-    }
-
-    public void readRC_ICONPREFIX(String value) {
-        iconPrefix = value;
-    }
-
-    public void readCHANNEL(String value) {
-        this.channel = value;
-    }
-
-    public void readCURRENTTITLE(String value) {
-        this.currentTitle = value;
-    }
+    private List<Row> rows = newArrayList();
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
-        if (!key.startsWith("ROW")) {
+        if (!key.startsWith("row")) {
             return;
         }
 
-        List<Entry> row = newArrayList();
+        key = key.replace("row0", "").replace("row", "");
+        int index = Integer.parseInt(key);
+
+
+        List<Entry> entries = newArrayList();
         String[] rowEntries = value.split(",");
         for (String rowEntry : rowEntries) {
             String[] parts = rowEntry.split(":");
             if (parts.length == 1) {
-                row.add(new Entry(parts[0]));
+                entries.add(new Entry(parts[0]));
             } else {
-                row.add(new Entry(parts[0], parts[1]));
+                entries.add(new Entry(parts[0], parts[1]));
             }
         }
+        rows.add(new Row(index, entries));
+    }
 
-        rows.add(row);
+    @Override
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        Collections.sort(rows);
     }
 
     @Override
@@ -127,7 +144,7 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
         return currentTitle;
     }
 
-    public List<List<Entry>> getRows() {
+    public List<Row> getRows() {
         return Collections.unmodifiableList(rows);
     }
 }

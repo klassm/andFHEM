@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -36,15 +37,18 @@ public class OwSwitchDevice extends FhemDevice<OwSwitchDevice> {
     private boolean onA;
     private boolean onB;
 
-    public void readA(String value) {
+    @XmllistAttribute("A")
+    public void setA(String value) {
         this.onA = !"OFF".equalsIgnoreCase(value);
     }
 
-    public void readB(String value) {
+    @XmllistAttribute("B")
+    public void setB(String value) {
         onB = !"OFF".equalsIgnoreCase(value);
     }
 
-    public void readGPIO(String value) {
+    @XmllistAttribute("GPIO")
+    public void setGpio(String value) {
         int s = ValueExtractUtil.extractLeadingInt(value);
 
         //Set values for channels (For 2 channels: 3 = A and B off, 1 = B on 2 = A on 0 = both on)

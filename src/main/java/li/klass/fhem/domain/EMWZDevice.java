@@ -32,42 +32,29 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
-@SuppressWarnings("unused")
 public class EMWZDevice extends FhemDevice<EMWZDevice> {
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
+    @XmllistAttribute("cum_kWh")
     private String cumulativeKwh;
 
     @ShowField(description = ResourceIdMapper.energy)
+    @XmllistAttribute("energy")
     private String energy;
 
     @ShowField(description = ResourceIdMapper.power)
+    @XmllistAttribute("power")
     private String power;
 
     @ShowField(description = ResourceIdMapper.price)
+    @XmllistAttribute("price_CF")
     private String price;
-
-    public void readCUM_KWH(String value) {
-        cumulativeKwh = ValueDescriptionUtil.append(value, "kWh");
-    }
-
-    public void readENERGY(String value) {
-        this.energy = ValueDescriptionUtil.append(value, "Wh");
-    }
-
-    public void readPOWER(String value) {
-        this.power = ValueDescriptionUtil.append(value, "W");
-    }
-
-    public void readPRICE_CF(String value) {
-        this.price = ValueDescriptionUtil.append(value, "EUR/W");
-    }
 
     public String getCumulativeKwh() {
         return cumulativeKwh;

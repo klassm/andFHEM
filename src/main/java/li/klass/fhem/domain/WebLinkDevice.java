@@ -26,15 +26,12 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 
 public class WebLinkDevice extends FhemDevice<WebLinkDevice> {
 
+    @XmllistAttribute("link")
     private String link;
-
-    @SuppressWarnings("unused")
-    public void readLINK(String value) {
-        link = value;
-    }
 
     public String getLink() {
         return link;

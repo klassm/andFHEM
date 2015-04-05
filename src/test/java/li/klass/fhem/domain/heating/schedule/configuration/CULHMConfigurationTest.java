@@ -49,7 +49,7 @@ public class CULHMConfigurationTest {
 
     @Test
     public void testDayRead() {
-        configuration.readNode(weekProfile, "TEMPLISTSAT", "08:00 16.5 19:30 20 24:00 16.0");
+        configuration.readNode(weekProfile, "tempListSat", "08:00 16.5 19:30 20 24:00 16.0");
 
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime()).isEqualTo("08:00");
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getSwitchTime()).isEqualTo("19:30");
@@ -72,13 +72,13 @@ public class CULHMConfigurationTest {
 
     @Test
     public void shouldIgnoreR_0_Pefixes() {
-        configuration.readNode(weekProfile, "R_0_TEMPLISTSAT", "08:00 16.5 19:30 20 24:00 16.0");
+        configuration.readNode(weekProfile, "R_0_tempListSat", "08:00 16.5 19:30 20 24:00 16.0");
         assertThat(weekProfile.getDayProfileFor(DayUtil.Day.SATURDAY)).isNotNull();
     }
 
     @Test
     public void testGenerateCommand() {
-        configuration.readNode(weekProfile, "TEMPLISTSAT", "24:00 16.0 08:00 16.0 19:30 20");
+        configuration.readNode(weekProfile, "tempListSat", "24:00 16.0 08:00 16.0 19:30 20");
 
         CULHMDevice device = new CULHMDevice();
         device.setName("name");
@@ -92,7 +92,7 @@ public class CULHMConfigurationTest {
 
     @Test
     public void testSetPrefixCanBeStillRead() {
-        configuration.readNode(weekProfile, "TEMPLISTSAT", "set_  05:45 17.0 07:00 21.0 18:00 17.0 23:00 21.0 24:00 17.0");
+        configuration.readNode(weekProfile, "tempListSat", "set_  05:45 17.0 07:00 21.0 18:00 17.0 23:00 21.0 24:00 17.0");
 
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature()).isEqualTo(17.0);
     }

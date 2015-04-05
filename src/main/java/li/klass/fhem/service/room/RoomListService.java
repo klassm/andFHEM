@@ -69,6 +69,8 @@ import static java.util.Collections.sort;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.RESEND_TRY;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
 import static li.klass.fhem.domain.core.DeviceType.AT;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
@@ -267,7 +269,16 @@ public class RoomListService extends AbstractService {
 
     private void resend(Intent intent, Context context) {
         LOG.info("resend() : resending {}", intent.getAction());
-        context.startService(createResendIntent(intent));
+
+        if (intent.getIntExtra(RESEND_TRY, 0) > 2) {
+            if (intent.hasExtra(RESULT_RECEIVER)) {
+                ResultReceiver receiver = intent.getParcelableExtra(RESULT_RECEIVER);
+                receiver.send(ResultCodes.ERROR, new Bundle());
+                LOG.error("resend() - exceeds maximum attempts, sending error");
+            }
+        } else {
+            context.startService(intent);
+        }
     }
 
     private Intent createResendIntent(Intent intent) {
@@ -276,6 +287,7 @@ public class RoomListService extends AbstractService {
         resendIntent.removeExtra(UPDATE_PERIOD);
 
         resendIntent.putExtra(UPDATE_PERIOD, NEVER_UPDATE_PERIOD);
+        resendIntent.putExtra(RESEND_TRY, intent.getIntExtra(RESEND_TRY, 0) + 1);
 
         return resendIntent;
     }

@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -34,11 +35,8 @@ import li.klass.fhem.resources.ResourceIdMapper;
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class FRMInDevice extends FhemDevice<FRMInDevice> {
     @ShowField(description = ResourceIdMapper.alarm)
+    @XmllistAttribute("alarm")
     private String alarm;
-
-    public void readALARM(String value) {
-        alarm = value;
-    }
 
     public String getAlarm() {
         return alarm;

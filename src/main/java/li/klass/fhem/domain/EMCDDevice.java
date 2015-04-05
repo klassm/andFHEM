@@ -24,10 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 public class EMCDDevice extends ToggleableDevice<EMCDDevice> {
     @Override
@@ -36,7 +35,7 @@ public class EMCDDevice extends ToggleableDevice<EMCDDevice> {
     }
 
     @Override
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        super.readSTATE(tagName, attributes, value.replaceAll("ok", "").trim());
+    public void setState(String value, DeviceNode node) {
+        super.setState(value.replaceAll("ok", "").trim(), node);
     }
 }

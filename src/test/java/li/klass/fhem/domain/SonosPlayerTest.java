@@ -41,7 +41,7 @@ public class SonosPlayerTest extends DeviceXMLParsingBase {
         assertThat(device.getCurrentAlbum()).isNullOrEmpty();
         assertThat(device.getCurrentTitle()).isNullOrEmpty();
         assertThat(device.getCurrentTitle()).isNullOrEmpty();
-        assertThat(device.getCurrentTrackDuration()).isNullOrEmpty();
+        assertThat(device.getCurrentTrackDuration()).isEqualTo("0:00:00");
         assertThat(device.getInfoSummarize1()).isEqualTo("WDR 2 Rhein und Ruhr:");
         assertThat(device.getInfoSummarize2()).isEqualTo("STOPPED => WDR 2 Rhein und Ruhr:");
         assertThat(device.getInfoSummarize3()).isEqualTo("Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer");

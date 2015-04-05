@@ -26,9 +26,10 @@ package li.klass.fhem.domain.core;
 
 import android.content.Context;
 
+import com.google.common.base.Joiner;
+
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
-import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,14 +44,15 @@ import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.DateFormatUtil;
-import li.klass.fhem.util.StringUtil;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
 
 @SuppressWarnings("unused")
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Serializable, Comparable<T> {
@@ -84,9 +86,10 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
 
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        if (tagName.equals("INT")) {
-            state = formatTargetState(value);
+    @XmllistAttribute("state")
+    public void setState(String value, DeviceNode node) {
+        if (node.getType() == INT) {
+            this.state = value;
         }
     }
 
@@ -95,7 +98,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         webCmd = newArrayList(value.split(":"));
     }
 
-    public void gcmState(String value) {
+    public void setGcmState(String value) {
         state = value;
         setMeasured(DateFormatUtil.toReadable(new DateTime()));
     }
@@ -190,7 +193,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @ShowField(description = ResourceIdMapper.rooms, showAfter = "aliasOrName")
     public String getRoomConcatenated() {
-        return StringUtil.concatenate(getRooms(), ",");
+        return Joiner.on(",").join(getRooms());
     }
 
     public void setRoomConcatenated(String roomsConcatenated) {
@@ -233,24 +236,23 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     /**
      * Called for each device node in the <i>xmllist</i>.
      *
-     * @param tagName    contains the current tag name (i.e. STATE, ATTR or INT)
-     * @param key        name of the key (i.e. ROOM)
-     * @param value      value of the tag
-     * @param attributes additional tag attributes
+     * @param type  contains the current tag name (i.e. STATE, ATTR or INT)
+     * @param key   name of the key (i.e. ROOM)
+     * @param value value of the tag
+     * @param node  additional tag node
      */
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
         if (key.endsWith("_TIME") && !key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
             setMeasured(value);
         }
     }
 
-    public void onAttributeRead(String attributeName, String attributeValue) {
-        if (attributeName.equals("SETS")) {
-            String setsText = attributeValue.replaceAll("\\*", "");
-            if (StringUtil.isBlank(setsText)) return;
+    @XmllistAttribute("SETS")
+    public void setSetList(String value) {
+        String setsText = value.replaceAll("\\*", "");
+        if (isNullOrEmpty(setsText)) return;
 
-            setList.parse(setsText);
-        }
+        setList.parse(setsText);
     }
 
     @Override
@@ -300,7 +302,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
      * Override me if you want to provide charts for a device
      *
      * @param chartSeries fill me with chart descriptions
-     * @param context context
+     * @param context     context
      */
     protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
         deviceCharts.clear();

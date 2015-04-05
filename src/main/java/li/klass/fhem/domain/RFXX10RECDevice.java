@@ -24,16 +24,15 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @OverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
 public class RFXX10RECDevice extends FhemDevice<RFXX10RECDevice> {
     @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
@@ -41,12 +40,14 @@ public class RFXX10RECDevice extends FhemDevice<RFXX10RECDevice> {
     @ShowField(description = ResourceIdMapper.lastState, showInOverview = true)
     private String lastState;
 
-    public void readTIME(String value) {
+    @XmllistAttribute("time")
+    public void setTime(String value) {
         setMeasured(value);
     }
 
-    public void readSTATECHANGE(String value, NamedNodeMap attributes) {
-        lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
+    @XmllistAttribute("stateChange")
+    public void setStateChange(String value, DeviceNode node) {
+        lastStateChangeTime = node.getMeasured();
         lastState = value;
     }
 

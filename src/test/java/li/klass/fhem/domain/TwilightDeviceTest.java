@@ -34,6 +34,7 @@ public class TwilightDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         TwilightDevice device = getDefaultDevice(TwilightDevice.class);
+        assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

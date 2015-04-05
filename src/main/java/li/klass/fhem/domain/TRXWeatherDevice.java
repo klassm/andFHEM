@@ -35,11 +35,11 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
@@ -47,73 +47,44 @@ import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
-@SuppressWarnings("unused")
 public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> implements TemperatureDevice {
 
     @WidgetTemperatureField
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.battery, showInOverview = true)
+    @XmllistAttribute("battery")
     private String battery;
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
+    @XmllistAttribute("humidity")
     private String humidity;
 
     @ShowField(description = ResourceIdMapper.dewpoint, showInOverview = false)
+    @XmllistAttribute("dewpoint")
     private String dewpoint;
 
     @ShowField(description = ResourceIdMapper.rain, showInOverview = false)
+    @XmllistAttribute("rain_total")
     private String rain;
 
     @ShowField(description = ResourceIdMapper.windSpeed, showInOverview = true)
+    @XmllistAttribute("wind_speed")
     private String windSpeed;
 
     @ShowField(description = ResourceIdMapper.windDirection, showInOverview = true)
+    @XmllistAttribute("wind_dir")
     private String windDirection;
 
     @ShowField(description = ResourceIdMapper.windAvgSpeed, showInOverview = false)
+    @XmllistAttribute("wind_avspeed")
     private String windAverageSpeed;
 
     @ShowField(description = ResourceIdMapper.windchill, showInOverview = false)
+    @XmllistAttribute("windchill")
     private String windchill;
-
-
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readBATTERY(String value) {
-        this.battery = value;
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readDEWPOINT(String value) {
-        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readRAIN_TOTAL(String value) {
-        this.rain = ValueDescriptionUtil.appendLm2(value);
-    }
-
-    public void readWIND_SPEED(String value) {
-        this.windSpeed = ValueDescriptionUtil.appendKmH(value);
-    }
-
-    public void readWIND_DIR(String value) {
-        this.windDirection = value;
-    }
-
-    public void readWIND_AVSPEED(String value) {
-        this.windAverageSpeed = ValueDescriptionUtil.appendKmH(value);
-    }
-
-    public void readWINDCHILL(String value) {
-        this.windchill = ValueDescriptionUtil.appendTemperature(value);
-    }
 
     public String getTemperature() {
         return temperature;

@@ -27,6 +27,8 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.common.base.Strings;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -35,7 +37,6 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.util.StringUtil;
 
 /**
  * Class accumulating all device actions like renaming, moving or deleting.
@@ -82,7 +83,7 @@ public class DeviceService {
      * @param context context
      */
     public void setAlias(final FhemDevice device, final String alias, Context context) {
-        if (StringUtil.isBlank(alias)) {
+        if (Strings.isNullOrEmpty(alias)) {
             commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias", context);
         } else {
             commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias, context);

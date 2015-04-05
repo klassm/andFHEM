@@ -35,7 +35,7 @@ public class ESA2000DeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         ESA2000Device device = getDefaultDevice(ESA2000Device.class);
 
-        assertThat(device.getCurrent()).isEqualTo("81 (W)");
+        assertThat(device.getCurrent()).isEqualTo("0.0812 (kW)");
         assertThat(device.getDay()).isEqualTo("1.04 (kWh)");
         assertThat(device.getDayLast()).isEqualTo("4.78 (kWh)");
         assertThat(device.getMonth()).isEqualTo("5.82 (kWh)");

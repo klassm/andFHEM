@@ -24,8 +24,9 @@
 
 package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 
+import com.google.common.base.Strings;
+
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.StringUtil;
 
 public abstract class AnnotatedDeviceClassItem {
     public abstract String getName();
@@ -39,7 +40,7 @@ public abstract class AnnotatedDeviceClassItem {
         if (annotation == null) return null;
 
         String showAfter = annotation.showAfter();
-        if (StringUtil.isBlank(showAfter)) return null;
+        if (Strings.isNullOrEmpty(showAfter)) return null;
 
         return showAfter;
     }

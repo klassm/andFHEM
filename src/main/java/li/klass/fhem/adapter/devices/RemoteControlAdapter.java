@@ -74,22 +74,20 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
         TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, parent, false);
         assert tableLayout != null;
 
-        List<List<RemoteControlDevice.Entry>> rows = device.getRows();
-
-        for (List<RemoteControlDevice.Entry> row : rows) {
+        for (RemoteControlDevice.Row row : device.getRows()) {
             tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater));
         }
 
         return tableLayout;
     }
 
-    private TableRow createTableRowForRemoteControlRow(List<RemoteControlDevice.Entry> row,
+    private TableRow createTableRowForRemoteControlRow(RemoteControlDevice.Row row,
                                                        Context context, RemoteControlDevice device,
                                                        LayoutInflater layoutInflater) {
 
         TableRow tableRow = new TableRow(context);
 
-        for (RemoteControlDevice.Entry entry : row) {
+        for (RemoteControlDevice.Entry entry : row.entries) {
             tableRow.addView(createImageViewFor(entry, device, layoutInflater, tableRow));
         }
 

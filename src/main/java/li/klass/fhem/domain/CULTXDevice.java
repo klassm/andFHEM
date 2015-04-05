@@ -36,11 +36,11 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -50,19 +50,13 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 public class CULTXDevice extends FhemDevice<CULTXDevice> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.temperature, showInDetail = true, showInOverview = true)
     @WidgetTemperatureField
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @WidgetTemperatureAdditionalField(description = ResourceIdMapper.humidity)
     @ShowField(description = ResourceIdMapper.humidity, showInDetail = true, showInOverview = true)
+    @XmllistAttribute("humidity")
     private String humidity;
-
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
 
     public String getTemperature() {
         return temperature;

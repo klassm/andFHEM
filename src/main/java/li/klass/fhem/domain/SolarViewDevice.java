@@ -31,75 +31,39 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
-import static li.klass.fhem.util.ValueDescriptionUtil.append;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendW;
 
 public class SolarViewDevice extends FhemDevice<SolarViewDevice> {
     @ShowField(description = ResourceIdMapper.currentPower, showInOverview = true)
+    @XmllistAttribute("currentPower")
     private String currentPower;
 
     @ShowField(description = ResourceIdMapper.current)
+    @XmllistAttribute("gridCurrent")
     private String gridCurrent;
 
     @ShowField(description = ResourceIdMapper.voltage)
+    @XmllistAttribute("gridVoltage")
     private String gridVoltage;
 
     @ShowField(description = ResourceIdMapper.temperature)
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.totalEnergy)
+    @XmllistAttribute("totalEnergy")
     private String totalEnergy;
 
     @ShowField(description = ResourceIdMapper.totalEnergyDay, showInOverview = true)
+    @XmllistAttribute("totalEnergyDay")
     private String totalEnergyDay;
 
     @ShowField(description = ResourceIdMapper.totalEnergyMonth)
+    @XmllistAttribute("totalEnergyMonth")
     private String totalEnergyMonth;
 
     @ShowField(description = ResourceIdMapper.totalEnergyYear)
-    private String totalEnergyYear;
-
-    @XmllistAttribute("currentPower")
-    public void setCurrentPower(String currentPower) {
-        this.currentPower = appendW(currentPower);
-    }
-
-    @XmllistAttribute("gridCurrent")
-    public void setGridCurrent(String gridCurrent) {
-        this.gridCurrent = append(gridCurrent, "A");
-    }
-
-    @XmllistAttribute("gridVoltage")
-    public void setGridVoltage(String gridVoltage) {
-        this.gridVoltage = append(gridVoltage, "V");
-    }
-
-    @XmllistAttribute("temperature")
-    public void setTemperature(String temperature) {
-        this.temperature = appendTemperature(temperature);
-    }
-
-    @XmllistAttribute("totalEnergy")
-    public void setTotalEnergy(String totalEnergy) {
-        this.totalEnergy = appendKWh(totalEnergy);
-    }
-
-    @XmllistAttribute("totalEnergyDay")
-    public void setTotalEnergyDay(String totalEnergyDay) {
-        this.totalEnergyDay = appendKWh(totalEnergyDay);
-    }
-
-    @XmllistAttribute("totalEnergyMonth")
-    public void setTotalEnergyMonth(String totalEnergyMonth) {
-        this.totalEnergyMonth = appendKWh(totalEnergyMonth);
-    }
-
     @XmllistAttribute("totalEnergyYear")
-    public void setTotalEnergyYear(String totalEnergyYear) {
-        this.totalEnergyYear = appendKWh(totalEnergyYear);
-    }
+    private String totalEnergyYear;
 
     public String getCurrentPower() {
         return currentPower;

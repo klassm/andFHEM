@@ -44,7 +44,7 @@ public class THPLSensorTest extends DeviceXMLParsingBase {
 
         assertThat(device.getMeasuredTemp()).isEqualTo("25.0 (°C)");
         assertThat(device.getBattery()).isEqualTo("ok");
-        assertThat(device.getHumidity()).isEqualTo("54 (%)");
+        assertThat(device.getHumidity()).isEqualTo("54.0 (%)");
         assertThat(device.getLuminosity()).isEqualTo("0.56 (lm)");
         assertThat(device.getBatteryVoltage()).isEqualTo("2.58 (V)");
 
@@ -60,8 +60,8 @@ public class THPLSensorTest extends DeviceXMLParsingBase {
 
         assertThat(device.getName()).isEqualTo("pressure");
 
-        assertThat(device.getPressure()).isEqualTo("998 (hPa)");
-        assertThat(device.getPressureNN()).isEqualTo("1024 (hPa)");
+        assertThat(device.getPressure()).isEqualTo("998.0 (hPa)");
+        assertThat(device.getPressureNN()).isEqualTo("1024.0 (hPa)");
 
         assertThat(device.isSupported()).isTrue();
     }

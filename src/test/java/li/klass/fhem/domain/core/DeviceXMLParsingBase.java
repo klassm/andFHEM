@@ -49,9 +49,11 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.DeviceListParser;
+import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.CloseableUtil;
+import li.klass.fhem.util.ReflectionUtil;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -82,6 +84,8 @@ public abstract class DeviceXMLParsingBase {
     public void before() throws Exception {
         AndFHEMApplication.setContext(context);
 
+        XmlListParser xmlListParser = AndFHEMApplication.createDaggerGraph().get(XmlListParser.class);
+        ReflectionUtil.setFieldValue(deviceListParser, "parser", xmlListParser);
         mockStrings();
 
         doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class), eq(context));

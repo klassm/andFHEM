@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -34,15 +35,14 @@ import li.klass.fhem.resources.ResourceIdMapper;
 public class GCMSendDevice extends FhemDevice<GCMSendDevice> {
 
     @ShowField(description = ResourceIdMapper.apiKey)
+    @XmllistAttribute("apiKey")
     private String apiKey;
+
     private String[] regIds;
 
-    @SuppressWarnings("unused")
-    public void readAPIKEY(String value) {
-        apiKey = value;
-    }
 
-    public void readREGIDS(String value) {
+    @XmllistAttribute("regIds")
+    public void setRegIds(String value) {
         regIds = value.split("\\|");
     }
 

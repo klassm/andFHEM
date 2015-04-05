@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
@@ -56,7 +57,8 @@ public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<Readings
         return hexToDecimal(rgb);
     }
 
-    public void readRGB(String value) {
+    @XmllistAttribute("rgb")
+    public void setRgb(String value) {
         setState("rgb " + value);
     }
 

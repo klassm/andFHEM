@@ -60,7 +60,7 @@ public class GCMSendDeviceServiceTest {
 
         assertThat(service.isDeviceRegistered(device, context)).isFalse();
 
-        device.readREGIDS("abc|def");
+        device.setRegIds("abc|def");
         assertThat(service.isDeviceRegistered(device, context)).isFalse();
 
         given(applicationProperties.getStringSharedPreference(eq(GCM_REGISTRATION_ID), anyString(), eq(context))).willReturn("abc");

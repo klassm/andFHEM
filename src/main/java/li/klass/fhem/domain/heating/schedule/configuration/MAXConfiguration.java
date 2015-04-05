@@ -27,6 +27,8 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
@@ -37,6 +39,7 @@ import li.klass.fhem.util.DayUtil;
 public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInterval, MaxDevice, MAXConfiguration> {
 
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 13;
+    public static final Pattern WEEKPROFILE_KEY_PATTERN = Pattern.compile("weekprofile_[0-9]+_([^_]+)_(time|temp)");
 
     public MAXConfiguration() {
         super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC);
@@ -44,26 +47,28 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
 
     @Override
     public void readNode(WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile, String key, String value) {
-        if (!key.startsWith("WEEKPROFILE") || (!key.endsWith("TEMP") && !key.endsWith("TIME")))
+        if (!key.startsWith("weekprofile") || (!key.endsWith("temp") && !key.endsWith("time"))) {
             return;
+        }
+
         key = key.replaceAll("-", "_");
 
         // B0 is a pretty strange fix. Sometimes it seems to be places instead of a degree (°) sign
         value = value.replaceAll("[^0-9. -:/]", "").replaceAll("  ", " ");
 
-        int lastDash = key.lastIndexOf("_");
-        int dayDash = key.indexOf("_", "WEEKPROFILE_".length());
+        Matcher matcher = WEEKPROFILE_KEY_PATTERN.matcher(key);
+        if (!matcher.find()) {
+            return;
+        }
 
-        if (lastDash == -1 || dayDash == -1) return;
-
-        String dayShortName = key.substring(dayDash + 1, lastDash);
+        String dayShortName = matcher.group(1);
         DayUtil.Day day = DayUtil.getDayForShortName(dayShortName);
 
         if (day == null) return;
 
-        if (key.endsWith("TEMP")) {
+        if (key.endsWith("temp")) {
             parseTemp(day, value, weekProfile);
-        } else if (key.endsWith("TIME")) {
+        } else if (key.endsWith("time")) {
             parseTime(day, value, weekProfile);
         }
     }
@@ -103,12 +108,12 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
 
     @Override
     public DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> createDayProfileFor(DayUtil.Day day, MAXConfiguration configuration) {
-        return new DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>(day, configuration);
+        return new DayProfile<>(day, configuration);
     }
 
     @Override
     public List<String> generateScheduleCommands(MaxDevice device, WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         List<? extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
         for (DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile : changedDayProfiles) {
@@ -123,7 +128,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
 
         StringBuilder builder = new StringBuilder();
 
-        List<FilledTemperatureInterval> heatingIntervals = new ArrayList<FilledTemperatureInterval>(dayProfile.getHeatingIntervals());
+        List<FilledTemperatureInterval> heatingIntervals = new ArrayList<>(dayProfile.getHeatingIntervals());
         Collections.sort(heatingIntervals);
 
         for (int i = 0; i < heatingIntervals.size(); i++) {

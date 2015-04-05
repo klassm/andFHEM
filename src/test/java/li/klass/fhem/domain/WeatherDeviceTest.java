@@ -42,8 +42,8 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getIcon()).isEqualTo("cloudy.png");
         assertThat(device.getCondition()).isEqualTo("Bewölkt");
-        assertThat(device.getHumidity()).isEqualTo("43 (%)");
-        assertThat(device.getTemperature()).isEqualTo("19 (°C)");
+        assertThat(device.getHumidity()).isEqualTo("43.0 (%)");
+        assertThat(device.getTemperature()).isEqualTo("19.0 (°C)");
         assertThat(device.getWind()).isEqualTo("NW mit 11 km/h");
         assertThat(device.getState()).isEqualTo("T: 19  H: 43  W: 11");
 

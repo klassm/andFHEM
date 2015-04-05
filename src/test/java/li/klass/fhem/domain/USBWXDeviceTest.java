@@ -39,7 +39,7 @@ public class USBWXDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getDewpoint()).isEqualTo("10.3 (°C)");
-        assertThat(device.getHumidity()).isEqualTo("60 (%)");
+        assertThat(device.getHumidity()).isEqualTo("60.0 (%)");
         assertThat(device.getTemperature()).isEqualTo("18.2 (°C)");
 
         assertThat(device.getState()).isEqualTo("T: 18.2  H: 60");

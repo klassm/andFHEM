@@ -37,13 +37,13 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
 
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
@@ -51,42 +51,38 @@ public class CULEMDevice extends FhemDevice<CULEMDevice> {
 
     @ShowField(description = ResourceIdMapper.currentUsage, showInOverview = true)
     @WidgetMediumLine1
+    @XmllistAttribute("current")
     private String currentUsage;
+
     @ShowField(description = ResourceIdMapper.dayUsage, showInOverview = true)
     @WidgetMediumLine2
     private String dayUsage;
+
     @ShowField(description = ResourceIdMapper.monthUsage, showInOverview = true)
     @WidgetMediumLine3
     private String monthUsage;
+
+    @XmllistAttribute("SUM_GRAPH_DIVISION_FACTOR")
     private double sumGraphDivisionFactor = 1d;
 
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
+    @XmllistAttribute("total")
     private String cumulativeKwh;
 
-    public void readCURRENT(String value) {
-        currentUsage = ValueDescriptionUtil.appendKWh(value);
+
+    @XmllistAttribute("cum_day")
+    public void setCumDay(String value) {
+        dayUsage = appendKWh(extractCumUsage(value, "CUM_DAY"));
     }
 
-    public void readCUM_DAY(String value) {
-        dayUsage = ValueDescriptionUtil.appendKWh(extractCumUsage(value, "CUM_DAY"));
+    @XmllistAttribute("cum_month")
+    public void setCumMonth(String value) {
+        monthUsage = appendKWh(extractCumUsage(value, "CUM_MONTH"));
     }
 
     private String extractCumUsage(String cumString, String cumToken) {
         cumToken = cumToken + ": ";
         return cumString.substring(cumToken.length(), cumString.indexOf(" ", cumToken.length() + 1));
-    }
-
-    public void readCUM_MONTH(String value) {
-        monthUsage = ValueDescriptionUtil.appendKWh(extractCumUsage(value, "CUM_MONTH"));
-    }
-
-    public void readSUM_GRAPH_DIVISION_FACTOR(String value) {
-        sumGraphDivisionFactor = Double.valueOf(value);
-    }
-
-    public void readTOTAL(String value) {
-        double val = ValueExtractUtil.extractLeadingDouble(value);
-        cumulativeKwh = ValueDescriptionUtil.appendKWh("" + (((int) (val * 100)) / 100d));
     }
 
     public String readCurrentUsage() {

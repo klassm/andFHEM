@@ -24,19 +24,17 @@
 
 package li.klass.fhem.util;
 
+import com.google.common.base.Strings;
+
 public class ValueDescriptionUtil {
 
     public static final String C = "°C";
     public static final String PERCENT = "%";
-    public static final String KM_H = "km/h";
     public static final String M_S = "m/s";
-    public static final String L_M2 = "l/m2";
     public static final String L = "l";
     public static final String KWH = "kWh";
     public static final String LUX = "lux";
     public static final String PPM = "ppm";
-    public static final String EURO = "€";
-    public static final String DB = "dB";
 
     public static String appendPercent(Object text) {
         return append(text, PERCENT);
@@ -44,14 +42,6 @@ public class ValueDescriptionUtil {
 
     public static String append(Object text, String appendix) {
         return text + " (" + appendix + ")";
-    }
-
-    public static String appendKmH(Object text) {
-        return append(text, KM_H);
-    }
-
-    public static String appendLm2(Object text) {
-        return append(text, L_M2);
     }
 
     public static String appendL(Object text) {
@@ -64,22 +54,6 @@ public class ValueDescriptionUtil {
 
     public static String appendPpm(Object text) {
         return append(text, PPM);
-    }
-
-    public static String appendEuro(Object text) {
-        return append(text, EURO);
-    }
-
-    public static String appendDb(Object text) {
-        return append(text, DB);
-    }
-
-    public static String appendHPa(Object text) {
-        return append(text, "hPa");
-    }
-
-    public static String appendLm(String luminosity) {
-        return append(luminosity, "lm");
     }
 
     public static String appendV(String voltage) {
@@ -102,10 +76,6 @@ public class ValueDescriptionUtil {
         } else {
             return appendTemperature(temperature);
         }
-    }
-
-    public static String appendmA(String value) {
-        return append(value, "mA");
     }
 
     public static String appendTemperature(Object text) {
@@ -140,7 +110,7 @@ public class ValueDescriptionUtil {
     }
 
     private static String appendToString(String string, String toAppend) {
-        if (!StringUtil.isBlank(string)) {
+        if (!Strings.isNullOrEmpty(string)) {
             string += " ";
         }
 

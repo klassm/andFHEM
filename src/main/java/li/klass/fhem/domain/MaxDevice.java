@@ -27,8 +27,6 @@ package li.klass.fhem.domain;
 import android.content.Context;
 import android.util.Log;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -41,6 +39,7 @@ import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
@@ -54,6 +53,7 @@ import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
@@ -81,6 +81,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     private String type;
 
     @ShowField(description = ResourceIdMapper.battery, showInOverview = true)
+    @XmllistAttribute("battery")
     private String battery;
 
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
@@ -88,9 +89,11 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.actuator)
+    @XmllistAttribute("VALVEPOSITION")
     private String actuator;
 
     @ShowField(description = ResourceIdMapper.ecoTemperature)
@@ -107,8 +110,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     private HeatingMode heatingMode;
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
         weekProfile.readNode(key, value);
     }
 
@@ -118,7 +121,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         weekProfile.afterXMLRead();
     }
 
-    public void readTYPE(String value) {
+    @XmllistAttribute("type")
+    public void setType(String value) {
         if (value.equalsIgnoreCase("ShutterContact")) {
             subType = SubType.WINDOW;
         } else if (value.equalsIgnoreCase("Cube")) {
@@ -134,23 +138,23 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         type = value;
     }
 
-    public void readBATTERY(String value) {
-        this.battery = value;
-    }
-
-    public void readWINDOWOPENTEMPERATURE(String value) {
+    @XmllistAttribute("WINDOWOPENTEMPERATURE")
+    public void setWindowOpenTemperature(String value) {
         this.windowOpenTemp = parseTemperature(value);
     }
 
-    public void readECOTEMPERATURE(String value) {
+    @XmllistAttribute("ECOTEMPERATURE")
+    public void setEcoTemperature(String value) {
         this.ecoTemp = parseTemperature(value);
     }
 
-    public void readCOMFORTTEMPERATURE(String value) {
+    @XmllistAttribute("COMFORTTEMPERATURE")
+    public void setComfortTemperature(String value) {
         comfortTemp = parseTemperature(value);
     }
 
-    public void readDESIREDTEMPERATURE(String value) {
+    @XmllistAttribute("DESIREDTEMPERATURE")
+    public void setDesiredTemperature(String value) {
         for (HeatingMode heatingMode : HeatingMode.values()) {
             if (value.equalsIgnoreCase(heatingMode.name())) {
                 this.heatingMode = heatingMode;
@@ -158,19 +162,11 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
             }
         }
 
-        double temperature = parseTemperature(value);
-        setDesiredTemp(temperature);
+        setDesiredTemp(parseTemperature(value));
     }
 
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readVALVEPOSITION(String value) {
-        this.actuator = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readMODE(String value) {
+    @XmllistAttribute("mode")
+    public void setMode(String value) {
         if (NumberUtil.isDecimalNumber(value)) {
             int mode = ValueExtractUtil.extractLeadingInt(value);
             switch (mode) {

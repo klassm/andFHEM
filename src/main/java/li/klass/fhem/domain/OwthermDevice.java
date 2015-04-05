@@ -36,11 +36,11 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -50,17 +50,15 @@ public class OwthermDevice extends FhemDevice<OwthermDevice> implements Temperat
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
+    @XmllistAttribute("temperature")
     private String temperature;
 
     private String present;
 
-    public void readPRESENT(String value) {
+    @XmllistAttribute("present")
+    public void setPresent(String value) {
         int stringId = value.equals("1") ? R.string.yes : R.string.no;
         present = AndFHEMApplication.getContext().getString(stringId);
-    }
-
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueUtil.formatTemperature(value);
     }
 
     public String getTemperature() {

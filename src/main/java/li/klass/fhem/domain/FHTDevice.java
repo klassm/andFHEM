@@ -26,8 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +41,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
@@ -54,56 +53,69 @@ import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
-import li.klass.fhem.util.ValueUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
-@SuppressWarnings("unused")
 public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevice,
         WindowOpenTempDevice, HeatingDevice<FHTMode, FHTConfiguration, FromToHeatingInterval, FHTDevice>, TemperatureDevice {
+
     private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
-    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<>(heatingConfiguration);
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
+
+    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<>(heatingConfiguration);
+    private FHTMode heatingMode;
+
     @ShowField(description = ResourceIdMapper.desiredTemperature, showAfter = "temperature")
     @WidgetMediumLine2(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp = MINIMUM_TEMPERATURE;
 
     @ShowField(description = ResourceIdMapper.dayTemperature, showAfter = "desiredTemp")
+    @XmllistAttribute("day_temp")
     private double dayTemperature = MINIMUM_TEMPERATURE;
 
     @ShowField(description = ResourceIdMapper.nightTemperature, showAfter = "dayTemperature")
+    @XmllistAttribute("night_temp")
     private double nightTemperature = MINIMUM_TEMPERATURE;
 
     @ShowField(description = ResourceIdMapper.windowOpenTemp, showAfter = "nightTemperature")
+    @XmllistAttribute("windowopen_temp")
     private double windowOpenTemp = MINIMUM_TEMPERATURE;
+
     @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
     @WidgetTemperatureAdditionalField(description = ResourceIdMapper.actuator)
     @WidgetMediumLine3(description = ResourceIdMapper.actuator)
     private String actuator;
-    private FHTMode heatingMode;
+
     @ShowField(description = ResourceIdMapper.warnings)
+    @XmllistAttribute("warnings")
     private String warnings;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
+    @XmllistAttribute("measured_temp")
     private String temperature;
+
     @ShowField(description = ResourceIdMapper.battery)
+    @XmllistAttribute("battery")
     private String battery;
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
-        super.onChildItemRead(tagName, key, value, nodeAttributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
+
         weekProfile.readNode(key, value);
 
-        if (key.startsWith("ACTUATOR") && value != null && value.matches("[0-9]*[%]?")) {
-            double percentage = ValueExtractUtil.extractLeadingDouble(value);
-            actuator = ValueDescriptionUtil.appendPercent(percentage);
+        if (key.startsWith("actuator") && value != null && value.matches("[0-9]*[%]?")) {
+            actuator = appendPercent(extractLeadingDouble(value));
         }
     }
 
@@ -113,19 +125,8 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
         weekProfile.afterXMLRead();
     }
 
-    public void readBATTERY(String value) {
-        battery = value;
-    }
-
-    public void readMEASURED_TEMP(String value) {
-        temperature = ValueUtil.formatTemperature(value);
-    }
-
-    public void readWARNINGS(String value) {
-        warnings = value;
-    }
-
-    public void readMODE(String value) {
+    @XmllistAttribute("mode")
+    public void setMode(String value) {
         try {
             this.heatingMode = FHTMode.valueOf(value.toUpperCase(Locale.getDefault()));
         } catch (IllegalArgumentException e) {
@@ -133,23 +134,12 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
         }
     }
 
-    public void readDESIRED_TEMP(String value) {
+    @XmllistAttribute("desired_temp")
+    public void setDesiredTemp(String value) {
         if (value.equalsIgnoreCase("off")) value = "5.5";
         if (value.equalsIgnoreCase("on")) value = "30.5";
 
-        desiredTemp = ValueExtractUtil.extractLeadingDouble(value);
-    }
-
-    public void readDAY_TEMP(String value) {
-        dayTemperature = ValueExtractUtil.extractLeadingDouble(value);
-    }
-
-    public void readNIGHT_TEMP(String value) {
-        nightTemperature = ValueExtractUtil.extractLeadingDouble(value);
-    }
-
-    public void readWINDOWOPEN_TEMP(String value) {
-        windowOpenTemp = ValueExtractUtil.extractLeadingDouble(value);
+        desiredTemp = extractLeadingDouble(value);
     }
 
     public String getActuator() {

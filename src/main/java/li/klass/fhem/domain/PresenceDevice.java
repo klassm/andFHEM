@@ -24,36 +24,33 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
-@SuppressWarnings("unused")
 public class PresenceDevice extends FhemDevice<PresenceDevice> {
     @ShowField(description = ResourceIdMapper.mode)
+    @XmllistAttribute("mode")
     private String mode;
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("state")) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        if (node.getType() == STATE && "state".equalsIgnoreCase(node.getMeasured())) {
+            setMeasured(node.getMeasured());
         }
-        super.onChildItemRead(tagName, key, value, attributes);
+        super.onChildItemRead(type, key, value, node);
     }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.NETWORK;
-    }
-
-    public void readMODE(String value) {
-        this.mode = value;
     }
 
     public String getMode() {

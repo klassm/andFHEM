@@ -32,38 +32,28 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
-@SuppressWarnings("unused")
 public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.battery)
+    @XmllistAttribute("battery")
     private String battery;
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
+    @XmllistAttribute("humidity")
     private String humidity;
-
-    public void readTEMPERATURE(String value) {
-        temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readHUMIDITY(String value) {
-        humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readBATTERY(String value) {
-        battery = value;
-    }
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {

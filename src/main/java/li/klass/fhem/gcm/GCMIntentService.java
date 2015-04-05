@@ -32,6 +32,7 @@ import android.os.SystemClock;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.common.base.Strings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NotificationUtil;
-import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.Tasker;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -93,7 +93,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String type = extras.getString("type");
         if ("message".equalsIgnoreCase(type)) {
             handleMessage(extras);
-        } else if ("notify".equalsIgnoreCase(type) || StringUtil.isBlank(type)) {
+        } else if ("notify".equalsIgnoreCase(type) || Strings.isNullOrEmpty(type)) {
             handleNotify(extras);
         } else {
             LOG.error("onMessage - unknown type: {}", type);
@@ -188,7 +188,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected String[] getSenderIds(Context context) {
         ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
         String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null, context);
-        if (StringUtil.isBlank(projectId)) {
+        if (Strings.isNullOrEmpty(projectId)) {
             return new String[]{};
         }
         return new String[]{projectId};

@@ -26,32 +26,12 @@ package li.klass.fhem.util;
 
 import org.junit.Test;
 
-import static li.klass.fhem.util.StringUtil.concatenate;
 import static li.klass.fhem.util.StringUtil.endsWith;
-import static li.klass.fhem.util.StringUtil.isBlank;
 import static li.klass.fhem.util.StringUtil.prefixPad;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class StringUtilTest {
-
-    @Test
-    public void testConcatenate() {
-        assertEquals("a,b,c", concatenate(new String[]{"a", "b", "c"}, ","));
-        assertEquals("", concatenate(new String[]{}, ","));
-    }
-
-    @Test
-    public void testIsBlank() {
-        assertTrue(isBlank(""));
-        assertTrue(isBlank(" "));
-        assertTrue(isBlank(null));
-        assertFalse(isBlank("abc"));
-    }
-
     @Test
     public void testEndsWith() {
         StringBuilder buffer = new StringBuilder("hallowelt123");

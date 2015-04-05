@@ -39,7 +39,7 @@ public class SolarViewDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getCurrentPower()).isEqualTo("4 (W)");
         assertThat(device.getGridCurrent()).isEqualTo("3 (A)");
         assertThat(device.getGridVoltage()).isEqualTo("2 (V)");
-        assertThat(device.getTemperature()).isEqualTo("10 (°C)");
+        assertThat(device.getTemperature()).isEqualTo("10.0 (°C)");
         assertThat(device.getTotalEnergy()).isEqualTo("533 (kWh)");
         assertThat(device.getTotalEnergyDay()).isEqualTo("1.2 (kWh)");
         assertThat(device.getTotalEnergyMonth()).isEqualTo("36 (kWh)");

@@ -34,6 +34,7 @@ import java.util.Map;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 
@@ -50,9 +51,9 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
     /**
      * We extract the device names from the current log regexp. As the regexp always concerns
      * device name and reading, we have to skip the reading.
-     * 
+     * <p/>
      * The default format is <i>deviceName:reading </i>, so we have to skip the reading part and
-     * the colon. In addition, we have to make sure that we can still write regexp style expression,
+     * the colon. In addition, we have to make sure that we can still write regexp style expressions,
      * including OR expressions on different levels.
      *
      * @param definition regexp definition for the log device (including device events).
@@ -112,8 +113,8 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
                 .replaceAll("\\.$", ".*");
     }
 
-    @SuppressWarnings("unused")
-    public void readREGEXP(String value) {
+    @XmllistAttribute("regexp")
+    public void setConcerningDeviceRegexp(String value) {
         if (".".equals(value)) value = ".*";
         this.concerningDeviceRegexp = extractConcerningDeviceRegexpFromDefinition(value);
     }
@@ -159,8 +160,8 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
         });
     }
 
-    @SuppressWarnings("unused")
-    public void readYAXISMINMAX(String definition) {
+    @XmllistAttribute("YAXISMINMAX")
+    public void readYAxisMinMax(String definition) {
         String[] definitions = definition.split("@");
         for (String graphDef : definitions) {
             String[] graphDefParts = graphDef.split(",");

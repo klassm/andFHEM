@@ -26,8 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -48,6 +46,7 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ValueUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
@@ -103,12 +102,11 @@ public class HMSDevice extends FhemDevice<HMSDevice> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
         if ("temperature".equalsIgnoreCase(key)) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+            setMeasured(node.getMeasured());
         }
     }
 

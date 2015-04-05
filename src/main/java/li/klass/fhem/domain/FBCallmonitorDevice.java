@@ -26,17 +26,18 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.Locale;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+
+import static li.klass.fhem.util.ValueDescriptionUtil.secondsToTimeString;
 
 @OverviewViewSettings(showState = false, showMeasured = true)
 @SuppressWarnings("unused")
@@ -57,14 +58,18 @@ public class FBCallmonitorDevice extends FhemDevice<FBCallmonitorDevice> {
     }
 
     @ShowField(description = ResourceIdMapper.callMonExternalName, showInOverview = true)
+    @XmllistAttribute("external_name")
     private String externalName;
 
     @ShowField(description = ResourceIdMapper.callMonExternalNumber, showInOverview = true)
+    @XmllistAttribute("external_number")
     private String externalNumber;
 
     @ShowField(description = ResourceIdMapper.callMonInternalNumber)
+    @XmllistAttribute("internal_number")
     private String internalNumber;
 
+    @XmllistAttribute("missed_call")
     private String missedCallNumber;
 
     @ShowField(description = ResourceIdMapper.callMonEvent, showInOverview = true)
@@ -76,41 +81,21 @@ public class FBCallmonitorDevice extends FhemDevice<FBCallmonitorDevice> {
     private Event eventInternal;
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
         if (key.equalsIgnoreCase("event")) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+            setMeasured(node.getMeasured());
         }
     }
 
-    public void readEXTERNAL_NAME(String value) {
-        externalName = value;
-    }
-
-    public void readEXTERNAL_NUMBER(String value) {
-        externalNumber = value;
-    }
-
-    public void readINTERNAL_NUMBER(String value) {
-        internalNumber = value;
-    }
-
-    public void readMISSED_CALL(String value) {
-        int firstSpace = value.indexOf(" ");
-        if (firstSpace != -1) {
-            value = value.substring(0, firstSpace);
-        }
-        this.missedCallNumber = value;
-    }
-
-    public void readEVENT(String value) {
+    @XmllistAttribute("event")
+    public void setEvent(String value) {
         eventInternal = Event.valueOf(value.toUpperCase(Locale.getDefault()));
     }
 
+    @XmllistAttribute("call_duration")
     public void readCALL_DURATION(String value) {
-        int seconds = Integer.valueOf(value);
-        callDuration = ValueDescriptionUtil.secondsToTimeString(seconds);
+        callDuration = secondsToTimeString(Integer.valueOf(value));
     }
 
     @Override

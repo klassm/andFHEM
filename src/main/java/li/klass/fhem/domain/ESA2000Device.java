@@ -32,11 +32,10 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
 import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
@@ -44,43 +43,24 @@ import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
 @SuppressWarnings("unused")
 public class ESA2000Device extends FhemDevice<ESA2000Device> {
     @ShowField(description = ResourceIdMapper.currentUsage, showInOverview = true)
+    @XmllistAttribute("actual")
     private String current;
+
     @ShowField(description = ResourceIdMapper.dayUsage, showInOverview = true)
+    @XmllistAttribute("day")
     private String day;
+
     @ShowField(description = ResourceIdMapper.monthUsage, showInOverview = true)
+    @XmllistAttribute("month")
     private String month;
+
     @ShowField(description = ResourceIdMapper.yearUsage, showInOverview = true)
+    @XmllistAttribute("year")
     private String year;
+
     @ShowField(description = ResourceIdMapper.dayLastUsage, showInOverview = false)
+    @XmllistAttribute("day_last")
     private String dayLast;
-
-    public void readACTUAL(String value) {
-        double actual = ValueExtractUtil.extractLeadingDouble(value) * 1000;
-        current = ValueDescriptionUtil.append((int) actual, "W");
-    }
-
-    public void readYEAR(String value) {
-        year = tokWHDesc(value);
-    }
-
-    public void readMONTH(String value) {
-        month = tokWHDesc(value);
-    }
-
-    public void readDAY(String value) {
-        day = tokWHDesc(value);
-    }
-
-    public void readDAY_LAST(String value) {
-        dayLast = tokWHDesc(value);
-    }
-
-    private String tokWHDesc(String value) {
-        double number = ValueExtractUtil.extractLeadingDouble(value);
-        double roundedNumber = ((int) (number * 100)) / 100d;
-
-        return ValueDescriptionUtil.append(roundedNumber, "kWh");
-    }
 
     public String getCurrent() {
         return current;

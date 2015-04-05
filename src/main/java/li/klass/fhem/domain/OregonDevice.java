@@ -35,11 +35,11 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
@@ -53,86 +53,60 @@ import static li.klass.fhem.service.graph.description.SeriesType.WIND;
 public class OregonDevice extends FhemDevice<OregonDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
+    @XmllistAttribute("humidity")
     private String humidity;
+
     @WidgetTemperatureField
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("temperature")
     private String temperature;
+
     @ShowField(description = ResourceIdMapper.forecast, showInOverview = true)
+    @XmllistAttribute("forecast")
     private String forecast;
+
     @ShowField(description = ResourceIdMapper.dewpoint)
+    @XmllistAttribute("dewpoint")
     private String dewpoint;
+
     @ShowField(description = ResourceIdMapper.pressure)
+    @XmllistAttribute("pressure")
     private String pressure;
+
     @ShowField(description = ResourceIdMapper.battery)
+    @XmllistAttribute("battery")
     private String battery;
+
     @ShowField(description = ResourceIdMapper.rainRate, showInOverview = true)
+    @XmllistAttribute("rain_rate")
     private String rainRate;
+
     @ShowField(description = ResourceIdMapper.rainTotal, showInOverview = true)
+    @XmllistAttribute("rain_total")
     private String rainTotal;
+
     @ShowField(description = ResourceIdMapper.windAvgSpeed, showInOverview = true)
+    @XmllistAttribute("wind_avspeed")
     private String windAvgSpeed;
+
     @ShowField(description = ResourceIdMapper.windDirection, showInOverview = true)
+    @XmllistAttribute("wind_dir")
     private String windDirection;
+
     @ShowField(description = ResourceIdMapper.windSpeed, showInOverview = true)
+    @XmllistAttribute("wind_speed")
     private String windSpeed;
+
     @ShowField(description = ResourceIdMapper.uvValue, showInOverview = true)
+    @XmllistAttribute("uv_val")
     private String uvValue;
+
     @ShowField(description = ResourceIdMapper.uvRisk, showInOverview = true)
+    @XmllistAttribute("uv_risk")
     private String uvRisk;
 
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readFORECAST(String value) {
-        this.forecast = value;
-    }
-
-    public void readDEWPOINT(String value) {
-        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readPRESSURE(String value) {
-        this.pressure = ValueDescriptionUtil.append(value, "hPa");
-    }
-
-    public void readBATTERY(String value) {
-        this.battery = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readRAIN_RATE(String value) {
-        this.rainRate = ValueDescriptionUtil.append(value, "mm/h");
-    }
-
-    public void readRAIN_TOTAL(String value) {
-        this.rainTotal = ValueDescriptionUtil.append(value, "l/m2");
-    }
-
-    public void readWIND_AVSPEED(String value) {
-        this.windAvgSpeed = ValueDescriptionUtil.appendKmH(value);
-    }
-
-    public void readWIND_DIR(String value) {
-        this.windDirection = value;
-    }
-
-    public void readWIND_SPEED(String value) {
-        this.windSpeed = ValueDescriptionUtil.appendKmH(value);
-    }
-
-    public void readUV_VAL(String value) {
-        this.uvValue = value;
-    }
-
-    public void readUV_RISK(String value) {
-        this.uvRisk = value;
-    }
-
-    public void readTIME(String value) {
+    @XmllistAttribute("time")
+    public void setTime(String value) {
         setMeasured(value);
     }
 

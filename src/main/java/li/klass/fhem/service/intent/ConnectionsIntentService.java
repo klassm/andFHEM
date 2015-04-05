@@ -28,6 +28,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -38,9 +40,9 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PATH;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
@@ -51,7 +53,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_PORT;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_TYPE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_URL;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
@@ -90,7 +91,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             String clientCertificatePassword = intent.getStringExtra(CONNECTION_CLIENT_CERTIFICATE_PASSWORD);
 
             String portString = intent.getStringExtra(CONNECTION_PORT);
-            if (StringUtil.isBlank(portString)) portString = "0";
+            if (Strings.isNullOrEmpty(portString)) portString = "0";
             int port = Integer.valueOf(portString);
 
             if (Actions.CONNECTION_CREATE.equals(action)) {

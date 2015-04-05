@@ -24,82 +24,78 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
+import android.content.Context;
+
+import com.google.common.base.Joiner;
+
+import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.sort;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
 public class HCSDevice extends FhemDevice<HCSDevice> {
 
     @ShowField(description = ResourceIdMapper.ecoThresholdOn)
+    @XmllistAttribute("thermostatThresholdOn")
     private String thermostatThresholdOn;
+
     @ShowField(description = ResourceIdMapper.thermostatThresholdOff)
+    @XmllistAttribute("thermostatThresholdOff")
     private String thermostatThresholdOff;
+
     @ShowField(description = ResourceIdMapper.valveThresholdOff)
+    @XmllistAttribute("valveThresholdOff")
     private String valveThresholdOff;
+
     @ShowField(description = ResourceIdMapper.valveThresholdOn)
+    @XmllistAttribute("valveThresholdOn")
     private String valveThresholdOn;
+
     @ShowField(description = ResourceIdMapper.ecoThresholdOff)
+    @XmllistAttribute("ecoTemperatureOff")
     private String ecoTemperatureOff;
+
     @ShowField(description = ResourceIdMapper.ecoThresholdOn)
+    @XmllistAttribute("ecoTemperatureOn")
     private String ecoTemperatureOn;
+
     @ShowField(description = ResourceIdMapper.mode)
+    @XmllistAttribute("mode")
     private String mode;
+
     @ShowField(description = ResourceIdMapper.idleDevices)
     private int numberOfIdleDevices;
     @ShowField(description = ResourceIdMapper.excludedDevices)
     private int numberOfExcludedDevices;
     @ShowField(description = ResourceIdMapper.demandDevices)
     private int numberOfDemandDevices;
-    @ShowField(description = ResourceIdMapper.blank, showAfter = "numberOfDemandDevices")
-    private String commaSeparatedDemandDevices;
 
-
-    public void readTHERMOSTATTHRESHOLDOFF(String value) {
-        thermostatThresholdOff = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readTHERMOSTATTHRESHOLDON(String value) {
-        thermostatThresholdOn = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readVALVETHRESHOLDOFF(String value) {
-        valveThresholdOff = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readVALVETHRESHOLDON(String value) {
-        valveThresholdOn = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readECOTEMPERATUREOFF(String value) {
-        ecoTemperatureOff = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readECOTEMPERATUREON(String value) {
-        ecoTemperatureOn = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readMODE(String value) {
-        mode = value;
-    }
+    private List<String> demandDevices = newArrayList();
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
-        if (!tagName.equalsIgnoreCase("STATE") || key.equalsIgnoreCase("STATE")) {
+        // We only want STATE nodes whose value is DEMAND, IDLE or EXCLUDED.
+        // However, we can also get a STATE node with key "state" and value "demand".
+        // This example would result in a demand device number which is one two high.
+        if (!node.isStateNode() || "state".equalsIgnoreCase(key)) {
             return;
         }
 
         if (value.equalsIgnoreCase("DEMAND")) {
             numberOfDemandDevices++;
-            addToDemandDevicesCommaSeparatedList(key);
+            demandDevices.add(key);
         } else if (value.equalsIgnoreCase("IDLE")) {
             numberOfIdleDevices++;
         } else if (value.equalsIgnoreCase("EXCLUDED")) {
@@ -108,16 +104,14 @@ public class HCSDevice extends FhemDevice<HCSDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.HEATING;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        sort(demandDevices);
     }
 
-    private void addToDemandDevicesCommaSeparatedList(String key) {
-        if (commaSeparatedDemandDevices == null) {
-            commaSeparatedDemandDevices = key;
-        } else {
-            commaSeparatedDemandDevices += ", " + key;
-        }
+    @Override
+    public DeviceFunctionality getDeviceGroup() {
+        return DeviceFunctionality.HEATING;
     }
 
     public String getThermostatThresholdOn() {
@@ -160,8 +154,9 @@ public class HCSDevice extends FhemDevice<HCSDevice> {
         return numberOfDemandDevices;
     }
 
+    @ShowField(description = ResourceIdMapper.blank, showAfter = "numberOfDemandDevices")
     public String getCommaSeparatedDemandDevices() {
-        return commaSeparatedDemandDevices;
+        return Joiner.on(", ").join(demandDevices);
     }
 
     @Override

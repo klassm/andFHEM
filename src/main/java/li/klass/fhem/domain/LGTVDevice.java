@@ -26,28 +26,22 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 public class LGTVDevice extends FhemDevice<LGTVDevice> {
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
+    @XmllistAttribute("power")
     private String power;
+
     @ShowField(description = ResourceIdMapper.musicMute, showInOverview = true)
+    @XmllistAttribute("audio")
     private String audio;
+
     @ShowField(description = ResourceIdMapper.input, showInOverview = true)
+    @XmllistAttribute("input")
     private String input;
-
-    public void readPOWER(String value) {
-        this.power = value;
-    }
-
-    public void readAUDIO(String value) {
-        this.audio = value;
-    }
-
-    public void readINPUT(String value) {
-        this.input = value;
-    }
 
     public String getPower() {
         return power;

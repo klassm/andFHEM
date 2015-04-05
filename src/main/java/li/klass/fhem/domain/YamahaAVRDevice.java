@@ -26,19 +26,24 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.util.ValueExtractUtil;
+
+import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> implements VolumeDevice {
 
+    @XmllistAttribute(value = {"volume", "volume_level"})
     private int volume;
+
     private boolean muted;
 
+    @XmllistAttribute("input")
     private String input;
 
     @Override
@@ -46,25 +51,14 @@ public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> implement
         return true;
     }
 
-    public void readVOLUME_LEVEL(String value) {
-        volume = ValueExtractUtil.extractLeadingInt(value);
-    }
-
-    public void readVOLUME(String value) {
-        readVOLUME_LEVEL(value);
-    }
-
     @ShowField(description = ResourceIdMapper.musicVolume)
     public String getVolumeDesc() {
         return volume + "";
     }
 
-    public void readMUTE(String value) {
-        muted = ValueExtractUtil.onOffToTrueFalse(value);
-    }
-
-    public void readINPUT(String value) {
-        input = value;
+    @XmllistAttribute("mute")
+    public void setMute(String value) {
+        muted = onOffToTrueFalse(value);
     }
 
     @Override

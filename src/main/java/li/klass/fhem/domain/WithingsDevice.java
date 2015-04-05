@@ -27,8 +27,6 @@ package li.klass.fhem.domain;
 import android.content.Context;
 import android.util.Log;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -36,41 +34,58 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.service.graph.description.SeriesType.CO2;
 import static li.klass.fhem.service.graph.description.SeriesType.FAT_RATIO;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.WEIGHT;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
-@SuppressWarnings("unused")
 @DetailViewSettings(showState = false)
 public class WithingsDevice extends FhemDevice<WithingsDevice> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.fatFreeMass)
+    @XmllistAttribute("fatFreeMass")
     private String fatFreeMass;
+
     @ShowField(description = ResourceIdMapper.fatMass)
+    @XmllistAttribute("fatMassWeight")
     private String fatMassWeight;
+
     @ShowField(description = ResourceIdMapper.fatRatio, showInOverview = true)
+    @XmllistAttribute("fatRatio")
     private String fatRatio;
+
     @ShowField(description = ResourceIdMapper.heartPulse)
+    @XmllistAttribute("heartPulse")
     private String heartPulse;
+
     @ShowField(description = ResourceIdMapper.height)
+    @XmllistAttribute("height")
     private String height;
+
     @ShowField(description = ResourceIdMapper.weight, showInOverview = true)
+    @XmllistAttribute("weight")
     private String weight;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("temperature")
     private String temperature;
+
     @ShowField(description = ResourceIdMapper.co2, showInOverview = true)
+    @XmllistAttribute("co2")
     private String co2;
+
     @ShowField(description = ResourceIdMapper.battery)
+    @XmllistAttribute("batteryLevel")
     private String batteryLevel;
+
     private SubType subType;
 
     @Override
@@ -119,62 +134,21 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> implements Temper
     }
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
-        if (tagName.equalsIgnoreCase("STATE") &&
-                (key.equalsIgnoreCase("BATTERY") ||
-                        key.equalsIgnoreCase("WEIGHT"))) {
-            setMeasured(attributes.getNamedItem("measured").getNodeValue());
+        if (node.getType() == STATE && ("BATTERY").equalsIgnoreCase(node.getKey()) || "WEIGHT".equalsIgnoreCase(node.getKey())) {
+            setMeasured(node.getMeasured());
         }
     }
 
-    public void readSUBTYPE(String value) {
+    @XmllistAttribute("subtype")
+    public void setSubtype(String value) {
         try {
             subType = SubType.valueOf(value.toUpperCase(Locale.getDefault()));
         } catch (IllegalArgumentException e) {
             Log.d(WithingsDevice.class.getName(), "cannot find enum value for " + value);
         }
-    }
-
-    public void readFATFREEMASS(String value) {
-        this.fatFreeMass = formatWeight(value);
-    }
-
-    public void readFATMASSWEIGHT(String value) {
-        this.fatMassWeight = formatWeight(value);
-    }
-
-    public void readFATRATIO(String value) {
-        this.fatRatio = "" + extractLeadingDouble(value, 1);
-    }
-
-    public void readHEARTPULSE(String value) {
-        this.heartPulse = "" + extractLeadingInt(value);
-    }
-
-    public void readHEIGHT(String value) {
-        this.height = ValueDescriptionUtil.append(value, "m");
-    }
-
-    public void readWEIGHT(String value) {
-        this.weight = formatWeight(value);
-    }
-
-    public void readBATTERYLEVEL(String value) {
-        this.batteryLevel = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readCO2(String value) {
-        this.co2 = ValueDescriptionUtil.append(value, "ppm");
-    }
-
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    private String formatWeight(String value) {
-        return ValueDescriptionUtil.append(extractLeadingDouble(value, 1), "kg");
     }
 
     @Override

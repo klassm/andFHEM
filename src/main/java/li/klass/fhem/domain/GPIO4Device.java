@@ -32,10 +32,10 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -45,58 +45,38 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
     private SubType subType = null;
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.avgDay)
+    @XmllistAttribute("T_avg_day")
     private String averageDay;
 
     @ShowField(description = ResourceIdMapper.avgMonth)
+    @XmllistAttribute("T_avg_month")
     private String averageMonth;
 
     @ShowField(description = ResourceIdMapper.maxDay)
+    @XmllistAttribute("T_max_day")
     private String maxDay;
 
     @ShowField(description = ResourceIdMapper.maxMonth)
+    @XmllistAttribute("T_max_month")
     private String maxMonth;
 
     @ShowField(description = ResourceIdMapper.minDay)
+    @XmllistAttribute("T_min_day")
     private String minDay;
 
     @ShowField(description = ResourceIdMapper.minMonth)
+    @XmllistAttribute("T_min_month")
     private String minMonth;
 
-    public void readMODEL(String value) {
+    @XmllistAttribute("model")
+    public void setModel(String value) {
         if (value.equals("DS1820") || value.equalsIgnoreCase("DS18B20")) {
             subType = SubType.TEMPERATURE;
         }
-    }
-
-    public void readTEMPERATURE(String value) {
-        temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readT_AVG_DAY(String value) {
-        this.averageDay = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readT_AVG_MONTH(String value) {
-        this.averageMonth = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readT_MIN_DAY(String value) {
-        this.minDay = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readT_MIN_MONTH(String value) {
-        this.minMonth = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readT_MAX_DAY(String value) {
-        this.maxDay = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readT_MAX_MONTH(String value) {
-        this.maxMonth = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public String getTemperature() {
@@ -125,7 +105,7 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
         return super.isSupported() && subType != null;
     }
 
-    public String getAverageDay() {
+    public String FHT_Wohnzimmer1getAverageDay() {
         return averageDay;
     }
 
@@ -147,6 +127,10 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
 
     public String getMinMonth() {
         return minMonth;
+    }
+
+    public String getAverageDay() {
+        return averageDay;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class THSensorTest extends DeviceXMLParsingBase {
         assertThat(device.supportsDim()).isEqualTo(false);
 
         assertThat(device.getMeasuredTemp()).isEqualTo("-2.4 (°C)");
-        assertThat(device.getHumidity()).isEqualTo("67 (%)");
+        assertThat(device.getHumidity()).isEqualTo("67.0 (%)");
 
         assertThat(device.getLogDevices()).isNotNull();
         assertThat(device.getDeviceCharts().size()).isEqualTo(1);
@@ -58,11 +58,11 @@ public class THSensorTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         assertThat(device.getMeasuredTemp()).isEqualTo("5.1 (°C)");
-        assertThat(device.getHumidity()).isEqualTo("92 (%)");
+        assertThat(device.getHumidity()).isEqualTo("92.0 (%)");
         assertThat(device.getBrightness()).isEqualTo("9");
         assertThat(device.getSunshine()).isEqualTo("224");
         assertThat(device.getIsRaining()).isEqualTo("no");
-        assertThat(device.getRain()).isEqualTo("74.045 (l/m2)");
+        assertThat(device.getRain()).isEqualTo("74.045 (l/m²)");
         assertThat(device.getWindDirection()).isEqualTo("300 (°)");
         assertThat(device.getWindSpeed()).isEqualTo("6.4 (m/s)");
     }

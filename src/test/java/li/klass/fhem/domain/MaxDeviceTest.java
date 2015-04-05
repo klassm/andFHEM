@@ -45,13 +45,13 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
     public void testHeatingMode() {
         MaxDevice maxDevice = new MaxDevice();
 
-        maxDevice.readMODE("auto");
+        maxDevice.setMode("auto");
         assertThat(maxDevice.getHeatingMode()).isEqualTo(AUTO);
 
-        maxDevice.readMODE("boost");
+        maxDevice.setMode("boost");
         assertThat(maxDevice.getHeatingMode()).isEqualTo(BOOST);
 
-        maxDevice.readMODE("manual");
+        maxDevice.setMode("manual");
         assertThat(maxDevice.getHeatingMode()).isEqualTo(MANUAL);
     }
 
@@ -90,7 +90,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getActuator()).isEqualTo("0 (%)");
         assertThat(device.getDesiredTempDesc()).isEqualTo("on");
         assertThat(device.getDesiredTemp()).isCloseTo(30.5, offset(0.1));
-        assertThat(device.getTemperature()).isEqualTo("21 (°C)");
+        assertThat(device.getTemperature()).isEqualTo("21.0 (°C)");
         assertThat(device.getWindowOpenTempDesc()).isEqualTo("12.0 (°C)");
         assertThat(device.getEcoTempDesc()).isEqualTo("16.5 (°C)");
         assertThat(device.getComfortTempDesc()).isEqualTo("19.0 (°C)");

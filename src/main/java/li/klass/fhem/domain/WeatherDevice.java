@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,6 +52,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -62,7 +62,6 @@ import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
-@SuppressWarnings("unused")
 public class WeatherDevice extends FhemDevice<WeatherDevice> {
     public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/images/weatherIcons/";
     private static final DateTimeFormatter PARSE_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
@@ -72,7 +71,7 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
 
     @WidgetTemperatureAdditionalField
     @WidgetMediumLine2
-
+    @XmllistAttribute("humidity")
     private String humidity;
 
     @XmllistAttribute("icon")
@@ -80,21 +79,24 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
 
     @WidgetTemperatureField
     @WidgetMediumLine1
+    @XmllistAttribute("temp_c")
     private String temperature;
 
+    @XmllistAttribute("wind_condition")
     private String wind;
 
     @XmllistAttribute("visibility")
     private String visibilityConditions;
 
+    @XmllistAttribute("wind_chill")
     private String windChill;
 
     private Map<Integer, WeatherDeviceForecast> forecastMap = newHashMap();
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (key.startsWith("FC")) {
-            parseForecast(key, value, attributes.getNamedItem("measured").getNodeValue());
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        if (key.startsWith("fc")) {
+            parseForecast(key, value, node.getMeasured());
         }
     }
 
@@ -132,27 +134,10 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
         }
     }
 
-    public void readCONDITION(String value, NamedNodeMap attributes) {
+    @XmllistAttribute("condition")
+    public void setCondition(String value, DeviceNode node) {
         this.condition = value;
-        String measured = attributes.getNamedItem("measured").getNodeValue();
-        setMeasured(measured);
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readTEMP_C(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readWIND_CONDITION(String value) {
-        this.wind = value.replaceAll("Wind: ", "").trim();
-    }
-
-    @XmllistAttribute("wind_chill")
-    public void setWindChill(String value) {
-        this.windChill = ValueDescriptionUtil.appendTemperature(value);
+        setMeasured(node.getMeasured());
     }
 
     public String getCondition() {

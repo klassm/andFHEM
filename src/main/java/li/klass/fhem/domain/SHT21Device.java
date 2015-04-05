@@ -32,6 +32,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -40,29 +41,20 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 @SuppressWarnings("unused")
 public class SHT21Device extends FhemDevice<SHT21Device> implements TemperatureDevice {
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
+    @XmllistAttribute("humidity")
     public String humidity;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @XmllistAttribute("temperature")
     public String temperature;
+
     @ShowField(description = ResourceIdMapper.dewpoint, showInOverview = true)
+    @XmllistAttribute("dewpoint")
     public String dewpoint;
-
-    public void readHUMIDITY(String value) {
-        humidity = appendPercent(value);
-    }
-
-    public void readTEMPERATURE(String value) {
-        temperature = appendTemperature(value);
-    }
-
-    public void readDEWPOINT(String value) {
-        dewpoint = appendTemperature(value);
-    }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {

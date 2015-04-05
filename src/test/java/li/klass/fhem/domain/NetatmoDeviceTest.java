@@ -38,7 +38,7 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAlias()).isEqualTo("Indoor");
         assertThat(device.getCo2()).isEqualTo("650 (ppm)");
-        assertThat(device.getHumidity()).isEqualTo("66 (%)");
+        assertThat(device.getHumidity()).isEqualTo("66.0 (%)");
         assertThat(device.getNoise()).isEqualTo("52 (dB)");
         assertThat(device.getPressure()).isEqualTo("960.2 (hPa)");
         assertThat(device.getTemperature()).isEqualTo("26.6 (°C)");
@@ -52,7 +52,7 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
         NetatmoDevice device = getDeviceFor("netatmo_module", NetatmoDevice.class);
 
         assertThat(device.getAlias()).isEqualTo("Outdoor");
-        assertThat(device.getHumidity()).isEqualTo("60 (%)");
+        assertThat(device.getHumidity()).isEqualTo("60.0 (%)");
         assertThat(device.getTemperature()).isEqualTo("28.2 (°C)");
         assertThat(device.getSubType()).isEqualTo("MODULE");
 

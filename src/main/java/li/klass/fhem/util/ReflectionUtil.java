@@ -118,6 +118,16 @@ public class ReflectionUtil {
         }
     }
 
+    public static void setFieldValue(Object object, String fieldName, Object value) {
+        try {
+            Field field = object.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (Exception e) {
+            Log.e(TAG, "cannot set field " + fieldName, e);
+        }
+    }
+
     public static String getFieldValueAsString(Object object, Field field) {
         Object value = getFieldValue(object, field);
         return String.valueOf(value);

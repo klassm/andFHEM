@@ -41,11 +41,11 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
@@ -59,56 +59,36 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.wind, showInOverview = true)
     @WidgetMediumLine2
+    @XmllistAttribute("wind")
     private String wind;
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetMediumLine3
     @WidgetTemperatureAdditionalField
+    @XmllistAttribute("humidity")
     private String humidity;
 
     @ShowField(description = ResourceIdMapper.rain, showInOverview = true)
+    @XmllistAttribute("rain")
     private String rain;
 
     @ShowField(description = ResourceIdMapper.avgDay)
+    @XmllistAttribute("AVG_DAY")
     private String averageDay;
 
     @ShowField(description = ResourceIdMapper.avgMonth)
+    @XmllistAttribute("AVG_MONTH")
     private String averageMonth;
 
     @ShowField(description = ResourceIdMapper.isRaining)
+    @XmllistAttribute("israining")
     private String isRaining;
 
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readWIND(String value) {
-        this.wind = ValueDescriptionUtil.appendKmH(value);
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readRAIN(String value) {
-        this.rain = ValueDescriptionUtil.appendLm2(value);
-    }
-
-    public void readAVG_DAY(String value) {
-        this.averageDay = value;
-    }
-
-    public void readAVG_MONTH(String value) {
-        this.averageMonth = value;
-    }
-
-    public void readISRAINING(String value) {
-        this.isRaining = value;
-    }
 
     public String getTemperature() {
         return temperature;

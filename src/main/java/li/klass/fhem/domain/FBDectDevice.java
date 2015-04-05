@@ -32,12 +32,11 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
@@ -45,37 +44,21 @@ import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
     @ShowField(description = ResourceIdMapper.energy)
+    @XmllistAttribute("energy")
     private String energy;
 
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
+    @XmllistAttribute("power")
     private String power;
 
     @ShowField(description = ResourceIdMapper.voltage)
+    @XmllistAttribute("voltage")
     private String voltage;
 
     @ShowField(description = ResourceIdMapper.cumulativeUsage)
+    @XmllistAttribute("current")
     private String current;
 
-
-    public void readENERGY(String value) {
-        int numValue = ValueExtractUtil.extractLeadingInt(value);
-        this.energy = ValueDescriptionUtil.append(numValue, "Wh");
-    }
-
-    public void readPOWER(String value) {
-        double numValue = ValueExtractUtil.extractLeadingDouble(value);
-        this.power = ValueDescriptionUtil.append(numValue, "W");
-    }
-
-    public void readVOLTAGE(String value) {
-        double numValue = ValueExtractUtil.extractLeadingDouble(value);
-        this.voltage = ValueDescriptionUtil.append(numValue, "V");
-    }
-
-    public void readCURRENT(String value) {
-        double numValue = ValueExtractUtil.extractLeadingDouble(value);
-        this.current = ValueDescriptionUtil.append(numValue, "A");
-    }
 
     public String getEnergy() {
         return energy;

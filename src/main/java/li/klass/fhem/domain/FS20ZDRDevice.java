@@ -24,11 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
@@ -38,10 +39,9 @@ public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("STATE")) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        if (node.getType() == STATE && node.getKey().equalsIgnoreCase("STATE")) {
+            setMeasured(node.getMeasured());
         }
     }
 

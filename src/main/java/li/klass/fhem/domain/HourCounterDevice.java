@@ -24,53 +24,34 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-
-import static li.klass.fhem.util.ValueDescriptionUtil.appendEuro;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 public class HourCounterDevice extends FhemDevice<HourCounterDevice> {
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     private String cumulativeUsage;
 
     @ShowField(description = ResourceIdMapper.dayUsage, showInOverview = true)
+    @XmllistAttribute("verbrauchTagkWh")
     private String dayKwh;
 
     @ShowField(description = ResourceIdMapper.price)
+    @XmllistAttribute("verbrauchGesamtEuro")
     private String price;
 
     @ShowField(description = ResourceIdMapper.pricePerDay)
+    @XmllistAttribute("verbrauchTagEuro")
     private String pricePerDay;
 
     @XmllistAttribute("Zaehlerstand")
-    public void setCumulativeUsage(String cumulativeUsage, NamedNodeMap namedNodeMap) {
+    public void setCumulativeUsage(String cumulativeUsage, DeviceNode deviceNode) {
         String[] parts = cumulativeUsage.split(" ");
         this.cumulativeUsage = parts[0] + " (" + parts[1] + ")";
-        if (namedNodeMap != null) {
-            setMeasured(namedNodeMap.getNamedItem("measured").getNodeValue());
-        }
-    }
-
-    @XmllistAttribute("verbrauchTagkWh")
-    public void setDayKwh(String dayKwh) {
-        this.dayKwh = appendKWh(extractLeadingDouble(dayKwh, 2));
-    }
-
-    @XmllistAttribute("verbrauchGesamtEuro")
-    public void setPrice(String price) {
-        this.price = appendEuro(extractLeadingDouble(price, 2));
-    }
-
-    @XmllistAttribute("verbrauchTagEuro")
-    public void setPricePerDay(String pricePerDay) {
-        this.pricePerDay = appendEuro(pricePerDay);
+        setMeasured(deviceNode.getMeasured());
     }
 
     public String getCumulativeUsage() {

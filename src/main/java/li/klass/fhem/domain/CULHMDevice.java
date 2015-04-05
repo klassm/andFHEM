@@ -27,7 +27,7 @@ package li.klass.fhem.domain;
 import android.content.Context;
 import android.util.Log;
 
-import org.w3c.dom.NamedNodeMap;
+import com.google.common.base.Strings;
 
 import java.util.List;
 import java.util.Locale;
@@ -54,8 +54,8 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.service.room.DeviceReadCallback;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.NumberUtil;
-import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -79,33 +79,40 @@ import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
 import static li.klass.fhem.service.graph.description.SeriesType.RAW;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendHPa;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendLm;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendV;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 @OverviewViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         implements DesiredTempDevice, HeatingDevice<CULHMDevice.HeatingMode, CULHMConfiguration, FilledTemperatureInterval, CULHMDevice> {
 
-    private static final CULHMConfiguration heatingConfiguration = new CULHMConfiguration();
-    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile =
-            new WeekProfile<>(heatingConfiguration);
-    public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+
+    private static final CULHMConfiguration HEATING_CONFIGURATION = new CULHMConfiguration();
+
+    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile =
+            new WeekProfile<>(HEATING_CONFIGURATION);
+
     private double desiredTemp = MINIMUM_TEMPERATURE;
+
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
-    private String model;
-    private String level;
+
     private SubType subType = null;
+
     private double fillContentLitresRaw;
     private double fillContentPercentageRaw;
 
+    @XmllistAttribute("MODEL")
+    private String model;
+
+    @XmllistAttribute("LEVEL")
+    private String level;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
+    @XmllistAttribute({"MEASURED_TEMP", "TEMPERATURE"})
     private String measuredTemp;
 
     @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
@@ -113,6 +120,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetTemperatureAdditionalField
+    @XmllistAttribute("HUMIDITY")
     private String humidity;
 
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
@@ -122,6 +130,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String commandAccepted;
 
     @ShowField(description = ResourceIdMapper.rawValue)
+    @XmllistAttribute("RAWVALUE")
     private String rawValue;
 
     @ShowField(description = ResourceIdMapper.maximumContent)
@@ -134,65 +143,81 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String rawToReadable;
 
     @ShowField(description = ResourceIdMapper.battery)
+    @XmllistAttribute("BATTERY")
     private String battery;
 
     @ShowField(description = ResourceIdMapper.brightness)
+    @XmllistAttribute("BRIGHTNESS")
     private String brightness;
 
     @ShowField(description = ResourceIdMapper.motion)
+    @XmllistAttribute("MOTION")
     private String motion;
 
     @ShowField(description = ResourceIdMapper.windSpeed)
+    @XmllistAttribute("WINDSPEED")
     private String windSpeed;
 
     @ShowField(description = ResourceIdMapper.windDirection)
+    @XmllistAttribute("WINDDIRECTION")
     private String windDirection;
 
     @ShowField(description = ResourceIdMapper.sunshine)
+    @XmllistAttribute("SUNSHINE")
     private String sunshine;
 
     @ShowField(description = ResourceIdMapper.isRaining)
     private String isRaining;
 
     @ShowField(description = ResourceIdMapper.rain)
+    @XmllistAttribute("RAIN")
     private String rain;
 
     @ShowField(description = ResourceIdMapper.currentPower)
+    @XmllistAttribute("POWER")
     private String power;
 
     @ShowField(description = ResourceIdMapper.voltage)
+    @XmllistAttribute("VOLTAGE")
     private String currentVoltage;
 
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
+    @XmllistAttribute("ENERGY")
     private String cumulativeUsage;
 
     @ShowField(description = ResourceIdMapper.brightness)
+    @XmllistAttribute("LUMINOSITY")
     private String luminosity;
 
     @ShowField(description = ResourceIdMapper.batteryVoltage)
+    @XmllistAttribute("BATVOLTAGE")
     private String batteryVoltage;
 
     @ShowField(description = ResourceIdMapper.pressure)
+    @XmllistAttribute("PRESSURE")
     private String pressure;
 
     @ShowField(description = ResourceIdMapper.pressureNN)
+    @XmllistAttribute("PRESSURE_NN")
     private String pressureNN;
 
     @ShowField(description = ResourceIdMapper.energy_frequency)
+    @XmllistAttribute("FREQUENCY")
     private String frequency;
 
     @ShowField(description = ResourceIdMapper.current)
+    @XmllistAttribute("CURRENT")
     private String current;
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
         weekProfile.readNode(key, value);
     }
 
     @XmllistAttribute("CONTENT")
     public void setContent(String value) {
-        fillContentLitresRaw = extractLeadingDouble(value.replace("l", ""));
+        fillContentLitresRaw = extractLeadingDouble(value);
         String fillContentLitres = ValueDescriptionUtil.appendL(fillContentLitresRaw);
         setState(fillContentLitres);
     }
@@ -203,11 +228,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         if (value.equalsIgnoreCase("on")) value = "30.5";
 
         desiredTemp = extractLeadingDouble(value);
-    }
-
-    @XmllistAttribute("MODEL")
-    public void setModel(String value) {
-        model = value;
     }
 
     @XmllistAttribute("DEVICE")
@@ -256,7 +276,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @XmllistAttribute("MODE")
     public void setMode(String value) {
-        if (value.equalsIgnoreCase("MANU")) value = "MANUAL";
+        if (value.equalsIgnoreCase("MANU")) {
+            value = "MANUAL";
+        }
         setControlMode(value);
     }
 
@@ -268,36 +290,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         } catch (Exception e) {
             Log.e(CULHMDevice.class.getName(), "cannot set heating mode from value " + value, e);
         }
-    }
-
-    @XmllistAttribute("POWER")
-    public void setPower(String value) {
-        power = ValueDescriptionUtil.appendW(value);
-    }
-
-    @XmllistAttribute("ENERGY")
-    public void setEnergy(String value) {
-        cumulativeUsage = ValueDescriptionUtil.appendKWh(Math.round(Double.parseDouble(value) / 1000));
-    }
-
-    @XmllistAttribute("VOLTAGE")
-    public void setVoltage(String value) {
-        currentVoltage = ValueDescriptionUtil.appendV(value);
-    }
-
-    @XmllistAttribute("FREQUENCY")
-    public void setFrequency(String value) {
-        frequency = ValueDescriptionUtil.appendHz(value);
-    }
-
-    @XmllistAttribute("CURRENT")
-    public void setCurrent(String value) {
-        current = ValueDescriptionUtil.appendmA(value);
-    }
-
-    @XmllistAttribute("LEVEL")
-    public void setLevel(String value) {
-        level = value;
     }
 
     @Override
@@ -436,11 +428,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return measuredTemp;
     }
 
-    @XmllistAttribute({"MEASURED_TEMP", "TEMPERATURE"})
-    public void setMeasuredTemp(String value) {
-        measuredTemp = ValueDescriptionUtil.appendTemperature(value);
-    }
-
     public String getActuator() {
         return actuator;
     }
@@ -448,9 +435,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @XmllistAttribute("ACTUATOR")
     public void setActuator(String value) {
         subType = THERMOSTAT;
-        if (value != null && value.endsWith("%")) {
-            value = appendPercent(extractLeadingInt(value));
-        }
         actuator = value;
     }
 
@@ -458,18 +442,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return humidity;
     }
 
-    @XmllistAttribute("HUMIDITY")
-    public void setHumidity(String value) {
-        humidity = appendPercent(value);
-    }
-
     public String getRawValue() {
         return rawValue;
-    }
-
-    @XmllistAttribute("RAWVALUE")
-    public void setRawValue(String value) {
-        this.rawValue = value;
     }
 
     public String getRawToReadable() {
@@ -508,54 +482,24 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return battery;
     }
 
-    @XmllistAttribute("BATTERY")
-    public void setBattery(String value) {
-        battery = value;
-    }
-
     public String getBrightness() {
         return brightness;
-    }
-
-    @XmllistAttribute("BRIGHTNESS")
-    public void setBrightness(String value) {
-        brightness = value;
     }
 
     public String getMotion() {
         return motion;
     }
 
-    @XmllistAttribute("MOTION")
-    public void setMotion(String value) {
-        motion = value;
-    }
-
     public String getWindSpeed() {
         return windSpeed;
-    }
-
-    @XmllistAttribute("WINDSPEED")
-    public void setWindSpeed(String value) {
-        windSpeed = ValueDescriptionUtil.append(value, "m/s");
     }
 
     public String getWindDirection() {
         return windDirection;
     }
 
-    @XmllistAttribute("WINDDIRECTION")
-    public void setWindDirection(String value) {
-        windDirection = ValueDescriptionUtil.append(value, "°");
-    }
-
     public String getSunshine() {
         return sunshine;
-    }
-
-    @XmllistAttribute("SUNSHINE")
-    public void setSunshine(String value) {
-        sunshine = value;
     }
 
     public String getIsRaining() {
@@ -571,11 +515,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     public String getRain() {
         return rain;
-    }
-
-    @XmllistAttribute("RAIN")
-    public void setRain(String value) {
-        rain = ValueDescriptionUtil.appendLm2(value);
     }
 
     public String getCumulativeUsage() {
@@ -627,36 +566,16 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return luminosity;
     }
 
-    @XmllistAttribute("LUMINOSITY")
-    public void setLuminosity(String luminosity) {
-        this.luminosity = appendLm(luminosity);
-    }
-
     public String getBatteryVoltage() {
         return batteryVoltage;
-    }
-
-    @XmllistAttribute("BATVOLTAGE")
-    public void setBatteryVoltage(String batteryVoltage) {
-        this.batteryVoltage = appendV(batteryVoltage);
     }
 
     public String getPressure() {
         return pressure;
     }
 
-    @XmllistAttribute("PRESSURE")
-    public void setPressure(String pressure) {
-        this.pressure = appendHPa(pressure);
-    }
-
     public String getPressureNN() {
         return pressureNN;
-    }
-
-    @XmllistAttribute("PRESSURE_NN")
-    public void setPressureNN(String pressureNN) {
-        this.pressureNN = appendHPa(pressureNN);
     }
 
     @Override
@@ -878,7 +797,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     public boolean isLastCommandAccepted() {
-        return StringUtil.isBlank(commandAccepted) || "yes".equalsIgnoreCase(commandAccepted);
+        return Strings.isNullOrEmpty(commandAccepted) || "yes".equalsIgnoreCase(commandAccepted);
     }
 
     @Override

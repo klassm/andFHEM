@@ -40,7 +40,6 @@ import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayUtil;
-import li.klass.fhem.util.StringUtil;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
@@ -59,7 +58,7 @@ public class GCMSendDeviceService extends AbstractService {
     public void addSelf(GCMSendDevice device, Context context) {
 
         String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null, context);
-        if (StringUtil.isBlank(registrationId)) {
+        if (isNullOrEmpty(registrationId)) {
             showToast(R.string.gcmRegistrationNotActive, context);
             return;
         }
@@ -83,7 +82,7 @@ public class GCMSendDeviceService extends AbstractService {
         String regIdsAttribute = ArrayUtil.join(newRegIds, "|");
 
         commandExecutionService.executeSafely(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute), context);
-        device.readREGIDS(regIdsAttribute);
+        device.setRegIds(regIdsAttribute);
     }
 
     public void removeRegistrationId(GCMSendDevice device, String registrationId, Context context) {

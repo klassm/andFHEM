@@ -35,6 +35,7 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         HUEDevice device = getDefaultDevice(HUEDevice.class);
 
+        assertThat(device).isNotNull();
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
         assertThat(device.getAlias()).isEqualTo("Extended color light 1");
@@ -56,6 +57,7 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testDeviceWithoutXYAttribute() {
         HUEDevice device = getDeviceFor("device1", HUEDevice.class);
+        assertThat(device).isNotNull();
         assertThat(device.getXy()).isNull();
     }
 

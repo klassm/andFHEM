@@ -24,6 +24,8 @@
 
 package li.klass.fhem.util;
 
+import com.google.common.base.Strings;
+
 public class ValueExtractUtil {
     public static double extractLeadingDouble(String text) {
         return extractLeadingDouble(text, -1);
@@ -31,7 +33,7 @@ public class ValueExtractUtil {
 
     public static double extractLeadingDouble(String text, int digits) {
         text = extractLeadingNumericText(text, digits);
-        if (StringUtil.isBlank(text)) return 0;
+        if (Strings.isNullOrEmpty(text)) return 0;
         return Double.valueOf(text);
     }
 
@@ -41,7 +43,7 @@ public class ValueExtractUtil {
     }
 
     static String extractLeadingNumericText(String text, int digits) {
-        if (StringUtil.isBlank(text)) return "";
+        if (Strings.isNullOrEmpty(text)) return "";
         String numericText = new LeadingNumericTextExtractor(text).numericText();
 
         if (digits > 0) {

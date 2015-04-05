@@ -36,6 +36,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -57,7 +58,6 @@ import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
-import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
 
@@ -330,7 +330,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         String text = getGeneralDetailsNotificationText(context, device);
         TextView notificationView = (TextView) view.findViewById(R.id.general_details_notification);
 
-        if (StringUtil.isBlank(text)) {
+        if (Strings.isNullOrEmpty(text)) {
             notificationView.setVisibility(View.GONE);
             return;
         }

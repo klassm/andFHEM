@@ -24,12 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.Map;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -37,15 +36,12 @@ public class PCF8574Device extends FhemDevice<PCF8574Device> {
 
     private Map<String, Boolean> portsIsOnMap = newHashMap();
 
-
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
-        if (key.matches("PORT[0-9]+")) {
-            portsIsOnMap.put(
-                    key.replace("PORT", "Port"),
-                    value.equalsIgnoreCase("on") || value.equalsIgnoreCase("1"));
+        if (key.matches("Port[0-9]+")) {
+            portsIsOnMap.put(key, value.equalsIgnoreCase("on") || value.equalsIgnoreCase("1"));
         }
     }
 

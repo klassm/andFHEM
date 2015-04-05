@@ -24,13 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.REMOTE_CONTROL;
 
@@ -39,11 +38,9 @@ public class HarmonyDevice extends FhemDevice<HarmonyDevice> {
     private String activity;
 
     @XmllistAttribute("activity")
-    public void setActivity(String activity, NamedNodeMap namedNodeMap) {
+    public void setActivity(String activity, DeviceNode deviceNode) {
         this.activity = activity;
-        if (namedNodeMap != null) {
-            setMeasured(namedNodeMap.getNamedItem("measured").getNodeValue());
-        }
+        setMeasured(deviceNode.getMeasured());
     }
 
     public String getActivity() {

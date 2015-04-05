@@ -54,7 +54,7 @@ public class OwSwitchDeviceTest extends DeviceXMLParsingBase {
     private void assertGPIO(String value, boolean aExpect, boolean bExpect) {
         OwSwitchDevice device = new OwSwitchDevice();
 
-        device.readGPIO(value);
+        device.setGpio(value);
         assertThat(device.isOnA()).isEqualTo(aExpect);
         assertThat(device.isOnB()).isEqualTo(bExpect);
     }

@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -35,83 +36,59 @@ public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> implements 
 
     @ShowField(description = ResourceIdMapper.musicMute)
     private String mute;
+
     @ShowField(description = ResourceIdMapper.musicRepeat)
     private String repeat;
+
     @ShowField(description = ResourceIdMapper.musicShuffle)
     private String shuffle;
+
     @ShowField(description = ResourceIdMapper.musicVolume)
+    @XmllistAttribute("volume")
     private String volume;
+
     @ShowField(description = ResourceIdMapper.musicAlbum)
+    @XmllistAttribute("currentAlbum")
     private String currentAlbum;
+
     @ShowField(description = ResourceIdMapper.musicSender)
+    @XmllistAttribute("currentSender")
     private String currentSender;
+
     @ShowField(description = ResourceIdMapper.musicTitle)
+    @XmllistAttribute("currentTitle")
     private String currentTitle;
+
     @ShowField(description = ResourceIdMapper.musicDuration)
+    @XmllistAttribute("currentTrackDuration")
     private String currentTrackDuration;
+
+    @XmllistAttribute("numberOfTracks")
     private String numberOfTracks;
+
     @ShowField(description = ResourceIdMapper.musicInfo, showInOverview = true, showInDetail = false)
+    @XmllistAttribute("infoSummarize1")
     private String infoSummarize1;
+
+    @XmllistAttribute("infoSummarize2")
     private String infoSummarize2;
+
+    @XmllistAttribute("infoSummarize3")
     private String infoSummarize3;
 
-
-    public void readMUTE(String value) {
+    @XmllistAttribute("mute")
+    public void setMute(String value) {
         this.mute = yesNoForNumber(value);
     }
 
-
-    public void readREPEAT(String value) {
+    @XmllistAttribute("repeat")
+    public void setRepeat(String value) {
         this.repeat = yesNoForNumber(value);
     }
 
-
-    public void readSHUFFLE(String value) {
+    @XmllistAttribute("shuffle")
+    public void setShuffle(String value) {
         this.shuffle = yesNoForNumber(value);
-    }
-
-
-    public void readVOLUME(String value) {
-        this.volume = value;
-    }
-
-    public void readCURRENTALBUM(String value) {
-        this.currentAlbum = value;
-    }
-
-
-    public void readCURRENTSENDER(String value) {
-        this.currentSender = value;
-    }
-
-
-    public void readCURRENTTITLE(String value) {
-        this.currentTitle = value;
-    }
-
-
-    public void readCURRENTTRACKDURATION(String value) {
-        if (value.equals("0:00:00")) return;
-
-        this.currentTrackDuration = value;
-    }
-
-
-    public void readNUMBEROFTRACKS(String value) {
-        this.numberOfTracks = value;
-    }
-
-
-    public void readINFOSUMMARIZE1(String value) {
-        this.infoSummarize1 = value;
-    }
-
-    public void readINFOSUMMARIZE2(String value) {
-        this.infoSummarize2 = value;
-    }
-
-    public void readINFOSUMMARIZE3(String value) {
-        this.infoSummarize3 = value;
     }
 
     public String getMute() {

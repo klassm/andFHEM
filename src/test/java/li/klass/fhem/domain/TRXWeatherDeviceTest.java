@@ -52,7 +52,7 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributesInHumidityDevice() {
         TRXWeatherDevice device = getDeviceFor("device1", TRXWeatherDevice.class);
 
-        assertThat(device.getHumidity()).isEqualTo("59 (%)");
+        assertThat(device.getHumidity()).isEqualTo("59.0 (%)");
         assertThat(device.getDewpoint()).isEqualTo("11.1 (°C)");
 
         assertThat(device.getLogDevices()).isNotEmpty();
@@ -62,15 +62,15 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testRainAttributes() {
         TRXWeatherDevice device = getDeviceFor("rain", TRXWeatherDevice.class);
-        assertThat(device.getRain()).isEqualTo("343 (l/m2)");
+        assertThat(device.getRain()).isEqualTo("343 (l/m²)");
     }
 
     @Test
     public void testWindAttributes() {
         TRXWeatherDevice device = getDeviceFor("wind", TRXWeatherDevice.class);
-        assertThat(device.getWindAverageSpeed()).isEqualTo("3 (km/h)");
+        assertThat(device.getWindAverageSpeed()).isEqualTo("3.0 (km/h)");
         assertThat(device.getWindDirection()).isEqualTo("180 S");
-        assertThat(device.getWindSpeed()).isEqualTo("0 (km/h)");
+        assertThat(device.getWindSpeed()).isEqualTo("0.0 (km/h)");
         assertThat(device.getWindchill()).isEqualTo("10.4 (°C)");
     }
 

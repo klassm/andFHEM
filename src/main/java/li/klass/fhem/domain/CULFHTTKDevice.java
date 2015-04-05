@@ -26,18 +26,18 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.DateFormatUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;
@@ -46,17 +46,15 @@ import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;
 @OverviewViewSettings(showState = true)
 public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
     private String lastWindowState;
+    @XmllistAttribute("window")
     private String windowState = "???";
     @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
 
-    public void readWINDOW(String value) {
-        windowState = value;
-    }
-
-    public void readPREVIOUS(String value, NamedNodeMap attributes) {
+    @XmllistAttribute("previous")
+    public void setPrevious(String value, DeviceNode deviceNode) {
         lastWindowState = value;
-        lastStateChangeTime = DateFormatUtil.formatTime(attributes.getNamedItem("measured").getNodeValue());
+        lastStateChangeTime = DateFormatUtil.formatTime(deviceNode.getMeasured());
     }
 
     @Override

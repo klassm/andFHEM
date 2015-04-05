@@ -26,6 +26,8 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 
+import com.google.common.base.Strings;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -38,7 +40,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 
@@ -275,7 +276,7 @@ public class AtDevice extends FhemDevice<AtDevice> {
                 ifContent = addToIf(ifContent, "$wday == " + repetition.weekdayOrdinate);
             }
 
-            if (!StringUtil.isBlank(ifContent)) {
+            if (!Strings.isNullOrEmpty(ifContent)) {
                 command += " if (" + ifContent + ")";
             }
         }
@@ -291,7 +292,7 @@ public class AtDevice extends FhemDevice<AtDevice> {
     }
 
     private String addToIf(String ifContent, String newPart) {
-        if (StringUtil.isBlank(ifContent)) {
+        if (Strings.isNullOrEmpty(ifContent)) {
             return newPart;
         }
         return ifContent + " && " + newPart;

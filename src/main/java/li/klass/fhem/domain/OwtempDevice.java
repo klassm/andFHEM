@@ -24,37 +24,32 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.util.ValueUtil;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-@SuppressWarnings("unused")
 @SupportsWidget(TemperatureWidgetView.class)
 public class OwtempDevice extends FhemDevice<OwtempDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
+    @XmllistAttribute("temperature")
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.warnings, showInOverview = true)
     private String warnings;
 
-    public void readTEMPERATURE(String value) {
-        this.temperature = ValueUtil.formatTemperature(value);
-    }
-
-    public void readWARNINGS(String value, NamedNodeMap attributes) {
+    @XmllistAttribute("warnings")
+    public void readWARNINGS(String value, DeviceNode deviceNode) {
         this.warnings = value;
-        String measured = attributes.getNamedItem("measured").getNodeValue();
-        setMeasured(measured);
+        setMeasured(deviceNode.getMeasured());
     }
 
     public String getTemperature() {

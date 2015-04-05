@@ -25,6 +25,7 @@
 package li.klass.fhem.domain.core;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -113,7 +114,11 @@ public class RoomDeviceList implements Serializable {
             }
         }
 
-        Collections.sort(deviceList);
+        try {
+            Collections.sort(deviceList);
+        } catch (Exception e) {
+            Log.e(RoomDeviceList.class.getName(), "cannot sort", e);
+        }
         return deviceList;
     }
 
@@ -172,7 +177,7 @@ public class RoomDeviceList implements Serializable {
     }
 
     public boolean isEmptyOrOnlyContainsDoNotShowDevices() {
-        for (HashSet<FhemDevice> devices : deviceMap.values()) {
+        for (Set<FhemDevice> devices : deviceMap.values()) {
             for (FhemDevice device : devices) {
                 if (device.isSupported()) {
                     return false;

@@ -71,12 +71,13 @@ public class RoomListHolderService {
     private volatile RoomDeviceList cachedRoomList;
     private volatile boolean fileStoreNotFilled = false;
 
-    public synchronized void storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {
+    public synchronized boolean storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {
         if (roomDeviceList == null || roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
             LOG.info("storeDeviceListMap() : won't store device list, as empty");
-            return;
+            return false;
         }
         storeDeviceListMapInternal(roomDeviceList, context);
+        return true;
     }
 
     public synchronized void clearRoomDeviceList(Context context) {

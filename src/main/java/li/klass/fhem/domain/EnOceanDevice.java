@@ -33,6 +33,7 @@ import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
 import static li.klass.fhem.util.Equals.ignoreCaseEither;
@@ -40,43 +41,34 @@ import static li.klass.fhem.util.Equals.ignoreCaseEither;
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
 public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EnOceanDevice.class);
-
-    private String model;
-    private String manufacturerId;
-
     public enum SubType {
         SWITCH, SENSOR, DIMMER, SHUTTER
     }
 
-    private SubType subType;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnOceanDevice.class);
+
+    @XmllistAttribute("model")
+    private String model;
+
+    @XmllistAttribute("manufid")
+    private String manufacturerId;
+
+    @XmllistAttribute("gwcmd")
     private String gwCmd;
 
-    public void readSUBTYPE(String value) {
+    private SubType subType;
+
+    @XmllistAttribute("subtype")
+    public void setSubtype(String value) {
         if (value.equalsIgnoreCase("switch")) {
             subType = SubType.SWITCH;
         } else if (value.equalsIgnoreCase("sensor")) {
             subType = SubType.SENSOR;
-        } else if (value.equalsIgnoreCase("gateway")) {
-            // handled in #afterDeviceXMLRead
         } else {
-            LOGGER.error("readSUBTYPE() - unknown subtype {}", value);
+            LOGGER.error("setSubtype() - unknown subtype {}", value);
             subType = null;
         }
     }
-
-    public void readMODEL(String value) {
-        this.model = value;
-    }
-
-    public void readMANUFID(String value) {
-        this.manufacturerId = value;
-    }
-
-    public void readGWCMD(String value) {
-        this.gwCmd = value;
-    }
-
 
     @Override
     protected String getSetListDimStateAttributeName() {
@@ -118,36 +110,41 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
 
     @Override
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
-        if (appWidgetClass.equals(ToggleWidgetView.class) && subType != SubType.SWITCH) {
-            return false;
-        }
-
-        return super.supportsWidget(appWidgetClass);
+        return !(appWidgetClass.equals(ToggleWidgetView.class) && subType != SubType.SWITCH)
+                && super.supportsWidget(appWidgetClass);
     }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
-        if (subType == SubType.SHUTTER) return DeviceFunctionality.WINDOW;
+        if (subType == SubType.SHUTTER) {
+            return DeviceFunctionality.WINDOW;
+        }
         return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     @Override
     public String getOffStateName() {
-        if (subType == SubType.SHUTTER) return "closes";
+        if (subType == SubType.SHUTTER) {
+            return "closes";
+        }
 
         if (eventMapReverse.containsKey("off")) {
             return eventMapReverse.get("off");
         }
+
         return "BI";
     }
 
     @Override
     public String getOnStateName() {
-        if (subType == SubType.SHUTTER) return "opens";
+        if (subType == SubType.SHUTTER) {
+            return "opens";
+        }
 
         if (eventMapReverse.containsKey("on")) {
             return eventMapReverse.get("on");
         }
+
         return "B0";
     }
 

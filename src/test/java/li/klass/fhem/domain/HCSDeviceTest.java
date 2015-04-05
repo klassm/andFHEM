@@ -41,8 +41,8 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState()).isEqualTo("demand");
 
-        assertThat(device.getEcoTemperatureOff()).isEqualTo("23 (°C)");
-        assertThat(device.getEcoTemperatureOn()).isEqualTo("12 (°C)");
+        assertThat(device.getEcoTemperatureOff()).isEqualTo("23.0 (°C)");
+        assertThat(device.getEcoTemperatureOn()).isEqualTo("12.0 (°C)");
         assertThat(device.getThermostatThresholdOff()).isEqualTo("0.5 (°C)");
         assertThat(device.getThermostatThresholdOn()).isEqualTo("0.5 (°C)");
         assertThat(device.getValveThresholdOff()).isEqualTo("25 (%)");
@@ -54,10 +54,10 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getNumberOfExcludedDevices()).isEqualTo(3);
         assertThat(device.getNumberOfIdleDevices()).isEqualTo(3);
 
-        assertThat(device.getCommaSeparatedDemandDevices()).isEqualTo("FHT_WOHNZIMMER, FHT_WOHNZIMMER1");
+        assertThat(device.getCommaSeparatedDemandDevices()).isEqualTo("FHT_Wohnzimmer, FHT_Wohnzimmer1");
 
         assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+        assertThat(device.getDeviceCharts()).isEmpty();
     }
 
     @Override

@@ -24,19 +24,18 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @OverviewViewSettings(showMeasured = true)
-@SuppressWarnings("unused")
 public class WatchdogDevice extends FhemDevice<WatchdogDevice> {
 
-    public void readTRIGGERED(String value, NamedNodeMap attributes) {
-        String measured = attributes.getNamedItem("measured").getNodeValue();
-        setMeasured(measured);
+    @XmllistAttribute("triggered")
+    public void readTRIGGERED(String value, DeviceNode node) {
+        setMeasured(node.getMeasured());
     }
 
     @Override

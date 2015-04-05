@@ -46,6 +46,8 @@ import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListHolderService;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.service.room.xmllist.Sanitiser;
+import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.update.UpdateHandler;
 import li.klass.fhem.util.io.FileSystemService;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
@@ -56,6 +58,8 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
                 ConnectionService.class,
                 DataConnectionSwitch.class,
                 DeviceListParser.class,
+                XmlListParser.class,
+                Sanitiser.class,
                 FavoritesService.class,
                 RoomListService.class,
                 RoomListHolderService.class,

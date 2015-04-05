@@ -25,24 +25,22 @@
 package li.klass.fhem.domain;
 
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showState = true)
 public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
 
     @ShowField(description = ResourceIdMapper.level)
+    @XmllistAttribute("pinLevel")
     private String pinLevel;
-
-    @SuppressWarnings("unused")
-    public void readPINLEVEL(String value) {
-        this.pinLevel = value;
-    }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
@@ -50,12 +48,11 @@ public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
-        if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("state")) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+        if (node.getType() == STATE && "state".equalsIgnoreCase(node.getKey())) {
+            setMeasured(node.getMeasured());
         }
     }
 

@@ -29,6 +29,8 @@ import android.content.SharedPreferences;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -37,7 +39,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.util.StringUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.EXECUTE_COMMAND;
@@ -78,7 +79,7 @@ public class SendCommandIntentService extends ConvenientIntentService {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
 
-        if (!StringUtil.isBlank(connectionId) && connectionService.exists(connectionId, this)) {
+        if (!Strings.isNullOrEmpty(connectionId) && connectionService.exists(connectionId, this)) {
             connectionService.setSelectedId(connectionId, this);
         }
 

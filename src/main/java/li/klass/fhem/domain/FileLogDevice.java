@@ -26,13 +26,12 @@ package li.klass.fhem.domain;
 
 import com.google.common.base.Optional;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
@@ -42,7 +41,7 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
     private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
         if (key.startsWith("CUSTOM_GRAPH")) {
             parseCustomGraphAttribute(value);
         }

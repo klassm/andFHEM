@@ -26,10 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
-import java.util.Locale;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -38,9 +34,11 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @SuppressWarnings("unused")
 @SupportsWidget(MediumInformationWidgetView.class)
@@ -50,32 +48,25 @@ public class WOLDevice extends FhemDevice<WOLDevice> {
     @ShowField(description = ResourceIdMapper.state, showInOverview = true)
     @WidgetMediumLine1
     private String isRunning;
+
     @ShowField(description = ResourceIdMapper.ip)
     @WidgetMediumLine2
+    @XmllistAttribute("ip")
     private String ip;
+
     @ShowField(description = ResourceIdMapper.mac)
+    @XmllistAttribute("mac")
     private String mac;
 
+    @XmllistAttribute("shutdownCmd")
     private String shutdownCommand;
 
-    public void readISRUNNING(String value, NamedNodeMap attributes) {
+    @XmllistAttribute("isRunning")
+    public void setIsRunning(String value, DeviceNode node) {
         Context context = AndFHEMApplication.getContext();
         int isRunningId = Boolean.valueOf(value) ? R.string.on : R.string.off;
         isRunning = context.getString(isRunningId);
-        String measured = attributes.getNamedItem("measured").getNodeValue();
-        setMeasured(measured);
-    }
-
-    public void readSHUTDOWNCMD(String value) {
-        this.shutdownCommand = value;
-    }
-
-    public void readIP(String value) {
-        ip = value;
-    }
-
-    public void readMAC(String value) {
-        mac = value.toUpperCase(Locale.getDefault());
+        setMeasured(node.getMeasured());
     }
 
     public String isRunning() {

@@ -72,31 +72,38 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
                 (eventMap.containsKey("on") && eventMap.containsKey("off"));
     }
 
-    public void readONOFFDEVICE(String value) {
+    @XmllistAttribute("onOffDevice")
+    public void setOnOffDevice(String value) {
         readButtonHookType(value, ON_OFF_DEVICE);
     }
 
-    public void readONDEVICE(String value) {
+    @XmllistAttribute("onDevice")
+    public void setOnDevice(String value) {
         readButtonHookType(value, ON_DEVICE);
     }
 
-    public void readOFFDEVICE(String value) {
+    @XmllistAttribute("offDevice")
+    public void setOffDevice(String value) {
         readButtonHookType(value, OFF_DEVICE);
     }
 
-    public void readTOGGLEDEVICE(String value) {
+    @XmllistAttribute("toggleDevice")
+    public void setToggleDevice(String value) {
         readButtonHookType(value, TOGGLE_DEVICE);
     }
 
-    public void readWEBCMDDEVICE(String value) {
+    @XmllistAttribute("webCmdDevice")
+    public void setWebCmdDevice(String value) {
         readButtonHookType(value, WEBCMD_DEVICE);
     }
 
-    public void readONSTATENAME(String value) {
+    @XmllistAttribute("onStateName")
+    public void setOnStateName(String value) {
         onStateName = value;
     }
 
-    public void readOFFSTATENAME(String value) {
+    @XmllistAttribute("offStateName")
+    public void setOffStateName(String value) {
         offStateName = value;
     }
 
@@ -106,7 +113,8 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
         }
     }
 
-    public void readINVERTSTATE(String value) {
+    @XmllistAttribute("invertState")
+    public void setInvertState(String value) {
         if (value.equalsIgnoreCase("true")) {
             doInvertOnState = true;
         }

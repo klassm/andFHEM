@@ -88,7 +88,7 @@ public class AndFHEMApplication extends Application {
         context = getApplicationContext();
         application = this;
 
-        graph = ObjectGraph.create(getModules().toArray());
+        graph = createDaggerGraph();
 
         inject(this);
         setApplicationInformation();
@@ -138,7 +138,11 @@ public class AndFHEMApplication extends Application {
         }
     }
 
-    protected List<Object> getModules() {
+    public static ObjectGraph createDaggerGraph() {
+        return ObjectGraph.create(getApplicationModules().toArray());
+    }
+
+    public static List<Object> getApplicationModules() {
         return Lists.<Object>newArrayList(
                 new ApplicationModule()
         );

@@ -123,4 +123,5 @@ public class BundleExtraKeys {
     public static final String IS_PREMIUM = "IS_PREMIUM";
 
     public static final String SENDER = "SENDER";
+    public static final String RESEND_TRY = "RESEND_TRY";
 }

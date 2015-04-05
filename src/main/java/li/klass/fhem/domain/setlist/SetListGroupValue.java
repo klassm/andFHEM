@@ -62,13 +62,18 @@ public class SetListGroupValue implements SetListValue {
 
         SetListGroupValue that = (SetListGroupValue) o;
 
-        if (!groupStates.equals(that.groupStates)) return false;
-
-        return true;
+        return groupStates.equals(that.groupStates);
     }
 
     @Override
     public int hashCode() {
         return groupStates != null ? groupStates.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "SetListGroupValue{" +
+                "groupStates=" + groupStates +
+                '}';
     }
 }

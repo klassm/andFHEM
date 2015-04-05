@@ -38,19 +38,15 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 public class TCM97001Device extends FhemDevice<TCM97001Device> {
     @ShowField(description = ResourceIdMapper.battery)
+    @XmllistAttribute("battery")
     private String battery;
 
     @ShowField(description = ResourceIdMapper.temperature)
-    private String temperature;
-
     @XmllistAttribute("TEMPERATURE")
-    public void setTemperature(String temperature) {
-        this.temperature = appendTemperature(temperature);
-    }
+    private String temperature;
 
     public String getBattery() {
         return battery;

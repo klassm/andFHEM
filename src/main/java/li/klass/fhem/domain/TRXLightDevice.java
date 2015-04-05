@@ -24,16 +24,16 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
@@ -49,19 +49,15 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     }
 
     @ShowField(description = ResourceIdMapper.type)
+    @XmllistAttribute("trx_light_type")
     private String type;
 
-    public void readTRX_LIGHT_TYPE(String value) {
-        this.type = value;
-    }
-
     @Override
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        super.readSTATE(tagName, attributes, value);
+    public void setState(String value, DeviceNode node) {
+        super.setState(value, node);
 
-        if (tagName.equals("STATE")) {
-            String measured = attributes.getNamedItem("measured").getNodeValue();
-            setMeasured(measured);
+        if (node.isStateNode()) {
+            setMeasured(node.getMeasured());
         }
     }
 

@@ -38,7 +38,7 @@ public class OpenWeatherMapDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity()).isEqualTo("94 (%)");
+        assertThat(device.getHumidity()).isEqualTo("94.0 (%)");
         assertThat(device.getTemperature()).isEqualTo("18.1 (°C)");
         assertThat(device.getSunrise()).isEqualTo("2013-09-11 05:06:19");
         assertThat(device.getSunset()).isEqualTo("2013-09-11 17:58:36");

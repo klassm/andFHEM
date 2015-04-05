@@ -36,6 +36,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         FHTDevice device = getDefaultDevice(FHTDevice.class);
+        assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

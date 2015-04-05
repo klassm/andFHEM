@@ -26,38 +26,39 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import org.w3c.dom.NamedNodeMap;
-
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
 import static li.klass.fhem.util.ValueDescriptionUtil.append;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @OverviewViewSettings(showState = false)
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
 public class EC3000Device extends FhemDevice<EC3000Device> {
     @ShowField(description = ResourceIdMapper.energy_consumption, showInOverview = true)
+    @XmllistAttribute("consumption")
     private String consumption;
 
     @ShowField(description = ResourceIdMapper.energy_power, showInOverview = true)
     @WidgetMediumLine1(description = ResourceIdMapper.energy_power)
+    @XmllistAttribute("power")
     private String power;
 
     @WidgetMediumLine2(description = ResourceIdMapper.energy_consumption)
     private String widgetInfoLine;
 
     @ShowField(description = ResourceIdMapper.price)
+    @XmllistAttribute("Euro")
     private String price;
 
     @Override
@@ -65,26 +66,14 @@ public class EC3000Device extends FhemDevice<EC3000Device> {
         return USAGE;
     }
 
-    public void readCONSUMPTION(String value) {
-        this.consumption = appendKWh(value);
-    }
-
-    public void readPOWER(String value) {
-        this.power = append(value, "W");
-    }
-
-    public void readEURO(String value) {
-        this.price = append(extractLeadingDouble(value, 2), "€");
+    @Override
+    public void setState(String value, DeviceNode node) {
+        super.setState(append(value, "W"), node);
     }
 
     @Override
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        super.readSTATE(tagName, attributes, append(value, "W"));
-    }
-
-    @Override
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, key, value, attributes);
+    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+        super.onChildItemRead(type, key, value, node);
 
         if (key.endsWith("lastRcv")) {
             setMeasured(value);
