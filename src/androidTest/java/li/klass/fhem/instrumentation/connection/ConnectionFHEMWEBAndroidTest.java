@@ -120,6 +120,49 @@ public class ConnectionFHEMWEBAndroidTest extends BaseAndroidTest<AndFHEMMainAct
     }
 
     @SuppressWarnings("unchecked")
+    public void test_alternative_URL_is_optional() throws Exception {
+        // given
+        String primaryUrl = "http://www.google.de";
+
+        instrumentation.waitForIdleSync();
+
+        onView(allOf(withId(R.id.create), withId(R.id.connectionList), withId(R.id.emptyText)));
+        onView(withId(R.id.connectionList)).check(matches(withEmptyListView()));
+
+        onView(withId(R.id.create))
+                .perform(click());
+
+        // when
+        instrumentation.waitForIdleSync();
+
+        onView(withId(R.id.connectionName)).perform(typeText("myName"));
+
+        selectServerType(FHEMWEB);
+
+        onView(withId(R.id.url))
+                .perform(scrollTo())
+                .perform(typeText(primaryUrl));
+
+        onView(withId(R.id.save))
+                .perform(scrollTo())
+                .perform(click());
+        instrumentation.waitForIdleSync();
+
+        // then
+        onView(withId(R.id.connectionList))
+                .check(matches(isDisplayed()))
+                .check(matches(withListViewSize(1)));
+        onData(withServerSpec().withName("myName").withServerType(FHEMWEB).build())
+                .inAdapterView(withId(R.id.connectionList))
+                .perform(click());
+        instrumentation.waitForIdleSync();
+
+        onView(withId(R.id.connectionName)).check(matches(withText("myName")));
+        onView(withId(R.id.connectionType)).check(matches(withSelectedItem(FHEMWEB)));
+        onView(withId(R.id.url)).check(matches(withText(primaryUrl)));
+    }
+
+    @SuppressWarnings("unchecked")
     public void test_FHEMWEB_URL_not_blank() {
         // given
         instrumentation.waitForIdleSync();

@@ -62,6 +62,7 @@ import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ALTERNATE_URL;
@@ -323,7 +324,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (enforceUrlStartsWithHttp(url)) return false;
 
         String alternateUrl = getTextViewContent(R.id.alternate_url);
-        if (enforceUrlStartsWithHttp(alternateUrl)) return false;
+        if (!isNullOrEmpty(alternateUrl) && enforceUrlStartsWithHttp(alternateUrl)) return false;
 
         String username = getTextViewContent(R.id.username);
         String clientCertificatePath = getTextViewContent(R.id.clientCertificatePath);
