@@ -299,11 +299,6 @@ public class DeviceListParser {
     }
 
     private <T extends FhemDevice> void handleCacheEntryFor(Map<String, Set<DeviceClassCacheEntry>> cache, T device,
-                                                            String key, String value) throws Exception {
-        handleCacheEntryFor(cache, device, key, value, null);
-    }
-
-    private <T extends FhemDevice> void handleCacheEntryFor(Map<String, Set<DeviceClassCacheEntry>> cache, T device,
                                                             String key, String value, DeviceNode deviceNode) throws Exception {
         key = key.toLowerCase(Locale.getDefault());
         if (cache.containsKey(key)) {
@@ -351,34 +346,19 @@ public class DeviceListParser {
     }
 
     public void fillDeviceWith(FhemDevice device, Map<String, String> updates, Context context) {
-        Class<? extends FhemDevice> deviceClass = device.getClass();
-
-        fillDeviceWith(device, updates, deviceClass);
-        device.afterDeviceXMLRead(context);
-    }
-
-    private boolean fillDeviceWith(FhemDevice device, Map<String, String> updates, Class<?> deviceClass) {
-        Map<String, Set<DeviceClassCacheEntry>> cache = deviceClassCache.get(deviceClass);
-        if (cache == null) return false;
-
-        boolean changed = false;
+        Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(device.getClass());
+        if (cache == null) return;
 
         for (Map.Entry<String, String> entry : updates.entrySet()) {
-            if (cache.containsKey(entry.getKey())) {
-                try {
-                    handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue());
-                    changed = true;
-                } catch (Exception e) {
-                    LOG.error("fillDeviceWith - handle " + entry, e);
-                }
+            try {
+                handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue(),
+                        new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), null));
+            } catch (Exception e) {
+                LOG.error("fillDeviceWith - handle " + entry, e);
             }
         }
 
-        if (deviceClass.getSuperclass() != null) {
-            return changed | fillDeviceWith(device, updates, deviceClass.getSuperclass());
-        } else {
-            return changed;
-        }
+        device.afterDeviceXMLRead(context);
     }
 
     private class ReadErrorHolder {
@@ -446,8 +426,6 @@ public class DeviceListParser {
 
         @Override
         public void invoke(Object object, DeviceNode node, String value) throws Exception {
-            if (node == null) return;
-
             Class<?>[] parameterTypes = method.getParameterTypes();
 
             if (parameterTypes.length == 1) {
@@ -466,7 +444,8 @@ public class DeviceListParser {
 
             } else if (parameterTypes.length == 2
                     && parameterTypes[0].equals(String.class)
-                    && parameterTypes[1].equals(DeviceNode.class)) {
+                    && parameterTypes[1].equals(DeviceNode.class)
+                    && node != null) {
                 method.invoke(object, value, node);
             }
         }

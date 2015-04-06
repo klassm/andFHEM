@@ -39,7 +39,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -124,8 +123,6 @@ public class RoomListIntentService extends ConvenientIntentService {
             boolean vibrateUponNotification = intent.getBooleanExtra(VIBRATE, false);
 
             roomListService.parseReceivedDeviceStateMap(deviceName, updates, vibrateUponNotification, this);
-
-            sendBroadcast(new Intent(Actions.DO_UPDATE));
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             LOG.trace("handleIntent() - remote update finished");
             roomListService.remoteUpdateFinished(this, intent.getBooleanExtra(BundleExtraKeys.SUCCESS, true));

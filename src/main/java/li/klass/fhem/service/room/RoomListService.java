@@ -48,7 +48,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -67,6 +66,9 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
+import static li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE;
+import static li.klass.fhem.constants.Actions.DO_UPDATE;
+import static li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.RESEND_TRY;
@@ -122,12 +124,14 @@ public class RoomListService extends AbstractService {
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
 
-        context.startService(new Intent(Actions.NOTIFICATION_TRIGGER)
+        context.startService(new Intent(NOTIFICATION_TRIGGER)
                 .setClass(context, NotificationIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
                 .putExtra(BundleExtraKeys.DEVICE, device)
                 .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
                 .putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification));
+
+        context.sendBroadcast(new Intent(DO_UPDATE));
 
         boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false, context);
         if (updateWidgets) {
@@ -215,7 +219,7 @@ public class RoomListService extends AbstractService {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
-                context.startService(new Intent(Actions.DO_REMOTE_UPDATE)
+                context.startService(new Intent(DO_REMOTE_UPDATE)
                         .setClass(context, RoomListUpdateIntentService.class));
             }
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");
@@ -242,8 +246,8 @@ public class RoomListService extends AbstractService {
                     resend(resendIntent, context);
                 }
 
-                context.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
-                context.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
+                context.sendBroadcast(new Intent(REDRAW_ALL_WIDGETS));
+                context.startService(new Intent(REDRAW_ALL_WIDGETS)
                         .setClass(context, AppWidgetUpdateService.class)
                         .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
 

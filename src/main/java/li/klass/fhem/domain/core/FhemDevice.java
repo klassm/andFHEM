@@ -52,6 +52,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.GCM_UPDATE;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
 
 @SuppressWarnings("unused")
@@ -88,7 +89,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @XmllistAttribute("state")
     public void setState(String value, DeviceNode node) {
-        if (node.getType() == INT) {
+        if (node.getType() == INT || node.getType() == GCM_UPDATE) {
             this.state = value;
         }
     }

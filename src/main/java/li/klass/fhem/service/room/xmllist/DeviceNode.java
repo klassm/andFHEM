@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DeviceNode {
     public enum DeviceNodeType {
-        INT, ATTR, STATE, HEADER
+        INT, ATTR, STATE, HEADER, GCM_UPDATE
     }
 
     private String key;

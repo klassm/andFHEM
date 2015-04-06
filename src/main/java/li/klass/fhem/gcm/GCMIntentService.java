@@ -130,14 +130,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         if (changesText == null) return;
 
-        Map<String, String> changeMap = extractChanges(deviceName, changesText);
-
-        Intent parseIntent = new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP);
-        parseIntent.setClass(this, RoomListIntentService.class);
-        parseIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        parseIntent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) changeMap);
-        parseIntent.putExtra(BundleExtraKeys.VIBRATE, shouldVibrate(extras));
-        startService(parseIntent);
+        startService(new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP)
+                .setClass(this, RoomListIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) extractChanges(deviceName, changesText))
+                .putExtra(BundleExtraKeys.VIBRATE, shouldVibrate(extras)));
     }
 
     Map<String, String> extractChanges(String deviceName, String changesText) {
