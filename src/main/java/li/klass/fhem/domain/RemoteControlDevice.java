@@ -54,7 +54,7 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
 
         @Override
         public int compareTo(@NotNull Row another) {
-            return Integer.compare(index, another.index);
+            return ((Integer) index).compareTo(another.index);
         }
     }
 
