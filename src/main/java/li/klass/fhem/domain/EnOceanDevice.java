@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -78,8 +79,8 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context) {
-        super.afterDeviceXMLRead(context);
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+        super.afterDeviceXMLRead(context, chartProvider);
 
         if (gwCmd != null) {
             if (gwCmd.equalsIgnoreCase("DIMMING")) {

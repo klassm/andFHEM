@@ -29,6 +29,7 @@ import android.content.Context;
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -63,8 +64,8 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context) {
-        super.afterDeviceXMLRead(context);
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+        super.afterDeviceXMLRead(context, chartProvider);
 
         if ("percent".equalsIgnoreCase(model) && "???".equalsIgnoreCase(getInternalState())) {
             setState("0 (%)");
@@ -130,8 +131,8 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
-        super.fillDeviceCharts(chartSeries, context);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
+        super.fillDeviceCharts(chartSeries, context, chartProvider);
 
         if (model != null && model.equals("tempsensor")) {
             addDeviceChartIfNotNull(

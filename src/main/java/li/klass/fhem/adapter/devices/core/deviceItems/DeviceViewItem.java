@@ -22,29 +22,20 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import org.junit.Test;
+public interface DeviceViewItem {
+    public static final String FIRST = "__first__";
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+    String getName();
 
-import static org.assertj.core.api.Assertions.assertThat;
+    String getValueFor(Object object);
 
-public class BMP180DeviceTest extends DeviceXMLParsingBase {
+    String getShowAfterValue();
 
-    @Test
-    public void all_properties_read() {
-        JsonDefDevice device = getDeviceFor("BMP180", JsonDefDevice.class);
-        assertThat(device.getName()).isEqualTo("BMP180");
-        assertThat(device.getAlias()).isEqualTo("Luftdruck");
+    boolean isShowInDetail();
 
-        assertThat(xmlListDeviceValue(device, "pressure")).isEqualTo("1006.3 (hPa)");
-        assertThat(xmlListDeviceValue(device, "pressure-nn")).isEqualTo("1019.5 (hPa)");
-        assertThat(xmlListDeviceValue(device, "temperature")).isEqualTo("21.9 (°C)");
-    }
+    boolean isShowInOverview();
 
-    @Override
-    protected String getFileName() {
-        return "bmp180.xml";
-    }
+    int getDescriptionStringId();
 }

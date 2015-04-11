@@ -39,6 +39,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -135,8 +136,8 @@ public class HMSDevice extends FhemDevice<HMSDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
-        super.fillDeviceCharts(chartSeries, context);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
+        super.fillDeviceCharts(chartSeries, context, chartProvider);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()

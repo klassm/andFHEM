@@ -24,18 +24,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-public class EMCDDevice extends ToggleableDevice<EMCDDevice> {
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.SWITCH;
-    }
-
-    @Override
-    public void setState(String value, DeviceNode node) {
-        super.setState(value.replaceAll("ok", "").trim(), node);
-    }
+public class JsonDefDevice extends ToggleableDevice<JsonDefDevice> {
 }

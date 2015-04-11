@@ -1,0 +1,125 @@
+{
+    I2C_BMP180: {
+        defaultGroup: 'WEATHER',
+        states: [
+            {
+                key: 'pressure',
+                desc: 'pressure',
+                showInOverview: true
+            },
+            {
+                key: 'pressure-nn',
+                desc: 'pressureNN',
+                showInOverview: true
+            },
+            {
+                key: 'temperature',
+                desc: 'temperature',
+                showInOverview: true
+            }
+        ],
+
+        charts: [
+            {
+                series: [
+                    {
+                        columnName: 'temperature',
+                        fileLogSpec: '4::',
+                        dbLogSpec: 'temperature::int1',
+                        seriesType: 'TEMPERATURE',
+                        showRegression: true
+                    }
+                ],
+                required: [{
+                    type: 'state',
+                    attribute: 'temperature'
+                }],
+                buttonText: 'temperatureGraph'
+            },
+            {
+                series: [
+                    {
+                        columnName: 'pressure',
+                        fileLogSpec: '6::',
+                        dbLogSpec: 'pressure::int1',
+                        seriesType: 'PRESSURE',
+                        yAxisMinMax: {
+                            defaultMin: 700,
+                            defaultMax: 1200,
+                            attribute: 'pressure'
+                        }
+                    },
+                    {
+                        columnName: 'pressureNN',
+                        fileLogSpec: '8::',
+                        dbLogSpec: 'pressure-nn::int1',
+                        seriesType: 'PRESSURE_NN',
+                        yAxisMinMax: {
+                            defaultMin: 700,
+                            defaultMax: 1200,
+                            attribute: 'pressure-nn'
+                        }
+                    }
+                ],
+                required: [{
+                    type: 'state',
+                    attribute: 'pressure'
+                }, {
+                    type: 'state',
+                    attribute: 'pressure-nn'
+                }],
+                buttonText: 'pressureGraph'
+            }
+        ]
+    },
+
+    CM160: {
+        defaultGroup: 'USAGE',
+        states: [
+            {
+                key: 'A',
+                desc: 'energy_current',
+                showInOverview: true
+            },
+            {
+                key: 'W',
+                desc: 'energy_power',
+                showInOverview: true
+            },
+            {
+                key: 'C',
+                desc: 'cost',
+                showInOverview: true
+            },
+            {
+                key: 'CO2',
+                desc: 'co2',
+                showInOverview: true
+            },
+            {
+                key: 'cumDay',
+                desc: 'dayUsage'
+            },
+            {
+                key: 'cumHour',
+                desc: 'hourUsage'
+            },
+            {
+                key: 'cumMonth',
+                desc: 'monthUsage'
+            },
+            {
+                key: 'cumYear',
+                desc: 'yearUsage'
+            }
+        ]
+    },
+
+    EGPMDevice: {
+        defaultGroup: 'SWITCH'
+    },
+
+    ECMDDevice: {
+        defaultGroup: 'SWITCH'
+    }
+}

@@ -34,14 +34,16 @@ public class EMCDDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_recognize_device_as_on() {
-        EMCDDevice device = getDeviceFor("Relais1", EMCDDevice.class);
+        JsonDefDevice device = getDeviceFor("Relais1", JsonDefDevice.class);
         assertThat(device.isOnByState()).isTrue();
+        assertThat(device.getState()).isEqualTo("on");
     }
 
     @Test
     public void should_recognize_device_as_off() {
-        EMCDDevice device = getDeviceFor("Relais2", EMCDDevice.class);
+        JsonDefDevice device = getDeviceFor("Relais2", JsonDefDevice.class);
         assertThat(device.isOnByState()).isFalse();
+        assertThat(device.getState()).isEqualTo("off");
     }
 
     @Override

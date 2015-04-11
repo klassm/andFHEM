@@ -22,60 +22,40 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
+package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.genericview.ShowFieldCache;
 
-public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
-    public final Method method;
-    private final String sortName;
+public class AnnotatedDeviceViewField extends AnnotatedDeviceViewItem {
+    protected final Field field;
     private ShowField showField;
 
-    public AnnotatedDeviceClassMethod(Method method) {
-        this.method = method;
-        method.setAccessible(true);
-
-        String name = method.getName();
-        name = getterNameToName(name);
-
-        this.sortName = name;
-        this.showField = method.getAnnotation(ShowField.class);
+    public AnnotatedDeviceViewField(Field field) {
+        this.field = field;
+        field.setAccessible(true);
+        this.showField = field.getAnnotation(ShowField.class);
         if (showField != null) {
-            showField = new ShowFieldCache(showField);
+            this.showField = new ShowFieldCache(showField);
         }
-
-    }
-
-    static String getterNameToName(String name) {
-        if (!name.startsWith("get")) return name;
-
-        name = name.replace("get", "");
-
-        int firstChar = name.charAt(0);
-        if (firstChar >= 'A' && firstChar <= 'Z') {
-            firstChar = firstChar - 'A' + 'a';
-        }
-
-        name = "" + ((char) firstChar) + name.substring(1);
-        return name;
     }
 
     @Override
     public String getName() {
-        return sortName;
+        return field.getName();
     }
 
     @Override
     public String getValueFor(Object object) {
         try {
-            Object value = method.invoke(object);
+            Object value = field.get(object);
             if (value == null) return null;
 
             return String.valueOf(value);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
+            // this may never happen as we set the field as being accessible!
             throw new IllegalStateException(e);
         }
     }

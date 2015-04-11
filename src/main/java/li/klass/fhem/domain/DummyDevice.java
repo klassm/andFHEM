@@ -28,6 +28,7 @@ import android.content.Context;
 
 import org.w3c.dom.NamedNodeMap;
 
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
@@ -54,8 +55,8 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context) {
-        super.afterDeviceXMLRead(context);
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+        super.afterDeviceXMLRead(context, chartProvider);
 
         SetListValue value = getSetList().get("state");
 

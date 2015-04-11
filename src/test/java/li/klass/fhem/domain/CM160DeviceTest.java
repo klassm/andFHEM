@@ -33,17 +33,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CM160DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testPropertiesSet() {
-        CM160Device device = getDefaultDevice(CM160Device.class);
+        JsonDefDevice device = getDefaultDevice(JsonDefDevice.class);
 
-        assertThat(device.getCurrent()).isEqualTo("3.92 (A)");
-        assertThat(device.getPower()).isEqualTo("901.6 (W)");
-        assertThat(device.getCost()).isEqualTo("0.2461 (€/h)");
-        assertThat(device.getCo2()).isEqualTo("0.4147 (kg/h)");
+        assertThat(xmlListDeviceValue(device, "A")).isEqualTo("3.92 (A)");
+        assertThat(xmlListDeviceValue(device, "W")).isEqualTo("901.6 (W)");
+        assertThat(xmlListDeviceValue(device, "C")).isEqualTo("0.2461 (€/h)");
+        assertThat(xmlListDeviceValue(device, "CO2")).isEqualTo("0.4147 (kg/h)");
 
-        assertThat(device.getCumHour()).isEqualTo("W: 101772 W, P: 1.70 kWh, C: 0.46 €, CO2: 0.78 kg");
-        assertThat(device.getCumDay()).isEqualTo("W: 4026875 W, P: 67.11 kWh, C: 18.32 €, CO2: 30.87 kg");
-        assertThat(device.getCumMonth()).isEqualTo("W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg");
-        assertThat(device.getCumYear()).isEqualTo("W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg");
+        assertThat(xmlListDeviceValue(device, "cumHour")).isEqualTo("W: 101772 W, P: 1.70 kWh, C: 0.46 €, CO2: 0.78 kg");
+        assertThat(xmlListDeviceValue(device, "cumDay")).isEqualTo("W: 4026875 W, P: 67.11 kWh, C: 18.32 €, CO2: 30.87 kg");
+        assertThat(xmlListDeviceValue(device, "cumMonth")).isEqualTo("W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg");
+        assertThat(xmlListDeviceValue(device, "cumYear")).isEqualTo("W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg");
 
         assertThat(device.getState()).isEqualTo("A: 3.92 A, W: 901.60 W, C: 0.2461 €/h, CO2: 0.4147 kg/h");
 

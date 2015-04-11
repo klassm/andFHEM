@@ -33,11 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EGPMDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        EGPMDevice device = getDefaultDevice(EGPMDevice.class);
+        JsonDefDevice device = getDefaultDevice(JsonDefDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
 
         assertThat(device.isOnByState()).isFalse();
+        assertThat(device.supportsToggle()).isTrue();
     }
 
     @Override

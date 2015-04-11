@@ -25,6 +25,9 @@
 package li.klass.fhem.dagger;
 
 import dagger.Module;
+import li.klass.fhem.adapter.devices.core.deviceItems.AnnotatedMethodsAndFieldsProvider;
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter;
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.uiservice.FragmentUiService;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.ui.service.importExport.ImportExportUIService;
@@ -33,7 +36,11 @@ import li.klass.fhem.ui.service.importExport.ImportExportUIService;
         injects = {
                 ImportExportUIService.class,
                 StateUiService.class,
-                FragmentUiService.class
+                FragmentUiService.class,
+
+                XmlDeviceItemProvider.class,
+                AnnotatedMethodsAndFieldsProvider.class,
+                DeviceViewItemSorter.class
         })
 public class UIServiceModule {
 }

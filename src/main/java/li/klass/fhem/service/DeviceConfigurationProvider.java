@@ -22,16 +22,36 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.service;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
+import com.google.common.io.Resources;
 
-import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
+import org.json.JSONObject;
 
-public class EGPMDevice extends ToggleableDevice<EGPMDevice> {
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return SWITCH;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
+
+@Singleton
+public class DeviceConfigurationProvider {
+    private final JSONObject options;
+
+    @Inject
+    public DeviceConfigurationProvider() {
+        try {
+            options = new JSONObject(Resources.toString(Resources.getResource(DeviceConfigurationProvider.class, "deviceConfiguration.json"), Charsets.UTF_8));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Optional<JSONObject> configurationFor(XmlListDevice device) {
+        JSONObject deviceConfig = options.optJSONObject(device.getType());
+
+        return deviceConfig == null ? Optional.<JSONObject>absent() : Optional.of(deviceConfig);
+
     }
 }

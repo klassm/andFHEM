@@ -30,6 +30,7 @@ import com.google.common.base.Joiner;
 
 import java.util.List;
 
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -104,8 +105,8 @@ public class HCSDevice extends FhemDevice<HCSDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context) {
-        super.afterDeviceXMLRead(context);
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+        super.afterDeviceXMLRead(context, chartProvider);
         sort(demandDevices);
     }
 

@@ -28,9 +28,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +51,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.StatisticsDevice;
+import li.klass.fhem.domain.core.ChartProvider;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
@@ -57,6 +61,7 @@ import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
+import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
@@ -80,6 +85,12 @@ public class DeviceListParser {
 
     @Inject
     ConnectionService connectionService;
+
+    @Inject
+    ChartProvider chartProvider;
+
+    @Inject
+    DeviceConfigurationProvider deviceConfigurationProvider;
 
     @Inject
     XmlListParser parser;
@@ -239,7 +250,16 @@ public class DeviceListParser {
                 return false;
             }
 
-            device.afterDeviceXMLRead(context);
+            device.setXmlListDevice(xmlListDevice);
+            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
+            if (optConfig.isPresent()) {
+                String defaultGroup = optConfig.get().optString("defaultGroup");
+                if (defaultGroup != null) {
+                    device.setDeviceFunctionality(DeviceFunctionality.valueOf(defaultGroup));
+                }
+            }
+
+            device.afterDeviceXMLRead(context, chartProvider);
 
             LOG.debug("loaded device with name " + device.getName());
 
@@ -353,12 +373,14 @@ public class DeviceListParser {
             try {
                 handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue(),
                         new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), null));
+                device.getXmlListDevice().getStates().put(entry.getKey(),
+                        new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), null));
             } catch (Exception e) {
                 LOG.error("fillDeviceWith - handle " + entry, e);
             }
         }
 
-        device.afterDeviceXMLRead(context);
+        device.afterDeviceXMLRead(context, chartProvider);
     }
 
     private class ReadErrorHolder {

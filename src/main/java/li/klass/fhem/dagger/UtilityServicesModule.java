@@ -26,10 +26,12 @@ package li.klass.fhem.dagger;
 
 import dagger.Module;
 import li.klass.fhem.billing.BillingService;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.DateService;
+import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.device.AtService;
@@ -79,7 +81,9 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
                 DateService.class,
                 VoiceCommandService.class,
                 SharedPreferencesService.class,
-                FileSystemService.class
+                FileSystemService.class,
+                DeviceConfigurationProvider.class,
+                ChartProvider.class
         })
 public class UtilityServicesModule {
 }

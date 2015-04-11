@@ -45,16 +45,19 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dagger.ObjectGraph;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.DeviceListParser;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.CloseableUtil;
-import li.klass.fhem.util.ReflectionUtil;
 
+import static li.klass.fhem.util.ReflectionUtil.setFieldValue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -84,8 +87,11 @@ public abstract class DeviceXMLParsingBase {
     public void before() throws Exception {
         AndFHEMApplication.setContext(context);
 
-        XmlListParser xmlListParser = AndFHEMApplication.createDaggerGraph().get(XmlListParser.class);
-        ReflectionUtil.setFieldValue(deviceListParser, "parser", xmlListParser);
+        ObjectGraph graph = AndFHEMApplication.createDaggerGraph();
+        setFieldValue(deviceListParser, "parser", graph.get(XmlListParser.class));
+        setFieldValue(deviceListParser, "chartProvider", graph.get(ChartProvider.class));
+        setFieldValue(deviceListParser, "deviceConfigurationProvider", graph.get(DeviceConfigurationProvider.class));
+
         mockStrings();
 
         doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class), eq(context));
@@ -147,5 +153,11 @@ public abstract class DeviceXMLParsingBase {
     // Careful: The Java-Compiler needs some class instance of <T> here to infer the type correctly!
     protected <T extends FhemDevice<T>> T getDeviceFor(String deviceName, @SuppressWarnings("unused") Class<T> clazz) {
         return roomDeviceList.getDeviceFor(deviceName);
+    }
+
+    protected String xmlListDeviceValue(Device device, String key) {
+        DeviceNode deviceNode = device.getXmlListDevice().getStates().get(key);
+        if (deviceNode == null) return null;
+        return deviceNode.getValue();
     }
 }

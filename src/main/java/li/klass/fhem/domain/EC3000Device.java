@@ -30,6 +30,7 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -81,8 +82,8 @@ public class EC3000Device extends FhemDevice<EC3000Device> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context) {
-        super.afterDeviceXMLRead(context);
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+        super.afterDeviceXMLRead(context, chartProvider);
         widgetInfoLine = price + ", " + consumption;
     }
 

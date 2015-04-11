@@ -22,19 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
+package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import com.google.common.base.Strings;
 
 import li.klass.fhem.domain.genericview.ShowField;
 
-public abstract class AnnotatedDeviceClassItem {
-    public abstract String getName();
-
-    public abstract String getValueFor(Object object);
+public abstract class AnnotatedDeviceViewItem implements DeviceViewItem {
 
     public abstract ShowField getShowFieldAnnotation();
 
+    @Override
     public String getShowAfterValue() {
         ShowField annotation = getShowFieldAnnotation();
         if (annotation == null) return null;
@@ -45,14 +43,17 @@ public abstract class AnnotatedDeviceClassItem {
         return showAfter;
     }
 
+    @Override
     public boolean isShowInDetail() {
         return getShowFieldAnnotation().showInDetail();
     }
 
+    @Override
     public boolean isShowInOverview() {
         return getShowFieldAnnotation().showInOverview();
     }
 
+    @Override
     public int getDescriptionStringId() {
         return getShowFieldAnnotation().description().getId();
     }

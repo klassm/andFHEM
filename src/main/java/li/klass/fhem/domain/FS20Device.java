@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
@@ -116,8 +117,8 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
-        super.fillDeviceCharts(chartSeries, context);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
+        super.fillDeviceCharts(chartSeries, context, chartProvider);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
                 new ChartSeriesDescription.Builder()

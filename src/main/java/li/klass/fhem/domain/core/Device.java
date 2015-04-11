@@ -29,11 +29,14 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 import li.klass.fhem.service.room.DeviceReadCallback;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class Device<T extends Device<T>> {
 
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
+
+    private XmlListDevice xmlListDevice;
 
     private OverviewViewSettings overviewViewSettings;
 
@@ -43,6 +46,10 @@ public abstract class Device<T extends Device<T>> {
         if (overviewViewSettings != null) {
             overviewViewSettings = new OverviewViewSettingsCache(overviewViewSettings);
         }
+    }
+
+    public void setXmlListDevice(XmlListDevice xmlListDevice) {
+        this.xmlListDevice = xmlListDevice;
     }
 
     public OverviewViewSettings getOverviewViewSettings() {
@@ -110,5 +117,9 @@ public abstract class Device<T extends Device<T>> {
 
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return true;
+    }
+
+    public XmlListDevice getXmlListDevice() {
+        return xmlListDevice;
     }
 }

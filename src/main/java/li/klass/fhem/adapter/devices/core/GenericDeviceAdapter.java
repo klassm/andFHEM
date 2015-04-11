@@ -40,14 +40,17 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem;
+import li.klass.fhem.adapter.devices.core.deviceItems.AnnotatedMethodsAndFieldsProvider;
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter;
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
@@ -59,6 +62,8 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
 
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
 
 public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
@@ -70,14 +75,25 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     @Inject
     protected StateUiService stateUiService;
 
+    @Inject
+    DeviceViewItemSorter deviceViewItemSorter;
+
+    @Inject
+    AnnotatedMethodsAndFieldsProvider annotatedMethodsAndFieldsProvider;
+
+    @Inject
+    XmlDeviceItemProvider xmlDeviceItemProvider;
+
     private Class<D> deviceClass;
-    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<>();
+
+    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = newHashMap();
+
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
      * recreating this list on each view creation is really really expensive (involves reflection,
      * list sorting, object creation, ...)
      */
-    private transient List<AnnotatedDeviceClassItem> sortedAnnotatedClassItems;
+    private transient Set<DeviceViewItem> annotatedClassItems;
 
     public GenericDeviceAdapter(Class<D> deviceClass) {
         super();
@@ -136,9 +152,9 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         setTextView(viewHolder.getDeviceName(), device.getAliasOrName());
         try {
             OverviewViewSettings annotation = device.getOverviewViewSettings();
-            List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
+            List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
             int currentGenericRow = 0;
-            for (AnnotatedDeviceClassItem item : items) {
+            for (DeviceViewItem item : items) {
                 String name = item.getName();
                 boolean alwaysShow = false;
                 if (annotation != null) {
@@ -177,11 +193,13 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         }
     }
 
-    private List<AnnotatedDeviceClassItem> getSortedAnnotatedClassItems(D device) {
-        if (sortedAnnotatedClassItems == null) {
-            sortedAnnotatedClassItems = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
+    private List<DeviceViewItem> getSortedAnnotatedClassItems(D device) {
+        if (annotatedClassItems == null) {
+            annotatedClassItems = annotatedMethodsAndFieldsProvider.generateAnnotatedClassItemsList(device.getClass());
         }
-        return sortedAnnotatedClassItems;
+        Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device.getXmlListDevice());
+
+        return deviceViewItemSorter.sortedViewItemsFrom(concat(annotatedClassItems, xmlViewItems));
     }
 
     private GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
@@ -204,7 +222,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     }
 
-    private void fillTableRow(GenericDeviceTableRowHolder holder, AnnotatedDeviceClassItem item, D device) {
+    private void fillTableRow(GenericDeviceTableRowHolder holder, DeviceViewItem item, D device) {
         String value = item.getValueFor(device);
         int description = item.getDescriptionStringId();
         setTextView(holder.description, description);
@@ -249,9 +267,9 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
         try {
             DetailViewSettings annotation = device.getClass().getAnnotation(DetailViewSettings.class);
-            List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
+            List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
 
-            for (AnnotatedDeviceClassItem item : items) {
+            for (DeviceViewItem item : items) {
                 String name = item.getName();
 
                 if (annotation != null) {

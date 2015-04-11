@@ -33,6 +33,7 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -47,7 +48,6 @@ import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
-@SuppressWarnings("unused")
 public class CULWSDevice extends FhemDevice<CULWSDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
@@ -73,8 +73,8 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> implements TemperatureD
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
-        super.fillDeviceCharts(chartSeries, context);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
+        super.fillDeviceCharts(chartSeries, context, chartProvider);
 
         if (temperature != null && humidity != null && dewpoint != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,

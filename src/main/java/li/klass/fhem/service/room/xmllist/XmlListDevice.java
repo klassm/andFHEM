@@ -24,9 +24,10 @@
 
 package li.klass.fhem.service.room.xmllist;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class XmlListDevice {
+public class XmlListDevice implements Serializable {
     private String type;
 
     private Map<String, DeviceNode> attributes;

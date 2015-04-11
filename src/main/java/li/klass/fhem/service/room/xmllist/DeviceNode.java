@@ -24,9 +24,11 @@
 
 package li.klass.fhem.service.room.xmllist;
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class DeviceNode {
+public class DeviceNode implements Serializable {
     public enum DeviceNodeType {
         INT, ATTR, STATE, HEADER, GCM_UPDATE
     }

@@ -39,6 +39,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
@@ -293,7 +294,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context) {
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
         if (actuator != null) {
             subType = THERMOSTAT;
         }
@@ -301,7 +302,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             weekProfile.afterXMLRead();
         }
 
-        super.afterDeviceXMLRead(context);
+        super.afterDeviceXMLRead(context, chartProvider);
     }
 
     @Override
@@ -584,8 +585,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
-        super.fillDeviceCharts(chartSeries, context);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
+        super.fillDeviceCharts(chartSeries, context, chartProvider);
 
         if (subType == null) return;
 

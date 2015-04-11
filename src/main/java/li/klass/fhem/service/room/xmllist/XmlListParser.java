@@ -160,16 +160,17 @@ public class XmlListParser {
                 default:
             }
         }
-        addToHeaderIfPresent(attributes, device, "sets");
-        addToHeaderIfPresent(attributes, device, "attrs");
+        addToHeaderIfPresent(attributes, device, "sets", node.getNodeName());
+        addToHeaderIfPresent(attributes, device, "attrs", node.getNodeName());
 
         return device;
     }
 
-    private void addToHeaderIfPresent(NamedNodeMap attributes, MutableXmlListDevice device, String attributeKey) {
+    private void addToHeaderIfPresent(NamedNodeMap attributes, MutableXmlListDevice device, String attributeKey, String deviceType) {
         Node attribute = attributes.getNamedItem(attributeKey);
         if (attribute != null) {
-            device.header.put(attributeKey, new DeviceNode(DeviceNodeType.HEADER, attributeKey, attribute.getNodeValue(), null));
+            device.header.put(attributeKey,
+                    sanitiser.sanitise(deviceType, new DeviceNode(DeviceNodeType.HEADER, attributeKey, attribute.getNodeValue(), null)));
         }
     }
 

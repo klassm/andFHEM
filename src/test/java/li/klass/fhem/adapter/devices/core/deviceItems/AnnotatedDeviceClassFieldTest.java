@@ -22,48 +22,41 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
+package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import org.junit.Test;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 import li.klass.fhem.domain.FHTDevice;
 
-import static li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassMethod.getterNameToName;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AnnotatedDeviceClassMethodTest {
-    @Test
-    public void testGetterNameToName() throws Exception {
-        assertThat(getterNameToName("getName"), is("name"));
-        assertThat(getterNameToName("hello"), is("hello"));
-    }
-
+public class AnnotatedDeviceClassFieldTest {
     @Test
     public void testGetDoubleValue() throws Exception {
         FHTDevice fhtDevice = new FHTDevice();
         fhtDevice.setDesiredTemp(20.0);
 
-        String value = getValueFor(fhtDevice, "getDesiredTemp");
+        String value = getFieldValue(fhtDevice, "desiredTemp");
         assertThat(value, is("20.0"));
     }
 
     @Test
     public void testGetNullValue() throws Exception {
         FHTDevice fhtDevice = new FHTDevice();
-        fhtDevice.setWarnings(null);
+        fhtDevice.setHeatingMode(null);
 
-        String value = getValueFor(fhtDevice, "getWarnings");
+        String value = getFieldValue(fhtDevice, "heatingMode");
         assertThat(value, is(nullValue()));
     }
 
-    private String getValueFor(FHTDevice fhtDevice, String methodName) throws NoSuchMethodException {
-        Method method = FHTDevice.class.getMethod(methodName);
-        AnnotatedDeviceClassMethod pseudoAnnotatedMethod = new AnnotatedDeviceClassMethod(method);
+    private String getFieldValue(FHTDevice fhtDevice, String fieldName) throws NoSuchFieldException {
+        Field field = FHTDevice.class.getDeclaredField(fieldName);
+        AnnotatedDeviceViewField pseudoAnnotatedField = new AnnotatedDeviceViewField(field);
 
-        return pseudoAnnotatedMethod.getValueFor(fhtDevice);
+        return pseudoAnnotatedField.getValueFor(fhtDevice);
     }
 }

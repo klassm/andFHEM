@@ -29,7 +29,6 @@ import android.content.Context;
 import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.List;
@@ -54,8 +53,8 @@ import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.GCM_UPDATE;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
-@SuppressWarnings("unused")
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Serializable, Comparable<T> {
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
     public static final long NEVER_OUTDATE_DATA = 0;
@@ -81,6 +80,8 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     private boolean hasStatisticsDevice = false;
 
+    private DeviceFunctionality deviceFunctionality;
+
     @XmllistAttribute("ROOM")
     public void setRoom(String value) {
         setRoomConcatenated(value);
@@ -99,11 +100,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         webCmd = newArrayList(value.split(":"));
     }
 
-    public void setGcmState(String value) {
-        state = value;
-        setMeasured(DateFormatUtil.toReadable(new DateTime()));
-    }
-
     @XmllistAttribute("DEF")
     public void setDefinition(String value) {
         definition = value;
@@ -119,11 +115,20 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         group = value;
     }
 
-    public void afterDeviceXMLRead(Context context) {
+    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
         this.definition = getDefinition();
     }
 
     public void afterAllXMLRead() {
+    }
+
+    public void setDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
+        this.deviceFunctionality = deviceFunctionality;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceGroup() {
+        return deviceFunctionality;
     }
 
     private void parseEventMap(String content) {
@@ -246,6 +251,10 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         if (key.endsWith("_TIME") && !key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
             setMeasured(value);
         }
+
+        if (node.getType() == STATE && "STATE".equalsIgnoreCase(node.getKey()) && measured == null) {
+            setMeasured(node.getMeasured());
+        }
     }
 
     @XmllistAttribute("SETS")
@@ -284,14 +293,14 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return logDevices;
     }
 
-    public void addLogDevice(LogDevice logDevice, Context context) {
+    public void addLogDevice(LogDevice logDevice, Context context, ChartProvider chartProvider) {
         logDevices.add(logDevice);
 
         // Unfortunately, this is called multiple times (whenever a log devices registers
         // itself for the device. However, we have no idea in which order the callbacks are
         // called, so we cannot register a listeners when all devices have been read ...
         if (!logDevices.isEmpty()) {
-            fillDeviceCharts(deviceCharts, context);
+            fillDeviceCharts(deviceCharts, context, chartProvider);
         }
     }
 
@@ -305,7 +314,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
      * @param chartSeries fill me with chart descriptions
      * @param context     context
      */
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
         deviceCharts.clear();
 
         if (hasStatisticsDevice) {
@@ -352,6 +361,10 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
                 addDeviceChartIfNotNull(new DeviceChart(customGraph.description, seriesDescription));
             }
         }
+
+        for (DeviceChart deviceChart : chartProvider.chartsFor(this)) {
+            deviceCharts.add(deviceChart);
+        }
     }
 
     protected void addDeviceChartIfNotNull(DeviceChart holder, Object... notNull) {
@@ -390,10 +403,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public String getDefinition() {
         return definition;
-    }
-
-    public String getEventMapStateForCurrentState() {
-        return getEventMapStateFor(getState());
     }
 
     public String getEventMapStateFor(String state) {
@@ -445,27 +454,10 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
 
-    @Override
-    public String toString() {
-        return "Device{" +
-                "rooms=" + (rooms == null ? null : rooms) +
-                ", name='" + name + '\'' +
-                ", state='" + state + '\'' +
-                ", alias='" + alias + '\'' +
-                ", measured='" + measured + '\'' +
-                ", definition='" + definition + '\'' +
-                ", eventMapReverse=" + eventMapReverse +
-                ", eventMap=" + eventMap +
-                ", setList=" + setList.toString() +
-                ", logDevices=" + logDevices.size() +
-                ", deviceCharts=" + deviceCharts +
-                '}';
-    }
-
-
     public List<String> getWebCmd() {
         return webCmd;
     }
+
 
     public String getWidgetName() {
         return firstNonNull(widgetName, getAliasOrName());
@@ -503,5 +495,22 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public void setHasStatisticsDevice(boolean hasStatisticsDevice) {
         this.hasStatisticsDevice = hasStatisticsDevice;
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "rooms=" + (rooms == null ? null : rooms) +
+                ", name='" + name + '\'' +
+                ", state='" + state + '\'' +
+                ", alias='" + alias + '\'' +
+                ", measured='" + measured + '\'' +
+                ", definition='" + definition + '\'' +
+                ", eventMapReverse=" + eventMapReverse +
+                ", eventMap=" + eventMap +
+                ", setList=" + setList.toString() +
+                ", logDevices=" + logDevices.size() +
+                ", deviceCharts=" + deviceCharts +
+                '}';
     }
 }

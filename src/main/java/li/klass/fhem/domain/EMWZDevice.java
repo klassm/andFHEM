@@ -29,6 +29,7 @@ import android.content.Context;
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -73,8 +74,8 @@ public class EMWZDevice extends FhemDevice<EMWZDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
-        super.fillDeviceCharts(chartSeries, context);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
+        super.fillDeviceCharts(chartSeries, context, chartProvider);
 
         addDeviceChartIfNotNull(
                 new DeviceChart(R.string.powerGraph,
