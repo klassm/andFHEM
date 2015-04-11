@@ -36,7 +36,6 @@ import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.FHEM;
 
-@SuppressWarnings("unused")
 public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
 
     @ShowField(description = ResourceIdMapper.hiddenRooms)
@@ -49,7 +48,6 @@ public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
 
     @ShowField(description = ResourceIdMapper.sortRooms)
     private String sortRooms;
-
 
     private String port;
 
@@ -92,7 +90,7 @@ public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
 
     @Override
     public boolean isSupported() {
-        return !temporary;
+        return !temporary && super.isSupported();
     }
 
     public List<String> getHiddenGroups() {

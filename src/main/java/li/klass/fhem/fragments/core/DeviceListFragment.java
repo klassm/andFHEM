@@ -266,41 +266,38 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
 
-        Intent intent = new Intent(getUpdateAction());
-        intent.setClass(getActivity(), getUpdateActionIntentTargetClass());
-        intent.putExtras(new Bundle());
-        intent.putExtra(DO_REFRESH, doUpdate);
-        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                View view = getView();
-                if (view == null) return;
+        Intent intent = new Intent(getUpdateAction())
+                .setClass(getActivity(), getUpdateActionIntentTargetClass())
+                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        View view = getView();
+                        if (view == null) return;
 
-                if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
-                    getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                        if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
+                            getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
-                    RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
-                    long lastUpdate = resultData.getLong(LAST_UPDATE);
+                            RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
+                            long lastUpdate = resultData.getLong(LAST_UPDATE);
 
-                    getAdapter().updateData(deviceList, lastUpdate);
+                            getAdapter().updateData(deviceList, lastUpdate);
 
-                    if (deviceList != null && deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-                        showEmptyView();
-                    } else {
-                        hideEmptyView();
+                            if (deviceList != null && deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                                showEmptyView();
+                            } else {
+                                hideEmptyView();
+                            }
+                        }
+
+                        View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
+                        if (!dataConnectionSwitch.getCurrentProvider(getActivity()).getClass()
+                                .isAssignableFrom(DummyDataConnection.class)) {
+                            dummyConnectionNotification.setVisibility(View.GONE);
+                        } else {
+                            dummyConnectionNotification.setVisibility(View.VISIBLE);
+                        }
                     }
-                }
-
-                View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                if (!dataConnectionSwitch.getCurrentProvider(getActivity()).getClass()
-                        .isAssignableFrom(DummyDataConnection.class)) {
-                    dummyConnectionNotification.setVisibility(View.GONE);
-                } else {
-                    dummyConnectionNotification.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+                });
         fillIntent(intent);
 
         FragmentActivity activity = getActivity();

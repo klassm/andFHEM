@@ -210,8 +210,9 @@ public class RoomDeviceList implements Serializable {
 
     @SuppressWarnings("unchecked")
     public <T extends FhemDevice> RoomDeviceList addDevice(T device, Context context) {
-        if (device == null) return this;
-        if (!device.isSupported()) return this;
+        if (device == null || !device.isSupported()) {
+            return this;
+        }
 
         List<String> groups = device.getInternalDeviceGroupOrGroupAttributes(context);
         for (String group : groups) {
