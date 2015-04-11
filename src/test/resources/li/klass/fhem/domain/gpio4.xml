@@ -53,62 +53,63 @@
         2013-06-04_21:30:25 GPIO4_DS1820_000516468fcd temperature: 23.437
         -->
         <GPIO4 name="temp" state="22.937 °C (Mittelwert: 22.7 °C)" sets=""
-               attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
-            <INT key="DEF" value="10-000802299fdc"/>
-            <INT key="NAME" value="temp"/>
-            <INT key="NR" value="56"/>
-            <INT key="NTFY_TRIGGERTIME" value="2013-06-05 13:19:36"/>
-            <INT key="STATE" value="22.937 °C (Mittelwert: 22.7 °C)"/>
-            <INT key="TYPE" value="GPIO4"/>
-            <ATTR key="alias" value="WZ_Temp"/>
-            <ATTR key="group" value="Temperatur"/>
-            <ATTR key="icon" value="icoTemp"/>
-            <ATTR key="model" value="DS1820"/>
-            <ATTR key="room" value="room"/>
-            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)"/>
-            <STATE key="T_avg_day" value="22.7" measured="2013-06-05 13:19:36"/>
-            <STATE key="T_avg_month" value="23.3" measured="2013-06-05 13:19:36"/>
-            <STATE key="T_cum_day" value="1090862.58" measured="2013-06-05 13:19:36"/>
-            <STATE key="T_cum_month" value="11160913.4479999" measured="2013-06-05 13:19:36"/>
-            <STATE key="T_max_day" value="23.6" measured="2013-06-05 01:24:08"/>
-            <STATE key="T_max_month" value="24.1" measured="2013-06-04 21:56:48"/>
-            <STATE key="T_min_day" value="20.6" measured="2013-06-05 07:59:46"/>
-            <STATE key="T_min_month" value="20.6" measured="2013-06-05 07:59:46"/>
-            <STATE key="failures" value="0" measured="2013-06-05 11:24:56"/>
-            <STATE key="state" value="T: 22.937" measured="2013-06-05 13:19:36"/>
-            <STATE key="temperature" value="22.937" measured="2013-06-05 13:19:36"/>
-            <STATE key="temperature_avg_day" value="23.3" measured="2013-06-04 16:50:49"/>
-            <STATE key="temperature_avg_month" value="23.3" measured="2013-06-04 16:50:49"/>
-            <STATE key="temperature_cum_day" value="1413849.486" measured="2013-06-04 16:50:49"/>
-            <STATE key="temperature_cum_month" value="9470476.686" measured="2013-06-04 16:50:49"/>
-            <STATE key="temperature_max_day" value="23.4" measured="2013-06-04 16:50:49"/>
-            <STATE key="temperature_max_month" value="23.4" measured="2013-06-04 16:50:49"/>
-            <STATE key="temperature_min_day" value="23.2" measured="2013-06-04 16:48:48"/>
-            <STATE key="temperature_min_month" value="23.2" measured="2013-06-04 16:48:48"/>
+            attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="10-000802299fdc" />
+            <INT key="NAME" value="temp" />
+            <INT key="NR" value="56" />
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-05 13:19:36" />
+            <INT key="STATE" value="22.937 °C (Mittelwert: 22.7 °C)" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="alias" value="WZ_Temp" />
+            <ATTR key="group" value="Temperatur" />
+            <ATTR key="icon" value="icoTemp" />
+            <ATTR key="model" value="DS1820" />
+            <ATTR key="room" value="room" />
+            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)" />
+            <STATE key="T_avg_day" value="22.7" measured="2013-06-05 13:19:36" />
+            <STATE key="T_avg_month" value="23.3" measured="2013-06-05 13:19:36" />
+            <STATE key="T_cum_day" value="1090862.58" measured="2013-06-05 13:19:36" />
+            <STATE key="T_cum_month" value="11160913.4479999" measured="2013-06-05 13:19:36" />
+            <STATE key="T_max_day" value="23.6" measured="2013-06-05 01:24:08" />
+            <STATE key="T_max_month" value="24.1" measured="2013-06-04 21:56:48" />
+            <STATE key="T_min_day" value="20.6" measured="2013-06-05 07:59:46" />
+            <STATE key="T_min_month" value="20.6" measured="2013-06-05 07:59:46" />
+            <STATE key="failures" value="0" measured="2013-06-05 11:24:56" />
+            <STATE key="state" value="T: 22.937" measured="2013-06-05 13:19:36" />
+            <STATE key="temperature" value="22.937" measured="2013-06-05 13:19:36" />
+            <STATE key="temperature_avg_day" value="23.3" measured="2013-06-04 16:50:49" />
+            <STATE key="temperature_avg_month" value="23.3" measured="2013-06-04 16:50:49" />
+            <STATE key="temperature_cum_day" value="1413849.486" measured="2013-06-04 16:50:49" />
+            <STATE key="temperature_cum_month" value="9470476.686" measured="2013-06-04 16:50:49" />
+            <STATE key="temperature_max_day" value="23.4" measured="2013-06-04 16:50:49" />
+            <STATE key="temperature_max_month" value="23.4" measured="2013-06-04 16:50:49" />
+            <STATE key="temperature_min_day" value="23.2" measured="2013-06-04 16:48:48" />
+            <STATE key="temperature_min_month" value="23.2" measured="2013-06-04 16:48:48" />
         </GPIO4>
 
         <GPIO4 name="RPi" state="Initialized" sets=""
-               attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
-            <INT key="DEF" value="BUSMASTER"/>
-            <ATTR key="room" value="room"/>
-            <INT key="NAME" value="RPi"/>
-            <INT key="NR" value="53"/>
-            <INT key="STATE" value="Initialized"/>
-            <INT key="TYPE" value="GPIO4"/>
+            attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="BUSMASTER" />
+            <ATTR key="room" value="room" />
+            <INT key="NAME" value="RPi" />
+            <INT key="NR" value="53" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="GPIO4" />
         </GPIO4>
 
-        <GPIO4 name="DS18B20" state="T: 20.437" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat custom_graph devStateIcon devStateStyle icon sortby webCmd">
-            <INT key="DEF" value="28-0000050b3960"/>
-            <INT key="NAME" value="DS18B20"/>
-            <INT key="NR" value="35"/>
-            <INT key="NTFY_ORDER" value="50-GPIO4_DS18B20_0000050b3960"/>
-            <INT key="STATE" value="T: 20.437"/>
-            <INT key="TYPE" value="GPIO4"/>
-            <ATTR key="model" value="DS18B20"/>
-            <ATTR key="room" value="room"/>
-            <STATE key="failures" value="7" measured="2013-11-01 06:47:06"/>
-            <STATE key="state" value="T: 20.437" measured="2013-11-01 06:46:05"/>
-            <STATE key="temperature" value="20.437" measured="2013-11-01 06:46:05"/>
+        <GPIO4 name="DS18B20" state="T: 20.437" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat custom_graph devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="28-0000050b3960" />
+            <INT key="NAME" value="DS18B20" />
+            <INT key="NR" value="35" />
+            <INT key="NTFY_ORDER" value="50-GPIO4_DS18B20_0000050b3960" />
+            <INT key="STATE" value="T: 20.437" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="model" value="DS18B20" />
+            <ATTR key="room" value="room" />
+            <STATE key="failures" value="7" measured="2013-11-01 06:47:06" />
+            <STATE key="state" value="T: 20.437" measured="2013-11-01 06:46:05" />
+            <STATE key="temperature" value="20.437" measured="2013-11-01 06:46:05" />
         </GPIO4>
 
         <GPIO4 name="additionalAttributes" state="20.937 °C (Mittelwert:
@@ -119,30 +120,119 @@ event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle
 icon item1 item10 item11 item12 item13 item14 item15 item16 item17
 item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9
 sortby webCmd">
-            <INT key="DEF" value="10-000802299fdc"/>
-            <INT key="NAME" value="additionalAttributes"/>
-            <INT key="NR" value="102"/>
-            <INT key="STATE" value="20.937 °C (Mittelwert: 20.6 °C)"/>
-            <INT key="TYPE" value="GPIO4"/>
-            <ATTR key="alias" value="Aktuell"/>
-            <ATTR key="group" value="Temperatur"/>
-            <ATTR key="icon" value="icoTemp"/>
-            <ATTR key="model" value="DS1820"/>
-            <ATTR key="room" value="room"/>
-            <ATTR key="sortby" value="B00"/>
-            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)"/>
-            <STATE key="T_avg_day" value="20.6" measured="2013-11-29 15:56:09"/>
-            <STATE key="T_avg_month" value="20.3" measured="2013-11-29 15:56:09"/>
-            <STATE key="T_cum_day" value="1180986.216" measured="2013-11-29 15:56:09"/>
+            <INT key="DEF" value="10-000802299fdc" />
+            <INT key="NAME" value="additionalAttributes" />
+            <INT key="NR" value="102" />
+            <INT key="STATE" value="20.937 °C (Mittelwert: 20.6 °C)" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="alias" value="Aktuell" />
+            <ATTR key="group" value="Temperatur" />
+            <ATTR key="icon" value="icoTemp" />
+            <ATTR key="model" value="DS1820" />
+            <ATTR key="room" value="room" />
+            <ATTR key="sortby" value="B00" />
+            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)" />
+            <STATE key="T_avg_day" value="20.6" measured="2013-11-29 15:56:09" />
+            <STATE key="T_avg_month" value="20.3" measured="2013-11-29 15:56:09" />
+            <STATE key="T_cum_day" value="1180986.216" measured="2013-11-29 15:56:09" />
             <STATE key="T_cum_month" value="52150296.5679963" measured="2013-11-29
-15:56:09"/>
-            <STATE key="T_max_day" value="22.2" measured="2013-11-29 00:07:58"/>
-            <STATE key="T_max_month" value="22.6" measured="2013-11-26 14:42:16"/>
-            <STATE key="T_min_day" value="20.1" measured="2013-11-29 12:24:23"/>
-            <STATE key="T_min_month" value="0.0" measured="2013-11-27 22:38:09"/>
-            <STATE key="failures" value="0" measured="2013-11-29 14:27:36"/>
-            <STATE key="state" value="T: 20.937" measured="2013-11-29 15:56:09"/>
-            <STATE key="temperature" value="20.937" measured="2013-11-29 15:56:09"/>
+15:56:09" />
+            <STATE key="T_max_day" value="22.2" measured="2013-11-29 00:07:58" />
+            <STATE key="T_max_month" value="22.6" measured="2013-11-26 14:42:16" />
+            <STATE key="T_min_day" value="20.1" measured="2013-11-29 12:24:23" />
+            <STATE key="T_min_month" value="0.0" measured="2013-11-27 22:38:09" />
+            <STATE key="failures" value="0" measured="2013-11-29 14:27:36" />
+            <STATE key="state" value="T: 20.937" measured="2013-11-29 15:56:09" />
+            <STATE key="temperature" value="20.937" measured="2013-11-29 15:56:09" />
+        </GPIO4>
+
+
+        <GPIO4 name="RPi" state="Initialized" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="BUSMASTER" />
+            <INT key="NAME" value="RPi" />
+            <INT key="NR" value="63" />
+            <INT key="NTFY_ORDER" value="50-RPi" />
+            <INT key="SLAVES" value="28-000006c5d13a" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="room" value="Heizung" />
+            <STATE key="failures" value="4" measured="2015-04-08 09:32:18" />
+        </GPIO4>
+        <GPIO4 name="Sensor_1" state="15.5 °C" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="28-000006c7e70b" />
+            <INT key="NAME" value="Sensor_1" />
+            <INT key="NR" value="59" />
+            <INT key="NTFY_ORDER" value="50-Sensor_1" />
+            <INT key="STATE" value="15.5 °C" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="room" value="Heizung" />
+            <ATTR key="stateFormat"
+                value="{sprintf &quot;%.1f °C&quot;, ReadingsVal($name, &quot;temperature&quot;, 0)}" />
+            <STATE key="failures" value="1101" measured="2015-04-08 17:13:11" />
+            <STATE key="state" value="T: 15.5" measured="2015-04-07 16:38:24" />
+            <STATE key="temperature" value="15.5" measured="2015-04-07 16:38:24" />
+        </GPIO4>
+        <GPIO4 name="Sensor_2" state="15.8 °C" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="28-000006c76f3b" />
+            <INT key="NAME" value="Sensor_2" />
+            <INT key="NR" value="60" />
+            <INT key="NTFY_ORDER" value="50-Sensor_2" />
+            <INT key="STATE" value="15.8 °C" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="room" value="Heizung" />
+            <ATTR key="stateFormat"
+                value="{sprintf &quot;%.1f °C&quot;, ReadingsVal($name, &quot;temperature&quot;, 0)}" />
+            <STATE key="failures" value="1101" measured="2015-04-08 17:13:11" />
+            <STATE key="state" value="T: 15.812" measured="2015-04-07 16:45:36" />
+            <STATE key="temperature" value="15.812" measured="2015-04-07 16:45:36" />
+        </GPIO4>
+        <GPIO4 name="Sensor_3" state="15.5 °C" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="28-000006c6bddd" />
+            <INT key="NAME" value="Sensor_3" />
+            <INT key="NR" value="58" />
+            <INT key="NTFY_ORDER" value="50-Sensor_3" />
+            <INT key="STATE" value="15.5 °C" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="room" value="Heizung" />
+            <ATTR key="stateFormat"
+                value="{sprintf &quot;%.1f °C&quot;, ReadingsVal($name, &quot;temperature&quot;, 0)}" />
+            <STATE key="failures" value="1101" measured="2015-04-08 17:13:11" />
+            <STATE key="state" value="T: 15.5" measured="2015-04-07 16:23:32" />
+            <STATE key="temperature" value="15.5" measured="2015-04-07 16:23:32" />
+        </GPIO4>
+        <GPIO4 name="Sensor_4" state="22.1 °C" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="28-000006c7a5c8" />
+            <INT key="NAME" value="Sensor_4" />
+            <INT key="NR" value="61" />
+            <INT key="NTFY_ORDER" value="50-Sensor_4" />
+            <INT key="STATE" value="22.1 °C" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="room" value="Heizung" />
+            <ATTR key="stateFormat"
+                value="{sprintf &quot;%.1f °C&quot;, ReadingsVal($name, &quot;temperature&quot;, 0)}" />
+            <STATE key="failures" value="1101" measured="2015-04-08 17:13:11" />
+            <STATE key="state" value="T: 22.125" measured="2015-04-07 16:53:54" />
+            <STATE key="temperature" value="22.125" measured="2015-04-07 16:53:54" />
+        </GPIO4>
+        <GPIO4 name="Sensor_5" state="15.9 °C" sets=""
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="28-000006c5d13a" />
+            <INT key="NAME" value="Sensor_5" />
+            <INT key="NR" value="62" />
+            <INT key="NTFY_ORDER" value="50-Sensor_5" />
+            <INT key="STATE" value="15.9 °C" />
+            <INT key="TYPE" value="GPIO4" />
+            <ATTR key="room" value="Heizung,Wetter" />
+            <ATTR key="stateFormat"
+                value="{sprintf &quot;%.1f °C&quot;, ReadingsVal($name, &quot;temperature&quot;, 0)}" />
+            <STATE key="failures" value="0" measured="2015-04-07 22:38:42" />
+            <STATE key="state" value="T: 15.875" measured="2015-04-08 17:13:11" />
+            <STATE key="temperature" value="15.875" measured="2015-04-08 17:13:11" />
         </GPIO4>
     </GPIO4_LIST>
 </FHZINFO>

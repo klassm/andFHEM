@@ -28,44 +28,55 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GPIO4DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         GPIO4Device device = getDeviceFor("temp", GPIO4Device.class);
 
-        assertThat(device.getTemperature(), is("22.937 (°C)"));
-        assertThat(device.getState(), is("22.937 °C (Mittelwert: 22.7 °C)"));
+        assertThat(device.getTemperature()).isEqualTo("22.937 (°C)");
+        assertThat(device.getState()).isEqualTo("22.937 °C (Mittelwert: 22.7 °C)");
 
         // this is not supported and, thus, removed
         GPIO4Device rPi = getDeviceFor("RPi", GPIO4Device.class);
-        assertThat(rPi, is(nullValue()));
+        assertThat(rPi).isNull();
     }
 
     @Test
     public void testDS18B20Device() {
         GPIO4Device device = getDeviceFor("DS18B20", GPIO4Device.class);
-        assertThat(device, is(notNullValue()));
+        assertThat(device).isNotNull();
 
-        assertThat(device.isSupported(), is(true));
-        assertThat(device.getTemperature(), is("20.437 (°C)"));
+        assertThat(device.isSupported()).isEqualTo(true);
+        assertThat(device.getTemperature()).isEqualTo("20.437 (°C)");
     }
 
     @Test
     public void testAdditionalAttributesDevice() {
         GPIO4Device device = getDeviceFor("additionalAttributes", GPIO4Device.class);
-        assertThat(device, is(notNullValue()));
+        assertThat(device).isNotNull();
 
-        assertThat(device.getAverageDay(), is("20.6 (°C)"));
-        assertThat(device.getAverageMonth(), is("20.3 (°C)"));
-        assertThat(device.getMinDay(), is("20.1 (°C)"));
-        assertThat(device.getMinMonth(), is("0.0 (°C)"));
-        assertThat(device.getMaxDay(), is("22.2 (°C)"));
-        assertThat(device.getMaxMonth(), is("22.6 (°C)"));
+        assertThat(device.getAverageDay()).isEqualTo("20.6 (°C)");
+        assertThat(device.getAverageMonth()).isEqualTo("20.3 (°C)");
+        assertThat(device.getMinDay()).isEqualTo("20.1 (°C)");
+        assertThat(device.getMinMonth()).isEqualTo("0.0 (°C)");
+        assertThat(device.getMaxDay()).isEqualTo("22.2 (°C)");
+        assertThat(device.getMaxMonth()).isEqualTo("22.6 (°C)");
+    }
+
+    @Test
+    public void testOtherModelsCanBeRead() {
+        assertThat(getDeviceFor("Sensor_5", GPIO4Device.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_4", GPIO4Device.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_3", GPIO4Device.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_2", GPIO4Device.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_1", GPIO4Device.class)).isNotNull();
+    }
+
+    @Test
+    public void testDeviceWithoutTemperatureDoesNotShowUp() {
+        assertThat(getDeviceFor("RPi", GPIO4Device.class)).isNull();
     }
 
     @Override

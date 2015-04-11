@@ -37,12 +37,10 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
-@SuppressWarnings("unused")
 public class GPIO4Device extends FhemDevice<GPIO4Device> {
-
-    private SubType subType = null;
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @XmllistAttribute("temperature")
@@ -72,13 +70,6 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
     @XmllistAttribute("T_min_month")
     private String minMonth;
 
-    @XmllistAttribute("model")
-    public void setModel(String value) {
-        if (value.equals("DS1820") || value.equalsIgnoreCase("DS18B20")) {
-            subType = SubType.TEMPERATURE;
-        }
-    }
-
     public String getTemperature() {
         return temperature;
     }
@@ -87,26 +78,20 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
     protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
         super.fillDeviceCharts(chartSeries, context);
 
-        if (subType == SubType.TEMPERATURE) {
-            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature, context)
-                            .withFileLogSpec("4:T")
-                            .withDbLogSpec("temperature::int2")
-                            .withSeriesType(TEMPERATURE)
-                            .withShowRegression(true)
-                            .build()
-            ), temperature);
-        }
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature, context)
+                        .withFileLogSpec("4:T")
+                        .withDbLogSpec("temperature::int2")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
+        ), temperature);
     }
 
     @Override
     public boolean isSupported() {
-        return super.isSupported() && subType != null;
-    }
-
-    public String FHT_Wohnzimmer1getAverageDay() {
-        return averageDay;
+        return super.isSupported() && !isNullOrEmpty(temperature);
     }
 
     public String getAverageMonth() {
@@ -146,9 +131,5 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
     @Override
     public long getTimeRequiredForStateError() {
         return OUTDATED_DATA_MS_DEFAULT;
-    }
-
-    private enum SubType {
-        TEMPERATURE
     }
 }
