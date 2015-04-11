@@ -104,7 +104,7 @@ public class DeviceListParser {
             return parseXMLListUnsafe(xmlList, context);
         } catch (Exception e) {
             LOG.error("cannot parse xmllist", e);
-            ErrorHolder.setError(e, "cannot parse xmllist, xmllist was: \r\n" + xmlList);
+            ErrorHolder.setError(e, "cannot parse xmllist, xmllist was: \r\n" + xmlList.replaceAll("<ATTR key=\"globalpassword\" value=\"[^\"]+\"/>", ""));
 
             new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors();
             return null;
