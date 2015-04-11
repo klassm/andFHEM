@@ -93,7 +93,7 @@ public class DeviceListParser {
             return parseXMLListUnsafe(xmlList, context);
         } catch (Exception e) {
             LOG.error("cannot parse xmllist", e);
-            ErrorHolder.setError(e, "cannot parse xmllist.");
+            ErrorHolder.setError(e, "cannot parse xmllist, xmllist was: \r\n" + xmlList);
 
             new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors();
             return null;
