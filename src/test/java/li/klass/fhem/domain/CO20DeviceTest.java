@@ -36,7 +36,7 @@ public class CO20DeviceTest extends DeviceXMLParsingBase {
         JsonDefDevice device = getDeviceFor("myCO20", JsonDefDevice.class);
 
         assertThat(device).isNotNull();
-        assertThat(xmlListDeviceValue(device, "voc")).isEqualTo("1009 (ppm)");
+        assertThat(stateValueFor(device, "voc")).isEqualTo("1009 (ppm)");
     }
 
     @Override

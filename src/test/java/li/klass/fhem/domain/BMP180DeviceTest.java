@@ -38,9 +38,9 @@ public class BMP180DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo("BMP180");
         assertThat(device.getAlias()).isEqualTo("Luftdruck");
 
-        assertThat(xmlListDeviceValue(device, "pressure")).isEqualTo("1006.3 (hPa)");
-        assertThat(xmlListDeviceValue(device, "pressure-nn")).isEqualTo("1019.5 (hPa)");
-        assertThat(xmlListDeviceValue(device, "temperature")).isEqualTo("21.9 (°C)");
+        assertThat(stateValueFor(device, "pressure")).isEqualTo("1006.3 (hPa)");
+        assertThat(stateValueFor(device, "pressure-nn")).isEqualTo("1019.5 (hPa)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("21.9 (°C)");
     }
 
     @Override

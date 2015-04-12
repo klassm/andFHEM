@@ -33,14 +33,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        IntertechnoDevice device = getDefaultDevice(IntertechnoDevice.class);
+        JsonDefDevice device = getDefaultDevice(JsonDefDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.isOnByState()).isEqualTo(true);
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.getModel()).isEqualTo("itswitch");
+        assertThat(attributeValueFor(device, "model")).isEqualTo("itswitch");
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
 

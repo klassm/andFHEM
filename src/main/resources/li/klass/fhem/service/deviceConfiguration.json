@@ -158,5 +158,15 @@
 
     X10: {
         defaultGroup: 'SWITCH'
+    },
+
+    IT: {
+        defaultGroup: 'SWITCH',
+        attributes: [
+            {
+                key: 'model',
+                desc: 'model'
+            }
+        ]
     }
 }

@@ -75,7 +75,7 @@ public enum DeviceType {
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    IT("IT", IntertechnoDevice.class, new ToggleableAdapter<>(IntertechnoDevice.class)),
+    IT("IT", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),

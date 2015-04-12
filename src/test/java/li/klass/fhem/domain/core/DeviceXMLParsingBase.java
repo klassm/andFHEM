@@ -155,8 +155,16 @@ public abstract class DeviceXMLParsingBase {
         return roomDeviceList.getDeviceFor(deviceName);
     }
 
-    protected String xmlListDeviceValue(Device device, String key) {
-        DeviceNode deviceNode = device.getXmlListDevice().getStates().get(key);
+    protected String stateValueFor(Device device, String key) {
+        return xmllistValueFor(key, device.getXmlListDevice().getStates());
+    }
+
+    protected String attributeValueFor(Device device, String key) {
+        return xmllistValueFor(key, device.getXmlListDevice().getAttributes());
+    }
+
+    private String xmllistValueFor(String key, Map<String, DeviceNode> map) {
+        DeviceNode deviceNode = map.get(key);
         if (deviceNode == null) return null;
         return deviceNode.getValue();
     }
