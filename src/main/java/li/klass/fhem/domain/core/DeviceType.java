@@ -152,7 +152,7 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
-    X10("X10", X10Device.class, new ToggleableAdapter<>(X10Device.class)),
+    X10("X10", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
     SMLUSB("SMLUSB", SMLUSBDevice.class),

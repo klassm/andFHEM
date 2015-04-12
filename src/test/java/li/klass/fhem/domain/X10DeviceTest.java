@@ -34,7 +34,7 @@ public class X10DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        X10Device device = getDeviceFor("X10.wohnzimmer_erker", X10Device.class);
+        JsonDefDevice device = getDeviceFor("X10.wohnzimmer_erker", JsonDefDevice.class);
         assertThat(device.isOnByState()).isFalse();
     }
 
