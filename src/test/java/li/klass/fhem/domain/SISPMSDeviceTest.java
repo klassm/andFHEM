@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SISPMSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        SISPMSDevice device = getDefaultDevice(SISPMSDevice.class);
+        JsonDefDevice device = getDefaultDevice(JsonDefDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

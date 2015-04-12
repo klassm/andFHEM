@@ -82,7 +82,7 @@ public enum DeviceType {
     OREGON("OREGON", OregonDevice.class),
     CUL_EM("CUL_EM", CULEMDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
-    SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapter<>(SISPMSDevice.class)),
+    SIS_PMS("SIS_PMS", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
