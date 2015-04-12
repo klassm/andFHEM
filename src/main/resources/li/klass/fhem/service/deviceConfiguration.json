@@ -121,5 +121,34 @@
 
     ECMDDevice: {
         defaultGroup: 'SWITCH'
+    },
+
+    CO20: {
+        defaultGroup: 'WEATHER',
+        states: [
+            {
+                key: 'voc',
+                desc: 'VOC',
+                showInOverview: true
+            }
+        ],
+        charts: [
+            {
+                series: [
+                    {
+                        columnName: 'VOC',
+                        fileLogSpec: '4:voc',
+                        dbLogSpec: 'voc::int1',
+                        seriesType: 'VOC',
+                        showRegression: true
+                    }
+                ],
+                required: [{
+                    type: 'state',
+                    attribute: 'voc'
+                }],
+                buttonText: 'VOCGraph'
+            }
+        ]
     }
 }

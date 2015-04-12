@@ -33,10 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CO20DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_CO20_device() {
-        CO20Device device = getDeviceFor("myCO20", CO20Device.class);
+        JsonDefDevice device = getDeviceFor("myCO20", JsonDefDevice.class);
 
         assertThat(device).isNotNull();
-        assertThat(device.getVoc()).isEqualTo("1009 (ppm)");
+        assertThat(xmlListDeviceValue(device, "voc")).isEqualTo("1009 (ppm)");
     }
 
     @Override

@@ -167,7 +167,7 @@ public enum DeviceType {
     EMCDDEVICE("ECMDDevice", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
-    CO20("CO20", CO20Device.class),
+    CO20("CO20", JsonDefDevice.class),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapter<>(MySensorsDevice.class)),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),

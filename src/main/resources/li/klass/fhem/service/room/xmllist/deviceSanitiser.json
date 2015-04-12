@@ -407,6 +407,13 @@
                 replace: 'ok',
                 replaceBy: ''
             }
+        },
+
+        CO20: {
+            voc: {
+                extract: 'int',
+                append: 'ppm'
+            }
         }
     }
 }
