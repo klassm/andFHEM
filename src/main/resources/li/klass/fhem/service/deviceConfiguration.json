@@ -115,7 +115,7 @@
         ]
     },
 
-    EGPMDevice: {
+    EGPM: {
         defaultGroup: 'SWITCH'
     },
 
