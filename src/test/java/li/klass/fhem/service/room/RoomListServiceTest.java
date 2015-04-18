@@ -26,8 +26,6 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,7 +40,6 @@ import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.FHEMWEB_DEVICE_NAME;
 import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,13 +93,6 @@ public class RoomListServiceTest {
         roomDeviceList.addDevice(new TestDevice("b", false, "def", "fgh"), context);
 
         assertThat(service.getRoomNameList(context)).containsExactly("abc", "def");
-    }
-
-    @DataProvider
-    public static Object[][] dataProviderSortRooms() {
-        return new Object[][]{
-                {"A B C", newHashSet("A", "B", "C"), newArrayList("A", "B", "C")}
-        };
     }
 
     class TestDevice extends FS20Device {

@@ -24,7 +24,13 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class JsonDefDevice extends ToggleableDevice<JsonDefDevice> {
+    @Override
+    public DeviceFunctionality getDeviceGroup() {
+        DeviceFunctionality deviceGroup = super.getDeviceGroup();
+        return deviceGroup == null ? DeviceFunctionality.UNKNOWN : deviceGroup;
+    }
 }

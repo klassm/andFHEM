@@ -203,9 +203,12 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
         if (parentBasePosition != -1) {
             return 0;
         } else {
-            DeviceAdapter adapter = DeviceType.getAdapterFor((FhemDevice) getItem(position));
-            if (adapter != null && adapter.getOverviewViewHolderClass() != null) {
-                return viewTypeMap.get(adapter.getOverviewViewHolderClass());
+            FhemDevice item = (FhemDevice) getItem(position);
+            if (item != null) {
+                DeviceAdapter adapter = DeviceType.getAdapterFor(item);
+                if (adapter != null && adapter.getOverviewViewHolderClass() != null) {
+                    return viewTypeMap.get(adapter.getOverviewViewHolderClass());
+                }
             }
         }
         return IGNORE_ITEM_VIEW_TYPE;

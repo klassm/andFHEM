@@ -132,9 +132,11 @@ public class DeviceListParser {
         Map<String, FhemDevice> allDevices = newHashMap();
 
         DeviceType[] deviceTypes = DeviceType.values();
-        for (DeviceType deviceType : deviceTypes) {
-            String tag = deviceType.getXmllistTag().toLowerCase(Locale.getDefault());
-            ImmutableList<XmlListDevice> xmlListDevices = parsedDevices.get(tag);
+
+        for (Map.Entry<String, ImmutableList<XmlListDevice>> entry : parsedDevices.entrySet()) {
+            DeviceType deviceType = DeviceType.getDeviceTypeFor(entry.getKey());
+
+            ImmutableList<XmlListDevice> xmlListDevices = parsedDevices.get(entry.getKey());
             if (xmlListDevices == null || xmlListDevices.isEmpty()) {
                 continue;
             }

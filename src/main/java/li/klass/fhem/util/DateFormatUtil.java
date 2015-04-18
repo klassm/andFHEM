@@ -54,6 +54,9 @@ public class DateFormatUtil {
 
     public static String formatTime(String input) {
         try {
+            if (input.equalsIgnoreCase("Initialized")) {
+                return null;
+            }
             DateTime dateTime = FHEM_DATE_FORMAT.parseDateTime(input);
             if (dateTime.toLocalDate().equals(LocalDate.now())) {
                 return ANDFHEM_TIME_FORMAT.print(dateTime);

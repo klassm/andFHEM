@@ -24,6 +24,9 @@
 
 package li.klass.fhem.domain.core;
 
+import java.util.Locale;
+import java.util.Map;
+
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
@@ -64,6 +67,8 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.*;
+
+import static com.google.common.collect.Maps.newHashMap;
 
 public enum DeviceType {
 
@@ -173,7 +178,19 @@ public enum DeviceType {
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
     TCM97001("CUL_TCM97001", TCM97001Device.class),
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
-    HOURCOUNTER("HourCounter", HourCounterDevice.class);
+    HOURCOUNTER("HourCounter", HourCounterDevice.class),
+
+    GENERIC("__generic__", JsonDefDevice.class);
+
+    private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = newHashMap();
+    private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = newHashMap();
+
+    static {
+        for (DeviceType deviceType : values()) {
+            DEVICE_TO_DEVICE_TYPE.put(deviceType.getDeviceClass(), deviceType);
+            TAG_TO_DEVICE_TYPE.put(deviceType.getXmllistTag().toLowerCase(Locale.getDefault()), deviceType);
+        }
+    }
 
     private String xmllistTag;
     private Class<? extends FhemDevice> deviceClass;
@@ -196,16 +213,10 @@ public enum DeviceType {
     }
 
     public static <T extends FhemDevice<T>> DeviceAdapter<T> getAdapterFor(T device) {
-        DeviceType deviceType = getDeviceTypeFor(device);
-        if (deviceType == null) {
-            return null;
-        } else {
-            return deviceType.getAdapter();
-        }
+        return getDeviceTypeFor(device).getAdapter();
     }
 
     public static <T extends FhemDevice> DeviceType getDeviceTypeFor(T device) {
-        if (device == null) return null;
         return getDeviceTypeFor(device.getClass());
     }
 
@@ -215,15 +226,13 @@ public enum DeviceType {
     }
 
     public static <T extends FhemDevice> DeviceType getDeviceTypeFor(Class<T> clazz) {
-        if (clazz == null) return null;
+        DeviceType result = DEVICE_TO_DEVICE_TYPE.get(clazz);
+        return result == null ? GENERIC : result;
+    }
 
-        DeviceType[] deviceTypes = DeviceType.values();
-        for (DeviceType deviceType : deviceTypes) {
-            if (deviceType.getDeviceClass().isAssignableFrom(clazz)) {
-                return deviceType;
-            }
-        }
-        return null;
+    public static DeviceType getDeviceTypeFor(String xmllistTag) {
+        DeviceType result = TAG_TO_DEVICE_TYPE.get(xmllistTag.toLowerCase(Locale.getDefault()));
+        return result == null ? GENERIC : result;
     }
 
     public Class<? extends FhemDevice> getDeviceClass() {
