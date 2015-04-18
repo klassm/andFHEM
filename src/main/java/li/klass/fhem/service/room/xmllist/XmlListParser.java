@@ -76,6 +76,9 @@ public class XmlListParser {
         // replace device tag extensions
         xmlList = xmlList.replaceAll("_[0-9]+_LIST", "_LIST");
         xmlList = xmlList.replaceAll("(<[/]?[A-Z0-9]+)_[0-9]+([ >])", "$1$2");
+        xmlList = xmlList.replaceAll("</>", "");
+        xmlList = xmlList.replaceAll("< [^>]*>", "");
+        xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");
 
         Document document = documentFromXmlList(xmlList);
         Node baseNode = findFHZINFONode(document);
