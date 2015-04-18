@@ -54,6 +54,7 @@ public class EnigmaDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getMute()).isEqualTo("-");
         assertThat(device.getVideoSize()).isEqualTo("1024x768");
         assertThat(device.getVolume()).isEqualTo("40");
+        assertThat(device.getDefinition()).isEqualTo("192.168.1.23");
     }
 
     @Override

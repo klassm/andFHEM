@@ -414,6 +414,13 @@
                 extract: 'int',
                 append: 'ppm'
             }
+        },
+
+        ENIGMA2: {
+            DEF: {
+                replace: '([^ ]+).*',
+                replaceBy: '$1'
+            }
         }
     }
 }

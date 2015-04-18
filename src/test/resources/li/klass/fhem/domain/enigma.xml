@@ -28,7 +28,7 @@
                  sets="statusRequest:noArg toggle:noArg on:noArg off:noArg reboot:noArg restartGui:noArg shutdown:noArg volume:slider,0,1,100 volumeUp:noArg volumeDown:noArg msg remoteControl channelUp:noArg channelDown:noArg play:noArg pause:noArg stop:noArg record:noArg showText channel:-,SAT.1_HD,RTL_HD,RTLII_HD,VOX_HD,kabel_eins_HD,SUPER_RTL_HD,ProSieben_HD,RTLNITRO_HD,ProSieben_MAXX_HD,SAT.1_Gold,N24,n-tv,3sat_HD,Das_Erste_HD,ZDF_HD,WDR_HD_Düsseldorf,Einsfestival_HD,tagesschau24_HD,EinsPlus_HD,PHOENIX_HD,arte_HD,ANIXE_HD,TecTime_TV,SIXX_HD,TELE_5_HD,N24_HD,n-tv_HD,DMAX_HD,Disney_Channel_HD,TLC_HD,hr-fernsehen_HD,ORF1_HD,ORF2W_HD,Disney_Channel,joiz,Comedy_Central/VIVA,MTV_HD,Welt_der_Wunder,eUrotic mute:-,on,off input:-,tv,radio"
                  attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings https:0,1 http-method:GET,POST disable:0,1 bouquet-tv bouquet-radio timeout remotecontrol:standard,advanced,keyboard lightMode:0,1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr">
             <INT key="CHANGED" value=""/>
-            <INT key="DEF" value="192.168.1.23"/>
+            <INT key="DEF" value="192.168.1.23 bla blub meinPasswort" />
             <INT key="INTERVAL" value="45"/>
             <INT key="NAME" value="Wz.TvReceiver"/>
             <INT key="NR" value="20"/>
