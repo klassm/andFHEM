@@ -224,7 +224,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     private void fillTableRow(GenericDeviceTableRowHolder holder, DeviceViewItem item, D device) {
         String value = item.getValueFor(device);
-        int description = item.getDescriptionStringId();
+        String description = item.getDescription(getContext());
         setTextView(holder.description, description);
         setTextView(holder.value, String.valueOf(value));
         if (value == null || value.equals("")) {

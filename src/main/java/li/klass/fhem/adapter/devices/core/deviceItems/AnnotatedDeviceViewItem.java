@@ -24,6 +24,8 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import android.content.Context;
+
 import com.google.common.base.Strings;
 
 import li.klass.fhem.domain.genericview.ShowField;
@@ -54,8 +56,8 @@ public abstract class AnnotatedDeviceViewItem implements DeviceViewItem {
     }
 
     @Override
-    public int getDescriptionStringId() {
-        return getShowFieldAnnotation().description().getId();
+    public String getDescription(Context context) {
+        return context.getString(getShowFieldAnnotation().description().getId());
     }
 
     @Override

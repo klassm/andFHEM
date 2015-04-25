@@ -24,7 +24,9 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,15 +38,29 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Sets.newHashSet;
 
 @Singleton
 public class XmlDeviceItemProvider {
+    public static final Function<Map.Entry<String, DeviceNode>, DeviceViewItem> TO_GENERIC_VIEW_ITEM = new Function<Map.Entry<String, DeviceNode>, DeviceViewItem>() {
+        @Override
+        public DeviceViewItem apply(Map.Entry<String, DeviceNode> input) {
+            return new GenericViewItem(input.getKey(), input.getValue().getValue());
+        }
+    };
+    public static final Predicate<DeviceViewItem> STATE_ENTRY = new Predicate<DeviceViewItem>() {
+        @Override
+        public boolean apply(DeviceViewItem input) {
+            return !"state".equalsIgnoreCase(input.getName());
+        }
+    };
     @Inject
     DeviceConfigurationProvider deviceConfigurationProvider;
 
@@ -53,18 +69,29 @@ public class XmlDeviceItemProvider {
         if (xmlListDevice == null) return items;
 
         try {
-            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
-            if (!optConfig.isPresent()) {
-                return items;
+            DeviceType deviceType = DeviceType.getDeviceTypeFor(xmlListDevice.getType());
+            if (deviceType == DeviceType.GENERIC) {
+                items.addAll(genericStatesFor(xmlListDevice));
             }
 
-            items.addAll(statesFor(xmlListDevice, optConfig.get()));
-            items.addAll(attributesFor(xmlListDevice, optConfig.get()));
+            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
+            if (optConfig.isPresent()) {
+                items.addAll(statesFor(xmlListDevice, optConfig.get()));
+                items.addAll(attributesFor(xmlListDevice, optConfig.get()));
+            }
 
             return items;
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Set<? extends DeviceViewItem> genericStatesFor(XmlListDevice xmlListDevice) {
+
+        return from(xmlListDevice.getStates().entrySet())
+                .transform(TO_GENERIC_VIEW_ITEM)
+                .filter(STATE_ENTRY)
+                .toSet();
     }
 
     private Set<DeviceViewItem> statesFor(XmlListDevice device, JSONObject jsonObject) throws JSONException {

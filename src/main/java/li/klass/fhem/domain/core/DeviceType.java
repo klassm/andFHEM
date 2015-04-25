@@ -180,7 +180,7 @@ public enum DeviceType {
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
     HOURCOUNTER("HourCounter", HourCounterDevice.class),
 
-    GENERIC("__generic__", JsonDefDevice.class);
+    GENERIC("__generic__", GenericDevice.class);
 
     private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = newHashMap();
     private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = newHashMap();

@@ -26,18 +26,42 @@ package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import android.content.Context;
 
-public interface DeviceViewItem {
-    public static final String FIRST = "__first__";
+public class GenericViewItem implements DeviceViewItem {
+    private String key;
+    private String value;
 
-    String getName();
+    public GenericViewItem(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
 
-    String getValueFor(Object object);
+    @Override
+    public String getName() {
+        return key;
+    }
 
-    String getShowAfterValue();
+    @Override
+    public String getValueFor(Object object) {
+        return value;
+    }
 
-    boolean isShowInDetail();
+    @Override
+    public String getShowAfterValue() {
+        return null;
+    }
 
-    boolean isShowInOverview();
+    @Override
+    public boolean isShowInDetail() {
+        return true;
+    }
 
-    String getDescription(Context context);
+    @Override
+    public boolean isShowInOverview() {
+        return false;
+    }
+
+    @Override
+    public String getDescription(Context context) {
+        return key;
+    }
 }

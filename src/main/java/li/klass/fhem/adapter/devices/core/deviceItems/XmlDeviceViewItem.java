@@ -24,6 +24,8 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import android.content.Context;
+
 import li.klass.fhem.resources.ResourceIdMapper;
 
 public class XmlDeviceViewItem implements DeviceViewItem {
@@ -70,8 +72,8 @@ public class XmlDeviceViewItem implements DeviceViewItem {
     }
 
     @Override
-    public int getDescriptionStringId() {
-        return resourceIdMapper.getId();
+    public String getDescription(Context context) {
+        return context.getString(resourceIdMapper.getId());
     }
 
     @Override

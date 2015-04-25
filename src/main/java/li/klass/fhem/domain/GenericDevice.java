@@ -22,22 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.deviceItems;
+package li.klass.fhem.domain;
 
-import android.content.Context;
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
-public interface DeviceViewItem {
-    public static final String FIRST = "__first__";
-
-    String getName();
-
-    String getValueFor(Object object);
-
-    String getShowAfterValue();
-
-    boolean isShowInDetail();
-
-    boolean isShowInOverview();
-
-    String getDescription(Context context);
+@OverviewViewSettings(showState = true, showMeasured = true)
+public class GenericDevice extends ToggleableDevice<GenericDevice> {
+    @Override
+    public DeviceFunctionality getDeviceGroup() {
+        DeviceFunctionality deviceGroup = super.getDeviceGroup();
+        return deviceGroup == null ? DeviceFunctionality.UNKNOWN : deviceGroup;
+    }
 }
