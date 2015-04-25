@@ -26,7 +26,6 @@ package li.klass.fhem.service.intent;
 
 import android.content.Intent;
 import android.os.ResultReceiver;
-import android.service.voice.VoiceInteractionService;
 
 import com.google.common.base.Optional;
 
@@ -63,7 +62,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     @Inject
     LicenseIntentService licenseIntentService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(VoiceInteractionService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VoiceCommandIntentService.class);
 
     public VoiceCommandIntentService() {
         super(VoiceCommandIntentService.class.getName());
