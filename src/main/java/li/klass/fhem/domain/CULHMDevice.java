@@ -65,6 +65,7 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.FILL_STATE;
 import static li.klass.fhem.domain.CULHMDevice.SubType.KEYMATIC;
 import static li.klass.fhem.domain.CULHMDevice.SubType.MOTION;
 import static li.klass.fhem.domain.CULHMDevice.SubType.POWERMETER;
+import static li.klass.fhem.domain.CULHMDevice.SubType.POWERSENSOR;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SHUTTER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
@@ -271,6 +272,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             subType = POWERMETER;
         } else if ("THPLSensor".equalsIgnoreCase(value)) {
             subType = THPL;
+        } else if ("powerSensor".equalsIgnoreCase(value)) {
+            subType = POWERSENSOR;
         }
         subTypeRaw = value;
     }
@@ -727,6 +730,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 break;
 
+            case POWERSENSOR:
             case POWERMETER:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                         new ChartSeriesDescription.Builder()
@@ -848,6 +852,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         MOTION(DeviceFunctionality.MOTION_DETECTOR),
         KEYMATIC(DeviceFunctionality.KEY),
         POWERMETER(DeviceFunctionality.SWITCH),
+        POWERSENSOR(DeviceFunctionality.USAGE),
         SHUTTER(DeviceFunctionality.WINDOW);
 
         private final DeviceFunctionality functionality;
