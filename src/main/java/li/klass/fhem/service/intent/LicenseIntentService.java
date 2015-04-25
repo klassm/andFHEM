@@ -54,7 +54,7 @@ public class LicenseIntentService extends ConvenientIntentService {
     @Inject
     ApplicationProperties applicationProperties;
 
-    private Context context = AndFHEMApplication.getContext();
+    private Context applicationContext = AndFHEMApplication.getContext();
 
     public LicenseIntentService() {
         super(LicenseIntentService.class.getName());
@@ -89,7 +89,7 @@ public class LicenseIntentService extends ConvenientIntentService {
                 boolean isPremium = isPremiumInternal(success);
                 listener.isPremium(isPremium);
             }
-        }, this);
+        }, applicationContext);
     }
 
     private boolean isPremiumInternal(boolean loadSuccessful) {
@@ -100,10 +100,10 @@ public class LicenseIntentService extends ConvenientIntentService {
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
             Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
             isPremium = true;
-        } else if (context.getPackageName().equals(PREMIUM_PACKAGE)) {
+        } else if (applicationContext.getPackageName().equals(PREMIUM_PACKAGE)) {
             Log.i(TAG, "found package name to be " + PREMIUM_PACKAGE + " => premium");
             isPremium = true;
-        } else if (isDebug(context)) {
+        } else if (isDebug(applicationContext)) {
             Log.i(TAG, "running in debug => premium");
             isPremium = true;
         } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||

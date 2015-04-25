@@ -26,8 +26,12 @@ package li.klass.fhem.service.intent;
 
 import android.content.Intent;
 import android.os.ResultReceiver;
+import android.service.voice.VoiceInteractionService;
 
 import com.google.common.base.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
@@ -59,6 +63,8 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     @Inject
     LicenseIntentService licenseIntentService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(VoiceInteractionService.class);
+
     public VoiceCommandIntentService() {
         super(VoiceCommandIntentService.class.getName());
     }
@@ -71,10 +77,13 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
             return STATE.DONE;
         }
 
-        LicenseIntentService.IsPremiumListener listener = new LicenseIntentService.IsPremiumListener() {
+        licenseIntentService.isPremium(new LicenseIntentService.IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
-                if (!isPremium) return;
+                if (!isPremium) {
+                    LOG.info("I am not premium, so I cannot recognize voice commands.");
+                    return;
+                }
 
                 if (action.equalsIgnoreCase(Actions.RECOGNIZE_VOICE_COMMAND)) {
                     String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
@@ -85,9 +94,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
                     }
                 }
             }
-        };
-
-        licenseIntentService.isPremium(listener);
+        });
 
         return STATE.DONE;
     }
