@@ -135,7 +135,7 @@ public class RoomDeviceList implements Serializable {
         Set<FhemDevice> allDevices = getAllDevices();
         List<T> deviceList = newArrayList();
         for (FhemDevice device : newArrayList(allDevices)) {
-            if (getDeviceTypeFor(device) != deviceType) {
+            if (device == null || getDeviceTypeFor(device) != deviceType) {
                 continue;
             }
 
