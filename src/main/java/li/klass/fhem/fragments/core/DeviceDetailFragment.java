@@ -96,6 +96,9 @@ public class DeviceDetailFragment extends BaseFragment {
                     if (device == null) return;
 
                     DeviceAdapter adapter = DeviceType.getAdapterFor(device);
+                    if (adapter == null) {
+                        return;
+                    }
                     adapter.attach(DeviceDetailFragment.this.getActivity());
                     ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
                     if (scrollView != null) {

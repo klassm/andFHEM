@@ -349,6 +349,9 @@ public class RoomListService extends AbstractService {
         Set<String> roomNames = Sets.newHashSet();
         for (FhemDevice device : roomDeviceList.getAllDevices()) {
             DeviceType type = getDeviceTypeFor(device);
+            if (type == null) {
+                continue;
+            }
             if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type, context) && type != AT) {
                 @SuppressWarnings("unchecked")
                 List<String> deviceRooms = device.getRooms();

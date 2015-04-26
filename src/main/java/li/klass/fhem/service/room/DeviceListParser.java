@@ -401,7 +401,9 @@ public class DeviceListParser {
         }
 
         public void addError(DeviceType deviceType) {
-            addErrors(deviceType, 1);
+            if (deviceType != null) {
+                addErrors(deviceType, 1);
+            }
         }
 
         public void addErrors(DeviceType deviceType, int errorCount) {

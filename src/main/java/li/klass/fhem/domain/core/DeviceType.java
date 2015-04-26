@@ -180,7 +180,7 @@ public enum DeviceType {
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
     HOURCOUNTER("HourCounter", HourCounterDevice.class),
 
-    GENERIC("__generic__", GenericDevice.class);
+    GENERIC("__generic__", GenericDevice.class, new ToggleableAdapter<>(GenericDevice.class));
 
     private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = newHashMap();
     private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = newHashMap();
@@ -213,11 +213,12 @@ public enum DeviceType {
     }
 
     public static <T extends FhemDevice<T>> DeviceAdapter<T> getAdapterFor(T device) {
-        return getDeviceTypeFor(device).getAdapter();
+        DeviceType type = getDeviceTypeFor(device);
+        return type == null ? null : type.<T>getAdapter();
     }
 
     public static <T extends FhemDevice> DeviceType getDeviceTypeFor(T device) {
-        return getDeviceTypeFor(device.getClass());
+        return device == null ? null : getDeviceTypeFor(device.getClass());
     }
 
     @SuppressWarnings("unchecked")
