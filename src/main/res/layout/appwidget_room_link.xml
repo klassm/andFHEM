@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/room_icon"
+            android:layout_toEndOf="@+id/room_icon"
             android:gravity="center"
             android:paddingEnd="0dp"
             android:paddingLeft="10dp"

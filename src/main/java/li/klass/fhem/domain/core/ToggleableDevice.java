@@ -54,7 +54,7 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
     public boolean isOffByState() {
         String internalState = getToggleStateValue();
         return internalState == null
-                || internalState.toLowerCase().contains(getOffStateName().toLowerCase(Locale.getDefault()))
+                || internalState.toLowerCase(Locale.getDefault()).contains(getOffStateName().toLowerCase(Locale.getDefault()))
                 || internalState.equalsIgnoreCase(eventMapReverse.get(getOffStateName()))
                 || internalState.equals("???");
     }
