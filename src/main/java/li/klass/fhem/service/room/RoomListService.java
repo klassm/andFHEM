@@ -353,9 +353,7 @@ public class RoomListService extends AbstractService {
                 continue;
             }
             if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type, context) && type != AT) {
-                @SuppressWarnings("unchecked")
-                List<String> deviceRooms = device.getRooms();
-                roomNames.addAll(deviceRooms);
+                roomNames.addAll(device.getRooms());
             }
         }
         roomNames.removeAll(roomDeviceList.getHiddenRooms());
