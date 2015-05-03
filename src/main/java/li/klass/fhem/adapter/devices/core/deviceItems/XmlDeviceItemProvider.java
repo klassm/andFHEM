@@ -70,11 +70,11 @@ public class XmlDeviceItemProvider {
 
         try {
             DeviceType deviceType = DeviceType.getDeviceTypeFor(xmlListDevice.getType());
-            if (deviceType == DeviceType.GENERIC) {
+            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
+            if (deviceType == DeviceType.GENERIC && !optConfig.isPresent()) {
                 items.addAll(genericStatesFor(xmlListDevice));
             }
 
-            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
             if (optConfig.isPresent()) {
                 items.addAll(statesFor(xmlListDevice, optConfig.get()));
                 items.addAll(attributesFor(xmlListDevice, optConfig.get()));

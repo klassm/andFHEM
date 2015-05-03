@@ -52,6 +52,5 @@ public class DeviceConfigurationProvider {
         JSONObject deviceConfig = options.optJSONObject(device.getType());
 
         return deviceConfig == null ? Optional.<JSONObject>absent() : Optional.of(deviceConfig);
-
     }
 }

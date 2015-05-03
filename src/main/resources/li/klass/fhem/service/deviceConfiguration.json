@@ -168,5 +168,53 @@
                 desc: 'model'
             }
         ]
+    },
+
+    GenShellSwitch: {
+        defaultGroup: 'SWITCH'
+    },
+
+    MYSENSORS_DEVICE: {
+        defaultGroup: 'SWITCH'
+    },
+
+    SolarView: {
+        defaultGroup: 'USAGE',
+        states: [
+            {
+                key: 'currentPower',
+                desc: 'currentPower',
+                showInOverview: true
+            },
+            {
+                key: 'gridCurrent',
+                desc: 'current'
+            },
+            {
+                key: 'gridVoltage',
+                desc: 'voltage'
+            },
+            {
+                key: 'temperature',
+                desc: 'temperature'
+            },
+            {
+                key: 'totalEnergy',
+                desc: 'totalEnergy'
+            },
+            {
+                key: 'totalEnergyDay',
+                desc: 'totalEnergyDay',
+                showInOverview: true
+            },
+            {
+                key: 'totalEnergyMonth',
+                desc: 'totalEnergyMonth'
+            },
+            {
+                key: 'totalEnergyYear',
+                desc: 'totalEnergyYear'
+            }
+        ]
     }
 }

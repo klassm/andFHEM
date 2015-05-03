@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MySensorsDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        MySensorsDevice device = getDeviceFor("MYSENSOR_10_4", MySensorsDevice.class);
+        GenericDevice device = getDeviceFor("MYSENSOR_10_4", GenericDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.isOnByState()).isTrue();

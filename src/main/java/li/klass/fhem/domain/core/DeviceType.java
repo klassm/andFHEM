@@ -66,7 +66,103 @@ import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
-import li.klass.fhem.domain.*;
+import li.klass.fhem.domain.AtDevice;
+import li.klass.fhem.domain.CULEMDevice;
+import li.klass.fhem.domain.CULFHTTKDevice;
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.CULTXDevice;
+import li.klass.fhem.domain.CULWSDevice;
+import li.klass.fhem.domain.DMXDevice;
+import li.klass.fhem.domain.DbLogDevice;
+import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.EC3000Device;
+import li.klass.fhem.domain.EIBDevice;
+import li.klass.fhem.domain.EMWZDevice;
+import li.klass.fhem.domain.ESA2000Device;
+import li.klass.fhem.domain.EnOceanDevice;
+import li.klass.fhem.domain.EnigmaDevice;
+import li.klass.fhem.domain.FBCallmonitorDevice;
+import li.klass.fhem.domain.FBDectDevice;
+import li.klass.fhem.domain.FHEMWEBDevice;
+import li.klass.fhem.domain.FHEMduinoEnvDevice;
+import li.klass.fhem.domain.FHEMduinoPT2262Device;
+import li.klass.fhem.domain.FHT8VDevice;
+import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.FRMInDevice;
+import li.klass.fhem.domain.FRMOutDevice;
+import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.FS20ZDRDevice;
+import li.klass.fhem.domain.FileLogDevice;
+import li.klass.fhem.domain.FloorplanDevice;
+import li.klass.fhem.domain.GCMSendDevice;
+import li.klass.fhem.domain.GPIO4Device;
+import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.domain.HCSDevice;
+import li.klass.fhem.domain.HM485Device;
+import li.klass.fhem.domain.HMSDevice;
+import li.klass.fhem.domain.HOLDevice;
+import li.klass.fhem.domain.HUEDevice;
+import li.klass.fhem.domain.HarmonyDevice;
+import li.klass.fhem.domain.HourCounterDevice;
+import li.klass.fhem.domain.JsonDefDevice;
+import li.klass.fhem.domain.KS300Device;
+import li.klass.fhem.domain.LGTVDevice;
+import li.klass.fhem.domain.LaCrosseDevice;
+import li.klass.fhem.domain.LightSceneDevice;
+import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.domain.MiLightDevice;
+import li.klass.fhem.domain.NetatmoDevice;
+import li.klass.fhem.domain.OWFSDevice;
+import li.klass.fhem.domain.OnkyoAvrDevice;
+import li.klass.fhem.domain.OpenWeatherMapDevice;
+import li.klass.fhem.domain.OregonDevice;
+import li.klass.fhem.domain.OwDevice;
+import li.klass.fhem.domain.OwSwitchDevice;
+import li.klass.fhem.domain.OwcountDevice;
+import li.klass.fhem.domain.OwtempDevice;
+import li.klass.fhem.domain.OwthermDevice;
+import li.klass.fhem.domain.PCA301Device;
+import li.klass.fhem.domain.PCA9532Device;
+import li.klass.fhem.domain.PCF8574Device;
+import li.klass.fhem.domain.PIDDevice;
+import li.klass.fhem.domain.PilightDevice;
+import li.klass.fhem.domain.PioneerAvrDevice;
+import li.klass.fhem.domain.PioneerAvrZoneDevice;
+import li.klass.fhem.domain.PresenceDevice;
+import li.klass.fhem.domain.RFXCOMDevice;
+import li.klass.fhem.domain.RFXX10RECDevice;
+import li.klass.fhem.domain.RPIGPIODevice;
+import li.klass.fhem.domain.ReadingsProxyDevice;
+import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.domain.RevoltDevice;
+import li.klass.fhem.domain.RoommateDevice;
+import li.klass.fhem.domain.SBPlayerDevice;
+import li.klass.fhem.domain.SHT21Device;
+import li.klass.fhem.domain.SMLUSBDevice;
+import li.klass.fhem.domain.STVDevice;
+import li.klass.fhem.domain.SWAPDevice;
+import li.klass.fhem.domain.SomfyDevice;
+import li.klass.fhem.domain.SonosDevice;
+import li.klass.fhem.domain.SonosPlayerDevice;
+import li.klass.fhem.domain.StatisticsDevice;
+import li.klass.fhem.domain.StructureDevice;
+import li.klass.fhem.domain.TCM97001Device;
+import li.klass.fhem.domain.TRXDevice;
+import li.klass.fhem.domain.TRXLightDevice;
+import li.klass.fhem.domain.TRXSecurityDevice;
+import li.klass.fhem.domain.TRXWeatherDevice;
+import li.klass.fhem.domain.ThresholdDevice;
+import li.klass.fhem.domain.TwilightDevice;
+import li.klass.fhem.domain.USBWXDevice;
+import li.klass.fhem.domain.UniRollDevice;
+import li.klass.fhem.domain.WOLDevice;
+import li.klass.fhem.domain.WatchdogDevice;
+import li.klass.fhem.domain.WeatherDevice;
+import li.klass.fhem.domain.WebLinkDevice;
+import li.klass.fhem.domain.WifiLightDevice;
+import li.klass.fhem.domain.WithingsDevice;
+import li.klass.fhem.domain.YamahaAVRDevice;
+import li.klass.fhem.domain.ZWaveDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -129,7 +225,6 @@ public enum DeviceType {
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     FRMIN("FRM_IN", FRMInDevice.class),
-    GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapter<>(GenShellSwitchDevice.class)),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
     ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<>(ZWaveDevice.class)),
     SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
@@ -146,9 +241,6 @@ public enum DeviceType {
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter<>(HM485Device.class)),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
-    EPGM("EGPM", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
-    CM160("CM160", JsonDefDevice.class),
-    BMP180("I2C_BMP180", JsonDefDevice.class),
     SHT21("I2C_SHT21", SHT21Device.class),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
     PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),
@@ -169,13 +261,10 @@ public enum DeviceType {
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
     FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapter<>(FHEMduinoPT2262Device.class)),
-    SOLARVIEW("SolarView", SolarViewDevice.class),
     EMCDDEVICE("ECMDDevice", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
-    CO20("CO20", JsonDefDevice.class),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
-    MY_SENSORS("MYSENSORS_DEVICE", MySensorsDevice.class, new ToggleableAdapter<>(MySensorsDevice.class)),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
     TCM97001("CUL_TCM97001", TCM97001Device.class),
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),

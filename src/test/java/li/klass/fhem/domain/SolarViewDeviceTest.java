@@ -34,16 +34,16 @@ public class SolarViewDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        SolarViewDevice device = getDeviceFor("Solar", SolarViewDevice.class);
+        GenericDevice device = getDeviceFor("Solar", GenericDevice.class);
 
-        assertThat(device.getCurrentPower()).isEqualTo("4 (W)");
-        assertThat(device.getGridCurrent()).isEqualTo("3 (A)");
-        assertThat(device.getGridVoltage()).isEqualTo("2 (V)");
-        assertThat(device.getTemperature()).isEqualTo("10.0 (°C)");
-        assertThat(device.getTotalEnergy()).isEqualTo("533 (kWh)");
-        assertThat(device.getTotalEnergyDay()).isEqualTo("1.2 (kWh)");
-        assertThat(device.getTotalEnergyMonth()).isEqualTo("36 (kWh)");
-        assertThat(device.getTotalEnergyYear()).isEqualTo("533 (kWh)");
+        assertThat(stateValueFor(device, "currentPower")).isEqualTo("4 (W)");
+        assertThat(stateValueFor(device, "gridCurrent")).isEqualTo("3 (A)");
+        assertThat(stateValueFor(device, "gridVoltage")).isEqualTo("2 (V)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("10.0 (°C)");
+        assertThat(stateValueFor(device, "totalEnergy")).isEqualTo("533 (kWh)");
+        assertThat(stateValueFor(device, "totalEnergyDay")).isEqualTo("1.2 (kWh)");
+        assertThat(stateValueFor(device, "totalEnergyMonth")).isEqualTo("36 (kWh)");
+        assertThat(stateValueFor(device, "totalEnergyYear")).isEqualTo("533 (kWh)");
     }
 
     @Override
