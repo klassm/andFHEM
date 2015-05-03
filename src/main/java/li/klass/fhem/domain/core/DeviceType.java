@@ -67,6 +67,7 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.*;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -218,7 +219,10 @@ public enum DeviceType {
     }
 
     public static <T extends FhemDevice> DeviceType getDeviceTypeFor(T device) {
-        return device == null ? null : getDeviceTypeFor(device.getClass());
+        if (device == null) return null;
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
+        if (xmlListDevice == null) return null;
+        return getDeviceTypeFor(xmlListDevice.getType());
     }
 
     @SuppressWarnings("unchecked")
