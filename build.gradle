@@ -24,6 +24,8 @@
 
 
 
+
+
 buildscript {
     repositories {
         mavenCentral()
@@ -56,7 +58,7 @@ apply plugin: 'de.mobilej.unmock'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.2'
+    buildToolsVersion '22.0.1'
     testBuildType 'debug'
 
     testOptions {
@@ -170,9 +172,9 @@ unMock {
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
     //noinspection GradleDependency
-    compile 'com.android.support:support-v4:22.1.0@aar'
+    compile 'com.android.support:support-v4:22.1.1@aar'
     //noinspection GradleDependency
-    compile 'com.android.support:appcompat-v7:22.1.0'
+    compile 'com.android.support:appcompat-v7:22.1.1'
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'commons-net:commons-net:3.3'
