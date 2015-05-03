@@ -176,7 +176,6 @@ public class RoomListHolderService {
                 return cachedRoomList;
             }
 
-
             ObjectInputStream objectInputStream = null;
             try {
                 LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");

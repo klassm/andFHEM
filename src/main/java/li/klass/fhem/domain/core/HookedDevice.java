@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
-public abstract class HookedDevice<T extends HookedDevice<T>> extends Device<T> {
+public abstract class HookedDevice<T extends HookedDevice<T>> extends Device {
 
     /**
      * Contains a name only used in widgets.

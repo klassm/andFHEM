@@ -104,7 +104,6 @@ import li.klass.fhem.domain.HOLDevice;
 import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.HourCounterDevice;
-import li.klass.fhem.domain.JsonDefDevice;
 import li.klass.fhem.domain.KS300Device;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LaCrosseDevice;
@@ -177,14 +176,12 @@ public enum DeviceType {
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    IT("IT", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OREGON("OREGON", OregonDevice.class),
     CUL_EM("CUL_EM", CULEMDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
-    SIS_PMS("SIS_PMS", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
@@ -250,7 +247,6 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
-    X10("X10", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
     SMLUSB("SMLUSB", SMLUSBDevice.class),
@@ -261,7 +257,6 @@ public enum DeviceType {
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
     FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapter<>(FHEMduinoPT2262Device.class)),
-    EMCDDEVICE("ECMDDevice", JsonDefDevice.class, new ToggleableAdapter<>(JsonDefDevice.class)),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),

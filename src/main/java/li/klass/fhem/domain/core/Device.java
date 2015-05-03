@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import java.io.Serializable;
+
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
@@ -31,7 +33,7 @@ import li.klass.fhem.service.room.AllDevicesReadCallback;
 import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-public abstract class Device<T extends Device<T>> {
+public abstract class Device implements Serializable {
 
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;

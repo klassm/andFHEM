@@ -30,7 +30,6 @@ import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +54,7 @@ import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.GCM_U
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
-public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Serializable, Comparable<T> {
+public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
     public static final long NEVER_OUTDATE_DATA = 0;
 

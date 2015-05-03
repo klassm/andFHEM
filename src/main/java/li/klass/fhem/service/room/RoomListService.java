@@ -353,6 +353,7 @@ public class RoomListService extends AbstractService {
                 continue;
             }
             if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type, context) && type != AT) {
+                //noinspection unchecked
                 roomNames.addAll(device.getRooms());
             }
         }
