@@ -14,5 +14,5 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
   echo y | android update sdk -u -a -t extra-google-google_play_services &&
   echo y | android update sdk -u -a -t extra-google-m2repository &&
   echo y | android update sdk -u -a -t extra-google-play_billing &&  
-  touch $DEPS
+#  touch $DEPS
 #fi
