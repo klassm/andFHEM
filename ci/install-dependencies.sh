@@ -19,3 +19,5 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
   echo y | android update sdk -u -a -t extra-google-play_billing #&& 
 #  touch $DEPS
 #fi
+
+./gradlew clean --continue
