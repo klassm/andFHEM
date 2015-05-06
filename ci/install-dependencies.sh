@@ -22,4 +22,5 @@ ls $ANDROID_HOME/extras/google/m2repository/com/android/support/support-v4/22.1.
   echo y | android update sdk -u -a -t extra-google-play_billing #&& 
 #  touch $DEPS
 #fi
+ls $ANDROID_HOME/extras/google/m2repository/com/android/support/support-v4/22.1.1
 
