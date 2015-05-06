@@ -52,7 +52,6 @@ repositories {
     maven { url 'https://repository-achartengine.forge.cloudbees.com/snapshot' }
 }
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
 
