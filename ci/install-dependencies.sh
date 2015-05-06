@@ -4,7 +4,6 @@
 export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
 
 echo "ANDROID_HOME=$ANDROID_HOME"
-ls $ANDROID_HOME/extras/google/m2repository/com/android/support/support-v4/22.1.1
 
 #DEPS="$ANDROID_HOME/installed-dependencies"
 
@@ -22,5 +21,4 @@ ls $ANDROID_HOME/extras/google/m2repository/com/android/support/support-v4/22.1.
   echo y | android update sdk -u -a -t extra-google-play_billing #&& 
 #  touch $DEPS
 #fi
-ls $ANDROID_HOME/extras/google/m2repository/com/android/support/support-v4/22.1.1
 
