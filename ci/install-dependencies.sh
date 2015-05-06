@@ -3,6 +3,9 @@
 # Fix the CircleCI path
 export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
 
+echo "ANDROID_HOME=$ANDROID_HOME"
+ls $ANDROID_HOME/extras/google/m2repository/com/android/support/support-v4/22.1.1
+
 #DEPS="$ANDROID_HOME/installed-dependencies"
 
 #if [ ! -e $DEPS ]; then
