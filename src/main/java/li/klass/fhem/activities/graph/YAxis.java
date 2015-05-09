@@ -26,47 +26,47 @@ package li.klass.fhem.activities.graph;
 
 import android.content.Context;
 
+import com.google.common.collect.BoundType;
+import com.google.common.collect.Range;
+
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.gplot.GPlotAxis;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
+public class YAxis implements Comparable<YAxis> {
     private final Context context;
     private String name;
     private List<ChartData> charts = newArrayList();
 
-    private double minimumY = Double.MAX_VALUE;
-    private double maximumY = Double.MIN_VALUE;
+    private double minimumY = 0;
+    private double maximumY = 0;
 
     private DateTime minimumX = null;
     private DateTime maximumX = null;
 
-    public YAxis(String name, Context context) {
+    public YAxis(Context context, GPlotAxis axis) {
         this.context = context;
-        this.name = name;
+        this.name = axis.getLabel();
+
+        Range<Double> range = axis.getRange().or(Range.range(-1d, BoundType.OPEN, 1d, BoundType.OPEN));
+        if (range.hasLowerBound()) {
+            minimumY = range.lowerEndpoint();
+        }
+        if (range.hasUpperBound()) {
+            maximumY = range.upperEndpoint();
+        }
     }
 
-    public void addChart(ChartSeriesDescription series, List<GraphEntry> graphData) {
+    public void addChart(GPlotSeries series, List<GraphEntry> graphData) {
         ChartData chart = new ChartData(series, graphData, context);
-
-        double seriesMaxValue = series.getYAxisMaxValue();
-        double seriesMinValue = series.getYAxisMinValue();
-
-        if (isSet(seriesMinValue) && seriesMinValue < minimumY) {
-            minimumY = seriesMinValue;
-        }
-
-        if (isSet(seriesMaxValue) && seriesMaxValue > maximumY) {
-            maximumY = seriesMaxValue;
-        }
 
         if (chart.getMaximumY() > maximumY) {
             maximumY = chart.getMaximumY();
@@ -87,10 +87,6 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
         charts.add(chart);
     }
 
-    private boolean isSet(double value) {
-        return Math.abs(value) > 0.1;
-    }
-
     @Override
     public int compareTo(@NotNull YAxis yAxis) {
         return name.compareTo(yAxis.getName());
@@ -108,47 +104,8 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
         }
     }
 
-    public int getTotalNumberOfSeries() {
-        int total = 0;
-        for (ChartData chart : charts) {
-            total += chart.getNumberOfContainedSeries();
-        }
-
-        return total;
-    }
-
-    @Override
-    public Iterator<ViewableChartSeries> iterator() {
-        return new Iterator<ViewableChartSeries>() {
-
-            private int currentChart = -1;
-            private Iterator<ViewableChartSeries> currentIterator;
-
-            @Override
-            public boolean hasNext() {
-                if (currentIterator == null) {
-                    return currentChart < charts.size();
-                }
-
-                return currentIterator.hasNext() || currentChart + 1 < charts.size();
-
-            }
-
-            @Override
-            public ViewableChartSeries next() {
-                if ((currentIterator == null || !currentIterator.hasNext())) {
-                    currentChart++;
-                    currentIterator = charts.get(currentChart).iterator();
-                }
-
-                return currentIterator.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("removing is not supported!");
-            }
-        };
+    public List<ChartData> getCharts() {
+        return charts;
     }
 
     public double getMinimumY() {

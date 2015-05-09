@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -42,6 +43,7 @@ import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.DateFormatUtil;
 
@@ -49,6 +51,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.GCM_UPDATE;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
@@ -76,6 +79,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     private long lastMeasureTime = -1;
     private String group;
     private List<DeviceChart> deviceCharts = newArrayList();
+    private Set<SvgGraphDefinition> svgGraphDefinitions = newHashSet();
 
     private boolean hasStatisticsDevice = false;
 
@@ -494,6 +498,14 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public void setHasStatisticsDevice(boolean hasStatisticsDevice) {
         this.hasStatisticsDevice = hasStatisticsDevice;
+    }
+
+    public void addSvgGraphDefinition(SvgGraphDefinition svgGraphDefinition) {
+        svgGraphDefinitions.add(svgGraphDefinition);
+    }
+
+    public Set<SvgGraphDefinition> getSvgGraphDefinitions() {
+        return svgGraphDefinitions;
     }
 
     @Override

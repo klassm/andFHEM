@@ -32,8 +32,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -44,6 +42,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.google.common.collect.ImmutableList;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
@@ -51,13 +51,12 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.BasicStroke;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer.FillOutsideLine;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -69,17 +68,20 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.service.graph.gplot.GPlotDefinition;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.DisplayUtil;
+import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
+import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
@@ -90,7 +92,8 @@ import static org.joda.time.Duration.standardHours;
 
 public class ChartingActivity extends ActionBarActivity implements Updateable {
 
-    public static final List<Integer> AVAILABLE_COLORS = Arrays.asList(Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE);
+    public static final List<Integer> AVAILABLE_COLORS = Arrays.asList(Color.BLUE, Color.RED, Color.GREEN,
+            Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE, Color.MAGENTA);
 
     public static final int REQUEST_TIME_CHANGE = 1;
     public static final int DIALOG_EXECUTING = 2;
@@ -107,7 +110,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     /**
      * {@link ChartSeriesDescription}s to be shown within the current graph.
      */
-    private ArrayList<ChartSeriesDescription> seriesDescriptions = newArrayList();
+    private SvgGraphDefinition svgGraphDefinition;
 
     /**
      * Start date for the current graph.
@@ -119,23 +122,20 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      */
     private DateTime endDate = new DateTime();
 
+    private List<Integer> availableColors = newArrayList(AVAILABLE_COLORS);
+
     /**
      * Jumps to the charting activity.
-     *
-     * @param context            calling intent
+     *  @param context            calling intent
      * @param device             concerned device
-     * @param seriesDescriptions series descriptions each representing one series in the resulting chart
+     * @param graphDefinition series descriptions each representing one series in the resulting chart
      */
     @SuppressWarnings("unchecked")
-    public static void showChart(Context context, FhemDevice device, ChartSeriesDescription... seriesDescriptions) {
+    public static void showChart(Context context, FhemDevice device, SvgGraphDefinition graphDefinition) {
 
-        ArrayList<ChartSeriesDescription> seriesList = newArrayList(seriesDescriptions);
-        Intent timeChartIntent = new Intent(context, ChartingActivity.class);
-        timeChartIntent.putExtras(new Bundle());
-        timeChartIntent.putExtra(DEVICE_NAME, device.getName());
-        timeChartIntent.putExtra(DEVICE_GRAPH_SERIES_DESCRIPTIONS, seriesList);
-
-        context.startActivity(timeChartIntent);
+        context.startActivity(new Intent(context, ChartingActivity.class)
+                .putExtra(DEVICE_NAME, device.getName())
+                .putExtra(DEVICE_GRAPH_DEFINITION, graphDefinition));
     }
 
     @Override
@@ -162,7 +162,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         Bundle extras = getIntent().getExtras();
         deviceName = extras.getString(DEVICE_NAME);
 
-        seriesDescriptions = extras.getParcelableArrayList(DEVICE_GRAPH_SERIES_DESCRIPTIONS);
+        svgGraphDefinition = (SvgGraphDefinition) extras.getSerializable(DEVICE_GRAPH_DEFINITION);
 
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -185,13 +185,12 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         intent.setClass(this, RoomListIntentService.class);
         intent.putExtra(DEVICE_NAME, deviceName);
         intent.putExtra(DO_REFRESH, doUpdate);
-        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode != ResultCodes.SUCCESS) return;
 
-                FhemDevice device = (FhemDevice) resultData.getSerializable(DEVICE);
-                readDataAndCreateChart(doUpdate, device);
+                readDataAndCreateChart(doUpdate, (FhemDevice) resultData.getSerializable(DEVICE));
             }
         });
         startService(intent);
@@ -206,40 +205,36 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     @SuppressWarnings("unchecked")
     private void readDataAndCreateChart(boolean doRefresh, final FhemDevice device) {
         showDialog(DIALOG_EXECUTING);
-        Intent intent = new Intent(Actions.DEVICE_GRAPH);
-        intent.setClass(this, DeviceIntentService.class);
-        intent.putExtra(DO_REFRESH, doRefresh);
-        intent.putExtra(DEVICE_NAME, deviceName);
-        intent.putExtra(START_DATE, startDate);
-        intent.putExtra(END_DATE, endDate);
-        intent.putExtra(DEVICE_GRAPH_SERIES_DESCRIPTIONS, seriesDescriptions);
-        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                if (resultCode == ResultCodes.SUCCESS) {
-                    Map<ChartSeriesDescription, List<GraphEntry>> graphData = (Map<ChartSeriesDescription, List<GraphEntry>>) resultData.get(DEVICE_GRAPH_ENTRY_MAP);
-                    createChart(device, graphData);
-                }
+        startService(new Intent(DEVICE_GRAPH)
+                .setClass(this, DeviceIntentService.class)
+                .putExtra(DO_REFRESH, doRefresh)
+                .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(START_DATE, startDate)
+                .putExtra(END_DATE, endDate)
+                .putExtra(DEVICE_GRAPH_DEFINITION, svgGraphDefinition)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == ResultCodes.SUCCESS) {
+                            createChart(device, (Map<GPlotSeries, List<GraphEntry>>) resultData.get(DEVICE_GRAPH_ENTRY_MAP));
+                        }
 
-                try {
-                    dismissDialog(DIALOG_EXECUTING);
-                } catch (Exception e) {
-                    Log.e(ChartingActivity.class.getName(), "error while hiding dialog", e);
-                }
-            }
-        });
-        startService(intent);
+                        try {
+                            dismissDialog(DIALOG_EXECUTING);
+                        } catch (Exception e) {
+                            Log.e(ChartingActivity.class.getName(), "error while hiding dialog", e);
+                        }
+                    }
+                }));
     }
 
     /**
      * Actually creates the charting view by using the newly read charting data.
-     *
-     * @param device    concerned device
+     *  @param device    concerned device
      * @param graphData used graph data
      */
     @SuppressWarnings("unchecked")
-    private void createChart(FhemDevice device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
+    private void createChart(FhemDevice device, Map<GPlotSeries, List<GraphEntry>> graphData) {
 
         List<YAxis> yAxisList = handleChartData(graphData);
         if (graphData.size() == 0) {
@@ -301,7 +296,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * @param data loaded data for each {@link ChartSeriesDescription}
      * @return list of {@link YAxis} (internal domain model representation)
      */
-    private List<YAxis> handleChartData(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+    private List<YAxis> handleChartData(Map<GPlotSeries, List<GraphEntry>> data) {
         removeChartSeriesWithTooFewEntries(data);
         return mapToYAxis(data);
     }
@@ -348,29 +343,34 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
             renderer.setYAxisMin(yAxis.getMinimumY(), axisNumber);
             setYAxisDescription(renderer, axisNumber, yAxis);
 
-            for (ViewableChartSeries chartSeries : yAxis) {
+            for (ChartData chartSeries : yAxis.getCharts()) {
                 XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
 
                 seriesRenderer.setFillPoints(false);
-                int color = getColorFor(chartSeries, newArrayList(AVAILABLE_COLORS));
+
+                int color = getNextAvailableColor();
                 seriesRenderer.setColor(color);
                 seriesRenderer.setPointStyle(PointStyle.POINT);
 
                 renderer.addSeriesRenderer(seriesRenderer);
 
-                switch (chartSeries.getChartType()) {
-                    case REGRESSION:
+                switch (chartSeries.getPlotSeries().getType()) {
+                    case HISTEPS:
+                    case FSTEPS:
+                    case STEPS:
                         seriesRenderer.setLineWidth(1);
-                        seriesRenderer.setShowLegendItem(false);
-                        seriesRenderer.setStroke(BasicStroke.DOTTED);
-                        break;
-                    case SUM:
+                        seriesRenderer.setShowLegendItem(true);
+                        seriesRenderer.addFillOutsideLine(new FillOutsideLine(FillOutsideLine.Type.BELOW));
+                        seriesRenderer.setStroke(BasicStroke.SOLID);
+                    case POINTS:
                         seriesRenderer.setLineWidth(1);
-                        seriesRenderer.setShowLegendItem(false);
+                        seriesRenderer.setShowLegendItem(true);
                         seriesRenderer.setStroke(BasicStroke.DOTTED);
                         break;
                     default:
-                        seriesRenderer.setLineWidth(2);
+                        seriesRenderer.setLineWidth(1);
+                        seriesRenderer.setShowLegendItem(true);
+                        seriesRenderer.setStroke(BasicStroke.SOLID);
                 }
             }
         }
@@ -401,9 +401,9 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         for (int yAxisIndex = 0; yAxisIndex < yAxisList.size(); yAxisIndex++) {
             YAxis yAxis = yAxisList.get(yAxisIndex);
 
-            for (ViewableChartSeries seriesContainer : yAxis) {
-                CustomTimeSeries timeSeries = new CustomTimeSeries(seriesContainer.getName(), yAxisIndex);
-                for (GraphEntry graphEntry : seriesContainer.getData()) {
+            for (ChartData chartData : yAxis.getCharts()) {
+                CustomTimeSeries timeSeries = new CustomTimeSeries(chartData.getPlotSeries().getTitle(), yAxisIndex);
+                for (GraphEntry graphEntry : chartData.getGraphData()) {
                     timeSeries.add(graphEntry.getDate().toDate(), graphEntry.getValue());
                 }
                 dataSet.addSeries(timeSeries);
@@ -418,8 +418,8 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      *
      * @param data data to work on (which is also modified here)
      */
-    private void removeChartSeriesWithTooFewEntries(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        for (ChartSeriesDescription chartSeriesDescription : newHashSet(data.keySet())) {
+    private void removeChartSeriesWithTooFewEntries(Map<GPlotSeries, List<GraphEntry>> data) {
+        for (GPlotSeries chartSeriesDescription : newHashSet(data.keySet())) {
             if (data.get(chartSeriesDescription).size() < 2) {
                 data.remove(chartSeriesDescription);
             }
@@ -432,35 +432,25 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * @param data amount of data
      * @return internal representation
      */
-    private List<YAxis> mapToYAxis(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        Map<String, YAxis> yAxisMap = newHashMap();
-
-        for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
-            SeriesType seriesType = chartSeriesDescription.getSeriesType();
-            if (seriesType == null && chartSeriesDescription.getColumnName() == null) {
-                throw new IllegalArgumentException("no series type: " + chartSeriesDescription.getColumnName() + " ; device " + deviceName + "");
+    private List<YAxis> mapToYAxis(Map<GPlotSeries, List<GraphEntry>> data) {
+        GPlotDefinition plotDefinition = svgGraphDefinition.getPlotDefinition();
+        YAxis leftAxis = new YAxis(this, plotDefinition.getLeftAxis());
+        for (GPlotSeries series : plotDefinition.getLeftAxis().getSeries()) {
+            if (data.containsKey(series)) {
+                leftAxis.addChart(series, data.get(series));
             }
-            String yAxisName;
-            if (seriesType == null) {
-                yAxisName = chartSeriesDescription.getFallBackYAxisName();
-            } else {
-                yAxisName = seriesType.getYAxisName();
-            }
-            if (!yAxisMap.containsKey(yAxisName)) {
-                yAxisMap.put(yAxisName, new YAxis(yAxisName, this));
-            }
-
-            yAxisMap.get(yAxisName).addChart(chartSeriesDescription, data.get(chartSeriesDescription));
         }
+        leftAxis.afterSeriesSet();
 
-        ArrayList<YAxis> yAxisList = newArrayList(yAxisMap.values());
-        Collections.sort(yAxisList);
-
-        for (YAxis yAxis : yAxisList) {
-            yAxis.afterSeriesSet();
+        YAxis rightAxis = new YAxis(this, plotDefinition.getRightAxis());
+        for (GPlotSeries series : plotDefinition.getRightAxis().getSeries()) {
+            if (data.containsKey(series)) {
+                rightAxis.addChart(series, data.get(series));
+            }
         }
+        rightAxis.afterSeriesSet();
 
-        return yAxisList;
+        return ImmutableList.of(leftAxis, rightAxis);
     }
 
     /**
@@ -508,16 +498,8 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         renderer.setYLabelsColor(axisNumber, getResources().getColor(android.R.color.white));
     }
 
-    private int getColorFor(ViewableChartSeries viewableChartSeries, List<Integer> availableColors) {
-        SeriesType seriesType = viewableChartSeries.getSeriesType();
-        if (seriesType != null) {
-            return seriesType.getColor();
-        }
-
-        Integer color = availableColors.get(0);
-        availableColors.remove(0);
-
-        return color;
+    private int getNextAvailableColor() {
+        return availableColors.remove(0);
     }
 
     @Override

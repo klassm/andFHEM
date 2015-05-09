@@ -36,7 +36,7 @@ import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -143,7 +143,7 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
      * @return command
      */
     public abstract String getGraphCommandFor(FhemDevice device, String fromDateFormatted,
-                                              String toDateFormatted, ChartSeriesDescription seriesDescription);
+                                              String toDateFormatted, GPlotSeries seriesDescription);
 
     @Override
     public void afterDeviceXMLRead(final Context context, final ChartProvider chartProvider) {

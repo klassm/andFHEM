@@ -28,9 +28,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
+import com.google.common.base.Optional;
+import com.google.common.io.CharStreams;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -42,6 +48,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
+import li.klass.fhem.fhem.FHEMWEBConnection;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.Cache;
@@ -188,6 +195,24 @@ public class CommandExecutionService extends AbstractService {
             }
         } finally {
             hideExecutingDialog(context);
+        }
+    }
+
+    public Optional<String> executeRequest(String relativPath, Context context) {
+        FHEMConnection provider = dataConnectionSwitch.getCurrentProvider(context);
+        if (!(provider instanceof FHEMWEBConnection)) {
+            return Optional.absent();
+        }
+
+        RequestResult<InputStream> result = ((FHEMWEBConnection) provider).executeRequest(relativPath);
+        if (result.handleErrors()) {
+            return Optional.absent();
+        }
+        try {
+            return Optional.of(CharStreams.toString(new InputStreamReader(result.content)));
+        } catch (IOException e) {
+            LOG.error("executeRequest() - cannot read stream", e);
+            return Optional.absent();
         }
     }
 

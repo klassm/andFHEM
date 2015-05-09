@@ -37,9 +37,9 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -165,14 +165,14 @@ public abstract class DeviceAdapter<D extends FhemDevice> {
         setTextView(view, textFieldLayoutId, context.getString(value));
     }
 
-    protected void fillGraphButton(final Context context, final D device, final DeviceChart deviceChart, Button button) {
-        if (deviceChart == null) return;
+    protected void fillGraphButton(final Context context, final D device, final SvgGraphDefinition svgGraphDefinition, Button button) {
+        if (svgGraphDefinition == null) return;
 
-        button.setText(deviceChart.buttonText);
+        button.setText(svgGraphDefinition.getName());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChartingActivity.showChart(context, device, deviceChart.chartSeriesDescriptions);
+                ChartingActivity.showChart(context, device, svgGraphDefinition);
             }
         });
     }

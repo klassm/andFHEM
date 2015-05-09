@@ -27,9 +27,11 @@ package li.klass.fhem.service.room;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import org.json.JSONObject;
@@ -63,6 +65,9 @@ import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.graph.gplot.GPlotDefinition;
+import li.klass.fhem.service.graph.gplot.GPlotHolder;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
@@ -70,6 +75,8 @@ import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -94,6 +101,9 @@ public class DeviceListParser {
 
     @Inject
     XmlListParser parser;
+
+    @Inject
+    GPlotHolder gPlotHolder;
 
     private static Logger LOG = LoggerFactory.getLogger(DeviceListParser.class);
 
@@ -150,6 +160,9 @@ public class DeviceListParser {
             }
         }
 
+        ImmutableSet<SvgGraphDefinition> svgGraphDefinitions = createSvgGraphDefinitions(parsedDevices.get("svg"), allDevices);
+        attachSvgGraphsToDevices(svgGraphDefinitions, allDevices);
+
         performAfterReadOperations(allDevices, errorHolder);
         RoomDeviceList roomDeviceList = buildRoomDeviceList(allDevices, context);
 
@@ -158,6 +171,38 @@ public class DeviceListParser {
         LOG.info("loaded {} devices!", allDevices.size());
 
         return roomDeviceList;
+    }
+
+    private void attachSvgGraphsToDevices(ImmutableSet<SvgGraphDefinition> svgGraphDefinitions, Map<String, FhemDevice> allDevices) {
+        for (Map.Entry<String, FhemDevice> entry : allDevices.entrySet()) {
+            for (SvgGraphDefinition svgGraphDefinition : svgGraphDefinitions) {
+                if (svgGraphDefinition.getLogDevice().concernsDevice(entry.getKey())) {
+                    entry.getValue().addSvgGraphDefinition(svgGraphDefinition);
+                }
+            }
+        }
+    }
+
+    private ImmutableSet<SvgGraphDefinition> createSvgGraphDefinitions(ImmutableList<XmlListDevice> svgDevices, final Map<String, FhemDevice> allDevices) {
+        return from(svgDevices).transform(new Function<XmlListDevice, SvgGraphDefinition>() {
+            @Override
+            public SvgGraphDefinition apply(XmlListDevice input) {
+                String gplotFileName = input.getInternals().get("GPLOTFILE").getValue();
+                Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName);
+                if (!gPlotDefinitionOptional.isPresent()) {
+                    return null;
+                }
+                String name = input.getInternals().get("NAME").getValue();
+
+                String logDeviceName = input.getInternals().get("LOGDEVICE").getValue();
+                if (!allDevices.containsKey(logDeviceName)) {
+                    return null;
+                }
+                LogDevice<?> logDevice = (LogDevice<?>) allDevices.get(logDeviceName);
+
+                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice);
+            }
+        }).filter(notNull()).toSet();
     }
 
     private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, ImmutableList<XmlListDevice> xmlListDevices,
@@ -289,7 +334,7 @@ public class DeviceListParser {
 
             String nodeContent = StringEscapeUtil.unescape(child.getValue());
 
-            if (nodeContent == null || nodeContent.length() == 0) {
+            if (nodeContent.length() == 0) {
                 continue;
             }
 

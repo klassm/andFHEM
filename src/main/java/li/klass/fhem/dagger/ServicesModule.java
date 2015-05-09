@@ -27,6 +27,8 @@ package li.klass.fhem.dagger;
 import dagger.Module;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.service.NotificationService;
+import li.klass.fhem.service.graph.gplot.GPlotHolder;
+import li.klass.fhem.service.graph.gplot.GPlotParser;
 import li.klass.fhem.service.importexport.ImportExportService;
 import li.klass.fhem.service.intent.AppActionsIntentService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
@@ -57,7 +59,9 @@ import li.klass.fhem.service.intent.VoiceCommandIntentService;
                 AppActionsIntentService.class,
                 VoiceCommandIntentService.class,
                 ImportExportService.class,
-                NotificationService.class
+                NotificationService.class,
+                GPlotHolder.class,
+                GPlotParser.class
         })
 public class ServicesModule {
 }

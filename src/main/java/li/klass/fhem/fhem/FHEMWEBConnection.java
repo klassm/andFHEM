@@ -95,7 +95,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
         InputStreamReader reader = null;
         try {
-            RequestResult<InputStream> response = executeRequest(urlSuffix, command);
+            RequestResult<InputStream> response = executeRequest(urlSuffix);
             if (response.error != null) {
                 return new RequestResult<>(response.error);
             }
@@ -127,13 +127,11 @@ public class FHEMWEBConnection extends FHEMConnection {
         return urlSuffix;
     }
 
-    private RequestResult<InputStream> executeRequest(String urlSuffix,
-                                                      String command) {
-        return executeRequest(serverSpec.getUrl(), urlSuffix, command, false);
+    public RequestResult<InputStream> executeRequest(String urlSuffix) {
+        return executeRequest(serverSpec.getUrl(), urlSuffix, false);
     }
 
-    private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix,
-                                                      String command, boolean isRetry) {
+    private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry) {
         String url = null;
         try {
             url = serverUrl + urlSuffix;
@@ -147,7 +145,6 @@ public class FHEMWEBConnection extends FHEMConnection {
             String authString = (serverSpec.getUsername() + ":" + serverSpec.getPassword());
             connection.addRequestProperty("Authorization", "Basic " +
                     Base64.encodeToString(authString.getBytes(), Base64.NO_WRAP));
-
             int statusCode = connection.getResponseCode();
             LOG.debug("response status code is " + statusCode);
 
@@ -166,33 +163,32 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<>((InputStream) new BufferedInputStream(connection.getInputStream()));
         } catch (ConnectTimeoutException e) {
             LOG.info("connection timed out", e);
-            return handleError(urlSuffix, command, isRetry, url, e);
+            return handleError(urlSuffix, isRetry, url, e);
         } catch (ClientProtocolException e) {
             LOG.info("cannot connect, invalid URL? (" + url + ")", e);
-            return handleError(urlSuffix, command, isRetry, url, e);
+            return handleError(urlSuffix, isRetry, url, e);
         } catch (IOException e) {
             LOG.info("cannot connect to host", e);
-            return handleError(urlSuffix, command, isRetry, url, e);
+            return handleError(urlSuffix, isRetry, url, e);
         }
     }
 
-    private RequestResult<InputStream> handleError(String urlSuffix, String command, boolean isRetry, String url, Exception e) {
-        setErrorInErrorHolderFor(e, url, command);
-        return handleRetryIfRequired(isRetry, new RequestResult<InputStream>(HOST_CONNECTION_ERROR), urlSuffix, command);
+    private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e) {
+        setErrorInErrorHolderFor(e, url, urlSuffix);
+        return handleRetryIfRequired(isRetry, new RequestResult<InputStream>(HOST_CONNECTION_ERROR), urlSuffix);
     }
 
     private RequestResult<InputStream> handleRetryIfRequired(boolean isCurrentRequestRetry, RequestResult<InputStream> previousResult,
-                                                             String urlSuffix, String command) {
+                                                             String urlSuffix) {
         if (!serverSpec.canRetry() || isCurrentRequestRetry) {
             return previousResult;
         }
-        return retryRequest(urlSuffix, command);
+        return retryRequest(urlSuffix);
     }
 
-    private RequestResult<InputStream> retryRequest(String urlSuffix,
-                                                    String command) {
+    private RequestResult<InputStream> retryRequest(String urlSuffix) {
         LOG.info("retrying request for alternate URL");
-        return executeRequest(serverSpec.getAlternateUrl(), urlSuffix, command, true);
+        return executeRequest(serverSpec.getAlternateUrl(), urlSuffix, true);
     }
 
     public String getPassword() {
@@ -210,7 +206,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     @Override
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        RequestResult<InputStream> response = executeRequest(relativePath, "request bitmap");
+        RequestResult<InputStream> response = executeRequest(relativePath);
         if (response.error != null) {
             return new RequestResult<>(response.error);
         }

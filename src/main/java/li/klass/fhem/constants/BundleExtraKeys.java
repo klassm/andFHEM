@@ -56,6 +56,7 @@ public class BundleExtraKeys {
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
     public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";
+    public static final String DEVICE_GRAPH_DEFINITION = "DEVICE_GRAPH_DEFINITION";
     public static final String START_DATE = "STARTDATE";
     public static final String END_DATE = "ENDDATE";
     public static final String DEVICE_DIM_PROGRESS = "DIMPROGRESS";

@@ -96,7 +96,7 @@ public class GPlotSeries implements Serializable {
                 '}';
     }
 
-    enum Type {
+    public enum Type {
         LINES,
         POINTS,
         STEPS,

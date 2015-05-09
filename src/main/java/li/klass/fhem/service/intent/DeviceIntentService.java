@@ -35,7 +35,6 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,7 +69,8 @@ import li.klass.fhem.service.device.ToggleableService;
 import li.klass.fhem.service.device.WOLService;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
@@ -292,11 +292,11 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private STATE graphIntent(Intent intent, FhemDevice device, ResultReceiver resultReceiver) {
-        ArrayList<ChartSeriesDescription> seriesDescriptions = intent.getParcelableArrayListExtra(BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS);
+        SvgGraphDefinition graphDefinition = (SvgGraphDefinition) intent.getSerializableExtra(BundleExtraKeys.DEVICE_GRAPH_DEFINITION);
         DateTime startDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
         DateTime endDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
 
-        HashMap<ChartSeriesDescription, List<GraphEntry>> graphData = graphService.getGraphData(device, seriesDescriptions, startDate, endDate, this);
+        HashMap<GPlotSeries, List<GraphEntry>> graphData = graphService.getGraphData(device, graphDefinition, startDate, endDate, this);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
         return STATE.DONE;
     }

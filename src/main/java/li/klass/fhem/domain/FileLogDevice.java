@@ -30,7 +30,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
@@ -76,8 +76,8 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
 
     @Override
     public String getGraphCommandFor(FhemDevice device, String fromDateFormatted, String toDateFormatted,
-                                     ChartSeriesDescription seriesDescription) {
+                                     GPlotSeries seriesDescription) {
         return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
-                seriesDescription.getFileLogSpec());
+                seriesDescription.getFileLogDef());
     }
 }

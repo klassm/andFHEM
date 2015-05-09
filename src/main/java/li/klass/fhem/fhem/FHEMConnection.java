@@ -55,8 +55,8 @@ public abstract class FHEMConnection {
     protected void onSetServerSpec() {
     }
 
-    protected void setErrorInErrorHolderFor(Exception e, String host, String command) {
-        String text = "Error while accessing '" + host + "' with command '" + command + "'\r\n" +
+    protected void setErrorInErrorHolderFor(Exception e, String host, String suffix) {
+        String text = "Error while accessing '" + host + "' with suffix '" + suffix + "'\r\n" +
                 serverSpec.toString() + "\r\n";
 
         ErrorHolder.setError(e, text);

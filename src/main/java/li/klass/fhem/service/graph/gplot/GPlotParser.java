@@ -24,12 +24,16 @@
 
 package li.klass.fhem.service.graph.gplot;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.Range;
+import com.google.common.io.Files;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -38,9 +42,13 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 
+@Singleton
 public class GPlotParser {
 
     public static final Pattern SETS_PATTERN = Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]([^\"^\']+)[\"'\\]]");
@@ -49,6 +57,26 @@ public class GPlotParser {
     public static final Pattern TYPE_PATTERN = Pattern.compile("with ([a-zA-Z]+)");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GPlotParser.class);
+
+    public static final FilenameFilter GPLOT_FILTER = new FilenameFilter() {
+        @Override
+        public boolean accept(File dir, String filename) {
+            return filename != null && filename.endsWith(".gplot");
+        }
+    };
+
+    @Inject
+    public GPlotParser() {
+    }
+
+    public Optional<GPlotDefinition> parseSafe(String content) {
+        try {
+            return Optional.of(parse(content));
+        } catch (Exception e) {
+            LOGGER.info("parseSafe() - cannot parse: \r\n" + content, e);
+            return Optional.absent();
+        }
+    }
 
     public GPlotDefinition parse(String content) {
         List<String> lines = newArrayList(content.split("[\\r\\n]"));
@@ -180,5 +208,20 @@ public class GPlotParser {
             out.put(matcher.group(1), matcher.group(2));
         }
         return out;
+    }
+
+    public Map<String, GPlotDefinition> getDefaultGPlotFiles() {
+        Map<String, GPlotDefinition> result = newHashMap();
+        try {
+            File resourceDirectory = new File(GPlotParser.class.getResource(".").toURI());
+            File[] files = resourceDirectory.listFiles(GPLOT_FILTER);
+            for (File file : files) {
+                String name = file.getName().substring(0, file.getName().indexOf("."));
+                result.put(name, parse(Files.toString(file, Charsets.UTF_8)));
+            }
+        } catch (Exception e) {
+            LOGGER.error("loadDefaultGPlotFiles() - cannot load default files", e);
+        }
+        return result;
     }
 }

@@ -55,12 +55,12 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Maps.newHashMap;
@@ -322,8 +322,8 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
             graphLayout.setVisibility(View.GONE);
             return;
         }
-        for (DeviceChart deviceChart : device.getDeviceCharts()) {
-            addGraphButton(context, graphLayout, inflater, device, deviceChart);
+        for (SvgGraphDefinition svgGraphDefinition : device.getSvgGraphDefinitions()) {
+            addGraphButton(context, graphLayout, inflater, device, svgGraphDefinition);
         }
     }
 
@@ -358,11 +358,11 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     }
 
     private void addGraphButton(final Context context, LinearLayout graphLayout,
-                                LayoutInflater inflater, final D device, final DeviceChart chart) {
+                                LayoutInflater inflater, final D device, final SvgGraphDefinition svgGraphDefinition) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
         assert button != null;
 
-        fillGraphButton(context, device, chart, button);
+        fillGraphButton(context, device, svgGraphDefinition, button);
         graphLayout.addView(button);
     }
 

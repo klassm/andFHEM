@@ -29,39 +29,34 @@ import android.content.Context;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
-import java.util.Iterator;
 import java.util.List;
 
-import li.klass.fhem.activities.graph.additions.AdditionalChart;
-import li.klass.fhem.activities.graph.additions.RegressionAdditionalChart;
-import li.klass.fhem.activities.graph.additions.SumAdditionalChart;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartSeries> {
+public class ChartData implements Comparable<ChartData> {
 
     private final Context context;
-    private ChartSeriesDescription seriesDescription;
+    private GPlotSeries plotSeries;
     private List<GraphEntry> graphData;
-    private List<AdditionalChart> additionalCharts = newArrayList();
 
     private double minimum = Double.MAX_VALUE;
     private double maximum = Double.MIN_VALUE;
 
-    public ChartData(ChartSeriesDescription seriesDescription, List<GraphEntry> graphData, Context context) {
-        this.seriesDescription = seriesDescription;
-        this.graphData = handleShowDiscreteValues(graphData, seriesDescription);
+    public ChartData(GPlotSeries plotSeries, List<GraphEntry> graphData, Context context) {
+        this.plotSeries = plotSeries;
+        this.graphData = handleShowDiscreteValues(graphData);
         this.context = context;
 
         calculateMinMax();
-        calculateAdditionalCharts();
     }
 
-    private List<GraphEntry> handleShowDiscreteValues(List<GraphEntry> data, ChartSeriesDescription chartSeriesDescription) {
-        if (!chartSeriesDescription.isShowDiscreteValues()) return data;
+    private List<GraphEntry> handleShowDiscreteValues(List<GraphEntry> data) {
+        if (!isDiscreteChart()) {
+            return data;
+        }
 
         float previousValue = -1;
         List<GraphEntry> newData = newArrayList();
@@ -97,16 +92,6 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         }
     }
 
-    private void calculateAdditionalCharts() {
-        if (seriesDescription.isShowRegression()) {
-            additionalCharts.add(new RegressionAdditionalChart(this));
-        }
-
-        if (seriesDescription.isShowSum()) {
-            additionalCharts.add(new SumAdditionalChart(this));
-        }
-    }
-
     public List<GraphEntry> getGraphData() {
         return graphData;
     }
@@ -131,59 +116,26 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
 
     @Override
     public int compareTo(@NotNull ChartData chartData) {
-        return seriesDescription.getColumnName().compareTo(chartData.getSeriesDescription().getColumnName());
+        return plotSeries.getTitle().compareTo(chartData.getPlotSeries().getTitle());
     }
 
-    public ChartSeriesDescription getSeriesDescription() {
-        return seriesDescription;
-    }
-
-    @Override
-    public Iterator<ViewableChartSeries> iterator() {
-        return new Iterator<ViewableChartSeries>() {
-            private int current = 0;
-
-            @Override
-            public boolean hasNext() {
-                return current < getNumberOfContainedSeries();
-            }
-
-            @Override
-            public ViewableChartSeries next() {
-                ViewableChartSeries result;
-                if (current == 0) {
-                    result = new ViewableChartSeries(seriesDescription.getColumnName(), graphData, ViewableChartSeries.ChartType.NORMAL, seriesDescription.getSeriesType());
-                } else {
-                    AdditionalChart chart = additionalCharts.get(current - 1);
-
-                    SeriesType seriesType = chart.getOriginData().getSeriesDescription().getSeriesType();
-                    result = new ViewableChartSeries(chart.getName(), chart.getData(), chart.getChartType(), seriesType);
-                }
-
-                current++;
-
-                return result;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("removing is not supported");
-            }
-        };
-    }
-
-    public int getNumberOfContainedSeries() {
-        return additionalCharts.size() + 1;
+    public GPlotSeries getPlotSeries() {
+        return plotSeries;
     }
 
     public void handleMinMax(DateTime minimumX, DateTime maximumX) {
-        if (seriesDescription.isShowDiscreteValues()) {
+        if (isDiscreteChart()) {
             GraphEntry first = graphData.get(0);
             GraphEntry last = graphData.get(graphData.size() - 1);
 
             graphData.add(0, new GraphEntry(minimumX, first.getValue()));
             graphData.add(new GraphEntry(maximumX, last.getValue()));
         }
+    }
+
+    private boolean isDiscreteChart() {
+        GPlotSeries.Type type = plotSeries.getType();
+        return type == GPlotSeries.Type.STEPS || type == GPlotSeries.Type.FSTEPS || type == GPlotSeries.Type.HISTEPS;
     }
 
     public Context getContext() {

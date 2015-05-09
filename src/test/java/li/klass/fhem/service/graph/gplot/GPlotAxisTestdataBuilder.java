@@ -22,19 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.service.graph.gplot;
 
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.log.LogDevice;
-import li.klass.fhem.service.graph.gplot.GPlotSeries;
+import com.google.common.base.Optional;
+import com.google.common.collect.Range;
 
-public class DbLogDevice extends LogDevice<DbLogDevice> {
-    private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s:%s";
+import static li.klass.fhem.service.graph.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeriesBuilder;
 
-    @Override
-    public String getGraphCommandFor(FhemDevice device, String fromDateFormatted, String toDateFormatted,
-                                     GPlotSeries plotSeries) {
-        return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
-                device.getName(), plotSeries.getDbLogDef());
+public class GPlotAxisTestdataBuilder {
+    public static GPlotAxis defaultGPlotAxis() {
+        GPlotAxis axis = new GPlotAxis("myLabel", Optional.of(Range.atLeast(10D)));
+        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series1").withAxis(GPlotSeries.Axis.LEFT).build());
+        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series2").withAxis(GPlotSeries.Axis.LEFT).build());
+        return axis;
     }
 }
