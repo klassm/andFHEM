@@ -52,7 +52,6 @@ repositories {
     maven { url 'https://repository-achartengine.forge.cloudbees.com/snapshot' }
 }
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
 
@@ -172,9 +171,9 @@ unMock {
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
     //noinspection GradleDependency
-    compile 'com.android.support:support-v4:22.1.1@aar'
+    compile 'com.android.support:support-v4:22.0.0@aar'
     //noinspection GradleDependency
-    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:appcompat-v7:22.0.0'
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'commons-net:commons-net:3.3'

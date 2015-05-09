@@ -1,219 +1,211 @@
 {
-    I2C_BMP180: {
-        defaultGroup: 'WEATHER',
-        states: [
+    "I2C_BMP180": {
+        "defaultGroup": "WEATHER",
+        "states": [
             {
-                key: 'pressure',
-                desc: 'pressure',
-                showInOverview: true
+                "key": "pressure",
+                "desc": "pressure",
+                "showInOverview": true
             },
             {
-                key: 'pressure-nn',
-                desc: 'pressureNN',
-                showInOverview: true
+                "key": "pressure-nn",
+                "desc": "pressureNN",
+                "showInOverview": true
             },
             {
-                key: 'temperature',
-                desc: 'temperature',
-                showInOverview: true
+                "key": "temperature",
+                "desc": "temperature",
+                "showInOverview": true
             }
         ],
-
-        charts: [
+        "charts": [
             {
-                series: [
+                "series": [
                     {
-                        columnName: 'temperature',
-                        fileLogSpec: '4::',
-                        dbLogSpec: 'temperature::int1',
-                        seriesType: 'TEMPERATURE',
-                        showRegression: true
+                        "columnName": "temperature",
+                        "fileLogSpec": "4::",
+                        "dbLogSpec": "temperature::int1",
+                        "seriesType": "TEMPERATURE",
+                        "showRegression": true
                     }
                 ],
-                required: [{
-                    type: 'state',
-                    attribute: 'temperature'
+                "required": [
+                    {
+                        "type": "state",
+                        "attribute": "temperature"
                 }],
-                buttonText: 'temperatureGraph'
+                "buttonText": "temperatureGraph"
             },
             {
-                series: [
+                "series": [
                     {
-                        columnName: 'pressure',
-                        fileLogSpec: '6::',
-                        dbLogSpec: 'pressure::int1',
-                        seriesType: 'PRESSURE',
-                        yAxisMinMax: {
-                            defaultMin: 700,
-                            defaultMax: 1200,
-                            attribute: 'pressure'
+                        "columnName": "pressure",
+                        "fileLogSpec": "6::",
+                        "dbLogSpec": "pressure::int1",
+                        "seriesType": "PRESSURE",
+                        "yAxisMinMax": {
+                            "defaultMin": 700,
+                            "defaultMax": 1200,
+                            "attribute": "pressure"
                         }
                     },
                     {
-                        columnName: 'pressureNN',
-                        fileLogSpec: '8::',
-                        dbLogSpec: 'pressure-nn::int1',
-                        seriesType: 'PRESSURE_NN',
-                        yAxisMinMax: {
-                            defaultMin: 700,
-                            defaultMax: 1200,
-                            attribute: 'pressure-nn'
+                        "columnName": "pressureNN",
+                        "fileLogSpec": "8::",
+                        "dbLogSpec": "pressure-nn::int1",
+                        "seriesType": "PRESSURE_NN",
+                        "yAxisMinMax": {
+                            "defaultMin": 700,
+                            "defaultMax": 1200,
+                            "attribute": "pressure-nn"
                         }
                     }
                 ],
-                required: [{
-                    type: 'state',
-                    attribute: 'pressure'
+                "required": [
+                    {
+                        "type": "state",
+                        "attribute": "pressure"
                 }, {
-                    type: 'state',
-                    attribute: 'pressure-nn'
+                        "type": "state",
+                        "attribute": "pressure-nn"
                 }],
-                buttonText: 'pressureGraph'
+                "buttonText": "pressureGraph"
             }
         ]
     },
-
-    CM160: {
-        defaultGroup: 'USAGE',
-        states: [
+    "CM160": {
+        "defaultGroup": "USAGE",
+        "states": [
             {
-                key: 'A',
-                desc: 'energy_current',
-                showInOverview: true
+                "key": "A",
+                "desc": "energy_current",
+                "showInOverview": true
             },
             {
-                key: 'W',
-                desc: 'energy_power',
-                showInOverview: true
+                "key": "W",
+                "desc": "energy_power",
+                "showInOverview": true
             },
             {
-                key: 'C',
-                desc: 'cost',
-                showInOverview: true
+                "key": "C",
+                "desc": "cost",
+                "showInOverview": true
             },
             {
-                key: 'CO2',
-                desc: 'co2',
-                showInOverview: true
+                "key": "CO2",
+                "desc": "co2",
+                "showInOverview": true
             },
             {
-                key: 'cumDay',
-                desc: 'dayUsage'
+                "key": "cumDay",
+                "desc": "dayUsage"
             },
             {
-                key: 'cumHour',
-                desc: 'hourUsage'
+                "key": "cumHour",
+                "desc": "hourUsage"
             },
             {
-                key: 'cumMonth',
-                desc: 'monthUsage'
+                "key": "cumMonth",
+                "desc": "monthUsage"
             },
             {
-                key: 'cumYear',
-                desc: 'yearUsage'
+                "key": "cumYear",
+                "desc": "yearUsage"
             }
         ]
     },
-
-    EGPM: {
-        defaultGroup: 'SWITCH'
+    "EGPM": {
+        "defaultGroup": "SWITCH"
     },
-
-    ECMDDevice: {
-        defaultGroup: 'SWITCH'
+    "ECMDDevice": {
+        "defaultGroup": "SWITCH"
     },
-
-    CO20: {
-        defaultGroup: 'WEATHER',
-        states: [
+    "CO20": {
+        "defaultGroup": "WEATHER",
+        "states": [
             {
-                key: 'voc',
-                desc: 'VOC',
-                showInOverview: true
+                "key": "voc",
+                "desc": "VOC",
+                "showInOverview": true
             }
         ],
-        charts: [
+        "charts": [
             {
-                series: [
+                "series": [
                     {
-                        columnName: 'VOC',
-                        fileLogSpec: '4:voc',
-                        dbLogSpec: 'voc::int1',
-                        seriesType: 'VOC',
-                        showRegression: true
+                        "columnName": "VOC",
+                        "fileLogSpec": "4:voc",
+                        "dbLogSpec": "voc::int1",
+                        "seriesType": "VOC",
+                        "showRegression": true
                     }
                 ],
-                required: [{
-                    type: 'state',
-                    attribute: 'voc'
+                "required": [
+                    {
+                        "type": "state",
+                        "attribute": "voc"
                 }],
-                buttonText: 'VOCGraph'
+                "buttonText": "VOCGraph"
             }
         ]
     },
-
-    SIS_PMS: {
-        defaultGroup: 'SWITCH'
+    "SIS_PMS": {
+        "defaultGroup": "SWITCH"
     },
-
-    X10: {
-        defaultGroup: 'SWITCH'
+    "X10": {
+        "defaultGroup": "SWITCH"
     },
-
-    IT: {
-        defaultGroup: 'SWITCH',
-        attributes: [
+    "IT": {
+        "defaultGroup": "SWITCH",
+        "attributes": [
             {
-                key: 'model',
-                desc: 'model'
+                "key": "model",
+                "desc": "model"
             }
         ]
     },
-
-    GenShellSwitch: {
-        defaultGroup: 'SWITCH'
+    "GenShellSwitch": {
+        "defaultGroup": "SWITCH"
     },
-
-    MYSENSORS_DEVICE: {
-        defaultGroup: 'SWITCH'
+    "MYSENSORS_DEVICE": {
+        "defaultGroup": "SWITCH"
     },
-
-    SolarView: {
-        defaultGroup: 'USAGE',
-        states: [
+    "SolarView": {
+        "defaultGroup": "USAGE",
+        "states": [
             {
-                key: 'currentPower',
-                desc: 'currentPower',
-                showInOverview: true
+                "key": "currentPower",
+                "desc": "currentPower",
+                "showInOverview": true
             },
             {
-                key: 'gridCurrent',
-                desc: 'current'
+                "key": "gridCurrent",
+                "desc": "current"
             },
             {
-                key: 'gridVoltage',
-                desc: 'voltage'
+                "key": "gridVoltage",
+                "desc": "voltage"
             },
             {
-                key: 'temperature',
-                desc: 'temperature'
+                "key": "temperature",
+                "desc": "temperature"
             },
             {
-                key: 'totalEnergy',
-                desc: 'totalEnergy'
+                "key": "totalEnergy",
+                "desc": "totalEnergy"
             },
             {
-                key: 'totalEnergyDay',
-                desc: 'totalEnergyDay',
-                showInOverview: true
+                "key": "totalEnergyDay",
+                "desc": "totalEnergyDay",
+                "showInOverview": true
             },
             {
-                key: 'totalEnergyMonth',
-                desc: 'totalEnergyMonth'
+                "key": "totalEnergyMonth",
+                "desc": "totalEnergyMonth"
             },
             {
-                key: 'totalEnergyYear',
-                desc: 'totalEnergyYear'
+                "key": "totalEnergyYear",
+                "desc": "totalEnergyYear"
             }
         ]
     }
