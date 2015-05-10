@@ -308,12 +308,14 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
             YAxis yAxis = yAxisList.get(axisNumber);
 
-            if (minDate == null || yAxis.getMinimumX().isBefore(minDate)) {
-                minDate = yAxis.getMinimumX();
+            DateTime minimumX = yAxis.getMinimumX();
+            if (minimumX != null && (minDate == null || minimumX.isBefore(minDate))) {
+                minDate = minimumX;
             }
 
-            if (maxDate == null || yAxis.getMaximumX().isAfter(maxDate)) {
-                maxDate = yAxis.getMaximumX();
+            DateTime maximumX = yAxis.getMaximumX();
+            if (maximumX != null && (maxDate == null || maximumX.isAfter(maxDate))) {
+                maxDate = maximumX;
             }
 
             if (yAxis.getMinimumY() < minY) {

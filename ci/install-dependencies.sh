@@ -18,7 +18,8 @@ echo "ANDROID_HOME=$ANDROID_HOME"
   echo y | android update sdk -u -a -t extra-android-support &&
   echo y | android update sdk -u -a -t extra-google-google_play_services &&
   echo y | android update sdk -u -a -t extra-google-m2repository &&
-  echo y | android update sdk -u -a -t extra-google-play_billing #&& 
+  echo y | android update sdk -u -a -t extra-android-m2repository &&
+  echo y | android update sdk -u -a -t extra-google-play_billing #&&
 #  touch $DEPS
 #fi
 

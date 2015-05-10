@@ -70,6 +70,7 @@ public class GPlotParserTest {
         assertThat(leftAxis.getLabel()).isEqualTo("Actuator (%)");
         assertThat(leftAxis.getSeries()).containsExactly(new Builder()
                         .withTitle("Actuator (%)")
+                        .withColor(SeriesColor.GREEN)
                         .withLineType(LineType.LINES)
                         .withFileLogDef("4:actuator.*[0-9]+%:0:int")
                         .withAxis(Axis.LEFT)
