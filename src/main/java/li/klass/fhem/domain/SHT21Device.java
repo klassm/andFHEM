@@ -24,24 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
-import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
 public class SHT21Device extends FhemDevice<SHT21Device> implements TemperatureDevice {
@@ -60,39 +48,6 @@ public class SHT21Device extends FhemDevice<SHT21Device> implements TemperatureD
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.TEMPERATURE;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4::")
-                        .withDbLogSpec("temperature::int1")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build()
-        ), temperature);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity, context).withFileLogSpec("6::")
-                        .withDbLogSpec("humidity::int1")
-                        .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                        .build()
-        ), humidity);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.dewpointGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.dewpoint, context).withFileLogSpec("8::")
-                        .withDbLogSpec("humidity::int1")
-                        .withSeriesType(DEWPOINT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                        .build()
-        ), dewpoint);
     }
 
     public String getHumidity() {

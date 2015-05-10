@@ -138,9 +138,6 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTargetDevice()).isEqualTo("lamp");
         assertThat(device.getTargetState()).isEqualTo("off");
         assertThat(device.getTargetStateAddtionalInformation()).isNullOrEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Test

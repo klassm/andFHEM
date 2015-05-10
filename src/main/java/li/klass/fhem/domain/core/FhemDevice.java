@@ -37,12 +37,8 @@ import java.util.Set;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.log.CustomGraph;
-import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.DateFormatUtil;
@@ -71,14 +67,12 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     protected Map<String, String> eventMapReverse = newHashMap();
     protected Map<String, String> eventMap = newHashMap();
     protected SetList setList = new SetList();
-    protected volatile List<LogDevice> logDevices = newArrayList();
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     private String state;
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
     private long lastMeasureTime = -1;
     private String group;
-    private List<DeviceChart> deviceCharts = newArrayList();
     private Set<SvgGraphDefinition> svgGraphDefinitions = newHashSet();
 
     private boolean hasStatisticsDevice = false;
@@ -118,7 +112,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         group = value;
     }
 
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+    public void afterDeviceXMLRead(Context context) {
         this.definition = getDefinition();
     }
 
@@ -292,91 +286,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return comparableAttribute.compareTo(otherComparableAttribute);
     }
 
-    public List<LogDevice> getLogDevices() {
-        return logDevices;
-    }
-
-    public void addLogDevice(LogDevice logDevice, Context context, ChartProvider chartProvider) {
-        logDevices.add(logDevice);
-
-        // Unfortunately, this is called multiple times (whenever a log devices registers
-        // itself for the device. However, we have no idea in which order the callbacks are
-        // called, so we cannot register a listeners when all devices have been read ...
-        if (!logDevices.isEmpty()) {
-            fillDeviceCharts(deviceCharts, context, chartProvider);
-        }
-    }
-
-    public List<DeviceChart> getDeviceCharts() {
-        return deviceCharts;
-    }
-
-    /**
-     * Override me if you want to provide charts for a device
-     *
-     * @param chartSeries fill me with chart descriptions
-     * @param context     context
-     */
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        deviceCharts.clear();
-
-        if (hasStatisticsDevice) {
-            deviceCharts.add(new DeviceChart(R.string.averagesGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withSeriesType(SeriesType.AVERAGE_HOUR)
-                            .withColumnName(R.string.avgHour, context)
-                            .withFileLogSpec("5:Hour\\x3a:0:")
-                            .withDbLogSpec("hour")
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withSeriesType(SeriesType.AVERAGE_DAY)
-                            .withColumnName(R.string.avgDay, context)
-                            .withFileLogSpec("7:Day\\x3a:0:")
-                            .withDbLogSpec("day")
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withSeriesType(SeriesType.AVERAGE_MONTH)
-                            .withColumnName(R.string.avgMonth, context)
-                            .withFileLogSpec("9:Month\\x3a:0:")
-                            .withDbLogSpec("month")
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withSeriesType(SeriesType.AVERAGE_YEAR)
-                            .withColumnName(R.string.avgYear, context)
-                            .withFileLogSpec("11:Year\\x3a:0:")
-                            .withDbLogSpec("year")
-                            .build()
-            ));
-        }
-
-        for (LogDevice<?> logDevice : logDevices) {
-            List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
-
-            for (CustomGraph customGraph : customGraphs) {
-                ChartSeriesDescription seriesDescription = new ChartSeriesDescription.Builder()
-                        .withColumnName(customGraph.description)
-                        .withFileLogSpec(customGraph.columnSpecification)
-                        .withDbLogSpec(customGraph.columnSpecification)
-                        .withFallbackYAxisName(customGraph.yAxisName)
-                        .withYAxisMinMaxValue(customGraph.yAxisMinMax)
-                        .build();
-
-                addDeviceChartIfNotNull(new DeviceChart(customGraph.description, seriesDescription));
-            }
-        }
-
-        for (DeviceChart deviceChart : chartProvider.chartsFor(this)) {
-            deviceCharts.add(deviceChart);
-        }
-    }
-
-    protected void addDeviceChartIfNotNull(DeviceChart holder, Object... notNull) {
-        for (Object o : notNull) {
-            if (o == null) return;
-        }
-        deviceCharts.add(holder);
-    }
-
     public String getState() {
         return state;
     }
@@ -520,8 +429,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
                 ", eventMapReverse=" + eventMapReverse +
                 ", eventMap=" + eventMap +
                 ", setList=" + setList.toString() +
-                ", logDevices=" + logDevices.size() +
-                ", deviceCharts=" + deviceCharts +
                 '}';
     }
 }

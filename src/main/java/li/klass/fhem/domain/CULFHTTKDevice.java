@@ -26,22 +26,14 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.DateFormatUtil;
-
-import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
@@ -59,7 +51,7 @@ public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+    public void afterDeviceXMLRead(Context context) {
         String stateChangeText = "";
         if (getLastWindowState() != null) {
             stateChangeText += getLastWindowState() + " => ";
@@ -90,19 +82,4 @@ public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
         return true;
     }
 
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.windowOpen, context)
-                        .withFileLogSpec("3:Open|Closed::$fld[2]=~/Open.*/?1:0")
-                        .withDbLogSpec("data:::$val=~s/(Open|Closed).*/$1eq\"Open\"?1:0/eg")
-                        .withSeriesType(WINDOW_OPEN)
-                        .withShowDiscreteValues(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("state", 0, 0))
-                        .build()
-        ), getState());
-    }
 }

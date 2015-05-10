@@ -26,8 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import java.util.List;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -39,19 +37,13 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ValueUtil;
-
-import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class HMSDevice extends FhemDevice<HMSDevice> {
@@ -133,30 +125,6 @@ public class HMSDevice extends FhemDevice<HMSDevice> {
 
     public String getWaterDetect() {
         return waterDetect;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4:T\\x3a:0:")
-                        .withDbLogSpec("temperature::int1")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build()
-        ), temperature);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context).withFileLogSpec("6:H\\x3a:0:")
-                        .withDbLogSpec("humidity::int")
-                        .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                        .build()
-        ), humidity);
     }
 
     @Override

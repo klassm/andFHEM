@@ -26,19 +26,11 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
-
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
@@ -64,8 +56,8 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         if ("percent".equalsIgnoreCase(model) && "???".equalsIgnoreCase(getInternalState())) {
             setState("0 (%)");
@@ -128,25 +120,6 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
             return ValueDescriptionUtil.appendPercent(stateToSet);
         }
         return super.formatStateTextToSet(stateToSet);
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        if (model != null && model.equals("tempsensor")) {
-            addDeviceChartIfNotNull(
-                    new DeviceChart(R.string.temperatureGraph,
-                            new ChartSeriesDescription.Builder()
-                                    .withColumnName(R.string.temperature, context)
-                                    .withFileLogSpec("3:")
-                                    .withDbLogSpec("state::int1")
-                                    .withSeriesType(TEMPERATURE)
-                                    .withShowRegression(true)
-                                    .build()
-                    ), getInternalState()
-            );
-        }
     }
 
     @Override

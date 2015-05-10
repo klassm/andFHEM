@@ -43,9 +43,6 @@ public class RFXX10RECDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("Open");
 
         assertThat(device.getSetList().getEntries()).isEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

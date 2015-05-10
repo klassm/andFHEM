@@ -43,9 +43,6 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("T: 21.1 BAT: ok");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Test
@@ -54,9 +51,6 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getHumidity()).isEqualTo("59.0 (%)");
         assertThat(device.getDewpoint()).isEqualTo("11.1 (°C)");
-
-        assertThat(device.getLogDevices()).isNotEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(3);
     }
 
     @Test

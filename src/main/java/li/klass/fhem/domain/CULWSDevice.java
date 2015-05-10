@@ -24,28 +24,16 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
-import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
 public class CULWSDevice extends FhemDevice<CULWSDevice> implements TemperatureDevice {
@@ -70,61 +58,6 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> implements TemperatureD
 
     public String getTemperature() {
         return temperature;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        if (temperature != null && humidity != null && dewpoint != null) {
-            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature, context)
-                            .withFileLogSpec("4:T:0:")
-                            .withDbLogSpec("temperature")
-                            .withSeriesType(TEMPERATURE)
-                            .withShowRegression(true)
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.humidity, context).withFileLogSpec("6:H:0")
-                            .withDbLogSpec("humidity")
-                            .withSeriesType(HUMIDITY)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.dewpoint, context).withFileLogSpec("8:D\\x3a:0:")
-                            .withDbLogSpec("dewpoint")
-                            .withSeriesType(DEWPOINT)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("dewpoint", -10, 10))
-                            .build()
-            ), temperature, humidity, dewpoint);
-        } else if (temperature != null && humidity != null) {
-            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature, context)
-                            .withFileLogSpec("4:T:0:")
-                            .withDbLogSpec("temperature")
-                            .withSeriesType(TEMPERATURE)
-                            .withShowRegression(true)
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.humidity, context).withFileLogSpec("6:H:0")
-                            .withDbLogSpec("humidity")
-                            .withSeriesType(HUMIDITY)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                            .build()
-            ), temperature, humidity);
-        } else {
-            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature, context)
-                            .withFileLogSpec("4:T:0:")
-                            .withDbLogSpec("temperature")
-                            .withSeriesType(TEMPERATURE)
-                            .withShowRegression(true)
-                            .build()
-            ), temperature);
-        }
     }
 
     @Override

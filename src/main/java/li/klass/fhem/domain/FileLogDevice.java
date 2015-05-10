@@ -24,54 +24,17 @@
 
 package li.klass.fhem.domain;
 
-import com.google.common.base.Optional;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
-
-@SuppressWarnings("unused")
 public class FileLogDevice extends LogDevice<FileLogDevice> {
     private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     @Override
-    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
-        if (key.startsWith("CUSTOM_GRAPH")) {
-            parseCustomGraphAttribute(value);
-        }
-    }
-
-    @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.LOG;
-    }
-
-    void parseCustomGraphAttribute(String value) {
-        String[] parts = value.split("[#@]");
-
-        if (parts.length == 3 || parts.length == 5) {
-            String pattern = parts[0];
-            String yAxisDescription = parts[1];
-            String description = parts[2];
-
-            Optional<YAxisMinMaxValue> minMaxValue;
-            if (parts.length == 5 && isDecimalNumber(parts[3]) && isDecimalNumber(parts[4])) {
-                minMaxValue = Optional.of(
-                        new YAxisMinMaxValue(extractLeadingDouble(parts[3]),
-                                extractLeadingDouble(parts[4]))
-                );
-            } else {
-                minMaxValue = Optional.absent();
-            }
-
-            customGraphs.add(new CustomGraph(pattern, description, yAxisDescription, minMaxValue));
-        }
     }
 
     @Override

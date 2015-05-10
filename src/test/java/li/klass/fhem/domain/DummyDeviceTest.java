@@ -46,9 +46,6 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.isOnByState()).isEqualTo(true);
 
         assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
         assertThat(device.supportsDim()).isEqualTo(false);
     }
 
@@ -62,9 +59,6 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("??");
         assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
         assertThat(device.supportsToggle()).isEqualTo(false);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
         assertThat(device.supportsDim()).isEqualTo(false);
     }
 

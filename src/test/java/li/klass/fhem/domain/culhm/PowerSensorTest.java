@@ -46,9 +46,6 @@ public class PowerSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getFrequency()).isEqualTo("50 (Hz)");
         assertThat(device.getCurrent()).isEqualTo("0 (mA)");
 
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts()).hasSize(2);
-
         assertThat(device.isSupported()).isTrue();
     }
 

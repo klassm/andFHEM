@@ -318,7 +318,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     private void addDetailGraphButtons(Context context, View view, D device, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
-        if (device.getDeviceCharts().size() == 0 || device.getLogDevices() == null) {
+        if (device.getSvgGraphDefinitions().isEmpty()) {
             graphLayout.setVisibility(View.GONE);
             return;
         }

@@ -50,9 +50,6 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
         assertThat(device.getFrequency()).isEqualTo("49.98 (Hz)");
         assertThat(device.getCurrent()).isEqualTo("376 (mA)");
 
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts()).hasSize(2);
-
         assertThat(device.isSupported()).isTrue();
     }
 

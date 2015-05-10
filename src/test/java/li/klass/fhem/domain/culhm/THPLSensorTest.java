@@ -48,9 +48,6 @@ public class THPLSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getLuminosity()).isEqualTo("0.56 (lm)");
         assertThat(device.getBatteryVoltage()).isEqualTo("2.58 (V)");
 
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts()).isEmpty();
-
         assertThat(device.isSupported()).isEqualTo(true);
     }
 

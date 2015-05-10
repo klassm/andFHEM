@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
@@ -47,20 +45,15 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newTreeSet;
-import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class WeatherDevice extends FhemDevice<WeatherDevice> {
@@ -190,27 +183,6 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
             result.add(forecastMap.get(key));
         }
         return result;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4:temperature:")
-                        .withDbLogSpec("temperature::int1")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build(),
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0:")
-                        .withDbLogSpec("humidity::int")
-                        .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                        .build()
-        ), temperature, humidity);
     }
 
     @Override

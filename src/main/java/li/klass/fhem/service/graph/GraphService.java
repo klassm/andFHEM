@@ -75,9 +75,9 @@ public class GraphService {
      */
     @SuppressWarnings("unchecked")
     public HashMap<GPlotSeries, List<GraphEntry>> getGraphData(FhemDevice device, SvgGraphDefinition svgGraphDefinition,
-                                                                          final DateTime startDate, final DateTime endDate, Context context) {
+                                                               final DateTime startDate, final DateTime endDate, Context context) {
 
-        if (device.getLogDevices().isEmpty()) return null;
+        if (device.getSvgGraphDefinitions().isEmpty()) return null;
 
         HashMap<GPlotSeries, List<GraphEntry>> data = newHashMap();
 
@@ -86,7 +86,7 @@ public class GraphService {
         series.addAll(svgGraphDefinition.getPlotDefinition().getRightAxis().getSeries());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(device, plotSeries, startDate, endDate, context));
+            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), plotSeries, startDate, endDate, context));
         }
 
         return data;
@@ -96,21 +96,20 @@ public class GraphService {
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
      *
-     * @param device            device to load graph entries from.
+     * @param logDevice   logDevice to load graph entries from.
      * @param gPlotSeries chart description
-     * @param startDate         read FileLog entries from the given date
-     * @param endDate           read FileLog entries up to the given date
-     * @param context           context
+     * @param startDate   read FileLog entries from the given date
+     * @param endDate     read FileLog entries up to the given date
+     * @param context     context
      * @return read logDevices entries converted to {@link GraphEntry} objects.
      */
-    private List<GraphEntry> getCurrentGraphEntriesFor(FhemDevice device,
+    private List<GraphEntry> getCurrentGraphEntriesFor(LogDevice logDevice,
                                                        GPlotSeries gPlotSeries,
                                                        DateTime startDate, DateTime endDate, Context context) {
-        String result = loadLogData(device, startDate, endDate, gPlotSeries, context);
-        return findGraphEntries(result);
+        return findGraphEntries(loadLogData(logDevice, startDate, endDate, gPlotSeries, context));
     }
 
-    public String loadLogData(FhemDevice device, DateTime fromDate, DateTime toDate,
+    public String loadLogData(LogDevice logDevice, DateTime fromDate, DateTime toDate,
                               GPlotSeries plotSeries, Context context) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
         String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
@@ -118,15 +117,12 @@ public class GraphService {
         StringBuilder result = new StringBuilder();
 
         @SuppressWarnings("unchecked")
-        List<LogDevice<?>> logDevices = device.getLogDevices();
-        for (LogDevice<?> logDevice : logDevices) {
-            String command = logDevice.getGraphCommandFor(device, fromDateFormatted,
-                    toDateFormatted, plotSeries);
+        String command = logDevice.getGraphCommandFor(logDevice, fromDateFormatted,
+                toDateFormatted, plotSeries);
 
-            String data = commandExecutionService.executeSafely(command, context);
-            if (data != null) {
-                result.append("\n\r").append(data.replaceAll("#[^\\\\]*\\\\[rn]", ""));
-            }
+        String data = commandExecutionService.executeSafely(command, context);
+        if (data != null) {
+            result.append("\n\r").append(data.replaceAll("#[^\\\\]*\\\\[rn]", ""));
         }
 
         return result.toString();

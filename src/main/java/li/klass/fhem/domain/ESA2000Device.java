@@ -24,22 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
-import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
 
 @SuppressWarnings("unused")
 public class ESA2000Device extends FhemDevice<ESA2000Device> {
@@ -81,28 +70,6 @@ public class ESA2000Device extends FhemDevice<ESA2000Device> {
 
     public String getDayLast() {
         return dayLast;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                new ChartSeriesDescription.Builder().withColumnName(R.string.currentUsage, context)
-                        .withFileLogSpec("8:CUR\\x3a\\s[0-9]::")
-                        .withDbLogSpec("actual::int4")
-                        .withSeriesType(CURRENT_USAGE_KILOWATT)
-                        .withShowDiscreteValues(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actual", 0, 0))
-                        .build(),
-                new ChartSeriesDescription.Builder().withColumnName(R.string.dayUsage, context)
-                        .withFileLogSpec("4:day\\x3a\\s[0-9]:0:")
-                        .withDbLogSpec("day::int2")
-                        .withSeriesType(DAY_USAGE)
-                        .withShowDiscreteValues(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("day", 0, 0))
-                        .build()
-        ), current);
     }
 
     @Override

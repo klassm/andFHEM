@@ -43,9 +43,6 @@ public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
         assertThat(attributeValueFor(device, "model")).isEqualTo("itswitch");
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

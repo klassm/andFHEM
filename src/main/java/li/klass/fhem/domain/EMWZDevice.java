@@ -24,21 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
 public class EMWZDevice extends FhemDevice<EMWZDevice> {
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
@@ -71,24 +61,6 @@ public class EMWZDevice extends FhemDevice<EMWZDevice> {
 
     public String getPrice() {
         return price;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(
-                new DeviceChart(R.string.powerGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.power, context)
-                                .withFileLogSpec("4:")
-                                .withDbLogSpec("energy::int3")
-                                .withSeriesType(POWER)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 0))
-                                .build()
-                )
-        );
     }
 
     @Override

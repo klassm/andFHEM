@@ -50,9 +50,6 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(3);
     }
 
     @Test

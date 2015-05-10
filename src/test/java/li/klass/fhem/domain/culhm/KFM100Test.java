@@ -52,9 +52,6 @@ public class KFM100Test extends DeviceXMLParsingBase {
         assertThat(device.getFillContentLitresRaw()).isCloseTo(171.3, offset(0.01));
         assertThat(device.getRawToReadable()).isEqualTo("10:0 255:4198");
 
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
-
         device.setContent("4300l");
         device.afterAllXMLRead();
         assertThat(device.getFillContentPercentageRaw()).isCloseTo(1, offset(0.01));

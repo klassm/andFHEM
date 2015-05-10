@@ -24,28 +24,15 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
-import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
-import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
 public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> implements TemperatureDevice {
@@ -121,45 +108,6 @@ public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> implements Te
 
     public String getWindchill() {
         return windchill;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4:temperature:")
-                        .withDbLogSpec("temperature::int2")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build(),
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.dewpoint, context).withFileLogSpec("4:dewpoint:0:")
-                        .withDbLogSpec("dewpoint::int1")
-                        .withSeriesType(DEWPOINT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("dewpoint", -10, 10))
-                        .build()
-        ), temperature);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0:")
-                        .withDbLogSpec("humidity")
-                        .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                        .build()
-        ), humidity);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.pressure, context).withFileLogSpec("4:pressure:0:")
-                        .withDbLogSpec("pressure")
-                        .withSeriesType(PRESSURE)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 700, 1200))
-                        .build()
-        ));
     }
 
     @Override

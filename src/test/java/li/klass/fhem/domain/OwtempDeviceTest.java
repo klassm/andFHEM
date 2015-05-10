@@ -42,11 +42,7 @@ public class OwtempDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getWarnings()).isEqualTo("none");
         assertThat(device.getState()).isEqualTo("T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none");
 
-
         assertThat(device.getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

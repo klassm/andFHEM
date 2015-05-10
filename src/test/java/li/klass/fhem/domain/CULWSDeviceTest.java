@@ -42,10 +42,7 @@ public class CULWSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTemperature()).isEqualTo("13.6 (°C)");
         assertThat(device.getState()).isEqualTo("T: 13.6  H: 45.8");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts()).hasSize(1);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Override

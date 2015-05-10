@@ -46,11 +46,7 @@ public class CULEMDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000");
         assertThat(device.getCumulativeKwh()).isEqualTo("1254.521 (kWh)");
 
-
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).hasSize(1);
-        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
     }
 
     @Override

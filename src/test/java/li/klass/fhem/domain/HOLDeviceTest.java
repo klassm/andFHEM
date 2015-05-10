@@ -48,9 +48,6 @@ public class HOLDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
 
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
-
         HOLDevice device1 = getDeviceFor("device1", HOLDevice.class);
         assertThat(device1.getState()).isEqualTo("on");
         assertThat(device1.isOnByState()).isEqualTo(true);

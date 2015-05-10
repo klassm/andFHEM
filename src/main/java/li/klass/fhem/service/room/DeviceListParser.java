@@ -53,7 +53,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.StatisticsDevice;
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -92,9 +91,6 @@ public class DeviceListParser {
 
     @Inject
     ConnectionService connectionService;
-
-    @Inject
-    ChartProvider chartProvider;
 
     @Inject
     DeviceConfigurationProvider deviceConfigurationProvider;
@@ -317,7 +313,7 @@ public class DeviceListParser {
                 }
             }
 
-            device.afterDeviceXMLRead(context, chartProvider);
+            device.afterDeviceXMLRead(context);
 
             LOG.debug("loaded device with name " + device.getName());
 
@@ -438,7 +434,7 @@ public class DeviceListParser {
             }
         }
 
-        device.afterDeviceXMLRead(context, chartProvider);
+        device.afterDeviceXMLRead(context);
     }
 
     private class ReadErrorHolder {

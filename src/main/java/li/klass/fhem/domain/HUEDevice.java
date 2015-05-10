@@ -28,7 +28,6 @@ import android.content.Context;
 
 import java.util.Locale;
 
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
@@ -100,8 +99,8 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         if (xy != null) {
             this.rgb = ColorUtil.xyToRgb(xy, brightness);

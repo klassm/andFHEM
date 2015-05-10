@@ -26,24 +26,17 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import java.util.List;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
 @SupportsWidget(TemperatureWidgetView.class)
@@ -71,28 +64,13 @@ public class OwthermDevice extends FhemDevice<OwthermDevice> implements Temperat
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         String state = getInternalState();
         if (state.contains("temperature")) {
             setState(temperature);
         }
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4:temperature")
-                        .withDbLogSpec("temperature::int1")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build()
-        ), temperature);
     }
 
     @Override

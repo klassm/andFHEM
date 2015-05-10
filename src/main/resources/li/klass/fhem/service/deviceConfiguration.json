@@ -17,60 +17,6 @@
                 "desc": "temperature",
                 "showInOverview": true
             }
-        ],
-        "charts": [
-            {
-                "series": [
-                    {
-                        "columnName": "temperature",
-                        "fileLogSpec": "4::",
-                        "dbLogSpec": "temperature::int1",
-                        "seriesType": "TEMPERATURE",
-                        "showRegression": true
-                    }
-                ],
-                "required": [
-                    {
-                        "type": "state",
-                        "attribute": "temperature"
-                }],
-                "buttonText": "temperatureGraph"
-            },
-            {
-                "series": [
-                    {
-                        "columnName": "pressure",
-                        "fileLogSpec": "6::",
-                        "dbLogSpec": "pressure::int1",
-                        "seriesType": "PRESSURE",
-                        "yAxisMinMax": {
-                            "defaultMin": 700,
-                            "defaultMax": 1200,
-                            "attribute": "pressure"
-                        }
-                    },
-                    {
-                        "columnName": "pressureNN",
-                        "fileLogSpec": "8::",
-                        "dbLogSpec": "pressure-nn::int1",
-                        "seriesType": "PRESSURE_NN",
-                        "yAxisMinMax": {
-                            "defaultMin": 700,
-                            "defaultMax": 1200,
-                            "attribute": "pressure-nn"
-                        }
-                    }
-                ],
-                "required": [
-                    {
-                        "type": "state",
-                        "attribute": "pressure"
-                }, {
-                        "type": "state",
-                        "attribute": "pressure-nn"
-                }],
-                "buttonText": "pressureGraph"
-            }
         ]
     },
     "CM160": {
@@ -127,25 +73,6 @@
                 "key": "voc",
                 "desc": "VOC",
                 "showInOverview": true
-            }
-        ],
-        "charts": [
-            {
-                "series": [
-                    {
-                        "columnName": "VOC",
-                        "fileLogSpec": "4:voc",
-                        "dbLogSpec": "voc::int1",
-                        "seriesType": "VOC",
-                        "showRegression": true
-                    }
-                ],
-                "required": [
-                    {
-                        "type": "state",
-                        "attribute": "voc"
-                }],
-                "buttonText": "VOCGraph"
             }
         ]
     },

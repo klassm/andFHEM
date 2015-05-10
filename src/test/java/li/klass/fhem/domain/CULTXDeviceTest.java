@@ -43,9 +43,6 @@ public class CULTXDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("T: 16.5 H: 73.0");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isNotEmpty();
-        assertThat(device.getDeviceCharts()).hasSize(1);
     }
 
     @Override

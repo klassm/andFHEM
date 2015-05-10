@@ -57,9 +57,6 @@ public class TwilightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("6");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

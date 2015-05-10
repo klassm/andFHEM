@@ -43,9 +43,6 @@ public class SmokeDetectorTest extends DeviceXMLParsingBase {
         assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.SMOKE_DETECTOR);
         assertThat(device.supportsDim()).isEqualTo(false);
 
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
-
         assertThat(device.isSupported()).isTrue();
     }
 

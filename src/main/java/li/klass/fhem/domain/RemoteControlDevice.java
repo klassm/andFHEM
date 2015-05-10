@@ -32,7 +32,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -119,8 +118,8 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         Collections.sort(rows);
     }
 

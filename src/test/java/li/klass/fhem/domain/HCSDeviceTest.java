@@ -55,9 +55,6 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getNumberOfIdleDevices()).isEqualTo(3);
 
         assertThat(device.getCommaSeparatedDemandDevices()).isEqualTo("FHT_Wohnzimmer, FHT_Wohnzimmer1");
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts()).isEmpty();
     }
 
     @Override

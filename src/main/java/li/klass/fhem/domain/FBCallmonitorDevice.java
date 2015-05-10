@@ -29,7 +29,6 @@ import android.content.Context;
 import java.util.Locale;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -100,8 +99,8 @@ public class FBCallmonitorDevice extends FhemDevice<FBCallmonitorDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         int eventStringId;
         if (eventInternal == null) {

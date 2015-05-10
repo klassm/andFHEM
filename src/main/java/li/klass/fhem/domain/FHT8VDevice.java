@@ -24,38 +24,13 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 
 @OverviewViewSettings(showState = true, stateStringId = ResourceIdMapper.actuator)
 public class FHT8VDevice extends FhemDevice<FHT8VDevice> {
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                new ChartSeriesDescription.Builder().withColumnName(R.string.actuator, context)
-                        .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
-                        .withDbLogSpec("state::int")
-                        .withSeriesType(ACTUATOR)
-                        .withShowDiscreteValues(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actuator", 0, 100))
-                        .build()
-        ));
-    }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {

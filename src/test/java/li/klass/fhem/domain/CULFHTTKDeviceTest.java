@@ -44,9 +44,6 @@ public class CULFHTTKDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("Closed => Open");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

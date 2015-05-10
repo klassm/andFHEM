@@ -56,11 +56,6 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDesiredTemp()).isCloseTo(6.5, offset(0.01));
         assertThat(device.getDesiredTempDesc()).isEqualTo("6.5 (°C)");
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts()).hasSize(1);
-
         assertThat(device.getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp")).isEqualTo(true);
     }
 
@@ -68,9 +63,6 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithMultipleActors() {
         FHTDevice device = getDeviceFor("fht_multi_actuators", FHTDevice.class);
         assertThat(device).isNotNull();
-
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts()).hasSize(1);
     }
 
     @Override

@@ -43,10 +43,6 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
-
         assertThat(device.supportsToggle()).isEqualTo(true);
     }
 

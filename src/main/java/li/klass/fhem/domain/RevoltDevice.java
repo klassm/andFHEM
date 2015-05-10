@@ -24,23 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
-
-import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_POWER_WATT;
-import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
 
 public class RevoltDevice extends FhemDevice<RevoltDevice> {
 
@@ -105,25 +94,4 @@ public class RevoltDevice extends FhemDevice<RevoltDevice> {
         this.frequency = ValueDescriptionUtil.appendHz(frequency);
     }
 
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.energy_power, context)
-                        .withFileLogSpec("4:power")
-                        .withDbLogSpec("power")
-                        .withSeriesType(CURRENT_POWER_WATT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("power", 0, 1))
-                        .build(),
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.currentUsage, context)
-                        .withFileLogSpec("4:energy:")
-                        .withDbLogSpec("energy")
-                        .withSeriesType(CURRENT_USAGE_KILOWATT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 1))
-                        .build()
-        ), energy, power);
-    }
 }

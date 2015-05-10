@@ -24,22 +24,13 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 public class GPIO4Device extends FhemDevice<GPIO4Device> {
 
@@ -73,21 +64,6 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
 
     public String getTemperature() {
         return temperature;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4:T")
-                        .withDbLogSpec("temperature::int2")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build()
-        ), temperature);
     }
 
     @Override

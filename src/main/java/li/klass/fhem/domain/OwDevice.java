@@ -28,7 +28,6 @@ import android.content.Context;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -74,8 +73,8 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     private String inputD;
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         String internalState = getInternalState();
         Map<String, String> eventMap = getEventMap();

@@ -41,9 +41,6 @@ public class RFXCOMDeviceTest extends DeviceXMLParsingBase {
 
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

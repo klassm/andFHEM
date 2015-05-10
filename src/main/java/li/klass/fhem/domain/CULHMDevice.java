@@ -29,7 +29,6 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 
-import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -39,8 +38,6 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -52,8 +49,6 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.NumberUtil;
@@ -70,17 +65,6 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.SHUTTER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THPL;
-import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
-import static li.klass.fhem.service.graph.description.SeriesType.BRIGHTNESS;
-import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE_Wh;
-import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_WATT;
-import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
-import static li.klass.fhem.service.graph.description.SeriesType.IS_RAINING;
-import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
-import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
-import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
-import static li.klass.fhem.service.graph.description.SeriesType.RAW;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
@@ -297,7 +281,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
+    public void afterDeviceXMLRead(Context context) {
         if (actuator != null) {
             subType = THERMOSTAT;
         }
@@ -305,7 +289,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             weekProfile.afterXMLRead();
         }
 
-        super.afterDeviceXMLRead(context, chartProvider);
+        super.afterDeviceXMLRead(context);
     }
 
     @Override
@@ -585,220 +569,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @Override
     public WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> getWeekProfile() {
         return weekProfile;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        if (subType == null) return;
-
-        switch (subType) {
-            case TH:
-
-                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature, context)
-                                .withFileLogSpec("4:T\\x3a:0:")
-                                .withDbLogSpec("measured-temp")
-                                .withSeriesType(TEMPERATURE)
-                                .withShowRegression(true)
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.humidity, context).withFileLogSpec("6:H\\x3a:0:")
-                                .withDbLogSpec("humidity")
-                                .withSeriesType(HUMIDITY)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                                .build()
-                ), humidity, measuredTemp);
-
-                if (humidity == null) {
-                    addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                            new ChartSeriesDescription.Builder()
-                                    .withColumnName(R.string.temperature, context)
-                                    .withFileLogSpec("4:T\\x3a:0:")
-                                    .withDbLogSpec("measured-temp")
-                                    .withSeriesType(TEMPERATURE)
-                                    .withShowRegression(true)
-                                    .build()
-                    ), measuredTemp);
-                }
-
-                addDeviceChartIfNotNull(
-                        new DeviceChart(R.string.brightnessSunshineGraph,
-                                new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.brightness, context).withFileLogSpec("4:brightness")
-                                        .withDbLogSpec("brightness")
-                                        .withSeriesType(BRIGHTNESS)
-                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("brightness", 0, 1000))
-                                        .build(),
-                                new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.sunshine, context).withFileLogSpec("4:sunshine")
-                                        .withDbLogSpec("sunshine")
-                                        .withSeriesType(SeriesType.SUNSHINE)
-                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("sunshine", 0, 0))
-                                        .build()
-                        ), sunshine, brightness
-                );
-
-                addDeviceChartIfNotNull(
-                        new DeviceChart(R.string.rainGraph,
-                                new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.isRaining, context)
-                                        .withFileLogSpec("4:isRaining")
-                                        .withDbLogSpec("isRaining")
-                                        .withSeriesType(IS_RAINING)
-                                        .withShowDiscreteValues(true)
-                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("isRaining", 0, 1))
-                                        .build(),
-                                new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.rain, context).withFileLogSpec("4:rain")
-                                        .withDbLogSpec("rain")
-                                        .withSeriesType(RAIN)
-                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain", 0, 70))
-                                        .build()
-                        ), isRaining, rain
-                );
-
-                addDeviceChartIfNotNull(
-                        new DeviceChart(R.string.windSpeedGraph,
-                                new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.windSpeed, context)
-                                        .withFileLogSpec("4:windSpeed")
-                                        .withDbLogSpec("windSpeed")
-                                        .withSeriesType(SeriesType.WIND)
-                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("windSpeed", 0, 0))
-                                        .build()),
-                        windSpeed
-                );
-
-                break;
-
-            case FILL_STATE:
-                addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.content, context)
-                                .withFileLogSpec("4:content:0:")
-                                .withDbLogSpec("content")
-                                .withSeriesType(LITRE_CONTENT)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("content", 0, 0))
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.rawValue, context).withFileLogSpec("4:rawValue:0:")
-                                .withDbLogSpec("rawValue")
-                                .withSeriesType(RAW)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rawValue", 0, 300))
-                                .build()
-                ), getState());
-
-                break;
-
-            case THERMOSTAT:
-
-                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature, context)
-                                .withFileLogSpec("4:T\\x3a:0:")
-                                .withDbLogSpec("measured-temp")
-                                .withSeriesType(TEMPERATURE)
-                                .withShowRegression(true)
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.humidity, context).withFileLogSpec("6:H\\x3a:0:")
-                                .withDbLogSpec("humidity")
-                                .withSeriesType(HUMIDITY)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                                .build()
-                ), humidity, measuredTemp);
-
-                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature, context)
-                                .withFileLogSpec("4:measured-temp:0")
-                                .withDbLogSpec("measured-temp")
-                                .withSeriesType(TEMPERATURE)
-                                .withShowRegression(true)
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.actuator, context).withFileLogSpec("4:actuator")
-                                .withDbLogSpec("actuator::int")
-                                .withSeriesType(ACTUATOR)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actuator", 0, 100))
-                                .build()
-                ), measuredTemp, actuator);
-
-                break;
-
-            case POWERSENSOR:
-            case POWERMETER:
-                addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.currentUsage, context).withFileLogSpec("4:current:0")
-                                .withDbLogSpec("current")
-                                .withSeriesType(CURRENT_USAGE_WATT)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 0))
-                                .build()
-                ), power);
-
-                addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraphCumulative,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.cumulativeUsage, context).withFileLogSpec("4:energy")
-                                .withDbLogSpec("energy")
-                                .withSeriesType(CUMULATIVE_USAGE_Wh)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 0))
-                                .build()
-                ), cumulativeUsage);
-                break;
-
-            case THPL:
-                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature, context)
-                                .withFileLogSpec("4:temperature:0")
-                                .withDbLogSpec("temperature")
-                                .withSeriesType(TEMPERATURE)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 0))
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0")
-                                .withDbLogSpec("humidity")
-                                .withSeriesType(HUMIDITY)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
-                                .build()
-                ), humidity, measuredTemp);
-
-                addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.pressure, context)
-                                .withFileLogSpec("4:pressure:0")
-                                .withDbLogSpec("pressure")
-                                .withSeriesType(PRESSURE)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 0, 0))
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.pressureNN, context).withFileLogSpec("4:pressure-nn:0")
-                                .withDbLogSpec("pressure-nn")
-                                .withSeriesType(HUMIDITY)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure-nn", 0, 0))
-                                .build()
-                ), pressure, pressureNN);
-
-                addDeviceChartIfNotNull(
-                        new DeviceChart(R.string.brightnessGraph,
-                                new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.brightness, context).withFileLogSpec("4:luminosity:0")
-                                        .withDbLogSpec("luminosity")
-                                        .withSeriesType(BRIGHTNESS)
-                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("luminosity", 0, 0))
-                                        .build()
-                        ), luminosity
-                );
-
-                break;
-        }
     }
 
     public boolean isLastCommandAccepted() {

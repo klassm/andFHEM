@@ -39,10 +39,7 @@ public class WatchdogDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
         assertThat(device.getState()).isEqualTo("defined");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Override

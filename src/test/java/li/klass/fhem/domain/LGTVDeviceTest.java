@@ -44,9 +44,6 @@ public class LGTVDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getPower()).isEqualTo("off");
 
         assertThat(device.getSetList().contains("power", "input", "audio")).isEqualTo(true);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts()).isEmpty();
     }
 
     @Override

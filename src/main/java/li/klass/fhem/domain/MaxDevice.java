@@ -27,17 +27,13 @@ package li.klass.fhem.domain;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.List;
 import java.util.Locale;
 
-import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -53,15 +49,11 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
-import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
 
 @SuppressWarnings("unused")
@@ -117,8 +109,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         weekProfile.afterXMLRead();
     }
 
@@ -285,46 +277,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @Override
     public boolean supportsToggle() {
         return subType == SubType.SWITCH;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        if (actuator != null) {
-            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature, context)
-                            .withFileLogSpec("4:temperature")
-                            .withDbLogSpec("temperature::int1")
-                            .withSeriesType(TEMPERATURE)
-                            .withShowRegression(true)
-                            .build(),
-                    new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature, context)
-                            .withFileLogSpec("4:desiredTemperature")
-                            .withDbLogSpec("desiredTemperature::int")
-                            .withSeriesType(DESIRED_TEMPERATURE)
-                            .withShowDiscreteValues(true)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("desiredTemperature", 0, 30))
-                            .build(),
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.actuator, context).withFileLogSpec("4:valveposition")
-                            .withDbLogSpec("valveposition::int")
-                            .withSeriesType(ACTUATOR)
-                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("valveposition", 0, 100))
-                            .build()
-            ), temperature, actuator);
-        } else {
-            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature, context)
-                            .withFileLogSpec("4:temperature")
-                            .withDbLogSpec("temperature::int1")
-                            .withSeriesType(TEMPERATURE)
-                            .withShowRegression(true)
-                            .build()
-            ), temperature);
-        }
     }
 
     @Override

@@ -44,10 +44,7 @@ public class WOLDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.getShutdownCommand()).isEqualTo("sh /some/crazy/command.sh");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Override

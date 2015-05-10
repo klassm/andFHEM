@@ -24,27 +24,20 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.NumberSystemUtil;
 
 import static java.util.Arrays.asList;
-import static li.klass.fhem.service.graph.description.SeriesType.TOGGLE_STATE;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
@@ -114,22 +107,6 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     @Override
     public List<String> getDimStates() {
         return DIM_STATES;
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.state, context)
-                        .withFileLogSpec("3:::$fld[2]=~/on.*/?1:0")
-                        .withDbLogSpec("data:::$val=~s/(on|off).*/$1eq\"on\"?1:0/eg")
-                        .withShowDiscreteValues(true)
-                        .withSeriesType(TOGGLE_STATE)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("state", 0, 1))
-                        .build()
-        ), getState());
     }
 
     @Override

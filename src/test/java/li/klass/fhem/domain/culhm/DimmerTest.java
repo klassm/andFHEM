@@ -46,9 +46,6 @@ public class DimmerTest extends DeviceXMLParsingBase {
         assertThat(device.getDimPosition()).isEqualTo(0);
         assertThat(device.supportsDim()).isEqualTo(true);
 
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
-
         assertThat(device.isSupported()).isEqualTo(true);
     }
 

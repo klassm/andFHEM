@@ -24,30 +24,14 @@
 
 package li.klass.fhem.domain.log;
 
-import android.content.Context;
-
-import com.google.common.collect.Lists;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
-import li.klass.fhem.service.room.AllDevicesReadCallback;
-
-import static com.google.common.collect.Maps.newHashMap;
-import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
 
-    protected List<CustomGraph> customGraphs = Lists.newArrayList();
     private String concerningDeviceRegexp;
-    private Map<String, YAxisMinMaxValue> yAxisConfiguration = newHashMap();
 
     /**
      * We extract the device names from the current log regexp. As the regexp always concerns
@@ -125,10 +109,6 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
         return DeviceFunctionality.LOG;
     }
 
-    public List<CustomGraph> getCustomGraphs() {
-        return customGraphs;
-    }
-
     public boolean concernsDevice(String deviceName) {
         return deviceName.matches(concerningDeviceRegexp);
     }
@@ -145,80 +125,4 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
     public abstract String getGraphCommandFor(FhemDevice device, String fromDateFormatted,
                                               String toDateFormatted, GPlotSeries seriesDescription);
 
-    @Override
-    public void afterDeviceXMLRead(final Context context, final ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
-
-        setAllDeviceReadCallback(new AllDevicesReadCallback() {
-            @Override
-            public void devicesRead(Map<String, FhemDevice> allDevices) {
-                for (FhemDevice device : allDevices.values()) {
-                    if (concernsDevice(device.getName())) {
-                        device.addLogDevice(LogDevice.this, context, chartProvider);
-                    }
-                }
-            }
-        });
-    }
-
-    @XmllistAttribute("YAXISMINMAX")
-    public void readYAxisMinMax(String definition) {
-        String[] definitions = definition.split("@");
-        for (String graphDef : definitions) {
-            String[] graphDefParts = graphDef.split(",");
-            if (graphDefParts.length == 3 && isDecimalNumber(graphDefParts[1]) && isDecimalNumber(graphDefParts[2])) {
-                yAxisConfiguration.put(graphDefParts[0],
-                        new YAxisMinMaxValue(extractLeadingDouble(graphDefParts[1]),
-                                extractLeadingDouble(graphDefParts[2])));
-            }
-        }
-    }
-
-    public YAxisMinMaxValue getYAxisMinMaxValueFor(String attribute, double defaultMin, double defaultMax) {
-        if (yAxisConfiguration.containsKey(attribute)) {
-            return yAxisConfiguration.get(attribute);
-        } else {
-            return new YAxisMinMaxValue(defaultMin, defaultMax);
-        }
-    }
-
-    public static class YAxisMinMaxValue implements Serializable {
-        public final double minValue;
-        public final double maxValue;
-
-        public YAxisMinMaxValue(double minValue, double maxValue) {
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-        }
-
-        @Override
-        public String toString() {
-            return "YAxisMinMaxValue{" +
-                    "minValue=" + minValue +
-                    ", maxValue=" + maxValue +
-                    '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            YAxisMinMaxValue that = (YAxisMinMaxValue) o;
-
-            return Double.compare(that.maxValue, maxValue) == 0
-                    && Double.compare(that.minValue, minValue) == 0;
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            long temp;
-            temp = Double.doubleToLongBits(minValue);
-            result = (int) (temp ^ (temp >>> 32));
-            temp = Double.doubleToLongBits(maxValue);
-            result = 31 * result + (int) (temp ^ (temp >>> 32));
-            return result;
-        }
-    }
 }

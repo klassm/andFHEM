@@ -45,9 +45,6 @@ public class PIDDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDesiredTemp()).isEqualTo(16, offset(0.001));
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Test

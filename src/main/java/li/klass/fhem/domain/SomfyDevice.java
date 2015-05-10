@@ -26,15 +26,14 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class SomfyDevice extends ToggleableDevice<SomfyDevice> {
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         if (!getWebCmd().contains("auf")) {
             getWebCmd().add("auf");
         }

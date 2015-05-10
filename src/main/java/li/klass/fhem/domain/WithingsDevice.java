@@ -24,15 +24,10 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
 import android.util.Log;
 
-import java.util.List;
 import java.util.Locale;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ChartProvider;
-import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -40,13 +35,8 @@ import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-import static li.klass.fhem.service.graph.description.SeriesType.CO2;
-import static li.klass.fhem.service.graph.description.SeriesType.FAT_RATIO;
-import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
-import static li.klass.fhem.service.graph.description.SeriesType.WEIGHT;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @DetailViewSettings(showState = false)
@@ -150,52 +140,6 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> implements Temper
         } catch (IllegalArgumentException e) {
             Log.d(WithingsDevice.class.getName(), "cannot find enum value for " + value);
         }
-    }
-
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context, ChartProvider chartProvider) {
-        super.fillDeviceCharts(chartSeries, context, chartProvider);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature, context)
-                        .withFileLogSpec("4:temperature")
-                        .withDbLogSpec("temperature")
-                        .withSeriesType(TEMPERATURE)
-                        .withShowRegression(true)
-                        .build()
-        ), temperature);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.co2Graph,
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.co2, context)
-                        .withFileLogSpec("4:co2")
-                        .withDbLogSpec("co2")
-                        .withSeriesType(CO2)
-                        .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("co2", 0, 0))
-                        .build()
-        ), co2);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.weight, context)
-                                .withFileLogSpec("4:weight")
-                                .withDbLogSpec("weight")
-                                .withSeriesType(WEIGHT)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("weight", 0, 0))
-                                .build(),
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.fatRatio, context)
-                                .withFileLogSpec("4:fatRatio")
-                                .withDbLogSpec("fatRatio")
-                                .withSeriesType(FAT_RATIO)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("fatRatio", 0, 100))
-                                .build()),
-                fatRatio, weight
-        );
     }
 
     @Override

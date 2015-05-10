@@ -37,10 +37,6 @@ public class DbLogDeviceTest extends DeviceXMLParsingBase {
     public void testDbLogIsAssociated() {
         KS300Device device = getDefaultDevice(KS300Device.class);
         assertThat(device).isNotNull();
-        assertThat(device.getLogDevices()).isNotEmpty();
-
-        assertThat(device.getLogDevices()).isNotEmpty();
-        assertThat(device.getLogDevices().get(0)).isInstanceOf(DbLogDevice.class);
     }
 
     @Override

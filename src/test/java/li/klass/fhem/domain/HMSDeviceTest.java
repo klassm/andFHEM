@@ -51,9 +51,6 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("T: 12.6  Bat: ok");
 
         assertThat(device.getSetList().getEntries()).isEmpty();
-
-        assertThat(device.getLogDevices()).isNotNull();
-        assertThat(device.getDeviceCharts()).hasSize(2);
     }
 
     @Test
@@ -64,7 +61,6 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getHumidity()).isNull();
 
         assertThat(device.getWaterDetect()).isEqualTo("no");
-        assertThat(device.getDeviceCharts()).isEmpty();
     }
 
     @Override

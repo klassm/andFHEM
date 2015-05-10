@@ -66,7 +66,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.gplot.GPlotAxis;
 import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
@@ -103,9 +102,6 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      */
     private String deviceName;
 
-    /**
-     * {@link ChartSeriesDescription}s to be shown within the current graph.
-     */
     private SvgGraphDefinition svgGraphDefinition;
 
     /**
@@ -120,8 +116,9 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
 
     /**
      * Jumps to the charting activity.
-     *  @param context            calling intent
-     * @param device             concerned device
+     *
+     * @param context         calling intent
+     * @param device          concerned device
      * @param graphDefinition series descriptions each representing one series in the resulting chart
      */
     @SuppressWarnings("unchecked")
@@ -224,7 +221,8 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
 
     /**
      * Actually creates the charting view by using the newly read charting data.
-     *  @param device    concerned device
+     *
+     * @param device    concerned device
      * @param graphData used graph data
      */
     @SuppressWarnings("unchecked")
@@ -283,13 +281,6 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         setContentView(view);
     }
 
-    /**
-     * Method mapping all given {@link ChartSeriesDescription}s to a common domain model (from {@link YAxis} outgoing).
-     * In addition, chart entries with less than a specified number of entries are removed.
-     *
-     * @param data loaded data for each {@link ChartSeriesDescription}
-     * @return list of {@link YAxis} (internal domain model representation)
-     */
     private List<YAxis> handleChartData(Map<GPlotSeries, List<GraphEntry>> data) {
         removeChartSeriesWithTooFewEntries(data);
         return mapToYAxis(data);

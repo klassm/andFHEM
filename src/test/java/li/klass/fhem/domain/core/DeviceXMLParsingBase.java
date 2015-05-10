@@ -50,6 +50,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
@@ -89,7 +90,7 @@ public abstract class DeviceXMLParsingBase {
 
         ObjectGraph graph = AndFHEMApplication.createDaggerGraph();
         setFieldValue(deviceListParser, "parser", graph.get(XmlListParser.class));
-        setFieldValue(deviceListParser, "chartProvider", graph.get(ChartProvider.class));
+        setFieldValue(deviceListParser, "gPlotHolder", graph.get(GPlotHolder.class));
         setFieldValue(deviceListParser, "deviceConfigurationProvider", graph.get(DeviceConfigurationProvider.class));
 
         mockStrings();

@@ -28,7 +28,6 @@ import android.content.Context;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.ChartProvider;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -44,8 +43,8 @@ public class StatisticsDevice extends FhemDevice<StatisticsDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead(Context context, ChartProvider chartProvider) {
-        super.afterDeviceXMLRead(context, chartProvider);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         setAllDeviceReadCallback(new AllDevicesReadCallback() {
             @Override

@@ -38,9 +38,6 @@ public class TCM97001DeviceTest extends DeviceXMLParsingBase {
         assertThat(device).isNotNull();
         assertThat(device.getTemperature()).isEqualTo("4.1 (°C)");
         assertThat(device.getBattery()).isEqualTo("Low");
-
-        assertThat(device.getLogDevices()).isNotEmpty();
-        assertThat(device.getDeviceCharts()).hasSize(1);
     }
 
     @Test
