@@ -25,6 +25,9 @@
 package li.klass.fhem.service.graph.gplot;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import li.klass.fhem.domain.log.LogDevice;
 
@@ -32,11 +35,17 @@ public class SvgGraphDefinition implements Serializable {
     private final String name;
     private final GPlotDefinition gPlotDefinition;
     private final LogDevice<?> logDevice;
+    private final List<String> labels;
+    private final String title;
 
-    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice<?> logDevice) {
+    private static final Pattern LABEL_PATTERN = Pattern.compile("<L([0-9]+)>");
+
+    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice<?> logDevice, List<String> labels, String title) {
         this.name = name;
         this.gPlotDefinition = gPlotDefinition;
         this.logDevice = logDevice;
+        this.labels = labels;
+        this.title = title;
     }
 
     public String getName() {
@@ -51,6 +60,10 @@ public class SvgGraphDefinition implements Serializable {
         return logDevice;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,8 +73,9 @@ public class SvgGraphDefinition implements Serializable {
 
         return !(name != null ? !name.equals(that.name) : that.name != null)
                 && !(gPlotDefinition != null ? !gPlotDefinition.equals(that.gPlotDefinition) : that.gPlotDefinition != null)
-                && !(logDevice != null ? !logDevice.equals(that.logDevice) : that.logDevice != null);
-
+                && !(logDevice != null ? !logDevice.equals(that.logDevice) : that.logDevice != null)
+                && !(labels != null ? !labels.equals(that.labels) : that.labels != null)
+                && !(title != null ? !title.equals(that.title) : that.title != null);
     }
 
     @Override
@@ -69,6 +83,30 @@ public class SvgGraphDefinition implements Serializable {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (gPlotDefinition != null ? gPlotDefinition.hashCode() : 0);
         result = 31 * result + (logDevice != null ? logDevice.hashCode() : 0);
+        result = 31 * result + (labels != null ? labels.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SvgGraphDefinition{" +
+                "name='" + name + '\'' +
+                ", gPlotDefinition=" + gPlotDefinition +
+                ", logDevice=" + logDevice +
+                ", labels=" + labels +
+                ", title='" + title + '\'' +
+                '}';
+    }
+
+    public String formatText(String toFormat) {
+        String result = toFormat.replaceAll("<TL>", title);
+        Matcher matcher = LABEL_PATTERN.matcher(toFormat);
+        while (matcher.find()) {
+            int labelIndex = Integer.parseInt(matcher.group(1)) - 1;
+            String replaceBy = labelIndex < labels.size() ? labels.get(labelIndex).trim() : "";
+            result = result.replaceAll(matcher.group(0), replaceBy);
+        }
         return result;
     }
 }

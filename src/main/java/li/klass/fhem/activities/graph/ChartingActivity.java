@@ -67,6 +67,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.gplot.GPlotAxis;
 import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
@@ -425,23 +426,20 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      */
     private List<YAxis> mapToYAxis(Map<GPlotSeries, List<GraphEntry>> data) {
         GPlotDefinition plotDefinition = svgGraphDefinition.getPlotDefinition();
-        YAxis leftAxis = new YAxis(this, plotDefinition.getLeftAxis());
-        for (GPlotSeries series : plotDefinition.getLeftAxis().getSeries()) {
+
+        return ImmutableList.of(createAxisFrom(data, plotDefinition.getLeftAxis()),
+                createAxisFrom(data, plotDefinition.getRightAxis()));
+    }
+
+    private YAxis createAxisFrom(Map<GPlotSeries, List<GraphEntry>> data, GPlotAxis axisDef) {
+        YAxis axis = new YAxis(this, axisDef, svgGraphDefinition.formatText(axisDef.getLabel()));
+        for (GPlotSeries series : axisDef.getSeries()) {
             if (data.containsKey(series)) {
-                leftAxis.addChart(series, data.get(series));
+                axis.addChart(series, data.get(series));
             }
         }
-        leftAxis.afterSeriesSet();
-
-        YAxis rightAxis = new YAxis(this, plotDefinition.getRightAxis());
-        for (GPlotSeries series : plotDefinition.getRightAxis().getSeries()) {
-            if (data.containsKey(series)) {
-                rightAxis.addChart(series, data.get(series));
-            }
-        }
-        rightAxis.afterSeriesSet();
-
-        return ImmutableList.of(leftAxis, rightAxis);
+        axis.afterSeriesSet();
+        return axis;
     }
 
     /**
@@ -475,7 +473,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * @param yAxis      Axis to set
      */
     private void setYAxisDescription(XYMultipleSeriesRenderer renderer, int axisNumber, YAxis yAxis) {
-        String title = yAxis.getName();
+        String title = yAxis.getLabel();
         renderer.setYTitle(title, axisNumber);
 
         if (axisNumber == 0) {

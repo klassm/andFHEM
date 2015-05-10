@@ -52,6 +52,7 @@ import li.klass.fhem.fhem.FHEMWEBConnection;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.Cache;
+import li.klass.fhem.util.CloseableUtil;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
@@ -213,6 +214,8 @@ public class CommandExecutionService extends AbstractService {
         } catch (IOException e) {
             LOG.error("executeRequest() - cannot read stream", e);
             return Optional.absent();
+        } finally {
+            CloseableUtil.close(result.content);
         }
     }
 

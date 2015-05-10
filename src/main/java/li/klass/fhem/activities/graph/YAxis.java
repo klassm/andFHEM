@@ -43,7 +43,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class YAxis implements Comparable<YAxis> {
     private final Context context;
-    private String name;
+    private String label;
     private List<ChartData> charts = newArrayList();
 
     private double minimumY = 0;
@@ -52,9 +52,9 @@ public class YAxis implements Comparable<YAxis> {
     private DateTime minimumX = null;
     private DateTime maximumX = null;
 
-    public YAxis(Context context, GPlotAxis axis) {
+    public YAxis(Context context, GPlotAxis axis, String label) {
         this.context = context;
-        this.name = axis.getLabel();
+        this.label = label;
 
         Range<Double> range = axis.getRange().or(Range.range(-1d, BoundType.OPEN, 1d, BoundType.OPEN));
         if (range.hasLowerBound()) {
@@ -89,11 +89,11 @@ public class YAxis implements Comparable<YAxis> {
 
     @Override
     public int compareTo(@NotNull YAxis yAxis) {
-        return name.compareTo(yAxis.getName());
+        return label.compareTo(yAxis.getLabel());
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
     public void afterSeriesSet() {

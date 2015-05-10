@@ -156,9 +156,9 @@ public class GPlotParser {
             if (line.startsWith("plot")) {
                 plotFound = true;
             }
-            if (line.startsWith("#FileLog ") || line.startsWith("#Log.") || line.startsWith("#logProxy")) {
+            if (line.startsWith("#FileLog") || line.startsWith("#Log.") || line.startsWith("#logProxy")) {
                 builders.add(new GPlotSeries.Builder().withFileLogDef(line.split(" ")[1]));
-            } else if (line.startsWith("#DbLog ")) {
+            } else if (line.startsWith("#DbLog")) {
                 builders.add(new GPlotSeries.Builder().withDbLogDef(line.split(" ")[1]));
             } else if (plotFound) {
                 GPlotSeries.Builder builder = builders.peek();

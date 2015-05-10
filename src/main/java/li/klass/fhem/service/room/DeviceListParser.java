@@ -202,7 +202,16 @@ public class DeviceListParser {
                 }
                 LogDevice<?> logDevice = (LogDevice<?>) allDevices.get(logDeviceName);
 
-                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice);
+                List<String> labels = newArrayList();
+                DeviceNode labelsDef = input.getAttributes().get("label");
+                if (labelsDef != null) {
+                    labels = newArrayList(labelsDef.getValue().replaceAll("\"", "").split(","));
+                }
+
+                DeviceNode titleDef = input.getAttributes().get("title");
+                String title = titleDef == null ? "" : titleDef.getValue();
+
+                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title);
             }
         }).filter(notNull()).toSet();
     }
