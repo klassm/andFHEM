@@ -1,425 +1,402 @@
 {
-    defaults: {
-        temperature: {
-            append: '°C',
-            extract: 'double'
+    "defaults": {
+        "temperature": {
+            "append": "°C",
+            "extract": "double"
         },
-        humidity: {
-            append: '%',
-            extract: 'double'
+        "humidity": {
+            "append": "%",
+            "extract": "double"
         },
-        dewpoint: {
-            append: '°C',
-            extract: 'double'
+        "dewpoint": {
+            "append": "°C",
+            "extract": "double"
         },
-        measured-temp: {
-            append: '°C',
-            extract: 'double'
+        "measured-temp": {
+            "append": "°C",
+            "extract": "double"
         },
-        wind: {
-            append: 'km/h',
-            extract: 'double'
+        "wind": {
+            "append": "km/h",
+            "extract": "double"
         },
-        pressure: {
-            append: 'hPa',
-            extract:  'double'
+        "pressure": {
+            "append": "hPa",
+            "extract": "double"
         },
-        pressure-nn: {
-            append: 'hPa',
-            extract:  'double'
+        "pressure-nn": {
+            "append": "hPa",
+            "extract": "double"
         },
-        wind_speed: {
-           append: 'km/h',
-           extract: 'double'
+        "wind_speed": {
+            "append": "km/h",
+            "extract": "double"
         },
-        wind_avspeed: {
-           append: 'km/h',
-           extract: 'double'
+        "wind_avspeed": {
+            "append": "km/h",
+            "extract": "double"
         },
-        co2: {
-            append: 'ppm'
+        "co2": {
+            "append": "ppm"
         },
-        voltage: {
-            append: 'V',
-            extract: 'double'
+        "voltage": {
+            "append": "V",
+            "extract": "double"
         }
     },
-
-    deviceTypes: {
-        GPIO4: {
-            T_avg_day: {
-                append: '°C',
-                extract: 'double'
+    "deviceTypes": {
+        "GPIO4": {
+            "T_avg_day": {
+                "append": "°C",
+                "extract": "double"
             },
-            T_avg_month: {
-                append: '°C',
-                extract: 'double'
+            "T_avg_month": {
+                "append": "°C",
+                "extract": "double"
             },
-            T_max_day: {
-                append: '°C',
-                extract: 'double'
+            "T_max_day": {
+                "append": "°C",
+                "extract": "double"
             },
-            T_max_month: {
-                append: '°C',
-                extract: 'double'
+            "T_max_month": {
+                "append": "°C",
+                "extract": "double"
             },
-            T_min_day: {
-                append: '°C',
-                extract: 'double'
+            "T_min_day": {
+                "append": "°C",
+                "extract": "double"
             },
-            T_min_month: {
-                append: '°C',
-                extract: 'double'
+            "T_min_month": {
+                "append": "°C",
+                "extract": "double"
             }
         },
-
-        HCS: {
-            thermostatThresholdOn: {
-               append: '°C',
-               extract: 'double'
+        "HCS": {
+            "thermostatThresholdOn": {
+                "append": "°C",
+                "extract": "double"
             },
-            thermostatThresholdOff: {
-               append: '°C',
-               extract: 'double'
+            "thermostatThresholdOff": {
+                "append": "°C",
+                "extract": "double"
             },
-            valveThresholdOn: {
-               append: '%'
+            "valveThresholdOn": {
+                "append": "%"
             },
-            valveThresholdOff: {
-               append: '%'
+            "valveThresholdOff": {
+                "append": "%"
             },
-            ecoTemperatureOn: {
-               append: '°C',
-               extract: 'double'
+            "ecoTemperatureOn": {
+                "append": "°C",
+                "extract": "double"
             },
-            ecoTemperatureOff: {
-               append: '°C',
-               extract: 'double'
+            "ecoTemperatureOff": {
+                "append": "°C",
+                "extract": "double"
             }
         },
-
-        KS300: {
-            rain: {
-               append: 'l/m²',
-               extract: 'double'
+        "KS300": {
+            "rain": {
+                "append": "l/m²",
+                "extract": "double"
             }
         },
-
-        HourCounter: {
-            verbrauchTagkWh: {
-               append: 'kWh',
-               extract: 'double'
+        "HourCounter": {
+            "verbrauchTagkWh": {
+                "append": "kWh",
+                "extract": "double"
             },
-            verbrauchGesamtEuro: {
-                append: '€',
-                extract: 'double'
+            "verbrauchGesamtEuro": {
+                "append": "€",
+                "extract": "double"
             },
-            verbrauchTagEuro: {
-                append: '€',
-                extract: 'double'
+            "verbrauchTagEuro": {
+                "append": "€",
+                "extract": "double"
             }
         },
-
-        MAX: {
-            valveposition: {
-               append: '%'
+        "MAX": {
+            "valveposition": {
+                "append": "%"
             }
         },
-
-        netatmo: {
-            noise: {
-                append: 'dB'
+        "netatmo": {
+            "noise": {
+                "append": "dB"
             }
         },
-
-        OREGON: {
-            rain_rate: {
-                append: 'mm/h'
+        "OREGON": {
+            "rain_rate": {
+                "append": "mm/h"
             },
-            rain_total: {
-               append: 'l/m²',
-               extract: 'double'
+            "rain_total": {
+                "append": "l/m²",
+                "extract": "double"
             },
-            battery: {
-                append: '%'
+            "battery": {
+                "append": "%"
             }
         },
-
-        SolarView: {
-            currentPower: {
-                append: 'W'
+        "SolarView": {
+            "currentPower": {
+                "append": "W"
             },
-            gridCurrent: {
-               append: 'A'
+            "gridCurrent": {
+                "append": "A"
             },
-            gridVoltage: {
-               append: 'V'
+            "gridVoltage": {
+                "append": "V"
             },
-            totalEnergy: {
-               append: 'kWh'
+            "totalEnergy": {
+                "append": "kWh"
             },
-            totalEnergyDay: {
-               append: 'kWh'
+            "totalEnergyDay": {
+                "append": "kWh"
             },
-            totalEnergyMonth: {
-                append: 'kWh'
+            "totalEnergyMonth": {
+                "append": "kWh"
             },
-            totalEnergyYear: {
-                append: 'kWh'
+            "totalEnergyYear": {
+                "append": "kWh"
             }
         },
-
-        TRX_WEATHER: {
-            rain_total: {
-                append: 'l/m²'
+        "TRX_WEATHER": {
+            "rain_total": {
+                "append": "l/m²"
             },
-            windchill: {
-               append: '°C'
+            "windchill": {
+                "append": "°C"
             }
         },
-
-        Weather: {
-            temp_c: {
-                append: '°C',
-                extract: 'double'
+        "Weather": {
+            "temp_c": {
+                "append": "°C",
+                "extract": "double"
             },
-            wind_chill: {
-               append: '°C'
+            "wind_chill": {
+                "append": "°C"
             },
-            wind_condition: {
-               replace: 'Wind: '
+            "wind_condition": {
+                "replace": "Wind: "
             }
         },
-
-        withings: {
-            fatFreeMass: {
-                extract: 'double',
-                append: 'kg'
+        "withings": {
+            "fatFreeMass": {
+                "extract": "double",
+                "append": "kg"
             },
-            fatMassWeight: {
-                extract: 'double',
-                append: 'kg'
+            "fatMassWeight": {
+                "extract": "double",
+                "append": "kg"
             },
-            fatRatio: {
-                extract: 'double',
-                append: '%'
+            "fatRatio": {
+                "extract": "double",
+                "append": "%"
             },
-            height: {
-                extract: 'double',
-                append: 'm'
+            "height": {
+                "extract": "double",
+                "append": "m"
             },
-            weight: {
-                extract: 'double',
-                append: 'kg'
+            "weight": {
+                "extract": "double",
+                "append": "kg"
             },
-            batteryLevel: {
-                extract: 'int',
-                append: '%'
+            "batteryLevel": {
+                "extract": "int",
+                "append": "%"
             },
-            heartPulse: {
-                extract: 'int'
+            "heartPulse": {
+                "extract": "int"
             }
         },
-
-        CUL_HM: {
-            power: {
-                append: 'W'
+        "CUL_HM": {
+            "power": {
+                "append": "W"
             },
-            energy: {
-                extract: 'double',
-                extractDivideBy: 1000,
-                append: 'kWh'
+            "energy": {
+                "extract": "double",
+                "extractDivideBy": 1000,
+                "append": "kWh"
             },
-            frequency: {
-                append: 'Hz'
+            "frequency": {
+                "append": "Hz"
             },
-            current: {
-                append: 'mA'
+            "current": {
+                "append": "mA"
             },
-            content: {
-                replace: 'l',
-                extract: 'double'
+            "content": {
+                "replace": "l",
+                "extract": "double"
             },
-            actuator: {
-                extract: 'int',
-                append: '%'
+            "actuator": {
+                "extract": "int",
+                "append": "%"
             },
-            windSpeed: {
-                append: 'm/s'
+            "windSpeed": {
+                "append": "m/s"
             },
-            windDirection: {
-                append: '°'
+            "windDirection": {
+                "append": "°"
             },
-            rain: {
-                append: 'l/m²'
+            "rain": {
+                "append": "l/m²"
             },
-            luminosity: {
-                append: 'lm'
+            "luminosity": {
+                "append": "lm"
             },
-            batVoltage: {
-                append: 'V'
+            "batVoltage": {
+                "append": "V"
             }
         },
-
-        CM160: {
-            A: {
-                extract: 'double',
-                append: 'A'
+        "CM160": {
+            "A": {
+                "extract": "double",
+                "append": "A"
             },
-            W: {
-                extract: 'double',
-                append: 'W'
+            "W": {
+                "extract": "double",
+                "append": "W"
             },
-            C: {
-                extract: 'double',
-                append: '€/h'
+            "C": {
+                "extract": "double",
+                "append": "€/h"
             },
-            CO2: {
-                extract: 'double',
-                append: 'kg/h'
+            "CO2": {
+                "extract": "double",
+                "append": "kg/h"
             }
         },
-
-        CUL_EM: {
-            current: {
-                append: kWh
+        "CUL_EM": {
+            "current": {
+                "append": "kWh"
             },
-            total: {
-                append: kWh
+            "total": {
+                "append": "kWh"
             }
         },
-
-        EC3000: {
-            consumption: {
-                append: 'kWh'
+        "EC3000": {
+            "consumption": {
+                "append": "kWh"
             },
-            power: {
-                append: 'W'
+            "power": {
+                "append": "W"
             },
-            Euro: {
-                append: '€',
-                extract: 'double',
-                extractDigits: 2
+            "Euro": {
+                "append": "€",
+                "extract": "double",
+                "extractDigits": 2
             }
         },
-
-        EMWZ: {
-            cum_kWh: {
-                append: 'kWh'
+        "EMWZ": {
+            "cum_kWh": {
+                "append": "kWh"
             },
-            energy: {
-                append: 'Wh'
+            "energy": {
+                "append": "Wh"
             },
-            power: {
-                append: 'W'
+            "power": {
+                "append": "W"
             },
-            price_CF: {
-                append: 'EUR/W'
+            "price_CF": {
+                "append": "EUR/W"
             }
         },
-
-        ESA2000: {
-            actual: {
-                append: 'kW',
-                extract: 'double',
-                extractDigits: 4
+        "ESA2000": {
+            "actual": {
+                "append": "kW",
+                "extract": "double",
+                "extractDigits": 4
             },
-            year: {
-                extract: 'double',
-                extractDigits: 2,
-                append: 'kWh'
+            "year": {
+                "extract": "double",
+                "extractDigits": 2,
+                "append": "kWh"
             },
-            month: {
-                extract: 'double',
-                extractDigits: 2,
-                append: 'kWh'
+            "month": {
+                "extract": "double",
+                "extractDigits": 2,
+                "append": "kWh"
             },
-            day: {
-                extract: 'double',
-                extractDigits: 2,
-                append: 'kWh'
+            "day": {
+                "extract": "double",
+                "extractDigits": 2,
+                "append": "kWh"
             },
-            day_last: {
-                extract: 'double',
-                extractDigits: 2,
-                append: 'kWh'
+            "day_last": {
+                "extract": "double",
+                "extractDigits": 2,
+                "append": "kWh"
             }
         },
-
-        FBDECT: {
-            energy: {
-                extract: 'int',
-                append: 'Wh'
+        "FBDECT": {
+            "energy": {
+                "extract": "int",
+                "append": "Wh"
             },
-            power: {
-                extract: 'double',
-                append: 'W'
+            "power": {
+                "extract": "double",
+                "append": "W"
             },
-            current: {
-                extract: 'double',
-                append: 'A'
+            "current": {
+                "extract": "double",
+                "append": "A"
             }
         },
-
-        HOL: {
-            currentSwitchTime: {
-                append: 's'
+        "HOL": {
+            "currentSwitchTime": {
+                "append": "s"
             }
         },
-
-        openweathermap: {
-            c_temperature: {
-                extract: 'double',
-                append: '°C'
+        "openweathermap": {
+            "c_temperature": {
+                "extract": "double",
+                "append": "°C"
             },
-            c_humidity: {
-                extract: 'double',
-                append: '%'
+            "c_humidity": {
+                "extract": "double",
+                "append": "%"
             },
-            c_windDir: {
-                extract: 'double',
-                append: '°'
+            "c_windDir": {
+                "extract": "double",
+                "append": "°"
             },
-            c_windSpeed: {
-                extract: 'double',
-                append: 'km/h'
+            "c_windSpeed": {
+                "extract": "double",
+                "append": "km/h"
             },
-            c_tempMax: {
-                extract: 'double',
-                append: '°C'
+            "c_tempMax": {
+                "extract": "double",
+                "append": "°C"
             },
-            c_tempMin: {
-                extract: 'double',
-                append: '°C'
+            "c_tempMin": {
+                "extract": "double",
+                "append": "°C"
             },
-            c_sunset: {
-                replace: 'T',
-                replaceBy: ' '
+            "c_sunset": {
+                "replace": "T",
+                "replaceBy": " "
             },
-            c_sunrise: {
-                replace: 'T',
-                replaceBy: ' '
+            "c_sunrise": {
+                "replace": "T",
+                "replaceBy": " "
             }
         },
-
-        ECMDDevice: {
-            STATE: {
-                replace: 'ok',
-                replaceBy: ''
+        "ECMDDevice": {
+            "STATE": {
+                "replace": "ok",
+                "replaceBy": ""
             }
         },
-
-        CO20: {
-            voc: {
-                extract: 'int',
-                append: 'ppm'
+        "CO20": {
+            "voc": {
+                "extract": "int",
+                "append": "ppm"
             }
         },
-
-        ENIGMA2: {
-            DEF: {
-                replace: '([^ ]+).*',
-                replaceBy: '$1'
+        "ENIGMA2": {
+            "DEF": {
+                "replace": "([^ ]+).*",
+                "replaceBy": "$1"
             }
         }
     }
