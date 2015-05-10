@@ -56,7 +56,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +75,6 @@ import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
@@ -91,9 +89,6 @@ import static li.klass.fhem.util.DisplayUtil.dpToPx;
 import static org.joda.time.Duration.standardHours;
 
 public class ChartingActivity extends ActionBarActivity implements Updateable {
-
-    public static final List<Integer> AVAILABLE_COLORS = Arrays.asList(Color.BLUE, Color.RED, Color.GREEN,
-            Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE, Color.MAGENTA);
 
     public static final int REQUEST_TIME_CHANGE = 1;
     public static final int DIALOG_EXECUTING = 2;
@@ -121,8 +116,6 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * End date for the current graph
      */
     private DateTime endDate = new DateTime();
-
-    private List<Integer> availableColors = newArrayList(AVAILABLE_COLORS);
 
     /**
      * Jumps to the charting activity.
@@ -348,30 +341,28 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
 
                 seriesRenderer.setFillPoints(false);
 
-                int color = getNextAvailableColor();
-                seriesRenderer.setColor(color);
+                GPlotSeries plotSeries = chartSeries.getPlotSeries();
+                seriesRenderer.setColor(plotSeries.getColor().getHexColor());
                 seriesRenderer.setPointStyle(PointStyle.POINT);
+                seriesRenderer.setShowLegendItem(true);
+                seriesRenderer.setLineWidth(plotSeries.getLineWidth());
+                seriesRenderer.setStroke(BasicStroke.SOLID);
 
-                renderer.addSeriesRenderer(seriesRenderer);
-
-                switch (chartSeries.getPlotSeries().getType()) {
-                    case HISTEPS:
-                    case FSTEPS:
-                    case STEPS:
-                        seriesRenderer.setLineWidth(1);
-                        seriesRenderer.setShowLegendItem(true);
+                switch (plotSeries.getSeriesType()) {
+                    case FILL:
                         seriesRenderer.addFillOutsideLine(new FillOutsideLine(FillOutsideLine.Type.BELOW));
-                        seriesRenderer.setStroke(BasicStroke.SOLID);
-                    case POINTS:
-                        seriesRenderer.setLineWidth(1);
-                        seriesRenderer.setShowLegendItem(true);
+                        break;
+                    case DOT:
                         seriesRenderer.setStroke(BasicStroke.DOTTED);
                         break;
-                    default:
-                        seriesRenderer.setLineWidth(1);
-                        seriesRenderer.setShowLegendItem(true);
-                        seriesRenderer.setStroke(BasicStroke.SOLID);
                 }
+                switch (plotSeries.getLineType()) {
+                    case POINTS:
+                        seriesRenderer.setStroke(BasicStroke.DOTTED);
+                        break;
+                }
+
+                renderer.addSeriesRenderer(seriesRenderer);
             }
         }
 
@@ -496,10 +487,6 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         }
 
         renderer.setYLabelsColor(axisNumber, getResources().getColor(android.R.color.white));
-    }
-
-    private int getNextAvailableColor() {
-        return availableColors.remove(0);
     }
 
     @Override

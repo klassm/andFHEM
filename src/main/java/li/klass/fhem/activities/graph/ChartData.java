@@ -134,8 +134,8 @@ public class ChartData implements Comparable<ChartData> {
     }
 
     private boolean isDiscreteChart() {
-        GPlotSeries.Type type = plotSeries.getType();
-        return type == GPlotSeries.Type.STEPS || type == GPlotSeries.Type.FSTEPS || type == GPlotSeries.Type.HISTEPS;
+        GPlotSeries.LineType lineType = plotSeries.getLineType();
+        return lineType == GPlotSeries.LineType.STEPS || lineType == GPlotSeries.LineType.FSTEPS || lineType == GPlotSeries.LineType.HISTEPS;
     }
 
     public Context getContext() {

@@ -135,6 +135,7 @@ public class DeviceListParser {
             return allDevicesRoom;
         }
 
+        gPlotHolder.reset();
         Map<String, ImmutableList<XmlListDevice>> parsedDevices = parser.parse(xmlList);
 
         ReadErrorHolder errorHolder = new ReadErrorHolder();
@@ -184,6 +185,7 @@ public class DeviceListParser {
     }
 
     private ImmutableSet<SvgGraphDefinition> createSvgGraphDefinitions(ImmutableList<XmlListDevice> svgDevices, final Map<String, FhemDevice> allDevices) {
+        if (svgDevices == null) return ImmutableSet.of();
         return from(svgDevices).transform(new Function<XmlListDevice, SvgGraphDefinition>() {
             @Override
             public SvgGraphDefinition apply(XmlListDevice input) {

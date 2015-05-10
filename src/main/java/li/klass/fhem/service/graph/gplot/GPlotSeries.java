@@ -24,21 +24,31 @@
 
 package li.klass.fhem.service.graph.gplot;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
+
+import static li.klass.fhem.service.graph.gplot.GPlotSeries.SeriesType.DEFAULT;
 
 public class GPlotSeries implements Serializable {
     private String title;
     private String fileLogDef;
     private String dbLogDef;
-    private Type type;
+    private LineType lineType;
     private Axis axis;
+    private SeriesColor color;
+    private SeriesType seriesType;
+    private final float lineWidth;
 
     private GPlotSeries(Builder builder) {
         title = builder.title;
         fileLogDef = builder.fileLogDef;
         dbLogDef = builder.dbLogDef;
-        type = builder.type;
+        lineType = builder.lineType;
         axis = builder.axis;
+        color = builder.color;
+        seriesType = builder.seriesType;
+        lineWidth = builder.lineWidth;
     }
 
     public String getTitle() {
@@ -49,8 +59,8 @@ public class GPlotSeries implements Serializable {
         return fileLogDef;
     }
 
-    public Type getType() {
-        return type;
+    public LineType getLineType() {
+        return lineType;
     }
 
     public Axis getAxis() {
@@ -59,6 +69,18 @@ public class GPlotSeries implements Serializable {
 
     public String getDbLogDef() {
         return dbLogDef;
+    }
+
+    public SeriesColor getColor() {
+        return color;
+    }
+
+    public SeriesType getSeriesType() {
+        return seriesType;
+    }
+
+    public float getLineWidth() {
+        return lineWidth;
     }
 
     @Override
@@ -71,8 +93,11 @@ public class GPlotSeries implements Serializable {
         return !(title != null ? !title.equals(that.title) : that.title != null) &&
                 !(fileLogDef != null ? !fileLogDef.equals(that.fileLogDef) : that.fileLogDef != null)
                 && !(dbLogDef != null ? !dbLogDef.equals(that.dbLogDef) : that.dbLogDef != null)
-                && type == that.type && axis == that.axis;
-
+                && lineType == that.lineType
+                && axis == that.axis
+                && color == that.color
+                && seriesType == that.seriesType
+                && lineWidth == that.lineWidth;
     }
 
     @Override
@@ -80,8 +105,11 @@ public class GPlotSeries implements Serializable {
         int result = title != null ? title.hashCode() : 0;
         result = 31 * result + (fileLogDef != null ? fileLogDef.hashCode() : 0);
         result = 31 * result + (dbLogDef != null ? dbLogDef.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (lineType != null ? lineType.hashCode() : 0);
         result = 31 * result + (axis != null ? axis.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + (seriesType != null ? seriesType.hashCode() : 0);
+        result = 31 * result + (lineWidth != +0.0f ? Float.floatToIntBits(lineWidth) : 0);
         return result;
     }
 
@@ -91,12 +119,15 @@ public class GPlotSeries implements Serializable {
                 "title='" + title + '\'' +
                 ", fileLogDef='" + fileLogDef + '\'' +
                 ", dbLogDef='" + dbLogDef + '\'' +
-                ", type=" + type +
+                ", lineType=" + lineType +
                 ", axis=" + axis +
+                ", color=" + color +
+                ", seriesType=" + seriesType +
+                ", lineWidth=" + lineWidth +
                 '}';
     }
 
-    public enum Type {
+    public enum LineType {
         LINES,
         POINTS,
         STEPS,
@@ -112,13 +143,43 @@ public class GPlotSeries implements Serializable {
         LEFT, RIGHT
     }
 
+    public enum SeriesType {
+        DEFAULT,
+        FILL,
+        DOT
+    }
+
+    public enum SeriesColor {
+        RED(Color.RED),
+        GREEN(Color.GREEN),
+        BLUE(Color.BLUE),
+        MAGENTA(Color.MAGENTA),
+        BROWN(0xA52A2A),
+        WHITE(Color.WHITE),
+        OLIVE(0x808000),
+        GRAY(Color.GRAY),
+        YELLOW(Color.YELLOW),;
+
+        private final int color;
+
+        SeriesColor(int color) {
+            this.color = color;
+        }
+
+        public int getHexColor() {
+            return color;
+        }
+    }
 
     public static final class Builder {
         private String title = "";
         private String fileLogDef;
         private String dbLogDef;
-        private Type type = Type.LINES;
+        private LineType lineType = LineType.LINES;
         public Axis axis;
+        private SeriesColor color = SeriesColor.RED;
+        private SeriesType seriesType = DEFAULT;
+        private float lineWidth = 1;
 
         public Builder() {
         }
@@ -140,13 +201,30 @@ public class GPlotSeries implements Serializable {
             return this;
         }
 
-        public Builder withType(final Type type) {
-            this.type = type;
+        public Builder withLineType(final LineType lineType) {
+            this.lineType = lineType;
             return this;
         }
 
         public Builder withAxis(final Axis axis) {
             this.axis = axis;
+            return this;
+        }
+
+        public Builder withColor(final SeriesColor color) {
+            if (color != null) {
+                this.color = color;
+            }
+            return this;
+        }
+
+        public Builder withSeriesType(final SeriesType seriesType) {
+            this.seriesType = seriesType;
+            return this;
+        }
+
+        public Builder withLineWith(float lineWidth) {
+            this.lineWidth = lineWidth;
             return this;
         }
 

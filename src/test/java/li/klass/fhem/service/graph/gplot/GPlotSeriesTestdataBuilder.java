@@ -30,6 +30,6 @@ public class GPlotSeriesTestdataBuilder {
                 .withAxis(GPlotSeries.Axis.LEFT)
                 .withFileLogDef("4::")
                 .withTitle("mySeries")
-                .withType(GPlotSeries.Type.LINES);
+                .withLineType(GPlotSeries.LineType.LINES);
     }
 }

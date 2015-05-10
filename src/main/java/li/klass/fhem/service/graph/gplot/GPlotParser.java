@@ -26,27 +26,37 @@ package li.klass.fhem.service.graph.gplot;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
-import com.google.common.io.Files;
+import com.google.common.io.Resources;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Collections.emptyMap;
 
 @Singleton
 public class GPlotParser {
@@ -55,6 +65,8 @@ public class GPlotParser {
     public static final Pattern AXIS_PATTERN = Pattern.compile("axes x1y([12])");
     public static final Pattern TITLE_PATTERN = Pattern.compile("title '([^']*)'");
     public static final Pattern TYPE_PATTERN = Pattern.compile("with ([a-zA-Z]+)");
+    public static final Pattern SERIES_TYPE_PATTERN = Pattern.compile("(l[0-9])((dot|fill(_stripe|_gyr)?)?)");
+    public static final Pattern LINE_WIDTH_PATTERN = Pattern.compile("lw ([0-9]+(\\.[0-9]+)?)");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GPlotParser.class);
 
@@ -64,6 +76,18 @@ public class GPlotParser {
             return filename != null && filename.endsWith(".gplot");
         }
     };
+
+    private ImmutableMap<String, GPlotSeries.SeriesColor> TO_COLOR = ImmutableMap.<String, GPlotSeries.SeriesColor>builder()
+            .put("l0", GPlotSeries.SeriesColor.RED)
+            .put("l1", GPlotSeries.SeriesColor.GREEN)
+            .put("l2", GPlotSeries.SeriesColor.BLUE)
+            .put("l3", GPlotSeries.SeriesColor.MAGENTA)
+            .put("l4", GPlotSeries.SeriesColor.BROWN)
+            .put("l5", GPlotSeries.SeriesColor.WHITE)
+            .put("l6", GPlotSeries.SeriesColor.OLIVE)
+            .put("l7", GPlotSeries.SeriesColor.GRAY)
+            .put("l8", GPlotSeries.SeriesColor.YELLOW)
+            .build();
 
     @Inject
     public GPlotParser() {
@@ -144,7 +168,9 @@ public class GPlotParser {
 
                 boolean attributeFound = handleAxis(line, builder);
                 attributeFound = handleTitle(line, builder) | attributeFound;
-                attributeFound = handleType(line, builder) | attributeFound;
+                attributeFound = handleLineType(line, builder) | attributeFound;
+                attributeFound = handleSeriesType(line, builder) | attributeFound;
+                attributeFound = handleLineWidth(line, builder) | attributeFound;
 
                 if (attributeFound) {
                     result.add(builder.build());
@@ -156,11 +182,43 @@ public class GPlotParser {
         return result;
     }
 
-    private boolean handleType(String line, GPlotSeries.Builder builder) {
+    private boolean handleLineWidth(String line, GPlotSeries.Builder builder) {
+        Matcher matcher = LINE_WIDTH_PATTERN.matcher(line);
+        if (matcher.find()) {
+            float lineWidth = Float.parseFloat(matcher.group(1));
+            builder.withLineWith(lineWidth);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleSeriesType(String line, GPlotSeries.Builder builder) {
+        Matcher matcher = SERIES_TYPE_PATTERN.matcher(line);
+        if (matcher.find()) {
+            String colorDesc = matcher.group(1);
+            String fillDesc = matcher.group(2);
+
+            GPlotSeries.SeriesType seriesType = GPlotSeries.SeriesType.DEFAULT;
+            if (fillDesc.contains("fill")) {
+                seriesType = GPlotSeries.SeriesType.FILL;
+            } else if (fillDesc.contains("dot")) {
+                seriesType = GPlotSeries.SeriesType.DOT;
+            }
+
+            builder.withColor(TO_COLOR.get(colorDesc));
+            builder.withSeriesType(seriesType);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean handleLineType(String line, GPlotSeries.Builder builder) {
         Matcher typeMatcher = TYPE_PATTERN.matcher(line);
         if (typeMatcher.find()) {
             try {
-                builder.withType(GPlotSeries.Type.valueOf(typeMatcher.group(1).toUpperCase(Locale.getDefault())));
+                builder.withLineType(GPlotSeries.LineType.valueOf(typeMatcher.group(1).toUpperCase(Locale.getDefault())));
                 return true;
             } catch (IllegalArgumentException e) {
                 LOGGER.debug("cannot find type for {}", typeMatcher.group(1));
@@ -211,16 +269,30 @@ public class GPlotParser {
     }
 
     public Map<String, GPlotDefinition> getDefaultGPlotFiles() {
-        Map<String, GPlotDefinition> result = newHashMap();
         try {
-            File resourceDirectory = new File(GPlotParser.class.getResource(".").toURI());
-            File[] files = resourceDirectory.listFiles(GPLOT_FILTER);
-            for (File file : files) {
-                String name = file.getName().substring(0, file.getName().indexOf("."));
-                result.put(name, parse(Files.toString(file, Charsets.UTF_8)));
-            }
+            URL url = GPlotParser.class.getResource("dummy.txt");
+            String scheme = url.getProtocol();
+            checkArgument(scheme.equals("jar"));
+            return readDefinitionsFromJar(url);
         } catch (Exception e) {
             LOGGER.error("loadDefaultGPlotFiles() - cannot load default files", e);
+        }
+        return emptyMap();
+    }
+
+    private Map<String, GPlotDefinition> readDefinitionsFromJar(URL url) throws IOException, URISyntaxException {
+        Map<String, GPlotDefinition> result = newHashMap();
+        JarURLConnection con = (JarURLConnection) url.openConnection();
+        JarFile archive = con.getJarFile();
+        Enumeration<JarEntry> entries = archive.entries();
+        while (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            if (entry.getName().endsWith(".gplot")) {
+                String filename = entry.getName().substring(entry.getName().lastIndexOf("/") + 1);
+                String plotName = filename.substring(0, filename.indexOf("."));
+                URL resource = GPlotParser.class.getResource(filename);
+                result.put(plotName, parse(Resources.toString(resource, Charsets.UTF_8)));
+            }
         }
         return result;
     }

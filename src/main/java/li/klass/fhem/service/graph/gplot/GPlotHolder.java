@@ -84,4 +84,9 @@ public class GPlotHolder {
 
         return definitions.get(name);
     }
+
+    public void reset() {
+        definitions.clear();
+        areDefaultFilesLoaded = false;
+    }
 }
