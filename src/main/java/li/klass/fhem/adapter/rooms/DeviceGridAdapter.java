@@ -68,6 +68,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
     private long lastUpdate;
 
     private static final Logger LOG = LoggerFactory.getLogger(DeviceGridAdapter.class);
+    private GroupComparator groupComparator;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList, ApplicationProperties applicationProperties) {
         super(context);
@@ -102,6 +103,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
         for (DeviceFunctionality invisible : holder.getInvisible(context)) {
             hiddenParents.add(invisible.getCaptionText(context));
         }
+        groupComparator = new GroupComparator(DeviceFunctionality.UNKNOWN.getCaptionText(context), deviceGroupParents);
 
         LOG.trace("restoreParents - set visible deviceGroupParents: {}" + deviceGroupParents);
     }
@@ -136,6 +138,8 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
         parents.addAll(customParents);
         parents.removeAll(roomDeviceList.getHiddenGroups());
         parents.removeAll(hiddenParents);
+        Collections.sort(parents, groupComparator);
+
         parentChildMap = newHashMap();
 
         this.roomDeviceList = roomDeviceList;
