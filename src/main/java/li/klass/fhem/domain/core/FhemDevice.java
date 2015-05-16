@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -185,7 +183,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public List<String> getRooms() {
         if (rooms == null || rooms.size() == 0) {
-            return newArrayList(AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName));
+            return newArrayList("Unsorted");
         }
         return rooms;
     }
