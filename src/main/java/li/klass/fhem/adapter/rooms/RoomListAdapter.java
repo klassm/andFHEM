@@ -105,6 +105,6 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
     @Override
     protected boolean doSort() {
-        return false;
+        return true;
     }
 }
