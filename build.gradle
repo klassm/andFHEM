@@ -65,7 +65,7 @@ android {
     }
 
     defaultConfig {
-        targetSdkVersion 21
+        targetSdkVersion 22
         minSdkVersion 9
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -25,14 +25,14 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:paddingLeft="10dp"
     android:paddingStart="10dp"
     android:paddingRight="0dp"
     android:paddingEnd="0dp">
 
-<TextView
+    <TextView
         android:layout_height="40dp"
         android:layout_width="40dp"
         android:contentDescription="@string/visibility"
@@ -46,6 +46,9 @@
         android:layout_marginTop="10dp"
         android:text="@string/deviceName"
         android:layout_toRightOf="@+id/drag"
+        android:layout_toEndOf="@+id/drag"
+        android:layout_toLeftOf="@+id/change_visibility"
+        android:layout_toStartOf="@+id/change_visibility"
         android:gravity="center_vertical"/>
 
     <ImageButton
@@ -53,6 +56,7 @@
         android:layout_width="40dp"
         android:contentDescription="@string/visibility"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:id="@+id/change_visibility"
         android:src="@drawable/visible"
         android:scaleType="fitXY"/>
