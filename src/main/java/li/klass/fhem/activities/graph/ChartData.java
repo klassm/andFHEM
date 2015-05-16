@@ -29,6 +29,7 @@ import android.content.Context;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
+import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.service.graph.GraphEntry;
@@ -49,8 +50,9 @@ public class ChartData implements Comparable<ChartData> {
         this.plotSeries = plotSeries;
         this.graphData = handleShowDiscreteValues(graphData);
         this.context = context;
-
         calculateMinMax();
+
+        Collections.sort(this.graphData);
     }
 
     private List<GraphEntry> handleShowDiscreteValues(List<GraphEntry> data) {

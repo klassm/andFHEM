@@ -27,16 +27,20 @@ package li.klass.fhem.service.graph;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
+import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT;
+
 /**
  * Transfer object representing one dot within a future graph.
  */
 public class GraphEntry implements Comparable<GraphEntry> {
     private float value;
     private DateTime date;
+    private String formattedTime;
 
     public GraphEntry(DateTime date, float value) {
         this.value = value;
         this.date = date;
+        this.formattedTime = ANDFHEM_DATE_FORMAT.print(date);
     }
 
     public void setDate(DateTime date) {
@@ -49,6 +53,10 @@ public class GraphEntry implements Comparable<GraphEntry> {
 
     public DateTime getDate() {
         return date;
+    }
+
+    public String getFormattedTime() {
+        return formattedTime;
     }
 
     @Override

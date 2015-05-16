@@ -90,9 +90,7 @@
             android:name="li.klass.fhem.activities.CommandIndicatorActivity"
             android:theme="@style/transparentDialogTheme"/>
 
-        <activity
-            android:name="li.klass.fhem.activities.graph.ChartingActivity"
-            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name="li.klass.fhem.activities.graph.ChartingActivity" />
         <activity android:name="li.klass.fhem.activities.graph.ChartingDateSelectionActivity"/>
 
         <activity

@@ -45,3 +45,7 @@
 }
 -keep class org.joda.time.** { *; }
 -dontwarn org.joda.**
+
+# MPAndroid Chart
+
+-keep class com.github.mikephil.charting.** { *; }

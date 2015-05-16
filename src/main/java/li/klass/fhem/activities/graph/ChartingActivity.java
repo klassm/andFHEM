@@ -24,13 +24,10 @@
 
 package li.klass.fhem.activities.graph;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
@@ -38,24 +35,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Range;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
-import org.achartengine.chart.PointStyle;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.renderer.BasicStroke;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer.FillOutsideLine;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +60,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.gplot.GPlotAxis;
 import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
@@ -75,7 +68,8 @@ import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
@@ -85,7 +79,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
-import static li.klass.fhem.util.DisplayUtil.dpToPx;
 import static org.joda.time.Duration.standardHours;
 
 public class ChartingActivity extends ActionBarActivity implements Updateable {
@@ -132,6 +125,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.chart);
 
         ((AndFHEMApplication) getApplication()).inject(this);
 
@@ -157,10 +151,6 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
 
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        String title = extras.getString(ChartFactory.TITLE);
-        if (title != null) {
-            getSupportActionBar().setTitle(title);
-        }
 
         update(false);
     }
@@ -172,19 +162,18 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
 
     @Override
     public void update(final boolean doUpdate) {
-        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.setClass(this, RoomListIntentService.class);
-        intent.putExtra(DEVICE_NAME, deviceName);
-        intent.putExtra(DO_REFRESH, doUpdate);
-        intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS) return;
+        startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
+                .setClass(this, RoomListIntentService.class)
+                .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS) return;
 
-                readDataAndCreateChart(doUpdate, (FhemDevice) resultData.getSerializable(DEVICE));
-            }
-        });
-        startService(intent);
+                        readDataAndCreateChart(doUpdate, (FhemDevice) resultData.getSerializable(DEVICE));
+                    }
+                }));
     }
 
     /**
@@ -228,256 +217,141 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     @SuppressWarnings("unchecked")
     private void createChart(FhemDevice device, Map<GPlotSeries, List<GraphEntry>> graphData) {
 
-        List<YAxis> yAxisList = handleChartData(graphData);
-        if (graphData.size() == 0) {
-            setContentView(R.layout.no_graph_entries);
-            return;
-        }
-
-        XYMultipleSeriesRenderer renderer = buildAndFillRenderer(yAxisList);
-        XYMultipleSeriesDataset dataSet = createChartDataSet(yAxisList);
+        handleDiscreteValues(graphData);
+        List<String> xAxisLabels = createXAxisLabelsFrom(graphData);
+        LineData lineData = createLineDataFor(xAxisLabels, graphData);
 
         String title;
         if (DisplayUtil.getWidthInDP() < 500) {
             title = device.getAliasOrName() + "\n\r" +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate);
-            renderer.setMargins(new int[]{(int) dpToPx(50), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         } else {
             title = device.getAliasOrName() + " " +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate);
-            renderer.setMargins(new int[]{(int) dpToPx(30), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         }
         getSupportActionBar().setTitle(title);
 
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.chart, null);
-        final LinearLayout chartLayout = (LinearLayout) view.findViewById(R.id.chart);
-        final GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
-        chartLayout.addView(timeChartView);
+        LineChart lineChart = (LineChart) findViewById(R.id.chart);
+        lineChart.setDescription("");
+        lineChart.setNoDataText(getString(R.string.noGraphEntries));
+        lineChart.setData(lineData);
 
-        ImageButton zoomOutButton = (ImageButton) view.findViewById(R.id.zoomOut);
-        zoomOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timeChartView.zoomOut();
-            }
-        });
-
-        ImageButton zoomInButton = (ImageButton) view.findViewById(R.id.zoomIn);
-        zoomInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timeChartView.zoomIn();
-            }
-        });
-
-        ImageButton zoomResetButton = (ImageButton) view.findViewById(R.id.zoomReset);
-        zoomResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timeChartView.zoomReset();
-            }
-        });
-
-        setContentView(view);
-    }
-
-    private List<YAxis> handleChartData(Map<GPlotSeries, List<GraphEntry>> data) {
-        removeChartSeriesWithTooFewEntries(data);
-        return mapToYAxis(data);
-    }
-
-    /**
-     * Builds the {@link XYMultipleSeriesRenderer}. This one is responsible for rendering all the afterwards given graph data
-     * to a charting pane. What we do here is set all the required options on the main renderer as well as on all the
-     * sub renderers responsible for rendering each chart.
-     * This also includes setting the min / max value for zooming and panning and the different graph style for
-     * regression and sum charts.
-     *
-     * @param yAxisList list of {@link YAxis} to render
-     * @return renderer
-     */
-    private XYMultipleSeriesRenderer buildAndFillRenderer(List<YAxis> yAxisList) {
-        XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer(yAxisList.size());
-        setRendererDefaults(renderer);
-
-        DateTime minDate = null;
-        DateTime maxDate = null;
-        double minY = Double.MAX_VALUE;
-        double maxY = Double.MIN_VALUE;
-
-        for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
-            YAxis yAxis = yAxisList.get(axisNumber);
-
-            DateTime minimumX = yAxis.getMinimumX();
-            if (minimumX != null && (minDate == null || minimumX.isBefore(minDate))) {
-                minDate = minimumX;
-            }
-
-            DateTime maximumX = yAxis.getMaximumX();
-            if (maximumX != null && (maxDate == null || maximumX.isAfter(maxDate))) {
-                maxDate = maximumX;
-            }
-
-            if (yAxis.getMinimumY() < minY) {
-                minY = yAxis.getMinimumY();
-            }
-
-            if (yAxis.getMaximumY() > maxY) {
-                maxY = yAxis.getMaximumY();
-            }
-
-            renderer.setYAxisMax(yAxis.getMaximumY(), axisNumber);
-            renderer.setYAxisMin(yAxis.getMinimumY(), axisNumber);
-            setYAxisDescription(renderer, axisNumber, yAxis);
-
-            for (ChartData chartSeries : yAxis.getCharts()) {
-                XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
-
-                seriesRenderer.setFillPoints(false);
-
-                GPlotSeries plotSeries = chartSeries.getPlotSeries();
-                seriesRenderer.setColor(plotSeries.getColor().getHexColor());
-                seriesRenderer.setPointStyle(PointStyle.POINT);
-                seriesRenderer.setShowLegendItem(true);
-                seriesRenderer.setLineWidth(plotSeries.getLineWidth());
-                seriesRenderer.setStroke(BasicStroke.SOLID);
-
-                switch (plotSeries.getSeriesType()) {
-                    case FILL:
-                        seriesRenderer.addFillOutsideLine(new FillOutsideLine(FillOutsideLine.Type.BELOW));
-                        break;
-                    case DOT:
-                        seriesRenderer.setStroke(BasicStroke.DOTTED);
-                        break;
-                }
-                switch (plotSeries.getLineType()) {
-                    case POINTS:
-                        seriesRenderer.setStroke(BasicStroke.DOTTED);
-                        break;
-                }
-
-                renderer.addSeriesRenderer(seriesRenderer);
-            }
-        }
-
-        if (minDate == null || maxDate == null) {
-            throw new IllegalArgumentException();
-        }
-
-        minY -= 1;
-        maxY += 1;
-
-        renderer.setPanLimits(new double[]{minDate.getMillis(), maxDate.getMillis(), Double.MIN_VALUE, Double.MAX_VALUE});
-        renderer.setZoomLimits(new double[]{minDate.getMillis(), maxDate.getMillis(), minY, maxY});
-
-        return renderer;
-    }
-
-    /**
-     * Create the actual data set for the graph. This means mapping the domain model, especially the amount of
-     * contained {@link YAxis} and its {@link ChartData} to the internal {@link CustomTimeSeries}.
-     *
-     * @param yAxisList list of {@link YAxis} to be mapped on the current data set
-     * @return data set in AChartEngine's format
-     */
-    private XYMultipleSeriesDataset createChartDataSet(List<YAxis> yAxisList) {
-        XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
-
-        for (int yAxisIndex = 0; yAxisIndex < yAxisList.size(); yAxisIndex++) {
-            YAxis yAxis = yAxisList.get(yAxisIndex);
-
-            for (ChartData chartData : yAxis.getCharts()) {
-                CustomTimeSeries timeSeries = new CustomTimeSeries(chartData.getPlotSeries().getTitle(), yAxisIndex);
-                for (GraphEntry graphEntry : chartData.getGraphData()) {
-                    timeSeries.add(graphEntry.getDate().toDate(), graphEntry.getValue());
-                }
-                dataSet.addSeries(timeSeries);
-            }
-
-        }
-        return dataSet;
-    }
-
-    /**
-     * Remove all graph series with less than 2 entries.
-     *
-     * @param data data to work on (which is also modified here)
-     */
-    private void removeChartSeriesWithTooFewEntries(Map<GPlotSeries, List<GraphEntry>> data) {
-        for (GPlotSeries chartSeriesDescription : newHashSet(data.keySet())) {
-            if (data.get(chartSeriesDescription).size() < 2) {
-                data.remove(chartSeriesDescription);
-            }
-        }
-    }
-
-    /**
-     * Maps the amount of chart description to the internal domain model
-     *
-     * @param data amount of data
-     * @return internal representation
-     */
-    private List<YAxis> mapToYAxis(Map<GPlotSeries, List<GraphEntry>> data) {
         GPlotDefinition plotDefinition = svgGraphDefinition.getPlotDefinition();
+        setRangeFor(plotDefinition.getLeftAxis().getRange(), lineChart.getAxisLeft());
+        setRangeFor(plotDefinition.getRightAxis().getRange(), lineChart.getAxisRight());
 
-        return ImmutableList.of(createAxisFrom(data, plotDefinition.getLeftAxis()),
-                createAxisFrom(data, plotDefinition.getRightAxis()));
+        lineChart.animateX(200);
     }
 
-    private YAxis createAxisFrom(Map<GPlotSeries, List<GraphEntry>> data, GPlotAxis axisDef) {
-        YAxis axis = new YAxis(this, axisDef, svgGraphDefinition.formatText(axisDef.getLabel()));
-        for (GPlotSeries series : axisDef.getSeries()) {
-            if (data.containsKey(series)) {
-                axis.addChart(series, data.get(series));
+    private void setRangeFor(Optional<Range<Double>> axisRange, com.github.mikephil.charting.components.YAxis axis) {
+        if (axisRange.isPresent()) {
+            Range<Double> range = axisRange.get();
+            if (range.hasLowerBound()) {
+                axis.setAxisMinValue(range.lowerEndpoint().floatValue());
+            }
+            if (range.hasUpperBound()) {
+                axis.setAxisMinValue(range.upperEndpoint().floatValue());
             }
         }
-        axis.afterSeriesSet();
-        return axis;
     }
 
-    /**
-     * Sets the renderer defaults. Nothing special here.
-     *
-     * @param renderer renderer
-     */
-    private void setRendererDefaults(XYMultipleSeriesRenderer renderer) {
-        renderer.setPointSize(5f);
-        renderer.setMargins(new int[]{20, 30, 15, 20});
-        renderer.setShowGrid(true);
-        renderer.setXLabelsAlign(Paint.Align.CENTER);
-        renderer.setZoomButtonsVisible(false);
-        renderer.setExternalZoomEnabled(true);
-        renderer.setXTitle(getResources().getString(R.string.time));
-        renderer.setChartTitle("");
-        renderer.setAxesColor(Color.WHITE);
-        renderer.setLabelsColor(Color.WHITE);
-        renderer.setAxisTitleTextSize(dpToPx(14));
-        renderer.setChartTitleTextSize(0);
-        renderer.setLabelsTextSize(dpToPx(10));
-        renderer.setLegendTextSize(dpToPx(14));
+    private void handleDiscreteValues(Map<GPlotSeries, List<GraphEntry>> graphData) {
+        for (Map.Entry<GPlotSeries, List<GraphEntry>> entry : graphData.entrySet()) {
+            if (!isDiscreteSeries(entry.getKey())) {
+                continue;
+            }
+
+            float previousValue = -1;
+            List<GraphEntry> newData = newArrayList();
+
+            List<GraphEntry> values = entry.getValue();
+            for (GraphEntry graphEntry : values) {
+                DateTime date = graphEntry.getDate();
+                float value = graphEntry.getValue();
+
+                if (previousValue == -1) {
+                    previousValue = value;
+                }
+
+                newData.add(new GraphEntry(date.minusMillis(1), previousValue));
+                newData.add(new GraphEntry(date, value));
+                newData.add(new GraphEntry(date.plusMillis(1), value));
+
+                previousValue = value;
+            }
+            values.clear();
+            values.addAll(newData);
+        }
     }
 
-    /**
-     * Set the {@link YAxis} description. This includes the axis description style (color, position) as well as the title
-     * itself.
-     *
-     * @param renderer   Renderer to set the values on.
-     * @param axisNumber axis number.
-     * @param yAxis      Axis to set
-     */
-    private void setYAxisDescription(XYMultipleSeriesRenderer renderer, int axisNumber, YAxis yAxis) {
-        String title = yAxis.getLabel();
-        renderer.setYTitle(title, axisNumber);
+    private boolean isDiscreteSeries(GPlotSeries plotSeries) {
+        GPlotSeries.LineType lineType = plotSeries.getLineType();
+        return lineType == GPlotSeries.LineType.STEPS || lineType == GPlotSeries.LineType.FSTEPS || lineType == GPlotSeries.LineType.HISTEPS;
+    }
 
-        if (axisNumber == 0) {
-            renderer.setYAxisAlign(Paint.Align.LEFT, 0);
-            renderer.setYLabelsAlign(Paint.Align.LEFT, 0);
-        } else {
-            renderer.setYAxisAlign(Paint.Align.RIGHT, 1);
-            renderer.setYLabelsAlign(Paint.Align.RIGHT, 1);
+    private LineData createLineDataFor(final List<String> xAxisLabels, Map<GPlotSeries, List<GraphEntry>> graphData) {
+        LineData lineData = new LineData(xAxisLabels);
+        for (Map.Entry<GPlotSeries, List<GraphEntry>> entry : graphData.entrySet()) {
+            GPlotSeries series = entry.getKey();
+            ImmutableList<Entry> yEntries = from(entry.getValue()).transform(new Function<GraphEntry, Entry>() {
+                @Override
+                public Entry apply(GraphEntry input) {
+                    return new Entry(input.getValue(), xAxisLabels.indexOf(input.getFormattedTime()));
+                }
+            }).toList();
+
+            LineDataSet lineDataSet = new LineDataSet(yEntries, series.getTitle());
+            lineDataSet.setAxisDependency(series.getAxis() == GPlotSeries.Axis.LEFT ?
+                    com.github.mikephil.charting.components.YAxis.AxisDependency.LEFT :
+                    com.github.mikephil.charting.components.YAxis.AxisDependency.RIGHT);
+            lineDataSet.setColor(series.getColor().getHexColor());
+            lineDataSet.setCircleColor(series.getColor().getHexColor());
+            lineDataSet.setFillColor(series.getColor().getHexColor());
+            lineDataSet.setDrawCubic(true);
+            lineDataSet.setDrawCircles(false);
+            lineDataSet.setDrawValues(false);
+            lineDataSet.setLineWidth(series.getLineWidth());
+
+            switch (series.getSeriesType()) {
+                case FILL:
+                    lineDataSet.setDrawFilled(true);
+
+                    break;
+                case DOT:
+                    lineDataSet.enableDashedLine(3, 2, 1);
+                    break;
+            }
+
+            switch (series.getLineType()) {
+                case POINTS:
+                    lineDataSet.enableDashedLine(3, 2, 1);
+                    break;
+            }
+
+            if (isDiscreteSeries(series)) {
+                lineDataSet.setDrawCubic(false);
+            }
+
+            lineData.addDataSet(lineDataSet);
         }
 
-        renderer.setYLabelsColor(axisNumber, getResources().getColor(android.R.color.white));
+        return lineData;
+    }
+
+    private List<String> createXAxisLabelsFrom(Map<GPlotSeries, List<GraphEntry>> graphData) {
+        List<String> labels = newArrayList(from(graphData.values()).transformAndConcat(new Function<List<GraphEntry>, Iterable<GraphEntry>>() {
+            @Override
+            public Iterable<GraphEntry> apply(List<GraphEntry> input) {
+                return input;
+            }
+        }).transform(new Function<GraphEntry, String>() {
+            @Override
+            public String apply(GraphEntry input) {
+                return input.getFormattedTime();
+            }
+        }).toSet());
+        Collections.sort(labels);
+        return labels;
     }
 
     @Override

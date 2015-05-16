@@ -139,7 +139,7 @@ public class GPlotSeries implements Serializable {
         QUADRATICSMOOTH
     }
 
-    enum Axis {
+    public enum Axis {
         LEFT, RIGHT
     }
 
