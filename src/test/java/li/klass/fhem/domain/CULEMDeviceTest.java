@@ -29,7 +29,6 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.data.Offset.offset;
 
 public class CULEMDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -41,7 +40,6 @@ public class CULEMDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getDayUsage()).isEqualTo("9.490 (kWh)");
         assertThat(device.getMonthUsage()).isEqualTo("60.385 (kWh)");
-        assertThat(device.getSumGraphDivisionFactor()).isEqualTo(2, offset(0.01));
         assertThat(device.getCurrentUsage()).isEqualTo("0 (kWh)");
         assertThat(device.getState()).isEqualTo("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000");
         assertThat(device.getCumulativeKwh()).isEqualTo("1254.521 (kWh)");

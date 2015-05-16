@@ -38,7 +38,6 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
 
 @SupportsWidget(MediumInformationWidgetView.class)
-@SuppressWarnings("unused")
 public class CULEMDevice extends FhemDevice<CULEMDevice> {
 
     @ShowField(description = ResourceIdMapper.currentUsage, showInOverview = true)
@@ -54,31 +53,23 @@ public class CULEMDevice extends FhemDevice<CULEMDevice> {
     @WidgetMediumLine3
     private String monthUsage;
 
-    @XmllistAttribute("SUM_GRAPH_DIVISION_FACTOR")
-    private double sumGraphDivisionFactor = 1d;
-
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     @XmllistAttribute("total")
     private String cumulativeKwh;
-
-
-    @XmllistAttribute("cum_day")
-    public void setCumDay(String value) {
-        dayUsage = appendKWh(extractCumUsage(value, "CUM_DAY"));
-    }
 
     @XmllistAttribute("cum_month")
     public void setCumMonth(String value) {
         monthUsage = appendKWh(extractCumUsage(value, "CUM_MONTH"));
     }
 
+    @XmllistAttribute("cum_day")
+    public void setCumDay(String value) {
+        dayUsage = appendKWh(extractCumUsage(value, "CUM_DAY"));
+    }
+
     private String extractCumUsage(String cumString, String cumToken) {
         cumToken = cumToken + ": ";
         return cumString.substring(cumToken.length(), cumString.indexOf(" ", cumToken.length() + 1));
-    }
-
-    public String readCurrentUsage() {
-        return currentUsage;
     }
 
     public String getDayUsage() {
@@ -95,10 +86,6 @@ public class CULEMDevice extends FhemDevice<CULEMDevice> {
 
     public String getCumulativeKwh() {
         return cumulativeKwh;
-    }
-
-    public double getSumGraphDivisionFactor() {
-        return sumGraphDivisionFactor;
     }
 
     @Override
