@@ -49,7 +49,7 @@ public class GenericDeviceService {
     public void setState(FhemDevice<?> device, String targetState, Context context) {
         targetState = device.formatTargetState(targetState);
 
-        commandExecutionService.executeSafely("set " + device.getName() + " " + targetState, context);
+        commandExecutionService.executeSafely("set " + getInternalName(device) + " " + targetState, context);
 
         if (device.shouldUpdateStateOnDevice(targetState)) {
             device.setState(device.formatStateTextToSet(targetState));
@@ -60,11 +60,15 @@ public class GenericDeviceService {
     }
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context) {
-        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, context);
+        commandExecutionService.executeSafely("set " + getInternalName(device) + " " + subStateName + " " + value, context);
         Tasker.sendTaskerNotifyIntent(context, device.getName(),
                 subStateName, value);
 
         invokeDeviceUpdateFor(device, subStateName, value);
+    }
+
+    private String getInternalName(FhemDevice<?> device) {
+        return device.getXmlListDevice().getInternals().get("NAME").getValue();
     }
 
     private void invokeDeviceUpdateFor(FhemDevice<?> device, String subStateName, String value) {
