@@ -33,13 +33,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ESA2000DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        ESA2000Device device = getDefaultDevice(ESA2000Device.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getCurrent()).isEqualTo("0.0812 (kW)");
-        assertThat(device.getDay()).isEqualTo("1.04 (kWh)");
-        assertThat(device.getDayLast()).isEqualTo("4.78 (kWh)");
-        assertThat(device.getMonth()).isEqualTo("5.82 (kWh)");
-        assertThat(device.getYear()).isEqualTo("19.67 (kWh)");
+        assertThat(stateValueFor(device, "actual")).isEqualTo("0.0812 (kW)");
+        assertThat(stateValueFor(device, "day")).isEqualTo("1.04 (kWh)");
+        assertThat(stateValueFor(device, "day_last")).isEqualTo("4.78 (kWh)");
+        assertThat(stateValueFor(device, "month")).isEqualTo("5.82 (kWh)");
+        assertThat(stateValueFor(device, "year")).isEqualTo("19.67 (kWh)");
     }
 
     @Override

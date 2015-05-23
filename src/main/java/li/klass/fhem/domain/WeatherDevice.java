@@ -195,11 +195,6 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
         return true;
     }
 
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
-
     public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
         private static final DateTimeFormatter FORECAST_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 

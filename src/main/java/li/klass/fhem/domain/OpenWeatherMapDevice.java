@@ -118,9 +118,4 @@ public class OpenWeatherMapDevice extends FhemDevice<OpenWeatherMapDevice> imple
     public boolean isSensorDevice() {
         return true;
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
 }

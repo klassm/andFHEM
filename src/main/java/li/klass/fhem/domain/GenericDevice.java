@@ -24,9 +24,16 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
+import com.google.common.collect.Iterables;
+
+import java.util.Map;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class GenericDevice extends ToggleableDevice<GenericDevice> {
@@ -34,5 +41,15 @@ public class GenericDevice extends ToggleableDevice<GenericDevice> {
     public DeviceFunctionality getDeviceGroup() {
         DeviceFunctionality deviceGroup = super.getDeviceGroup();
         return deviceGroup == null ? DeviceFunctionality.UNKNOWN : deviceGroup;
+    }
+
+    @Override
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        Map<String, DeviceNode> states = getXmlListDevice().getStates();
+        DeviceNode node = states.containsKey("state") ? states.get("state") : Iterables.getFirst(states.values(), null);
+        if (node != null) {
+            setMeasured(node.getMeasured());
+        }
     }
 }

@@ -27,7 +27,7 @@ package li.klass.fhem.adapter.devices.core.deviceItems;
 import android.content.Context;
 
 public interface DeviceViewItem {
-    public static final String FIRST = "__first__";
+    String FIRST = "__first__";
 
     String getName();
 

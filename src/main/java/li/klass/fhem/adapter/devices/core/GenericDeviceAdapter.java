@@ -53,18 +53,26 @@ import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
@@ -83,6 +91,12 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     @Inject
     XmlDeviceItemProvider xmlDeviceItemProvider;
+
+    @Inject
+    ApplicationProperties applicationProperties;
+
+    @Inject
+    DeviceConfigurationProvider deviceConfigurationProvider;
 
     private Class<D> deviceClass;
 
@@ -198,8 +212,38 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
             annotatedClassItems = annotatedMethodsAndFieldsProvider.generateAnnotatedClassItemsList(device.getClass());
         }
         Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device.getXmlListDevice());
+        registerListenersFor(device, xmlViewItems);
 
         return deviceViewItemSorter.sortedViewItemsFrom(concat(annotatedClassItems, xmlViewItems));
+    }
+
+    private void registerListenersFor(D device, Set<DeviceViewItem> xmlViewItems) {
+        for (DeviceViewItem xmlViewItem : xmlViewItems) {
+            registerListenerFor(device, xmlViewItem);
+        }
+    }
+
+    private void registerListenerFor(D device, final DeviceViewItem xmlViewItem) {
+        final String key = xmlViewItem.getName();
+        if (device.getSetList().contains(key)) {
+            registerFieldListener(key, new FieldNameAddedToDetailListener<D>() {
+                @Override
+                protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
+                    SetListValue setListValue = device.getSetList().get(key);
+                    int state = extractLeadingInt(xmlViewItem.getValueFor(device));
+                    if (setListValue instanceof SetListSliderValue) {
+                        SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
+                        tableLayout.addView(
+                                new StateChangingSeekBarFullWidth<D>(getContext(), state, sliderValue, key, fieldTableRow, applicationProperties)
+                                        .createRow(getInflater(), device));
+                    } else if (setListValue instanceof SetListGroupValue) {
+                        SetListGroupValue groupValue = (SetListGroupValue) setListValue;
+                        tableLayout.addView(new StateChangingSpinnerActionRow<D>(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
+                                .createRow(device, tableLayout));
+                    }
+                }
+            });
+        }
     }
 
     private GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
@@ -215,10 +259,21 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     protected boolean isOverviewError(D device, long lastUpdate) {
         // It does not make sense to show measure errors for data stemming out of a prestored
         // XML file.
+        boolean sensorDevice = isSensorDevice(device);
         return !(dataConnectionSwitch.getCurrentProvider(getContext()) instanceof DummyDataConnection) &&
                 lastUpdate != -1 &&
-                device.isSensorDevice() &&
-                device.isOutdatedData(lastUpdate);
+                sensorDevice &&
+                isOutdatedData(device, lastUpdate);
+
+    }
+
+    private boolean isSensorDevice(D device) {
+        return device.isSensorDevice() || deviceConfigurationProvider.isSensorDevice(device.getXmlListDevice());
+    }
+
+    private boolean isOutdatedData(D device, long lastUpdateTime) {
+        return device.getLastMeasureTime() != -1
+                && lastUpdateTime - device.getLastMeasureTime() > FhemDevice.OUTDATED_DATA_MS_DEFAULT;
 
     }
 
@@ -245,7 +300,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
-        if (device.isSensorDevice() && device.isOutdatedData(lastUpdate)) {
+        if (isSensorDevice(device) && isOutdatedData(device, lastUpdate)) {
             View measureErrorView = view.findViewById(R.id.measure_error_notification);
             if (measureErrorView != null) {
                 measureErrorView.setVisibility(View.VISIBLE);

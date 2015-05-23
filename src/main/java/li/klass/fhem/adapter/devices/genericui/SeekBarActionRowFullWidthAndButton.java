@@ -39,7 +39,7 @@ import li.klass.fhem.util.DialogUtil;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_SET_VALUE_BUTTONS;
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 
-public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>> extends SeekBarActionRowFullWidth<T> {
+public abstract class SeekBarActionRowFullWidthAndButton<D extends FhemDevice<D>> extends SeekBarActionRowFullWidth<D> {
 
     protected Context context;
 
@@ -53,7 +53,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>
     }
 
     @Override
-    public TableRow createRow(LayoutInflater inflater, T device, int layoutSpan) {
+    public TableRow createRow(LayoutInflater inflater, D device, int layoutSpan) {
         TableRow row = super.createRow(inflater, device, 1);
         applySetButtonIfRequired(device, row);
 
@@ -67,7 +67,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>
         return row;
     }
 
-    private void applySetButtonIfRequired(final T device, TableRow row) {
+    private void applySetButtonIfRequired(final D device, TableRow row) {
         Button button = (Button) row.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>
         }
     }
 
-    public abstract void onButtonSetValue(T device, int value);
+    public abstract void onButtonSetValue(D device, int value);
 
     protected boolean showButton() {
         return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false, context);
@@ -101,7 +101,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>
     protected abstract ApplicationProperties getApplicationProperties();
 
     @Override
-    public TableRow createRow(final LayoutInflater inflater, final T device) {
+    public TableRow createRow(final LayoutInflater inflater, final D device) {
         TableRow row = super.createRow(inflater, device);
         applySetButtonIfRequired(device, row);
 

@@ -142,9 +142,4 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     public boolean isSensorDevice() {
         return !supportsToggle();
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
 }

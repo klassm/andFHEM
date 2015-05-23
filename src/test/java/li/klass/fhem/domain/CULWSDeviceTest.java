@@ -33,13 +33,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CULWSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULWSDevice device = getDefaultDevice(CULWSDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity()).isEqualTo("45.8 (%)");
-        assertThat(device.getTemperature()).isEqualTo("13.6 (°C)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("45.8 (%)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("13.6 (°C)");
         assertThat(device.getState()).isEqualTo("T: 13.6  H: 45.8");
 
         assertThat(device.getSetList().getEntries()).isEmpty();

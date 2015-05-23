@@ -148,8 +148,6 @@ public class AppWidgetUpdateService extends IntentService {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         final AppWidgetView widgetView = appWidgetDataHolder.getAppWidgetView(configuration);
-        widgetView.attach(getApplication());
-
         RemoteViews content = widgetView.createView(this, configuration);
 
         try {

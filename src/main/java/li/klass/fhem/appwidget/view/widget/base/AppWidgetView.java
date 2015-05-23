@@ -24,7 +24,6 @@
 
 package li.klass.fhem.appwidget.view.widget.base;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -41,13 +40,18 @@ import li.klass.fhem.util.ImageUtil;
 
 public abstract class AppWidgetView {
 
-    private boolean daggerAttached = false;
-
     public static final Logger LOG = LoggerFactory.getLogger(AppWidgetView.class);
+
+
+    public AppWidgetView() {
+        AndFHEMApplication application = AndFHEMApplication.getApplication();
+        if (application != null) {
+            application.inject(this);
+        }
+    }
 
     public abstract void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                                    WidgetConfigurationCreatedCallback callback, String... payload);
-
 
     public RemoteViews createView(Context context, WidgetConfiguration widgetConfiguration) {
         LOG.debug("creating widget view for configuration {}", widgetConfiguration);
@@ -83,11 +87,4 @@ public abstract class AppWidgetView {
     }
 
     public abstract int getWidgetName();
-
-    public void attach(Application application) {
-        if (!daggerAttached) {
-            ((AndFHEMApplication) application).inject(this);
-            daggerAttached = true;
-        }
-    }
 }

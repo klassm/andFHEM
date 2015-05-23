@@ -387,18 +387,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return true;
     }
 
-    public long getTimeRequiredForStateError() {
-        return NEVER_OUTDATE_DATA;
-    }
-
-    public boolean isOutdatedData(long lastUpdateTime) {
-        long timeRequiredForStateError = getTimeRequiredForStateError();
-        return timeRequiredForStateError != NEVER_OUTDATE_DATA
-                && lastMeasureTime != -1
-                && lastUpdateTime - lastMeasureTime > timeRequiredForStateError;
-
-    }
-
     public boolean hasStatisticsDevice() {
         return hasStatisticsDevice;
     }

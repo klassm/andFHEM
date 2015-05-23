@@ -62,8 +62,8 @@ import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
-import li.klass.fhem.service.DeviceConfigurationProvider;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
@@ -80,6 +80,7 @@ import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
+import static li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider.DEFAULT_GROUP;
 import static li.klass.fhem.util.ReflectionUtil.getAllDeclaredFields;
 import static li.klass.fhem.util.ReflectionUtil.getAllDeclaredMethods;
 
@@ -305,9 +306,9 @@ public class DeviceListParser {
             }
 
             device.setXmlListDevice(xmlListDevice);
-            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
+            Optional<JSONObject> optConfig = deviceConfigurationProvider.plainConfigurationFor(xmlListDevice);
             if (optConfig.isPresent()) {
-                String defaultGroup = optConfig.get().optString("defaultGroup");
+                String defaultGroup = optConfig.get().optString(DEFAULT_GROUP);
                 if (defaultGroup != null) {
                     device.setDeviceFunctionality(DeviceFunctionality.valueOf(defaultGroup));
                 }

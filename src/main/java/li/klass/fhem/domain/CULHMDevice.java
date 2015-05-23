@@ -588,11 +588,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
-
-    @Override
     protected String getSetListDimStateAttributeName() {
         return "pct";
     }

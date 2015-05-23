@@ -33,11 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FHEMduinoPT2262DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        FHEMduinoPT2262Device device = getDeviceFor("Elro_FB1_B", FHEMduinoPT2262Device.class);
+        GenericDevice device = getDeviceFor("Elro_FB1_B", GenericDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.supportsToggle()).isTrue();
         assertThat(device.isOnByState()).isFalse();
-        assertThat(device.getIoDev()).isEqualTo("FHEMduino");
     }
 
     @Override

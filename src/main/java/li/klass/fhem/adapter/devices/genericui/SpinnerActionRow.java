@@ -39,9 +39,9 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class SpinnerActionRow<T extends FhemDevice> {
-    private int description;
-    private int prompt;
+public abstract class SpinnerActionRow<D extends FhemDevice> {
+    private String description;
+    private String prompt;
     private List<String> spinnerValues;
     private int selectedPosition;
     private int temporarySelectedPosition;
@@ -51,6 +51,10 @@ public abstract class SpinnerActionRow<T extends FhemDevice> {
     private boolean ignoreItemSelection = false;
 
     public SpinnerActionRow(Context context, int description, int prompt, List<String> spinnerValues, int selectedPosition) {
+        this(context, context.getString(description), context.getString(prompt), spinnerValues, selectedPosition);
+    }
+
+    public SpinnerActionRow(Context context, String description, String prompt, List<String> spinnerValues, int selectedPosition) {
         this.description = description;
         this.prompt = prompt;
         this.spinnerValues = spinnerValues;
@@ -58,7 +62,7 @@ public abstract class SpinnerActionRow<T extends FhemDevice> {
         this.context = context;
     }
 
-    public TableRow createRow(final T device, ViewGroup viewGroup) {
+    public TableRow createRow(final D device, ViewGroup viewGroup) {
         ignoreItemSelection = true;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,7 +70,7 @@ public abstract class SpinnerActionRow<T extends FhemDevice> {
 
         ((TextView) rowView.findViewById(R.id.description)).setText(description);
         final Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
-        spinner.setPrompt(context.getString(prompt));
+        spinner.setPrompt(prompt);
 
         ArrayAdapter adapter = new ArrayAdapter<>(context, R.layout.spinnercontent, spinnerValues);
         spinner.setAdapter(adapter);
@@ -104,5 +108,5 @@ public abstract class SpinnerActionRow<T extends FhemDevice> {
         selectedPosition = temporarySelectedPosition;
     }
 
-    public abstract void onItemSelected(final Context context, T device, String item);
+    public abstract void onItemSelected(final Context context, D device, String item);
 }

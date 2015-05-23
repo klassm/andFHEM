@@ -33,18 +33,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CULEMDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULEMDevice device = getDefaultDevice(CULEMDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getDayUsage()).isEqualTo("9.490 (kWh)");
-        assertThat(device.getMonthUsage()).isEqualTo("60.385 (kWh)");
-        assertThat(device.getCurrentUsage()).isEqualTo("0 (kWh)");
+        assertThat(stateValueFor(device, "cum_day")).isEqualTo("9.490 (kWh)");
+        assertThat(stateValueFor(device, "cum_month")).isEqualTo("60.385 (kWh)");
+        assertThat(stateValueFor(device, "current")).isEqualTo("0 (kWh)");
+        assertThat(stateValueFor(device, "total")).isEqualTo("1254.521 (kWh)");
         assertThat(device.getState()).isEqualTo("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000");
-        assertThat(device.getCumulativeKwh()).isEqualTo("1254.521 (kWh)");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Override

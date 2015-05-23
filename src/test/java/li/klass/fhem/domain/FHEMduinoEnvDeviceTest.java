@@ -33,14 +33,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FHEMduinoEnvDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        FHEMduinoEnvDevice device = getDeviceFor("Aussentemperatur", FHEMduinoEnvDevice.class);
+        GenericDevice device = getDeviceFor("Aussentemperatur", GenericDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("1.4°C / 81%");
-        assertThat(device.getTemperature()).isEqualTo("1.4 (°C)");
-        assertThat(device.getHumidity()).isEqualTo("81 (%)");
-        assertThat(device.getBattery()).isEqualTo("ok");
-        assertThat(device.getDewpoint()).isEqualTo("-1.5 (°C)");
-        assertThat(device.getIoDev()).isEqualTo("FHEMduino");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("1.4 (°C)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("81.0 (%)");
+        assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
+        assertThat(stateValueFor(device, "taupunkttemp")).isEqualTo("-1.5 (°C)");
+        assertThat(attributeValueFor(device, "IODev")).isEqualTo("FHEMduino");
     }
 
     @Override

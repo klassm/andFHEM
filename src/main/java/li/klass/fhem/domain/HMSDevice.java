@@ -146,9 +146,4 @@ public class HMSDevice extends FhemDevice<HMSDevice> {
     public boolean isSensorDevice() {
         return true;
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return 5 * 60 * 60 * 1000;
-    }
 }

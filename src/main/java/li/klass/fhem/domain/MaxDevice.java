@@ -355,11 +355,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         return true;
     }
 
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
-
     public enum HeatingMode {
         ECO, COMFORT, BOOST, AUTO, TEMPORARY, MANUAL
     }

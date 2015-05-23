@@ -24,22 +24,22 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EMWZDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        EMWZDevice device = getDefaultDevice(EMWZDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getCumulativeKwh(), is("0.120 (kWh)"));
-        assertThat(device.getPower(), is("0.480 (W)"));
-        assertThat(device.getPrice(), is("0.250 (EUR/W)"));
-        assertThat(device.getEnergy(), is("0.040 (Wh)"));
+        assertThat(stateValueFor(device, "cum_kWh")).isEqualTo("0.120 (kWh)");
+        assertThat(stateValueFor(device, "power")).isEqualTo("0.480 (W)");
+        assertThat(stateValueFor(device, "price_CF")).isEqualTo("0.250 (EUR/W)");
+        assertThat(stateValueFor(device, "energy")).isEqualTo("0.040 (Wh)");
 
     }
 

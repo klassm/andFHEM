@@ -258,9 +258,4 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
     public boolean isSensorDevice() {
         return true;
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
 }

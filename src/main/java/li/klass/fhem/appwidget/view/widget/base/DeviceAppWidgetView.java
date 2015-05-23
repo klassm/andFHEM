@@ -33,8 +33,12 @@ import android.widget.RemoteViews;
 
 import com.google.common.base.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
 
 import javax.inject.Inject;
 
@@ -47,18 +51,33 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.room.RoomListService;
+
+import static li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider.SUPPORTED_WIDGETS;
+import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
 
 public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     public static final String TAG = DeviceAppWidgetView.class.getName();
 
     @Inject
-    RoomListService roomListService;
+    public RoomListService roomListService;
+
+    @Inject
+    public DeviceConfigurationProvider deviceConfigurationProvider;
 
     public static final Logger LOG = LoggerFactory.getLogger(DeviceAppWidgetView.class);
 
     public boolean supports(FhemDevice<?> device) {
+        boolean supportsFromJson = supportsFromJsonConfiguration(device);
+        boolean supportsFromAnnotation = supportsFromAnnotation(device);
+
+        return supportsFromJson || supportsFromAnnotation;
+    }
+
+    private boolean supportsFromAnnotation(FhemDevice<?> device) {
         if (!device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
 
         if (!device.supportsWidget(this.getClass())) {
@@ -68,9 +87,25 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         SupportsWidget annotation = device.getClass().getAnnotation(SupportsWidget.class);
         Class<? extends DeviceAppWidgetView>[] supportedWidgetViews = annotation.value();
         for (Class<? extends DeviceAppWidgetView> supportedWidgetView : supportedWidgetViews) {
-            if (supportedWidgetView.equals(this.getClass())) return true;
+            if (supportedWidgetView.equals(getClass())) {
+                return true;
+            }
         }
+        return false;
+    }
 
+    private boolean supportsFromJsonConfiguration(FhemDevice<?> device) {
+        Optional<JSONObject> configuration = deviceConfigurationProvider.plainConfigurationFor(device.getXmlListDevice());
+        if (configuration.isPresent()) {
+            JSONObject conf = configuration.get();
+            JSONArray jsonArray = conf.optJSONArray(SUPPORTED_WIDGETS);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String supports = jsonArray.optString(i);
+                if (getClass().getSimpleName().equalsIgnoreCase(supports)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -136,6 +171,18 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         } else {
             Log.i(TAG, "cannot find device for " + payload[0]);
         }
+    }
+
+    protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls) {
+        Optional<DeviceConfiguration> configuration = deviceConfigurationProvider.configurationFor(device);
+        if (configuration.isPresent()) {
+            for (DeviceConfiguration.State state : configuration.get().getStates()) {
+                if (state.getMarkers().contains(annotationCls.getSimpleName())) {
+                    return device.getXmlListDevice().getStates().get(state.getKey()).getValue();
+                }
+            }
+        }
+        return getValueAndDescriptionForAnnotation(device, annotationCls);
     }
 
     protected void createDeviceWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,

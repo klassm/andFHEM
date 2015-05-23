@@ -33,16 +33,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CULTXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULTXDevice device = getDefaultDevice(CULTXDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity()).isEqualTo("73.0 (%)");
-        assertThat(device.getTemperature()).isEqualTo("16.5 (°C)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("73.0 (%)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("16.5 (°C)");
         assertThat(device.getState()).isEqualTo("T: 16.5 H: 73.0");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Override

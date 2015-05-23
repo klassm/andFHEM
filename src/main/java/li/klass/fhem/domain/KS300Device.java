@@ -126,9 +126,4 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
     public boolean isSensorDevice() {
         return true;
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
 }

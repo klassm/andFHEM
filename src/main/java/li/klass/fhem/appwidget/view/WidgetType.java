@@ -124,7 +124,6 @@ public enum WidgetType {
     public void createWidgetConfiguration(Application application, Context context, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback,
                                           String... payload) {
-        widgetView.attach(application);
         widgetView.createWidgetConfiguration(context, this, appWidgetId, callback, payload);
     }
 }

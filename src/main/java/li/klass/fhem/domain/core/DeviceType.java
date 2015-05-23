@@ -67,29 +67,18 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.CULTXDevice;
-import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.DMXDevice;
 import li.klass.fhem.domain.DbLogDevice;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
-import li.klass.fhem.domain.EMWZDevice;
-import li.klass.fhem.domain.ESA2000Device;
 import li.klass.fhem.domain.EnOceanDevice;
 import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
-import li.klass.fhem.domain.FBDectDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
-import li.klass.fhem.domain.FHEMduinoEnvDevice;
-import li.klass.fhem.domain.FHEMduinoPT2262Device;
-import li.klass.fhem.domain.FHT8VDevice;
 import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.FRMInDevice;
-import li.klass.fhem.domain.FRMOutDevice;
 import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FileLogDevice;
@@ -172,7 +161,6 @@ public enum DeviceType {
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
-    CUL_TX("CUL_TX", CULTXDevice.class),
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
@@ -180,10 +168,8 @@ public enum DeviceType {
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OREGON("OREGON", OregonDevice.class),
-    CUL_EM("CUL_EM", CULEMDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     USBWX("USBWX", USBWXDevice.class),
-    CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
     FILE_LOG("FileLog", FileLogDevice.class),
     DB_LOG("DbLog", DbLogDevice.class),
@@ -196,7 +182,6 @@ public enum DeviceType {
     HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter<>(HOLDevice.class)),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter(PIDDevice.class)),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter(PIDDevice.class)),
-    FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<>(TRXLightDevice.class)),
     TRX("TRX", TRXDevice.class),
@@ -212,16 +197,11 @@ public enum DeviceType {
     UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
     TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new GenericDeviceAdapterWithSwitchActionRow<>(TRXSecurityDevice.class)),
     PRESENCE("PRESENCE", PresenceDevice.class),
-    EMWZ("EMWZ", EMWZDevice.class),
-    FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapter<>(FBDectDevice.class)),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
     GPIO4("GPIO4", GPIO4Device.class),
-    FRMOUT("FRM_OUT", FRMOutDevice.class, new ToggleableAdapter<>(FRMOutDevice.class)),
-    ESA2000("ESA2000", ESA2000Device.class),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
-    FRMIN("FRM_IN", FRMInDevice.class),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
     ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<>(ZWaveDevice.class)),
     SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
@@ -255,8 +235,6 @@ public enum DeviceType {
     REVOLT("Revolt", RevoltDevice.class),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
-    FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
-    FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapter<>(FHEMduinoPT2262Device.class)),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),

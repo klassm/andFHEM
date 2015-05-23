@@ -35,11 +35,17 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class StateChangingSpinnerActionRow<T extends FhemDevice<T>> extends SpinnerActionRow<T> {
+public class StateChangingSpinnerActionRow<D extends FhemDevice<D>> extends SpinnerActionRow<D> {
 
     private final String commandAttribute;
 
     public StateChangingSpinnerActionRow(Context context, int description, int prompt,
+                                         List<String> spinnerValues, String selectedValue,
+                                         String commandAttribute) {
+        this(context, context.getString(description), context.getString(prompt), spinnerValues, selectedValue, commandAttribute);
+    }
+
+    public StateChangingSpinnerActionRow(Context context, String description, String prompt,
                                          List<String> spinnerValues, String selectedValue,
                                          String commandAttribute) {
         super(context, description, prompt, spinnerValues, spinnerValues.indexOf(selectedValue));
@@ -47,14 +53,15 @@ public class StateChangingSpinnerActionRow<T extends FhemDevice<T>> extends Spin
     }
 
     @Override
-    public void onItemSelected(Context context, T device, String item) {
-        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.STATE_NAME, commandAttribute);
-        intent.putExtra(BundleExtraKeys.STATE_VALUE, item);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
+    public void onItemSelected(Context context, D device, String item) {
 
-        context.startService(intent);
+        context.startService(
+                new Intent(Actions.DEVICE_SET_SUB_STATE)
+                        .setClass(context, DeviceIntentService.class)
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                        .putExtra(BundleExtraKeys.STATE_NAME, commandAttribute)
+                        .putExtra(BundleExtraKeys.STATE_VALUE, item)
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context))
+        );
     }
 }

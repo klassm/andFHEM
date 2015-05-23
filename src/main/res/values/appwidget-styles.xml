@@ -48,6 +48,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:text">item</item>
     </style>
@@ -60,6 +61,7 @@
         <item name="android:id">@id/deviceName</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:text">deviceName</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="appwidget_subcaption" parent="appwidget_item">

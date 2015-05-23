@@ -104,9 +104,4 @@ public class GPIO4Device extends FhemDevice<GPIO4Device> {
     public boolean isSensorDevice() {
         return true;
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
 }

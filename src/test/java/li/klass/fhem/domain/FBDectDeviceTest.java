@@ -24,23 +24,24 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FBDectDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        FBDectDevice device = getDefaultDevice(FBDectDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getName(), is("device"));
-        assertThat(device.getCurrent(), is("0.1039 (A)"));
-        assertThat(device.getEnergy(), is("13837 (Wh)"));
-        assertThat(device.getPower(), is("13.08 (W)"));
-        assertThat(device.getVoltage(), is("230.014 (V)"));
+        assertThat(device.getName()).isEqualTo("device");
+        assertThat(stateValueFor(device, "current")).isEqualTo("0.1039 (A)");
+        assertThat(stateValueFor(device, "energy")).isEqualTo("13837 (Wh)");
+        assertThat(stateValueFor(device, "power")).isEqualTo("13.08 (W)");
+        assertThat(stateValueFor(device, "voltage")).isEqualTo("230.014 (V)");
+        assertThat(device.supportsToggle()).isTrue();
     }
 
     @Override

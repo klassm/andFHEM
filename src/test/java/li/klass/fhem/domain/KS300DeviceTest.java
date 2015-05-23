@@ -27,7 +27,6 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.util.DateFormatUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,22 +48,8 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTemperature()).isEqualTo("2.0 (°C)");
         assertThat(device.getState()).isEqualTo("T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
-
-    @Test
-    public void testIsOutdated() {
-        KS300Device device = new KS300Device();
-
-        long now = System.currentTimeMillis();
-
-        device.setMeasured(DateFormatUtil.FHEM_DATE_FORMAT.print(now));
-        long outdateTime = device.getTimeRequiredForStateError();
-
-        assertThat(device.isOutdatedData(device.getLastMeasureTime() + outdateTime + 10000)).isTrue();
-        assertThat(device.isOutdatedData(device.getLastMeasureTime() + outdateTime - 10000)).isFalse();
-    }
-
 
     @Override
     protected String getFileName() {

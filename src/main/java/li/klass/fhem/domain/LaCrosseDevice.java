@@ -66,9 +66,4 @@ public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> implements Temper
     public boolean isSensorDevice() {
         return true;
     }
-
-    @Override
-    public long getTimeRequiredForStateError() {
-        return OUTDATED_DATA_MS_DEFAULT;
-    }
 }

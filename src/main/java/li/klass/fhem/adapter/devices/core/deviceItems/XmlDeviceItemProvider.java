@@ -40,7 +40,7 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.DeviceConfigurationProvider;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
@@ -70,7 +70,7 @@ public class XmlDeviceItemProvider {
 
         try {
             DeviceType deviceType = DeviceType.getDeviceTypeFor(xmlListDevice.getType());
-            Optional<JSONObject> optConfig = deviceConfigurationProvider.configurationFor(xmlListDevice);
+            Optional<JSONObject> optConfig = deviceConfigurationProvider.plainConfigurationFor(xmlListDevice);
             if (deviceType == DeviceType.GENERIC && !optConfig.isPresent()) {
                 items.addAll(genericStatesFor(xmlListDevice));
             }
