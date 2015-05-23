@@ -31,12 +31,14 @@ import com.google.common.collect.Iterables;
 import java.util.Map;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class GenericDevice extends ToggleableDevice<GenericDevice> {
+public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         DeviceFunctionality deviceGroup = super.getDeviceGroup();
@@ -51,5 +53,14 @@ public class GenericDevice extends ToggleableDevice<GenericDevice> {
         if (node != null) {
             setMeasured(node.getMeasured());
         }
+    }
+
+    @Override
+    protected String getSetListDimStateAttributeName() {
+        SetList setList = getSetList();
+        if (setList.contains("dim") && setList.get("dim") instanceof SetListSliderValue) {
+            return "dim";
+        }
+        return super.getSetListDimStateAttributeName();
     }
 }

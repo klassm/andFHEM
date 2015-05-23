@@ -150,7 +150,6 @@ import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.domain.WithingsDevice;
 import li.klass.fhem.domain.YamahaAVRDevice;
-import li.klass.fhem.domain.ZWaveDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -203,7 +202,6 @@ public enum DeviceType {
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
-    ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<>(ZWaveDevice.class)),
     SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
@@ -243,7 +241,7 @@ public enum DeviceType {
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
     HOURCOUNTER("HourCounter", HourCounterDevice.class),
 
-    GENERIC("__generic__", GenericDevice.class, new ToggleableAdapter<>(GenericDevice.class));
+    GENERIC("__generic__", GenericDevice.class, new DimmableAdapter<>(GenericDevice.class));
 
     private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = newHashMap();
     private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = newHashMap();

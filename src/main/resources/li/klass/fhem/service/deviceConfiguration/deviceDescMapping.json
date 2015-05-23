@@ -1,0 +1,5 @@
+{
+  "temperature": "temperature",
+  "humidity": "humidity",
+  "luminance": "brightness"
+}

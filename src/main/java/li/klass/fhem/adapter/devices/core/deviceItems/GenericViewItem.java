@@ -24,7 +24,7 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import android.content.Context;
+import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 public class GenericViewItem implements DeviceViewItem {
     private String key;
@@ -36,8 +36,8 @@ public class GenericViewItem implements DeviceViewItem {
     }
 
     @Override
-    public String getName() {
-        return key;
+    public String getName(DeviceDescMapping deviceDescMapping) {
+        return deviceDescMapping.descFor(key);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class GenericViewItem implements DeviceViewItem {
     }
 
     @Override
-    public String getDescription(Context context) {
+    public String getSortKey() {
         return key;
     }
 }

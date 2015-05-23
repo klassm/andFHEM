@@ -332,12 +332,43 @@
     "states": [
       {
         "key": "alarm",
-        "desc": "alarm"
+        "desc": "alarm",
+        "showInOverview": true
       }
     ]
   },
   "FRM_OUT": {
     "defaultGroup": "SWITCH",
     "sensorDevice": true
+  },
+  "ZWave": {
+    "defaultGroup": "UNKNOWN",
+    "states": [
+      {
+        "key": "temperature",
+        "showInOverview": true
+      },
+      {
+        "key": "humidity",
+        "showInOverview": true
+      },
+      {
+        "key": "luminance",
+        "showInOverview": true
+      },
+      {
+        "key": "reportedState"
+      },
+      {
+        "key": "power",
+        "desc": "energy_power",
+        "showInOverview": true
+      },
+      {
+        "key": "energy",
+        "desc": "energy_current",
+        "showInOverview": true
+      }
+    ]
   }
 }

@@ -66,6 +66,7 @@ import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -97,6 +98,9 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     @Inject
     DeviceConfigurationProvider deviceConfigurationProvider;
+
+    @Inject
+    DeviceDescMapping deviceDescMapping;
 
     private Class<D> deviceClass;
 
@@ -169,7 +173,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
             List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
             int currentGenericRow = 0;
             for (DeviceViewItem item : items) {
-                String name = item.getName();
+                String name = item.getName(deviceDescMapping);
                 boolean alwaysShow = false;
                 if (annotation != null) {
                     if (name.equalsIgnoreCase("state")) {
@@ -224,7 +228,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     }
 
     private void registerListenerFor(D device, final DeviceViewItem xmlViewItem) {
-        final String key = xmlViewItem.getName();
+        final String key = xmlViewItem.getSortKey();
         if (device.getSetList().contains(key)) {
             registerFieldListener(key, new FieldNameAddedToDetailListener<D>() {
                 @Override
@@ -279,7 +283,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     private void fillTableRow(GenericDeviceTableRowHolder holder, DeviceViewItem item, D device) {
         String value = item.getValueFor(device);
-        String description = item.getDescription(getContext());
+        String description = item.getName(deviceDescMapping);
         setTextView(holder.description, description);
         setTextView(holder.value, String.valueOf(value));
         if (value == null || value.equals("")) {
@@ -325,7 +329,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
             List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
 
             for (DeviceViewItem item : items) {
-                String name = item.getName();
+                String name = item.getName(deviceDescMapping);
 
                 if (annotation != null) {
                     if (name.equalsIgnoreCase("state") && !annotation.showState()) {

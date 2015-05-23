@@ -41,6 +41,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
@@ -58,11 +59,14 @@ public class XmlDeviceItemProvider {
     public static final Predicate<DeviceViewItem> STATE_ENTRY = new Predicate<DeviceViewItem>() {
         @Override
         public boolean apply(DeviceViewItem input) {
-            return !"state".equalsIgnoreCase(input.getName());
+            return !"state".equalsIgnoreCase(input.getSortKey());
         }
     };
     @Inject
     DeviceConfigurationProvider deviceConfigurationProvider;
+
+    @Inject
+    DeviceDescMapping deviceDescMapping;
 
     public Set<DeviceViewItem> getDeviceClassItems(XmlListDevice xmlListDevice) {
         Set<DeviceViewItem> items = newHashSet();
@@ -86,7 +90,7 @@ public class XmlDeviceItemProvider {
         }
     }
 
-    private Set<? extends DeviceViewItem> genericStatesFor(XmlListDevice xmlListDevice) {
+    private Set<DeviceViewItem> genericStatesFor(XmlListDevice xmlListDevice) {
 
         return from(xmlListDevice.getStates().entrySet())
                 .transform(TO_GENERIC_VIEW_ITEM)
@@ -104,7 +108,10 @@ public class XmlDeviceItemProvider {
 
         for (int i = 0; i < states.length(); i++) {
             JSONObject state = states.getJSONObject(i);
-            items.add(itemFor(state, device.getStates()));
+            Optional<XmlDeviceViewItem> item = itemFor(state, device.getStates());
+            if (item.isPresent()) {
+                items.add(item.get());
+            }
         }
 
         return items;
@@ -120,20 +127,33 @@ public class XmlDeviceItemProvider {
 
         for (int i = 0; i < attributes.length(); i++) {
             JSONObject attribute = attributes.getJSONObject(i);
-            items.add(itemFor(attribute, device.getAttributes()));
+            Optional<XmlDeviceViewItem> item = itemFor(attribute, device.getAttributes());
+            if (item.isPresent()) {
+                items.add(item.get());
+            }
         }
 
         return items;
     }
 
-    private XmlDeviceViewItem itemFor(JSONObject object, Map<String, DeviceNode> valueMap) throws JSONException {
+    private Optional<XmlDeviceViewItem> itemFor(JSONObject object, Map<String, DeviceNode> valueMap) throws JSONException {
         String key = object.getString("key");
-        String desc = object.getString("desc");
+        if (!valueMap.containsKey(key)) {
+            return Optional.absent();
+        }
+        String desc;
+        String jsonDesc = object.optString("desc", null);
+        if (jsonDesc != null) {
+            desc = deviceDescMapping.descFor(ResourceIdMapper.valueOf(jsonDesc));
+        } else {
+            desc = deviceDescMapping.descFor(key);
+        }
         String showAfter = object.optString("showAfter");
         boolean showInOverview = object.optBoolean("showInOverview", false);
         boolean showInDetail = object.optBoolean("showInDetail", true);
         String value = valueMap.get(key).getValue();
 
-        return new XmlDeviceViewItem(key, value, showAfter, showInDetail, showInOverview, ResourceIdMapper.valueOf(desc));
+        return Optional.of(new XmlDeviceViewItem(key, desc,
+                value, showAfter, showInDetail, showInOverview));
     }
 }

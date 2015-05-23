@@ -24,31 +24,29 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import android.content.Context;
-
-import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 public class XmlDeviceViewItem implements DeviceViewItem {
-    private final String name;
+    private final String key;
     private final String value;
     private final String showAfter;
     private final boolean isShowInDetail;
     private final boolean isShowInOverview;
-    private final ResourceIdMapper resourceIdMapper;
+    private final String desc;
 
-    public XmlDeviceViewItem(String name, String value, String showAfter, boolean isShowInDetail,
-                             boolean isShowInOverview, ResourceIdMapper resourceIdMapper) {
-        this.name = name;
+    public XmlDeviceViewItem(String key, String desc, String value, String showAfter, boolean isShowInDetail,
+                             boolean isShowInOverview) {
+        this.key = key;
         this.value = value;
         this.showAfter = showAfter;
         this.isShowInDetail = isShowInDetail;
         this.isShowInOverview = isShowInOverview;
-        this.resourceIdMapper = resourceIdMapper;
+        this.desc = desc;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getName(DeviceDescMapping deviceDescMapping) {
+        return desc;
     }
 
     @Override
@@ -72,19 +70,18 @@ public class XmlDeviceViewItem implements DeviceViewItem {
     }
 
     @Override
-    public String getDescription(Context context) {
-        return context.getString(resourceIdMapper.getId());
+    public String getSortKey() {
+        return key;
     }
 
     @Override
     public String toString() {
         return "XmlDeviceViewItem{" +
-                "name='" + name + '\'' +
+                "key='" + key + '\'' +
                 ", value='" + value + '\'' +
                 ", showAfter='" + showAfter + '\'' +
                 ", isShowInDetail=" + isShowInDetail +
                 ", isShowInOverview=" + isShowInOverview +
-                ", resourceIdMapper=" + resourceIdMapper +
                 '}';
     }
 }

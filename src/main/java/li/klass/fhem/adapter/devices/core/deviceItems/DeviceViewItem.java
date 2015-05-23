@@ -24,12 +24,12 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import android.content.Context;
+import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 public interface DeviceViewItem {
     String FIRST = "__first__";
 
-    String getName();
+    String getName(DeviceDescMapping deviceDescMapping);
 
     String getValueFor(Object object);
 
@@ -39,5 +39,5 @@ public interface DeviceViewItem {
 
     boolean isShowInOverview();
 
-    String getDescription(Context context);
+    String getSortKey();
 }

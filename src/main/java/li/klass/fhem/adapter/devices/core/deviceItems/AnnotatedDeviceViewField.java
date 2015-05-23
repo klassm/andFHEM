@@ -43,11 +43,6 @@ public class AnnotatedDeviceViewField extends AnnotatedDeviceViewItem {
     }
 
     @Override
-    public String getName() {
-        return field.getName();
-    }
-
-    @Override
     public String getValueFor(Object object) {
         try {
             Object value = field.get(object);
@@ -58,6 +53,11 @@ public class AnnotatedDeviceViewField extends AnnotatedDeviceViewItem {
             // this may never happen as we set the field as being accessible!
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public String getSortKey() {
+        return field.getName();
     }
 
     @Override

@@ -24,43 +24,5 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import com.google.common.base.Strings;
-
-import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
-
-public abstract class AnnotatedDeviceViewItem implements DeviceViewItem {
-
-    public abstract ShowField getShowFieldAnnotation();
-
-    @Override
-    public String getShowAfterValue() {
-        ShowField annotation = getShowFieldAnnotation();
-        if (annotation == null) return null;
-
-        String showAfter = annotation.showAfter();
-        if (Strings.isNullOrEmpty(showAfter)) return null;
-
-        return showAfter;
-    }
-
-    @Override
-    public String getName(DeviceDescMapping deviceDescMapping) {
-        return deviceDescMapping.descFor(getShowFieldAnnotation().description());
-    }
-
-    @Override
-    public boolean isShowInDetail() {
-        return getShowFieldAnnotation().showInDetail();
-    }
-
-    @Override
-    public boolean isShowInOverview() {
-        return getShowFieldAnnotation().showInOverview();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "::" + getName(null);
-    }
+public interface TextualDeviceViewItem extends DeviceViewItem {
 }

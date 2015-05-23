@@ -50,7 +50,7 @@ public class DeviceViewItemSorter {
         for (DeviceViewItem item : items) {
             String showAfterValue = item.getShowAfterValue();
             if (!isNullOrEmpty(showAfterValue)) {
-                String lowerCaseName = item.getName().toLowerCase(Locale.getDefault());
+                String lowerCaseName = item.getSortKey().toLowerCase(Locale.getDefault());
                 if (DeviceViewItem.FIRST.equals(showAfterValue)) {
                     // make sure we are the first one!
                     fieldNameMapping.put(lowerCaseName, "___" + lowerCaseName);
@@ -65,8 +65,8 @@ public class DeviceViewItemSorter {
         Collections.sort(result, new Comparator<DeviceViewItem>() {
             @Override
             public int compare(DeviceViewItem lhs, DeviceViewItem rhs) {
-                String lhsName = lhs.getName().toLowerCase(Locale.getDefault());
-                String rhsName = rhs.getName().toLowerCase(Locale.getDefault());
+                String lhsName = lhs.getSortKey().toLowerCase(Locale.getDefault());
+                String rhsName = rhs.getSortKey().toLowerCase(Locale.getDefault());
 
                 if (fieldNameMappingRecursive.containsKey(lhsName)) {
                     lhsName = fieldNameMappingRecursive.get(lhsName);

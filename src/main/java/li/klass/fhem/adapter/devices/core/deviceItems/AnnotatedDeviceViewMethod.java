@@ -38,15 +38,12 @@ public class AnnotatedDeviceViewMethod extends AnnotatedDeviceViewItem {
         this.method = method;
         method.setAccessible(true);
 
-        String name = method.getName();
-        name = getterNameToName(name);
+        this.sortName = getterNameToName(method.getName());
 
-        this.sortName = name;
         this.showField = method.getAnnotation(ShowField.class);
         if (showField != null) {
             showField = new ShowFieldCache(showField);
         }
-
     }
 
     static String getterNameToName(String name) {
@@ -64,11 +61,6 @@ public class AnnotatedDeviceViewMethod extends AnnotatedDeviceViewItem {
     }
 
     @Override
-    public String getName() {
-        return sortName;
-    }
-
-    @Override
     public String getValueFor(Object object) {
         try {
             Object value = method.invoke(object);
@@ -78,6 +70,11 @@ public class AnnotatedDeviceViewMethod extends AnnotatedDeviceViewItem {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public String getSortKey() {
+        return sortName;
     }
 
     @Override

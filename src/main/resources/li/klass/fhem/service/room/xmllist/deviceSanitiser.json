@@ -42,6 +42,10 @@
     "voltage": {
       "append": "V",
       "extract": "double"
+    },
+    "luminance": {
+      "append": "Lux",
+      "extract": "double"
     }
   },
   "deviceTypes": {
@@ -412,6 +416,16 @@
     "FHEMduino_Env": {
       "taupunkttemp": {
         "append": "°C",
+        "extract": "double"
+      }
+    },
+    "ZWave": {
+      "power": {
+        "append": "W",
+        "extract": "double"
+      },
+      "energy": {
+        "append": "kWh",
         "extract": "double"
       }
     }

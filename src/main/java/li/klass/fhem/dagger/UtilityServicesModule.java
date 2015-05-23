@@ -41,6 +41,7 @@ import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
 import li.klass.fhem.service.device.WOLService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.room.DeviceListParser;
@@ -81,7 +82,8 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
                 VoiceCommandService.class,
                 SharedPreferencesService.class,
                 FileSystemService.class,
-                DeviceConfigurationProvider.class
+                DeviceConfigurationProvider.class,
+                DeviceDescMapping.class
         })
 public class UtilityServicesModule {
 }

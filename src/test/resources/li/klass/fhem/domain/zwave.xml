@@ -43,5 +43,83 @@
             <ATTR key="room" value="room"/>
             <STATE key="state" value="off" measured="2013-07-05 23:29:17"/>
         </ZWave>
+        <ZWave name="ZWave_Devolo_Socket_01" state="associationAdd 1 1"
+            sets="associationAdd associationDel basicValue configByte configDefault configLong configWord off:noArg on:noArg protectionBytes protectionOff:noArg protectionOn:noArg protectionSeq:noArg swaIncludeNone:noArg swaIncludeOff:noArg swaIncludeOn:noArg swaIncludeOnOff:noArg swaOff:noArg swaOn:noArg blink off-for-timer off-till on-till toggle on-for-timer intervals"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 classes event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="0184e69f 3" />
+            <INT key="LASTInputDev" value="ZWDongle_0" />
+            <INT key="MSGCNT" value="9140" />
+            <INT key="NAME" value="ZWave_Devolo_Socket_01" />
+            <INT key="NR" value="29" />
+            <INT key="STATE" value="associationAdd 1 1" />
+            <INT key="TYPE" value="ZWave" />
+            <INT key="ZWDongle_0_MSGCNT" value="9140" />
+            <INT key="ZWDongle_0_RAWMSG" value="000400030e32022134000003bb000000000000" />
+            <INT key="ZWDongle_0_TIME" value="2015-05-18 14:34:47" />
+            <INT key="homeId" value="0184e69f" />
+            <INT key="id" value="03" />
+            <INT key="lastMsgTimestamp" value="1431952487" />
+            <INT key="IODev" value="ZWDongle_0" />
+            <ATTR key="IODev" value="ZWDongle_0" />
+            <ATTR key="classes"
+                value="ZWAVEPLUS_INFO VERSION MANUFACTURER_SPECIFIC SECURITY DEVICE_RESET_LOCALLY ASSOCIATION ASSOCIATION_GRP_INFO POWERLEVEL SWITCH_BINARY BASIC SWITCH_ALL METER CONFIGURATION ALARM PROTECTION FIRMWARE_UPDATE_MD" />
+            <ATTR key="icon" value="black_Steckdose.off" />
+            <ATTR key="room" value="ZWave" />
+            <STATE key="assocGroup_01" value="Max 01 Nodes 01" measured="2015-05-16 14:05:55" />
+            <STATE key="basicReport" value="ff" measured="2015-05-15 14:01:38" />
+            <STATE key="energy" value="2.21 kWh" measured="2015-05-18 13:52:13" />
+            <STATE key="power" value="95.5 W" measured="2015-05-18 14:34:47" />
+            <STATE key="reportedState" value="on" measured="2015-05-15 14:01:47" />
+            <STATE key="state" value="associationAdd 1 1" measured="2015-05-16 14:02:20" />
+            <STATE key="swa" value="on off" measured="2015-05-16 14:09:01" />
+            <STATE key="transmit" value="OK" measured="2015-05-16 14:02:20" />
+            <STATE key="zwavePlusInfo"
+                value="version:01 role:AlwaysOnSlave node:Z-Wave+Node installerIcon:0700 userIcon:0700"
+                measured="2015-05-15 14:02:06" />
+        </ZWave>
+        <ZWave name="ZWave_multisensor_1" state="closed"
+            sets="associationAdd associationDel configByte configDefault configLong configWord wakeupInterval wakeupNoMoreInformation:noArg"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 classes event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="0184e69f 2" />
+            <INT key="LASTInputDev" value="ZWDongle_0" />
+            <INT key="MSGCNT" value="1470" />
+            <INT key="NAME" value="ZWave_multisensor_1" />
+            <INT key="NR" value="24" />
+            <INT key="STATE" value="closed" />
+            <INT key="TYPE" value="ZWave" />
+            <INT key="ZWDongle_0_MSGCNT" value="1470" />
+            <INT key="ZWDongle_0_RAWMSG" value="00040002028407" />
+            <INT key="ZWDongle_0_TIME" value="2015-05-15 07:27:32" />
+            <INT key="homeId" value="0184e69f" />
+            <INT key="id" value="02" />
+            <INT key="lastMsgTimestamp" value="1431667652" />
+            <INT key="IODev" value="ZWDongle_0" />
+            <ATTR key="IODev" value="ZWDongle_0" />
+            <ATTR key="classes"
+                value="SENSOR_BINARY SENSOR_MULTILEVEL BATTERY WAKE_UP CONFIGURATION ASSOCIATION MANUFACTURER_SPECIFIC VERSION" />
+            <ATTR key="icon" value="temp_outside" />
+            <ATTR key="room" value="ZWave" />
+            <STATE key="CMD" value="ZW_APPLICATION_UPDATE" measured="2015-05-14 13:25:52" />
+            <STATE key="UNPARSED" value="SENSOR_MULTILEVEL 06311505013300"
+                measured="2015-05-14 17:07:34" />
+            <STATE key="assocGroup_01" value="Max 05 Nodes 01" measured="2015-05-13 20:43:41" />
+            <STATE key="basicReport" value="ff" measured="2015-05-13 20:43:41" />
+            <STATE key="basicSet" value="00" measured="2015-05-14 13:21:11" />
+            <STATE key="battery" value="100 %" measured="2015-05-15 07:27:32" />
+            <STATE key="config_101" value="225" measured="2015-05-14 13:35:33" />
+            <STATE key="config_111" value="60" measured="2015-05-14 13:35:33" />
+            <STATE key="config_2" value="1" measured="2015-05-14 13:39:33" />
+            <STATE key="config_4" value="0" measured="2015-05-14 13:39:33" />
+            <STATE key="humidity" value="66 %" measured="2015-05-15 07:27:32" />
+            <STATE key="luminance" value="202 Lux" measured="2015-05-15 07:27:32" />
+            <STATE key="reportedState" value="closed" measured="2015-05-14 13:24:11" />
+            <STATE key="state" value="closed" measured="2015-05-14 13:24:11" />
+            <STATE key="temperature" value="11.1 C" measured="2015-05-15 07:27:32" />
+            <STATE key="transmit" value="OK" measured="2015-05-14 13:43:33" />
+            <STATE key="version" value="Lib 6 Prot 3.28 App 1.18" measured="2015-05-13 20:43:41" />
+            <STATE key="wakeup" value="notification" measured="2015-05-15 07:27:32" />
+            <STATE key="wakeupReport" value="interval 240 target 1"
+                measured="2015-05-13 20:53:48" />
+        </ZWave>
     </ZWave_LIST>
 </FHZINFO>
