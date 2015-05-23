@@ -29,12 +29,12 @@ import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 
 public class DbLogDevice extends LogDevice<DbLogDevice> {
-    private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s:%s";
+    private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     @Override
     public String getGraphCommandFor(FhemDevice device, String fromDateFormatted, String toDateFormatted,
                                      GPlotSeries plotSeries) {
         return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
-                device.getName(), plotSeries.getDbLogDef());
+                plotSeries.getDbLogDef());
     }
 }
