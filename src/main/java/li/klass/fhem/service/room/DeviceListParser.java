@@ -197,7 +197,15 @@ public class DeviceListParser {
                 if (!allDevices.containsKey(logDeviceName)) {
                     return null;
                 }
-                LogDevice<?> logDevice = (LogDevice<?>) allDevices.get(logDeviceName);
+
+                // In rare cases we will find devices not being log devices, resulting in
+                // ClassCastExceptions. We just want to make sure we only handle LogDevices here.
+                FhemDevice logDeviceFhemDevice = allDevices.get(logDeviceName);
+                if (!(logDeviceFhemDevice instanceof LogDevice)) {
+                    return null;
+                }
+
+                LogDevice<?> logDevice = (LogDevice<?>) logDeviceFhemDevice;
 
                 List<String> labels = newArrayList();
                 DeviceNode labelsDef = input.getAttributes().get("label");

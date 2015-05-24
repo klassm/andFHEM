@@ -300,8 +300,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
 
     @Override
     protected final View getDeviceDetailView(Context context, D device, long lastUpdate) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(getDetailViewLayout(), null);
+        View view = LayoutInflater.from(context).inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
         if (isSensorDevice(device) && isOutdatedData(device, lastUpdate)) {
@@ -329,7 +328,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
             List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
 
             for (DeviceViewItem item : items) {
-                String name = item.getName(deviceDescMapping);
+                String name = item.getSortKey();
 
                 if (annotation != null) {
                     if (name.equalsIgnoreCase("state") && !annotation.showState()) {
