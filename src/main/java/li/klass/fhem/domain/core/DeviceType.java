@@ -93,27 +93,23 @@ import li.klass.fhem.domain.HOLDevice;
 import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.HourCounterDevice;
-import li.klass.fhem.domain.KS300Device;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.NetatmoDevice;
-import li.klass.fhem.domain.OWFSDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OregonDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwSwitchDevice;
 import li.klass.fhem.domain.OwcountDevice;
-import li.klass.fhem.domain.OwtempDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PCA301Device;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PCF8574Device;
 import li.klass.fhem.domain.PIDDevice;
-import li.klass.fhem.domain.PilightDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.PresenceDevice;
@@ -125,8 +121,6 @@ import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.RevoltDevice;
 import li.klass.fhem.domain.RoommateDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
-import li.klass.fhem.domain.SHT21Device;
-import li.klass.fhem.domain.SMLUSBDevice;
 import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SomfyDevice;
@@ -156,14 +150,12 @@ import static com.google.common.collect.Maps.newHashMap;
 
 public enum DeviceType {
 
-    KS300("KS300", KS300Device.class),
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OREGON("OREGON", OregonDevice.class),
@@ -173,7 +165,6 @@ public enum DeviceType {
     FILE_LOG("FileLog", FileLogDevice.class),
     DB_LOG("DbLog", DbLogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),
-    OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
@@ -212,11 +203,9 @@ public enum DeviceType {
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    PILIGHT("pilight", PilightDevice.class, new ToggleableAdapter<>(PilightDevice.class)),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter<>(HM485Device.class)),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
-    SHT21("I2C_SHT21", SHT21Device.class),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
     PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
@@ -227,7 +216,6 @@ public enum DeviceType {
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
-    SMLUSB("SMLUSB", SMLUSBDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter<>(SomfyDevice.class)),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),

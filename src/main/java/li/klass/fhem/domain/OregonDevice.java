@@ -35,7 +35,6 @@ import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @SupportsWidget(TemperatureWidgetView.class)
-@SuppressWarnings("unused")
 public class OregonDevice extends FhemDevice<OregonDevice> implements TemperatureDevice {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)

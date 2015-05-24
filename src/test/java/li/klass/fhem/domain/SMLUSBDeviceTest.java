@@ -34,14 +34,13 @@ public class SMLUSBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_all_device_properties() {
-        SMLUSBDevice device = getDeviceFor("device", SMLUSBDevice.class);
+        GenericDevice device = getDeviceFor("device", GenericDevice.class);
 
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("device");
-        assertThat(device.getPower()).isEqualTo("2504.00 (W)");
-        assertThat(device.getCounterReading()).isEqualTo("6362.92 (kWh)");
-        assertThat(device.getCounterReadingTariff1()).isEqualTo("6362.92 (kWh)");
+        assertThat(stateValueFor(device, "Momentanleistung")).isEqualTo("2504.0 (W)");
+        assertThat(stateValueFor(device, "Zählerstand-Bezug-Total")).isEqualTo("6362.92 (kWh)");
     }
 
     @Override

@@ -284,6 +284,7 @@
       }
     ]
   },
+
   "FHEMduino_Env": {
     "defaultGroup": "TEMPERATURE",
     "sensorDevice": true,
@@ -311,6 +312,57 @@
       {
         "key": "IODev",
         "desc": "ioDev"
+      }
+    ]
+  },
+  "KS300": {
+    "defaultGroup": "WEATHER",
+    "sensorDevice": true,
+    "supportedWidgets": [
+      "MediumInformationWidgetView",
+      "TemperatureWidgetView"
+    ],
+    "states": [
+      {
+        "key": "temperature",
+        "desc": "temperature",
+        "showInOverview": true,
+        "markers": [
+          "WidgetMediumLine1",
+          "WidgetTemperatureField"
+        ]
+      },
+      {
+        "key": "wind",
+        "desc": "wind",
+        "showInOverview": true,
+        "markers": ["WidgetMediumLine2"]
+      },
+      {
+        "key": "humidity",
+        "desc": "humidity",
+        "showInOverview": true,
+        "markers": [
+          "WidgetMediumLine3",
+          "WidgetTemperatureAdditionalField"
+        ]
+      },
+      {
+        "key": "rain",
+        "desc": "rain",
+        "showInOverview": true
+      },
+      {
+        "key": "avg_day",
+        "desc": "avgDay"
+      },
+      {
+        "key": "avg_month",
+        "desc": "avgMonth"
+      },
+      {
+        "key": "israining",
+        "desc": "isRaining"
       }
     ]
   },
@@ -370,5 +422,92 @@
         "showInOverview": true
       }
     ]
+  },
+  "SHT21": {
+    "defaultGroup": "TEMPERATURE",
+    "sensorDevice": true,
+    "supportedWidgets": [
+      "MediumInformationWidgetView",
+      "TemperatureWidgetView"
+    ],
+    "states": [
+      {
+        "key": "temperature",
+        "desc": "temperature",
+        "showInOverview": true,
+        "markers": [
+          "WidgetMediumLine1",
+          "WidgetTemperatureField"
+        ]
+      },
+      {
+        "key": "dewpoint",
+        "desc": "dewpoint",
+        "showInOverview": true,
+        "markers": ["WidgetMediumLine3"]
+      },
+      {
+        "key": "humidity",
+        "desc": "humidity",
+        "showInOverview": true,
+        "markers": [
+          "WidgetMediumLine2",
+          "WidgetTemperatureAdditionalField"
+        ]
+      }
+    ]
+  },
+  "SMLUSB": {
+    "defaultGroup": "USAGE",
+    "sensorDevice": true,
+    "supportedWidgets": ["MediumInformationWidgetView"],
+    "states": [
+      {
+        "key": "Momentanleistung",
+        "desc": "currentUsage",
+        "showInOverview": true,
+        "markers": ["WidgetMediumLine1"]
+      },
+      {
+        "key": "Zählerstand-Bezug-Total",
+        "desc": "counterReading",
+        "showInOverview": true,
+        "markers": ["WidgetMediumLine2"]
+      }
+    ]
+  },
+  "OWFS": {
+    "defaultGroup": "FHEM"
+  },
+  "OWTEMP": {
+    "defaultGroup": "TEMPERATURE",
+    "sensorDevice": true,
+    "supportedWidgets": [
+      "MediumInformationWidgetView",
+      "TemperatureWidgetView"
+    ],
+    "states": [
+      {
+        "key": "temperature",
+        "desc": "temperature",
+        "showInOverview": true,
+        "markers": [
+          "WidgetMediumLine1",
+          "WidgetTemperatureField"
+        ]
+      },
+      {
+        "key": "warnings",
+        "desc": "warnings",
+        "showInOverview": true,
+        "markers": [
+          "WidgetMediumLine2",
+          "WidgetTemperatureAdditionalField"
+        ]
+      }
+    ]
+  },
+  "pilight": {
+    "defaultGroup": "SWITCH"
   }
 }

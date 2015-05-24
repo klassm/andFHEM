@@ -33,12 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OWFSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        OWFSDevice device = getDefaultDevice(OWFSDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Override

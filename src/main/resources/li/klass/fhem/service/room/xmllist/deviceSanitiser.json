@@ -428,6 +428,16 @@
         "append": "kWh",
         "extract": "double"
       }
+    },
+    "SMLUSB": {
+      "Zählerstand-Bezug-Total": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "Momentanleistung": {
+        "append": "W",
+        "extract": "double"
+      }
     }
   }
 }

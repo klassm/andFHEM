@@ -34,12 +34,12 @@ public class SHT21DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        SHT21Device device = getDeviceFor("SHT21", SHT21Device.class);
+        GenericDevice device = getDeviceFor("SHT21", GenericDevice.class);
         assertThat(device.getName()).isEqualTo("SHT21");
 
-        assertThat(device.getHumidity()).isEqualTo("49.6 (%)");
-        assertThat(device.getTemperature()).isEqualTo("24.3 (°C)");
-        assertThat(device.getDewpoint()).isEqualTo("13.1 (°C)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("49.6 (%)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("24.3 (°C)");
+        assertThat(stateValueFor(device, "dewpoint")).isEqualTo("13.1 (°C)");
     }
 
     @Override
