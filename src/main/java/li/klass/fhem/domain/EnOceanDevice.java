@@ -132,7 +132,7 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
             return eventMapReverse.get("off");
         }
 
-        return "BI";
+        return super.getOffStateName();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
             return eventMapReverse.get("on");
         }
 
-        return "B0";
+        return super.getOnStateName();
     }
 
 
