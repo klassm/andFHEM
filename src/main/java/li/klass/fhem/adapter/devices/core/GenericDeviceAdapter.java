@@ -173,7 +173,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
             List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
             int currentGenericRow = 0;
             for (DeviceViewItem item : items) {
-                String name = item.getName(deviceDescMapping);
+                String name = item.getSortKey();
                 boolean alwaysShow = false;
                 if (annotation != null) {
                     if (name.equalsIgnoreCase("state")) {
