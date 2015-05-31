@@ -5,5 +5,5 @@ AndFHEM is an Android frontend to control devices using an FHEM home automation 
 
 # Build State
 
-The current build state can be found here:
+The current build state can be found at 
 [![Circle CI](https://circleci.com/gh/klassm/andFHEM/tree/master.svg?style=svg)](https://circleci.com/gh/klassm/andFHEM/tree/master)(https://circleci.com/gh/klassm/andFHEM)
