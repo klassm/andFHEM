@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.ThresholdDevice;
@@ -41,7 +41,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import static li.klass.fhem.domain.ThresholdDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.ThresholdDevice.MINIMUM_TEMPERATURE;
 
-public class ThresholdAdapter extends GenericDeviceAdapter<ThresholdDevice> {
+public class ThresholdAdapter extends ExplicitOverviewDetailDeviceAdapter<ThresholdDevice> {
 
     @Inject
     ApplicationProperties applicationProperties;

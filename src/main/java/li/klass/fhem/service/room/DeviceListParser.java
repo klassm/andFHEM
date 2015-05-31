@@ -330,7 +330,7 @@ public class DeviceListParser {
 
     private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice node, Optional<DeviceConfiguration> deviceConfiguration) throws Exception {
         T device = deviceClass.newInstance();
-        device.setDeviceConfiguration(deviceConfiguration.orNull());
+        device.setDeviceConfiguration(deviceConfiguration);
 
         Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 

@@ -27,13 +27,13 @@ package li.klass.fhem.adapter.devices;
 import android.content.Context;
 import android.content.Intent;
 
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
-public class WebLinkAdapter extends GenericDeviceAdapter<WebLinkDevice> {
+public class WebLinkAdapter extends ExplicitOverviewDetailDeviceAdapter<WebLinkDevice> {
     public WebLinkAdapter() {
         super(WebLinkDevice.class);
     }

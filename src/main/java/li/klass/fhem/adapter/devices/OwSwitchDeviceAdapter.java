@@ -32,12 +32,12 @@ import android.widget.TableRow;
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.OwSwitchDevice;
 
-public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> {
+public class OwSwitchDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<OwSwitchDevice> {
     @Inject
     StateUiService stateUiService;
 

@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import com.google.common.base.Optional;
+
 import java.io.Serializable;
 
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
@@ -34,14 +36,18 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class Device implements Serializable {
 
-    protected DeviceConfiguration deviceConfiguration;
+    protected Optional<DeviceConfiguration> deviceConfiguration;
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
 
     private XmlListDevice xmlListDevice;
 
-    public void setDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
+    public void setDeviceConfiguration(Optional<DeviceConfiguration> deviceConfiguration) {
         this.deviceConfiguration = deviceConfiguration;
+    }
+
+    public Optional<DeviceConfiguration> getDeviceConfiguration() {
+        return deviceConfiguration;
     }
 
     public void setXmlListDevice(XmlListDevice xmlListDevice) {

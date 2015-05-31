@@ -36,7 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
@@ -46,7 +46,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static java.util.Collections.sort;
 
-public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
+public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<PCA9532Device> {
     @Inject
     ApplicationProperties applicationProperties;
 

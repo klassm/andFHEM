@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+              style="@style/fragmentContent">
+
+    <TextView
+        style="@style/deviceDetailSectionCaption"
+        android:text="@string/generalDetails">
+    </TextView>
+
+    <TextView
+        android:id="@+id/general_details_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:background="@color/activeGreen"
+        android:padding="5dp"
+        android:text=""
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/measure_error_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:background="@color/red"
+        android:padding="5dp"
+        android:text="@string/errorOutdatedData"
+        android:textColor="@android:color/white"
+        android:visibility="gone"/>
+
+    <TableLayout
+        android:id="@+id/generic"
+        style="@style/deviceDetailTable">
+    </TableLayout>
+
+
+    <LinearLayout
+        android:id="@+id/graphButtons"
+        style="@style/deviceDetailSectionContent"
+        android:orientation="vertical">
+        <TextView
+            style="@style/deviceDetailSectionCaption"
+            android:text="@string/plots"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/actionButtons"
+        style="@style/deviceDetailSectionContent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/deviceDetailSectionCaption"
+            android:text="@string/actions"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/otherStuff"
+        style="@style/deviceDetailSectionContent"
+        android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>

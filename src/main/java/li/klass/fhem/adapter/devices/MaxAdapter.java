@@ -35,7 +35,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
@@ -51,7 +51,7 @@ import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.MaxDevice.HeatingMode;
 
-public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
+public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter<MaxDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 

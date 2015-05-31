@@ -43,7 +43,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
@@ -73,7 +73,7 @@ import static li.klass.fhem.ui.AndroidBug.handleColorStateBug;
 import static li.klass.fhem.ui.AndroidBug.showMessageIfColorStateBugIsEncountered;
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class FHTAdapter extends GenericDeviceAdapterWithSwitchActionRow<FHTDevice> {
+public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<FHTDevice> {
 
     @Inject
     ApplicationProperties applicationProperties;

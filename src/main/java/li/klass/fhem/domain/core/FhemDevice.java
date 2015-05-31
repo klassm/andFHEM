@@ -124,8 +124,8 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     public void afterDeviceXMLRead(Context context) {
         this.definition = getDefinition();
 
-        if (deviceConfiguration != null) {
-            deviceFunctionality = deviceConfiguration.getDefaultGroup();
+        if (deviceConfiguration.isPresent()) {
+            deviceFunctionality = deviceConfiguration.get().getDefaultGroup();
         }
 
         //Optimization to prevent the expensive calls to Annotations in getView()

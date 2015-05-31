@@ -31,14 +31,14 @@ import android.widget.TableRow;
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class STVDeviceAdapter extends GenericDeviceAdapter<STVDevice> {
+public class STVDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<STVDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 

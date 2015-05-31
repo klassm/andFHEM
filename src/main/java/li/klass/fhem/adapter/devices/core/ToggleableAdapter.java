@@ -44,7 +44,7 @@ import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYO
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
-public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDeviceAdapterWithSwitchActionRow<D> {
+public class ToggleableAdapter<D extends ToggleableDevice<D>> extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<D> {
     public ToggleableAdapter(Class<D> deviceClass) {
         super(deviceClass);
     }

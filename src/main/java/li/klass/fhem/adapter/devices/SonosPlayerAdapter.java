@@ -33,14 +33,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class SonosPlayerAdapter extends GenericDeviceAdapterWithSwitchActionRow<SonosPlayerDevice> {
+public class SonosPlayerAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<SonosPlayerDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 

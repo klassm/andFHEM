@@ -38,13 +38,13 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public class LightSceneAdapter extends GenericDeviceAdapterWithSwitchActionRow<LightSceneDevice> {
+public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<LightSceneDevice> {
     @Inject
     StateUiService stateUiService;
 

@@ -36,6 +36,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
@@ -70,9 +71,10 @@ public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice>
         boolean showState = true;
         boolean showMeasured = true;
 
-        if (deviceConfiguration != null) {
-            showState = deviceConfiguration.isShowStateInOverview();
-            showMeasured = deviceConfiguration.isShowMeasuredInOverview();
+        if (deviceConfiguration.isPresent()) {
+            DeviceConfiguration conf = deviceConfiguration.get();
+            showState = conf.isShowStateInOverview();
+            showMeasured = conf.isShowMeasuredInOverview();
         }
         return new OverviewViewSettingsCache(showState, showMeasured);
     }

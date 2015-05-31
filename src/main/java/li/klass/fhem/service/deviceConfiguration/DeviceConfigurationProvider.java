@@ -55,6 +55,8 @@ public class DeviceConfigurationProvider {
     public static final String MARKERS = "markers";
     private static final String SHOW_STATE_IN_OVERVIEW = "showStateInOverview";
     private static final String SHOW_MEASURED_IN_OVERVIEW = "showMeasuredInOverview";
+    public static final String SHOW_AFTER = "SHOW_AFTER";
+    private static final String ATTRIBUTES = "attributes";
     private final JSONObject options;
 
     @Inject
@@ -99,17 +101,36 @@ public class DeviceConfigurationProvider {
                 .withShowStateInOverview(jsonObject.optBoolean(SHOW_STATE_IN_OVERVIEW, true))
                 .withShowMeasuredInOverview(jsonObject.optBoolean(SHOW_MEASURED_IN_OVERVIEW, true));
 
+        addStates(jsonObject, builder);
+        addAttributes(jsonObject, builder);
+
+        return Optional.of(builder.build());
+    }
+
+    private void addAttributes(JSONObject jsonObject, DeviceConfiguration.Builder builder) {
+        JSONArray attributes = jsonObject.optJSONArray(ATTRIBUTES);
+        if (attributes != null) {
+            for (int i = 0; i < attributes.length(); i++) {
+                JSONObject attribute = attributes.optJSONObject(i);
+
+                builder.withAttribute(new DeviceConfiguration.ViewItemConfig(attribute.optString(KEY), attribute.optString(DESC), attribute.optString(SHOW_AFTER),
+                        attribute.optBoolean(SHOW_IN_OVERVIEW, false), attribute.optBoolean("showInDetail", true),
+                        transformStringJsonArray(attribute.optJSONArray(MARKERS))));
+            }
+        }
+    }
+
+    private void addStates(JSONObject jsonObject, DeviceConfiguration.Builder builder) {
         JSONArray states = jsonObject.optJSONArray(STATES);
         if (states != null) {
             for (int i = 0; i < states.length(); i++) {
                 JSONObject state = states.optJSONObject(i);
 
-                builder.withState(new DeviceConfiguration.State(state.optString(KEY), state.optString(DESC), state.optBoolean(SHOW_IN_OVERVIEW, false),
+                builder.withState(new DeviceConfiguration.ViewItemConfig(state.optString(KEY), state.optString(DESC), state.optString(SHOW_AFTER),
+                        state.optBoolean(SHOW_IN_OVERVIEW, false), state.optBoolean("showInDetail", true),
                         transformStringJsonArray(state.optJSONArray(MARKERS))));
             }
         }
-
-        return Optional.of(builder.build());
     }
 
     private Set<String> transformStringJsonArray(JSONArray array) {

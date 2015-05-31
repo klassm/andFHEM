@@ -670,4 +670,9 @@
     <string name="importPasswordDescription">Please enter a password to decrypt the backup. The value must match the value you entered to create the backup. The value may also be empty.</string>
     <string name="importErrorWrongPassword">Wrong password</string>
     <string name="importErrorInvalidFile">The file does not seem to be contain a valid andFHEM backup.</string>
+
+
+    <string name="detailCardExpand">More …</string>
+    <string name="detailStatesSection">States</string>
+    <string name="detailAttributesSection">Attributes</string>
 </resources>

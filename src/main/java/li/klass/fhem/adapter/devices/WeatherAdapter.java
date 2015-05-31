@@ -35,14 +35,14 @@ import android.widget.RelativeLayout;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ImageUtil;
 import li.klass.fhem.util.ListViewUtil;
 
-public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
+public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter<WeatherDevice> {
 
     public WeatherAdapter() {
         super(WeatherDevice.class);

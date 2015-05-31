@@ -37,13 +37,15 @@ public class DeviceConfiguration implements Serializable {
     private DeviceFunctionality defaultGroup;
     private boolean sensorDevice;
     private final Set<String> supportedWidgets;
-    private Set<State> states;
+    private Set<ViewItemConfig> states;
+    private Set<ViewItemConfig> attributes;
     private boolean showStateInOverview;
     private boolean showMeasuredInOverview;
 
     private DeviceConfiguration(Builder builder) {
         defaultGroup = checkNotNull(builder.defaultGroup);
         states = checkNotNull(builder.states);
+        attributes = checkNotNull(builder.attributes);
         supportedWidgets = checkNotNull(builder.supportedWidgets);
         sensorDevice = builder.sensorDevice;
         showStateInOverview = builder.showStateInOverview;
@@ -58,8 +60,12 @@ public class DeviceConfiguration implements Serializable {
         return sensorDevice;
     }
 
-    public Set<State> getStates() {
+    public Set<ViewItemConfig> getStates() {
         return states;
+    }
+
+    public Set<ViewItemConfig> getAttributes() {
+        return attributes;
     }
 
     public Set<String> getSupportedWidgets() {
@@ -74,13 +80,15 @@ public class DeviceConfiguration implements Serializable {
         return showMeasuredInOverview;
     }
 
-    public static class State implements Serializable {
+    public static class ViewItemConfig implements Serializable {
         private final Set<String> markers;
         String key;
         String desc;
+        String showAfter;
         boolean showInOverview = false;
+        boolean showInDetail = false;
 
-        public State(String key, String desc, boolean showInOverview, Set<String> markers) {
+        public ViewItemConfig(String key, String desc, String showAfter, boolean showInOverview, boolean showInDetail, Set<String> markers) {
             this.key = checkNotNull(key);
             this.desc = checkNotNull(desc);
             this.markers = checkNotNull(markers);
@@ -103,12 +111,20 @@ public class DeviceConfiguration implements Serializable {
             return markers;
         }
 
+        public String getShowAfter() {
+            return showAfter;
+        }
+
+        public boolean isShowInDetail() {
+            return showInDetail;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            State state = (State) o;
+            ViewItemConfig state = (ViewItemConfig) o;
 
             return !(key != null ? !key.equals(state.key) : state.key != null);
 
@@ -123,7 +139,8 @@ public class DeviceConfiguration implements Serializable {
     public static final class Builder {
         private DeviceFunctionality defaultGroup;
         private boolean sensorDevice = false;
-        private Set<State> states = Sets.newHashSet();
+        private Set<ViewItemConfig> states = Sets.newHashSet();
+        private Set<ViewItemConfig> attributes = Sets.newHashSet();
         private Set<String> supportedWidgets = Sets.newHashSet();
         private boolean showStateInOverview;
         private boolean showMeasuredInOverview;
@@ -141,8 +158,13 @@ public class DeviceConfiguration implements Serializable {
             return this;
         }
 
-        public Builder withState(State state) {
+        public Builder withState(ViewItemConfig state) {
             this.states.add(state);
+            return this;
+        }
+
+        public Builder withAttribute(ViewItemConfig attribute) {
+            this.attributes.add(attribute);
             return this;
         }
 

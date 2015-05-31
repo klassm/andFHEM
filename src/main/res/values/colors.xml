@@ -29,6 +29,7 @@
 
     <color name="lightGrey">#FFF6F6F6</color>
     <color name="darkGrey">#FFD9D9D9</color>
+    <color name="darkerGrey">#BB242424</color>
 
     <color name="focusedColor">#FFFFE748</color>
     <color name="thumbOuterColor">#55FFE748</color>

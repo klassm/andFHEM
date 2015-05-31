@@ -629,4 +629,8 @@
     <string name="importPasswordDescription">Bitte gib ein Password für die Entschlüsselung des Backups ein. Bitte stelle sicher, dass das Passwort mit dem Passwort übereinstimmt, das du bei der Erstellung des Backups angegeben hast! Das Feld darf auch leer bleiben.Please enter a password to decrypt the backup. The value must match the value you entered to create the backup. The value may also be empty.</string>
     <string name="importErrorWrongPassword">Falsches Passwort</string>
     <string name="importErrorInvalidFile">Diese Datei sieht nicht wie eine valide andFHEM Backup-Datei aus.</string>
+
+    <string name="detailCardExpand">Mehr …</string>
+    <string name="detailStatesSection">Zustände</string>
+    <string name="detailAttributesSection">Attribute</string>
 </resources>

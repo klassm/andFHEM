@@ -32,7 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
@@ -41,7 +41,7 @@ import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class GCMSendDeviceAdapter extends GenericDeviceAdapterWithSwitchActionRow<GCMSendDevice> {
+public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<GCMSendDevice> {
     @Inject
     GCMSendDeviceService gcmSendDeviceService;
 

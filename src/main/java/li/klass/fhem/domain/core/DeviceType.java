@@ -63,8 +63,9 @@ import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
@@ -181,11 +182,11 @@ public enum DeviceType {
     AT("at", AtDevice.class, null),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter<>(EIBDevice.class)),
-    HCS("HCS", HCSDevice.class, new GenericDeviceAdapterWithSwitchActionRow<>(HCSDevice.class)),
+    HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter<>(OwDevice.class)),
     UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
-    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new GenericDeviceAdapterWithSwitchActionRow<>(TRXSecurityDevice.class)),
+    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<>(TRXSecurityDevice.class)),
     PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
@@ -229,7 +230,7 @@ public enum DeviceType {
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
     HOURCOUNTER("HourCounter", HourCounterDevice.class),
 
-    GENERIC("__generic__", GenericDevice.class, new DimmableAdapter<>(GenericDevice.class));
+    GENERIC("__generic__", GenericDevice.class, new GenericOverviewDetailDeviceAdapter());
 
     private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = newHashMap();
     private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = newHashMap();
@@ -247,7 +248,7 @@ public enum DeviceType {
     private DeviceVisibility visibility = null;
 
     <T extends FhemDevice<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
-        this(xmllistTag, deviceClass, new GenericDeviceAdapter<>(deviceClass));
+        this(xmllistTag, deviceClass, new ExplicitOverviewDetailDeviceAdapter<>(deviceClass));
     }
 
     DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter<? extends FhemDevice<?>> adapter) {

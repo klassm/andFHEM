@@ -32,14 +32,14 @@ import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-public class HarmonyDeviceAdapter extends GenericDeviceAdapterWithSwitchActionRow<HarmonyDevice> {
+public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<HarmonyDevice> {
     public HarmonyDeviceAdapter() {
         super(HarmonyDevice.class);
     }

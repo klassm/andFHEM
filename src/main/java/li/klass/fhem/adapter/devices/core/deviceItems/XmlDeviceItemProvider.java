@@ -24,14 +24,9 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,121 +34,98 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration.ViewItemConfig;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Sets.newHashSet;
 
 @Singleton
 public class XmlDeviceItemProvider {
-    public static final Function<Map.Entry<String, DeviceNode>, DeviceViewItem> TO_GENERIC_VIEW_ITEM = new Function<Map.Entry<String, DeviceNode>, DeviceViewItem>() {
-        @Override
-        public DeviceViewItem apply(Map.Entry<String, DeviceNode> input) {
-            return new GenericViewItem(input.getKey(), input.getValue().getValue());
-        }
-    };
-    public static final Predicate<DeviceViewItem> STATE_ENTRY = new Predicate<DeviceViewItem>() {
-        @Override
-        public boolean apply(DeviceViewItem input) {
-            return !"state".equalsIgnoreCase(input.getSortKey());
-        }
-    };
-    @Inject
-    DeviceConfigurationProvider deviceConfigurationProvider;
 
     @Inject
     DeviceDescMapping deviceDescMapping;
 
-    public Set<DeviceViewItem> getDeviceClassItems(XmlListDevice xmlListDevice) {
+    public Set<DeviceViewItem> getDeviceClassItems(FhemDevice fhemDevice) {
         Set<DeviceViewItem> items = newHashSet();
+        XmlListDevice xmlListDevice = fhemDevice.getXmlListDevice();
+
         if (xmlListDevice == null) return items;
 
-        try {
-            DeviceType deviceType = DeviceType.getDeviceTypeFor(xmlListDevice.getType());
-            Optional<JSONObject> optConfig = deviceConfigurationProvider.plainConfigurationFor(xmlListDevice);
-            if (deviceType == DeviceType.GENERIC && !optConfig.isPresent()) {
-                items.addAll(genericStatesFor(xmlListDevice));
-            }
+        DeviceType deviceType = DeviceType.getDeviceTypeFor(xmlListDevice.getType());
+        Optional<DeviceConfiguration> configuration = fhemDevice.getDeviceConfiguration();
 
-            if (optConfig.isPresent()) {
-                items.addAll(statesFor(xmlListDevice, optConfig.get()));
-                items.addAll(attributesFor(xmlListDevice, optConfig.get()));
-            }
+        boolean showAll = !configuration.isPresent() && deviceType == DeviceType.GENERIC;
+        items.addAll(statesFor(xmlListDevice, configuration, showAll));
+        items.addAll(attributesFor(xmlListDevice, configuration, showAll));
 
-            return items;
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        return items;
     }
 
-    private Set<DeviceViewItem> genericStatesFor(XmlListDevice xmlListDevice) {
-
-        return from(xmlListDevice.getStates().entrySet())
-                .transform(TO_GENERIC_VIEW_ITEM)
-                .filter(STATE_ENTRY)
-                .toSet();
+    public Set<DeviceViewItem> getStatesFor(FhemDevice device, boolean showUnknown) {
+        Optional<DeviceConfiguration> configuration = device.getDeviceConfiguration();
+        return statesFor(device.getXmlListDevice(), configuration, showUnknown);
     }
 
-    private Set<DeviceViewItem> statesFor(XmlListDevice device, JSONObject jsonObject) throws JSONException {
+    public Set<DeviceViewItem> getAttributesFor(FhemDevice device, boolean showUnknown) {
+        Optional<DeviceConfiguration> configuration = device.getDeviceConfiguration();
+        return attributesFor(device.getXmlListDevice(), configuration, showUnknown);
+    }
+
+    private Set<DeviceViewItem> statesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
+        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getStates() : Collections.<ViewItemConfig>emptySet();
+        Map<String, DeviceNode> deviceStates = device.getStates();
+
+        return itemsFor(configs, deviceStates, showUnknown);
+    }
+
+    private Set<DeviceViewItem> attributesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
+        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getAttributes() : Collections.<ViewItemConfig>emptySet();
+        return itemsFor(configs, device.getAttributes(), showUnknown);
+    }
+
+    private Set<DeviceViewItem> itemsFor(Set<ViewItemConfig> configs, Map<String, DeviceNode> nodes, boolean showUnknown) {
         Set<DeviceViewItem> items = newHashSet();
 
-        JSONArray states = jsonObject.optJSONArray("states");
-        if (states == null) {
-            return items;
-        }
-
-        for (int i = 0; i < states.length(); i++) {
-            JSONObject state = states.getJSONObject(i);
-            Optional<XmlDeviceViewItem> item = itemFor(state, device.getStates());
-            if (item.isPresent()) {
-                items.add(item.get());
+        for (Map.Entry<String, DeviceNode> entry : nodes.entrySet()) {
+            Optional<ViewItemConfig> config = configFor(configs, entry.getKey());
+            if (config.isPresent()) {
+                items.add(itemFor(config.get(), entry.getValue()));
+            } else if (showUnknown) {
+                items.add(genericItemFor(entry.getValue()));
             }
         }
 
         return items;
     }
 
-    private Set<DeviceViewItem> attributesFor(XmlListDevice device, JSONObject jsonObject) throws JSONException {
-        Set<DeviceViewItem> items = newHashSet();
-
-        JSONArray attributes = jsonObject.optJSONArray("attributes");
-        if (attributes == null) {
-            return items;
-        }
-
-        for (int i = 0; i < attributes.length(); i++) {
-            JSONObject attribute = attributes.getJSONObject(i);
-            Optional<XmlDeviceViewItem> item = itemFor(attribute, device.getAttributes());
-            if (item.isPresent()) {
-                items.add(item.get());
+    private Optional<ViewItemConfig> configFor(Set<ViewItemConfig> viewItemConfigs, String key) {
+        for (ViewItemConfig config : viewItemConfigs) {
+            if (config.getKey().equalsIgnoreCase(key)) {
+                return Optional.of(config);
             }
         }
-
-        return items;
+        return Optional.absent();
     }
 
-    private Optional<XmlDeviceViewItem> itemFor(JSONObject object, Map<String, DeviceNode> valueMap) throws JSONException {
-        String key = object.getString("key");
-        if (!valueMap.containsKey(key)) {
-            return Optional.absent();
-        }
-        String desc;
-        String jsonDesc = object.optString("desc", null);
-        if (jsonDesc != null) {
-            desc = deviceDescMapping.descFor(ResourceIdMapper.valueOf(jsonDesc));
-        } else {
-            desc = deviceDescMapping.descFor(key);
-        }
-        String showAfter = object.optString("showAfter");
-        boolean showInOverview = object.optBoolean("showInOverview", false);
-        boolean showInDetail = object.optBoolean("showInDetail", true);
-        String value = valueMap.get(key).getValue();
+    private DeviceViewItem genericItemFor(DeviceNode deviceNode) {
+        String desc = deviceDescMapping.descFor(deviceNode.getKey());
 
-        return Optional.of(new XmlDeviceViewItem(key, desc,
-                value, showAfter, showInDetail, showInOverview));
+        return new XmlDeviceViewItem(deviceNode.getKey(), desc,
+                deviceNode.getValue(), null, true, false);
+    }
+
+    private XmlDeviceViewItem itemFor(ViewItemConfig config, DeviceNode deviceNode) {
+        String jsonDesc = config.getDesc();
+        String desc = jsonDesc != null ?
+                deviceDescMapping.descFor(ResourceIdMapper.valueOf(jsonDesc)) :
+                deviceDescMapping.descFor(deviceNode.getKey());
+
+        return new XmlDeviceViewItem(config.getKey(), desc,
+                deviceNode.getValue(), config.getShowAfter(), config.isShowInDetail(), config.isShowInOverview());
     }
 }

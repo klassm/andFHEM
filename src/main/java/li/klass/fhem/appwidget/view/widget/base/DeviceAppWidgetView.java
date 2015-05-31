@@ -33,12 +33,11 @@ import android.widget.RemoteViews;
 
 import com.google.common.base.Optional;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -55,7 +54,6 @@ import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.room.RoomListService;
 
-import static li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider.SUPPORTED_WIDGETS;
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
 
 public abstract class DeviceAppWidgetView extends AppWidgetView {
@@ -95,13 +93,11 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     private boolean supportsFromJsonConfiguration(FhemDevice<?> device) {
-        Optional<JSONObject> configuration = deviceConfigurationProvider.plainConfigurationFor(device.getXmlListDevice());
-        if (configuration.isPresent()) {
-            JSONObject conf = configuration.get();
-            JSONArray jsonArray = conf.optJSONArray(SUPPORTED_WIDGETS);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                String supports = jsonArray.optString(i);
-                if (getClass().getSimpleName().equalsIgnoreCase(supports)) {
+        Optional<DeviceConfiguration> deviceConfiguration = device.getDeviceConfiguration();
+        if (deviceConfiguration.isPresent()) {
+            Set<String> supportedWidgets = deviceConfiguration.get().getSupportedWidgets();
+            for (String supportedWidget : supportedWidgets) {
+                if (getClass().getSimpleName().equalsIgnoreCase(supportedWidget)) {
                     return true;
                 }
             }
@@ -176,7 +172,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls) {
         Optional<DeviceConfiguration> configuration = deviceConfigurationProvider.configurationFor(device);
         if (configuration.isPresent()) {
-            for (DeviceConfiguration.State state : configuration.get().getStates()) {
+            for (DeviceConfiguration.ViewItemConfig state : configuration.get().getStates()) {
                 if (state.getMarkers().contains(annotationCls.getSimpleName())) {
                     return device.getXmlListDevice().getStates().get(state.getKey()).getValue();
                 }

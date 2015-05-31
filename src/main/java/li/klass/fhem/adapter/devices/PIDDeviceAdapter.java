@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.PIDDevice;
@@ -41,7 +41,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import static li.klass.fhem.domain.PIDDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.PIDDevice.MINIMUM_TEMPERATURE;
 
-public class PIDDeviceAdapter extends GenericDeviceAdapterWithSwitchActionRow<PIDDevice> {
+public class PIDDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<PIDDevice> {
     @Inject
     ApplicationProperties applicationProperties;
 

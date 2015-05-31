@@ -36,14 +36,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.PCF8574Device;
 
 import static java.util.Collections.sort;
 
-public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
+public class PCF8574DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<PCF8574Device> {
     @Inject
     StateUiService stateUiService;
 

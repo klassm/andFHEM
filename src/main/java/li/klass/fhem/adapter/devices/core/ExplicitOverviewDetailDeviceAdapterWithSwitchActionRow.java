@@ -30,8 +30,8 @@ import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public class GenericDeviceAdapterWithSwitchActionRow<D extends FhemDevice<D>> extends GenericDeviceAdapter<D> {
-    public GenericDeviceAdapterWithSwitchActionRow(Class<D> deviceClass) {
+public class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<D extends FhemDevice<D>> extends ExplicitOverviewDetailDeviceAdapter<D> {
+    public ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow(Class<D> deviceClass) {
         super(deviceClass);
     }
 

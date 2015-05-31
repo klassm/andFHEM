@@ -29,12 +29,12 @@ import android.content.Context;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.domain.UniRollDevice;
 
-public class UniRollAdapter extends GenericDeviceAdapterWithSwitchActionRow<UniRollDevice> {
+public class UniRollAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<UniRollDevice> {
 
     public UniRollAdapter() {
         super(UniRollDevice.class);

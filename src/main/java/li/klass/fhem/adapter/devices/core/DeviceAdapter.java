@@ -117,8 +117,6 @@ public abstract class DeviceAdapter<D extends FhemDevice> {
 
     protected abstract Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent);
 
-    public abstract int getDetailViewLayout();
-
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
 

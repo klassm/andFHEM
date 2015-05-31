@@ -32,7 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
@@ -42,7 +42,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class WOLAdapter extends GenericDeviceAdapterWithSwitchActionRow<WOLDevice> {
+public class WOLAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<WOLDevice> {
     @Inject
     StateUiService stateUiService;
 

@@ -61,8 +61,9 @@ import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 
 @Module(complete = false,
@@ -104,9 +105,10 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 HarmonyDeviceAdapter.class,
 
                 DeviceAdapter.class,
-                GenericDeviceAdapter.class,
+                ExplicitOverviewDetailDeviceAdapter.class,
+                GenericOverviewDetailDeviceAdapter.class,
                 DimmableAdapter.class,
-                GenericDeviceAdapterWithSwitchActionRow.class
+                ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow.class
         })
 public class AdapterModule {
 }
