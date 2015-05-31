@@ -84,6 +84,10 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
 
+    static {
+        HttpsURLConnection.setDefaultSSLSocketFactory(new NoSSLv3Factory());
+    }
+
     private FHEMWEBConnection() {
     }
 
