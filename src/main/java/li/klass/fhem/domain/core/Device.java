@@ -27,35 +27,25 @@ package li.klass.fhem.domain.core;
 import java.io.Serializable;
 
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
-import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class Device implements Serializable {
 
+    protected DeviceConfiguration deviceConfiguration;
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
 
     private XmlListDevice xmlListDevice;
 
-    private OverviewViewSettings overviewViewSettings;
-
-    public Device() {
-        //Optimization to prevent the expensive calls to Annotations in getView()
-        overviewViewSettings = getClass().getAnnotation(OverviewViewSettings.class);
-        if (overviewViewSettings != null) {
-            overviewViewSettings = new OverviewViewSettingsCache(overviewViewSettings);
-        }
+    public void setDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
+        this.deviceConfiguration = deviceConfiguration;
     }
 
     public void setXmlListDevice(XmlListDevice xmlListDevice) {
         this.xmlListDevice = xmlListDevice;
-    }
-
-    public OverviewViewSettings getOverviewViewSettings() {
-        return overviewViewSettings;
     }
 
     public AllDevicesReadCallback getDeviceReadCallback() {
@@ -124,4 +114,5 @@ public abstract class Device implements Serializable {
     public XmlListDevice getXmlListDevice() {
         return xmlListDevice;
     }
+
 }

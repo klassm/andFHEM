@@ -53,6 +53,8 @@ public class DeviceConfigurationProvider {
     public static final String DESC = "desc";
     public static final String KEY = "key";
     public static final String MARKERS = "markers";
+    private static final String SHOW_STATE_IN_OVERVIEW = "showStateInOverview";
+    private static final String SHOW_MEASURED_IN_OVERVIEW = "showMeasuredInOverview";
     private final JSONObject options;
 
     @Inject
@@ -65,17 +67,26 @@ public class DeviceConfigurationProvider {
     }
 
     public Optional<JSONObject> plainConfigurationFor(XmlListDevice device) {
-        JSONObject deviceConfig = options.optJSONObject(device.getType());
+        return plainConfigurationFor(device.getType());
+    }
+
+    public Optional<JSONObject> plainConfigurationFor(String type) {
+        JSONObject deviceConfig = options.optJSONObject(type);
 
         return deviceConfig == null ? Optional.<JSONObject>absent() : Optional.of(deviceConfig);
     }
+
 
     public Optional<DeviceConfiguration> configurationFor(FhemDevice<?> device) {
         return configurationFor(device.getXmlListDevice());
     }
 
     public Optional<DeviceConfiguration> configurationFor(XmlListDevice device) {
-        Optional<JSONObject> configOpt = plainConfigurationFor(device);
+        return configurationFor(device.getType());
+    }
+
+    public Optional<DeviceConfiguration> configurationFor(String type) {
+        Optional<JSONObject> configOpt = plainConfigurationFor(type);
         if (!configOpt.isPresent()) {
             return Optional.absent();
         }
@@ -84,7 +95,9 @@ public class DeviceConfigurationProvider {
         DeviceConfiguration.Builder builder = new DeviceConfiguration.Builder()
                 .withSensorDevice(jsonObject.optBoolean(SENSOR_DEVICE, false))
                 .withDefaultGroup(DeviceFunctionality.valueOf(jsonObject.optString(DEFAULT_GROUP)))
-                .withSupportedWidgets(transformStringJsonArray(jsonObject.optJSONArray(SUPPORTED_WIDGETS)));
+                .withSupportedWidgets(transformStringJsonArray(jsonObject.optJSONArray(SUPPORTED_WIDGETS)))
+                .withShowStateInOverview(jsonObject.optBoolean(SHOW_STATE_IN_OVERVIEW, true))
+                .withShowMeasuredInOverview(jsonObject.optBoolean(SHOW_MEASURED_IN_OVERVIEW, true));
 
         JSONArray states = jsonObject.optJSONArray(STATES);
         if (states != null) {

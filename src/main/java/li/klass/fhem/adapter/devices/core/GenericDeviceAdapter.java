@@ -169,7 +169,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
         viewHolder.resetHolder();
         setTextView(viewHolder.getDeviceName(), device.getAliasOrName());
         try {
-            OverviewViewSettings annotation = device.getOverviewViewSettings();
+            OverviewViewSettings annotation = device.getOverviewViewSettingsCache();
             List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
             int currentGenericRow = 0;
             for (DeviceViewItem item : items) {

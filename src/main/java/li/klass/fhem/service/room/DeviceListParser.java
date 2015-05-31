@@ -34,7 +34,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +52,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.StatisticsDevice;
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
@@ -63,6 +61,7 @@ import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
@@ -80,7 +79,6 @@ import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
-import static li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider.DEFAULT_GROUP;
 import static li.klass.fhem.util.ReflectionUtil.getAllDeclaredFields;
 import static li.klass.fhem.util.ReflectionUtil.getAllDeclaredMethods;
 
@@ -141,6 +139,7 @@ public class DeviceListParser {
 
         for (Map.Entry<String, ImmutableList<XmlListDevice>> entry : parsedDevices.entrySet()) {
             DeviceType deviceType = getDeviceTypeFor(entry.getKey());
+            Optional<DeviceConfiguration> deviceConfiguration = deviceConfigurationProvider.configurationFor(entry.getKey());
 
             ImmutableList<XmlListDevice> xmlListDevices = parsedDevices.get(entry.getKey());
             if (xmlListDevices == null || xmlListDevices.isEmpty()) {
@@ -150,7 +149,7 @@ public class DeviceListParser {
             if (connectionService.mayShowInCurrentConnectionType(deviceType, context)) {
 
                 int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), xmlListDevices,
-                        allDevices, context);
+                        allDevices, context, deviceConfiguration);
 
                 if (localErrorCount > 0) {
                     errorHolder.addErrors(deviceType, localErrorCount);
@@ -222,14 +221,14 @@ public class DeviceListParser {
     }
 
     private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, ImmutableList<XmlListDevice> xmlListDevices,
-                                    Map<String, FhemDevice> allDevices, Context context) {
+                                    Map<String, FhemDevice> allDevices, Context context, Optional<DeviceConfiguration> deviceConfiguration) {
 
         int errorCount = 0;
 
         String errorText = "";
 
         for (XmlListDevice xmlListDevice : xmlListDevices) {
-            if (!deviceFromXmlListDevice(deviceClass, xmlListDevice, allDevices, context)) {
+            if (!deviceFromXmlListDevice(deviceClass, xmlListDevice, allDevices, context, deviceConfiguration)) {
                 errorCount++;
                 errorText += xmlListDevice.toString() + "\r\n\r\n";
             }
@@ -305,23 +304,17 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends FhemDevice> boolean deviceFromXmlListDevice(Class<T> deviceClass,
-                                                                   XmlListDevice xmlListDevice, Map<String, FhemDevice> allDevices, Context context) {
+    private <T extends FhemDevice> boolean deviceFromXmlListDevice(
+            Class<T> deviceClass, XmlListDevice xmlListDevice, Map<String,
+            FhemDevice> allDevices, Context context, Optional<DeviceConfiguration> deviceConfiguration) {
+
         try {
-            T device = createAndFillDevice(deviceClass, xmlListDevice);
+            T device = createAndFillDevice(deviceClass, xmlListDevice, deviceConfiguration);
             if (device == null) {
                 return false;
             }
 
             device.setXmlListDevice(xmlListDevice);
-            Optional<JSONObject> optConfig = deviceConfigurationProvider.plainConfigurationFor(xmlListDevice);
-            if (optConfig.isPresent()) {
-                String defaultGroup = optConfig.get().optString(DEFAULT_GROUP);
-                if (defaultGroup != null) {
-                    device.setDeviceFunctionality(DeviceFunctionality.valueOf(defaultGroup));
-                }
-            }
-
             device.afterDeviceXMLRead(context);
 
             LOG.debug("loaded device with name " + device.getName());
@@ -335,8 +328,10 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice node) throws Exception {
+    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice node, Optional<DeviceConfiguration> deviceConfiguration) throws Exception {
         T device = deviceClass.newInstance();
+        device.setDeviceConfiguration(deviceConfiguration.orNull());
+
         Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
         Iterable<DeviceNode> children = concat(node.getAttributes().values(), node.getInternals().values(), node.getStates().values(), node.getHeader().values());

@@ -26,23 +26,28 @@ package li.klass.fhem.service.deviceConfiguration;
 
 import com.google.common.collect.Sets;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class DeviceConfiguration {
-    DeviceFunctionality defaultGroup;
-    boolean sensorDevice;
+public class DeviceConfiguration implements Serializable {
+    private DeviceFunctionality defaultGroup;
+    private boolean sensorDevice;
     private final Set<String> supportedWidgets;
-    Set<State> states;
+    private Set<State> states;
+    private boolean showStateInOverview;
+    private boolean showMeasuredInOverview;
 
     private DeviceConfiguration(Builder builder) {
         defaultGroup = checkNotNull(builder.defaultGroup);
         states = checkNotNull(builder.states);
         supportedWidgets = checkNotNull(builder.supportedWidgets);
         sensorDevice = builder.sensorDevice;
+        showStateInOverview = builder.showStateInOverview;
+        showMeasuredInOverview = builder.showMeasuredInOverview;
     }
 
     public DeviceFunctionality getDefaultGroup() {
@@ -61,7 +66,15 @@ public class DeviceConfiguration {
         return supportedWidgets;
     }
 
-    public static class State {
+    public boolean isShowStateInOverview() {
+        return showStateInOverview;
+    }
+
+    public boolean isShowMeasuredInOverview() {
+        return showMeasuredInOverview;
+    }
+
+    public static class State implements Serializable {
         private final Set<String> markers;
         String key;
         String desc;
@@ -112,6 +125,8 @@ public class DeviceConfiguration {
         private boolean sensorDevice = false;
         private Set<State> states = Sets.newHashSet();
         private Set<String> supportedWidgets = Sets.newHashSet();
+        private boolean showStateInOverview;
+        private boolean showMeasuredInOverview;
 
         public Builder() {
         }
@@ -133,6 +148,16 @@ public class DeviceConfiguration {
 
         public Builder withSupportedWidgets(Set<String> supportedWidgets) {
             this.supportedWidgets = supportedWidgets;
+            return this;
+        }
+
+        public Builder withShowStateInOverview(boolean showStateInOverview) {
+            this.showStateInOverview = showStateInOverview;
+            return this;
+        }
+
+        public Builder withShowMeasuredInOverview(boolean showMeasuredInOverview) {
+            this.showMeasuredInOverview = showMeasuredInOverview;
             return this;
         }
 

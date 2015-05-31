@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -53,7 +55,6 @@ import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE
 
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
-    public static final long NEVER_OUTDATE_DATA = 0;
 
     protected List<String> rooms;
     protected List<String> webCmd = newArrayList();
@@ -76,6 +77,16 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     private boolean hasStatisticsDevice = false;
 
     private DeviceFunctionality deviceFunctionality;
+
+    private OverviewViewSettings overviewViewSettingsCache;
+
+    public final OverviewViewSettings getOverviewViewSettingsCache() {
+        return overviewViewSettingsCache;
+    }
+
+    protected OverviewViewSettings getExplicitOverviewSettings() {
+        return null;
+    }
 
     @XmllistAttribute("ROOM")
     public void setRoom(String value) {
@@ -112,18 +123,27 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public void afterDeviceXMLRead(Context context) {
         this.definition = getDefinition();
+
+        if (deviceConfiguration != null) {
+            deviceFunctionality = deviceConfiguration.getDefaultGroup();
+        }
+
+        //Optimization to prevent the expensive calls to Annotations in getView()
+        overviewViewSettingsCache = getExplicitOverviewSettings();
+        if (overviewViewSettingsCache == null) {
+            OverviewViewSettings annotation = getClass().getAnnotation(OverviewViewSettings.class);
+            if (annotation != null) {
+                overviewViewSettingsCache = new OverviewViewSettingsCache(annotation);
+            }
+        }
     }
 
     public void afterAllXMLRead() {
     }
 
-    public void setDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
-        this.deviceFunctionality = deviceFunctionality;
-    }
-
     @Override
     public DeviceFunctionality getDeviceGroup() {
-        return deviceFunctionality;
+        return deviceFunctionality == null ? DeviceFunctionality.UNKNOWN : deviceFunctionality;
     }
 
     private void parseEventMap(String content) {

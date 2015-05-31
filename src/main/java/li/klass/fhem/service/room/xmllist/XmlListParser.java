@@ -42,7 +42,6 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -91,7 +90,7 @@ public class XmlListParser {
                 if (devices.isEmpty()) {
                     continue;
                 }
-                String deviceType = devices.get(0).getType().toLowerCase(Locale.getDefault());
+                String deviceType = devices.get(0).getType();
                 if (result.containsKey(deviceType)) {
                     // In case we have two LISTs for the same device type, we need to merge
                     // existing lists. FHEM will not send out those lists, but we replace

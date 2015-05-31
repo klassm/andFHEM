@@ -151,13 +151,13 @@ public class GPlotSeries implements Serializable {
 
     public enum SeriesColor {
         RED(Color.RED),
-        GREEN(Color.GREEN),
+        GREEN(0xFF004700),
         BLUE(Color.BLUE),
         MAGENTA(Color.MAGENTA),
         BROWN(0xA52A2A),
-        WHITE(Color.WHITE),
+        WHITE(Color.BLACK),
         OLIVE(0x808000),
-        GRAY(Color.GRAY),
+        GRAY(0x5A5A5A),
         YELLOW(Color.YELLOW),;
 
         private final int color;

@@ -98,6 +98,9 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
+        if (!supportsToggle() && !supportsDim()) {
+            return super.getDeviceGroup();
+        }
         return functionalityForDimmable(this);
     }
 

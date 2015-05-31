@@ -33,6 +33,7 @@ import java.util.Map;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
@@ -62,5 +63,17 @@ public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice>
             return "dim";
         }
         return super.getSetListDimStateAttributeName();
+    }
+
+    @Override
+    protected OverviewViewSettings getExplicitOverviewSettings() {
+        boolean showState = true;
+        boolean showMeasured = true;
+
+        if (deviceConfiguration != null) {
+            showState = deviceConfiguration.isShowStateInOverview();
+            showMeasured = deviceConfiguration.isShowMeasuredInOverview();
+        }
+        return new OverviewViewSettingsCache(showState, showMeasured);
     }
 }

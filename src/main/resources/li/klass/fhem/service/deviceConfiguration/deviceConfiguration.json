@@ -318,6 +318,8 @@
   "KS300": {
     "defaultGroup": "WEATHER",
     "sensorDevice": true,
+    "showStateInOverview": false,
+    "showMeasuredInOverview": true,
     "supportedWidgets": [
       "MediumInformationWidgetView",
       "TemperatureWidgetView"
@@ -426,6 +428,8 @@
   "SHT21": {
     "defaultGroup": "TEMPERATURE",
     "sensorDevice": true,
+    "showStateInOverview": false,
+    "showMeasuredInOverview": true,
     "supportedWidgets": [
       "MediumInformationWidgetView",
       "TemperatureWidgetView"
@@ -460,6 +464,8 @@
   "SMLUSB": {
     "defaultGroup": "USAGE",
     "sensorDevice": true,
+    "showStateInOverview": false,
+    "showMeasuredInOverview": true,
     "supportedWidgets": ["MediumInformationWidgetView"],
     "states": [
       {
@@ -477,11 +483,15 @@
     ]
   },
   "OWFS": {
+    "showStateInOverview": true,
+    "showMeasuredInOverview": true,
     "defaultGroup": "FHEM"
   },
   "OWTEMP": {
     "defaultGroup": "TEMPERATURE",
     "sensorDevice": true,
+    "showStateInOverview": false,
+    "showMeasuredInOverview": true,
     "supportedWidgets": [
       "MediumInformationWidgetView",
       "TemperatureWidgetView"
