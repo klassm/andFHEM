@@ -633,4 +633,5 @@
     <string name="detailCardExpand">Mehr …</string>
     <string name="detailStatesSection">Zustände</string>
     <string name="detailAttributesSection">Attribute</string>
+    <string name="detailInternalsSection">Interna</string>
 </resources>

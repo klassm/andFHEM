@@ -33,11 +33,16 @@
         layout="@layout/device_detail_card_table" />
 
     <include
+        android:id="@+id/plotsCard"
+        layout="@layout/device_detail_card_plots" />
+
+    <include
         android:id="@+id/attributesCard"
         layout="@layout/device_detail_card_table" />
 
     <include
-        android:id="@+id/plotsCard"
-        layout="@layout/device_detail_card_plots" />
+        android:id="@+id/internalsCard"
+        layout="@layout/device_detail_card_table" />
+
 
 </LinearLayout>

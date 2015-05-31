@@ -76,6 +76,11 @@ public class XmlDeviceItemProvider {
         return attributesFor(device.getXmlListDevice(), configuration, showUnknown);
     }
 
+    public Set<DeviceViewItem> getInternalsFor(FhemDevice device, boolean showUnknown) {
+        Optional<DeviceConfiguration> configuration = device.getDeviceConfiguration();
+        return internalsFor(device.getXmlListDevice(), configuration, showUnknown);
+    }
+
     private Set<DeviceViewItem> statesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
         Set<ViewItemConfig> configs = config.isPresent() ? config.get().getStates() : Collections.<ViewItemConfig>emptySet();
         Map<String, DeviceNode> deviceStates = device.getStates();
@@ -86,6 +91,12 @@ public class XmlDeviceItemProvider {
     private Set<DeviceViewItem> attributesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
         Set<ViewItemConfig> configs = config.isPresent() ? config.get().getAttributes() : Collections.<ViewItemConfig>emptySet();
         return itemsFor(configs, device.getAttributes(), showUnknown);
+    }
+
+
+    private Set<DeviceViewItem> internalsFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
+        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getInternals() : Collections.<ViewItemConfig>emptySet();
+        return itemsFor(configs, device.getInternals(), showUnknown);
     }
 
     private Set<DeviceViewItem> itemsFor(Set<ViewItemConfig> configs, Map<String, DeviceNode> nodes, boolean showUnknown) {

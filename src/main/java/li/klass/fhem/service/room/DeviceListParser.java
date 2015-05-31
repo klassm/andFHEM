@@ -157,7 +157,7 @@ public class DeviceListParser {
             }
         }
 
-        ImmutableSet<SvgGraphDefinition> svgGraphDefinitions = createSvgGraphDefinitions(parsedDevices.get("svg"), allDevices);
+        ImmutableSet<SvgGraphDefinition> svgGraphDefinitions = createSvgGraphDefinitions(parsedDevices.get("SVG"), allDevices);
         attachSvgGraphsToDevices(svgGraphDefinitions, allDevices);
 
         performAfterReadOperations(allDevices, errorHolder);

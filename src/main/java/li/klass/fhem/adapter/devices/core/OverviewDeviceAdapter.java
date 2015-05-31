@@ -95,7 +95,7 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
      */
     protected transient Set<DeviceViewItem> annotatedClassItems;
 
-    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = newHashMap();
+    protected Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = newHashMap();
 
     @SuppressWarnings("unchecked")
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {

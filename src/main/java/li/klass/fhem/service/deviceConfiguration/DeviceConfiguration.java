@@ -39,6 +39,7 @@ public class DeviceConfiguration implements Serializable {
     private final Set<String> supportedWidgets;
     private Set<ViewItemConfig> states;
     private Set<ViewItemConfig> attributes;
+    private Set<ViewItemConfig> internals;
     private boolean showStateInOverview;
     private boolean showMeasuredInOverview;
 
@@ -46,6 +47,7 @@ public class DeviceConfiguration implements Serializable {
         defaultGroup = checkNotNull(builder.defaultGroup);
         states = checkNotNull(builder.states);
         attributes = checkNotNull(builder.attributes);
+        internals = checkNotNull(builder.internals);
         supportedWidgets = checkNotNull(builder.supportedWidgets);
         sensorDevice = builder.sensorDevice;
         showStateInOverview = builder.showStateInOverview;
@@ -66,6 +68,10 @@ public class DeviceConfiguration implements Serializable {
 
     public Set<ViewItemConfig> getAttributes() {
         return attributes;
+    }
+
+    public Set<ViewItemConfig> getInternals() {
+        return internals;
     }
 
     public Set<String> getSupportedWidgets() {
@@ -141,6 +147,7 @@ public class DeviceConfiguration implements Serializable {
         private boolean sensorDevice = false;
         private Set<ViewItemConfig> states = Sets.newHashSet();
         private Set<ViewItemConfig> attributes = Sets.newHashSet();
+        private Set<ViewItemConfig> internals = Sets.newHashSet();
         private Set<String> supportedWidgets = Sets.newHashSet();
         private boolean showStateInOverview;
         private boolean showMeasuredInOverview;
@@ -165,6 +172,11 @@ public class DeviceConfiguration implements Serializable {
 
         public Builder withAttribute(ViewItemConfig attribute) {
             this.attributes.add(attribute);
+            return this;
+        }
+
+        public Builder withInternal(ViewItemConfig internal) {
+            this.internals.add(internal);
             return this;
         }
 

@@ -31,7 +31,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.google.common.base.Optional;
 
 import java.util.List;
 import java.util.Set;
@@ -40,9 +43,16 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
+import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<GenericDevice> {
     @Override
@@ -61,7 +71,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
 
         fillStatesCard(device, linearLayout);
         fillAttributesCard(device, linearLayout);
+        fillInternalsCard(device, linearLayout);
         fillPlotsCard(device, linearLayout);
+
         return linearLayout;
     }
 
@@ -74,7 +86,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
 
         LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
         for (final SvgGraphDefinition svgGraphDefinition : device.getSvgGraphDefinitions()) {
-            Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, graphLayout);
+            Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, null);
             button.setText(svgGraphDefinition.getName());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,6 +94,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
                     ChartingActivity.showChart(getContext(), device, svgGraphDefinition);
                 }
             });
+            graphLayout.addView(button);
         }
     }
 
@@ -91,6 +104,10 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
 
     private void fillAttributesCard(final GenericDevice device, LinearLayout linearLayout) {
         fillCard(device, linearLayout, R.id.attributesCard, R.string.detailAttributesSection, new AttributeItemProvider());
+    }
+
+    private void fillInternalsCard(final GenericDevice device, LinearLayout linearLayout) {
+        fillCard(device, linearLayout, R.id.internalsCard, R.string.detailInternalsSection, new InternalsItemProvider());
     }
 
     private void fillCard(final GenericDevice device, LinearLayout linearLayout, int cardId, int caption, final ItemProvider itemProvider) {
@@ -123,9 +140,39 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
             GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = createTableRow(getInflater(), R.layout.device_detail_generic_table_row);
             fillTableRow(holder, item, device);
             table.addView(holder.row);
+            addActionIfRequired(device, table, item, holder.row);
         }
 
         table.setVisibility(items.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
+    private void addActionIfRequired(GenericDevice device, TableLayout table, DeviceViewItem item, TableRow row) {
+        if (item.getSortKey().equalsIgnoreCase("state") && device.getSetList().contains("on", "off")) {
+            table.addView(new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+                    .createRow(getInflater(), device, getContext()));
+            return;
+        }
+
+        SetListValue setListValue = device.getSetList().get(item.getSortKey());
+        if (setListValue == null) {
+            return;
+        }
+
+        if (setListValue instanceof SetListSliderValue) {
+            SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
+            TableRow sliderRow = new StateChangingSeekBarFullWidth<GenericDevice>(
+                    getContext(), extractLeadingInt(item.getValueFor(device)),
+                    sliderValue, item.getSortKey(), row, applicationProperties)
+                    .createRow(getInflater(), device);
+            table.addView(sliderRow);
+        } else if (setListValue instanceof SetListGroupValue) {
+            SetListGroupValue groupValue = (SetListGroupValue) setListValue;
+            List<String> groupStates = groupValue.getGroupStates();
+            if (groupStates.contains("on") && groupStates.contains("off")) {
+                table.addView(new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+                        .createRow(getInflater(), device, getContext()));
+            }
+        }
     }
 
     @Override
@@ -147,15 +194,21 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
         Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown);
     }
 
-    private class StateItemProvider implements ItemProvider {
+    private static class StateItemProvider implements ItemProvider {
         public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
-            return xmlDeviceItemProvider.getStatesFor(device, showUnknown);
+            return provider.getStatesFor(device, showUnknown);
         }
     }
 
-    private class AttributeItemProvider implements ItemProvider {
+    private static class AttributeItemProvider implements ItemProvider {
         public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
-            return xmlDeviceItemProvider.getAttributesFor(device, showUnknown);
+            return provider.getAttributesFor(device, showUnknown);
+        }
+    }
+
+    private static class InternalsItemProvider implements ItemProvider {
+        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
+            return provider.getInternalsFor(device, showUnknown);
         }
     }
 }

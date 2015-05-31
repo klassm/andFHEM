@@ -39,33 +39,22 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
-import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
 
 public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extends OverviewDeviceAdapter<D> {
     private static final String TAG = ExplicitOverviewDetailDeviceAdapter.class.getName();
 
-    @Inject
-    protected StateUiService stateUiService;
-
     private Class<D> deviceClass;
-
-    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = newHashMap();
-
 
     public ExplicitOverviewDetailDeviceAdapter(Class<D> deviceClass) {
         super();
