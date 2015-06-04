@@ -99,6 +99,10 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         if (configuration.isPresent()) {
             JSONObject conf = configuration.get();
             JSONArray jsonArray = conf.optJSONArray(SUPPORTED_WIDGETS);
+            if (jsonArray == null) {
+                return false;
+            }
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 String supports = jsonArray.optString(i);
                 if (getClass().getSimpleName().equalsIgnoreCase(supports)) {
