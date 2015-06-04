@@ -23,7 +23,7 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/andFHEMDarkGreen" android:state_pressed="true" />
-    <item android:drawable="@color/andFHEMDarkGreen" android:state_focused="true" />
+    <item android:drawable="@color/darkerGrey" android:state_pressed="true" />
+    <item android:drawable="@color/darkerGrey" android:state_focused="true" />
     <item android:drawable="@android:color/transparent" />
 </selector>

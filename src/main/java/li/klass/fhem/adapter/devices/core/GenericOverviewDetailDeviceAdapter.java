@@ -28,6 +28,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -55,6 +57,15 @@ import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<GenericDevice> {
+
+    private Animation animation;
+
+    @Override
+    public void attach(Context context) {
+        super.attach(context);
+        animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+    }
+
     @Override
     public Class<? extends FhemDevice> getSupportedDeviceClass() {
         return GenericDevice.class;
@@ -86,7 +97,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
 
         LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
         for (final SvgGraphDefinition svgGraphDefinition : device.getSvgGraphDefinitions()) {
-            Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, null);
+            Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
             button.setText(svgGraphDefinition.getName());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -139,16 +150,21 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
         for (DeviceViewItem item : items) {
             GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = createTableRow(getInflater(), R.layout.device_detail_generic_table_row);
             fillTableRow(holder, item, device);
-            table.addView(holder.row);
+            addRow(table, holder.row);
             addActionIfRequired(device, table, item, holder.row);
         }
 
         table.setVisibility(items.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
+    private void addRow(TableLayout table, TableRow row) {
+        row.setAnimation(animation);
+        table.addView(row);
+    }
+
     private void addActionIfRequired(GenericDevice device, TableLayout table, DeviceViewItem item, TableRow row) {
         if (item.getSortKey().equalsIgnoreCase("state") && device.getSetList().contains("on", "off")) {
-            table.addView(new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+            addRow(table, new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
                     .createRow(getInflater(), device, getContext()));
             return;
         }
@@ -164,12 +180,12 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
                     getContext(), extractLeadingInt(item.getValueFor(device)),
                     sliderValue, item.getSortKey(), row, applicationProperties)
                     .createRow(getInflater(), device);
-            table.addView(sliderRow);
+            addRow(table, sliderRow);
         } else if (setListValue instanceof SetListGroupValue) {
             SetListGroupValue groupValue = (SetListGroupValue) setListValue;
             List<String> groupStates = groupValue.getGroupStates();
             if (groupStates.contains("on") && groupStates.contains("off")) {
-                table.addView(new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+                addRow(table, new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
                         .createRow(getInflater(), device, getContext()));
             }
         }

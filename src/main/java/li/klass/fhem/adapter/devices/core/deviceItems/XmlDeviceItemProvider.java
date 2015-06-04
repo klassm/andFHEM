@@ -136,7 +136,8 @@ public class XmlDeviceItemProvider {
                 deviceDescMapping.descFor(ResourceIdMapper.valueOf(jsonDesc)) :
                 deviceDescMapping.descFor(deviceNode.getKey());
 
+        String showAfter = config.getShowAfter() != null ? config.getShowAfter() : DeviceViewItem.FIRST;
         return new XmlDeviceViewItem(config.getKey(), desc,
-                deviceNode.getValue(), config.getShowAfter(), config.isShowInDetail(), config.isShowInOverview());
+                deviceNode.getValue(), showAfter, config.isShowInDetail(), config.isShowInOverview());
     }
 }

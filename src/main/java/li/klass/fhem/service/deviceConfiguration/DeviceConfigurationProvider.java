@@ -57,6 +57,7 @@ public class DeviceConfigurationProvider {
     private static final String SHOW_MEASURED_IN_OVERVIEW = "showMeasuredInOverview";
     public static final String SHOW_AFTER = "SHOW_AFTER";
     private static final String ATTRIBUTES = "attributes";
+    private static final String INTERNALS = "internals";
     private final JSONObject options;
 
     @Inject
@@ -103,6 +104,7 @@ public class DeviceConfigurationProvider {
 
         addStates(jsonObject, builder);
         addAttributes(jsonObject, builder);
+        addInternals(jsonObject, builder);
 
         return Optional.of(builder.build());
     }
@@ -129,6 +131,19 @@ public class DeviceConfigurationProvider {
                 builder.withState(new DeviceConfiguration.ViewItemConfig(state.optString(KEY), state.optString(DESC), state.optString(SHOW_AFTER),
                         state.optBoolean(SHOW_IN_OVERVIEW, false), state.optBoolean("showInDetail", true),
                         transformStringJsonArray(state.optJSONArray(MARKERS))));
+            }
+        }
+    }
+
+    private void addInternals(JSONObject jsonObject, DeviceConfiguration.Builder builder) {
+        JSONArray internals = jsonObject.optJSONArray(INTERNALS);
+        if (internals != null) {
+            for (int i = 0; i < internals.length(); i++) {
+                JSONObject internal = internals.optJSONObject(i);
+
+                builder.withInternal(new DeviceConfiguration.ViewItemConfig(internal.optString(KEY), internal.optString(DESC), internal.optString(SHOW_AFTER),
+                        internal.optBoolean(SHOW_IN_OVERVIEW, false), internal.optBoolean("showInDetail", true),
+                        transformStringJsonArray(internal.optJSONArray(MARKERS))));
             }
         }
     }
