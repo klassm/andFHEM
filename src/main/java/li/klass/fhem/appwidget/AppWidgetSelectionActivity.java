@@ -182,7 +182,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
     }
 
     private void createWidget(WidgetType type, final Context context, String... payload) {
-        type.createWidgetConfiguration(getApplication(), this, widgetId, new WidgetConfigurationCreatedCallback() {
+        type.createWidgetConfiguration(this, widgetId, new WidgetConfigurationCreatedCallback() {
             @Override
             public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
                 appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration, context);

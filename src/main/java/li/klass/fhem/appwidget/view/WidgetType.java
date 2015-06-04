@@ -24,7 +24,6 @@
 
 package li.klass.fhem.appwidget.view;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.google.common.base.Predicate;
@@ -121,7 +120,7 @@ public enum WidgetType {
         }));
     }
 
-    public void createWidgetConfiguration(Application application, Context context, int appWidgetId,
+    public void createWidgetConfiguration(Context context, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback,
                                           String... payload) {
         widgetView.createWidgetConfiguration(context, this, appWidgetId, callback, payload);
