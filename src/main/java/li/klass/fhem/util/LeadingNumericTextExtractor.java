@@ -24,16 +24,15 @@
 
 package li.klass.fhem.util;
 
-import com.google.common.base.Strings;
-
 import java.util.Set;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 
 public class LeadingNumericTextExtractor {
 
     private enum State {
-        START, NEGATIVE, NUMBER, COMMA, MANTISSA_AFTER_COMMA, EXPONENT_DELIMITER, NEGATIVE_EXPONENT, EXPONENT, EXIT, ERROR
+        START, NEGATIVE, NUMBER, COMMA, MANTISSA_AFTER_COMMA, EXPONENT_DELIMITER, NEGATIVE_EXPONENT, EXPONENT, EXIT_WITHOUT_TEXT, EXIT, ERROR
     }
 
     private static final Set<State> END_STATES = newHashSet(State.NUMBER, State.COMMA, State.MANTISSA_AFTER_COMMA, State.EXPONENT, State.EXIT, State.ERROR);
@@ -47,7 +46,7 @@ public class LeadingNumericTextExtractor {
 
     private void parse(String input) {
         input = input.trim();
-        if (Strings.isNullOrEmpty(input)) {
+        if (isNullOrEmpty(input)) {
             return;
         }
 
@@ -66,6 +65,7 @@ public class LeadingNumericTextExtractor {
     private boolean parse(char c) {
         switch (state) {
             case EXIT:
+            case EXIT_WITHOUT_TEXT:
             case ERROR:
                 return false;
             case START:
@@ -76,7 +76,7 @@ public class LeadingNumericTextExtractor {
                     output.append(c);
                     state = State.NUMBER;
                 } else {
-                    state = State.ERROR;
+                    state = State.EXIT_WITHOUT_TEXT;
                 }
                 break;
             case NEGATIVE:
@@ -84,7 +84,7 @@ public class LeadingNumericTextExtractor {
                     output.append(c);
                     state = State.NUMBER;
                 } else {
-                    state = State.ERROR;
+                    state = State.EXIT_WITHOUT_TEXT;
                 }
                 break;
             case NUMBER:

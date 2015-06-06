@@ -29,6 +29,8 @@ import com.google.common.io.Resources;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 
@@ -45,6 +47,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 public class Sanitiser {
 
     private final JSONObject options;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Sanitiser.class);
 
     @Inject
     public Sanitiser() {
@@ -61,6 +64,9 @@ public class Sanitiser {
             return sanitise(deviceNode, deviceOptions);
         } catch (JSONException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOGGER.error("cannot sanitise {}", deviceNode);
+            return deviceNode;
         }
     }
 
