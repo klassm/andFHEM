@@ -49,7 +49,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +89,24 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     public static final int CURRENT_DAY_TIMESPAN = -1;
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    public static final Function<GraphEntry, String> TO_LABEL = new Function<GraphEntry, String>() {
+        @Override
+        public String apply(GraphEntry input) {
+            return input.getFormattedTime();
+        }
+    };
+    public static final Comparator<GraphEntry> GRAPH_ENTRY_DATE_COMPARATOR = new Comparator<GraphEntry>() {
+        @Override
+        public int compare(GraphEntry lhs, GraphEntry rhs) {
+            return lhs.compareTo(rhs);
+        }
+    };
+    public static final Function<List<GraphEntry>, Iterable<GraphEntry>> GRAPH_ENTRY_LIST_IDENTITY = new Function<List<GraphEntry>, Iterable<GraphEntry>>() {
+        @Override
+        public Iterable<GraphEntry> apply(List<GraphEntry> input) {
+            return input;
+        }
+    };
 
     /**
      * Current device graphs are shown for.
@@ -307,7 +325,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
             lineDataSet.setColor(series.getColor().getHexColor());
             lineDataSet.setCircleColor(series.getColor().getHexColor());
             lineDataSet.setFillColor(series.getColor().getHexColor());
-            lineDataSet.setDrawCubic(true);
+            lineDataSet.setDrawCubic(false);
             lineDataSet.setDrawCircles(false);
             lineDataSet.setDrawValues(false);
             lineDataSet.setLineWidth(series.getLineWidth());
@@ -339,19 +357,10 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     }
 
     private List<String> createXAxisLabelsFrom(Map<GPlotSeries, List<GraphEntry>> graphData) {
-        List<String> labels = newArrayList(from(graphData.values()).transformAndConcat(new Function<List<GraphEntry>, Iterable<GraphEntry>>() {
-            @Override
-            public Iterable<GraphEntry> apply(List<GraphEntry> input) {
-                return input;
-            }
-        }).transform(new Function<GraphEntry, String>() {
-            @Override
-            public String apply(GraphEntry input) {
-                return input.getFormattedTime();
-            }
-        }).toSet());
-        Collections.sort(labels);
-        return labels;
+        ImmutableList<GraphEntry> sortedEntries = from(graphData.values()).transformAndConcat(GRAPH_ENTRY_LIST_IDENTITY)
+                .toSortedList(GRAPH_ENTRY_DATE_COMPARATOR);
+
+        return from(sortedEntries).transform(TO_LABEL).toList();
     }
 
     @Override

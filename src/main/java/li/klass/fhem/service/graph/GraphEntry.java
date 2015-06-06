@@ -89,6 +89,4 @@ public class GraphEntry implements Comparable<GraphEntry> {
     public int compareTo(@NotNull GraphEntry graphEntry) {
         return (date).compareTo(graphEntry.getDate());
     }
-
-
 }
