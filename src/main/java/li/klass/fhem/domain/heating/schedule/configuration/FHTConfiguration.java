@@ -27,6 +27,7 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
@@ -44,6 +45,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
     @Override
     public void readNode(WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile, String key, String value) {
+        key = key.toUpperCase(Locale.getDefault());
         if (!key.endsWith("FROM1") && !key.endsWith("FROM2") && !key.endsWith("TO1") && !key.endsWith("TO2")) {
             return;
         }
@@ -80,7 +82,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     protected List<String> generateCommandParts(List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles) {
-        List<String> commandParts = new ArrayList<String>();
+        List<String> commandParts = new ArrayList<>();
 
         for (DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile : changedDayProfiles) {
             DayUtil.Day day = dayProfile.getDay();
@@ -105,7 +107,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     protected List<String> generateCommands(FHTDevice device, List<String> commandParts) {
-        List<String> commands = new ArrayList<String>();
+        List<String> commands = new ArrayList<>();
         StringBuilder currentCommand = new StringBuilder();
         int currentCommandSize = 0;
 
@@ -134,7 +136,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
     @Override
     public DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> createDayProfileFor(DayUtil.Day day, FHTConfiguration configuration) {
-        return new DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>(day, configuration);
+        return new DayProfile<>(day, configuration);
     }
 
     @Override
