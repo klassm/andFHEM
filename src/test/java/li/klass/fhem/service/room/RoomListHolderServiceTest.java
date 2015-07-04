@@ -63,7 +63,6 @@ public class RoomListHolderServiceTest {
             FHEMWEBDevice device = new FHEMWEBDevice();
             device.setName(input.getLeft());
             device.setPort(String.valueOf(input.getRight()));
-            device.setGroup("someGroup");
             return device;
         }
     };

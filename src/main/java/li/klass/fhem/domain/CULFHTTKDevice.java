@@ -58,6 +58,7 @@ public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
         }
         stateChangeText += getWindowState();
         setState(stateChangeText);
+        super.afterDeviceXMLRead(context);
     }
 
     @Override
