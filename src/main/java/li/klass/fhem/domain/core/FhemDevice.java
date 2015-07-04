@@ -395,8 +395,9 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public List<String> getInternalDeviceGroupOrGroupAttributes(Context context) {
         List<String> groups = newArrayList();
-        if (!isNullOrEmpty(group)) {
-            groups.addAll(asList(group.split(",")));
+        DeviceNode groupAttribute = getXmlListDevice().getAttributes().get("group");
+        if (groupAttribute != null) {
+            groups.addAll(asList(groupAttribute.getValue().split(",")));
         } else {
             groups.add(getDeviceGroup().getCaptionText(context));
         }
