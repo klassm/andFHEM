@@ -71,7 +71,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
     private long lastMeasureTime = -1;
-    private String group;
     private Set<SvgGraphDefinition> svgGraphDefinitions = newHashSet();
 
     private boolean hasStatisticsDevice = false;
@@ -114,11 +113,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     @XmllistAttribute("EVENTMAP")
     public void setEventmap(String value) {
         parseEventMap(value);
-    }
-
-    @XmllistAttribute("GROUP")
-    public void setGroup(String value) {
-        group = value;
     }
 
     public void afterDeviceXMLRead(Context context) {
