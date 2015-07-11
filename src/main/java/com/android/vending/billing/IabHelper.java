@@ -975,7 +975,7 @@ public class IabHelper {
     }
 
     public boolean isSetupDone() {
-        return mSetupDone;
+        return mSetupDone && mService != null && mServiceConn != null;
     }
 
     void logDebug(String msg) {
