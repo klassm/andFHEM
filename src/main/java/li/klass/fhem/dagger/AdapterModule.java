@@ -65,6 +65,11 @@ import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
+import li.klass.fhem.adapter.devices.overview.strategy.DefaultOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.DimmableOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.LightSceneDeviceOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.ToggleableOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.WeatherDeviceOverviewStrategy;
 
 @Module(complete = false,
         injects = {
@@ -108,7 +113,14 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 ExplicitOverviewDetailDeviceAdapter.class,
                 GenericOverviewDetailDeviceAdapter.class,
                 DimmableAdapter.class,
-                ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow.class
+                ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow.class,
+
+                DefaultOverviewStrategy.class,
+                DimmableOverviewStrategy.class,
+                ToggleableOverviewStrategy.class,
+                LightSceneDeviceOverviewStrategy.class,
+                WeatherDeviceOverviewStrategy.class
         })
+
 public class AdapterModule {
 }

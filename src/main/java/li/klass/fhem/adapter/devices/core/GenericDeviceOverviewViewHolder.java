@@ -17,9 +17,9 @@
  *
  * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
  * along with this distribution; if not, write to:
- *  Free Software Foundation, Inc.
- *  51 Franklin Street, Fifth Floor
- *  Boston, MA  02110-1301  USA
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.adapter.devices.core;
@@ -39,7 +39,6 @@ import li.klass.fhem.R;
 
 public class GenericDeviceOverviewViewHolder {
 
-
     private TableLayout tableLayout;
     private TableRow deviceNameRow;
     private TextView deviceName;
@@ -53,10 +52,9 @@ public class GenericDeviceOverviewViewHolder {
     }
 
     public static class GenericDeviceTableRowHolder {
-        TableRow row;
-        TextView description;
-        TextView value;
-
+        public TableRow row;
+        public TextView description;
+        public TextView value;
     }
 
     public void resetHolder() {

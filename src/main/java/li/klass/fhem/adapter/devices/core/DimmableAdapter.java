@@ -25,20 +25,18 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.DimActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimmableDeviceDimActionRowFullWidth;
 import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
+import li.klass.fhem.adapter.devices.overview.strategy.DimmableOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
@@ -47,32 +45,11 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
     @Inject
     StateUiService stateUiService;
 
+    @Inject
+    DimmableOverviewStrategy dimmableOverviewStrategy;
+
     public DimmableAdapter(Class<D> deviceClass) {
         super(deviceClass);
-    }
-
-    @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
-        D device = (D) rawDevice;
-        if (!device.supportsDim() || device.isSpecialButtonDevice()) {
-            return super.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate);
-        }
-        if (convertView == null || convertView.getTag() == null) {
-            convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
-            GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);
-            convertView.setTag(holder);
-        }
-        GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
-        holder.resetHolder();
-        holder.getDeviceName().setVisibility(View.GONE);
-        DimActionRow<D> row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY);
-        if (row == null) {
-            row = new DimActionRow<>(layoutInflater);
-            holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, row);
-        }
-        row.fillWith(device, null);
-        holder.getTableLayout().addView(row.getView());
-        return convertView;
     }
 
     @Override
@@ -125,5 +102,10 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
     @Override
     public Class getOverviewViewHolderClass() {
         return GenericDeviceOverviewViewHolder.class;
+    }
+
+    @Override
+    public OverviewStrategy getOverviewStrategy() {
+        return dimmableOverviewStrategy;
     }
 }

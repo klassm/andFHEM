@@ -54,4 +54,8 @@ public class DataConnectionSwitch {
 
         return currentConnection;
     }
+
+    public boolean isDummyDataActive(Context context) {
+        return getCurrentProvider(context) instanceof DummyDataConnection;
+    }
 }

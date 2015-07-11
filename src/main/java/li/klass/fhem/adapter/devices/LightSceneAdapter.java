@@ -37,45 +37,24 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
+import li.klass.fhem.adapter.devices.overview.strategy.LightSceneDeviceOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.LightSceneDevice;
-import li.klass.fhem.domain.core.FhemDevice;
 
 public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<LightSceneDevice> {
     @Inject
     StateUiService stateUiService;
 
+    @Inject
+    LightSceneDeviceOverviewStrategy lightSceneDeviceOverviewStrategy;
+
     public LightSceneAdapter() {
         super(LightSceneDevice.class);
     }
-
-    @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
-        TableLayout layout = (TableLayout) layoutInflater.inflate(R.layout.device_overview_generic, null);
-        layout.removeAllViews();
-
-        LightSceneDevice device = (LightSceneDevice) rawDevice;
-        layout.addView(new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
-                HolderActionRow.LAYOUT_OVERVIEW) {
-
-            @Override
-            public List<String> getItems(LightSceneDevice device) {
-                return device.getScenes();
-            }
-
-            @Override
-            public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
-                Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
-                setSceneButtonProperties(device, scene, button);
-                return button;
-            }
-        }.createRow(layout.getContext(), getInflater(), layout, device));
-        return layout;
-    }
-
 
     @Override
     protected void afterPropertiesSet() {
@@ -113,5 +92,10 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
 
     private void activateScene(LightSceneDevice device, String scene) {
         stateUiService.setSubState(device, "scene", scene, getContext());
+    }
+
+    @Override
+    public OverviewStrategy getOverviewStrategy() {
+        return lightSceneDeviceOverviewStrategy;
     }
 }

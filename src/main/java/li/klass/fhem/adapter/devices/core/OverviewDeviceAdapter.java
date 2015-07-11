@@ -25,15 +25,11 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +45,10 @@ import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
+import li.klass.fhem.adapter.devices.overview.strategy.DefaultOverviewStrategy;
+import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
@@ -65,7 +62,6 @@ import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OverviewDeviceAdapter.class);
 
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
@@ -88,6 +84,9 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
     @Inject
     DeviceDescMapping deviceDescMapping;
 
+    @Inject
+    DefaultOverviewStrategy defaultOverviewStrategy;
+
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
      * recreating this list on each view creation is really really expensive (involves reflection,
@@ -97,69 +96,12 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
 
     protected Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = newHashMap();
 
-    @SuppressWarnings("unchecked")
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
-        if (convertView == null || convertView.getTag() == null) {
-            convertView = layoutInflater.inflate(getOverviewLayout(), null);
-            GenericDeviceOverviewViewHolder viewHolder = new GenericDeviceOverviewViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            LOGGER.info("Reusing generic device overview view");
-        }
-        GenericDeviceOverviewViewHolder viewHolder = (GenericDeviceOverviewViewHolder) convertView.getTag();
-        fillDeviceOverviewView(convertView, (D) rawDevice, lastUpdate, viewHolder);
-        return convertView;
+    public OverviewStrategy getOverviewStrategy() {
+        return defaultOverviewStrategy;
     }
 
-
-    private int getOverviewLayout() {
-        return R.layout.device_overview_generic;
-    }
-
-    private void fillDeviceOverviewView(View view, D device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder) {
-        viewHolder.resetHolder();
-        setTextView(viewHolder.getDeviceName(), device.getAliasOrName());
-        try {
-            OverviewViewSettings annotation = device.getOverviewViewSettingsCache();
-            List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
-            int currentGenericRow = 0;
-            for (DeviceViewItem item : items) {
-                String name = item.getSortKey();
-                boolean alwaysShow = false;
-                if (annotation != null) {
-                    if (name.equalsIgnoreCase("state")) {
-                        if (!annotation.showState()) continue;
-                        alwaysShow = true;
-                    }
-
-                    if (name.equalsIgnoreCase("measured")) {
-                        if (!annotation.showMeasured()) continue;
-                        alwaysShow = true;
-                    }
-                }
-                if (alwaysShow || item.isShowInOverview()) {
-                    currentGenericRow++;
-                    GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder rowHolder;
-                    if (currentGenericRow <= viewHolder.getTableRowCount()) {
-                        rowHolder = viewHolder.getTableRowAt(currentGenericRow - 1);
-                    } else {
-                        rowHolder = createTableRow(getInflater(), R.layout.device_overview_generic_table_row);
-                        viewHolder.addTableRow(rowHolder);
-                    }
-                    fillTableRow(rowHolder, item, device);
-                    viewHolder.getTableLayout().addView(rowHolder.row);
-                }
-            }
-
-            if (isOverviewError(device, lastUpdate)) {
-                Resources resources = getContext().getResources();
-                int color = resources.getColor(R.color.errorBackground);
-                view.setBackgroundColor(color);
-            }
-
-        } catch (Exception e) {
-            LOGGER.error("exception occurred while setting device overview values", e);
-        }
+    public final View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
+        return getOverviewStrategy().createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice));
     }
 
 
@@ -207,7 +149,7 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
         }
     }
 
-    protected List<DeviceViewItem> getSortedAnnotatedClassItems(D device) {
+    protected List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device) {
         if (annotatedClassItems == null) {
             annotatedClassItems = annotatedMethodsAndFieldsProvider.generateAnnotatedClassItemsList(device.getClass());
         }
@@ -218,13 +160,13 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
     }
 
 
-    protected void registerListenersFor(D device, Set<DeviceViewItem> xmlViewItems) {
+    protected void registerListenersFor(FhemDevice device, Set<DeviceViewItem> xmlViewItems) {
         for (DeviceViewItem xmlViewItem : xmlViewItems) {
             registerListenerFor(device, xmlViewItem);
         }
     }
 
-    private void registerListenerFor(D device, final DeviceViewItem xmlViewItem) {
+    private void registerListenerFor(FhemDevice device, final DeviceViewItem xmlViewItem) {
         final String key = xmlViewItem.getSortKey();
         if (device.getSetList().contains(key)) {
             registerFieldListener(key, new FieldNameAddedToDetailListener<D>() {
