@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import li.klass.fhem.R;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.NumberSystemUtil;
 
@@ -40,6 +41,11 @@ public class ConversionFragment extends BaseFragment {
 
     private transient EditText inputField;
     private transient TextView resultField;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

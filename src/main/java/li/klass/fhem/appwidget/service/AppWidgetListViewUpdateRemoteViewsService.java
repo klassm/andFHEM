@@ -57,7 +57,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
     @Override
     public void onCreate() {
         super.onCreate();
-        ((AndFHEMApplication) getApplication()).inject(this);
+        ((AndFHEMApplication) getApplication()).getDaggerComponent().inject(this);
     }
 
     @Override

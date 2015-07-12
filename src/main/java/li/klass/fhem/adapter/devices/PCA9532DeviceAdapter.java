@@ -29,24 +29,25 @@ import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import com.google.common.collect.Lists;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PCA9532Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 
-public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<PCA9532Device> {
+public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -54,55 +55,65 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<PC
     StateUiService stateUiService;
 
     public PCA9532DeviceAdapter() {
-        super(PCA9532Device.class);
+        super();
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return PCA9532Device.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<PCA9532Device>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
-                List<String> ports = Lists.newArrayList(device.getPortsIsOnMap().keySet());
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                List<String> ports = newArrayList(((PCA9532Device) device).getPortsIsOnMap().keySet());
                 sort(ports);
 
                 for (String port : ports) {
-                    createPortRow(context, tableLayout, port, device);
+                    createPortRow(context, tableLayout, port, ((PCA9532Device) device));
                 }
             }
 
             private void createPortRow(Context context, TableLayout tableLayout, final String port, PCA9532Device device) {
-                tableLayout.addView(new ToggleActionRow<PCA9532Device>(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
+                tableLayout.addView(new ToggleActionRow(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
 
                     @Override
-                    protected boolean isOn(PCA9532Device device) {
-                        return device.getPortsIsOnMap().get(port);
+                    protected boolean isOn(FhemDevice device) {
+                        return ((PCA9532Device) device).getPortsIsOnMap().get(port);
                     }
 
                     @Override
-                    protected void onButtonClick(final Context context, final PCA9532Device device, final boolean isChecked) {
+                    protected void onButtonClick(final Context context, final FhemDevice device, final boolean isChecked) {
                         stateUiService.setSubState(device, port, isChecked ? "on" : "off", context);
                     }
                 }.createRow(context, device, port));
             }
         });
 
-        registerFieldListener("pwm0", new FieldNameAddedToDetailListener<PCA9532Device>() {
+        registerFieldListener("pwm0", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBarFullWidth<PCA9532Device>(
-                        context, device.getPwm0(),
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new StateChangingSeekBarFullWidth(
+                        context, ((PCA9532Device) device).getPwm0(),
                         (SetListSliderValue) device.getSetList().get("PWM0"), "PWM0", applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("pwm1", new FieldNameAddedToDetailListener<PCA9532Device>() {
+        registerFieldListener("pwm1", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBarFullWidth<PCA9532Device>(
-                        context, device.getPwm1(),
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new StateChangingSeekBarFullWidth(
+                        context, ((PCA9532Device) device).getPwm1(),
                         (SetListSliderValue) device.getSetList().get("PWM1"), "PWM1", applicationProperties)
                         .createRow(getInflater(), device));
             }

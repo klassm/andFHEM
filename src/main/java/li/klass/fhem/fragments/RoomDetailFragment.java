@@ -29,6 +29,7 @@ import android.os.Bundle;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.service.intent.RoomListIntentService;
 
@@ -37,6 +38,11 @@ import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 public class RoomDetailFragment extends DeviceListFragment {
 
     private String roomName;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public void setArguments(Bundle args) {

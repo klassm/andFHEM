@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutorService;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
@@ -55,8 +56,10 @@ public abstract class ConvenientIntentService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((AndFHEMApplication) getApplication()).inject(this);
+        inject(((AndFHEMApplication) getApplication()).getDaggerComponent());
     }
+
+    protected abstract void inject(ApplicationComponent applicationComponent);
 
     @Override
     protected void onHandleIntent(final Intent intent) {

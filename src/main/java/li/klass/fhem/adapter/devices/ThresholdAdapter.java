@@ -31,31 +31,39 @@ import android.widget.TableRow;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.ThresholdDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.domain.ThresholdDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.ThresholdDevice.MINIMUM_TEMPERATURE;
 
-public class ThresholdAdapter extends ExplicitOverviewDetailDeviceAdapter<ThresholdDevice> {
+public class ThresholdAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
     @Inject
     ApplicationProperties applicationProperties;
 
-    public ThresholdAdapter() {
-        super(ThresholdDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return ThresholdDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
-        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<ThresholdDevice>() {
+        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, ThresholdDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<ThresholdDevice>(context, device.getDesiredTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new TemperatureChangeTableRow(context, ((ThresholdDevice) device).getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));

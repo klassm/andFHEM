@@ -25,10 +25,15 @@
 package li.klass.fhem.adapter.devices;
 
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
-import li.klass.fhem.domain.EnOceanDevice;
+import li.klass.fhem.dagger.ApplicationComponent;
 
-public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
+public class EnOceanAdapter extends DimmableAdapter {
     public EnOceanAdapter() {
-        super(EnOceanDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 }

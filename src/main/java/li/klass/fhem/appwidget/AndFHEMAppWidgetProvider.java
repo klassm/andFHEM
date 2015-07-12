@@ -35,6 +35,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 
 public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
 
@@ -44,9 +45,11 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     protected AndFHEMAppWidgetProvider() {
         AndFHEMApplication application = AndFHEMApplication.getApplication();
         if (application != null) {
-            application.inject(this);
+            inject(application.getDaggerComponent());
         }
     }
+
+    protected abstract void inject(ApplicationComponent applicationComponent);
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

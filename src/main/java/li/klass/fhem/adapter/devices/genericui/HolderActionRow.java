@@ -38,7 +38,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class HolderActionRow<D extends FhemDevice<D>, I> {
+public abstract class HolderActionRow<I> {
     private String description;
     private int layout;
 
@@ -50,7 +50,7 @@ public abstract class HolderActionRow<D extends FhemDevice<D>, I> {
         this.layout = layout;
     }
 
-    public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final D device) {
+    public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final FhemDevice device) {
         TableRow row = (TableRow) inflater.inflate(layout, viewGroup, false);
 
         FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);
@@ -70,7 +70,7 @@ public abstract class HolderActionRow<D extends FhemDevice<D>, I> {
         return row;
     }
 
-    public abstract List<I> getItems(D device);
+    public abstract List<I> getItems(FhemDevice device);
 
-    public abstract View viewFor(I item, D device, LayoutInflater inflater, Context context, ViewGroup viewGroup);
+    public abstract View viewFor(I item, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup);
 }

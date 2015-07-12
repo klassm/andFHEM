@@ -30,7 +30,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class StateChangingYesNoTwoButtonActionRow<T extends FhemDevice> extends OnOffActionRow<T> {
+public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffActionRow {
 
     private final StateUiService stateUiService;
 
@@ -40,24 +40,24 @@ public abstract class StateChangingYesNoTwoButtonActionRow<T extends FhemDevice>
     }
 
     @Override
-    protected String getOnStateText(T device, Context context) {
+    protected String getOnStateText(FhemDevice device, Context context) {
         return context.getString(R.string.yes);
     }
 
     @Override
-    protected String getOffStateText(T device, Context context) {
+    protected String getOffStateText(FhemDevice device, Context context) {
         return context.getString(R.string.no);
     }
 
     @Override
-    public void onButtonClick(Context context, T device, String targetState) {
+    public void onButtonClick(Context context, FhemDevice device, String targetState) {
         stateUiService.setState(device, targetState, context);
     }
 
     @Override
-    protected boolean isOn(T device) {
+    protected boolean isOn(FhemDevice device) {
         return isYes(device);
     }
 
-    protected abstract boolean isYes(T device);
+    protected abstract boolean isYes(FhemDevice device);
 }

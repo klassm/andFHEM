@@ -51,6 +51,10 @@ public class AtService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AtService.class);
 
+    @Inject
+    public AtService() {
+    }
+
     public void createNew(String timerName, int hour, int minute, int second, String repetition, String type,
                           String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive,
                           Context context) {

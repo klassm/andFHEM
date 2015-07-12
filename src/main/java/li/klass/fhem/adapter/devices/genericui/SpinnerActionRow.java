@@ -39,7 +39,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class SpinnerActionRow<D extends FhemDevice> {
+public abstract class SpinnerActionRow {
     private String description;
     private String prompt;
     private List<String> spinnerValues;
@@ -62,7 +62,7 @@ public abstract class SpinnerActionRow<D extends FhemDevice> {
         this.context = context;
     }
 
-    public TableRow createRow(final D device, ViewGroup viewGroup) {
+    public TableRow createRow(final FhemDevice device, ViewGroup viewGroup) {
         ignoreItemSelection = true;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,5 +108,5 @@ public abstract class SpinnerActionRow<D extends FhemDevice> {
         selectedPosition = temporarySelectedPosition;
     }
 
-    public abstract void onItemSelected(final Context context, D device, String item);
+    public abstract void onItemSelected(final Context context, FhemDevice device, String item);
 }

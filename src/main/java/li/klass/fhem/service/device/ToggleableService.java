@@ -37,6 +37,10 @@ public class ToggleableService {
     @Inject
     CommandExecutionService commandExecutionService;
 
+    @Inject
+    public ToggleableService() {
+    }
+
     /**
      * Toggles the state of a toggleable device.
      *

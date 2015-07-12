@@ -37,47 +37,55 @@ import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.YamahaAVRDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class YamahaAVRAdapter extends ToggleableAdapter<YamahaAVRDevice> {
+public class YamahaAVRAdapter extends ToggleableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
     @Inject
     StateUiService stateUiService;
 
-    public YamahaAVRAdapter() {
-        super(YamahaAVRDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return YamahaAVRDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("volumeDesc", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
+        registerFieldListener("volumeDesc", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow<YamahaAVRDevice>(stateUiService)
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
             }
         });
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                 SetListGroupValue groupValue = (SetListGroupValue) device.getSetList().get("input");
-                tableLayout.addView(new StateChangingSpinnerActionRow<YamahaAVRDevice>(context, R.string.input, R.string.input,
-                        groupValue.getGroupStates(), device.getInput(), "input")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context, R.string.input, R.string.input,
+                        groupValue.getGroupStates(), ((YamahaAVRDevice) device).getInput(), "input")
                         .createRow(device, tableLayout));
             }
         });

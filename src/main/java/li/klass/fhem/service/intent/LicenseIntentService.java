@@ -24,37 +24,26 @@
 
 package li.klass.fhem.service.intent;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.ResultReceiver;
-import android.util.Log;
 
 import javax.inject.Inject;
-import javax.security.cert.X509Certificate;
 
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.billing.BillingService;
+import li.klass.fhem.billing.LicenseService;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
 import static li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class LicenseIntentService extends ConvenientIntentService {
 
-    private static final String TAG = LicenseIntentService.class.getName();
-
     @Inject
-    BillingService billingService;
+    LicenseService licenseService;
 
     @Inject
     ApplicationProperties applicationProperties;
-
-    private Context applicationContext = AndFHEMApplication.getContext();
 
     public LicenseIntentService() {
         super(LicenseIntentService.class.getName());
@@ -74,7 +63,7 @@ public class LicenseIntentService extends ConvenientIntentService {
 
     private void handlePremiumRequest(final ResultReceiver resultReceiver) {
 
-        isPremium(new IsPremiumListener() {
+        licenseService.isPremium(new LicenseService.IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
                 sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium);
@@ -82,58 +71,8 @@ public class LicenseIntentService extends ConvenientIntentService {
         });
     }
 
-    public void isPremium(final IsPremiumListener listener) {
-        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
-            @Override
-            public void onInventoryLoadFinished(boolean success) {
-                boolean isPremium = isPremiumInternal(success);
-                listener.isPremium(isPremium);
-            }
-        }, applicationContext);
-    }
-
-    private boolean isPremiumInternal(boolean loadSuccessful) {
-        boolean isPremium = false;
-
-        // careful: We need an application context here, as LicenseIntentService (this?!) is null
-        // when invoking getPackageName!
-        if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
-            Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
-            isPremium = true;
-        } else if (applicationContext.getPackageName().equals(PREMIUM_PACKAGE)) {
-            Log.i(TAG, "found package name to be " + PREMIUM_PACKAGE + " => premium");
-            isPremium = true;
-        } else if (isDebug(applicationContext)) {
-            Log.i(TAG, "running in debug => premium");
-            isPremium = true;
-        } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||
-                billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID))) {
-            Log.i(TAG, "found inapp premium purchase => premium");
-            isPremium = true;
-        } else {
-            Log.i(TAG, "seems that I am not Premium...");
-        }
-        return isPremium;
-    }
-
-    public static boolean isDebug(Context context) {
-        try {
-            PackageInfo pkgInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-
-            for (Signature appSignature : pkgInfo.signatures) {
-                X509Certificate appCertificate = X509Certificate.getInstance(appSignature.toByteArray());
-                if (appCertificate.getSubjectDN().getName().contains("Android Debug")) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            Log.e(LicenseIntentService.class.getName(), "isDebug() : some exception occurred while reading app signatures", e);
-        }
-        return false;
-    }
-
-    public interface IsPremiumListener {
-        void isPremium(boolean isPremium);
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

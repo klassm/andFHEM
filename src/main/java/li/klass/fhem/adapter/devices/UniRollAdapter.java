@@ -32,35 +32,43 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.UniRollDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class UniRollAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<UniRollDevice> {
+public class UniRollAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
 
-    public UniRollAdapter() {
-        super(UniRollDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return UniRollDevice.class;
     }
 
     @Override
-    protected List<DeviceDetailViewAction<UniRollDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<UniRollDevice>> detailActions = super.provideDetailActions();
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
 
-        detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.up) {
+    @Override
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
+
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.up) {
             @Override
-            public void onButtonClick(Context context, UniRollDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 stateUiService.setState(device, "up", context);
             }
         });
 
-        detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.stop) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.stop) {
             @Override
-            public void onButtonClick(Context context, UniRollDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 stateUiService.setState(device, "stop", context);
             }
         });
 
-        detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.down) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.down) {
             @Override
-            public void onButtonClick(Context context, UniRollDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 stateUiService.setState(device, "down", context);
             }
         });

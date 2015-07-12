@@ -22,10 +22,6 @@
  *   Boston, MA  02110-1301  USA
  */
 
-
-
-
-
 buildscript {
     repositories {
         mavenCentral()
@@ -33,13 +29,12 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 
-
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
 
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.5.1'
         classpath 'de.mobilej.unmock:UnMockPlugin:0.1.1'
     }
 }
@@ -54,6 +49,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 21
@@ -180,8 +176,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.google.guava:guava:18.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
-    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.google.dagger:dagger-compiler:2.0.1'
+    compile 'com.google.dagger:dagger:2.0.1'
+    compile 'javax.annotation:javax.annotation-api:1.2'
+
     compile 'joda-time:joda-time:2.4'
     //noinspection GradleDependency
     compile 'com.intellij:annotations:12.0@jar'

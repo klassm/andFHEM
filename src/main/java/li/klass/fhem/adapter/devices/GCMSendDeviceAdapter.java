@@ -37,33 +37,45 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.GCMSendDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<GCMSendDevice> {
+public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     GCMSendDeviceService gcmSendDeviceService;
 
     public GCMSendDeviceAdapter() {
-        super(GCMSendDevice.class);
+        super();
     }
 
     @Override
-    protected List<DeviceDetailViewAction<GCMSendDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<GCMSendDevice>> detailActions = super.provideDetailActions();
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return GCMSendDevice.class;
+    }
 
-        detailActions.add(new DeviceDetailViewButtonAction<GCMSendDevice>(R.string.gcmRegisterThis) {
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
+
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.gcmRegisterThis) {
             @Override
-            public void onButtonClick(Context context, GCMSendDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 context.startService(new Intent(Actions.GCM_ADD_SELF)
                         .setClass(context, DeviceIntentService.class)
                         .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
             }
 
             @Override
-            public boolean isVisible(GCMSendDevice device) {
-                return !gcmSendDeviceService.isDeviceRegistered(device, getContext());
+            public boolean isVisible(FhemDevice device) {
+                return !gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device, getContext());
             }
         });
 
@@ -71,8 +83,8 @@ public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
     }
 
     @Override
-    protected String getGeneralDetailsNotificationText(Context context, GCMSendDevice device) {
-        if (gcmSendDeviceService.isDeviceRegistered(device, context)) {
+    protected String getGeneralDetailsNotificationText(Context context, FhemDevice device) {
+        if (gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device, context)) {
             return context.getString(R.string.gcmAlreadyRegistered);
         }
         return null;

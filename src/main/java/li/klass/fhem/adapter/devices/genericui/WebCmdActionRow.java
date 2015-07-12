@@ -38,7 +38,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.handleSelectedOption;
 
-public class WebCmdActionRow<D extends FhemDevice<D>> extends HolderActionRow<D, String> {
+public class WebCmdActionRow extends HolderActionRow<String> {
     public WebCmdActionRow(int layout, Context context) {
         super(context.getString(R.string.webcmd), layout);
     }
@@ -48,12 +48,12 @@ public class WebCmdActionRow<D extends FhemDevice<D>> extends HolderActionRow<D,
     }
 
     @Override
-    public List<String> getItems(D device) {
+    public List<String> getItems(FhemDevice device) {
         return device.getWebCmd();
     }
 
     @Override
-    public View viewFor(final String command, final D device, LayoutInflater inflater,
+    public View viewFor(final String command, final FhemDevice device, LayoutInflater inflater,
                         final Context context, ViewGroup viewGroup) {
 
         ToggleButton button = (ToggleButton) inflater.inflate(R.layout.webcmd_row_element, viewGroup, false);

@@ -35,13 +35,14 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
-public class DimActionRow<D extends DimmableDevice<?>> {
+public class DimActionRow {
     private TextView updateView;
     private TextView description;
 
@@ -60,27 +61,29 @@ public class DimActionRow<D extends DimmableDevice<?>> {
         return tableRow;
     }
 
-    public void fillWith(final D device, TableRow updateRow) {
+    public void fillWith(final FhemDevice device, TableRow updateRow) {
+        DimmableDevice dimmableDevice = (DimmableDevice) device;
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setMax(device.getDimUpperBound());
-        seekBar.setProgress(device.getDimPosition());
-        description.setText(device.getAliasOrName());
+        seekBar.setMax(dimmableDevice.getDimUpperBound());
+        seekBar.setProgress(dimmableDevice.getDimPosition());
+        description.setText(dimmableDevice.getAliasOrName());
         if (updateRow != null) {
             updateView = (TextView) updateRow.findViewById(R.id.value);
         }
     }
 
-    private SeekBar.OnSeekBarChangeListener createListener(final D device) {
+    private SeekBar.OnSeekBarChangeListener createListener(final FhemDevice device) {
+        final DimmableDevice dimmableDevice = (DimmableDevice) device;
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public int progress = device.getDimPosition();
+            public int progress = dimmableDevice.getDimPosition();
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress;
 
                 if (updateView != null) {
-                    updateView.setText(device.getDimStateForPosition(progress));
+                    updateView.setText(dimmableDevice.getDimStateForPosition(progress));
                 }
             }
 
@@ -95,7 +98,7 @@ public class DimActionRow<D extends DimmableDevice<?>> {
         };
     }
 
-    public void onStopTrackingTouch(final Context context, D device, int progress) {
+    public void onStopTrackingTouch(final Context context, FhemDevice device, int progress) {
         context.startService(new Intent(Actions.DEVICE_DIM)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(DEVICE_DIM_PROGRESS, progress)

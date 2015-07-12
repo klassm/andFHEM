@@ -44,6 +44,10 @@ public class DimmableOverviewStrategy extends OverviewStrategy {
     @Inject
     ToggleableOverviewStrategy toggleableOverviewStrategy;
 
+    @Inject
+    public DimmableOverviewStrategy() {
+    }
+
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         DimmableDevice<?> device = (DimmableDevice<?>) rawDevice;
@@ -58,9 +62,9 @@ public class DimmableOverviewStrategy extends OverviewStrategy {
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
-        DimActionRow<DimmableDevice<?>> row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY);
+        DimActionRow row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY);
         if (row == null) {
-            row = new DimActionRow<>(layoutInflater);
+            row = new DimActionRow(layoutInflater);
             holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, row);
         }
         row.fillWith(device, null);

@@ -36,11 +36,13 @@ import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
 import li.klass.fhem.adapter.devices.overview.strategy.DimmableOverviewStrategy;
 import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
-public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapter<D> {
+public class DimmableAdapter extends ToggleableAdapter {
 
     @Inject
     StateUiService stateUiService;
@@ -48,31 +50,38 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
     @Inject
     DimmableOverviewStrategy dimmableOverviewStrategy;
 
-    public DimmableAdapter(Class<D> deviceClass) {
-        super(deviceClass);
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<D>(DIMMER) {
+        registerFieldListener("state", new FieldNameAddedToDetailListener(DIMMER) {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
-                tableLayout.addView(new DimmableDeviceDimActionRowFullWidth<>(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new DimmableDeviceDimActionRowFullWidth(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
                         .createRow(getInflater(), device));
-                tableLayout.addView(new DimUpDownRow<D>(stateUiService)
+                tableLayout.addView(new DimUpDownRow(stateUiService)
                         .createRow(context, getInflater(), device));
             }
 
             @Override
-            public boolean supportsDevice(D device) {
-                return device.supportsDim();
+            public boolean supportsDevice(FhemDevice device) {
+                return ((DimmableDevice) device).supportsDim();
             }
         });
     }
 
-    public static class DimUpDownRow<D extends DimmableDevice<D>> extends UpDownButtonRow<D> {
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return DimmableDevice.class;
+    }
+
+    public static class DimUpDownRow extends UpDownButtonRow {
 
         private final StateUiService stateUiService;
 
@@ -82,16 +91,18 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         }
 
         @Override
-        public void onUpButtonClick(Context context, D device) {
-            dim(context, device, device.getDimUpPosition());
+        public void onUpButtonClick(Context context, FhemDevice device) {
+            DimmableDevice dimmableDevice = (DimmableDevice) device;
+            dim(context, dimmableDevice, dimmableDevice.getDimUpPosition());
         }
 
         @Override
-        public void onDownButtonClick(Context context, D device) {
-            dim(context, device, device.getDimDownPosition());
+        public void onDownButtonClick(Context context, FhemDevice device) {
+            DimmableDevice dimmableDevice = (DimmableDevice) device;
+            dim(context, dimmableDevice, dimmableDevice.getDimDownPosition());
         }
 
-        protected void dim(Context context, D device, int newPosition) {
+        protected void dim(Context context, DimmableDevice device, int newPosition) {
             int currentPosition = device.getDimPosition();
             if (currentPosition != newPosition) {
                 stateUiService.setDim(device, newPosition, context);

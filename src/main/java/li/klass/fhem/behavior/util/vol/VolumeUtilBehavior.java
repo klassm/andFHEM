@@ -22,27 +22,28 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.dagger;
+package li.klass.fhem.behavior.util.vol;
 
-import dagger.Module;
-import li.klass.fhem.activities.AndFHEMMainActivity;
-import li.klass.fhem.activities.PreferencesActivity;
-import li.klass.fhem.activities.StartupActivity;
-import li.klass.fhem.activities.graph.ChartingActivity;
-import li.klass.fhem.appwidget.type.big.BigWidgetSelectionActivity;
-import li.klass.fhem.appwidget.type.medium.MediumWidgetSelectionActivity;
-import li.klass.fhem.appwidget.type.small.SmallWidgetSelectionActivity;
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.util.ValueExtractUtil;
 
-@Module(complete = false,
-        injects = {
-                AndFHEMMainActivity.class,
-                ChartingActivity.class,
-                StartupActivity.class,
-                PreferencesActivity.class,
+import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
-                SmallWidgetSelectionActivity.class,
-                MediumWidgetSelectionActivity.class,
-                BigWidgetSelectionActivity.class
-        })
-public class ActivityModule {
+public class VolumeUtilBehavior {
+    public static int volumeFor(FhemDevice fhemDevice) {
+        String volume = fhemDevice.getXmlListDevice().getStates().get("volume").getValue();
+        SetListSliderValue volumeSetList = (SetListSliderValue) fhemDevice.getSetList().get("volume");
+        if (volume.equalsIgnoreCase("on")) {
+            return volumeSetList.getStop();
+        } else if (volume.equalsIgnoreCase("off")) {
+            return volumeSetList.getStart();
+        }
+        return ValueExtractUtil.extractLeadingInt(volume);
+    }
+
+    public static boolean isMuted(FhemDevice fhemDevice) {
+        String mute = fhemDevice.getXmlListDevice().getStates().get("mute").getValue();
+        return onOffToTrueFalse(mute);
+    }
 }

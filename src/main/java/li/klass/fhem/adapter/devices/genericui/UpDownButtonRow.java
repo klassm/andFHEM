@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.adapter.devices.genericui;
@@ -33,7 +34,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class UpDownButtonRow<T extends FhemDevice> {
+public abstract class UpDownButtonRow {
     private String description;
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_updownbuttonrow;
@@ -43,7 +44,7 @@ public abstract class UpDownButtonRow<T extends FhemDevice> {
         this.description = description;
     }
 
-    public TableRow createRow(final Context context, LayoutInflater inflater, final T device) {
+    public TableRow createRow(final Context context, LayoutInflater inflater, final FhemDevice device) {
         TableRow row = (TableRow) inflater.inflate(LAYOUT_DETAIL, null);
         ((TextView) row.findViewById(R.id.description)).setText(description);
 
@@ -67,7 +68,7 @@ public abstract class UpDownButtonRow<T extends FhemDevice> {
         return row;
     }
 
-    public abstract void onUpButtonClick(Context context, T device);
+    public abstract void onUpButtonClick(Context context, FhemDevice device);
 
-    public abstract void onDownButtonClick(Context context, T device);
+    public abstract void onDownButtonClick(Context context, FhemDevice device);
 }

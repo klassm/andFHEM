@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +44,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class OnOffActionRow<T extends FhemDevice> {
+public class OnOffActionRow {
 
     public static final String HOLDER_KEY = "OnOffActionRow";
     public static final int LAYOUT_DETAIL = R.layout.device_detail_onoffbuttonrow;
@@ -68,7 +67,7 @@ public class OnOffActionRow<T extends FhemDevice> {
     }
 
     @SuppressWarnings("unchecked")
-    public TableRow createRow(LayoutInflater inflater, final T device, Context context) {
+    public TableRow createRow(LayoutInflater inflater, final FhemDevice device, Context context) {
         TableRow tableRow = (TableRow) inflater.inflate(layoutId, null);
         TextView descriptionView = ((TextView) tableRow.findViewById(R.id.description));
         Button onButton = findOnButton(tableRow);
@@ -104,15 +103,15 @@ public class OnOffActionRow<T extends FhemDevice> {
         return (Button) tableRow.findViewById(R.id.onButton);
     }
 
-    protected String getOnStateName(T device, Context context) {
+    protected String getOnStateName(FhemDevice device, Context context) {
         return "on";
     }
 
-    protected String getOffStateName(T device, Context context) {
+    protected String getOffStateName(FhemDevice device, Context context) {
         return "off";
     }
 
-    protected String getOnStateText(T device, Context context) {
+    protected String getOnStateText(FhemDevice device, Context context) {
         @SuppressWarnings("unchecked")
         Map<String, String> eventMap = device.getEventMap();
 
@@ -120,7 +119,7 @@ public class OnOffActionRow<T extends FhemDevice> {
         return eventMap.containsKey(onStateName) ? eventMap.get(onStateName) : context.getString(R.string.on);
     }
 
-    protected String getOffStateText(T device, Context context) {
+    protected String getOffStateText(FhemDevice device, Context context) {
         @SuppressWarnings("unchecked")
         Map<String, String> eventMap = device.getEventMap();
 
@@ -128,11 +127,11 @@ public class OnOffActionRow<T extends FhemDevice> {
         return eventMap.containsKey(offStateName) ? eventMap.get(offStateName) : context.getString(R.string.off);
     }
 
-    protected boolean isOn(T device) {
+    protected boolean isOn(FhemDevice device) {
         return false;
     }
 
-    private ToggleButton.OnClickListener createListener(final Context context, final T device, final String targetState) {
+    private ToggleButton.OnClickListener createListener(final Context context, final FhemDevice device, final String targetState) {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +140,7 @@ public class OnOffActionRow<T extends FhemDevice> {
         };
     }
 
-    public void onButtonClick(final Context context, T device, String targetState) {
+    public void onButtonClick(final Context context, FhemDevice device, String targetState) {
         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

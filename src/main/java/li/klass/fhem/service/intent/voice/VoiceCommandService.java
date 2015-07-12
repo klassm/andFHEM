@@ -74,6 +74,10 @@ public class VoiceCommandService {
     @Inject
     RoomListService roomListService;
 
+    @Inject
+    public VoiceCommandService() {
+    }
+
     public Optional<VoiceResult> resultFor(String voiceCommand, Context context) {
         voiceCommand = replaceArticles(voiceCommand.toLowerCase(Locale.getDefault()));
 

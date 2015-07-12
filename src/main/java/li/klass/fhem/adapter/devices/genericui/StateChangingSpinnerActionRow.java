@@ -35,7 +35,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class StateChangingSpinnerActionRow<D extends FhemDevice<D>> extends SpinnerActionRow<D> {
+public class StateChangingSpinnerActionRow extends SpinnerActionRow {
 
     private final String commandAttribute;
 
@@ -53,7 +53,7 @@ public class StateChangingSpinnerActionRow<D extends FhemDevice<D>> extends Spin
     }
 
     @Override
-    public void onItemSelected(Context context, D device, String item) {
+    public void onItemSelected(Context context, FhemDevice device, String item) {
 
         context.startService(
                 new Intent(Actions.DEVICE_SET_SUB_STATE)

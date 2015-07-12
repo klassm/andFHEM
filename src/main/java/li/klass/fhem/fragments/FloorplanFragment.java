@@ -35,12 +35,18 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.util.BuildVersion;
 
 public class FloorplanFragment extends AbstractWebViewFragment {
 
     public static final String TAG = FloorplanFragment.class.getName();
     private String deviceName;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public void setArguments(Bundle args) {

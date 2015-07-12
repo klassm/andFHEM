@@ -36,6 +36,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.CommandExecutionService;
@@ -98,5 +99,10 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
             LOG.info("getRemoteRoomDeviceListMap() - error during command execution", e);
             return Optional.absent();
         }
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

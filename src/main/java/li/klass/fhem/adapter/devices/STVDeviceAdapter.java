@@ -30,42 +30,50 @@ import android.widget.TableRow;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.STVDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class STVDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<STVDevice> {
+public class STVDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
     @Inject
     StateUiService stateUiService;
 
-    public STVDeviceAdapter() {
-        super(STVDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return STVDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<STVDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final STVDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow<STVDevice>(stateUiService)
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
             }
         });
 
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<STVDevice>() {
+        registerFieldListener("volume", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, STVDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });

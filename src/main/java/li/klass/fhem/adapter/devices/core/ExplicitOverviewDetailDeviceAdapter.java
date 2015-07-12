@@ -39,6 +39,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Set;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
@@ -51,20 +52,15 @@ import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
 
-public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extends OverviewDeviceAdapter<D> {
+public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     private static final String TAG = ExplicitOverviewDetailDeviceAdapter.class.getName();
 
-    private Class<D> deviceClass;
-
-    public ExplicitOverviewDetailDeviceAdapter(Class<D> deviceClass) {
-        super();
-
-        this.deviceClass = deviceClass;
+    public ExplicitOverviewDetailDeviceAdapter() {
         afterPropertiesSet();
-        registerFieldListener("state", new FieldNameAddedToDetailListener<D>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
-                                            D device, TableRow fieldTableRow) {
+                                            FhemDevice device, TableRow fieldTableRow) {
                 createWebCmdTableRowIfRequired(getInflater(), tableLayout, device);
             }
         });
@@ -74,11 +70,11 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
     }
 
     private void createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
-                                                final D device) {
+                                                final FhemDevice device) {
         if (device.getWebCmd().isEmpty()) return;
         final Context context = inflater.getContext();
 
-        layout.addView(new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL, context)
+        layout.addView(new WebCmdActionRow(HolderActionRow.LAYOUT_DETAIL, context)
                 .createRow(context, inflater, layout, device));
     }
 
@@ -88,7 +84,7 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
     }
 
     @Override
-    protected final View getDeviceDetailView(Context context, D device, long lastUpdate) {
+    protected final View getDeviceDetailView(Context context, FhemDevice device, long lastUpdate) {
         View view = getInflater().inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
@@ -106,7 +102,7 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
         return R.layout.device_detail_explicit;
     }
 
-    protected void fillDeviceDetailView(Context context, View view, D device) {
+    protected void fillDeviceDetailView(Context context, View view, FhemDevice device) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         TableLayout layout = (TableLayout) view.findViewById(R.id.generic);
@@ -149,37 +145,39 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
         updateGeneralDetailsNotificationText(context, view, device);
     }
 
-    private void notifyFieldListeners(Context context, D device, TableLayout layout, String fieldName, TableRow fieldTableRow) {
+    private void notifyFieldListeners(Context context, FhemDevice device, TableLayout layout, String fieldName, TableRow fieldTableRow) {
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
             return;
         }
 
-        List<FieldNameAddedToDetailListener<D>> listeners = fieldNameAddedListeners.get(fieldName);
-        for (FieldNameAddedToDetailListener<D> listener : listeners) {
+        List<FieldNameAddedToDetailListener> listeners = fieldNameAddedListeners.get(fieldName);
+        for (FieldNameAddedToDetailListener listener : listeners) {
             if (listener.supportsDevice(device)) {
                 listener.onFieldNameAdded(context, layout, fieldName, device, fieldTableRow);
             }
         }
     }
 
-    private void addDetailGraphButtons(Context context, View view, D device, LayoutInflater inflater) {
+    @SuppressWarnings("unchecked")
+    private void addDetailGraphButtons(Context context, View view, FhemDevice device, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
-        if (device.getSvgGraphDefinitions().isEmpty()) {
+        Set<SvgGraphDefinition> svgGraphDefinitions = device.getSvgGraphDefinitions();
+        if (svgGraphDefinitions.isEmpty()) {
             graphLayout.setVisibility(View.GONE);
             return;
         }
-        for (SvgGraphDefinition svgGraphDefinition : device.getSvgGraphDefinitions()) {
+        for (SvgGraphDefinition svgGraphDefinition : svgGraphDefinitions) {
             addGraphButton(context, graphLayout, inflater, device, svgGraphDefinition);
         }
     }
 
-    private void addDetailActionButtons(Context context, View view, D device, LayoutInflater inflater) {
+    private void addDetailActionButtons(Context context, View view, FhemDevice device, LayoutInflater inflater) {
         LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
-        List<DeviceDetailViewAction<D>> actions = provideDetailActions();
+        List<DeviceDetailViewAction> actions = provideDetailActions();
         if (!hasVisibleDetailActions(actions, device)) {
             actionLayout.setVisibility(View.GONE);
         }
-        for (DeviceDetailViewAction<D> action : actions) {
+        for (DeviceDetailViewAction action : actions) {
             if (!action.isVisible(device)) continue;
 
             View actionView = action.createView(context, inflater, device, actionLayout);
@@ -187,10 +185,10 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
         }
     }
 
-    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {
+    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, FhemDevice device, LayoutInflater inflater) {
     }
 
-    private void updateGeneralDetailsNotificationText(Context context, View view, D device) {
+    private void updateGeneralDetailsNotificationText(Context context, View view, FhemDevice device) {
         String text = getGeneralDetailsNotificationText(context, device);
         TextView notificationView = (TextView) view.findViewById(R.id.general_details_notification);
 
@@ -204,7 +202,7 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
     }
 
     private void addGraphButton(final Context context, LinearLayout graphLayout,
-                                LayoutInflater inflater, final D device, final SvgGraphDefinition svgGraphDefinition) {
+                                LayoutInflater inflater, final FhemDevice device, final SvgGraphDefinition svgGraphDefinition) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
         assert button != null;
 
@@ -212,10 +210,10 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
         graphLayout.addView(button);
     }
 
-    private boolean hasVisibleDetailActions(List<DeviceDetailViewAction<D>> actions, D device) {
+    private boolean hasVisibleDetailActions(List<DeviceDetailViewAction> actions, FhemDevice device) {
         if (actions.isEmpty()) return false;
 
-        for (DeviceDetailViewAction<D> detailAction : actions) {
+        for (DeviceDetailViewAction detailAction : actions) {
             if (detailAction.isVisible(device)) {
                 return true;
             }
@@ -223,7 +221,7 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
         return false;
     }
 
-    protected String getGeneralDetailsNotificationText(Context context, D device) {
+    protected String getGeneralDetailsNotificationText(Context context, FhemDevice device) {
         return null;
     }
 
@@ -232,12 +230,7 @@ public class ExplicitOverviewDetailDeviceAdapter<D extends FhemDevice<D>> extend
         return intent;
     }
 
-    @Override
-    public Class<? extends FhemDevice> getSupportedDeviceClass() {
-        return deviceClass;
-    }
-
-    protected List<DeviceDetailViewAction<D>> provideDetailActions() {
+    protected List<DeviceDetailViewAction> provideDetailActions() {
         return Lists.newArrayList();
     }
 }

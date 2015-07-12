@@ -27,13 +27,13 @@ package li.klass.fhem.adapter.devices.genericui.multimedia;
 import android.content.Context;
 
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
+import li.klass.fhem.behavior.util.vol.VolumeUtilBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class VolumeActionRow<V extends FhemDevice<V> & VolumeDevice> extends StateChangingSeekBarFullWidth<V> {
-    public VolumeActionRow(Context context, V device, ApplicationProperties applicationProperties) {
-        super(context, device.getVolumeAsInt(), (SetListSliderValue) device.getSetList().get("volume"), "volume", applicationProperties);
+public class VolumeActionRow extends StateChangingSeekBarFullWidth {
+    public VolumeActionRow(Context context, FhemDevice device, ApplicationProperties applicationProperties) {
+        super(context, VolumeUtilBehavior.volumeFor(device), (SetListSliderValue) device.getSetList().get("volume"), "volume", applicationProperties);
     }
 }

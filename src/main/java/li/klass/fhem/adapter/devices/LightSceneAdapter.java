@@ -43,9 +43,11 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.overview.strategy.LightSceneDeviceOverviewStrategy;
 import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.LightSceneDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<LightSceneDevice> {
+public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     StateUiService stateUiService;
 
@@ -53,24 +55,34 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     LightSceneDeviceOverviewStrategy lightSceneDeviceOverviewStrategy;
 
     public LightSceneAdapter() {
-        super(LightSceneDevice.class);
+        super();
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return LightSceneDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
-        registerFieldListener("state", new FieldNameAddedToDetailListener<LightSceneDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, LightSceneDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new HolderActionRow<LightSceneDevice, String>(context.getString(R.string.scene), HolderActionRow.LAYOUT_DETAIL) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new HolderActionRow<String>(context.getString(R.string.scene), HolderActionRow.LAYOUT_DETAIL) {
 
                     @Override
-                    public List<String> getItems(LightSceneDevice device) {
-                        return device.getScenes();
+                    public List<String> getItems(FhemDevice device) {
+                        return ((LightSceneDevice) device).getScenes();
                     }
 
                     @Override
-                    public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
+                    public View viewFor(String scene, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
                         Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
                         setSceneButtonProperties(device, scene, button);
                         return button;
@@ -80,7 +92,7 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         });
     }
 
-    private void setSceneButtonProperties(final LightSceneDevice device, final String scene, Button button) {
+    private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button) {
         button.setText(scene);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +102,7 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         });
     }
 
-    private void activateScene(LightSceneDevice device, String scene) {
+    private void activateScene(FhemDevice device, String scene) {
         stateUiService.setSubState(device, "scene", scene, getContext());
     }
 

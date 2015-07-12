@@ -45,15 +45,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import dagger.ObjectGraph;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.dagger.ApplicationComponent;
+import li.klass.fhem.dagger.ApplicationModule;
+import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
-import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
-import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.CloseableUtil;
@@ -75,23 +74,24 @@ public abstract class DeviceXMLParsingBase {
     @Mock
     protected ConnectionService connectionService;
 
-    @InjectMocks
-    protected DeviceListParser deviceListParser;
+    @Mock
+    protected Context context;
 
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
 
-    @Mock
-    protected Context context;
+    @InjectMocks
+    protected DeviceListParser deviceListParser;
 
     @Before
     public void before() throws Exception {
         AndFHEMApplication.setContext(context);
 
-        ObjectGraph graph = AndFHEMApplication.createDaggerGraph();
-        setFieldValue(deviceListParser, "parser", graph.get(XmlListParser.class));
-        setFieldValue(deviceListParser, "gPlotHolder", graph.get(GPlotHolder.class));
-        setFieldValue(deviceListParser, "deviceConfigurationProvider", graph.get(DeviceConfigurationProvider.class));
+        ApplicationComponent applicationComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(new AndFHEMApplication())).build();
+
+        setFieldValue(deviceListParser, "parser", applicationComponent.getXmlListParser());
+        setFieldValue(deviceListParser, "gPlotHolder", applicationComponent.getGPlotHolder());
+        setFieldValue(deviceListParser, "deviceConfigurationProvider", applicationComponent.getDeviceConfigurationProvider());
 
         mockStrings();
 

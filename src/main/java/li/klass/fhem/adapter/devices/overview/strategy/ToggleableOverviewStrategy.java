@@ -54,6 +54,11 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
     @Inject
     DefaultOverviewStrategy defaultOverviewStrategy;
 
+
+    @Inject
+    public ToggleableOverviewStrategy() {
+    }
+
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
@@ -89,16 +94,16 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
 
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
                                                                             TableLayout tableLayout, LayoutInflater layoutInflater) {
-        tableLayout.addView(new WebCmdActionRow<T>(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
+        tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
                 .createRow(context, layoutInflater, tableLayout, device));
     }
 
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
         Context context = layoutInflater.getContext();
 
-        ToggleDeviceActionRow<T> actionRow = holder.getAdditionalHolderFor(HOLDER_KEY);
+        ToggleDeviceActionRow actionRow = holder.getAdditionalHolderFor(HOLDER_KEY);
         if (actionRow == null) {
-            actionRow = new ToggleDeviceActionRow<>(layoutInflater, layoutId);
+            actionRow = new ToggleDeviceActionRow(layoutInflater, layoutId);
             holder.putAdditionalHolder(HOLDER_KEY, actionRow);
         }
         actionRow.fillWith(context, device, device.getAliasOrName());
@@ -106,9 +111,9 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
-        OnOffActionRowForToggleables<T> onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRowForToggleables.HOLDER_KEY);
+        OnOffActionRowForToggleables onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRowForToggleables.HOLDER_KEY);
         if (onOffActionRow == null) {
-            onOffActionRow = new OnOffActionRowForToggleables<>(layoutId);
+            onOffActionRow = new OnOffActionRowForToggleables(layoutId);
             holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow);
         }
         holder.getTableLayout().addView(onOffActionRow

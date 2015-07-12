@@ -66,7 +66,7 @@ public class StartupActivity extends Activity {
             return;
         }
 
-        ((AndFHEMApplication) getApplication()).inject(this);
+        ((AndFHEMApplication) getApplication()).getDaggerComponent().inject(this);
 
         setContentView(R.layout.startup);
     }

@@ -30,21 +30,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
-public class OnOffActionRowForToggleables<T extends ToggleableDevice> extends OnOffActionRow<T> {
+public class OnOffActionRowForToggleables extends OnOffActionRow {
 
     public OnOffActionRowForToggleables(int layoutId) {
         super(layoutId);
     }
 
-    public TableRow createRow(LayoutInflater inflater, final T device, Context context) {
+    public TableRow createRow(LayoutInflater inflater, final FhemDevice device, Context context) {
         TableRow tableRow = super.createRow(inflater, device, context);
 
         Button onButton = findOnButton(tableRow);
         Button offButton = findOffButton(tableRow);
 
-        switch (device.getButtonHookType()) {
+        ToggleableDevice toggleableDevice = getToggleableDevice(device);
+        switch (toggleableDevice.getButtonHookType()) {
             case ON_DEVICE:
                 offButton.setVisibility(View.GONE);
                 onButton.setVisibility(View.VISIBLE);
@@ -58,18 +60,22 @@ public class OnOffActionRowForToggleables<T extends ToggleableDevice> extends On
         return tableRow;
     }
 
-    @Override
-    protected String getOnStateName(T device, Context context) {
-        return device.getOnStateName();
+    private ToggleableDevice getToggleableDevice(FhemDevice device) {
+        return (ToggleableDevice) device;
     }
 
     @Override
-    protected String getOffStateName(T device, Context context) {
-        return device.getOffStateName();
+    protected String getOnStateName(FhemDevice device, Context context) {
+        return getToggleableDevice(device).getOnStateName();
     }
 
     @Override
-    protected boolean isOn(T device) {
-        return device.isOnRespectingInvertHook();
+    protected String getOffStateName(FhemDevice device, Context context) {
+        return getToggleableDevice(device).getOffStateName();
+    }
+
+    @Override
+    protected boolean isOn(FhemDevice device) {
+        return getToggleableDevice(device).isOnRespectingInvertHook();
     }
 }

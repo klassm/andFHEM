@@ -41,6 +41,8 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.Actions;
@@ -57,9 +59,17 @@ import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 public class GCMIntentService extends GCMBaseIntentService {
     private static final Logger LOG = LoggerFactory.getLogger(GCMIntentService.class);
 
+    @Inject
+    ApplicationProperties applicationProperties;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((AndFHEMApplication) getApplication()).getDaggerComponent().inject(this);
+    }
+
     @Override
     protected void onRegistered(Context context, String registrationId) {
-        ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
         applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId, context);
         LOG.info("onRegistered - device registered with regId {}", registrationId);
 
@@ -183,7 +193,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected String[] getSenderIds(Context context) {
-        ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
         String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null, context);
         if (Strings.isNullOrEmpty(projectId)) {
             return new String[]{};

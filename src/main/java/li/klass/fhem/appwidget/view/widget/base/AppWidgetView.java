@@ -36,6 +36,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.util.ImageUtil;
 
 public abstract class AppWidgetView {
@@ -46,9 +47,11 @@ public abstract class AppWidgetView {
     public AppWidgetView() {
         AndFHEMApplication application = AndFHEMApplication.getApplication();
         if (application != null) {
-            application.inject(this);
+            inject(application.getDaggerComponent());
         }
     }
+
+    protected abstract void inject(ApplicationComponent applicationComponent);
 
     public abstract void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                                    WidgetConfigurationCreatedCallback callback, String... payload);

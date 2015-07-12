@@ -31,40 +31,52 @@ import android.widget.TableRow;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.HarmonyDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<HarmonyDevice> {
+public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     public HarmonyDeviceAdapter() {
-        super(HarmonyDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return HarmonyDevice.class;
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<HarmonyDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HarmonyDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("activity");
-                tableLayout.addView(new StateChangingSpinnerActionRow<HarmonyDevice>(context,
-                        R.string.activity, R.string.activity, inputSetList.getGroupStates(), device.getActivity(), "activity")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context,
+                        R.string.activity, R.string.activity, inputSetList.getGroupStates(), ((HarmonyDevice) device).getActivity(), "activity")
                         .createRow(device, tableLayout));
             }
         });
     }
 
     @Override
-    protected List<DeviceDetailViewAction<HarmonyDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<HarmonyDevice>> detailActions = super.provideDetailActions();
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
 
         //noinspection unchecked
-        detailActions.add(PlayerDetailAction.builderFor(stateUiService, HarmonyDevice.class)
+        detailActions.add(PlayerDetailAction.builderFor(stateUiService)
                 .withPreviousCommand("special previousTrack")
                 .withStopCommand("special stop")
                 .withPlayCommand("special playPause")

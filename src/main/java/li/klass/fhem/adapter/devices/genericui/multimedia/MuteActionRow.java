@@ -29,26 +29,26 @@ import android.content.Context;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.StateChangingYesNoTwoButtonActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.behavior.util.vol.VolumeUtilBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.multimedia.VolumeDevice;
 
-public class MuteActionRow<V extends FhemDevice<V> & VolumeDevice> extends StateChangingYesNoTwoButtonActionRow<V> {
+public class MuteActionRow extends StateChangingYesNoTwoButtonActionRow {
     public MuteActionRow(StateUiService stateUiService) {
         super(stateUiService, R.string.musicMute);
     }
 
     @Override
-    protected String getOnStateName(V device, Context context) {
+    protected String getOnStateName(FhemDevice device, Context context) {
         return "mute";
     }
 
     @Override
-    protected String getOffStateName(V device, Context context) {
-        return "volume " + device.getVolumeAsInt();
+    protected String getOffStateName(FhemDevice device, Context context) {
+        return "volume " + VolumeUtilBehavior.volumeFor(device);
     }
 
     @Override
-    public boolean isYes(V device) {
-        return device.isMuted();
+    public boolean isYes(FhemDevice device) {
+        return VolumeUtilBehavior.isMuted(device);
     }
 }

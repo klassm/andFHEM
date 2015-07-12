@@ -40,28 +40,36 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ImageUtil;
 
 import static li.klass.fhem.util.DisplayUtil.dpToPx;
 
-public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice> {
+public class RemoteControlAdapter extends ToggleableAdapter {
 
     @Inject
     StateUiService stateUiService;
 
-    public RemoteControlAdapter() {
-        super(RemoteControlDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return RemoteControlDevice.class;
     }
 
     @Override
-    protected List<DeviceDetailViewAction<RemoteControlDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<RemoteControlDevice>> detailActions = super.provideDetailActions();
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
 
-        detailActions.add(new DeviceDetailViewAction<RemoteControlDevice>() {
+    @Override
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
+
+        detailActions.add(new DeviceDetailViewAction() {
             @Override
             public View createView(Context context, LayoutInflater inflater,
-                                   RemoteControlDevice device, LinearLayout parent) {
+                                   FhemDevice device, LinearLayout parent) {
                 return createRemoteControlTable(context, device, inflater, parent);
             }
         });
@@ -69,13 +77,14 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
         return detailActions;
     }
 
-    private TableLayout createRemoteControlTable(Context context, RemoteControlDevice device,
+    private TableLayout createRemoteControlTable(Context context, FhemDevice device,
                                                  LayoutInflater layoutInflater, LinearLayout parent) {
         TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, parent, false);
         assert tableLayout != null;
 
-        for (RemoteControlDevice.Row row : device.getRows()) {
-            tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater));
+        RemoteControlDevice remoteControlDevice = (RemoteControlDevice) device;
+        for (RemoteControlDevice.Row row : remoteControlDevice.getRows()) {
+            tableLayout.addView(createTableRowForRemoteControlRow(row, context, remoteControlDevice, layoutInflater));
         }
 
         return tableLayout;

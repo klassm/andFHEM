@@ -38,20 +38,32 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.FS20ZDRDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class FS20ZDRDeviceAdapter extends ToggleableAdapter<FS20ZDRDevice> {
+public class FS20ZDRDeviceAdapter extends ToggleableAdapter {
     public FS20ZDRDeviceAdapter() {
-        super(FS20ZDRDevice.class);
+        super();
     }
 
     @Override
-    protected List<DeviceDetailViewAction<FS20ZDRDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<FS20ZDRDevice>> detailActions = super.provideDetailActions();
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
 
-        detailActions.add(new DeviceDetailViewAction<FS20ZDRDevice>() {
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return FS20ZDRDevice.class;
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
+
+        detailActions.add(new DeviceDetailViewAction() {
             @Override
-            public View createView(Context context, LayoutInflater inflater, FS20ZDRDevice device, LinearLayout parent) {
+            public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent) {
                 View view = inflater.inflate(R.layout.fs20_zdr_actions, parent, false);
 
                 registerActionHandlerFor(context, view, device, R.id.vol_up, "volume_up");
@@ -76,7 +88,7 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapter<FS20ZDRDevice> {
         return detailActions;
     }
 
-    private void registerActionHandlerFor(final Context context, View view, final FS20ZDRDevice device,
+    private void registerActionHandlerFor(final Context context, View view, final FhemDevice device,
                                           int buttonId, final String state) {
         Button button = (Button) view.findViewById(buttonId);
         button.setOnClickListener(new View.OnClickListener() {

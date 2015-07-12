@@ -41,20 +41,22 @@ import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener<D> {
+public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener {
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
+    public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
         if (!doAddField(device)) return;
 
-        M mode = device.getHeatingMode();
-        int selected = EnumUtils.positionOf(device.getHeatingModes(), mode);
+        final D heatingDevice = (D) device;
+        M mode = heatingDevice.getHeatingMode();
+        int selected = EnumUtils.positionOf(heatingDevice.getHeatingModes(), mode);
 
-        tableLayout.addView(new SpinnerActionRow<D>(context, R.string.mode, R.string.setMode, toStringList(device.getHeatingModes()), selected) {
+        tableLayout.addView(new SpinnerActionRow(context, R.string.mode, R.string.setMode, toStringList(heatingDevice.getHeatingModes()), selected) {
 
             @Override
-            public void onItemSelected(final Context context, D device, String item) {
-                M mode = EnumUtils.valueOf(device.getHeatingModes(), item);
+            public void onItemSelected(final Context context, FhemDevice device, String item) {
+                M mode = EnumUtils.valueOf(heatingDevice.getHeatingModes(), item);
 
                 if (mode == getUnknownMode() || mode == null) {
                     revertSelection();
@@ -66,7 +68,7 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
         }.createRow(device, tableLayout));
     }
 
-    protected boolean doAddField(D device) {
+    protected boolean doAddField(FhemDevice device) {
         return true;
     }
 
@@ -74,7 +76,7 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
         return null;
     }
 
-    protected void changeMode(M newMode, D device, Context context) {
+    protected void changeMode(M newMode, FhemDevice device, Context context) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

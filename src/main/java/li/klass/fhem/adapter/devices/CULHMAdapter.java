@@ -43,7 +43,9 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.LitreContentView;
@@ -56,26 +58,32 @@ import static li.klass.fhem.domain.CULHMDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.CULHMDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 
-public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
+public class CULHMAdapter extends DimmableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
     public CULHMAdapter() {
-        super(CULHMDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
-        registerFieldListener("state", new FieldNameAddedToDetailListener<CULHMDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(final Context context, final TableLayout tableLayout, String field, final CULHMDevice device, TableRow fieldTableRow) {
-                switch (device.getSubType()) {
+            public void onFieldNameAdded(final Context context, final TableLayout tableLayout, String field, final FhemDevice device, TableRow fieldTableRow) {
+                final CULHMDevice culhmDevice = (CULHMDevice) device;
+                switch (culhmDevice.getSubType()) {
                     case FILL_STATE:
                         tableLayout.addView(new CustomViewTableRow() {
                             @Override
                             public View getContentView() {
-                                return new LitreContentView(context, device.getFillContentPercentageRaw());
+                                return new LitreContentView(context, culhmDevice.getFillContentPercentageRaw());
                             }
                         }.createRow(getInflater(), tableLayout));
                         break;
@@ -85,8 +93,8 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
 
         registerFieldListener("state", new HeatingModeListener<CULHMDevice, CULHMDevice.HeatingMode>() {
             @Override
-            protected boolean doAddField(CULHMDevice device) {
-                return device.getSubType() == THERMOSTAT;
+            protected boolean doAddField(FhemDevice device) {
+                return ((CULHMDevice) device).getSubType() == THERMOSTAT;
             }
 
             @Override
@@ -95,23 +103,24 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
             }
         });
 
-        registerFieldListener("desiredTempDesc", new FieldNameAddedToDetailListener<CULHMDevice>() {
+        registerFieldListener("desiredTempDesc", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, CULHMDevice device, TableRow fieldTableRow) {
-                if (device.getSubType() != THERMOSTAT) return;
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                CULHMDevice culhmDevice = (CULHMDevice) device;
+                if (culhmDevice.getSubType() != THERMOSTAT) return;
 
-                tableLayout.addView(new TemperatureChangeTableRow<CULHMDevice>(context, device.getDesiredTemp(), fieldTableRow,
+                tableLayout.addView(new TemperatureChangeTableRow(context, culhmDevice.getDesiredTemp(), fieldTableRow,
                         DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("commandAccepted", new FieldNameAddedToDetailListener<CULHMDevice>() {
+        registerFieldListener("commandAccepted", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
-                                            CULHMDevice device, TableRow fieldTableRow) {
-                if (!device.isLastCommandAccepted()) {
+                                            FhemDevice device, TableRow fieldTableRow) {
+                if (!((CULHMDevice) device).isLastCommandAccepted()) {
                     TextView valueView = (TextView) fieldTableRow.findViewById(R.id.value);
                     valueView.setTextColor(context.getResources().getColor(R.color.red));
                 }
@@ -120,17 +129,17 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
     }
 
     @Override
-    protected boolean isOverviewError(CULHMDevice device, long lastUpdate) {
-        return super.isOverviewError(device, lastUpdate) || !device.isLastCommandAccepted();
+    protected boolean isOverviewError(FhemDevice device, long lastUpdate) {
+        return super.isOverviewError(device, lastUpdate) || !((CULHMDevice) device).isLastCommandAccepted();
     }
 
     @Override
-    protected List<DeviceDetailViewAction<CULHMDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<CULHMDevice>> detailActions = super.provideDetailActions();
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
 
-        detailActions.add(new DeviceDetailViewButtonAction<CULHMDevice>(R.string.timetable) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.timetable) {
             @Override
-            public void onButtonClick(Context context, CULHMDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 context.sendBroadcast(
                         new Intent(SHOW_FRAGMENT)
                                 .putExtra(FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
@@ -138,8 +147,8 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
             }
 
             @Override
-            public boolean isVisible(CULHMDevice device) {
-                return device.getSubType() == THERMOSTAT;
+            public boolean isVisible(FhemDevice device) {
+                return ((CULHMDevice) device).getSubType() == THERMOSTAT;
             }
         });
 

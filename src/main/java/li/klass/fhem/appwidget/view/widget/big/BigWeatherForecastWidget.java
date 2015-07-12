@@ -39,6 +39,7 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.appwidget.view.widget.base.DeviceListAppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
@@ -108,5 +109,10 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
 
         view.setOnClickFillInIntent(R.id.forecastItem, new Intent());
         return view;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

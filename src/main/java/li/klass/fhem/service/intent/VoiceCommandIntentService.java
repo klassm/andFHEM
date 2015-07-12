@@ -37,9 +37,11 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import li.klass.fhem.activities.CommandIndicatorActivity;
+import li.klass.fhem.billing.LicenseService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.TextToSpeechService;
 import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.intent.voice.VoiceResult;
@@ -60,7 +62,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     VoiceCommandService voiceCommandService;
 
     @Inject
-    LicenseIntentService licenseIntentService;
+    LicenseService licenseService;
 
     private static final Logger LOG = LoggerFactory.getLogger(VoiceCommandIntentService.class);
 
@@ -76,7 +78,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
             return STATE.DONE;
         }
 
-        licenseIntentService.isPremium(new LicenseIntentService.IsPremiumListener() {
+        licenseService.isPremium(new LicenseService.IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
                 if (!isPremium) {
@@ -137,4 +139,10 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
         startActivity(new Intent(VoiceCommandIntentService.this, CommandIndicatorActivity.class)
                 .setFlags(FLAG_ACTIVITY_NEW_TASK));
     }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
+
 }

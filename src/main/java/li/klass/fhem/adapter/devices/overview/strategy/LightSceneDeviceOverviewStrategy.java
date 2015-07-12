@@ -48,22 +48,26 @@ public class LightSceneDeviceOverviewStrategy extends OverviewStrategy {
     @Inject
     StateUiService stateUiService;
 
+    @Inject
+    public LightSceneDeviceOverviewStrategy() {
+    }
+
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         TableLayout layout = (TableLayout) layoutInflater.inflate(R.layout.device_overview_generic, null);
         layout.removeAllViews();
 
         LightSceneDevice device = (LightSceneDevice) rawDevice;
-        layout.addView(new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
+        layout.addView(new HolderActionRow<String>(device.getAliasOrName(),
                 HolderActionRow.LAYOUT_OVERVIEW) {
 
             @Override
-            public List<String> getItems(LightSceneDevice device) {
-                return device.getScenes();
+            public List<String> getItems(FhemDevice device) {
+                return ((LightSceneDevice) device).getScenes();
             }
 
             @Override
-            public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
+            public View viewFor(String scene, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
                 Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
                 setSceneButtonProperties(device, scene, button, context);
                 return button;
@@ -73,7 +77,7 @@ public class LightSceneDeviceOverviewStrategy extends OverviewStrategy {
     }
 
 
-    private void setSceneButtonProperties(final LightSceneDevice device, final String scene, Button button, final Context context) {
+    private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button, final Context context) {
         button.setText(scene);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +87,7 @@ public class LightSceneDeviceOverviewStrategy extends OverviewStrategy {
         });
     }
 
-    private void activateScene(LightSceneDevice device, String scene, Context context) {
+    private void activateScene(FhemDevice device, String scene, Context context) {
         stateUiService.setSubState(device, "scene", scene, context);
     }
 }

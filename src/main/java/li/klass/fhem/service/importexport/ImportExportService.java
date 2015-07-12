@@ -82,6 +82,10 @@ public class ImportExportService {
     @Inject
     ApplicationProperties applicationProperties;
 
+    @Inject
+    public ImportExportService() {
+    }
+
     protected Map<String, String> getSharedPreferencesExportKeys(Context context) {
         return ImmutableMap.<String, String>builder()
                 .put("CONNECTIONS", ConnectionService.PREFERENCES_NAME)

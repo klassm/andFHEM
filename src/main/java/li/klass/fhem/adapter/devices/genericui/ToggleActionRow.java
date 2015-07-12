@@ -39,7 +39,7 @@ import java.util.Map;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class ToggleActionRow<D extends FhemDevice> {
+public abstract class ToggleActionRow {
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow;
@@ -58,19 +58,19 @@ public abstract class ToggleActionRow<D extends FhemDevice> {
         return tableRow;
     }
 
-    public TableRow createRow(Context context, D device, String description) {
+    public TableRow createRow(Context context, FhemDevice device, String description) {
         fillWith(context, device, description);
         return tableRow;
     }
 
-    public void fillWith(Context context, D device, String description) {
+    public void fillWith(Context context, FhemDevice device, String description) {
         descriptionView.setText(description);
         toggleButton.setOnClickListener(createListener(context, device, toggleButton));
         setToogleButtonText(device, toggleButton, context);
         toggleButton.setChecked(isOn(device));
     }
 
-    private ToggleButton.OnClickListener createListener(final Context context, final D device, final ToggleButton button) {
+    private ToggleButton.OnClickListener createListener(final Context context, final FhemDevice device, final ToggleButton button) {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +80,7 @@ public abstract class ToggleActionRow<D extends FhemDevice> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void setToogleButtonText(D device, ToggleButton toggleButton, Context context) {
+    protected void setToogleButtonText(FhemDevice device, ToggleButton toggleButton, Context context) {
         Map<String, String> eventMap = device.getEventMap();
         if (eventMap == null) return;
 
@@ -107,7 +107,7 @@ public abstract class ToggleActionRow<D extends FhemDevice> {
         return Optional.fromNullable(eventMap.get("off"));
     }
 
-    protected abstract boolean isOn(D device);
+    protected abstract boolean isOn(FhemDevice device);
 
-    protected abstract void onButtonClick(final Context context, D device, boolean isChecked);
+    protected abstract void onButtonClick(final Context context, FhemDevice device, boolean isChecked);
 }

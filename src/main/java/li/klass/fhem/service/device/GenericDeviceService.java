@@ -46,6 +46,10 @@ public class GenericDeviceService {
     @Inject
     CommandExecutionService commandExecutionService;
 
+    @Inject
+    public GenericDeviceService() {
+    }
+
     public void setState(FhemDevice<?> device, String targetState, Context context) {
         targetState = device.formatTargetState(targetState);
 

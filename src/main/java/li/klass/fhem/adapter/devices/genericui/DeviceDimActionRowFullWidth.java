@@ -29,7 +29,7 @@ import android.widget.TableRow;
 
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class DeviceDimActionRowFullWidth<D extends FhemDevice<D>> extends SeekBarActionRowFullWidth<D> {
+public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWidth {
 
     private final int lowerBound;
     private final int dimStep;
@@ -47,20 +47,20 @@ public abstract class DeviceDimActionRowFullWidth<D extends FhemDevice<D>> exten
         this.upperBound = upperBound;
     }
 
-    public void onStopTrackingTouch(final Context context, D device, int progress) {
+    public void onStopTrackingTouch(final Context context, FhemDevice device, int progress) {
         int dimProgress = dimProgressToDimState(progress, lowerBound, dimStep);
         onStopDim(context, device, dimProgress);
     }
 
     @Override
-    public String toUpdateText(D device, int progress) {
+    public String toUpdateText(FhemDevice device, int progress) {
         int dimProgress = dimProgressToDimState(progress, lowerBound, dimStep);
         return toDimUpdateText(device, dimProgress);
     }
 
-    public abstract void onStopDim(Context context, D device, int progress);
+    public abstract void onStopDim(Context context, FhemDevice device, int progress);
 
-    public abstract String toDimUpdateText(D device, int progress);
+    public abstract String toDimUpdateText(FhemDevice device, int progress);
 
     static int toDimProgress(int progress, int lowerBound, int step) {
         return (progress - lowerBound) / step;

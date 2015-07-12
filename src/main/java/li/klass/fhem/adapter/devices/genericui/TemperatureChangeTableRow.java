@@ -42,7 +42,7 @@ import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarActionRowFullWidthAndButton<D> {
+public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton {
     private final TextView updateView;
     private double newTemperature;
     private String intentAction;
@@ -79,7 +79,7 @@ public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarA
     }
 
     @Override
-    public void onProgressChanged(Context context, D device, int progress) {
+    public void onProgressChanged(Context context, FhemDevice device, int progress) {
         this.newTemperature = dimProgressToTemperature(progress, minTemperature);
         updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
     }
@@ -89,7 +89,7 @@ public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarA
     }
 
     @Override
-    public void onStopTrackingTouch(final Context seekBarContext, final D device, int progress) {
+    public void onStopTrackingTouch(final Context seekBarContext, final FhemDevice device, int progress) {
         if (!sendIntents) return;
         if (progress == initialProgress) return;
 
@@ -115,7 +115,7 @@ public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarA
         return String.format(text, attributeText, temperatureText);
     }
 
-    private void setValue(D device, double newValue) {
+    private void setValue(FhemDevice device, double newValue) {
         Intent intent = new Intent(intentAction);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -131,7 +131,7 @@ public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarA
     }
 
     @Override
-    public void onButtonSetValue(D device, int value) {
+    public void onButtonSetValue(FhemDevice device, int value) {
         setValue(device, value);
     }
 

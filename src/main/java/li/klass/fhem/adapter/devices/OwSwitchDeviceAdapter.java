@@ -31,68 +31,80 @@ import android.widget.TableRow;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.OwSwitchDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class OwSwitchDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<OwSwitchDevice> {
+public class OwSwitchDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
     @Inject
     StateUiService stateUiService;
 
     public OwSwitchDeviceAdapter() {
-        super(OwSwitchDevice.class);
+        super();
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return OwSwitchDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<OwSwitchDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
-                                            OwSwitchDevice device, TableRow fieldTableRow) {
+                                            FhemDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new OwSwitchToggleRow(getInflater()) {
 
                     @Override
-                    protected boolean isOn(OwSwitchDevice device) {
-                        return device.isOnA();
+                    protected boolean isOn(FhemDevice device) {
+                        return ((OwSwitchDevice) device).isOnA();
                     }
 
                     @Override
-                    protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
-                        return device.setStateForA(isChecked);
+                    protected int setStateFor(FhemDevice device, boolean isChecked) {
+                        return ((OwSwitchDevice) device).setStateForA(isChecked);
                     }
                 }.createRow(context, device, "A"));
 
                 tableLayout.addView(new OwSwitchToggleRow(getInflater()) {
 
                     @Override
-                    protected boolean isOn(OwSwitchDevice device) {
-                        return device.isOnB();
+                    protected boolean isOn(FhemDevice device) {
+                        return ((OwSwitchDevice) device).isOnB();
                     }
 
                     @Override
-                    protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
-                        return device.setStateForB(isChecked);
+                    protected int setStateFor(FhemDevice device, boolean isChecked) {
+                        return ((OwSwitchDevice) device).setStateForB(isChecked);
                     }
                 }.createRow(context, device, "B"));
             }
         });
     }
 
-    private abstract class OwSwitchToggleRow extends ToggleActionRow<OwSwitchDevice> {
+    private abstract class OwSwitchToggleRow extends ToggleActionRow {
 
         public OwSwitchToggleRow(LayoutInflater inflater) {
             super(inflater, ToggleActionRow.LAYOUT_DETAIL);
         }
 
         @Override
-        protected void onButtonClick(Context context, OwSwitchDevice device, boolean isChecked) {
+        protected void onButtonClick(Context context, FhemDevice device, boolean isChecked) {
             stateUiService.setSubState(device, "gpio", "" + setStateFor(device, isChecked), context);
         }
 
-        protected abstract int setStateFor(OwSwitchDevice device, boolean isChecked);
+        protected abstract int setStateFor(FhemDevice device, boolean isChecked);
     }
 }

@@ -50,6 +50,10 @@ public class DeviceService {
     @Inject
     RoomListService roomListService;
 
+    @Inject
+    public DeviceService() {
+    }
+
     /**
      * Rename a device.
      *

@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.connection.ConnectionService;
 
@@ -119,5 +120,10 @@ public class SendCommandIntentService extends ConvenientIntentService {
 
     private SharedPreferences getRecentCommandsPreferences() {
         return this.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

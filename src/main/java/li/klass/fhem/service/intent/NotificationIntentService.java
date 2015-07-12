@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.NotificationService;
 
@@ -73,5 +74,10 @@ public class NotificationIntentService extends ConvenientIntentService {
             resultReceiver.send(ResultCodes.SUCCESS, result);
         }
         return STATE.SUCCESS;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

@@ -40,17 +40,25 @@ import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.devices.overview.strategy.WeatherDeviceOverviewStrategy;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WeatherDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ImageUtil;
 import li.klass.fhem.util.ListViewUtil;
 
-public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter<WeatherDevice> {
+public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
     @Inject
     WeatherDeviceOverviewStrategy weatherDeviceOverviewStrategy;
 
-    public WeatherAdapter() {
-        super(WeatherDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return WeatherDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
@@ -59,7 +67,7 @@ public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter<WeatherD
     }
 
     @Override
-    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, WeatherDevice device, LayoutInflater inflater) {
+    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, FhemDevice device, LayoutInflater inflater) {
         LinearLayout currentWeatherHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, layout, false);
         setTextView(currentWeatherHolder, R.id.caption, R.string.currentWeather);
         RelativeLayout currentWeatherContent = createCurrentWeatherContent(device, inflater, layout);
@@ -75,25 +83,26 @@ public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter<WeatherD
         ListViewUtil.setHeightBasedOnChildren(weatherForecastList);
     }
 
-    private RelativeLayout createCurrentWeatherContent(WeatherDevice device, LayoutInflater inflater, LinearLayout layout) {
+    private RelativeLayout createCurrentWeatherContent(FhemDevice device, LayoutInflater inflater, LinearLayout layout) {
         RelativeLayout currentWeather = (RelativeLayout) inflater.inflate(R.layout.weather_current, layout, false);
 
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, device.getWind());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowCondition, R.id.condition, device.getCondition());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWindChill, R.id.windChill, device.getWindChill());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowVisibilityCondition, R.id.visibilityCondition, device.getVisibilityConditions());
+        WeatherDevice weatherDevice = (WeatherDevice) device;
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowTemperature, R.id.temperature, weatherDevice.getTemperature());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, weatherDevice.getWind());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowHumidity, R.id.humidity, weatherDevice.getHumidity());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowCondition, R.id.condition, weatherDevice.getCondition());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWindChill, R.id.windChill, weatherDevice.getWindChill());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowVisibilityCondition, R.id.visibilityCondition, weatherDevice.getVisibilityConditions());
 
-        setWeatherIconIn((ImageView) currentWeather.findViewById(R.id.currentWeatherImage), device.getIcon());
+        setWeatherIconIn((ImageView) currentWeather.findViewById(R.id.currentWeatherImage), weatherDevice.getIcon());
 
         return currentWeather;
     }
 
-    private ListView createWeatherForecastList(final Context context, final WeatherDevice device) {
+    private ListView createWeatherForecastList(final Context context, final FhemDevice device) {
         final ListView weatherForecastList = new ListView(context);
         ListDataAdapter<WeatherDevice.WeatherDeviceForecast> forecastAdapter = new ListDataAdapter<WeatherDevice.WeatherDeviceForecast>(
-                context, R.layout.weather_forecast_item, device.getForecasts()
+                context, R.layout.weather_forecast_item, ((WeatherDevice) device).getForecasts()
         ) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

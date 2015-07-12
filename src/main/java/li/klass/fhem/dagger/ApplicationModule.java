@@ -25,19 +25,20 @@
 package li.klass.fhem.dagger;
 
 import dagger.Module;
+import dagger.Provides;
+import li.klass.fhem.AndFHEMApplication;
 
-@Module(complete = false,
-        includes = {
-                UtilityModule.class,
-                UtilityServicesModule.class,
-                ServicesModule.class,
-                ActivityModule.class,
-                FragmentsModule.class,
-                AppWidgetModule.class,
-                AdapterModule.class,
-                UIServiceModule.class,
-                AndroidModule.class
-        }
-)
+@Module
 public class ApplicationModule {
+
+    private final AndFHEMApplication application;
+
+    public ApplicationModule(AndFHEMApplication application) {
+        this.application = application;
+    }
+
+    @Provides
+    AndFHEMApplication getApplication() {
+        return application;
+    }
 }

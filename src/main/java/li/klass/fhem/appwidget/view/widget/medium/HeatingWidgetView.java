@@ -33,6 +33,7 @@ import java.util.Locale;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
@@ -75,5 +76,10 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     @Override
     public boolean supports(FhemDevice<?> device) {
         return device instanceof FHTDevice;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

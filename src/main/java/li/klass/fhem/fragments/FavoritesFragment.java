@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.intent.FavoritesIntentService;
@@ -40,6 +41,11 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
     @Override
     protected String getUpdateAction() {
         return Actions.FAVORITE_ROOM_LIST;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 
     @Override

@@ -41,6 +41,7 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.advertisement.AdvertisementService;
@@ -56,6 +57,11 @@ public class DeviceDetailFragment extends BaseFragment {
     public void setArguments(Bundle args) {
         super.setArguments(args);
         deviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 
     @Override

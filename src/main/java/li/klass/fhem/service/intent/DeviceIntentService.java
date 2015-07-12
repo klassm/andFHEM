@@ -44,6 +44,7 @@ import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.WOLDevice;
@@ -373,5 +374,10 @@ public class DeviceIntentService extends ConvenientIntentService {
         }
 
         return SUCCESS;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

@@ -35,26 +35,34 @@ import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.ReadingsProxyDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class ReadingsProxyDeviceAdapter extends DimmableAdapter<ReadingsProxyDevice> {
+public class ReadingsProxyDeviceAdapter extends DimmableAdapter {
     @Inject
     StateUiService stateUiService;
 
-    public ReadingsProxyDeviceAdapter() {
-        super(ReadingsProxyDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return ReadingsProxyDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<ReadingsProxyDevice>() {
+        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final ReadingsProxyDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((ReadingsProxyDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(
@@ -68,8 +76,8 @@ public class ReadingsProxyDeviceAdapter extends DimmableAdapter<ReadingsProxyDev
             }
 
             @Override
-            public boolean supportsDevice(ReadingsProxyDevice device) {
-                return device.getRgbDesc() != null;
+            public boolean supportsDevice(FhemDevice device) {
+                return ((ReadingsProxyDevice) device).getRgbDesc() != null;
             }
         });
     }

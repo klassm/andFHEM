@@ -145,7 +145,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chart);
 
-        ((AndFHEMApplication) getApplication()).inject(this);
+        ((AndFHEMApplication) getApplication()).getDaggerComponent().inject(this);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
             startDate = (DateTime) savedInstanceState.getSerializable(START_DATE);

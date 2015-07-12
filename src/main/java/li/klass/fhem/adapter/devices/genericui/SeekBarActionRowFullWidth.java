@@ -33,7 +33,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class SeekBarActionRowFullWidth<T extends FhemDevice> {
+public abstract class SeekBarActionRowFullWidth {
     protected int initialProgress;
     private int layoutId;
     protected int maximumProgress;
@@ -60,11 +60,11 @@ public abstract class SeekBarActionRowFullWidth<T extends FhemDevice> {
         }
     }
 
-    public TableRow createRow(LayoutInflater inflater, T device) {
+    public TableRow createRow(LayoutInflater inflater, FhemDevice device) {
         return createRow(inflater, device, 1);
     }
 
-    public TableRow createRow(LayoutInflater inflater, T device, int layoutSpan) {
+    public TableRow createRow(LayoutInflater inflater, FhemDevice device, int layoutSpan) {
         TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
@@ -80,7 +80,7 @@ public abstract class SeekBarActionRowFullWidth<T extends FhemDevice> {
         return row;
     }
 
-    private SeekBar.OnSeekBarChangeListener createListener(final T device) {
+    private SeekBar.OnSeekBarChangeListener createListener(final FhemDevice device) {
         return new SeekBar.OnSeekBarChangeListener() {
 
             public int progress = initialProgress;
@@ -105,12 +105,12 @@ public abstract class SeekBarActionRowFullWidth<T extends FhemDevice> {
         };
     }
 
-    public void onProgressChanged(Context context, T device, int progress) {
+    public void onProgressChanged(Context context, FhemDevice device, int progress) {
     }
 
-    public String toUpdateText(T device, int progress) {
+    public String toUpdateText(FhemDevice device, int progress) {
         return progress + "";
     }
 
-    public abstract void onStopTrackingTouch(final Context context, T device, int progress);
+    public abstract void onStopTrackingTouch(final Context context, FhemDevice device, int progress);
 }

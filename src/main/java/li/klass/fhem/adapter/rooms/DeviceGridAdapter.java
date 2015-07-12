@@ -227,7 +227,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
     protected View getChildView(final String parent, int parentPosition,
                                 T child, View view, ViewGroup viewGroup) {
 
-        final DeviceAdapter<? extends FhemDevice<?>> deviceAdapter = DeviceType.getAdapterFor(child);
+        final DeviceAdapter deviceAdapter = DeviceType.getAdapterFor(child);
 
         if (deviceAdapter == null) {
             LOG.debug("getChildView - unsupported device type {}", child);

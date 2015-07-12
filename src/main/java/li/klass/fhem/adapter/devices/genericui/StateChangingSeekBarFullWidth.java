@@ -36,7 +36,7 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class StateChangingSeekBarFullWidth<D extends FhemDevice<D>> extends SeekBarActionRowFullWidthAndButton<D> {
+public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndButton {
 
     private String commandAttribute;
     private ApplicationProperties applicationProperties;
@@ -69,12 +69,12 @@ public class StateChangingSeekBarFullWidth<D extends FhemDevice<D>> extends Seek
 
 
     @Override
-    public void onButtonSetValue(D device, int value) {
+    public void onButtonSetValue(FhemDevice device, int value) {
         onStopTrackingTouch(context, device, value);
     }
 
     @Override
-    public void onStopTrackingTouch(Context context, D device, int progress) {
+    public void onStopTrackingTouch(Context context, FhemDevice device, int progress) {
         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

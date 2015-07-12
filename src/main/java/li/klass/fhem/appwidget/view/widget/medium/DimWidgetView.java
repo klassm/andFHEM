@@ -39,6 +39,7 @@ import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -102,5 +103,10 @@ public class DimWidgetView extends DeviceAppWidgetView {
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, resultReceiver);
 
         return intent;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

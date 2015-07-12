@@ -47,6 +47,7 @@ import li.klass.fhem.adapter.rooms.RoomListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.advertisement.AdvertisementService;
@@ -70,6 +71,11 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     private int emptyTextId = R.string.noRooms;
     private RoomSelectableCallback roomSelectableCallback;
     private RoomClickedCallback roomClickedCallback;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public void setArguments(Bundle args) {

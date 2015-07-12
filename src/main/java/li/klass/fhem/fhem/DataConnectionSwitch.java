@@ -42,6 +42,10 @@ public class DataConnectionSwitch {
     @Inject
     ApplicationProperties applicationProperties;
 
+    @Inject
+    public DataConnectionSwitch() {
+    }
+
     public FHEMConnection getCurrentProvider(Context context) {
         FHEMServerSpec selectedServer = connectionService.getCurrentServer(context);
         FHEMConnection currentConnection = selectedServer.getServerType().getConnection();

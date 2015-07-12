@@ -32,17 +32,23 @@ import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class DimmableDeviceDimActionRowFullWidth<D extends DimmableDevice<D>> extends DeviceDimActionRowFullWidth<D> {
+public class DimmableDeviceDimActionRowFullWidth extends DeviceDimActionRowFullWidth {
 
-    public DimmableDeviceDimActionRowFullWidth(D device, int layoutId, TableRow updateRow) {
+    public DimmableDeviceDimActionRowFullWidth(FhemDevice device, int layoutId, TableRow updateRow) {
+        this((DimmableDevice) device, layoutId, updateRow);
+    }
+
+    private DimmableDeviceDimActionRowFullWidth(DimmableDevice device, int layoutId, TableRow updateRow) {
         super(device.getDimPosition(), device.getDimLowerBound(), device.getDimStep(),
                 device.getDimUpperBound(), updateRow, layoutId);
     }
 
-    public void onStopTrackingTouch(final Context context, D device, int progress) {
-        int dimProgress = dimProgressToDimState(progress, device.getDimLowerBound(), device.getDimStep());
+    public void onStopTrackingTouch(final Context context, FhemDevice device, int progress) {
+        DimmableDevice dimmableDevice = (DimmableDevice) device;
+        int dimProgress = dimProgressToDimState(progress, dimmableDevice.getDimLowerBound(), dimmableDevice.getDimStep());
 
         Intent intent = new Intent(Actions.DEVICE_DIM);
         intent.setClass(context, DeviceIntentService.class);
@@ -54,7 +60,7 @@ public class DimmableDeviceDimActionRowFullWidth<D extends DimmableDevice<D>> ex
     }
 
     @Override
-    public void onStopDim(Context context, D device, int progress) {
+    public void onStopDim(Context context, FhemDevice device, int progress) {
         Intent intent = new Intent(Actions.DEVICE_DIM);
         intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -64,7 +70,7 @@ public class DimmableDeviceDimActionRowFullWidth<D extends DimmableDevice<D>> ex
     }
 
     @Override
-    public String toDimUpdateText(D device, int progress) {
-        return device.getDimStateForPosition(progress);
+    public String toDimUpdateText(FhemDevice device, int progress) {
+        return ((DimmableDevice) device).getDimStateForPosition(progress);
     }
 }

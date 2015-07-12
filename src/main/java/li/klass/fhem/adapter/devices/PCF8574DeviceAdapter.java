@@ -35,30 +35,42 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PCF8574Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static java.util.Collections.sort;
 
-public class PCF8574DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<PCF8574Device> {
+public class PCF8574DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
     @Inject
     StateUiService stateUiService;
 
     public PCF8574DeviceAdapter() {
-        super(PCF8574Device.class);
+        super();
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return PCF8574Device.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<PCF8574Device>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCF8574Device device, TableRow fieldTableRow) {
-                List<String> ports = Lists.newArrayList(device.getPortsIsOnMap().keySet());
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                List<String> ports = Lists.newArrayList(((PCF8574Device) device).getPortsIsOnMap().keySet());
                 sort(ports);
 
                 for (String port : ports) {
@@ -66,16 +78,16 @@ public class PCF8574DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter<PC
                 }
             }
 
-            private void createPortRow(Context context, TableLayout tableLayout, final String port, PCF8574Device device) {
-                tableLayout.addView(new ToggleActionRow<PCF8574Device>(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
+            private void createPortRow(Context context, TableLayout tableLayout, final String port, FhemDevice device) {
+                tableLayout.addView(new ToggleActionRow(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
 
                     @Override
-                    protected boolean isOn(PCF8574Device device) {
-                        return device.getPortsIsOnMap().get(port);
+                    protected boolean isOn(FhemDevice device) {
+                        return ((PCF8574Device) device).getPortsIsOnMap().get(port);
                     }
 
                     @Override
-                    protected void onButtonClick(final Context context, final PCF8574Device device, final boolean isChecked) {
+                    protected void onButtonClick(final Context context, final FhemDevice device, final boolean isChecked) {
                         stateUiService.setSubState(device, port, isChecked ? "on" : "off", context);
                     }
                 }.createRow(context, device, port));

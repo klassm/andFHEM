@@ -61,6 +61,7 @@ import li.klass.fhem.activities.DuplicateInstallActivity;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.LicenseIntentService;
@@ -210,7 +211,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
     private void initialize(final Bundle savedInstanceState) {
         AndFHEMApplication application = (AndFHEMApplication) getApplication();
-        application.inject(this);
+        inject(application.getDaggerComponent());
 
 
         if (application.isAndFHEMAlreadyInstalled()) {
@@ -240,6 +241,8 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             handleStartupFragment(hasFavorites);
         }
     }
+
+    protected abstract void inject(ApplicationComponent applicationComponent);
 
     private void handleStartupFragment(boolean hasFavorites) {
         String startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,

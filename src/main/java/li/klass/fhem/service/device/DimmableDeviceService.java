@@ -40,6 +40,11 @@ public class DimmableDeviceService {
     @Inject
     GenericDeviceService genericDeviceService;
 
+
+    @Inject
+    public DimmableDeviceService() {
+    }
+
     /**
      * Dims a device.
      *

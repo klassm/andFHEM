@@ -41,6 +41,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
@@ -156,5 +157,10 @@ public class RoomListIntentService extends ConvenientIntentService {
             bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate(this));
             receiver.send(resultCode, bundle);
         }
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

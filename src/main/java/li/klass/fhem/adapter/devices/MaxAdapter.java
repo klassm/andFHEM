@@ -34,8 +34,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
@@ -44,14 +44,16 @@ import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.adapter.uiservice.FragmentUiService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.MaxDevice.HeatingMode;
 
-public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter<MaxDevice> {
+public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -59,25 +61,36 @@ public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter<MaxDevice> {
     FragmentUiService fragmentUiService;
 
     public MaxAdapter() {
-        super(MaxDevice.class);
+        super();
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return MaxDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         registerFieldListener("state", new HeatingModeListener<MaxDevice, HeatingMode>() {
             @Override
-            protected boolean doAddField(MaxDevice device) {
-                return device.getSubType() == MaxDevice.SubType.TEMPERATURE;
+            protected boolean doAddField(FhemDevice device) {
+                return ((MaxDevice) device).getSubType() == MaxDevice.SubType.TEMPERATURE;
             }
         });
 
-        registerFieldListener("desiredTempDesc", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("desiredTempDesc", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
-                if (device.getSubType() != MaxDevice.SubType.TEMPERATURE) return;
-                if (device.getHeatingMode() != HeatingMode.MANUAL) return;
+            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                MaxDevice maxDevice = (MaxDevice) device;
+                if (maxDevice.getSubType() != MaxDevice.SubType.TEMPERATURE) return;
+                if (maxDevice.getHeatingMode() != HeatingMode.MANUAL) return;
 
-                tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getDesiredTemp(), fieldTableRow,
+                tableLayout.addView(new TemperatureChangeTableRow(context, maxDevice.getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties) {
                     @Override
@@ -94,30 +107,30 @@ public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter<MaxDevice> {
             }
         });
 
-        registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getWindowOpenTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new TemperatureChangeTableRow(context, ((MaxDevice) device).getWindowOpenTemp(), fieldTableRow,
                         Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("ecoTemp", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("ecoTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getEcoTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new TemperatureChangeTableRow(context, ((MaxDevice) device).getEcoTemp(), fieldTableRow,
                         Actions.DEVICE_SET_ECO_TEMPERATURE, R.string.ecoTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("comfortTemp", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("comfortTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getComfortTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new TemperatureChangeTableRow(context, ((MaxDevice) device).getComfortTemp(), fieldTableRow,
                         Actions.DEVICE_SET_COMFORT_TEMPERATURE, R.string.comfortTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
@@ -126,18 +139,18 @@ public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter<MaxDevice> {
     }
 
     @Override
-    protected List<DeviceDetailViewAction<MaxDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<MaxDevice>> detailActions = super.provideDetailActions();
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
 
-        detailActions.add(new DeviceDetailViewButtonAction<MaxDevice>(R.string.timetable) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.timetable) {
             @Override
-            public void onButtonClick(Context context, MaxDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 fragmentUiService.showIntervalWeekProfileFor(device, context);
             }
 
             @Override
-            public boolean isVisible(MaxDevice device) {
-                return device.getSubType() == MaxDevice.SubType.TEMPERATURE;
+            public boolean isVisible(FhemDevice device) {
+                return ((MaxDevice) device).getSubType() == MaxDevice.SubType.TEMPERATURE;
             }
         });
 

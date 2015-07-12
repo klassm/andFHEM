@@ -58,6 +58,10 @@ public class GPlotHolder {
     @Inject
     GPlotParser gPlotParser;
 
+    @Inject
+    public GPlotHolder() {
+    }
+
     private void loadDefaultGPlotFiles() {
         if (areDefaultFilesLoaded) {
             return;

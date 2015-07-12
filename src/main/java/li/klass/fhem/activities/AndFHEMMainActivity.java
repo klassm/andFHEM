@@ -37,6 +37,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.update.UpdateHandler;
@@ -60,6 +61,11 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
 
         updateHandler.onApplicationUpdate();
         gcmSendDeviceService.registerWithGCM(this);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 
     @Override

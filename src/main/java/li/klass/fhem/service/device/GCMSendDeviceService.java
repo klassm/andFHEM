@@ -55,6 +55,10 @@ public class GCMSendDeviceService extends AbstractService {
     @Inject
     ApplicationProperties applicationProperties;
 
+    @Inject
+    public GCMSendDeviceService() {
+    }
+
     public void addSelf(GCMSendDevice device, Context context) {
 
         String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null, context);

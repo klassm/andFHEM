@@ -49,6 +49,7 @@ import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragmen
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -84,7 +85,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AndFHEMApplication) getApplication()).inject(this);
+        inject(((AndFHEMApplication) getApplication()).getDaggerComponent());
 
         Intent intent = getIntent();
         widgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
@@ -108,6 +109,8 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
         actionBar.addTab(actionBar.newTab().setText(R.string.widget_others)
                 .setTabListener(this).setTag(TAG_OTHER));
     }
+
+    protected abstract void inject(ApplicationComponent applicationComponent);
 
     @Override
     protected void onResume() {

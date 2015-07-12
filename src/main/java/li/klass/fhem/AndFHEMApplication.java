@@ -32,18 +32,17 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
-import com.google.common.collect.Lists;
-
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.dagger.ApplicationModule;
+import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.InstalledApplications;
 
@@ -61,11 +60,13 @@ public class AndFHEMApplication extends Application {
 
     private static Context context;
     private static AndFHEMApplication application;
+
     @Inject
     ApplicationProperties applicationProperties;
+
     private boolean isUpdate = false;
     private String currentApplicationVersion;
-    private ObjectGraph graph;
+    private ApplicationComponent daggerComponent;
 
     public static Context getContext() {
         return context;
@@ -79,6 +80,11 @@ public class AndFHEMApplication extends Application {
         return application;
     }
 
+    public ApplicationComponent getDaggerComponent() {
+        return daggerComponent;
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -88,9 +94,9 @@ public class AndFHEMApplication extends Application {
         context = getApplicationContext();
         application = this;
 
-        graph = createDaggerGraph();
+        daggerComponent = createDaggerComponent();
+        daggerComponent.inject(this);
 
-        inject(this);
         setApplicationInformation();
     }
 
@@ -107,6 +113,7 @@ public class AndFHEMApplication extends Application {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setStrictMode() {
         try {
@@ -138,18 +145,8 @@ public class AndFHEMApplication extends Application {
         }
     }
 
-    public static ObjectGraph createDaggerGraph() {
-        return ObjectGraph.create(getApplicationModules().toArray());
-    }
-
-    public static List<Object> getApplicationModules() {
-        return Lists.<Object>newArrayList(
-                new ApplicationModule()
-        );
-    }
-
-    public void inject(Object object) {
-        graph.inject(object);
+    private ApplicationComponent createDaggerComponent() {
+        return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
     }
 
     private void setApplicationInformation() {
@@ -187,8 +184,8 @@ public class AndFHEMApplication extends Application {
         return false;
     }
 
-    public ObjectGraph getGraph() {
-        return graph;
+    public void getGraph() {
+
     }
 
     public boolean isUpdate() {

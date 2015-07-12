@@ -61,6 +61,10 @@ public class ImportExportUIService {
     @Inject
     ImportExportService importExportService;
 
+    @Inject
+    public ImportExportUIService() {
+    }
+
     public void handleImport(final Activity activity) {
         new FileDialog(activity, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
             @Override

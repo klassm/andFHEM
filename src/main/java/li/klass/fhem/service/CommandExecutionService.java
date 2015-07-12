@@ -79,6 +79,10 @@ public class CommandExecutionService extends AbstractService {
     private transient String lastFailedCommand = null;
     private transient Cache<Bitmap> imageCache = getImageCache();
 
+    @Inject
+    public CommandExecutionService() {
+    }
+
     public void resendLastFailedCommand(Context context) {
         if (lastFailedCommand != null) {
             String command = lastFailedCommand;

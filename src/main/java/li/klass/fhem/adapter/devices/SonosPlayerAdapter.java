@@ -32,39 +32,47 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.SonosPlayerDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class SonosPlayerAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<SonosPlayerDevice> {
+public class SonosPlayerAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public SonosPlayerAdapter() {
-        super(SonosPlayerDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return SonosPlayerDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<SonosPlayerDevice>() {
+        registerFieldListener("volume", new FieldNameAddedToDetailListener() {
 
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, SonosPlayerDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
     }
 
     @Override
-    protected List<DeviceDetailViewAction<SonosPlayerDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<SonosPlayerDevice>> actions = super.provideDetailActions();
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> actions = super.provideDetailActions();
         //noinspection unchecked
-        actions.add(PlayerDetailAction.builderFor(stateUiService, SonosPlayerDevice.class)
+        actions.add(PlayerDetailAction.builderFor(stateUiService)
                 .withPreviousCommand("Previous")
                 .withPauseCommand("Pause")
                 .withStopCommand("Stop")

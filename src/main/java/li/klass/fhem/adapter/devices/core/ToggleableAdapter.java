@@ -33,47 +33,55 @@ import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.devices.overview.strategy.ToggleableOverviewStrategy;
+import li.klass.fhem.dagger.ApplicationComponent;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
 import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYOUT_DETAIL;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 
-public class ToggleableAdapter<D extends ToggleableDevice<D>> extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<D> {
+public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     ToggleableOverviewStrategy toggleableOverviewStrategy;
 
-    public ToggleableAdapter(Class<D> deviceClass) {
-        super(deviceClass);
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return ToggleableDevice.class;
     }
 
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(Context context, T device,
                                                                           TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new ToggleDeviceActionRow<T>(getInflater(), layoutId)
+        tableLayout.addView(new ToggleDeviceActionRow(getInflater(), layoutId)
                 .createRow(context, device, device.getAliasOrName()));
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new OnOffActionRowForToggleables<T>(layoutId)
+        tableLayout.addView(new OnOffActionRowForToggleables(layoutId)
                 .createRow(getInflater(), device, context));
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
-        registerFieldListener("state", new FieldNameAddedToDetailListener<D>(TOGGLEABLE_AND_NOT_DIMMABLE) {
+        registerFieldListener("state", new FieldNameAddedToDetailListener(TOGGLEABLE_AND_NOT_DIMMABLE) {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, android.widget.TableRow fieldTableRow) {
-                if (!device.supportsToggle()) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, android.widget.TableRow fieldTableRow) {
+                if (!(device instanceof ToggleableDevice) || !((ToggleableDevice) device).supportsToggle()) {
                     return;
                 }
-                addDetailSwitchActionRow(context, device, tableLayout);
+                addDetailSwitchActionRow(context, (ToggleableDevice) device, tableLayout);
             }
         });
     }
 
-    protected <T extends ToggleableDevice<T>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
+    protected <T extends ToggleableDevice<T>> void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout) {
         ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
         if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
             addOnOffActionRow(context, device, layout, OnOffActionRowForToggleables.LAYOUT_DETAIL);

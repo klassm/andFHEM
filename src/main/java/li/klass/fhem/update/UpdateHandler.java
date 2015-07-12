@@ -37,6 +37,10 @@ public class UpdateHandler {
     @Inject
     AndFHEMApplication application;
 
+    @Inject
+    public UpdateHandler() {
+    }
+
     public void onApplicationUpdate() {
         if (!application.isUpdate()) {
             Log.i(UpdateHandler.class.getName(), "not an update");

@@ -47,6 +47,7 @@ import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
@@ -56,9 +57,14 @@ import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
-public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<GenericDevice> {
+public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     private Animation animation;
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
 
     @Override
     public void attach(Context context) {
@@ -77,13 +83,13 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
     }
 
     @Override
-    protected View getDeviceDetailView(Context context, final GenericDevice device, long lastUpdate) {
+    protected View getDeviceDetailView(Context context, final FhemDevice device, long lastUpdate) {
         LinearLayout linearLayout = (LinearLayout) getInflater().inflate(getDetailViewLayout(), null);
-
-        fillStatesCard(device, linearLayout);
-        fillAttributesCard(device, linearLayout);
-        fillInternalsCard(device, linearLayout);
-        fillPlotsCard(device, linearLayout);
+        GenericDevice genericDevice = (GenericDevice) device;
+        fillStatesCard(genericDevice, linearLayout);
+        fillAttributesCard(genericDevice, linearLayout);
+        fillInternalsCard(genericDevice, linearLayout);
+        fillPlotsCard(genericDevice, linearLayout);
 
         return linearLayout;
     }
@@ -164,7 +170,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
 
     private void addActionIfRequired(GenericDevice device, TableLayout table, DeviceViewItem item, TableRow row) {
         if (item.getSortKey().equalsIgnoreCase("state") && device.getSetList().contains("on", "off")) {
-            addRow(table, new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+            addRow(table, new OnOffActionRow(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
                     .createRow(getInflater(), device, getContext()));
             return;
         }
@@ -176,7 +182,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
 
         if (setListValue instanceof SetListSliderValue) {
             SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
-            TableRow sliderRow = new StateChangingSeekBarFullWidth<GenericDevice>(
+            TableRow sliderRow = new StateChangingSeekBarFullWidth(
                     getContext(), extractLeadingInt(item.getValueFor(device)),
                     sliderValue, item.getSortKey(), row, applicationProperties)
                     .createRow(getInflater(), device);
@@ -185,7 +191,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter<Ge
             SetListGroupValue groupValue = (SetListGroupValue) setListValue;
             List<String> groupStates = groupValue.getGroupStates();
             if (groupStates.contains("on") && groupStates.contains("off")) {
-                addRow(table, new OnOffActionRow<GenericDevice>(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+                addRow(table, new OnOffActionRow(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
                         .createRow(getInflater(), device, getContext()));
             }
         }

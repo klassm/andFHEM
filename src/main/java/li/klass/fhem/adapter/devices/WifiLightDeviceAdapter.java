@@ -35,27 +35,35 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WifiLightDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class WifiLightDeviceAdapter extends ToggleableAdapter<WifiLightDevice> {
+public class WifiLightDeviceAdapter extends ToggleableAdapter {
     @Inject
     StateUiService stateUiService;
 
-    public WifiLightDeviceAdapter() {
-        super(WifiLightDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return WifiLightDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<WifiLightDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final WifiLightDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRgb(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((WifiLightDevice) device).getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

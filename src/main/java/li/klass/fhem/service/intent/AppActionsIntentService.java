@@ -30,6 +30,7 @@ import android.os.ResultReceiver;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class AppActionsIntentService extends ConvenientIntentService {
@@ -49,5 +50,10 @@ public class AppActionsIntentService extends ConvenientIntentService {
         }
 
         return STATE.DONE;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

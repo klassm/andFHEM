@@ -40,7 +40,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import static com.google.common.base.Optional.fromNullable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailViewAction<T> {
+public class PlayerDetailAction extends DeviceDetailViewAction {
 
     private final StateUiService stateUiService;
     private final Optional<String> previousCommand;
@@ -49,7 +49,7 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
     private final Optional<String> playCommand;
     private final Optional<String> nextCommand;
 
-    private PlayerDetailAction(Builder<T> builder) {
+    private PlayerDetailAction(Builder builder) {
         stateUiService = builder.stateUiService;
         previousCommand = builder.previousCommand;
         pauseCommand = builder.pauseCommand;
@@ -59,7 +59,7 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
     }
 
     @Override
-    public View createView(Context context, LayoutInflater inflater, T device, LinearLayout parent) {
+    public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent) {
         View view = inflater.inflate(R.layout.player_action, parent, false);
 
         fillImageButtonWithAction(context, view, device, R.id.rewind, previousCommand);
@@ -71,7 +71,7 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
         return view;
     }
 
-    private void fillImageButtonWithAction(final Context context, View view, final T device,
+    private void fillImageButtonWithAction(final Context context, View view, final FhemDevice device,
                                            int id, final Optional<String> action) {
         ImageButton button = (ImageButton) view.findViewById(id);
         if (!action.isPresent()) {
@@ -86,11 +86,11 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
         });
     }
 
-    public static <T extends FhemDevice<T>> Builder<T> builderFor(StateUiService stateUiService, Class<T> deviceClazz) {
-        return new Builder<>(stateUiService, deviceClazz);
+    public static Builder builderFor(StateUiService stateUiService) {
+        return new Builder(stateUiService);
     }
 
-    public static final class Builder<T extends FhemDevice<T>> {
+    public static final class Builder {
         private StateUiService stateUiService;
         private Optional<String> previousCommand = Optional.absent();
         private Optional<String> pauseCommand = Optional.absent();
@@ -98,7 +98,7 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
         private Optional<String> playCommand = Optional.absent();
         private Optional<String> nextCommand = Optional.absent();
 
-        public Builder(StateUiService stateUiService, @SuppressWarnings("UnusedParameters") Class<T> deviceClazz) {
+        public Builder(StateUiService stateUiService) {
             checkNotNull(stateUiService);
             this.stateUiService = stateUiService;
         }
@@ -128,8 +128,8 @@ public class PlayerDetailAction<T extends FhemDevice<T>> extends DeviceDetailVie
             return this;
         }
 
-        public PlayerDetailAction<T> build() {
-            return new PlayerDetailAction<>(this);
+        public PlayerDetailAction build() {
+            return new PlayerDetailAction(this);
         }
     }
 }

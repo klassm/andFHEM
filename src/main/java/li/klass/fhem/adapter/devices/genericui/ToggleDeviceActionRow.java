@@ -31,10 +31,11 @@ import android.view.LayoutInflater;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class ToggleDeviceActionRow<T extends ToggleableDevice> extends ToggleActionRow<T> {
+public class ToggleDeviceActionRow extends ToggleActionRow {
 
     public static final String HOLDER_KEY = ToggleDeviceActionRow.class.getName();
 
@@ -43,12 +44,12 @@ public class ToggleDeviceActionRow<T extends ToggleableDevice> extends ToggleAct
     }
 
     @Override
-    protected boolean isOn(T device) {
-        return device.isOnRespectingInvertHook();
+    protected boolean isOn(FhemDevice device) {
+        return ((ToggleableDevice) device).isOnRespectingInvertHook();
     }
 
     @Override
-    protected void onButtonClick(final Context context, T device, boolean isChecked) {
+    protected void onButtonClick(final Context context, FhemDevice device, boolean isChecked) {
         Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

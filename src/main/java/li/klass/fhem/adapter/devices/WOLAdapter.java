@@ -39,42 +39,50 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WOLDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class WOLAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<WOLDevice> {
+public class WOLAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     StateUiService stateUiService;
 
-    public WOLAdapter() {
-        super(WOLDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return WOLDevice.class;
     }
 
     @Override
-    protected List<DeviceDetailViewAction<WOLDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<WOLDevice>> detailActions = super.provideDetailActions();
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
 
-        detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.wake) {
+    @Override
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
+
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.wake) {
             @Override
-            public void onButtonClick(Context context, WOLDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 stateUiService.setState(device, "on", context);
             }
         });
 
-        detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.shutdown) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.shutdown) {
             @Override
-            public void onButtonClick(Context context, WOLDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 stateUiService.setState(device, "off", context);
             }
 
             @Override
-            public boolean isVisible(WOLDevice device) {
-                return device.getShutdownCommand() != null;
+            public boolean isVisible(FhemDevice device) {
+                return ((WOLDevice) device).getShutdownCommand() != null;
             }
         });
-        detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.requestRefresh) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.requestRefresh) {
             @Override
-            public void onButtonClick(Context context, WOLDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 context.startService(new Intent(Actions.DEVICE_REFRESH_STATE)
                         .setClass(context, DeviceIntentService.class)
                         .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())

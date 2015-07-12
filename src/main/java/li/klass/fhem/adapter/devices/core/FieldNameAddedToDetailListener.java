@@ -34,7 +34,7 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
 
-public abstract class FieldNameAddedToDetailListener<T extends FhemDevice> {
+public abstract class FieldNameAddedToDetailListener {
     protected enum NotificationDeviceType {
         ALL,
         TOGGLEABLE_AND_NOT_DIMMABLE,
@@ -55,9 +55,9 @@ public abstract class FieldNameAddedToDetailListener<T extends FhemDevice> {
         this.notificationDeviceType = notificationDeviceType;
     }
 
-    protected abstract void onFieldNameAdded(Context context, TableLayout tableLayout, String field, T device, TableRow fieldTableRow);
+    protected abstract void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow);
 
-    public boolean supportsDevice(T device) {
+    public boolean supportsDevice(FhemDevice device) {
         switch (notificationDeviceType) {
             case DIMMER:
                 return device instanceof DimmableDevice && ((DimmableDevice) device).supportsDim();

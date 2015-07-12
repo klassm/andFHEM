@@ -30,6 +30,7 @@ import android.os.ResultReceiver;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.FavoritesService;
@@ -88,5 +89,10 @@ public class FavoritesIntentService extends ConvenientIntentService {
         }
 
         return STATE.DONE;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

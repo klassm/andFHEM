@@ -72,7 +72,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     }
 
     private void inject(Context context) {
-        ((AndFHEMApplication) ((Activity) context).getApplication()).inject(this);
+        ((AndFHEMApplication) ((Activity) context).getApplication()).getDaggerComponent().inject(this);
     }
 
     @Override

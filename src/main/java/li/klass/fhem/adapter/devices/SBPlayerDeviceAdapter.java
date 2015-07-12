@@ -38,45 +38,53 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.SBPlayerDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class SBPlayerDeviceAdapter extends ToggleableAdapter<SBPlayerDevice> {
+public class SBPlayerDeviceAdapter extends ToggleableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public SBPlayerDeviceAdapter() {
-        super(SBPlayerDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return SBPlayerDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<SBPlayerDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final SBPlayerDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow<SBPlayerDevice>(stateUiService)
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
             }
         });
 
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<SBPlayerDevice>() {
+        registerFieldListener("volume", new FieldNameAddedToDetailListener() {
 
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, SBPlayerDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
     }
 
     @Override
-    protected List<DeviceDetailViewAction<SBPlayerDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<SBPlayerDevice>> detailActions = super.provideDetailActions();
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
 
         //noinspection unchecked
-        detailActions.add(PlayerDetailAction.builderFor(stateUiService, SBPlayerDevice.class)
+        detailActions.add(PlayerDetailAction.builderFor(stateUiService)
                 .withPreviousCommand("previous")
                 .withPauseCommand("pause")
                 .withStopCommand("stop")

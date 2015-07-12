@@ -37,44 +37,51 @@ import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapter<PioneerAvrZoneDevice> {
+public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
     @Inject
     StateUiService stateUiService;
 
-    public PioneerAvrZoneDeviceAdapter() {
-        super(PioneerAvrZoneDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return PioneerAvrZoneDevice.class;
     }
 
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<PioneerAvrZoneDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final PioneerAvrZoneDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow<PioneerAvrZoneDevice>(stateUiService)
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
-                tableLayout.addView(new StateChangingSpinnerActionRow<PioneerAvrZoneDevice>(context,
-                        R.string.input, R.string.input, inputSetList.getGroupStates(), device.getInput(), "input")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context,
+                        R.string.input, R.string.input, inputSetList.getGroupStates(), ((PioneerAvrZoneDevice) device).getInput(), "input")
                         .createRow(device, tableLayout));
             }
         });
 
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<PioneerAvrZoneDevice>() {
+        registerFieldListener("volume", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrZoneDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });

@@ -59,7 +59,7 @@ public class WebCmdActionRowTest {
         assertThat(items).hasSize(0);
     }
 
-    private class DummyWebCmdRow extends WebCmdActionRow<DummyDevice> {
+    private class DummyWebCmdRow extends WebCmdActionRow {
         public DummyWebCmdRow(String description, int layout) {
             super(description, layout);
         }

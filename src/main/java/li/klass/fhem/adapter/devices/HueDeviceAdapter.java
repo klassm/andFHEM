@@ -36,11 +36,13 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.HUEDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.StringUtil;
 
-public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
+public class HueDeviceAdapter extends DimmableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -48,33 +50,38 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
     StateUiService stateUiService;
 
     public HueDeviceAdapter() {
-        super(HUEDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("saturationDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
+        registerFieldListener("saturationDesc", new FieldNameAddedToDetailListener() {
             @Override
-            public boolean supportsDevice(HUEDevice device) {
-                return device.getSaturationDesc() != null;
+            public boolean supportsDevice(FhemDevice device) {
+                return ((HUEDevice) device).getSaturationDesc() != null;
             }
 
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBarFullWidth<HUEDevice>(context,
-                        device.getSaturation(), 254, "sat", applicationProperties)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new StateChangingSeekBarFullWidth(context,
+                        ((HUEDevice) device).getSaturation(), 254, "sat", applicationProperties)
                         .createRow(getInflater(), device));
 
             }
         });
 
-        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
+        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRgb(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((HUEDevice) device).getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

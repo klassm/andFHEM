@@ -58,6 +58,6 @@ public class ValueExtractUtil {
     }
 
     public static boolean onOffToTrueFalse(String value) {
-        return value.equalsIgnoreCase("on");
+        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true");
     }
 }

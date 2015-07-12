@@ -33,6 +33,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class MediumInformationWidgetView extends DeviceAppWidgetView {
@@ -57,5 +58,10 @@ public class MediumInformationWidgetView extends DeviceAppWidgetView {
         setTextViewOrHide(view, R.id.line3, line3);
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

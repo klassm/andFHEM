@@ -32,6 +32,7 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class TemperatureWidgetView extends DeviceAppWidgetView {
@@ -56,5 +57,10 @@ public class TemperatureWidgetView extends DeviceAppWidgetView {
 
             openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
         }
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

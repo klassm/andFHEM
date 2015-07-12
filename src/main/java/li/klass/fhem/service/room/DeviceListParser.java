@@ -100,6 +100,10 @@ public class DeviceListParser {
     @Inject
     GPlotHolder gPlotHolder;
 
+    @Inject
+    public DeviceListParser() {
+    }
+
     private static Logger LOG = LoggerFactory.getLogger(DeviceListParser.class);
 
     private Map<Class<?>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();

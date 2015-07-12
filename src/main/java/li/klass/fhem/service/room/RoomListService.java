@@ -111,6 +111,10 @@ public class RoomListService extends AbstractService {
     @Inject
     RoomListHolderService roomListHolderService;
 
+    @Inject
+    public RoomListService() {
+    }
+
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification, Context context) {
 

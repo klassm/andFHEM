@@ -86,7 +86,7 @@ public class PreferencesActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AndFHEMApplication) getApplication()).inject(this);
+        ((AndFHEMApplication) getApplication()).getDaggerComponent().inject(this);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.registerOnSharedPreferenceChangeListener(this);

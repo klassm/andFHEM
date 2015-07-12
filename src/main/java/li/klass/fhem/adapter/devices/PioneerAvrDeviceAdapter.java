@@ -37,52 +37,60 @@ import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PioneerAvrDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class PioneerAvrDeviceAdapter extends ToggleableAdapter<PioneerAvrDevice> {
+public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
     @Inject
     StateUiService stateUiService;
 
-    public PioneerAvrDeviceAdapter() {
-        super(PioneerAvrDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return PioneerAvrDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<PioneerAvrDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow<PioneerAvrDevice>(stateUiService)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
-                tableLayout.addView(new StateChangingSpinnerActionRow<PioneerAvrDevice>(context,
-                        R.string.input, R.string.input, inputSetList.getGroupStates(), device.getInput(), "input")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context,
+                        R.string.input, R.string.input, inputSetList.getGroupStates(), ((PioneerAvrDevice) device).getInput(), "input")
                         .createRow(device, tableLayout));
             }
         });
 
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<PioneerAvrDevice>() {
+        registerFieldListener("volume", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<PioneerAvrDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrDevice device, TableRow fieldTableRow) {
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                 SetListGroupValue listeningModeSetList = (SetListGroupValue) device.getSetList().get("listeningMode");
-                tableLayout.addView(new StateChangingSpinnerActionRow<PioneerAvrDevice>(context,
-                        R.string.audioMode, R.string.audioMode, listeningModeSetList.getGroupStates(), device.getListeningMode(), "listeningMode")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context,
+                        R.string.audioMode, R.string.audioMode, listeningModeSetList.getGroupStates(), ((PioneerAvrDevice) device).getListeningMode(), "listeningMode")
                         .createRow(device, tableLayout));
             }
         });

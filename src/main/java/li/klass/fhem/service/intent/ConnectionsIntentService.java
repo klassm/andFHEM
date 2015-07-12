@@ -37,6 +37,7 @@ import javax.inject.Inject;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -144,5 +145,10 @@ public class ConnectionsIntentService extends ConvenientIntentService {
     private void sendChangedBroadcast() {
         Intent changedIntent = new Intent(Actions.CONNECTIONS_CHANGED);
         sendBroadcast(changedIntent);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

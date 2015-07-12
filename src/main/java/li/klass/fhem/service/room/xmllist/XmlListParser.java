@@ -68,6 +68,9 @@ public class XmlListParser {
     @Inject
     Sanitiser sanitiser;
 
+    @Inject
+    public XmlListParser() {
+    }
 
     public Map<String, ImmutableList<XmlListDevice>> parse(String xmlList) throws Exception {
         Map<String, ImmutableList<XmlListDevice>> result = Maps.newHashMap();

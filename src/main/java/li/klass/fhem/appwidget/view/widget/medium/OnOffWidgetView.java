@@ -34,6 +34,7 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -83,5 +84,10 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
     @Override
     public boolean supports(FhemDevice<?> device) {
         return device instanceof ToggleableDevice;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

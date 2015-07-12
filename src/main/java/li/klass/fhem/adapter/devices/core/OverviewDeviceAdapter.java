@@ -61,7 +61,7 @@ import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
-public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
+public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
@@ -94,16 +94,19 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
      */
     protected transient Set<DeviceViewItem> annotatedClassItems;
 
-    protected Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = newHashMap();
+    protected Map<String, List<FieldNameAddedToDetailListener>> fieldNameAddedListeners = newHashMap();
 
     public OverviewStrategy getOverviewStrategy() {
         return defaultOverviewStrategy;
     }
 
     public final View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
-        return getOverviewStrategy().createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice));
+        OverviewStrategy overviewStrategy = getOverviewStrategy();
+        if (overviewStrategy == null) {
+            throw new NullPointerException("was null for device " + rawDevice.toString() + " and adapter " + getClass().getSimpleName());
+        }
+        return overviewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice));
     }
-
 
     protected GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
         GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = new GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder();
@@ -115,7 +118,7 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
         return holder;
     }
 
-    protected boolean isOverviewError(D device, long lastUpdate) {
+    protected boolean isOverviewError(FhemDevice device, long lastUpdate) {
         // It does not make sense to show measure errors for data stemming out of a prestored
         // XML file.
         boolean sensorDevice = isSensorDevice(device);
@@ -126,18 +129,18 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
 
     }
 
-    protected boolean isSensorDevice(D device) {
+    protected boolean isSensorDevice(FhemDevice device) {
         return device.isSensorDevice() ||
                 (device.getDeviceConfiguration().isPresent() && device.getDeviceConfiguration().get().isSensorDevice());
     }
 
-    protected boolean isOutdatedData(D device, long lastUpdateTime) {
+    protected boolean isOutdatedData(FhemDevice device, long lastUpdateTime) {
         return device.getLastMeasureTime() != -1
                 && lastUpdateTime - device.getLastMeasureTime() > FhemDevice.OUTDATED_DATA_MS_DEFAULT;
 
     }
 
-    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, D device) {
+    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
         String value = item.getValueFor(device);
         String description = item.getName(deviceDescMapping);
         setTextView(holder.description, description);
@@ -169,19 +172,19 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
     private void registerListenerFor(FhemDevice device, final DeviceViewItem xmlViewItem) {
         final String key = xmlViewItem.getSortKey();
         if (device.getSetList().contains(key)) {
-            registerFieldListener(key, new FieldNameAddedToDetailListener<D>() {
+            registerFieldListener(key, new FieldNameAddedToDetailListener() {
                 @Override
-                protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
+                protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                     SetListValue setListValue = device.getSetList().get(key);
                     int state = extractLeadingInt(xmlViewItem.getValueFor(device));
                     if (setListValue instanceof SetListSliderValue) {
                         SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
                         tableLayout.addView(
-                                new StateChangingSeekBarFullWidth<D>(getContext(), state, sliderValue, key, fieldTableRow, applicationProperties)
+                                new StateChangingSeekBarFullWidth(getContext(), state, sliderValue, key, fieldTableRow, applicationProperties)
                                         .createRow(getInflater(), device));
                     } else if (setListValue instanceof SetListGroupValue) {
                         SetListGroupValue groupValue = (SetListGroupValue) setListValue;
-                        tableLayout.addView(new StateChangingSpinnerActionRow<D>(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
+                        tableLayout.addView(new StateChangingSpinnerActionRow(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
                                 .createRow(device, tableLayout));
                     }
                 }
@@ -189,9 +192,9 @@ public abstract class OverviewDeviceAdapter<D extends FhemDevice<D>> extends Dev
         }
     }
 
-    protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener<D> listener) {
+    protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener listener) {
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
-            fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener<D>>());
+            fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener>());
         }
 
         fieldNameAddedListeners.get(fieldName).add(listener);

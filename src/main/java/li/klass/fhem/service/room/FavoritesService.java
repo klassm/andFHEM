@@ -39,8 +39,13 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 @Singleton
 public class FavoritesService {
     public static final String PREFERENCES_NAME = "favorites";
+
     @Inject
     RoomListService roomListService;
+
+    @Inject
+    public FavoritesService() {
+    }
 
     /**
      * Adds a new favorite device.

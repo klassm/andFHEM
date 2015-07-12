@@ -57,6 +57,10 @@ public class DefaultOverviewStrategy extends OverviewStrategy {
     @Inject
     DeviceDescMapping deviceDescMapping;
 
+    @Inject
+    public DefaultOverviewStrategy() {
+    }
+
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         if (convertView == null || convertView.getTag() == null) {

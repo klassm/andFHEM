@@ -39,8 +39,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class SetList implements Serializable {
     private Map<String, SetListValue> entries = Maps.newHashMap();
 
-    public void parse(String text) {
-        if (isEmpty(text)) return;
+    public SetList parse(String text) {
+        if (isEmpty(text)) return this;
 
         text = text.trim();
 
@@ -48,6 +48,8 @@ public class SetList implements Serializable {
         for (String part : parts) {
             handlePart(part);
         }
+
+        return this;
     }
 
     private void handlePart(String part) {

@@ -27,9 +27,15 @@ package li.klass.fhem.fragments;
 import android.os.Bundle;
 
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 
 public class WebViewFragment extends AbstractWebViewFragment {
     private String loadUrl;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public void setArguments(Bundle args) {

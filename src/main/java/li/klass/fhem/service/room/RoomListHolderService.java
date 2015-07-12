@@ -71,6 +71,10 @@ public class RoomListHolderService {
     private volatile RoomDeviceList cachedRoomList;
     private volatile boolean fileStoreNotFilled = false;
 
+    @Inject
+    public RoomListHolderService() {
+    }
+
     public synchronized boolean storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {
         if (roomDeviceList == null) {
             LOG.info("storeDeviceListMap() : won't store device list, as empty");

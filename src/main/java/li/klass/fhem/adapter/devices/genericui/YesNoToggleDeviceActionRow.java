@@ -33,10 +33,10 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> extends ToggleDeviceActionRow<D> {
+public abstract class YesNoToggleDeviceActionRow extends ToggleDeviceActionRow {
 
     private final String commandAttribute;
 
@@ -46,16 +46,16 @@ public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> 
     }
 
     @Override
-    protected void setToogleButtonText(D device, ToggleButton toggleButton, Context context) {
+    protected void setToogleButtonText(FhemDevice device, ToggleButton toggleButton, Context context) {
         toggleButton.setTextOff(context.getString(R.string.no));
         toggleButton.setTextOn(context.getString(R.string.yes));
     }
 
     @Override
-    public abstract boolean isOn(D device);
+    public abstract boolean isOn(FhemDevice device);
 
     @Override
-    public void onButtonClick(Context context, D device, boolean isChecked) {
+    public void onButtonClick(Context context, FhemDevice device, boolean isChecked) {
         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

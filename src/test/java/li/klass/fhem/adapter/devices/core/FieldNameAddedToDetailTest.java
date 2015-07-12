@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
@@ -40,16 +41,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FieldNameAddedToDetailTest {
 
-    private FieldNameAddedToDetailListener<FS20Device> listener;
+    private FieldNameAddedToDetailListener listener;
     private FS20Device dimmableFS20Device;
     private FS20Device toggleableFS20Device;
 
     @Before
     public void before() {
-        listener = new FieldNameAddedToDetailListener<FS20Device>() {
+        listener = new FieldNameAddedToDetailListener() {
 
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FS20Device device, TableRow fieldTableRow) {
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
             }
         };
 

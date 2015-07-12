@@ -29,13 +29,20 @@ import android.content.Intent;
 
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
-public class WebLinkAdapter extends ExplicitOverviewDetailDeviceAdapter<WebLinkDevice> {
-    public WebLinkAdapter() {
-        super(WebLinkDevice.class);
+public class WebLinkAdapter extends ExplicitOverviewDetailDeviceAdapter {
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return WebLinkDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override

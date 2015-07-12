@@ -46,6 +46,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.SendCommandIntentService;
 import li.klass.fhem.util.ListViewUtil;
@@ -56,6 +57,11 @@ public class SendCommandFragment extends BaseFragment {
 
     private transient ArrayAdapter<String> recentCommandsAdapter;
     private ArrayList<String> recentCommands;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

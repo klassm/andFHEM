@@ -50,11 +50,15 @@ import li.klass.fhem.util.ArrayUtil;
 public class HeatingService {
 
     public static final String TAG = HeatingService.class.getName();
+    public static final Logger LOGGER = LoggerFactory.getLogger(HeatingService.class);
     private static final String SET_COMMAND = "set %s %s %s";
+
     @Inject
     CommandExecutionService commandExecutionService;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(HeatingService.class);
+    @Inject
+    public HeatingService() {
+    }
 
     /**
      * Sets the desired temperature. The action will only be executed if the new desired temperature is different to

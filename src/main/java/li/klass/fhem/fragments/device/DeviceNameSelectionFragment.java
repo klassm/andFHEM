@@ -30,6 +30,7 @@ import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
@@ -46,5 +47,10 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
         Intent intent = new Intent(Actions.BACK);
         intent.putExtra(BundleExtraKeys.CLICKED_DEVICE, child);
         getActivity().sendBroadcast(intent);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

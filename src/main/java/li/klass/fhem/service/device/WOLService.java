@@ -39,6 +39,10 @@ public class WOLService {
     @Inject
     CommandExecutionService commandExecutionService;
 
+    @Inject
+    public WOLService() {
+    }
+
     public void requestRefreshState(WOLDevice device, Context context) {
         commandExecutionService.executeSafely("set " + device.getName() + " refresh", context);
     }

@@ -50,6 +50,10 @@ public class XmlDeviceItemProvider {
     @Inject
     DeviceDescMapping deviceDescMapping;
 
+    @Inject
+    public XmlDeviceItemProvider() {
+    }
+
     public Set<DeviceViewItem> getDeviceClassItems(FhemDevice fhemDevice) {
         Set<DeviceViewItem> items = newHashSet();
         XmlListDevice xmlListDevice = fhemDevice.getXmlListDevice();

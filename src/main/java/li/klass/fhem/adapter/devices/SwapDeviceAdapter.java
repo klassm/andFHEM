@@ -35,31 +35,39 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.SWAPDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class SwapDeviceAdapter extends ToggleableAdapter<SWAPDevice> {
+public class SwapDeviceAdapter extends ToggleableAdapter {
     @Inject
     StateUiService stateUiService;
 
-    public SwapDeviceAdapter() {
-        super(SWAPDevice.class);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return SWAPDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<SWAPDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public boolean supportsDevice(SWAPDevice device) {
-                return device.supportsRGB();
+            public boolean supportsDevice(FhemDevice device) {
+                return ((SWAPDevice) device).supportsRGB();
             }
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final SWAPDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRgb(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((SWAPDevice) device).getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

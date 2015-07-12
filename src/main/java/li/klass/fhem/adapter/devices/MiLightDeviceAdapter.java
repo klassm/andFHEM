@@ -35,31 +35,38 @@ import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.MiLightDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class MiLightDeviceAdapter extends DimmableAdapter<MiLightDevice> {
+public class MiLightDeviceAdapter extends DimmableAdapter {
     @Inject
     StateUiService stateUiService;
 
     public MiLightDeviceAdapter() {
-        super(MiLightDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("rgb", new FieldNameAddedToDetailListener<MiLightDevice>() {
+        registerFieldListener("rgb", new FieldNameAddedToDetailListener() {
             @Override
-            public boolean supportsDevice(MiLightDevice device) {
-                return device.getRgb() != null;
+            public boolean supportsDevice(FhemDevice device) {
+                return ((MiLightDevice) device).getRgb() != null;
             }
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final MiLightDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRgbColor(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((MiLightDevice) device).getRgbColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

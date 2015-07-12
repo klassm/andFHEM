@@ -67,7 +67,7 @@ public class AvailableTargetStatesDialogUtil {
 
     public static final TargetStateSelectedCallback STATE_SENDING_CALLBACK = new TargetStateSelectedCallback() {
         @Override
-        public <D extends FhemDevice<D>> void onTargetStateSelected(String state, String subState, D device, Context context) {
+        public <D extends FhemDevice<?>> void onTargetStateSelected(String state, String subState, D device, Context context) {
             if (isBlank(state)) return;
 
             if (!isBlank(subState)) {
@@ -77,7 +77,7 @@ public class AvailableTargetStatesDialogUtil {
             }
         }
 
-        private <D extends FhemDevice<D>> void switchDeviceState(String newState, D device, final Context context) {
+        private <D extends FhemDevice<?>> void switchDeviceState(String newState, D device, final Context context) {
             Intent intent = new Intent(Actions.DEVICE_SET_STATE);
             intent.setClass(context, DeviceIntentService.class);
             intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -86,7 +86,7 @@ public class AvailableTargetStatesDialogUtil {
             context.startService(intent);
         }
 
-        private <D extends FhemDevice<D>> void switchDeviceSubState(String newState, String newSubState, D device, final Context context) {
+        private <D extends FhemDevice<?>> void switchDeviceSubState(String newState, String newSubState, D device, final Context context) {
             if (newState.equalsIgnoreCase("state") || isEmpty(newSubState)) {
                 switchDeviceState(newSubState, device, context);
                 return;
@@ -142,7 +142,7 @@ public class AvailableTargetStatesDialogUtil {
         contextMenu.show();
     }
 
-    public static <D extends FhemDevice<D>> TypeHandler<D>
+    public static <D extends FhemDevice<?>> TypeHandler<D>
     handlerForSelectedOption(D device, Context context,
                              final String option,
                              final TargetStateSelectedCallback callback) {
@@ -166,17 +166,17 @@ public class AvailableTargetStatesDialogUtil {
                         initialProgress = ((DimmableDevice) device).getDimPosition();
                     }
 
-                    tableLayout.addView(new DeviceDimActionRowFullWidth<D>(initialProgress,
+                    tableLayout.addView(new DeviceDimActionRowFullWidth(initialProgress,
                             sliderValue.getStart(), sliderValue.getStep(), sliderValue.getStop(),
                             null, R.layout.device_detail_seekbarrow_full_width) {
 
                         @Override
-                        public void onStopDim(Context context, D device, int progress) {
+                        public void onStopDim(Context context, FhemDevice device, int progress) {
                             dimProgress = progress;
                         }
 
                         @Override
-                        public String toDimUpdateText(D device, int progress) {
+                        public String toDimUpdateText(FhemDevice device, int progress) {
                             return null;
                         }
                     }.createRow(LayoutInflater.from(context), device));
@@ -248,7 +248,7 @@ public class AvailableTargetStatesDialogUtil {
     }
 
 
-    public static <D extends FhemDevice<D>> boolean handleSelectedOption(final Context context, final D device, String option, TargetStateSelectedCallback callback) {
+    public static <D extends FhemDevice<?>> boolean handleSelectedOption(final Context context, final D device, String option, TargetStateSelectedCallback callback) {
         final TypeHandler<D> typeHandler = handlerForSelectedOption(device, context, option, callback);
         if (typeHandler == null) {
             return true;
@@ -277,8 +277,8 @@ public class AvailableTargetStatesDialogUtil {
         return false;
     }
 
-    public static interface TargetStateSelectedCallback {
-        <D extends FhemDevice<D>> void onTargetStateSelected(String state, String subState, D device, Context context);
+    public interface TargetStateSelectedCallback {
+        <D extends FhemDevice<?>> void onTargetStateSelected(String state, String subState, D device, Context context);
     }
 
     public static abstract class TypeHandler<D> {

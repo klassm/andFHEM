@@ -92,6 +92,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     @Inject
     AdvertisementService advertisementService;
 
+
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -225,7 +226,7 @@ public abstract class DeviceListFragment extends BaseFragment {
             @Override
             public boolean onItemClick(View view, String parent, FhemDevice child, int parentPosition, int childPosition) {
                 if (child != null) {
-                    DeviceAdapter<? extends FhemDevice> adapter = DeviceType.getAdapterFor(child);
+                    DeviceAdapter adapter = DeviceType.getAdapterFor(child);
                     if (adapter != null && adapter.supportsDetailView(child)) {
                         if (actionMode != null) actionMode.finish();
                         adapter.attach(DeviceListFragment.this.getActivity());

@@ -63,7 +63,6 @@ import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
-import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
@@ -162,7 +161,7 @@ public enum DeviceType {
     OREGON("OREGON", OregonDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     USBWX("USBWX", USBWXDevice.class),
-    FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
+    FS20("FS20", FS20Device.class, new DimmableAdapter()),
     FILE_LOG("FileLog", FileLogDevice.class),
     DB_LOG("DbLog", DbLogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),
@@ -170,23 +169,23 @@ public enum DeviceType {
     RFXCOM("RFXCOM", RFXCOMDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
-    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter<>(HOLDevice.class)),
-    PID("PID", PIDDevice.class, new PIDDeviceAdapter(PIDDevice.class)),
-    PID20("PID20", PIDDevice.class, new PIDDeviceAdapter(PIDDevice.class)),
+    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter()),
+    PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
+    PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
-    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<>(TRXLightDevice.class)),
+    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
-    STRUCTURE("structure", StructureDevice.class, new DimmableAdapter<>(StructureDevice.class)),
+    STRUCTURE("structure", StructureDevice.class, new DimmableAdapter()),
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
-    EIB("EIB", EIBDevice.class, new DimmableAdapter<>(EIBDevice.class)),
-    HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<>(HCSDevice.class)),
+    EIB("EIB", EIBDevice.class, new DimmableAdapter()),
+    HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWTHERM("OWTHERM", OwthermDevice.class),
-    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter<>(OwDevice.class)),
+    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
-    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<>(TRXSecurityDevice.class)),
+    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
@@ -198,14 +197,14 @@ public enum DeviceType {
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
-    PCA301("PCA301", PCA301Device.class, new ToggleableAdapter<>(PCA301Device.class)),
+    PCA301("PCA301", PCA301Device.class, new ToggleableAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter<>(RPIGPIODevice.class)),
+    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter()),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
-    HM485("HM485", HM485Device.class, new DimmableAdapter<>(HM485Device.class)),
+    HM485("HM485", HM485Device.class, new DimmableAdapter()),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
     PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),
@@ -217,7 +216,7 @@ public enum DeviceType {
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
-    SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter<>(SomfyDevice.class)),
+    SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
@@ -244,25 +243,25 @@ public enum DeviceType {
 
     private String xmllistTag;
     private Class<? extends FhemDevice> deviceClass;
-    private DeviceAdapter<? extends FhemDevice<?>> adapter;
+    private DeviceAdapter adapter;
     private DeviceVisibility visibility = null;
 
     <T extends FhemDevice<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
-        this(xmllistTag, deviceClass, new ExplicitOverviewDetailDeviceAdapter<>(deviceClass));
+        this(xmllistTag, deviceClass, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow());
     }
 
-    DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter<? extends FhemDevice<?>> adapter) {
+    DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter adapter) {
         this.xmllistTag = xmllistTag;
         this.deviceClass = deviceClass;
         this.adapter = adapter;
     }
 
-    DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter<? extends FhemDevice<?>> adapter, DeviceVisibility visibility) {
+    DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter adapter, DeviceVisibility visibility) {
         this(xmllistTag, deviceClass, adapter);
         this.visibility = visibility;
     }
 
-    public static <T extends FhemDevice<T>> DeviceAdapter<T> getAdapterFor(T device) {
+    public static <T extends FhemDevice<T>> DeviceAdapter getAdapterFor(T device) {
         DeviceType type = getDeviceTypeFor(device);
         return type == null ? null : type.<T>getAdapter();
     }
@@ -275,8 +274,8 @@ public enum DeviceType {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends FhemDevice<T>> DeviceAdapter<T> getAdapter() {
-        return (DeviceAdapter<T>) adapter;
+    public <T extends FhemDevice<T>> DeviceAdapter getAdapter() {
+        return adapter;
     }
 
     public static <T extends FhemDevice> DeviceType getDeviceTypeFor(Class<T> clazz) {

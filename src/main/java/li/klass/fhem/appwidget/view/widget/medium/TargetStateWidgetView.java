@@ -40,6 +40,7 @@ import li.klass.fhem.appwidget.view.widget.activity.TargetStateAdditionalInforma
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
@@ -96,8 +97,8 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device,
                 new AvailableTargetStatesDialogUtil.TargetStateSelectedCallback() {
                     @Override
-                    public <D extends FhemDevice<D>> void onTargetStateSelected(String state, String subState,
-                                                                                D device, Context context) {
+                    public void onTargetStateSelected(String state, String subState,
+                                                      FhemDevice device, Context context) {
                         if (state.equals("state")) {
                             state = subState;
                             subState = null;
@@ -118,5 +119,10 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     @Override
     public boolean supports(FhemDevice<?> device) {
         return !device.getSetList().getEntries().isEmpty();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

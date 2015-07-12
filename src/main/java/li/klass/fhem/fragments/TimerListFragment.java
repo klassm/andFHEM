@@ -50,6 +50,7 @@ import li.klass.fhem.adapter.timer.TimerListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
@@ -67,6 +68,11 @@ public class TimerListFragment extends BaseFragment {
     private AtDevice contextMenuClickedDevice;
 
     private boolean createNewDeviceCalled = false;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

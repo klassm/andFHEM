@@ -31,31 +31,39 @@ import android.widget.TableRow;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PIDDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.domain.PIDDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.PIDDevice.MINIMUM_TEMPERATURE;
 
-public class PIDDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<PIDDevice> {
+public class PIDDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public PIDDeviceAdapter(Class<PIDDevice> deviceClass) {
-        super(deviceClass);
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return PIDDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
-        registerFieldListener("desiredTemperature", new FieldNameAddedToDetailListener<PIDDevice>() {
+        registerFieldListener("desiredTemperature", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PIDDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<PIDDevice>(context, device.getDesiredTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new TemperatureChangeTableRow(context, ((PIDDevice) device).getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));

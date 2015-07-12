@@ -48,6 +48,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
@@ -73,8 +74,10 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AndFHEMApplication) getActivity().getApplication()).inject(this);
+        inject(((AndFHEMApplication) getActivity().getApplication()).getDaggerComponent());
     }
+
+    protected abstract void inject(ApplicationComponent applicationComponent);
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

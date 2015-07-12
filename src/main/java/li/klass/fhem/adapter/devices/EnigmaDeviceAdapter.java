@@ -37,11 +37,13 @@ import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.MuteActionRow;
 import li.klass.fhem.adapter.devices.genericui.multimedia.VolumeActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.EnigmaDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class EnigmaDeviceAdapter extends ToggleableAdapter<EnigmaDevice> {
+public class EnigmaDeviceAdapter extends ToggleableAdapter {
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -49,35 +51,41 @@ public class EnigmaDeviceAdapter extends ToggleableAdapter<EnigmaDevice> {
     StateUiService stateUiService;
 
     public EnigmaDeviceAdapter() {
-        super(EnigmaDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<EnigmaDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, EnigmaDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow<EnigmaDevice>(stateUiService)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                EnigmaDevice enigmaDevice = (EnigmaDevice) device;
+                tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
-                tableLayout.addView(new StateChangingSpinnerActionRow<EnigmaDevice>(context,
-                        R.string.input, R.string.input, inputSetList.getGroupStates(), device.getInput(), "input")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context,
+                        R.string.input, R.string.input, inputSetList.getGroupStates(), enigmaDevice.getInput(), "input")
                         .createRow(device, tableLayout));
 
                 SetListGroupValue channelSetList = (SetListGroupValue) device.getSetList().get("channel");
-                tableLayout.addView(new StateChangingSpinnerActionRow<EnigmaDevice>(context,
-                        R.string.channel, R.string.channel, channelSetList.getGroupStates(), device.getChannel(), "channel")
+                tableLayout.addView(new StateChangingSpinnerActionRow(context,
+                        R.string.channel, R.string.channel, channelSetList.getGroupStates(), enigmaDevice.getChannel(), "channel")
                         .createRow(device, tableLayout));
             }
         });
 
-        registerFieldListener("volume", new FieldNameAddedToDetailListener<EnigmaDevice>() {
+        registerFieldListener("volume", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, EnigmaDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow<>(context, device, applicationProperties)
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, device, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });

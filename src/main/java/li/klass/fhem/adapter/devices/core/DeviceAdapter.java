@@ -37,13 +37,14 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class DeviceAdapter<D extends FhemDevice> {
+public abstract class DeviceAdapter {
 
     private Context context;
     private LayoutInflater inflater;
@@ -51,9 +52,11 @@ public abstract class DeviceAdapter<D extends FhemDevice> {
     protected DeviceAdapter() {
         AndFHEMApplication application = AndFHEMApplication.getApplication();
         if (application != null) {
-            application.inject(this);
+            inject(application.getDaggerComponent());
         }
     }
+
+    protected abstract void inject(ApplicationComponent daggerComponent);
 
     /**
      * Indicates whether the current adapter supports the given device class.
@@ -89,14 +92,14 @@ public abstract class DeviceAdapter<D extends FhemDevice> {
     @SuppressWarnings("unchecked")
     public View createDetailView(Context context, FhemDevice device, long lastUpdate) {
         if (supportsDetailView(device)) {
-            return getDeviceDetailView(context, (D) device, lastUpdate);
+            return getDeviceDetailView(context, device, lastUpdate);
         }
         return null;
     }
 
     public abstract boolean supportsDetailView(FhemDevice device);
 
-    protected abstract View getDeviceDetailView(Context context, D device, long lastUpdate);
+    protected abstract View getDeviceDetailView(Context context, FhemDevice device, long lastUpdate);
 
     public void gotoDetailView(Context context, FhemDevice device) {
         if (!supportsDetailView(device)) {
@@ -163,7 +166,7 @@ public abstract class DeviceAdapter<D extends FhemDevice> {
         setTextView(view, textFieldLayoutId, context.getString(value));
     }
 
-    protected void fillGraphButton(final Context context, final D device, final SvgGraphDefinition svgGraphDefinition, Button button) {
+    protected void fillGraphButton(final Context context, final FhemDevice device, final SvgGraphDefinition svgGraphDefinition, Button button) {
         if (svgGraphDefinition == null) return;
 
         button.setText(svgGraphDefinition.getName());

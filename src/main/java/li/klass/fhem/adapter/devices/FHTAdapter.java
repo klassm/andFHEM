@@ -42,15 +42,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.DateService;
@@ -73,7 +75,7 @@ import static li.klass.fhem.ui.AndroidBug.handleColorStateBug;
 import static li.klass.fhem.ui.AndroidBug.showMessageIfColorStateBugIsEncountered;
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<FHTDevice> {
+public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
 
     @Inject
     ApplicationProperties applicationProperties;
@@ -82,58 +84,73 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
     DateService dateService;
 
     public FHTAdapter() {
-        super(FHTDevice.class);
+        super();
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return FHTDevice.class;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
-        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getDesiredTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                FHTDevice fhtDevice = (FHTDevice) device;
+                tableLayout.addView(new TemperatureChangeTableRow(context, fhtDevice.getDesiredTemp(), fieldTableRow,
                         DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE,
                         MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
-        registerFieldListener("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("dayTemperature", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getDayTemperature(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                FHTDevice fhtDevice = (FHTDevice) device;
+                tableLayout.addView(new TemperatureChangeTableRow(context, fhtDevice.getDayTemperature(), fieldTableRow,
                         DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature, MINIMUM_TEMPERATURE,
                         MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
-        registerFieldListener("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("nightTemperature", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getNightTemperature(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                FHTDevice fhtDevice = (FHTDevice) device;
+                tableLayout.addView(new TemperatureChangeTableRow(context, fhtDevice.getNightTemperature(), fieldTableRow,
                         DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature, MINIMUM_TEMPERATURE,
                         MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
-        registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getWindowOpenTemp(), fieldTableRow,
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                FHTDevice fhtDevice = (FHTDevice) device;
+                tableLayout.addView(new TemperatureChangeTableRow(context, fhtDevice.getWindowOpenTemp(), fieldTableRow,
                         DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
                         .createRow(getInflater(), device));
             }
         });
 
-        registerFieldListener("actuator", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("actuator", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, final TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                FHTMode mode = device.getHeatingMode();
+            public void onFieldNameAdded(Context context, final TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                FHTDevice fhtDevice = (FHTDevice) device;
+                FHTMode mode = fhtDevice.getHeatingMode();
 
                 int selected = EnumUtils.positionOf(FHTMode.values(), mode);
-                tableLayout.addView(new SpinnerActionRow<FHTDevice>(context, R.string.mode, R.string.setMode, toStringList(FHTMode.values()), selected) {
+                tableLayout.addView(new SpinnerActionRow(context, R.string.mode, R.string.setMode, toStringList(FHTMode.values()), selected) {
 
                     @Override
-                    public void onItemSelected(Context context, FHTDevice device, String item) {
+                    public void onItemSelected(Context context, FhemDevice device, String item) {
                         FHTMode mode = FHTMode.valueOf(item);
                         setMode(device, mode, this, tableLayout);
                     }
@@ -144,12 +161,12 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
     }
 
     @Override
-    protected List<DeviceDetailViewAction<FHTDevice>> provideDetailActions() {
-        List<DeviceDetailViewAction<FHTDevice>> detailActions = super.provideDetailActions();
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> detailActions = super.provideDetailActions();
 
-        detailActions.add(new DeviceDetailViewButtonAction<FHTDevice>(R.string.timetable) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.timetable) {
             @Override
-            public void onButtonClick(Context context, FHTDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FROM_TO_WEEK_PROFILE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -157,9 +174,9 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
             }
         });
 
-        detailActions.add(new DeviceDetailViewButtonAction<FHTDevice>(R.string.requestRefresh) {
+        detailActions.add(new DeviceDetailViewButtonAction(R.string.requestRefresh) {
             @Override
-            public void onButtonClick(Context context, FHTDevice device) {
+            public void onButtonClick(Context context, FhemDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_VALUES);
                 intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -170,7 +187,7 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
         return detailActions;
     }
 
-    private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow, TableLayout tableLayout) {
+    private void setMode(FhemDevice device, FHTMode mode, final SpinnerActionRow spinnerActionRow, TableLayout tableLayout) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE)
                 .setClass(getContext(), DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
@@ -191,7 +208,7 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
         }
     }
 
-    private void handleHolidayMode(final FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow,
+    private void handleHolidayMode(final FhemDevice device, final SpinnerActionRow spinnerActionRow,
                                    final Intent intent, final TableLayout tableLayout) {
         showMessageIfColorStateBugIsEncountered(getContext(), new AndroidBug.MessageBugHandler() {
             @Override
@@ -205,8 +222,8 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
 
                 TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateRow);
 
-                final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
-                        new TemperatureChangeTableRow<>(getContext(), FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
+                final TemperatureChangeTableRow temperatureChangeTableRow =
+                        new TemperatureChangeTableRow(getContext(), FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
                                 FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE, applicationProperties);
                 contentView.addView(temperatureChangeTableRow.createRow(getInflater(), device));
 
@@ -239,7 +256,7 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
         });
     }
 
-    private void handleHolidayShortMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, final TableLayout tableLayout) {
+    private void handleHolidayShortMode(FhemDevice device, final SpinnerActionRow spinnerActionRow, final Intent intent, final TableLayout tableLayout) {
 
         new HolidayShortEditHolder(spinnerActionRow, tableLayout, device, intent).showDialog();
     }
@@ -277,17 +294,17 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
     }
 
     private class HolidayShortEditHolder {
-        private final SpinnerActionRow<FHTDevice> spinnerActionRow;
+        private final SpinnerActionRow spinnerActionRow;
         private final TableLayout tableLayout;
 
-        private final FHTDevice device;
+        private final FhemDevice device;
         private final Intent switchIntent;
 
         private int hour = 0;
         private int minute = 0;
 
-        public HolidayShortEditHolder(final SpinnerActionRow<FHTDevice> spinnerActionRow,
-                                      TableLayout tableLayout, FHTDevice device, Intent switchIntent) {
+        public HolidayShortEditHolder(final SpinnerActionRow spinnerActionRow,
+                                      TableLayout tableLayout, FhemDevice device, Intent switchIntent) {
             this.spinnerActionRow = spinnerActionRow;
             this.tableLayout = tableLayout;
             this.device = device;
@@ -347,8 +364,8 @@ public class FHTAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchAct
 
 
             TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateTemperatureRow);
-            final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
-                    new TemperatureChangeTableRow<>(getContext(), FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
+            final TemperatureChangeTableRow temperatureChangeTableRow =
+                    new TemperatureChangeTableRow(getContext(), FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
                             FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE, applicationProperties);
             contentView.addView(temperatureChangeTableRow.createRow(getInflater(), device));
 

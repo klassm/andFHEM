@@ -40,25 +40,32 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class DummyAdapter extends DimmableAdapter<DummyDevice> {
+public class DummyAdapter extends DimmableAdapter {
     @Inject
     StateUiService stateUiService;
 
     public DummyAdapter() {
-        super(DummyDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("state", new FieldNameAddedToDetailListener<DummyDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout,
-                                         String field, final DummyDevice device,
+                                         String field, final FhemDevice device,
                                          TableRow fieldTableRow) {
                 tableLayout.addView(new ButtonActionRow(context, R.string.set) {
 
@@ -83,21 +90,21 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
             }
 
             @Override
-            public boolean supportsDevice(DummyDevice device) {
-                return device.isTimerDevice();
+            public boolean supportsDevice(FhemDevice device) {
+                return ((DummyDevice) device).isTimerDevice();
             }
         });
 
-        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<DummyDevice>() {
+        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener() {
             @Override
-            public boolean supportsDevice(DummyDevice device) {
-                return device.getRgbDesc() != null;
+            public boolean supportsDevice(FhemDevice device) {
+                return ((DummyDevice) device).getRgbDesc() != null;
             }
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final DummyDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((DummyDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

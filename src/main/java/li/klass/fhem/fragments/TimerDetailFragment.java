@@ -47,6 +47,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
@@ -101,6 +102,11 @@ public class TimerDetailFragment extends BaseFragment {
     private String stateAppendix;
     private boolean isActive;
     private String savedTimerDeviceName;
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
+    }
 
     @Override
     public void setArguments(Bundle args) {

@@ -35,30 +35,37 @@ import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.DMXDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class DmxAdapter extends DimmableAdapter<DMXDevice> {
+public class DmxAdapter extends DimmableAdapter {
     @Inject
     StateUiService stateUiService;
 
     public DmxAdapter() {
-        super(DMXDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
-        registerFieldListener("rgb", new FieldNameAddedToDetailListener<DMXDevice>() {
+        registerFieldListener("rgb", new FieldNameAddedToDetailListener() {
             @Override
-            public boolean supportsDevice(DMXDevice device) {
-                return device.getRgb() != null;
+            public boolean supportsDevice(FhemDevice device) {
+                return ((DMXDevice) device).getRgb() != null;
             }
 
             @Override
             public void onFieldNameAdded(final Context context, final TableLayout tableLayout, String field,
-                                         final DMXDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
+                                         final FhemDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(((DMXDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

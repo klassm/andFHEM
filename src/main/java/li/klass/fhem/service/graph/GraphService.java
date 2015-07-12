@@ -62,6 +62,10 @@ public class GraphService {
     @Inject
     CommandExecutionService commandExecutionService;
 
+    @Inject
+    public GraphService() {
+    }
+
     /**
      * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
      * be notified.

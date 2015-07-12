@@ -62,6 +62,10 @@ public class AppWidgetDataHolder {
     @Inject
     SharedPreferencesService sharedPreferencesService;
 
+    @Inject
+    public AppWidgetDataHolder() {
+    }
+
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
         Set<String> appWidgetIds = getAllAppWidgetIds(context);
         for (String appWidgetId : appWidgetIds) {

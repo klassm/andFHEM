@@ -28,17 +28,24 @@ import java.util.List;
 
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow<D extends FhemDevice<D>> extends ExplicitOverviewDetailDeviceAdapter<D> {
-    public ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow(Class<D> deviceClass) {
-        super(deviceClass);
+public class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow extends ExplicitOverviewDetailDeviceAdapter {
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
     }
 
     @Override
-    protected List<DeviceDetailViewAction<D>> provideDetailActions() {
-        List<DeviceDetailViewAction<D>> actions = super.provideDetailActions();
-        actions.add(new AvailableTargetStatesSwitchActionRow<D>());
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return FhemDevice.class;
+    }
+
+    @Override
+    protected List<DeviceDetailViewAction> provideDetailActions() {
+        List<DeviceDetailViewAction> actions = super.provideDetailActions();
+        actions.add(new AvailableTargetStatesSwitchActionRow());
         return actions;
     }
 }

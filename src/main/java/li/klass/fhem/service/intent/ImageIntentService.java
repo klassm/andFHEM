@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.CommandExecutionService;
 
 public class ImageIntentService extends ConvenientIntentService {
@@ -59,5 +60,10 @@ public class ImageIntentService extends ConvenientIntentService {
             }
         }
         return STATE.ERROR;
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

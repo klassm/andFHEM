@@ -54,6 +54,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -88,6 +89,11 @@ public class ConnectionDetailFragment extends BaseFragment {
             connectionId = args.getString(BundleExtraKeys.CONNECTION_ID);
             isModify = true;
         }
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 
     @Override

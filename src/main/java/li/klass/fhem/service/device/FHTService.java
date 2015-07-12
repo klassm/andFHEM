@@ -45,6 +45,10 @@ public class FHTService {
     @Inject
     CommandExecutionService commandExecutionService;
 
+    @Inject
+    public FHTService() {
+    }
+
     /**
      * Sets the mode attribute of a given FHT device. The action will only be executed if the new mode is different to
      * the already set one.

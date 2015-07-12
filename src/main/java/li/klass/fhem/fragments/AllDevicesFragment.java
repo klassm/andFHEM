@@ -25,6 +25,7 @@
 package li.klass.fhem.fragments;
 
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.intent.RoomListIntentService;
@@ -38,5 +39,9 @@ public class AllDevicesFragment extends DeviceListFragment implements TopLevelFr
     @Override
     protected String getUpdateAction() {
         return Actions.GET_ALL_ROOMS_DEVICE_LIST;
+    }
+
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 }

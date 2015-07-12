@@ -29,13 +29,24 @@ import android.content.Intent;
 
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
-public class FloorplanAdapter extends ExplicitOverviewDetailDeviceAdapter<FloorplanDevice> {
+public class FloorplanAdapter extends ExplicitOverviewDetailDeviceAdapter {
     public FloorplanAdapter() {
-        super(FloorplanDevice.class);
+        super();
+    }
+
+    @Override
+    protected void inject(ApplicationComponent daggerComponent) {
+        daggerComponent.inject(this);
+    }
+
+    @Override
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
+        return FloorplanDevice.class;
     }
 
     @Override

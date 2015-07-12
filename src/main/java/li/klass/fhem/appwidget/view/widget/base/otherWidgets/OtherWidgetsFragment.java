@@ -42,6 +42,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 
 import static android.widget.AdapterView.OnItemClickListener;
@@ -116,6 +117,11 @@ public class OtherWidgetsFragment extends BaseFragment {
         }
 
         adapter.updateData(values);
+    }
+
+    @Override
+    protected void inject(ApplicationComponent applicationComponent) {
+        applicationComponent.inject(this);
     }
 
     public interface OnWidgetClickedCallback extends Serializable {

@@ -40,12 +40,12 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.billing.LicenseService;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.DeviceVisibility;
 import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -66,11 +66,15 @@ public class ConnectionService {
     ApplicationProperties applicationProperties;
 
     @Inject
-    LicenseIntentService licenseIntentService;
+    LicenseService licenseIntentService;
+
+    @Inject
+    public ConnectionService() {
+    }
 
     private FHEMServerSpec getTestData(Context context) {
         FHEMServerSpec testData = null;
-        if (LicenseIntentService.isDebug(context)) {
+        if (LicenseService.isDebug(context)) {
             testData = new DummyServerSpec(TEST_DATA_ID, "test.xml");
             testData.setName("TestData");
             testData.setServerType(ServerType.DUMMY);
@@ -90,7 +94,7 @@ public class ConnectionService {
                        final String clientCertificatePath, final String clientCertificatePassword, final Context context) {
         if (exists(name, context)) return;
 
-        licenseIntentService.isPremium(new LicenseIntentService.IsPremiumListener() {
+        licenseIntentService.isPremium(new LicenseService.IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
                 if (isPremium || getCountWithoutDummy(context) < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
