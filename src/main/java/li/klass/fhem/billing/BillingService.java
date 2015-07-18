@@ -74,6 +74,7 @@ public class BillingService {
                     if (!success) {
                         Log.e(TAG, "requestPurchase() - cannot initialize purchase flow, setup was not successful");
                     } else {
+                        iabHelper.flagEndAsync();
                         iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
                             @Override
                             public void onIabPurchaseFinished(IabResult result, Purchase info) {
@@ -99,7 +100,7 @@ public class BillingService {
     }
 
     public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener, Context context) {
-        if (isSetup() && isLoaded()) {
+        if (isLoaded()) {
             Log.d(TAG, "loadInventory() - inventory is already setup and loaded, skipping load");
             if (listener != null) listener.onInventoryLoadFinished(true);
         } else {
@@ -120,7 +121,6 @@ public class BillingService {
     public synchronized boolean contains(final String sku) {
         checkArgument(inventory != null);
         checkArgument(isSetup());
-
 
         return inventory.hasPurchase(sku);
     }
@@ -182,11 +182,11 @@ public class BillingService {
 
         boolean success = false;
         try {
-            if (!iabHelper.isSetupDone()) {
+            if (isLoaded()) {
+                Log.d(TAG, "loadInternal() - inventory was already loaded, skipping load");
+            } else if (!iabHelper.isSetupDone()) {
                 inventory = Inventory.empty();
                 Log.e(TAG, "loadInternal() - setup was not done, initializing with empty inventory");
-            } else if (isLoaded()) {
-                Log.d(TAG, "loadInternal() - inventory was already loaded, skipping load");
             } else {
                 Log.d(TAG, "loadInternal() - loading inventory");
                 inventory = iabHelper.queryInventory(false, null);
