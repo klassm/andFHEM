@@ -107,7 +107,8 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     @Override
-    public OverviewStrategy getOverviewStrategy() {
-        return lightSceneDeviceOverviewStrategy;
+    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+        super.fillOverviewStrategies(overviewStrategies);
+        overviewStrategies.add(lightSceneDeviceOverviewStrategy);
     }
 }

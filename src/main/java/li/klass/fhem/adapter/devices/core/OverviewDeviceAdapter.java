@@ -32,6 +32,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +59,7 @@ import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
@@ -87,6 +89,8 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     @Inject
     DefaultOverviewStrategy defaultOverviewStrategy;
 
+    List<OverviewStrategy> overviewStrategies;
+
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
      * recreating this list on each view creation is really really expensive (involves reflection,
@@ -96,12 +100,29 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
     protected Map<String, List<FieldNameAddedToDetailListener>> fieldNameAddedListeners = newHashMap();
 
-    public OverviewStrategy getOverviewStrategy() {
-        return defaultOverviewStrategy;
+    @Override
+    protected void onAfterInject() {
+        super.onAfterInject();
+        overviewStrategies = newArrayList();
+        fillOverviewStrategies(overviewStrategies);
+        Collections.reverse(overviewStrategies);
+    }
+
+    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+        overviewStrategies.add(defaultOverviewStrategy);
+    }
+
+    private OverviewStrategy getMostSpecificOverviewStrategy(FhemDevice device) {
+        for (OverviewStrategy overviewStrategy : overviewStrategies) {
+            if (overviewStrategy.supports(device)) {
+                return overviewStrategy;
+            }
+        }
+        throw new IllegalStateException("no overview strategy found, default should always be present");
     }
 
     public final View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
-        OverviewStrategy overviewStrategy = getOverviewStrategy();
+        OverviewStrategy overviewStrategy = getMostSpecificOverviewStrategy(rawDevice);
         if (overviewStrategy == null) {
             throw new NullPointerException("was null for device " + rawDevice.toString() + " and adapter " + getClass().getSimpleName());
         }

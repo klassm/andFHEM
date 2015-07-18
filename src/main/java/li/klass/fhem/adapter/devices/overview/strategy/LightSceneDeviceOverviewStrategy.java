@@ -76,6 +76,10 @@ public class LightSceneDeviceOverviewStrategy extends OverviewStrategy {
         return layout;
     }
 
+    @Override
+    public boolean supports(FhemDevice fhemDevice) {
+        return fhemDevice instanceof LightSceneDevice;
+    }
 
     private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button, final Context context) {
         button.setText(scene);

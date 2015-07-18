@@ -25,81 +25,76 @@
 package li.klass.fhem.behavior.dim;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
-import java.util.regex.Pattern;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListValue;
 
-import static com.google.common.collect.FluentIterable.from;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
-class DiscreteDimmableBehavior implements DimmableTypeBehavior {
+class ContinuousDimmableBehavior implements DimmableTypeBehavior {
+    private static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
+    private SetListSliderValue slider;
+    private String setListAttribute;
 
-    public static final Pattern DIM_STATE_PATTERN = Pattern.compile("dim[0-9]+[%]?");
-    private static final Predicate<String> DIMMABLE_STATE = new Predicate<String>() {
-        @Override
-        public boolean apply(String input) {
-            return DIM_STATE_PATTERN.matcher(input).matches();
-        }
-    };
-
-    private final ImmutableList<String> foundDimStates;
-
-    public DiscreteDimmableBehavior(ImmutableList<String> foundDimStates) {
-        this.foundDimStates = foundDimStates;
-    }
-
-    public ImmutableList<String> getFoundDimStates() {
-        return foundDimStates;
-    }
-
-    static Optional<DiscreteDimmableBehavior> behaviorFor(SetList setList) {
-
-        List<String> keys = setList.getSortedKeys();
-        ImmutableList<String> foundDimStates = from(keys).filter(DIMMABLE_STATE).toList();
-
-        return foundDimStates.isEmpty() ?
-                Optional.<DiscreteDimmableBehavior>absent() :
-                Optional.of(new DiscreteDimmableBehavior(foundDimStates));
+    private ContinuousDimmableBehavior(SetListSliderValue sliderValue, String setListAttribute) {
+        this.slider = sliderValue;
+        this.setListAttribute = setListAttribute;
     }
 
     @Override
     public int getDimLowerBound() {
-        return 0;
+        return slider.getStart();
     }
 
     @Override
     public int getDimStep() {
-        return 0;
+        return slider.getStep();
     }
 
     @Override
     public int getCurrentDimPosition(FhemDevice device) {
-        String state = device.getInternalState();
-        int position = foundDimStates.indexOf(state);
-        return position == -1 ? 0 : position;
+        String value = device.getXmlListDevice().getStates().get(setListAttribute).getValue();
+        return getPositionForDimState(value);
     }
 
     @Override
     public int getDimUpperBound() {
-        return foundDimStates.size();
+        return slider.getStop();
     }
 
     @Override
     public String getDimStateForPosition(int position) {
-        return foundDimStates.get(position);
+        return position + "";
     }
 
     @Override
     public int getPositionForDimState(String dimState) {
-        return foundDimStates.indexOf(dimState);
+        return extractLeadingInt(dimState);
+    }
+
+    public SetListSliderValue getSlider() {
+        return slider;
     }
 
     @Override
     public String getStateName() {
-        return "state";
+        return setListAttribute;
+    }
+
+    static Optional<ContinuousDimmableBehavior> behaviorFor(SetList setList) {
+        for (String dimAttribute : DIM_ATTRIBUTES) {
+            if (!setList.contains(dimAttribute)) {
+                continue;
+            }
+            SetListValue setListValue = setList.get(dimAttribute);
+            if (setListValue instanceof SetListSliderValue) {
+                return Optional.of(new ContinuousDimmableBehavior((SetListSliderValue) setListValue, dimAttribute));
+            }
+            return Optional.absent();
+        }
+        return Optional.absent();
     }
 }

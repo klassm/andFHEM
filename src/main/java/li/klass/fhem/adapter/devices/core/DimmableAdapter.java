@@ -28,6 +28,8 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
@@ -116,7 +118,8 @@ public class DimmableAdapter extends ToggleableAdapter {
     }
 
     @Override
-    public OverviewStrategy getOverviewStrategy() {
-        return dimmableOverviewStrategy;
+    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+        super.fillOverviewStrategies(overviewStrategies);
+        overviewStrategies.add(dimmableOverviewStrategy);
     }
 }

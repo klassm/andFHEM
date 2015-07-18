@@ -75,6 +75,11 @@ public class DefaultOverviewStrategy extends OverviewStrategy {
         return convertView;
     }
 
+    @Override
+    public boolean supports(FhemDevice fhemDevice) {
+        return true;
+    }
+
     private int getOverviewLayout() {
         return R.layout.device_overview_generic;
     }

@@ -36,6 +36,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.DimActionRow;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
@@ -70,5 +71,10 @@ public class DimmableOverviewStrategy extends OverviewStrategy {
         row.fillWith(device, null);
         holder.getTableLayout().addView(row.getView());
         return convertView;
+    }
+
+    @Override
+    public boolean supports(FhemDevice fhemDevice) {
+        return DimmableBehavior.behaviorFor(fhemDevice).isPresent();
     }
 }

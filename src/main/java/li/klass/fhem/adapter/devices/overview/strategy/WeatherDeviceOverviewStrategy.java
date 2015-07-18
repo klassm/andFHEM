@@ -54,6 +54,11 @@ public class WeatherDeviceOverviewStrategy extends OverviewStrategy {
         return layout;
     }
 
+    @Override
+    public boolean supports(FhemDevice fhemDevice) {
+        return fhemDevice instanceof WeatherDevice;
+    }
+
 
     protected void fillDeviceOverviewView(final View view, WeatherDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());

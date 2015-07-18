@@ -53,7 +53,11 @@ public abstract class DeviceAdapter {
         AndFHEMApplication application = AndFHEMApplication.getApplication();
         if (application != null) {
             inject(application.getDaggerComponent());
+            onAfterInject();
         }
+    }
+
+    protected void onAfterInject() {
     }
 
     protected abstract void inject(ApplicationComponent daggerComponent);

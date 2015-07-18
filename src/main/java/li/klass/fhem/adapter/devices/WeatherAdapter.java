@@ -33,6 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
@@ -144,7 +146,8 @@ public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter {
     }
 
     @Override
-    public OverviewStrategy getOverviewStrategy() {
-        return weatherDeviceOverviewStrategy;
+    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+        super.fillOverviewStrategies(overviewStrategies);
+        overviewStrategies.add(weatherDeviceOverviewStrategy);
     }
 }

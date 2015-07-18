@@ -67,4 +67,6 @@ public abstract class OverviewStrategy {
         }
         return false;
     }
+
+    public abstract boolean supports(FhemDevice fhemDevice);
 }

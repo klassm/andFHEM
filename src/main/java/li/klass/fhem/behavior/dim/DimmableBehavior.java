@@ -24,93 +24,84 @@
 
 package li.klass.fhem.behavior.dim;
 
+import com.google.common.base.Optional;
+
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetList;
+
 public class DimmableBehavior {
 
-//    private final FhemDevice fhemDevice;
-//
-//    public DimmableBehavior(FhemDevice fhemDevice) {
-//        this.fhemDevice = fhemDevice;
-//    }
-//
-//    public int getDimPosition() {
-//        int position = getPositionForDimStateInternal(getDimStateFieldValue());
-//        if (position == -1) {
-//            return 0;
-//        }
-//        return position;
-//    }
-//
-//    public int getDimUpPosition() {
-//        int currentPosition = getDimPosition();
-//        if (currentPosition + 1 > getDimUpperBound()) {
-//            return getDimUpperBound();
-//        }
-//        return currentPosition + 1;
-//    }
-//
-//    public int getDimDownPosition() {
-//        int currentPosition = getDimPosition();
-//        if (currentPosition - 1 < getDimLowerBound()) {
-//            return getDimLowerBound();
-//        }
-//        return currentPosition - 1;
-//    }
-//
-//    public String getDimStateFieldValue() {
-//        return getState();
-//    }
-//
-//    @Override
-//    public String formatTargetState(String targetState) {
-//        if (targetState.equals("dimup")) {
-//            return getDimStateForPosition(getDimUpPosition());
-//        } else if (targetState.equals("dimdown")) {
-//            return getDimStateForPosition(getDimDownPosition());
-//        }
-//        return super.formatTargetState(targetState);
-//    }
-//
-//    @Override
-//    public String formatStateTextToSet(String stateToSet) {
-//        if (!supportsDim()) return super.formatStateTextToSet(stateToSet);
-//
-//        int position = getPositionForDimStateInternal(stateToSet);
-//        if (position == getDimUpperBound()) {
-//            return "on";
-//        }
-//        if (position == getDimLowerBound()) {
-//            return "off";
-//        }
-//        return super.formatStateTextToSet(stateToSet);
-//    }
-//
-//    public int getDimLowerBound() {
-//        return 0;
-//    }
-//
-//    public abstract int getDimUpperBound();
-//
-//    public int getDimStep() {
-//        return 1;
-//    }
-//
-//    public int getPositionForDimStateInternal(String dimState) {
-//        if (dimState == null) return -1;
-//        if (dimState.equals("on")) return getDimUpperBound();
-//        if (dimState.equals("off")) return getDimLowerBound();
-//
-//        return getPositionForDimState(dimState);
-//    }
-//
-//    /**
-//     * Get the dim state for a given position. This is sent to FHEM within the set command!
-//     *
-//     * @param position position to look for
-//     * @return state for the given position.
-//     */
-//    public abstract String getDimStateForPosition(int position);
-//
-//    public abstract int getPositionForDimState(String dimState);
-//
-//    public abstract boolean supportsDim();
+    private final FhemDevice fhemDevice;
+    private DimmableTypeBehavior behavior;
+
+    public DimmableBehavior(FhemDevice fhemDevice, DimmableTypeBehavior dimmableTypeBehavior) {
+        this.behavior = dimmableTypeBehavior;
+        this.fhemDevice = fhemDevice;
+    }
+
+    public int getCurrentDimPosition() {
+        return behavior.getCurrentDimPosition(fhemDevice);
+    }
+
+    public int getDimUpPosition() {
+        int currentPosition = getCurrentDimPosition();
+        if (currentPosition + 1 > behavior.getDimUpperBound()) {
+            return behavior.getDimUpperBound();
+        }
+        return currentPosition + 1;
+    }
+
+    public int getDimDownPosition() {
+        int currentPosition = getCurrentDimPosition();
+        if (currentPosition - 1 < behavior.getDimLowerBound()) {
+            return behavior.getDimLowerBound();
+        }
+        return currentPosition - 1;
+    }
+
+
+    public String getDimStateForPosition(int position) {
+        return behavior.getDimStateForPosition(position);
+    }
+
+    public int getPositionForDimState(String dimState) {
+        return behavior.getPositionForDimState(dimState);
+    }
+
+    public int getDimLowerBound() {
+        return behavior.getDimLowerBound();
+    }
+
+    public int getDimUpperBound() {
+        return behavior.getDimUpperBound();
+    }
+
+    public int getDimStep() {
+        return behavior.getDimStep();
+    }
+
+    public FhemDevice getFhemDevice() {
+        return fhemDevice;
+    }
+
+    DimmableTypeBehavior getBehavior() {
+        return behavior;
+    }
+
+    public static Optional<DimmableBehavior> behaviorFor(FhemDevice fhemDevice) {
+        SetList setList = fhemDevice.getSetList();
+
+        Optional<ContinuousDimmableBehavior> continuous = ContinuousDimmableBehavior.behaviorFor(setList);
+        if (continuous.isPresent()) {
+            DimmableTypeBehavior behavior = continuous.get();
+            return Optional.of(new DimmableBehavior(fhemDevice, behavior));
+        }
+
+        Optional<DiscreteDimmableBehavior> discrete = DiscreteDimmableBehavior.behaviorFor(setList);
+        if (discrete.isPresent()) {
+            return Optional.of(new DimmableBehavior(fhemDevice, discrete.get()));
+        }
+
+        return Optional.absent();
+    }
 }

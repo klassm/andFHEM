@@ -78,6 +78,11 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
         return convertView;
     }
 
+    @Override
+    public boolean supports(FhemDevice fhemDevice) {
+        return fhemDevice.getSetList().contains("on", "off");
+    }
+
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
         TableLayout layout = holder.getTableLayout();
         ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();

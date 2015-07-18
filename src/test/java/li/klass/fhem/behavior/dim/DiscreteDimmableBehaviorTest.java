@@ -72,4 +72,41 @@ public class DiscreteDimmableBehaviorTest {
     public void should_return_absent_if_the_set_list_does_not_contain_multiple_dim_states(SetList setList) {
         assertThat(DiscreteDimmableBehavior.behaviorFor(setList).isPresent()).isFalse();
     }
+
+    @DataProvider
+    public static Object[][] upperBoundProvider() {
+        return new Object[][]{
+                {new SetList().parse("dim10% dim20% dim30%"), 3},
+                {new SetList().parse("dim10% dim20% dim30% dim40%"), 4},
+                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), 5}
+        };
+    }
+
+    @Test
+    @UseDataProvider("upperBoundProvider")
+    public void should_calculate_upper_bound(SetList setList, int expectedUpperBound) {
+        DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.behaviorFor(setList).get();
+
+        assertThat(behavior.getDimUpperBound()).isEqualTo(expectedUpperBound);
+    }
+
+    @DataProvider
+    public static Object[][] positionProvider() {
+        return new Object[][]{
+                {new SetList().parse("dim10% dim20% dim30%"), "dim20%", 1},
+                {new SetList().parse("dim10% dim20% dim30% dim40%"), "dim30%", 2},
+                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), "dim50%", 4},
+                {new SetList().parse("dim20% dim10%"), "dim10%", 0},
+                {new SetList().parse("dim20% dim10%"), "dim20%", 1}
+        };
+    }
+
+    @Test
+    @UseDataProvider("positionProvider")
+    public void should_calculate_position(SetList setList, String state, int position) {
+        DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.behaviorFor(setList).get();
+
+        assertThat(behavior.getDimStateForPosition(position)).isEqualTo(state);
+        assertThat(behavior.getPositionForDimState(state)).isEqualTo(position);
+    }
 }

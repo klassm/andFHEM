@@ -27,6 +27,8 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.widget.TableLayout;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
@@ -96,7 +98,8 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     @Override
-    public OverviewStrategy getOverviewStrategy() {
-        return toggleableOverviewStrategy;
+    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+        super.fillOverviewStrategies(overviewStrategies);
+        overviewStrategies.add(toggleableOverviewStrategy);
     }
 }
