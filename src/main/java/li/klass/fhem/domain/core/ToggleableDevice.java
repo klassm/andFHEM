@@ -28,11 +28,6 @@ import java.util.Locale;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.OFF_DEVICE;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_DEVICE;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevice<T> {
@@ -72,31 +67,6 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
                 (eventMap.containsKey("on") && eventMap.containsKey("off"));
     }
 
-    @XmllistAttribute("onOffDevice")
-    public void setOnOffDevice(String value) {
-        readButtonHookType(value, ON_OFF_DEVICE);
-    }
-
-    @XmllistAttribute("onDevice")
-    public void setOnDevice(String value) {
-        readButtonHookType(value, ON_DEVICE);
-    }
-
-    @XmllistAttribute("offDevice")
-    public void setOffDevice(String value) {
-        readButtonHookType(value, OFF_DEVICE);
-    }
-
-    @XmllistAttribute("toggleDevice")
-    public void setToggleDevice(String value) {
-        readButtonHookType(value, TOGGLE_DEVICE);
-    }
-
-    @XmllistAttribute("webCmdDevice")
-    public void setWebCmdDevice(String value) {
-        readButtonHookType(value, WEBCMD_DEVICE);
-    }
-
     @XmllistAttribute("onStateName")
     public void setOnStateName(String value) {
         onStateName = value;
@@ -107,25 +77,11 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
         offStateName = value;
     }
 
-    private void readButtonHookType(String value, ButtonHookType target) {
-        if (value.equalsIgnoreCase("true")) {
-            buttonHookType = target;
-        }
-    }
-
     @XmllistAttribute("invertState")
     public void setInvertState(String value) {
         if (value.equalsIgnoreCase("true")) {
             doInvertOnState = true;
         }
-    }
-
-    public ButtonHookType getButtonHookType() {
-        return buttonHookType;
-    }
-
-    public boolean isSpecialButtonDevice() {
-        return buttonHookType != NORMAL;
     }
 
     public String getOffStateName() {

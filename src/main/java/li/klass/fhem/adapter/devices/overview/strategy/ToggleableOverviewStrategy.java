@@ -41,19 +41,24 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
+import li.klass.fhem.adapter.devices.hook.ButtonHook;
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_OVERVIEW;
 import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.HOLDER_KEY;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
+import static li.klass.fhem.adapter.devices.hook.ButtonHook.NORMAL;
+import static li.klass.fhem.adapter.devices.hook.ButtonHook.TOGGLE_DEVICE;
+import static li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE;
 
 @Singleton
 public class ToggleableOverviewStrategy extends OverviewStrategy {
     @Inject
     DefaultOverviewStrategy defaultOverviewStrategy;
 
+    @Inject
+    DeviceHookProvider hookProvider;
 
     @Inject
     public ToggleableOverviewStrategy() {
@@ -85,9 +90,9 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
 
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
         TableLayout layout = holder.getTableLayout();
-        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
-        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
-            if (buttonHookType == WEBCMD_DEVICE) {
+        ButtonHook hook = hookProvider.buttonHookFor(device);
+        if (hook != NORMAL && hook != TOGGLE_DEVICE) {
+            if (hook == WEBCMD_DEVICE) {
                 addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater);
             } else {
                 addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater);
@@ -118,7 +123,7 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
         OnOffActionRowForToggleables onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRowForToggleables.HOLDER_KEY);
         if (onOffActionRow == null) {
-            onOffActionRow = new OnOffActionRowForToggleables(layoutId);
+            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider.buttonHookFor(device));
             holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow);
         }
         holder.getTableLayout().addView(onOffActionRow

@@ -30,7 +30,11 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.hook.ButtonHook;
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
@@ -40,9 +44,10 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
-
 public class ToggleWidgetView extends DeviceAppWidgetView {
+    @Inject
+    DeviceHookProvider deviceHookProvider;
+
     @Override
     public int getWidgetName() {
         return R.string.widget_toggle;
@@ -61,18 +66,19 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
 
         Intent actionIntent;
 
-        if (!toggleable.isSpecialButtonDevice() || toggleable.getButtonHookType() == ON_OFF_DEVICE) {
+        ButtonHook hook = deviceHookProvider.buttonHookFor(device);
+
+        if (hook == ButtonHook.NORMAL || hook == ButtonHook.ON_OFF_DEVICE) {
             actionIntent = new Intent(Actions.DEVICE_WIDGET_TOGGLE);
             actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             actionIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
             actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-
         } else {
             actionIntent = new Intent(Actions.DEVICE_SET_STATE);
             actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
 
-            ToggleableDevice.ButtonHookType buttonHookType = toggleable.getButtonHookType();
-            switch (buttonHookType) {
+
+            switch (hook) {
                 case ON_DEVICE:
                     isOn = true;
                     actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOnStateName());

@@ -30,13 +30,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
+import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class OnOffActionRowForToggleables extends OnOffActionRow {
 
-    public OnOffActionRowForToggleables(int layoutId) {
+    private ButtonHook buttonHook;
+
+    public OnOffActionRowForToggleables(int layoutId, ButtonHook buttonHook) {
         super(layoutId);
+        this.buttonHook = buttonHook;
     }
 
     public TableRow createRow(LayoutInflater inflater, final FhemDevice device, Context context) {
@@ -45,8 +49,7 @@ public class OnOffActionRowForToggleables extends OnOffActionRow {
         Button onButton = findOnButton(tableRow);
         Button offButton = findOffButton(tableRow);
 
-        ToggleableDevice toggleableDevice = getToggleableDevice(device);
-        switch (toggleableDevice.getButtonHookType()) {
+        switch (buttonHook) {
             case ON_DEVICE:
                 offButton.setVisibility(View.GONE);
                 onButton.setVisibility(View.VISIBLE);

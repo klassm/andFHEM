@@ -59,7 +59,6 @@ public enum DeviceFunctionality {
     }
 
     public static DeviceFunctionality functionalityForDimmable(DimmableDevice device) {
-        if (device.isSpecialButtonDevice()) return SWITCH;
         if (device.supportsDim()) {
             return DIMMER;
         }

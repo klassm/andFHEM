@@ -27,7 +27,6 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +41,6 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.isOnByState()).isEqualTo(true);
-        assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
 
         assertThat(device.getEventMap().get("off-for-timer 12")).isEqualTo("Ab80");
         assertThat(device.getEventMap().get("off")).isEqualTo("Ab");
@@ -68,8 +66,6 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEventMapStateFor("dummy")).isEqualTo("dummy");
 
         assertThat(device.getAlias()).isEqualTo("myAlias");
-        assertThat(device.isSpecialButtonDevice()).isEqualTo(true);
-        assertThat(device.getButtonHookType()).isEqualTo(ToggleableDevice.ButtonHookType.ON_OFF_DEVICE);
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
 

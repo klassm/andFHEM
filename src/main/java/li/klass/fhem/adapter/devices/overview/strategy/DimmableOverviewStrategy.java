@@ -36,6 +36,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.DimActionRow;
+import li.klass.fhem.adapter.devices.hook.ButtonHook;
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -46,15 +48,20 @@ public class DimmableOverviewStrategy extends OverviewStrategy {
     ToggleableOverviewStrategy toggleableOverviewStrategy;
 
     @Inject
+    DeviceHookProvider deviceHookProvider;
+
+    @Inject
     public DimmableOverviewStrategy() {
     }
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         DimmableDevice<?> device = (DimmableDevice<?>) rawDevice;
-        if (!device.supportsDim() || device.isSpecialButtonDevice()) {
+        ButtonHook hook = deviceHookProvider.buttonHookFor(device);
+        if (!supports(device) || hook == ButtonHook.NORMAL) {
             return toggleableOverviewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, deviceItems);
         }
+
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
             GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);

@@ -33,6 +33,8 @@ import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
+import li.klass.fhem.adapter.devices.hook.ButtonHook;
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
 import li.klass.fhem.adapter.devices.overview.strategy.ToggleableOverviewStrategy;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -41,11 +43,13 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
 import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYOUT_DETAIL;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 
 public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     ToggleableOverviewStrategy toggleableOverviewStrategy;
+
+    @Inject
+    DeviceHookProvider deviceHookProvider;
 
     @Override
     protected void inject(ApplicationComponent daggerComponent) {
@@ -65,7 +69,7 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new OnOffActionRowForToggleables(layoutId)
+        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider.buttonHookFor(device))
                 .createRow(getInflater(), device, context));
     }
 
@@ -83,9 +87,9 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         });
     }
 
-    protected <T extends ToggleableDevice<T>> void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout) {
-        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
-        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
+    protected void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout) {
+        ButtonHook hook = deviceHookProvider.buttonHookFor(device);
+        if (hook != ButtonHook.NORMAL && hook != ButtonHook.TOGGLE_DEVICE) {
             addOnOffActionRow(context, device, layout, OnOffActionRowForToggleables.LAYOUT_DETAIL);
         } else {
             addToggleDeviceActionRow(context, device, layout, LAYOUT_DETAIL);
