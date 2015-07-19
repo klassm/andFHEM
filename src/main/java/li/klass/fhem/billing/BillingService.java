@@ -119,8 +119,7 @@ public class BillingService {
     }
 
     public synchronized boolean contains(final String sku) {
-        checkArgument(inventory != null);
-        checkArgument(isSetup());
+        checkArgument(isLoaded());
 
         return inventory.hasPurchase(sku);
     }
