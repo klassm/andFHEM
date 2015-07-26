@@ -117,7 +117,7 @@ public class GraphService {
         StringBuilder result = new StringBuilder();
 
         @SuppressWarnings("unchecked")
-        String command = logDevice.getGraphCommandFor(logDevice, fromDateFormatted,
+        String command = logDevice.getGraphCommandFor(fromDateFormatted,
                 toDateFormatted, plotSeries);
 
         String data = commandExecutionService.executeSafely(command, context);

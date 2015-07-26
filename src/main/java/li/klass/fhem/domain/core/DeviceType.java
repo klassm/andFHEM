@@ -70,7 +70,6 @@ import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.DMXDevice;
-import li.klass.fhem.domain.DbLogDevice;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
@@ -81,7 +80,6 @@ import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.FS20ZDRDevice;
-import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GPIO4Device;
@@ -144,6 +142,7 @@ import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.domain.WithingsDevice;
 import li.klass.fhem.domain.YamahaAVRDevice;
+import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -162,8 +161,8 @@ public enum DeviceType {
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     USBWX("USBWX", USBWXDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
-    FILE_LOG("FileLog", FileLogDevice.class),
-    DB_LOG("DbLog", DbLogDevice.class),
+    FILE_LOG("FileLog", LogDevice.class),
+    DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),

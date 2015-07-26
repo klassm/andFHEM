@@ -1,0 +1,18 @@
+# Created by FHEM/98_SVG.pm, 2015-01-22 13:06:38
+set terminal png transparent size <SIZE> crop
+set output '<OUT>.png'
+set xdata time
+set timefmt "%Y-%m-%d_%H:%M:%S"
+set xlabel " "
+set title '<L1>'
+set ytics
+set y2tics
+set grid ytics
+set ylabel "Power (KWh)"
+set y2label "Power (KWh)"
+set yrange min:max
+set y2range min:max
+
+#sumLog 4:CUL_EM_22.Summe\x3a:0:
+
+plot "<IN>" using 1:2 axes x1y2 title 'Stromzähler' ls l0fill lw 1 with lines

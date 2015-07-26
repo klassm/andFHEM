@@ -28,7 +28,7 @@ public class GPlotSeriesTestdataBuilder {
     public static GPlotSeries.Builder defaultGPlotSeriesBuilder() {
         return new GPlotSeries.Builder()
                 .withAxis(GPlotSeries.Axis.LEFT)
-                .withFileLogDef("4::")
+                .withLogDef("4::")
                 .withTitle("mySeries")
                 .withLineType(GPlotSeries.LineType.LINES);
     }
