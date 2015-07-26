@@ -36,6 +36,8 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
 
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
+
 public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInterval, MaxDevice, MAXConfiguration> {
 
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 13;
@@ -77,7 +79,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         String[] temperatures = value.split("/");
         for (int i = 0; i < temperatures.length; i++) {
             String temperatureValue = temperatures[i].trim();
-            double temperature = Double.valueOf(temperatureValue);
+            double temperature = extractLeadingDouble(temperatureValue);
 
             getOrCreateInterval(weekProfile, day, i).setTemperature(temperature);
         }

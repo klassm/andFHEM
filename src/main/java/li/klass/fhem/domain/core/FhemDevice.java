@@ -30,6 +30,7 @@ import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,6 +50,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.GCM_UPDATE;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
@@ -56,7 +58,6 @@ import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
 
-    protected List<String> rooms;
     protected List<String> webCmd = newArrayList();
     protected String name;
     protected String alias;
@@ -86,12 +87,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     protected OverviewViewSettings getExplicitOverviewSettings() {
         return null;
     }
-
-    @XmllistAttribute("ROOM")
-    public void setRoom(String value) {
-        setRoomConcatenated(value);
-    }
-
 
     @XmllistAttribute("state")
     public void setState(String value, DeviceNode node) {
@@ -196,23 +191,28 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public List<String> getRooms() {
-        if (rooms == null || rooms.size() == 0) {
+        DeviceNode room = getXmlListDevice().getAttributes().get("room");
+        if (room == null) {
             return newArrayList("Unsorted");
         }
-        return rooms;
+        return Arrays.asList(getRoomConcatenated().split(","));
     }
 
     public void setRooms(List<String> rooms) {
-        this.rooms = rooms;
+        setRoomConcatenated(Joiner.on(",").join(rooms));
     }
 
     @ShowField(description = ResourceIdMapper.rooms, showAfter = "aliasOrName")
     public String getRoomConcatenated() {
-        return Joiner.on(",").join(getRooms());
+        DeviceNode room = getXmlListDevice().getAttributes().get("room");
+        if (room == null) {
+            return "Unsorted";
+        }
+        return room.getValue();
     }
 
     public void setRoomConcatenated(String roomsConcatenated) {
-        this.rooms = newArrayList(roomsConcatenated.split(","));
+        getXmlListDevice().getAttributes().put("room", new DeviceNode(DeviceNodeType.ATTR, "room", roomsConcatenated, null));
     }
 
     /**
@@ -256,7 +256,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
      * @param value value of the tag
      * @param node  additional tag node
      */
-    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
+    public void onChildItemRead(DeviceNodeType type, String key, String value, DeviceNode node) {
         if (key.endsWith("_TIME") && !key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
             setMeasured(value);
         }
@@ -421,7 +421,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     @Override
     public String toString() {
         return "Device{" +
-                "rooms=" + (rooms == null ? null : rooms) +
                 ", name='" + name + '\'' +
                 ", state='" + state + '\'' +
                 ", alias='" + alias + '\'' +

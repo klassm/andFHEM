@@ -45,7 +45,7 @@
             <STATE key="external_number" value="026094339657" measured="2013-08-08 16:36:29"/>
             <STATE key="internal_number" value="4382910" measured="2013-08-08 16:36:29"/>
             <STATE key="missed_call" value="4294829932" measured="2013-08-08 16:36:31"/>
-            <STATE key="room" value="room"/>
+            <ATTR key="room" value="room" />
         </FB_CALLMONITOR>
 
         <!-- a device without an associated call event (resulted in xmllist error, issue #483) -->
@@ -59,7 +59,7 @@
             <INT key="PARTIAL" value=""/>
             <INT key="STATE" value="opened"/>
             <INT key="TYPE" value="FB_CALLMONITOR"/>
-            <STATE key="room" value="room"/>
+            <ATTR key="room" value="room" />
             <ATTR key="event-on-change-reading" value="event"/>
         </FB_CALLMONITOR>
     </FB_CALLMONITOR_LIST>

@@ -40,7 +40,7 @@
             <INT key="NR" value="21"/>
             <INT key="STATE" value="??"/>
             <INT key="TYPE" value="dummy"/>
-            <INT key="room" value="room"/>
+            <ATTR key="room" value="room" />
             <STATE key="state" value="??" measured="2012-07-23 11:06:31"/>
         </dummy>
         <dummy name="deviceWithSetlist" state="20" sets="state:17,18,19,20,21,21.5,22"
@@ -72,7 +72,7 @@
             <INT key="NAME" value="sliderDevice"/>
             <INT key="NR" value="336"/>
             <INT key="STATE" value="???"/>
-            <INT key="room" value="room"/>
+            <ATTR key="room" value="room" />
             <INT key="TYPE" value="dummy"/>
             <ATTR key="setList" value="state:slider,0,1,10"/>
         </dummy>

@@ -54,7 +54,7 @@
             <STATE key="ss_indoor" value="20:37:15" measured="2012-07-18 11:08:00"/>
             <STATE key="ss_naut" value="22:43:16" measured="2012-07-18 11:08:00"/>
             <STATE key="ss_weather" value="21:05:07" measured="2012-07-18 11:08:00"/>
-            <STATE key="room" value="room"/>
+            <ATTR key="room" value="room" />
         </Twilight>
     </Twilight_LIST>
 </FHZINFO>
