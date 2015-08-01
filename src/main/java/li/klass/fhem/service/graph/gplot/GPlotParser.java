@@ -33,8 +33,6 @@ import com.google.common.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
@@ -69,13 +67,6 @@ public class GPlotParser {
     public static final Pattern LINE_WIDTH_PATTERN = Pattern.compile("lw ([0-9]+(\\.[0-9]+)?)");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GPlotParser.class);
-
-    public static final FilenameFilter GPLOT_FILTER = new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String filename) {
-            return filename != null && filename.endsWith(".gplot");
-        }
-    };
 
     private ImmutableMap<String, GPlotSeries.SeriesColor> TO_COLOR = ImmutableMap.<String, GPlotSeries.SeriesColor>builder()
             .put("l0", GPlotSeries.SeriesColor.RED)
@@ -145,7 +136,6 @@ public class GPlotParser {
         return new GPlotAxis(rightLabel, optRange);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private List<GPlotSeries> extractSeriesFrom(List<String> lines) {
         List<GPlotSeries> result = newArrayList();
         Queue<GPlotSeries.Builder> builders = new LinkedList<>();
@@ -156,13 +146,16 @@ public class GPlotParser {
             if (line.startsWith("plot")) {
                 plotFound = true;
             }
-            if (line.startsWith("#FileLog") || line.startsWith("#Log.") || line.startsWith("#logProxy")) {
-                builders.add(new GPlotSeries.Builder().withFileLogDef(line.split(" ")[1]));
-            } else if (line.startsWith("#DbLog")) {
-                builders.add(new GPlotSeries.Builder().withDbLogDef(line.split(" ")[1]));
+            String[] spaceSeparatedParts = line.split(" ");
+            if (line.startsWith("#")
+                    && spaceSeparatedParts.length == 2
+                    && !spaceSeparatedParts[0].matches("[#]+[ ]*")
+                    && spaceSeparatedParts[1].contains(":")) {
+                builders.add(new GPlotSeries.Builder().withLogDef(spaceSeparatedParts[1]));
             } else if (plotFound) {
                 GPlotSeries.Builder builder = builders.peek();
                 if (builder == null) {
+                    System.out.println("builder is null");
                     break;
                 }
 
@@ -172,6 +165,7 @@ public class GPlotParser {
                 attributeFound = handleSeriesType(line, builder) | attributeFound;
                 attributeFound = handleLineWidth(line, builder) | attributeFound;
 
+                System.out.println(builder);
                 if (attributeFound) {
                     result.add(builder.build());
                     builders.remove();

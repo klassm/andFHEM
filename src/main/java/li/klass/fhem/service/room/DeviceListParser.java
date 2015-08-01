@@ -208,7 +208,7 @@ public class DeviceListParser {
                     return null;
                 }
 
-                LogDevice<?> logDevice = (LogDevice<?>) logDeviceFhemDevice;
+                LogDevice logDevice = (LogDevice) logDeviceFhemDevice;
 
                 List<String> labels = newArrayList();
                 DeviceNode labelsDef = input.getAttributes().get("label");

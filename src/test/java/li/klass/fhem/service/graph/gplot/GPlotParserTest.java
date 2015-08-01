@@ -72,7 +72,7 @@ public class GPlotParserTest {
                         .withTitle("Actuator (%)")
                         .withColor(SeriesColor.GREEN)
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4:actuator.*[0-9]+%:0:int")
+                        .withLogDef("4:actuator.*[0-9]+%:0:int")
                         .withAxis(Axis.LEFT)
                         .build()
         );
@@ -82,7 +82,7 @@ public class GPlotParserTest {
         assertThat(rightAxis.getSeries()).containsExactly(new Builder()
                         .withTitle("Measured temperature")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4:measured:0:")
+                        .withLogDef("4:measured:0:")
                         .withAxis(Axis.RIGHT)
                         .build()
         );
@@ -103,61 +103,61 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("T")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4:::")
+                        .withLogDef("4:::")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("H")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("6:::")
+                        .withLogDef("6:::")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("W")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("8:::")
+                        .withLogDef("8:::")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("R/h")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("10::0:delta-h")
+                        .withLogDef("10::0:delta-h")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("R/d")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("10::0:delta-d")
+                        .withLogDef("10::0:delta-d")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("IR")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("12::0:$fld[11]=~\"32768\"?1:0")
+                        .withLogDef("12::0:$fld[11]=~\"32768\"?1:0")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("WD")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("14::0:")
+                        .withLogDef("14::0:")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("WDR")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("16::0:")
+                        .withLogDef("16::0:")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("S")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("18::0:delta-h")
+                        .withLogDef("18::0:delta-h")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("B")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("20::0:")
+                        .withLogDef("20::0:")
                         .withAxis(Axis.LEFT)
                         .build()
         );
@@ -182,7 +182,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4::0:")
+                        .withLogDef("4::0:")
                         .withAxis(Axis.LEFT)
                         .build()
         );
@@ -207,7 +207,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Open/Closed")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4:Window:0:$fld[3]=~\"Open\"?1:0")
+                        .withLogDef("4:Window:0:$fld[3]=~\"Open\"?1:0")
                         .withAxis(Axis.LEFT)
                         .build()
         );
@@ -245,13 +245,13 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("RX")
                         .withLineType(LineType.LINES)
-                        .withDbLogDef("<SPEC1>:eth0_diff:::$val=~s/^RX..([\\d.]*).*/$1/eg")
+                        .withLogDef("<SPEC1>:eth0_diff:::$val=~s/^RX..([\\d.]*).*/$1/eg")
                         .withAxis(Axis.LEFT)
                         .build(),
                 new Builder()
                         .withTitle("TX")
                         .withLineType(LineType.LINES)
-                        .withDbLogDef("<SPEC1>:eth0_diff:::$val=~s/.*TX..([\\d.]*).*/$1/eg")
+                        .withLogDef("<SPEC1>:eth0_diff:::$val=~s/.*TX..([\\d.]*).*/$1/eg")
                         .withColor(SeriesColor.GREEN)
                         .withAxis(Axis.LEFT)
                         .build()
@@ -264,7 +264,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Total")
                         .withLineType(LineType.LINES)
-                        .withDbLogDef("<SPEC1>:eth0_diff:::$val=~s/.*Total..([\\d.]*).*/$1/eg")
+                        .withLogDef("<SPEC1>:eth0_diff:::$val=~s/.*Total..([\\d.]*).*/$1/eg")
                         .withAxis(Axis.RIGHT)
                         .withColor(SeriesColor.BLUE)
                         .build()
@@ -286,7 +286,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Rain/h")
                         .withLineType(LineType.HISTEPS)
-                        .withFileLogDef("10:IR\\x3a:0:delta-h")
+                        .withLogDef("10:IR\\x3a:0:delta-h")
                         .withColor(SeriesColor.GREEN)
                         .withSeriesType(SeriesType.FILL)
                         .withAxis(Axis.LEFT)
@@ -294,7 +294,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Rain/day")
                         .withLineType(LineType.HISTEPS)
-                        .withFileLogDef("10:IR\\x3a:0:delta-d")
+                        .withLogDef("10:IR\\x3a:0:delta-d")
                         .withColor(SeriesColor.BLUE)
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.LEFT)
@@ -307,7 +307,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Temperature")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4:IR\\x3a:0:")
+                        .withLogDef("4:IR\\x3a:0:")
                         .withColor(SeriesColor.RED)
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.RIGHT)
@@ -329,7 +329,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Air quality (ppm)")
                         .withLineType(LineType.LINES)
-                        .withFileLogDef("4:voc::")
+                        .withLogDef("4:voc::")
                         .withColor(SeriesColor.WHITE)
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.RIGHT)
@@ -369,6 +369,35 @@ public class GPlotParserTest {
         boolean containsSeries = !definition.getLeftAxis().getSeries().isEmpty();
         containsSeries = !definition.getRightAxis().getSeries().isEmpty() | containsSeries;
         assertThat(containsSeries).isTrue();
+    }
+
+    @Test
+    public void should_parse_user_specified_power8ttt_gplot() throws Exception {
+        // given
+        String content = readGPlot("power8ttt.gplot");
+
+        // when
+        GPlotDefinition definition = gPlotParser.parse(content);
+
+        // then
+        GPlotAxis leftAxis = definition.getLeftAxis();
+        assertThat(leftAxis.getLabel()).isEqualTo("Power (KWh)");
+        assertThat(leftAxis.getRange().isPresent()).isFalse();
+
+        GPlotAxis rightAxis = definition.getRightAxis();
+        assertThat(rightAxis.getLabel()).isEqualTo("Power (KWh)");
+        assertThat(rightAxis.getRange().isPresent()).isFalse();
+
+        assertThat(rightAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Stromzähler")
+                        .withLineType(LineType.LINES)
+                        .withLogDef("4:CUL_EM_22.Summe\\x3a:0:")
+                        .withColor(SeriesColor.RED)
+                        .withSeriesType(SeriesType.FILL)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(1)
+                        .build());
     }
 
     private String readGPlot(String fileName) throws IOException {

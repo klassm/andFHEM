@@ -33,7 +33,7 @@
             <INT key="STATE" value="Next: 23:00:00"/>
             <INT key="TRIGGERTIME" value="1341090000"/>
             <INT key="TYPE" value="at"/>
-            <INT key="room" value="room"/>
+            <ATTR key="room" value="room" />
         </at>
 
         <at name="device1" state="Next: 23:00:00" sets=""
@@ -45,7 +45,7 @@
             <INT key="STATE" value="Next: 23:00:00"/>
             <INT key="TRIGGERTIME" value="1341090000"/>
             <INT key="TYPE" value="at"/>
-            <INT key="room" value="room"/>
+            <ATTR key="room" value="room" />
             <ATTR key="disable" value="1"/>
         </at>
     </at_LIST>

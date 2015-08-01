@@ -29,7 +29,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -54,8 +55,10 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.connection.ConnectionService;
 
+import static org.apache.commons.lang3.StringUtils.trimToNull;
+
 public abstract class AbstractWebViewFragment extends BaseFragment {
-    public static final String TAG = AbstractWebViewFragment.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractWebViewFragment.class);
 
     @Inject
     ConnectionService connectionService;
@@ -100,16 +103,20 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                 handler.proceed();
             }
 
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void onReceivedHttpAuthRequest(WebView view, @NotNull HttpAuthHandler handler, String host, String realm) {
                 FHEMServerSpec currentServer = connectionService.getCurrentServer(getActivity());
                 String url = currentServer.getUrl();
+                String alternativeUrl = trimToNull(currentServer.getAlternateUrl());
                 try {
-                    String fhemHost = new URL(url).getHost();
+
+                    String fhemUrlHost = new URL(url).getHost();
+                    String alternativeUrlHost = alternativeUrl == null ? null : new URL(alternativeUrl).getHost();
                     String username = currentServer.getUsername();
                     String password = currentServer.getPassword();
 
-                    if (host.startsWith(fhemHost)) {
+                    if (host.startsWith(fhemUrlHost) || (alternativeUrlHost != null && host.startsWith(alternativeUrlHost))) {
                         handler.proceed(username, password);
                     } else {
                         handler.cancel();
@@ -123,7 +130,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                     Intent intent = new Intent(Actions.SHOW_TOAST);
                     intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection);
                     getActivity().sendBroadcast(intent);
-                    Log.e(TAG, "malformed URL: " + url, e);
+                    LOG.error("malformed URL: " + url, e);
 
                     handler.cancel();
                 }
@@ -166,7 +173,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection);
             getActivity().sendBroadcast(intent);
-            Log.e(TAG, "malformed URL: " + url, e);
+            LOG.error("malformed URL: " + url, e);
         }
     }
 

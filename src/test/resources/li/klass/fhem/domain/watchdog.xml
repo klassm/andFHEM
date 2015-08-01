@@ -39,7 +39,7 @@
             <INT key="TO" value="1"/>
             <INT key="TYPE" value="watchdog"/>
             <STATE key="Triggered" value="triggered" measured="2012-02-02 10:00:10"/>
-            <STATE key="room" value="room"/>
+            <ATTR key="room" value="room" />
         </watchdog>
     </watchdog_LIST>
 </FHZINFO>

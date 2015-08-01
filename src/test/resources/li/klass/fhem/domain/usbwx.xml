@@ -37,12 +37,11 @@
             <INT key="corr2" value="0"/>
             <INT key="corr3" value="0"/>
             <INT key="corr4" value="0"/>
-            <ATTR key="room" value="keller"/>
+            <ATTR key="room" value="room" />
             <STATE key="dewpoint" value="10.3" measured="2011-12-29 21:47:24"/>
             <STATE key="dewpoint2" value="8.9" measured="2011-03-21 19:27:07"/>
             <STATE key="humidity" value="60" measured="2011-12-29 21:47:24"/>
             <STATE key="temperature" value="18.2" measured="2011-12-29 21:47:24"/>
-            <STATE key="room" value="room"/>
         </USBWX>
     </USBWX_LIST>
 

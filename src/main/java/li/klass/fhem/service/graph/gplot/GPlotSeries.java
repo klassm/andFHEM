@@ -32,8 +32,7 @@ import static li.klass.fhem.service.graph.gplot.GPlotSeries.SeriesType.DEFAULT;
 
 public class GPlotSeries implements Serializable {
     private String title;
-    private String fileLogDef;
-    private String dbLogDef;
+    private String logDef;
     private LineType lineType;
     private Axis axis;
     private SeriesColor color;
@@ -42,8 +41,7 @@ public class GPlotSeries implements Serializable {
 
     private GPlotSeries(Builder builder) {
         title = builder.title;
-        fileLogDef = builder.fileLogDef;
-        dbLogDef = builder.dbLogDef;
+        logDef = builder.logDef;
         lineType = builder.lineType;
         axis = builder.axis;
         color = builder.color;
@@ -55,8 +53,8 @@ public class GPlotSeries implements Serializable {
         return title;
     }
 
-    public String getFileLogDef() {
-        return fileLogDef;
+    public String getLogDef() {
+        return logDef;
     }
 
     public LineType getLineType() {
@@ -65,10 +63,6 @@ public class GPlotSeries implements Serializable {
 
     public Axis getAxis() {
         return axis;
-    }
-
-    public String getDbLogDef() {
-        return dbLogDef;
     }
 
     public SeriesColor getColor() {
@@ -91,8 +85,7 @@ public class GPlotSeries implements Serializable {
         GPlotSeries that = (GPlotSeries) o;
 
         return !(title != null ? !title.equals(that.title) : that.title != null) &&
-                !(fileLogDef != null ? !fileLogDef.equals(that.fileLogDef) : that.fileLogDef != null)
-                && !(dbLogDef != null ? !dbLogDef.equals(that.dbLogDef) : that.dbLogDef != null)
+                !(logDef != null ? !logDef.equals(that.logDef) : that.logDef != null)
                 && lineType == that.lineType
                 && axis == that.axis
                 && color == that.color
@@ -103,8 +96,7 @@ public class GPlotSeries implements Serializable {
     @Override
     public int hashCode() {
         int result = title != null ? title.hashCode() : 0;
-        result = 31 * result + (fileLogDef != null ? fileLogDef.hashCode() : 0);
-        result = 31 * result + (dbLogDef != null ? dbLogDef.hashCode() : 0);
+        result = 31 * result + (logDef != null ? logDef.hashCode() : 0);
         result = 31 * result + (lineType != null ? lineType.hashCode() : 0);
         result = 31 * result + (axis != null ? axis.hashCode() : 0);
         result = 31 * result + (color != null ? color.hashCode() : 0);
@@ -117,8 +109,7 @@ public class GPlotSeries implements Serializable {
     public String toString() {
         return "GPlotSeries{" +
                 "title='" + title + '\'' +
-                ", fileLogDef='" + fileLogDef + '\'' +
-                ", dbLogDef='" + dbLogDef + '\'' +
+                ", logDef='" + logDef + '\'' +
                 ", lineType=" + lineType +
                 ", axis=" + axis +
                 ", color=" + color +
@@ -173,8 +164,7 @@ public class GPlotSeries implements Serializable {
 
     public static final class Builder {
         private String title = "";
-        private String fileLogDef;
-        private String dbLogDef;
+        private String logDef;
         private LineType lineType = LineType.LINES;
         public Axis axis;
         private SeriesColor color = SeriesColor.RED;
@@ -191,13 +181,8 @@ public class GPlotSeries implements Serializable {
             return this;
         }
 
-        public Builder withFileLogDef(final String fileLogDef) {
-            this.fileLogDef = fileLogDef;
-            return this;
-        }
-
-        public Builder withDbLogDef(final String dbLogDef) {
-            this.dbLogDef = dbLogDef;
+        public Builder withLogDef(final String fileLogDef) {
+            this.logDef = fileLogDef;
             return this;
         }
 
@@ -230,6 +215,19 @@ public class GPlotSeries implements Serializable {
 
         public GPlotSeries build() {
             return new GPlotSeries(this);
+        }
+
+        @Override
+        public String toString() {
+            return "GPlotSeries.Builder{" +
+                    "title='" + title + '\'' +
+                    ", logDef='" + logDef + '\'' +
+                    ", lineType=" + lineType +
+                    ", axis=" + axis +
+                    ", color=" + color +
+                    ", seriesType=" + seriesType +
+                    ", lineWidth=" + lineWidth +
+                    '}';
         }
     }
 }

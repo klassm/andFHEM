@@ -124,8 +124,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
         Set<FhemDevice> allDevices = roomDeviceList.getAllDevices();
         for (FhemDevice device : allDevices) {
             LOG.trace("updateData - contained device {}", device.getName());
-            if (device.isInRoom("hidden") && !showHiddenDevices ||
-                    device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
+            if (device.isInRoom("hidden") && !showHiddenDevices) {
                 roomDeviceList.removeDevice(device, context);
             } else {
                 customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes(context));

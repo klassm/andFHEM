@@ -29,9 +29,10 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 
-public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
+public class LogDevice extends FhemDevice<LogDevice> {
 
     private String concerningDeviceRegexp;
+    private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     /**
      * We extract the device names from the current log regexp. As the regexp always concerns
@@ -116,13 +117,14 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
     /**
      * Create a graph command for the given parameters.
      *
-     * @param device            device which created the log entries.
      * @param fromDateFormatted formatted from log date (yyyy-MM-dd_HH:mm)
      * @param toDateFormatted   formatted to log date (yyyy-MM-dd_HH:mm)
-     * @param seriesDescription series specification.
+     * @param plotSeries        series specification.
      * @return command
      */
-    public abstract String getGraphCommandFor(FhemDevice device, String fromDateFormatted,
-                                              String toDateFormatted, GPlotSeries seriesDescription);
-
+    public String getGraphCommandFor(String fromDateFormatted, String toDateFormatted,
+                                     GPlotSeries plotSeries) {
+        return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
+                plotSeries.getLogDef());
+    }
 }

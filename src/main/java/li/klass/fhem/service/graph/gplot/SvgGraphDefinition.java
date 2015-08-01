@@ -34,13 +34,13 @@ import li.klass.fhem.domain.log.LogDevice;
 public class SvgGraphDefinition implements Serializable {
     private final String name;
     private final GPlotDefinition gPlotDefinition;
-    private final LogDevice<?> logDevice;
+    private final LogDevice logDevice;
     private final List<String> labels;
     private final String title;
 
     private static final Pattern LABEL_PATTERN = Pattern.compile("<L([0-9]+)>");
 
-    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice<?> logDevice, List<String> labels, String title) {
+    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice logDevice, List<String> labels, String title) {
         this.name = name;
         this.gPlotDefinition = gPlotDefinition;
         this.logDevice = logDevice;
@@ -56,7 +56,7 @@ public class SvgGraphDefinition implements Serializable {
         return gPlotDefinition;
     }
 
-    public LogDevice<?> getLogDevice() {
+    public LogDevice getLogDevice() {
         return logDevice;
     }
 

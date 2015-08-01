@@ -105,9 +105,9 @@ public class RoomListServiceTest {
 
         TestDevice(String name, boolean supported, String... rooms) {
             setName(name);
-            setRooms(newArrayList(rooms));
             setXmlListDevice(new XmlListDevice(DeviceType.GENERIC.getXmllistTag(), Maps.<String,
                     DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap()));
+            setRooms(newArrayList(rooms));
             this.supported = supported;
         }
 

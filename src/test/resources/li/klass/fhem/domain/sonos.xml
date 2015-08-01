@@ -30,7 +30,7 @@
             <INT key="INTERVAL" value="10"/>
             <INT key="NAME" value="device"/>
             <INT key="NR" value="30"/>
-            <INT key="room" value="room"/>
+            <ATTR key="room" value="room" />
             <INT key="STATE" value="Active"/>
             <INT key="TYPE" value="SONOS"/>
             <STATE key="state" value="Active" measured="2013-04-15 23:26:43"/>

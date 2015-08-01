@@ -26,6 +26,7 @@ package com.android.vending.billing;
 
 import com.google.common.collect.Sets;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +37,9 @@ import java.util.Set;
  * Represents a block of information about in-app items.
  * An Inventory is returned by such methods as {@link IabHelper#queryInventory}.
  */
-public class Inventory {
-    Map<String,SkuDetails> mSkuMap = new HashMap<String,SkuDetails>();
-    Map<String,Purchase> mPurchaseMap = new HashMap<String,Purchase>();
+public class Inventory implements Serializable {
+    Map<String, SkuDetails> mSkuMap = new HashMap<>();
+    Map<String, Purchase> mPurchaseMap = new HashMap<>();
 
     Inventory() { }
 
@@ -81,7 +82,7 @@ public class Inventory {
 
     /** Returns a list of all owned product IDs of a given type */
     List<String> getAllOwnedSkus(String itemType) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (Purchase p : mPurchaseMap.values()) {
             if (p.getItemType().equals(itemType)) result.add(p.getSku());
         }
@@ -90,7 +91,7 @@ public class Inventory {
 
     /** Returns a list of all purchases. */
     List<Purchase> getAllPurchases() {
-        return new ArrayList<Purchase>(mPurchaseMap.values());
+        return new ArrayList<>(mPurchaseMap.values());
     }
 
     void addSkuDetails(SkuDetails d) {
@@ -103,5 +104,13 @@ public class Inventory {
 
     public static Inventory empty() {
         return new Inventory();
+    }
+
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "mSkuMap=" + mSkuMap +
+                ", mPurchaseMap=" + mPurchaseMap +
+                '}';
     }
 }
