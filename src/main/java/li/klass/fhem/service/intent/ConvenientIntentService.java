@@ -95,7 +95,7 @@ public abstract class ConvenientIntentService extends IntentService {
                 sendNoResult(resultReceiver, ResultCodes.ERROR);
             }
         } catch (Exception e) {
-            Log.e(ConvenientIntentService.class.getName(), "An error occurred while processing an intent", e);
+            Log.e(ConvenientIntentService.class.getName(), "An error occurred while processing an intent (" + intent + ")", e);
             sendNoResult(resultReceiver, ResultCodes.ERROR);
         }
     }
