@@ -487,6 +487,7 @@
     <string name="widget_device_list_update">Geräteliste aktualisieren</string>
     <string name="widget_room_detail">Verknüpfung</string>
     <string name="widget_remote_update_started">Geräteliste wird aktualisiert &#8230;</string>
+    <string name="widget_application_password">Bei aktiviertem Applikations-Passwort können keine Widgets ausgewählt werden.</string>
 
     <string name="widget_devices">Geräte-Widgets</string>
     <string name="widget_rooms">Raum-Widgets</string>

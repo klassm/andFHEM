@@ -492,6 +492,7 @@
     <string name="widget_device_list_update">Refresh device list</string>
     <string name="widget_room_detail">Link</string>
     <string name="widget_remote_update_started">Device list update started &#8230;</string>
+    <string name="widget_application_password">While an application password is enabled no appwidgets can be selected.</string>
 
     <string name="widget_devices">Device widgets</string>
     <string name="widget_rooms">Room widgets</string>

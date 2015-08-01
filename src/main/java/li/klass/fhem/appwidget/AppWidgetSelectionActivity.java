@@ -48,11 +48,14 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static android.appwidget.AppWidgetManager.ACTION_APPWIDGET_CONFIGURE;
@@ -72,6 +75,10 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
     public static final int TAG_OTHER = 2;
     @Inject
     AppWidgetDataHolder appWidgetDataHolder;
+
+    @Inject
+    ApplicationProperties applicationProperties;
+
     private int widgetId;
     private WidgetSize widgetSize;
 
@@ -97,16 +104,26 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
             return;
         }
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        if (applicationProperties.getStringSharedPreference(PreferenceKeys.STARTUP_PASSWORD, null, this) != null) {
+            DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password, new DialogUtil.AlertOnClickListener() {
+                @Override
+                public void onClick() {
+                    finish();
+                    setResult(RESULT_CANCELED);
+                }
+            });
+        } else {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        actionBar.addTab(actionBar.newTab().setText(R.string.widget_devices)
-                .setTabListener(this).setTag(TAG_DEVICES));
-        actionBar.addTab(actionBar.newTab().setText(R.string.widget_rooms)
-                .setTabListener(this).setTag(TAG_ROOMS));
-        actionBar.addTab(actionBar.newTab().setText(R.string.widget_others)
-                .setTabListener(this).setTag(TAG_OTHER));
+            actionBar.addTab(actionBar.newTab().setText(R.string.widget_devices)
+                    .setTabListener(this).setTag(TAG_DEVICES));
+            actionBar.addTab(actionBar.newTab().setText(R.string.widget_rooms)
+                    .setTabListener(this).setTag(TAG_ROOMS));
+            actionBar.addTab(actionBar.newTab().setText(R.string.widget_others)
+                    .setTabListener(this).setTag(TAG_OTHER));
+        }
     }
 
     @Override
