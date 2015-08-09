@@ -4604,4 +4604,19 @@ room structexclude webCmd eventMap">
             <STATE key="state" value="off" measured="2013-07-05 23:29:17" />
         </ZWave>
     </ZWave_LIST>
+    <SVG_LIST>
+        <SVG name="weblink_wetterstation" state="initialized" sets="copyGplotFile:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings fixedoffset fixedrange startDate plotsize nrAxis endPlotNow endPlotToday label title plotfunction captionLeft:1,0 alias_map always_hidden custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice pronunciation sortby structexclude toggleDevice webCmd webcmdDevice widgetOverride yaxisminmax userattr">
+            <INT key="CFGFN" value="include/garten.cfg"/>
+            <INT key="DEF" value="FileLog_wetterstation:temp4rain10:CURRENT"/>
+            <INT key="GPLOTFILE" value="temp4rain10"/>
+            <INT key="LOGDEVICE" value="FileLog_wetterstation"/>
+            <INT key="LOGFILE" value="CURRENT"/>
+            <INT key="NAME" value="weblink_wetterstation"/>
+            <INT key="NR" value="311"/>
+            <INT key="STATE" value="initialized"/>
+            <INT key="TYPE" value="SVG"/>
+            <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="room" value="Plots"/>
+        </SVG>
+    </SVG_LIST>
 </FHZINFO>

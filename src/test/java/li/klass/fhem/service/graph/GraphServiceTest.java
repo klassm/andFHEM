@@ -24,8 +24,15 @@
 
 package li.klass.fhem.service.graph;
 
+import com.google.common.base.Optional;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import org.joda.time.DateTime;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 
 import java.util.List;
@@ -34,6 +41,7 @@ import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(DataProviderRunner.class)
 public class GraphServiceTest {
 
     @Rule
@@ -57,5 +65,25 @@ public class GraphServiceTest {
         List<GraphEntry> graphEntries = graphService.findGraphEntries(content);
 
         assertThat(graphEntries).hasSize(5);
+    }
+
+    @DataProvider
+    public static Object[][] graphEntryProvider() {
+        DateTime dateTime = new DateTime(2013, 3, 21, 16, 38, 39);
+        return new Object[][] {
+                { "2013-03-21_16:38:39 5.7\n", Optional.of(new GraphEntry(dateTime, 5.7f)) },
+                { "2013-03-21_16:38:39 5.7", Optional.of(new GraphEntry(dateTime, 5.7f)) },
+                { "2013-03-21_16:38:39 -5.7\n", Optional.of(new GraphEntry(dateTime, -5.7f)) },
+                { "2013-03-21_16:38 5.7\n", Optional.<GraphEntry>absent() },
+                { "2013-03-21_16:38:39\n", Optional.<GraphEntry>absent() },
+        };
+    }
+
+    @Test
+    @UseDataProvider("graphEntryProvider")
+    public void should_parse_graph_entry(String entry, Optional<GraphEntry> expected) {
+        Optional<GraphEntry> result = graphService.parseEntry(entry);
+
+        assertThat(result).isEqualTo(expected);
     }
 }

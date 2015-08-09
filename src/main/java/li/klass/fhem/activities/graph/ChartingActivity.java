@@ -250,18 +250,21 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         getSupportActionBar().setTitle(title);
 
         LineChart lineChart = (LineChart) findViewById(R.id.chart);
-        lineChart.setDescription("");
-        lineChart.setNoDataText(getString(R.string.noGraphEntries));
-        lineChart.setData(lineData);
 
+        // must be called before setting chart data!
         GPlotDefinition plotDefinition = svgGraphDefinition.getPlotDefinition();
         setRangeFor(plotDefinition.getLeftAxis().getRange(), lineChart.getAxisLeft());
         setRangeFor(plotDefinition.getRightAxis().getRange(), lineChart.getAxisRight());
+
+        lineChart.setDescription("");
+        lineChart.setNoDataText(getString(R.string.noGraphEntries));
+        lineChart.setData(lineData);
 
         lineChart.animateX(200);
     }
 
     private void setRangeFor(Optional<Range<Double>> axisRange, com.github.mikephil.charting.components.YAxis axis) {
+        axis.setStartAtZero(false);
         if (axisRange.isPresent()) {
             Range<Double> range = axisRange.get();
             if (range.hasLowerBound()) {

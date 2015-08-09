@@ -27,6 +27,7 @@ package li.klass.fhem.service.graph;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 
 import org.joda.time.DateTime;
@@ -145,28 +146,36 @@ public class GraphService {
         String[] entries = content.split("\n");
         for (String entry : entries) {
 
-            String[] parts = entry.split(" ");
-            if (parts.length != 2) continue;
-
-            String entryTime = parts[0];
-            String entryValue = parts[1];
-
-            try {
-                if (ENTRY_FORMAT.length() == entryTime.length()) {
-                    DateTime entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime);
-                    float entryFloatValue = Float.valueOf(entryValue);
-
-                    result.add(new GraphEntry(entryDate, entryFloatValue));
-                } else {
-                    LOG.trace("silent ignore of {}, as having a wrong time format", entryTime);
-                }
-            } catch (NumberFormatException e) {
-                Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
-            } catch (Exception e) {
-                Log.e(GraphService.class.getName(), "cannot parse number " + entryValue, e);
+            Optional<GraphEntry> parsed = parseEntry(entry);
+            if (parsed.isPresent()) {
+                result.add(parsed.get());
             }
         }
 
         return result;
+    }
+
+    Optional<GraphEntry> parseEntry(String entry) {
+        String[] parts = entry.split(" ");
+        if (parts.length != 2) return Optional.absent();
+
+        String entryTime = parts[0];
+        String entryValue = parts[1];
+
+        try {
+            if (ENTRY_FORMAT.length() == entryTime.length()) {
+                DateTime entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime);
+                float entryFloatValue = Float.valueOf(entryValue);
+
+                return Optional.of(new GraphEntry(entryDate, entryFloatValue));
+            } else {
+                LOG.trace("silent ignore of {}, as having a wrong time format", entryTime);
+            }
+        } catch (NumberFormatException e) {
+            Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
+        } catch (Exception e) {
+            Log.e(GraphService.class.getName(), "cannot parse number " + entryValue, e);
+        }
+        return Optional.absent();
     }
 }
