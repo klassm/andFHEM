@@ -103,7 +103,7 @@ public class ApplicationProperties {
 
     public boolean getBooleanSharedPreference(String key, boolean defaultValue, Context context) {
         SharedPreferences preferences = getPreferences(context);
-        return preferences.getBoolean(key, defaultValue);
+        return preferences == null ? defaultValue : preferences.getBoolean(key, defaultValue);
     }
 
     private SharedPreferences getPreferences(Context context) {
@@ -112,7 +112,7 @@ public class ApplicationProperties {
 
     public int getIntegerSharedPreference(String key, int defaultValue, Context context) {
         SharedPreferences preferences = getPreferences(context);
-        return preferences.getInt(key, defaultValue);
+        return preferences == null ? defaultValue : preferences.getInt(key, defaultValue);
     }
 
     public String getApplicationSharedPreferencesName(Context context) {
@@ -121,7 +121,7 @@ public class ApplicationProperties {
 
     public String getStringSharedPreference(String key, String defaultValue, Context context) {
         SharedPreferences preferences = getPreferences(context);
-        String value = preferences.getString(key, defaultValue);
+        String value = preferences == null ? defaultValue : preferences.getString(key, defaultValue);
         if (isNullOrEmpty(value)) {
             return defaultValue;
         } else {
@@ -130,7 +130,8 @@ public class ApplicationProperties {
     }
 
     public boolean containsSharedPreference(Context context, String key) {
-        return getPreferences(context).contains(key);
+        SharedPreferences preferences = getPreferences(context);
+        return preferences == null ? false : preferences.contains(key);
     }
 
     public String getStringSharedPreference(String key, Context context) {
@@ -139,6 +140,7 @@ public class ApplicationProperties {
 
     public void setSharedPreference(String key, String value, Context context) {
         SharedPreferences preferences = getPreferences(context);
+        if (preferences == null) return;
         preferences.edit().putString(key, value).apply();
     }
 }
