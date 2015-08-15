@@ -25,6 +25,7 @@
 package li.klass.fhem.domain.core;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
@@ -60,6 +61,8 @@ import li.klass.fhem.util.CloseableUtil;
 import static li.klass.fhem.util.ReflectionUtil.setFieldValue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 
@@ -83,6 +86,9 @@ public abstract class DeviceXMLParsingBase {
     @InjectMocks
     protected DeviceListParser deviceListParser;
 
+    @Mock
+    protected SharedPreferences sharedPreferences;
+
     @Before
     public void before() throws Exception {
         AndFHEMApplication.setContext(context);
@@ -92,6 +98,8 @@ public abstract class DeviceXMLParsingBase {
         setFieldValue(deviceListParser, "parser", applicationComponent.getXmlListParser());
         setFieldValue(deviceListParser, "gPlotHolder", applicationComponent.getGPlotHolder());
         setFieldValue(deviceListParser, "deviceConfigurationProvider", applicationComponent.getDeviceConfigurationProvider());
+
+        given(context.getSharedPreferences(anyString(), anyInt())).willReturn(sharedPreferences);
 
         mockStrings();
 

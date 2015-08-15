@@ -94,6 +94,10 @@ public class DummyDataConnection extends FHEMConnection {
                 today + "_11:52:23 3.3\r\n" +
                 today + "_12:54:56 2.3\r\n" +
                 today + "_13:57:28 1.3\r\n" +
+                today + "_14:00:28 -1.3\r\n" +
+                today + "_15:57:28 -2.3\r\n" +
+                today + "_16:57:28 -3.3\r\n" +
+                today + "_17:57:28 -4.3\r\n" +
                 "#" + columnSpec;
 
         return new RequestResult<>(content);
