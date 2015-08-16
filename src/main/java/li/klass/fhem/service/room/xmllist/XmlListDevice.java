@@ -89,6 +89,9 @@ public class XmlListDevice implements Serializable {
     public void setHeader(String key, String value) {
         getHeader().put(key, new DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow()));
     }
+    public void setAttribute(String key, String value) {
+        getAttributes().put(key, new DeviceNode(DeviceNode.DeviceNodeType.ATTR, key, value, measuredNow()));
+    }
 
     @Override
     public String toString() {

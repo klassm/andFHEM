@@ -48,6 +48,7 @@ import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ApplicationProperties;
 
 @Singleton
@@ -90,6 +91,10 @@ public class DimmableStrategy extends ViewStrategy {
 
     @Override
     public boolean supports(FhemDevice fhemDevice) {
+        DeviceNode disableDim = fhemDevice.getXmlListDevice().getAttributes().get("disableDim");
+        if (disableDim != null && "true".equalsIgnoreCase(disableDim.getValue())) {
+            return false;
+        }
         ButtonHook hook = deviceHookProvider.buttonHookFor(fhemDevice);
         return hook == ButtonHook.NORMAL
                 && DimmableBehavior.behaviorFor(fhemDevice).isPresent();

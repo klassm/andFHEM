@@ -472,6 +472,15 @@
         ]
       }
     },
+    "FS20": {
+      "__general__": {
+        "addAttributeIfModelDoesNotMatch": {
+          "models": [ "FS20DI", "FS20DI10", "FS20DU" ],
+          "key": "disableDim",
+          "value": "true"
+        }
+      }
+    },
     "CUL_HM": {
       "STATE": {
         "replace": "^([0-9\\.]+) ([^0-9]+)",

@@ -78,13 +78,35 @@ public class Sanitiser {
             JSONObject generalOptions = typeOptions.optJSONObject("__general__");
             if (generalOptions == null) return;
 
-            handleGeneralAttributesArray(generalOptions, xmlListDevice);
+            handleGeneral(xmlListDevice, generalOptions);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void handleGeneralAttributesArray(JSONObject generalOptions, XmlListDevice xmlListDevice) throws JSONException {
+    private void handleGeneral(XmlListDevice xmlListDevice, JSONObject generalOptions) throws JSONException {
+        handleGeneralAttributesIfNotPresent(generalOptions, xmlListDevice);
+        handleGeneralAttributeAddIfModelDoesNotMatch(xmlListDevice, generalOptions);
+    }
+
+    private void handleGeneralAttributeAddIfModelDoesNotMatch(XmlListDevice xmlListDevice, JSONObject generalOptions) throws JSONException {
+        JSONObject config = generalOptions.optJSONObject("addAttributeIfModelDoesNotMatch");
+        if (config == null) return;
+
+        JSONArray models = config.getJSONArray("models");
+        DeviceNode modelNode = xmlListDevice.getAttributes().get("model");
+        String model = modelNode == null ? null : modelNode.getValue();
+
+        for (int i = 0; i < models.length(); i++) {
+            if (models.getString(i).equalsIgnoreCase(model)) {
+                return;
+            }
+        }
+
+        xmlListDevice.setAttribute(config.getString("key"), config.getString("value"));
+    }
+
+    private void handleGeneralAttributesIfNotPresent(JSONObject generalOptions, XmlListDevice xmlListDevice) throws JSONException {
         JSONArray attributes = generalOptions.optJSONArray("addAttributesIfNotPresent");
         if (attributes == null) return;
 
