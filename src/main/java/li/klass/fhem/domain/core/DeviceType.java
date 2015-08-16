@@ -78,7 +78,6 @@ import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
@@ -160,7 +159,6 @@ public enum DeviceType {
     OREGON("OREGON", OregonDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     USBWX("USBWX", USBWXDevice.class),
-//    FS20("FS20", FS20Device.class, new DimmableAdapter()),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),

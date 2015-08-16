@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.GenericDevice;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
@@ -86,7 +86,7 @@ public class FhemDeviceTest {
     }
 
     private static FhemDevice deviceFor(String name, String alias, String sortBy) {
-        FS20Device device = new FS20Device();
+        GenericDevice device = new GenericDevice();
         device.setName(name);
         device.setAlias(alias);
         device.setSortBy(sortBy);

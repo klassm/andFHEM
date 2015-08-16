@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -99,7 +99,7 @@ public class RoomListServiceTest {
         assertThat(service.getRoomNameList(context)).containsExactly("abc", "def");
     }
 
-    class TestDevice extends FS20Device {
+    class TestDevice extends GenericDevice {
 
         private final boolean supported;
 

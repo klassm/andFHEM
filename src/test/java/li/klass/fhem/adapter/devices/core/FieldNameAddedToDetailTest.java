@@ -31,7 +31,7 @@ import android.widget.TableRow;
 import org.junit.Before;
 import org.junit.Test;
 
-import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
@@ -42,8 +42,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FieldNameAddedToDetailTest {
 
     private FieldNameAddedToDetailListener listener;
-    private FS20Device dimmableFS20Device;
-    private FS20Device toggleableFS20Device;
+    private CULHMDevice dimmableDevice;
+    private CULHMDevice toggleableDevice;
 
     @Before
     public void before() {
@@ -54,32 +54,33 @@ public class FieldNameAddedToDetailTest {
             }
         };
 
-        dimmableFS20Device = new FS20Device();
-        dimmableFS20Device.setModel(FS20Device.DIM_MODELS.get(0));
+        dimmableDevice = new CULHMDevice();
+        dimmableDevice.setSubType("DIMMER");
 
-        toggleableFS20Device = new FS20Device();
-        toggleableFS20Device.setModel("NOT_DIMMABLE");
+        toggleableDevice = new CULHMDevice();
+        toggleableDevice.setSubType("SWITCH");
+        toggleableDevice.setSetList("on off");
     }
 
     @Test
     public void testSupportsDeviceOfDimmerNotificationType() {
         listener.setNotificationDeviceType(DIMMER);
 
-        assertThat(listener.supportsDevice(dimmableFS20Device)).isTrue();
-        assertThat(listener.supportsDevice(toggleableFS20Device)).isFalse();
+        assertThat(listener.supportsDevice(dimmableDevice)).isTrue();
+        assertThat(listener.supportsDevice(toggleableDevice)).isFalse();
     }
 
     @Test
     public void testSupportsDeviceOfToggleableAndNotDimmableNotificationType() {
         listener.setNotificationDeviceType(TOGGLEABLE_AND_NOT_DIMMABLE);
-        assertThat(listener.supportsDevice(dimmableFS20Device)).isFalse();
-        assertThat(listener.supportsDevice(toggleableFS20Device)).isTrue();
+        assertThat(listener.supportsDevice(dimmableDevice)).isFalse();
+        assertThat(listener.supportsDevice(toggleableDevice)).isTrue();
     }
 
     @Test
     public void testSupportsDeviceOfAllNotificationType() {
         listener.setNotificationDeviceType(ALL);
-        assertThat(listener.supportsDevice(dimmableFS20Device)).isTrue();
-        assertThat(listener.supportsDevice(toggleableFS20Device)).isTrue();
+        assertThat(listener.supportsDevice(dimmableDevice)).isTrue();
+        assertThat(listener.supportsDevice(toggleableDevice)).isTrue();
     }
 }

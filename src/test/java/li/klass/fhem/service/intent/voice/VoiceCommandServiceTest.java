@@ -40,7 +40,7 @@ import org.mockito.Mock;
 
 import java.util.List;
 
-import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
@@ -244,7 +244,7 @@ public class VoiceCommandServiceTest {
         assertThat(result.get()).isEqualTo(new VoiceResult.Success("device", "scene off"));
     }
 
-    public class TestDummy extends FS20Device {
+    public class TestDummy extends GenericDevice {
         public TestDummy(String name) {
             setName(name);
         }
