@@ -40,7 +40,6 @@ import li.klass.fhem.util.NumberSystemUtil;
 import static java.util.Arrays.asList;
 
 @OverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
 public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     /**

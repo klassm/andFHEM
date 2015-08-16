@@ -26,7 +26,7 @@ package li.klass.fhem.adapter.devices.core;
 
 import java.util.List;
 
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -45,7 +45,7 @@ public class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow extends Expl
     @Override
     protected List<DeviceDetailViewAction> provideDetailActions() {
         List<DeviceDetailViewAction> actions = super.provideDetailActions();
-        actions.add(new AvailableTargetStatesSwitchActionRow());
+        actions.add(new AvailableTargetStatesSwitchAction());
         return actions;
     }
 }

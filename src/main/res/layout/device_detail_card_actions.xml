@@ -22,30 +22,32 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    style="@style/card"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="4sp"
+    card_view:cardUseCompatPadding="true">
 
-    <include
-        android:id="@+id/statesCard"
-        layout="@layout/device_detail_card_table" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <include
-        android:id="@+id/plotsCard"
-        layout="@layout/device_detail_card_plots" />
-    <include
-        android:id="@+id/actionsCard"
-        layout="@layout/device_detail_card_actions" />
+        <TextView
+            android:id="@+id/cardCaption"
+            style="@style/cardCaption"
+            android:text="@string/actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <include
-        android:id="@+id/attributesCard"
-        layout="@layout/device_detail_card_table" />
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/actionsList"
+            android:orientation="vertical" />
+    </LinearLayout>
 
-    <include
-        android:id="@+id/internalsCard"
-        layout="@layout/device_detail_card_table" />
-
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

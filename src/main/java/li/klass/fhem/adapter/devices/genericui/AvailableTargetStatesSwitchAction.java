@@ -31,8 +31,8 @@ import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
 
-public class AvailableTargetStatesSwitchActionRow extends DeviceDetailViewButtonAction {
-    public AvailableTargetStatesSwitchActionRow() {
+public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
+    public AvailableTargetStatesSwitchAction() {
         super(R.string.switchSetOptions);
     }
 

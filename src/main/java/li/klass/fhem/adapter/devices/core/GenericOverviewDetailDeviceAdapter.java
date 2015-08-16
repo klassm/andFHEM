@@ -47,8 +47,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
@@ -109,8 +109,20 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         fillAttributesCard(genericDevice, linearLayout);
         fillInternalsCard(genericDevice, linearLayout);
         fillPlotsCard(genericDevice, linearLayout);
+        fillActionsCard(genericDevice, linearLayout);
 
         return linearLayout;
+    }
+
+    private void fillActionsCard(GenericDevice genericDevice, LinearLayout linearLayout) {
+        CardView actionsCard = (CardView) linearLayout.findViewById(R.id.actionsCard);
+        if (genericDevice.getSetList().size() == 0) {
+            actionsCard.setVisibility(View.GONE);
+            return;
+        }
+
+        LinearLayout layout = (LinearLayout) actionsCard.findViewById(R.id.actionsList);
+        layout.addView(new AvailableTargetStatesSwitchAction().createView(getContext(), getInflater(), genericDevice, linearLayout));
     }
 
     private void fillPlotsCard(final GenericDevice device, LinearLayout linearLayout) {
