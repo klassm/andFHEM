@@ -31,10 +31,12 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 @RunWith(DataProviderRunner.class)
 public class ContinuousDimmableBehaviorTest {
@@ -84,6 +86,6 @@ public class ContinuousDimmableBehaviorTest {
         ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(new SetList().parse("position:slider,0,5,100")).get();
 
         assertThat(behavior.getPositionForDimState(text)).isEqualTo(position);
-        assertThat(behavior.getDimStateForPosition(fhemDevice, position)).isEqualTo(state);
+        assertThat(behavior.getDimStateForPosition(mock(FhemDevice.class), position)).isEqualTo(state);
     }
 }

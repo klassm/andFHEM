@@ -38,7 +38,6 @@ public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.isOnByState()).isEqualTo(true);
         assertThat(device.getState()).isEqualTo("on");
         assertThat(attributeValueFor(device, "model")).isEqualTo("itswitch");
 

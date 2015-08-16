@@ -38,15 +38,6 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
 
     private String model;
 
-    @Override
-    public boolean isOnByState() {
-        if (super.isOnByState()) return true;
-
-        String internalState = getInternalState();
-        return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
-                internalState.equalsIgnoreCase("on-till");
-    }
-
     @XmllistAttribute("model")
     public void setModel(String value) {
         if (value.equals("dpt10")) {

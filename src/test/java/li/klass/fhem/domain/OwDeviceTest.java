@@ -38,13 +38,11 @@ public class OwDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo("Aussentemperatur");
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
         assertThat(device.getSubType()).isEqualTo(OwDevice.SubType.TEMPERATURE);
-        assertThat(device.getState()).isEqualTo("0.0 (°C)");
         assertThat(device.isSupported()).isTrue();
         assertThat(device.supportsToggle()).isFalse();
 
         OwDevice device1 = getDeviceFor("Vorlauf", OwDevice.class);
         assertThat(device1.getSubType()).isEqualTo(OwDevice.SubType.TEMPERATURE);
-        assertThat(device1.getState()).isEqualTo("19.1 (°C)");
         assertThat(device1.isSupported()).isTrue();
         assertThat(device1.supportsToggle()).isFalse();
     }
@@ -65,7 +63,6 @@ public class OwDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.supportsToggle()).isTrue();
         assertThat(device.getState()).isEqualTo("ein");
         assertThat(device.getInternalState()).isEqualTo("PIO 1");
-        assertThat(device.isOnByState()).isTrue();
     }
 
     @Test

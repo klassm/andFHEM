@@ -36,7 +36,6 @@ public class FRMOutDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         GenericDevice device = getDefaultDevice(GenericDevice.class);
         assertThat(device.supportsToggle()).isTrue();
-        assertThat(device.isOnByState()).isTrue();
     }
 
     @Override

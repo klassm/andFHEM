@@ -72,7 +72,7 @@ public class OnOffBehaviorTest {
 
         //  given
         ToggleableDevice device = new EIBDevice();
-        device.setXmlListDevice(mock(XmlListDevice.class));
+        device.setXmlListDevice(new XmlListDevice("BLUB"));
         device.setState(readState);
 
         // expect
@@ -85,13 +85,13 @@ public class OnOffBehaviorTest {
     public void should_handle_invert_state_hook(String readState, boolean isOn) {
         //  given
         ToggleableDevice device = new EIBDevice();
-        device.setXmlListDevice(mock(XmlListDevice.class));
+        device.setXmlListDevice(new XmlListDevice("BLUB"));
         device.setState(readState);
         device.setName("on");
         given(deviceHookProvider.invertState(device)).willReturn(false);
 
         ToggleableDevice device2 = new EIBDevice();
-        device2.setXmlListDevice(mock(XmlListDevice.class));
+        device2.setXmlListDevice(new XmlListDevice("BLA"));
         device2.setState(readState);
         device.setName("off");
         given(deviceHookProvider.invertState(device2)).willReturn(true);

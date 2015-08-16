@@ -110,6 +110,8 @@ public class Sanitiser {
         String measured = deviceNode.getMeasured();
         DeviceNode.DeviceNodeType type = deviceNode.getType();
 
+        value = value.replaceAll("&deg;", "°");
+
         value = handleExtract(attributeOptions, value);
         value = handleReplace(attributeOptions, value);
         value = handleAppend(attributeOptions, value);

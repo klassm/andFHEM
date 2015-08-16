@@ -42,7 +42,6 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.supportsToggle()).isEqualTo(true);
-        assertThat(device.isOnByState()).isEqualTo(true);
 
         assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
         assertThat(device.supportsDim()).isEqualTo(false);
@@ -117,7 +116,6 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         DummyDevice device = getDeviceFor("onOffEventMap", DummyDevice.class);
 
         assertThat(device.supportsToggle()).isEqualTo(true);
-        assertThat(device.isOnByState()).isEqualTo(true);
     }
 
     @Override

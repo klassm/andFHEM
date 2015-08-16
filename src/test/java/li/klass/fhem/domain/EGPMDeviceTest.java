@@ -37,7 +37,6 @@ public class EGPMDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
 
-        assertThat(device.isOnByState()).isFalse();
         assertThat(device.supportsToggle()).isTrue();
     }
 

@@ -187,6 +187,6 @@ public class XmlListParser {
     }
 
     private String nodeValueToString(Node value) {
-        return value == null ? null : value.getNodeValue();
+        return value == null ? null : value.getNodeValue().trim();
     }
 }

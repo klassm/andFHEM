@@ -45,7 +45,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
 
     @Override
     public int getPositionForDimState(String dimState) {
-        dimState = dimState.replaceAll(getSetListDimStateAttributeName(), "").replaceAll("[% ]", "");
+        dimState = dimState.replaceAll(getSetListDimStateAttributeName(), "").replaceAll("[\\(\\)% ]", "");
         if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState) || getOnStateName().equals(dimState))
             return getDimUpperBound();
         if (dimState.equals(getEventMapStateFor("off")) || "off".equals(dimState) || getOffStateName().equals(dimState))

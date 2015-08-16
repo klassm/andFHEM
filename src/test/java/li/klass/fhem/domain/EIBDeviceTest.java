@@ -39,7 +39,6 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isEqualTo(true);
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
         assertThat(device.supportsToggle()).isEqualTo(true);
@@ -71,16 +70,6 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
         assertDeviceState("brightness", "13338.0 (lux)");
         assertDeviceState("time", "13:34:00");
         assertDeviceState("dpt10", "18:44:33");
-
-        // missing data??
-//        assertDeviceState("rainsensor", "0.9 (°C)");
-    }
-
-    @Test
-    public void testPercentDeviceWithUnsetState() {
-        EIBDevice device = getDeviceFor("percent_with_unset_state", EIBDevice.class);
-        assertThat(device.getState()).isNotNull();
-        assertThat(device.getState()).isEqualTo("0 (%)");
     }
 
     private void assertDeviceState(String deviceName, String expectedState) {

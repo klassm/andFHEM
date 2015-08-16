@@ -25,7 +25,6 @@
 package li.klass.fhem.service.room.xmllist;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
 
 import org.joda.time.DateTime;
 
@@ -80,8 +79,17 @@ public class XmlListDevice implements Serializable {
     }
 
     public void setState(String key, String value) {
-        getStates().put("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow()));
+        getStates().put(key, new DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow()));
     }
+
+    public void setInternal(String key, String value) {
+        getInternals().put(key, new DeviceNode(DeviceNode.DeviceNodeType.INT, key, value, measuredNow()));
+    }
+
+    public void setHeader(String key, String value) {
+        getHeader().put(key, new DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow()));
+    }
+
     @Override
     public String toString() {
         return "XmlListDevice{" +

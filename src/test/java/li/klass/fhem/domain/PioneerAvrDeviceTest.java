@@ -38,7 +38,6 @@ public class PioneerAvrDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("off");
-        assertThat(device.isOnByState()).isFalse();
         assertThat(device.getVolume()).isEqualTo("46");
         assertThat(device.getVolumeAsInt()).isEqualTo(46);
         assertThat(device.getMute()).isEqualTo("off");

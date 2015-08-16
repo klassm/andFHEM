@@ -34,13 +34,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FS20DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInFirstDevice() {
-        FS20Device device = getDefaultDevice(FS20Device.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isEqualTo(true);
 
         assertThat(device.getEventMap().get("off-for-timer 12")).isEqualTo("Ab80");
         assertThat(device.getEventMap().get("off")).isEqualTo("Ab");
@@ -53,13 +52,12 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInSecondDevice() {
-        FS20Device device = getDeviceFor("device1", FS20Device.class);
+        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo("device1");
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("off");
-        assertThat(device.isOnByState()).isEqualTo(false);
 
         assertThat(device.getEventMapStateFor("off")).isEqualTo("closed");
         assertThat(device.getEventMapStateFor("on")).isEqualTo("open");
@@ -77,32 +75,14 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInThirdDevice() {
-        FS20Device device = getDeviceFor("device2", FS20Device.class);
+        GenericDevice device = getDeviceFor("device2", GenericDevice.class);
 
-        assertThat(device.isOnByState()).isEqualTo(false);
         assertThat(device.getWidgetName()).isEqualTo("widget_name");
     }
 
     @Test
-    public void testDim() {
-        FS20Device device = new FS20Device();
-        device.setState("dim12%");
-
-        assertThat(device.getDimPosition()).isEqualTo(2);
-
-        assertThat(device.getDimDownPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("dim6%"));
-        assertThat(device.getDimUpPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("dim18%"));
-
-        device.setState("on");
-        assertThat(device.getDimUpPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("dim100%"));
-
-        device.setState("off");
-        assertThat(device.getDimDownPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("off"));
-    }
-
-    @Test
     public void testAlwaysHiddenHook() {
-        FS20Device device = new FS20Device();
+        GenericDevice device = new GenericDevice();
         assertThat(device.isSupported()).isEqualTo(true);
 
         device.setAlwaysHidden("true");
@@ -114,19 +94,8 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testAlwaysHiddenDevice() {
-        FS20Device device = getDeviceFor("device3", FS20Device.class);
+        GenericDevice device = getDeviceFor("device3", GenericDevice.class);
         assertThat(device).isNull();
-    }
-
-    @Test
-    public void should_handle_OFF_STATES_as_off() {
-
-        FS20Device device = new FS20Device();
-        for (String offState : FS20Device.OFF_STATES) {
-            device.setState(offState);
-            assertThat(device.isOffByState()).isTrue();
-            assertThat(device.isOnByState()).isFalse();
-        }
     }
 
     @Override

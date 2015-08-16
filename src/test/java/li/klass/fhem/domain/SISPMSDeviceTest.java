@@ -38,7 +38,6 @@ public class SISPMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.isOnByState()).isEqualTo(false);
         assertThat(device.getState()).isEqualTo("off");
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();

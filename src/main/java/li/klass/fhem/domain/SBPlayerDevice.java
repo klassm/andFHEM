@@ -54,11 +54,6 @@ public class SBPlayerDevice extends ToggleableDevice<SBPlayerDevice> implements 
     }
 
     @Override
-    public String getToggleStateValue() {
-        return power;
-    }
-
-    @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }

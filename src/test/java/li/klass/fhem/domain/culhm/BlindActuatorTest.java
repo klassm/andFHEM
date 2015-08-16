@@ -39,12 +39,11 @@ public class BlindActuatorTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState()).isEqualTo("75 %");
+        assertThat(device.getState()).isEqualTo("75 (%)");
         assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.DIMMER);
         assertThat(device.supportsDim()).isEqualTo(true);
         assertThat(device.getDimPosition()).isEqualTo(75);
 
-        assertThat(device.isOnByState()).isEqualTo(true);
         assertThat(device.isSupported()).isEqualTo(true);
 
         assertThat(device.getCommandAccepted()).isEqualTo("yes");

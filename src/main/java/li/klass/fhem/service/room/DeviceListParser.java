@@ -331,14 +331,16 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice node, Optional<DeviceConfiguration> deviceConfiguration) throws Exception {
+    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice xmlListDevice, Optional<DeviceConfiguration> deviceConfiguration) throws Exception {
         T device = deviceClass.newInstance();
+        device.setXmlListDevice(xmlListDevice);
         device.setDeviceConfiguration(deviceConfiguration);
 
         Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
-        Iterable<DeviceNode> children = concat(node.getAttributes().values(), node.getInternals().values(), node.getStates().values(), node.getHeader().values());
-        for (DeviceNode child : children) {
+        Iterable<DeviceNode> children = concat(xmlListDevice.getAttributes().values(), xmlListDevice.getInternals().values(),
+                xmlListDevice.getStates().values(), xmlListDevice.getHeader().values());
+        for (DeviceNode child : newArrayList(children)) {
             if (child.getKey() == null) continue;
 
             String sanitisedKey = child.getKey().trim().replaceAll("[-\\.]", "_");

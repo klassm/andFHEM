@@ -29,6 +29,8 @@ import android.content.Context;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.CommandExecutionService;
 
@@ -36,6 +38,12 @@ import li.klass.fhem.service.CommandExecutionService;
 public class ToggleableService {
     @Inject
     CommandExecutionService commandExecutionService;
+
+    @Inject
+    DeviceHookProvider deviceHookProvider;
+
+    @Inject
+    OnOffBehavior onOffBehavior;
 
     @Inject
     public ToggleableService() {
@@ -48,11 +56,11 @@ public class ToggleableService {
      * @param context context
      */
     public <D extends ToggleableDevice> void toggleState(D device, Context context) {
-        if (device.isOnByState()) {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + device.getOffStateName(), context);
+        if (onOffBehavior.isOnByState(device)) {
+            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOffStateName(device), context);
             device.setState(device.getOffStateName());
         } else {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + device.getOnStateName(), context);
+            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOnStateName(device), context);
             device.setState(device.getOnStateName());
         }
     }

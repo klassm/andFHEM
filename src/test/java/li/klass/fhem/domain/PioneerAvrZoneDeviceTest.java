@@ -41,7 +41,6 @@ public class PioneerAvrZoneDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getVolume()).isEqualTo("68");
         assertThat(device.getVolumeAsInt()).isEqualTo(68);
         assertThat(device.getPower()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
         assertThat(device.getState()).isEqualTo("off");
         assertThat(device.getMute()).isEqualTo("off");
         assertThat(device.isMuted()).isFalse();

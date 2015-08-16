@@ -32,15 +32,6 @@ import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SWAPDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        SWAPDevice device = getDefaultDevice(SWAPDevice.class);
-        assertThat(device).isNotNull();
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
-
-        assertThat(device.getState()).isEqualTo("27.3 (°C)");
-    }
 
     @Test
     public void testSwapDeviceWithExtendedXmllistTagAndRGB() {

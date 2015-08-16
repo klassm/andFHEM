@@ -29,11 +29,11 @@ import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
-@SuppressWarnings("unused")
 public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<ReadingsProxyDevice> {
 
     @ShowField(description = ResourceIdMapper.color)
@@ -44,11 +44,8 @@ public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<Readings
     }
 
     private String getRgb() {
-        if (!getSetList().contains("rgb")) return null;
-        String state = getInternalState();
-        if (!state.startsWith("rgb")) return null;
-
-        return state.substring("rgb".length()).trim();
+        DeviceNode rgb = getXmlListDevice().getStates().get("RGB");
+        return rgb == null ? null : rgb.getValue().trim();
     }
 
     public int getRGBColor() {
@@ -57,19 +54,8 @@ public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<Readings
         return hexToDecimal(rgb);
     }
 
-    @XmllistAttribute("rgb")
-    public void setRgb(String value) {
-        setState("rgb " + value);
-    }
-
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return functionalityForDimmable(this);
-    }
-
-    @Override
-    public boolean acceptXmlKey(String key) {
-        // we only want uppercase RGB values
-        return !"rgb".equals(key);
     }
 }

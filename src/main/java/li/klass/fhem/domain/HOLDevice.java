@@ -66,10 +66,6 @@ public class HOLDevice extends ToggleableDevice<HOLDevice> {
         return nextTrigger;
     }
 
-    public boolean isOnByState() {
-        return super.isOnByState() || !getInternalState().equals("off");
-    }
-
     @Override
     public boolean supportsToggle() {
         return true;

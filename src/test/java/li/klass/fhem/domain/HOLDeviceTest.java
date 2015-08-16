@@ -38,7 +38,6 @@ public class HOLDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.isOnByState()).isEqualTo(false);
         assertThat(device.getState()).isEqualTo("off");
 
         assertThat(device.getCurrentSwitchDevice()).isEqualTo("mat_halogen");
@@ -50,7 +49,6 @@ public class HOLDeviceTest extends DeviceXMLParsingBase {
 
         HOLDevice device1 = getDeviceFor("device1", HOLDevice.class);
         assertThat(device1.getState()).isEqualTo("on");
-        assertThat(device1.isOnByState()).isEqualTo(true);
     }
 
     @Override

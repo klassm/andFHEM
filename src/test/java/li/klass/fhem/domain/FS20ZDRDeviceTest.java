@@ -38,7 +38,6 @@ public class FS20ZDRDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.supportsToggle()).isTrue();
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
     }
 
     @Override

@@ -35,7 +35,6 @@ public class FHEMduinoEnvDeviceTest extends DeviceXMLParsingBase {
     public void should_read_device_attributes() {
         GenericDevice device = getDeviceFor("Aussentemperatur", GenericDevice.class);
         assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("1.4°C / 81%");
         assertThat(stateValueFor(device, "temperature")).isEqualTo("1.4 (°C)");
         assertThat(stateValueFor(device, "humidity")).isEqualTo("81.0 (%)");
         assertThat(stateValueFor(device, "battery")).isEqualTo("ok");

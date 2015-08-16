@@ -38,7 +38,6 @@ public class SBPlayerDeviceTest extends DeviceXMLParsingBase {
         assertThat(device).isNotNull();
         assertThat(device.isMuted()).isTrue();
         assertThat(device.getVolumeAsInt()).isEqualTo(0);
-        assertThat(device.isOnByState()).isTrue();
     }
 
     @Override

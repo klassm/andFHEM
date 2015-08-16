@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
-
 import static com.google.common.collect.Sets.newHashSet;
 
 @SuppressWarnings("unused")
@@ -33,14 +31,6 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
 
     private String onStateName = "on";
     private String offStateName = "off";
-
-    public boolean isOnByState() {
-        return !isOffByState();
-    }
-
-    public boolean isOffByState() {
-        return new OnOffBehavior().isOffByState(this);
-    }
 
     public boolean supportsToggle() {
         return getSetList().contains("on", "off") ||
@@ -64,9 +54,5 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
 
     public String getOnStateName() {
         return onStateName;
-    }
-
-    public String getToggleStateValue() {
-        return getInternalState();
     }
 }

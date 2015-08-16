@@ -37,7 +37,6 @@ public class OwthermDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getTemperature(), is("13.625 (°C)"));
         assertThat(device.getPresent(), is("yes"));
-        assertThat(device.getState(), is("13.625 (°C)"));
     }
 
     @Override

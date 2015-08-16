@@ -6,11 +6,6 @@ import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 public class StructureDevice extends DimmableContinuousStatesDevice<StructureDevice> {
 
     @Override
-    public boolean isOnByState() {
-        return super.isOnByState() || getState().equalsIgnoreCase("on");
-    }
-
-    @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.functionalityForDimmable(this);
     }

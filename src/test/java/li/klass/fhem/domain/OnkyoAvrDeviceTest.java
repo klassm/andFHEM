@@ -38,7 +38,6 @@ public class OnkyoAvrDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
         assertThat(device.getVolume()).isEqualTo("29");
         assertThat(device.getVolumeAsInt()).isEqualTo(29);
         assertThat(device.getMute()).isEqualTo("off");

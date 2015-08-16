@@ -64,8 +64,6 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
-        ToggleableDevice toggleable = (ToggleableDevice) device;
-
         boolean isOn = onOffBehavior.isOn(device);
 
         Intent actionIntent;
@@ -79,17 +77,17 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
             actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         } else {
             actionIntent = new Intent(Actions.DEVICE_SET_STATE);
-            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
 
 
             switch (hook) {
                 case ON_DEVICE:
                     isOn = true;
-                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOnStateName());
+                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, deviceHookProvider.getOnStateName(device));
                     break;
                 case OFF_DEVICE:
                     isOn = false;
-                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOffStateName());
+                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, deviceHookProvider.getOffStateName(device));
                     break;
             }
         }
@@ -98,11 +96,11 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
         if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE);
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE);
-            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(toggleable.getOnStateName()));
+            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(deviceHookProvider.getOnStateName(device)));
         } else {
             view.setViewVisibility(R.id.toggleOff, View.VISIBLE);
             view.setViewVisibility(R.id.toggleOn, View.GONE);
-            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(toggleable.getOffStateName()));
+            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(deviceHookProvider.getOffStateName(device)));
         }
 
         PendingIntent pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,

@@ -82,12 +82,7 @@ class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public int getCurrentDimPosition(FhemDevice device) {
         String state = device.getInternalState();
-        if ("on".equalsIgnoreCase(state)) {
-            return getDimUpperBound();
-        } else if ("off".equalsIgnoreCase(state)) {
-            return getDimLowerBound();
-        }
-        int position = foundDimStates.indexOf(state);
+        int position = getPositionForDimState(state);
         return position == -1 ? 0 : position;
     }
 
@@ -98,18 +93,22 @@ class DiscreteDimmableBehavior implements DimmableTypeBehavior {
 
     @Override
     public String getDimStateForPosition(FhemDevice fhemDevice, int position) {
-        if (position == 0) {
+        if (position == getDimLowerBound()) {
             return "off";
-        }
-        if (position == foundDimStates.size() + 1) {
+        } else if (position == getDimUpperBound()) {
             return "on";
         }
         return foundDimStates.get(position - 1);
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
-        return foundDimStates.indexOf(dimState);
+    public int getPositionForDimState(String state) {
+        if ("on".equalsIgnoreCase(state)) {
+            return getDimUpperBound();
+        } else if ("off".equalsIgnoreCase(state)) {
+            return getDimLowerBound();
+        }
+        return foundDimStates.indexOf(state) + 1;
     }
 
     @Override

@@ -32,6 +32,7 @@ import android.widget.RemoteViews;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
@@ -46,6 +47,9 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
     @Inject
     OnOffBehavior onOffBehavior;
 
+    @Inject
+    DeviceHookProvider deviceHookProvider;
+
     @Override
     public int getWidgetName() {
         return R.string.widget_onOff;
@@ -58,28 +62,29 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
-        ToggleableDevice<?> toggleable = (ToggleableDevice) device;
-
         boolean isOn = onOffBehavior.isOn(device);
 
-        view.setTextViewText(R.id.widgetOnButton, toggleable.getEventMapStateFor(toggleable.getOnStateName()));
-        view.setTextViewText(R.id.widgetOffButton, toggleable.getEventMapStateFor(toggleable.getOffStateName()));
+        String onStateName = deviceHookProvider.getOnStateName(device);
+        String offStateName = deviceHookProvider.getOffStateName(device);
+
+        view.setTextViewText(R.id.widgetOnButton, onStateName);
+        view.setTextViewText(R.id.widgetOffButton, offStateName);
 
         int backgroundColor = isOn ? R.color.android_green : android.R.color.white;
         view.setInt(R.id.widgetOnButton, "setBackgroundColor", context.getResources().getColor(backgroundColor));
 
-        Intent onIntent = new Intent(Actions.DEVICE_SET_STATE);
-        onIntent.setClass(context, DeviceIntentService.class);
-        onIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
-        onIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOnStateName());
+        Intent onIntent = new Intent(Actions.DEVICE_SET_STATE)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, onStateName);
         PendingIntent onPendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId,
                 onIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.widgetOnButton, onPendingIntent);
 
-        Intent offIntent = new Intent(Actions.DEVICE_SET_STATE);
-        offIntent.setClass(context, DeviceIntentService.class);
-        offIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
-        offIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOffStateName());
+        Intent offIntent = new Intent(Actions.DEVICE_SET_STATE)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, offStateName);
         PendingIntent offPendingIntent = PendingIntent.getService(context, -1 * widgetConfiguration.widgetId,
                 offIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.widgetOffButton, offPendingIntent);

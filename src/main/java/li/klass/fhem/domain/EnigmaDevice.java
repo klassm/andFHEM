@@ -108,11 +108,6 @@ public class EnigmaDevice extends ToggleableDevice<EnigmaDevice> implements Volu
     }
 
     @Override
-    public boolean isOnByState() {
-        return "on".equalsIgnoreCase(power);
-    }
-
-    @Override
     public void setState(String state) {
         super.setState(state);
         if (state.equalsIgnoreCase("on") || state.equalsIgnoreCase("off")) {

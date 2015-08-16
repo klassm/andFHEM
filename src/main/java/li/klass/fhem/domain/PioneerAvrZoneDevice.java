@@ -87,9 +87,4 @@ public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice>
         }
         super.setState(state);
     }
-
-    @Override
-    public String getToggleStateValue() {
-        return getPower();
-    }
 }

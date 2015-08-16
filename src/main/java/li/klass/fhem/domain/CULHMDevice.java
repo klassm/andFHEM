@@ -169,7 +169,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     @XmllistAttribute("ENERGY")
-    private String cumulativeUsage;
+    private String energy;
 
     @ShowField(description = ResourceIdMapper.brightness)
     @XmllistAttribute("LUMINOSITY")
@@ -340,14 +340,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return super.isSupported() && subType != null;
     }
 
-    public boolean isOnByState() {
-        if (super.isOnByState()) return true;
-
-        String internalState = getInternalState();
-        return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
-                (subType == DIMMER && getDimPosition() > 0);
-    }
-
     @Override
     public int getDimPosition() {
         if (subType != DIMMER && subType != SHUTTER) return 0;
@@ -505,8 +497,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return rain;
     }
 
-    public String getCumulativeUsage() {
-        return cumulativeUsage;
+    public String getEnergy() {
+        return energy;
     }
 
     @Override

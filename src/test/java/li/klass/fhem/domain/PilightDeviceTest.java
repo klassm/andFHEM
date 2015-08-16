@@ -38,8 +38,6 @@ public class PilightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.isOnByState()).isTrue();
-
         assertThat(device.getSetList().getEntries()).isNotEmpty();
     }
 

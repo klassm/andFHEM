@@ -43,7 +43,6 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.supportsToggle()).isEqualTo(true);
-        assertThat(device.isOnByState()).isEqualTo(true);
 
         assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
     }

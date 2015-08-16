@@ -41,14 +41,13 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
 
         assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.POWERMETER);
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.isOnByState()).isTrue();
         assertThat(device.supportsToggle()).isFalse();
 
-        assertThat(device.getPower()).isEqualTo("3 (W)");
+        assertThat(device.getPower()).isEqualTo("3.0 (W)");
         assertThat(device.getCurrentVoltage()).isEqualTo("228.7 (V)");
-        assertThat(device.getCumulativeUsage()).isEqualTo("0.0 (kWh)");
+        assertThat(device.getEnergy()).isEqualTo("5.0 (kWh)");
         assertThat(device.getFrequency()).isEqualTo("49.98 (Hz)");
-        assertThat(device.getCurrent()).isEqualTo("376 (mA)");
+        assertThat(device.getCurrent()).isEqualTo("376.0 (mA)");
 
         assertThat(device.isSupported()).isTrue();
     }

@@ -41,10 +41,10 @@ public class PowerSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.POWERSENSOR);
         assertThat(device.supportsToggle()).isFalse();
 
-        assertThat(device.getPower()).isEqualTo("150 (W)");
+        assertThat(device.getPower()).isEqualTo("150.0 (W)");
         assertThat(device.getCurrentVoltage()).isEqualTo("0.0 (V)");
-        assertThat(device.getFrequency()).isEqualTo("50 (Hz)");
-        assertThat(device.getCurrent()).isEqualTo("0 (mA)");
+        assertThat(device.getFrequency()).isEqualTo("50.0 (Hz)");
+        assertThat(device.getCurrent()).isEqualTo("0.0 (mA)");
 
         assertThat(device.isSupported()).isTrue();
     }

@@ -58,13 +58,6 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     }
 
     @Override
-    public boolean isOnByState() {
-        if (super.isOnByState()) return true;
-
-        return !getInternalState().equalsIgnoreCase("off");
-    }
-
-    @Override
     public boolean supportsToggle() {
         return true;
     }
