@@ -30,7 +30,6 @@ import android.content.Intent;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -135,17 +134,17 @@ public class DeviceListParser {
         }
 
         gPlotHolder.reset();
-        Map<String, ImmutableList<XmlListDevice>> parsedDevices = parser.parse(xmlList);
+        Map<String, List<XmlListDevice>> parsedDevices = parser.parse(xmlList);
 
         ReadErrorHolder errorHolder = new ReadErrorHolder();
 
         Map<String, FhemDevice> allDevices = newHashMap();
 
-        for (Map.Entry<String, ImmutableList<XmlListDevice>> entry : parsedDevices.entrySet()) {
+        for (Map.Entry<String, List<XmlListDevice>> entry : parsedDevices.entrySet()) {
             DeviceType deviceType = getDeviceTypeFor(entry.getKey());
             Optional<DeviceConfiguration> deviceConfiguration = deviceConfigurationProvider.configurationFor(entry.getKey());
 
-            ImmutableList<XmlListDevice> xmlListDevices = parsedDevices.get(entry.getKey());
+            List<XmlListDevice> xmlListDevices = parsedDevices.get(entry.getKey());
             if (xmlListDevices == null || xmlListDevices.isEmpty()) {
                 continue;
             }
@@ -184,7 +183,7 @@ public class DeviceListParser {
         }
     }
 
-    private ImmutableSet<SvgGraphDefinition> createSvgGraphDefinitions(ImmutableList<XmlListDevice> svgDevices, final Map<String, FhemDevice> allDevices) {
+    private ImmutableSet<SvgGraphDefinition> createSvgGraphDefinitions(List<XmlListDevice> svgDevices, final Map<String, FhemDevice> allDevices) {
         if (svgDevices == null) return ImmutableSet.of();
         return from(svgDevices).transform(new Function<XmlListDevice, SvgGraphDefinition>() {
             @Override
@@ -224,7 +223,7 @@ public class DeviceListParser {
         }).filter(notNull()).toSet();
     }
 
-    private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, ImmutableList<XmlListDevice> xmlListDevices,
+    private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, List<XmlListDevice> xmlListDevices,
                                     Map<String, FhemDevice> allDevices, Context context, Optional<DeviceConfiguration> deviceConfiguration) {
 
         int errorCount = 0;

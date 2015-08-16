@@ -35,8 +35,9 @@ import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
-import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
-import li.klass.fhem.adapter.devices.overview.strategy.ToggleableOverviewStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
@@ -46,10 +47,13 @@ import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYO
 
 public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
-    ToggleableOverviewStrategy toggleableOverviewStrategy;
+    ToggleableStrategy toggleableOverviewStrategy;
 
     @Inject
     DeviceHookProvider deviceHookProvider;
+
+    @Inject
+    OnOffBehavior onOffBehavior;
 
     @Override
     protected void inject(ApplicationComponent daggerComponent) {
@@ -64,12 +68,12 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(Context context, T device,
                                                                           TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new ToggleDeviceActionRow(getInflater(), layoutId)
+        tableLayout.addView(new ToggleDeviceActionRow(getInflater(), layoutId, onOffBehavior)
                 .createRow(context, device, device.getAliasOrName()));
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider.buttonHookFor(device))
+        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior)
                 .createRow(getInflater(), device, context));
     }
 
@@ -102,7 +106,7 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     @Override
-    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(toggleableOverviewStrategy);
     }

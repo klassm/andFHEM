@@ -72,14 +72,6 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     @Override
-    public void setState(String value, DeviceNode node) {
-        super.setState(value, node);
-        if (node.isStateNode()) {
-            setMeasured(node.getMeasured());
-        }
-    }
-
-    @Override
     public boolean isOffByState() {
         if (super.isOffByState()) {
             return true;

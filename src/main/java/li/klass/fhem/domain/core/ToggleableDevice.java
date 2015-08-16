@@ -24,41 +24,22 @@
 
 package li.klass.fhem.domain.core;
 
-import java.util.Locale;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
 
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevice<T> {
 
-    private boolean doInvertOnState = false;
     private String onStateName = "on";
     private String offStateName = "off";
-
-    public enum ButtonHookType {
-        NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE, WEBCMD_DEVICE
-    }
-
-    private ButtonHookType buttonHookType = NORMAL;
 
     public boolean isOnByState() {
         return !isOffByState();
     }
 
     public boolean isOffByState() {
-        String internalState = getToggleStateValue();
-        return internalState == null
-                || internalState.toLowerCase(Locale.getDefault()).contains(getOffStateName().toLowerCase(Locale.getDefault()))
-                || internalState.equalsIgnoreCase(eventMapReverse.get(getOffStateName()))
-                || internalState.equals("???");
-    }
-
-    public boolean isOnRespectingInvertHook() {
-        boolean isOn = isOnByState();
-        if (doInvertOnState) isOn = !isOn;
-
-        return isOn;
+        return new OnOffBehavior().isOffByState(this);
     }
 
     public boolean supportsToggle() {
@@ -75,13 +56,6 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
     @XmllistAttribute("offStateName")
     public void setOffStateName(String value) {
         offStateName = value;
-    }
-
-    @XmllistAttribute("invertState")
-    public void setInvertState(String value) {
-        if (value.equalsIgnoreCase("true")) {
-            doInvertOnState = true;
-        }
     }
 
     public String getOffStateName() {

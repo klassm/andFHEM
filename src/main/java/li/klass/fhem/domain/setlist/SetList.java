@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import li.klass.fhem.util.NumberUtil;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -65,13 +67,19 @@ public class SetList implements Serializable {
         String key = keyValue[0];
         String value = keyValue.length == 2 ? keyValue[1] : "";
 
-        entries.put(key, handleValue(value));
+        SetListValue setListValue = handleValue(value);
+        if (setListValue != null) {
+            entries.put(key, setListValue);
+        }
     }
 
     private SetListValue handleValue(String value) {
         String[] parts = value.split(",");
 
         if (parts.length == 4 && parts[0].equals("slider")) {
+            if (parts[2].contains(".")) {
+                return null; // we do not yet support slider values with decimal steps
+            }
             return new SetListSliderValue(parts);
         }
 

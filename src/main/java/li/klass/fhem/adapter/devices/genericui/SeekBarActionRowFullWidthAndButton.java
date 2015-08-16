@@ -41,24 +41,20 @@ import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 
 public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRowFullWidth {
 
+    public static final int LAYOUT_DETAIL = R.layout.device_detail_seekbarrow_with_button;
     protected Context context;
 
-    public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int maximumProgress) {
-        this(context, initialProgress, 0, maximumProgress);
-    }
-
-    public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int minimumProgress, int maximumProgress) {
-        super(initialProgress, minimumProgress, maximumProgress, R.layout.device_detail_seekbarrow_with_button, null);
+    public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int minimumProgress, int maximumProgress, TableRow updateRow) {
+        super(initialProgress, minimumProgress, maximumProgress, LAYOUT_DETAIL, updateRow);
         this.context = context;
     }
-
     @Override
     public TableRow createRow(LayoutInflater inflater, FhemDevice device, int layoutSpan) {
         TableRow row = super.createRow(inflater, device, 1);
         applySetButtonIfRequired(device, row);
 
         TableLayout layout = (TableLayout) row.findViewById(R.id.seekBarLayout);
-        if (layoutSpan != 1) {
+        if (layout != null && layoutSpan != 1) {
             TableRow.LayoutParams layoutParams = (TableRow.LayoutParams) layout.getLayoutParams();
             layoutParams.span = layoutSpan;
             layout.setLayoutParams(layoutParams);
@@ -69,6 +65,7 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
 
     private void applySetButtonIfRequired(final FhemDevice device, TableRow row) {
         Button button = (Button) row.findViewById(R.id.button);
+        if (button == null) return;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

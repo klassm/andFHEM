@@ -35,8 +35,8 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DimmableDeviceDimActionRowFullWidth;
 import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
-import li.klass.fhem.adapter.devices.overview.strategy.DimmableOverviewStrategy;
-import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
+import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -50,7 +50,7 @@ public class DimmableAdapter extends ToggleableAdapter {
     StateUiService stateUiService;
 
     @Inject
-    DimmableOverviewStrategy dimmableOverviewStrategy;
+    DimmableStrategy dimmableStrategy;
 
 
     @Override
@@ -118,8 +118,8 @@ public class DimmableAdapter extends ToggleableAdapter {
     }
 
     @Override
-    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
-        overviewStrategies.add(dimmableOverviewStrategy);
+        overviewStrategies.add(dimmableStrategy);
     }
 }

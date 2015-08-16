@@ -22,21 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.service.room.xmllist;
+package li.klass.fhem.adapter.devices.strategy;
 
-import java.util.Map;
+import java.util.List;
 
-import static com.google.common.collect.Maps.newHashMap;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-class MutableXmlListDevice {
-    String type;
+import static com.google.common.collect.Lists.newArrayList;
 
-    Map<String, DeviceNode> attributes = newHashMap();
-    Map<String, DeviceNode> states = newHashMap();
-    Map<String, DeviceNode> internals = newHashMap();
-    Map<String, DeviceNode> header = newHashMap();
+@Singleton
+public class StrategyProvider {
+    @Inject
+    DefaultViewStrategy defaultOverviewStrategy;
 
-    MutableXmlListDevice(String type) {
-        this.type = type;
-    }
+    @Inject
+    DimmableStrategy dimmableStrategy;
+
+    @Inject
+    ToggleableStrategy toggleableOverviewStrategy;
+
+    @Inject
+    LightSceneDeviceViewStrategy lightSceneDeviceOverviewStrategy;
+
+    @Inject
+    WeatherDeviceViewStrategy weatherDeviceStrategy;
+
+    private List<ViewStrategy> strategies = newArrayList();
 }

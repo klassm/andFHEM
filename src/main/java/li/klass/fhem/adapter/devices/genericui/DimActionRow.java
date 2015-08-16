@@ -33,6 +33,8 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -43,6 +45,8 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public class DimActionRow {
+    private final StateUiService stateUiService;
+    private final Context context;
     private TextView updateView;
     private TextView description;
 
@@ -51,10 +55,12 @@ public class DimActionRow {
     private SeekBar seekBar;
     private TableRow tableRow;
 
-    public DimActionRow(LayoutInflater inflater) {
+    public DimActionRow(LayoutInflater inflater, StateUiService stateUiService, Context context) {
         tableRow = (TableRow) inflater.inflate(LAYOUT_OVERVIEW, null);
         description = (TextView) tableRow.findViewById(R.id.description);
         seekBar = (SeekBar) tableRow.findViewById(R.id.seekBar);
+        this.stateUiService = stateUiService;
+        this.context = context;
     }
 
     public TableRow getView() {
@@ -62,28 +68,29 @@ public class DimActionRow {
     }
 
     public void fillWith(final FhemDevice device, TableRow updateRow) {
+        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device).get();
+
         DimmableDevice dimmableDevice = (DimmableDevice) device;
-        seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setMax(dimmableDevice.getDimUpperBound());
-        seekBar.setProgress(dimmableDevice.getDimPosition());
+        seekBar.setOnSeekBarChangeListener(createListener(behavior));
+        seekBar.setMax(behavior.getDimUpperBound());
+        seekBar.setProgress(behavior.getCurrentDimPosition());
         description.setText(dimmableDevice.getAliasOrName());
         if (updateRow != null) {
             updateView = (TextView) updateRow.findViewById(R.id.value);
         }
     }
 
-    private SeekBar.OnSeekBarChangeListener createListener(final FhemDevice device) {
-        final DimmableDevice dimmableDevice = (DimmableDevice) device;
+    private SeekBar.OnSeekBarChangeListener createListener(final DimmableBehavior behavior) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public int progress = dimmableDevice.getDimPosition();
+            public int progress = behavior.getCurrentDimPosition();
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress;
 
                 if (updateView != null) {
-                    updateView.setText(dimmableDevice.getDimStateForPosition(progress));
+                    updateView.setText(behavior.getDimStateForPosition(progress));
                 }
             }
 
@@ -93,16 +100,8 @@ public class DimActionRow {
 
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {
-                DimActionRow.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
+                behavior.switchTo(stateUiService, context, progress);
             }
         };
-    }
-
-    public void onStopTrackingTouch(final Context context, FhemDevice device, int progress) {
-        context.startService(new Intent(Actions.DEVICE_DIM)
-                .setClass(context, DeviceIntentService.class)
-                .putExtra(DEVICE_DIM_PROGRESS, progress)
-                .putExtra(DEVICE_NAME, device.getName())
-                .putExtra(RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 }

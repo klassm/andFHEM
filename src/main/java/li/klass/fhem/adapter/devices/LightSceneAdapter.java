@@ -40,8 +40,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
-import li.klass.fhem.adapter.devices.overview.strategy.LightSceneDeviceOverviewStrategy;
-import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
+import li.klass.fhem.adapter.devices.strategy.LightSceneDeviceViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.LightSceneDevice;
@@ -52,7 +52,7 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     StateUiService stateUiService;
 
     @Inject
-    LightSceneDeviceOverviewStrategy lightSceneDeviceOverviewStrategy;
+    LightSceneDeviceViewStrategy lightSceneDeviceOverviewStrategy;
 
     public LightSceneAdapter() {
         super();
@@ -107,7 +107,7 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     @Override
-    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(lightSceneDeviceOverviewStrategy);
     }

@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.overview.strategy;
+package li.klass.fhem.adapter.devices.strategy;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.util.List;
 
@@ -40,16 +41,17 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
 @Singleton
-public class LightSceneDeviceOverviewStrategy extends OverviewStrategy {
+public class LightSceneDeviceViewStrategy extends ViewStrategy {
     @Inject
     StateUiService stateUiService;
 
     @Inject
-    public LightSceneDeviceOverviewStrategy() {
+    public LightSceneDeviceViewStrategy() {
     }
 
     @Override
@@ -79,6 +81,11 @@ public class LightSceneDeviceOverviewStrategy extends OverviewStrategy {
     @Override
     public boolean supports(FhemDevice fhemDevice) {
         return fhemDevice instanceof LightSceneDevice;
+    }
+
+    @Override
+    TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
+        return null;
     }
 
     private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button, final Context context) {

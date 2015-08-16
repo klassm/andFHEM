@@ -27,6 +27,7 @@ package li.klass.fhem.service.room.xmllist;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -40,6 +41,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.ATTR;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
@@ -62,11 +64,38 @@ public class Sanitiser {
         try {
             JSONObject deviceOptions = optionsFor(deviceType);
             return sanitise(deviceNode, deviceOptions);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             LOGGER.error("cannot sanitise {}", deviceNode);
             return deviceNode;
+        }
+    }
+
+    public void sanitise(String deviceType, XmlListDevice xmlListDevice) {
+        try {
+            JSONObject typeOptions = options.getJSONObject("deviceTypes").optJSONObject(deviceType);
+            if (typeOptions == null) return;
+
+            JSONObject generalOptions = typeOptions.optJSONObject("__general__");
+            if (generalOptions == null) return;
+
+            handleGeneralAttributesArray(generalOptions, xmlListDevice);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void handleGeneralAttributesArray(JSONObject generalOptions, XmlListDevice xmlListDevice) throws JSONException {
+        JSONArray attributes = generalOptions.optJSONArray("addAttributesIfNotPresent");
+        if (attributes == null) return;
+
+        for (int i = 0; i < attributes.length(); i++) {
+            JSONObject object = attributes.getJSONObject(i);
+            String key = object.getString("key");
+            String value = object.getString("value");
+
+            if (!xmlListDevice.getAttributes().containsKey(key)) {
+                xmlListDevice.getAttributes().put(key, new DeviceNode(ATTR, key, value, null));
+            }
         }
     }
 
@@ -128,17 +157,21 @@ public class Sanitiser {
         return value;
     }
 
-    private JSONObject optionsFor(String type) throws JSONException {
-        JSONObject defaults = options.getJSONObject("defaults");
-        JSONObject typeOptions = options.getJSONObject("deviceTypes").optJSONObject(type);
+    private JSONObject optionsFor(String type) {
+        try {
+            JSONObject defaults = options.getJSONObject("defaults");
+            JSONObject typeOptions = options.getJSONObject("deviceTypes").optJSONObject(type);
 
-        JSONObject result = new JSONObject();
-        putAllInto(defaults, result);
-        if (typeOptions != null) {
-            putAllInto(typeOptions, result);
+            JSONObject result = new JSONObject();
+            putAllInto(defaults, result);
+            if (typeOptions != null) {
+                putAllInto(typeOptions, result);
+            }
+
+            return result;
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
-
-        return result;
     }
 
     private void putAllInto(JSONObject from, JSONObject into) throws JSONException {

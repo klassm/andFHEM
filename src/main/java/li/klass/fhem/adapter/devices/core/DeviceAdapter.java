@@ -110,11 +110,10 @@ public abstract class DeviceAdapter {
             return;
         }
 
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        intent.putExtras(new Bundle());
-        intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, (String) device.getRooms().get(0));
+        Intent intent = new Intent(Actions.SHOW_FRAGMENT)
+                .putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName())
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.ROOM_NAME, (String) device.getRooms().get(0));
 
         intent = onFillDeviceDetailIntent(context, device, intent);
         if (intent != null) {
@@ -153,12 +152,6 @@ public abstract class DeviceAdapter {
         if (textView != null) {
             textView.setText(value);
         }
-    }
-
-    protected void setTextView(TextView textView, int valueRes) {
-        Context context = textView.getContext();
-        checkNotNull(context);
-        setTextView(textView, context.getString(valueRes));
     }
 
     protected void setTextView(View view, int textFieldLayoutId, int value) {

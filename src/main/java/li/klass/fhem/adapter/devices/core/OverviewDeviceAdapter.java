@@ -46,9 +46,10 @@ import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
-import li.klass.fhem.adapter.devices.overview.strategy.DefaultOverviewStrategy;
-import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
+import li.klass.fhem.adapter.devices.strategy.DefaultViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
@@ -61,7 +62,6 @@ import li.klass.fhem.util.ApplicationProperties;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
@@ -87,9 +87,9 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     DeviceDescMapping deviceDescMapping;
 
     @Inject
-    DefaultOverviewStrategy defaultOverviewStrategy;
+    DefaultViewStrategy defaultOverviewStrategy;
 
-    List<OverviewStrategy> overviewStrategies;
+    List<ViewStrategy> overviewStrategies;
 
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
@@ -108,25 +108,25 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         Collections.reverse(overviewStrategies);
     }
 
-    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         overviewStrategies.add(defaultOverviewStrategy);
     }
 
-    private OverviewStrategy getMostSpecificOverviewStrategy(FhemDevice device) {
-        for (OverviewStrategy overviewStrategy : overviewStrategies) {
-            if (overviewStrategy.supports(device)) {
-                return overviewStrategy;
+    private ViewStrategy getMostSpecificOverviewStrategy(FhemDevice device) {
+        for (ViewStrategy viewStrategy : overviewStrategies) {
+            if (viewStrategy.supports(device)) {
+                return viewStrategy;
             }
         }
         throw new IllegalStateException("no overview strategy found, default should always be present");
     }
 
     public final View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
-        OverviewStrategy overviewStrategy = getMostSpecificOverviewStrategy(rawDevice);
-        if (overviewStrategy == null) {
+        ViewStrategy viewStrategy = getMostSpecificOverviewStrategy(rawDevice);
+        if (viewStrategy == null) {
             throw new NullPointerException("was null for device " + rawDevice.toString() + " and adapter " + getClass().getSimpleName());
         }
-        return overviewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice));
+        return viewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice));
     }
 
     protected GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
@@ -197,11 +197,9 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
                 @Override
                 protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                     SetListValue setListValue = device.getSetList().get(key);
-                    int state = extractLeadingInt(xmlViewItem.getValueFor(device));
                     if (setListValue instanceof SetListSliderValue) {
-                        SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
                         tableLayout.addView(
-                                new StateChangingSeekBarFullWidth(getContext(), state, sliderValue, key, fieldTableRow, applicationProperties)
+                                new StateChangingSeekBarFullWidth(getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key).get(), fieldTableRow)
                                         .createRow(getInflater(), device));
                     } else if (setListValue instanceof SetListGroupValue) {
                         SetListGroupValue groupValue = (SetListGroupValue) setListValue;

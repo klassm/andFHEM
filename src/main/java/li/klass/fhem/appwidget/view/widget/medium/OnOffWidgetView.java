@@ -29,7 +29,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
@@ -40,6 +43,9 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class OnOffWidgetView extends DeviceAppWidgetView {
+    @Inject
+    OnOffBehavior onOffBehavior;
+
     @Override
     public int getWidgetName() {
         return R.string.widget_onOff;
@@ -54,7 +60,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         ToggleableDevice<?> toggleable = (ToggleableDevice) device;
 
-        boolean isOn = toggleable.isOnRespectingInvertHook();
+        boolean isOn = onOffBehavior.isOn(device);
 
         view.setTextViewText(R.id.widgetOnButton, toggleable.getEventMapStateFor(toggleable.getOnStateName()));
         view.setTextViewText(R.id.widgetOffButton, toggleable.getEventMapStateFor(toggleable.getOffStateName()));

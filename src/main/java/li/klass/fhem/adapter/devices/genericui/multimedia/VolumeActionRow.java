@@ -25,15 +25,16 @@
 package li.klass.fhem.adapter.devices.genericui.multimedia;
 
 import android.content.Context;
+import android.widget.TableRow;
 
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
-import li.klass.fhem.behavior.util.vol.VolumeUtilBehavior;
+import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class VolumeActionRow extends StateChangingSeekBarFullWidth {
-    public VolumeActionRow(Context context, FhemDevice device, ApplicationProperties applicationProperties) {
-        super(context, VolumeUtilBehavior.volumeFor(device), (SetListSliderValue) device.getSetList().get("volume"), "volume", applicationProperties);
+    public VolumeActionRow(Context context, StateUiService stateUiService, ApplicationProperties applicationProperties, FhemDevice device, TableRow updateRow) {
+        super(context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "volume").get(), updateRow);
     }
 }

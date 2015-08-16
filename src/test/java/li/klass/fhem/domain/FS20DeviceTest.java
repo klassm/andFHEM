@@ -79,7 +79,6 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributesInThirdDevice() {
         FS20Device device = getDeviceFor("device2", FS20Device.class);
 
-        assertThat(device.isOnRespectingInvertHook()).isEqualTo(true);
         assertThat(device.isOnByState()).isEqualTo(false);
         assertThat(device.getWidgetName()).isEqualTo("widget_name");
     }

@@ -29,44 +29,26 @@ import android.content.Intent;
 import android.widget.TableRow;
 
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndButton {
 
-    private String commandAttribute;
+    private final StateUiService stateUiService;
     private ApplicationProperties applicationProperties;
+    private DimmableBehavior dimmableBehavior;
 
-    public StateChangingSeekBarFullWidth(Context context, int initialProgress, int maximumProgress,
-                                         String commandAttribute, ApplicationProperties applicationProperties) {
-        this(context, initialProgress, 0, maximumProgress, commandAttribute, applicationProperties);
-    }
-
-    public StateChangingSeekBarFullWidth(Context context, int initialProgress, int minimumProgress, int maximumProgress, String commandAttribute,
-                                         ApplicationProperties applicationProperties) {
-        super(context, initialProgress, minimumProgress, maximumProgress);
-        this.commandAttribute = commandAttribute;
+    public StateChangingSeekBarFullWidth(Context context, StateUiService stateUiService, ApplicationProperties applicationProperties, DimmableBehavior dimmableBehavior, TableRow updateRow) {
+        super(context, dimmableBehavior.getCurrentDimPosition(), dimmableBehavior.getDimLowerBound(), dimmableBehavior.getDimUpperBound(), updateRow);
+        this.dimmableBehavior = dimmableBehavior;
+        this.stateUiService = stateUiService;
         this.applicationProperties = applicationProperties;
     }
-
-    public StateChangingSeekBarFullWidth(Context context, int initialProgress, SetListSliderValue sliderValue,
-                                         String commandAttribute, ApplicationProperties applicationProperties) {
-        this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(),
-                commandAttribute, applicationProperties);
-    }
-
-    public StateChangingSeekBarFullWidth(Context context, int initialProgress, SetListSliderValue sliderValue,
-                                         String commandAttribute, TableRow updateRow,
-                                         ApplicationProperties applicationProperties) {
-        this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(),
-                commandAttribute, applicationProperties);
-        setUpdateRow(updateRow);
-    }
-
 
     @Override
     public void onButtonSetValue(FhemDevice device, int value) {
@@ -75,14 +57,12 @@ public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndB
 
     @Override
     public void onStopTrackingTouch(Context context, FhemDevice device, int progress) {
-        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.STATE_NAME, commandAttribute);
-        intent.putExtra(BundleExtraKeys.STATE_VALUE, progress + "");
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
+        dimmableBehavior.switchTo(stateUiService, context, progress);
+    }
 
-        context.startService(intent);
+    @Override
+    public String toUpdateText(FhemDevice device, int progress) {
+        return dimmableBehavior.getDimStateForPosition(progress);
     }
 
     @Override

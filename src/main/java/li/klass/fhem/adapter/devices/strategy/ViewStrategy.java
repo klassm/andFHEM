@@ -22,8 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.overview.strategy;
+package li.klass.fhem.adapter.devices.strategy;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableRow;
@@ -32,9 +33,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class OverviewStrategy {
+public abstract class ViewStrategy {
     public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems);
 
     protected void setTextView(TextView textView, String value) {
@@ -69,4 +71,6 @@ public abstract class OverviewStrategy {
     }
 
     public abstract boolean supports(FhemDevice fhemDevice);
+
+    abstract TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context);
 }

@@ -22,12 +22,14 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.overview.strategy;
+package li.klass.fhem.adapter.devices.strategy;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TableRow;
 
 import java.util.List;
 
@@ -35,22 +37,22 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ImageUtil;
 
 @Singleton
-public class WeatherDeviceOverviewStrategy extends OverviewStrategy {
+public class WeatherDeviceViewStrategy extends ViewStrategy {
     @Inject
-    public WeatherDeviceOverviewStrategy() {
+    public WeatherDeviceViewStrategy() {
     }
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather, null);
-        fillDeviceOverviewView(layout, (WeatherDevice) rawDevice, lastUpdate, null);
+        fillDeviceOverviewView(layout, (WeatherDevice) rawDevice);
         return layout;
     }
 
@@ -59,8 +61,13 @@ public class WeatherDeviceOverviewStrategy extends OverviewStrategy {
         return fhemDevice instanceof WeatherDevice;
     }
 
+    @Override
+    TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
+        return null;
+    }
 
-    protected void fillDeviceOverviewView(final View view, WeatherDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder) {
+
+    protected void fillDeviceOverviewView(final View view, WeatherDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());

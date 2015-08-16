@@ -299,6 +299,9 @@
         "append": "€",
         "extract": "double",
         "extractDigits": 2
+      },
+      "state": {
+        "append": "W"
       }
     },
     "EMWZ": {
@@ -437,6 +440,26 @@
       "Momentanleistung": {
         "append": "W",
         "extract": "double"
+      }
+    },
+    "EnOcean": {
+      "__general__": {
+        "addAttributesIfNotPresent": [
+          {
+            "key": "offStateName",
+            "value": "closes"
+          }
+        ]
+      }
+    },
+    "OWDevice": {
+      "__general__": {
+        "addAttributesIfNotPresent": [
+          {
+            "key": "offStateName",
+            "value": "PIO 0"
+          }
+        ]
       }
     }
   }

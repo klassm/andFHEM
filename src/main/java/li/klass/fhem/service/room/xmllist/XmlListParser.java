@@ -50,20 +50,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
 
 @Singleton
 public class XmlListParser {
-    private static final Function<MutableXmlListDevice, XmlListDevice> TO_XMLLIST_DEVICE = new Function<MutableXmlListDevice, XmlListDevice>() {
-        @NonNull
-        @Override
-        public XmlListDevice apply(MutableXmlListDevice input) {
-            return new XmlListDevice(input.type, copyOf(input.attributes), copyOf(input.states), copyOf(input.internals), copyOf(input.header));
-        }
-    };
 
     @Inject
     Sanitiser sanitiser;
@@ -72,8 +63,8 @@ public class XmlListParser {
     public XmlListParser() {
     }
 
-    public Map<String, ImmutableList<XmlListDevice>> parse(String xmlList) throws Exception {
-        Map<String, ImmutableList<XmlListDevice>> result = Maps.newHashMap();
+    public Map<String, List<XmlListDevice>> parse(String xmlList) throws Exception {
+        Map<String, List<XmlListDevice>> result = Maps.newHashMap();
 
         // replace device tag extensions
         xmlList = xmlList.replaceAll("_[0-9]+_LIST", "_LIST");
@@ -89,7 +80,7 @@ public class XmlListParser {
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node node = childNodes.item(i);
             if (node.getNodeName().endsWith("_LIST")) {
-                ImmutableList<XmlListDevice> devices = handleListNode(node);
+                List<XmlListDevice> devices = handleListNode(node);
                 if (devices.isEmpty()) {
                     continue;
                 }
@@ -106,7 +97,7 @@ public class XmlListParser {
             }
         }
 
-        return ImmutableMap.copyOf(result);
+        return result;
     }
 
     private Node findFHZINFONode(Document document) {
@@ -126,25 +117,25 @@ public class XmlListParser {
         return docBuilder.parse(new InputSource(new StringReader(xmlList)));
     }
 
-    private ImmutableList<XmlListDevice> handleListNode(Node node) {
-        List<MutableXmlListDevice> devices = newArrayList();
+    private List<XmlListDevice> handleListNode(Node node) {
+        List<XmlListDevice> devices = newArrayList();
 
         NodeList childNodes = node.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
-            MutableXmlListDevice device = handleDeviceNode(childNodes.item(i));
-            if (device != null && device.internals.containsKey("NAME")) {
+            XmlListDevice device = handleDeviceNode(childNodes.item(i));
+            if (device != null && device.getInternals().containsKey("NAME")) {
                 devices.add(device);
             }
         }
 
-        return from(devices).transform(TO_XMLLIST_DEVICE).toList();
+        return devices;
     }
 
-    private MutableXmlListDevice handleDeviceNode(Node node) {
+    private XmlListDevice handleDeviceNode(Node node) {
         NamedNodeMap attributes = node.getAttributes();
         if (attributes == null) return null;
 
-        MutableXmlListDevice device = new MutableXmlListDevice(node.getNodeName());
+        XmlListDevice device = new XmlListDevice(node.getNodeName());
 
         NodeList childNodes = node.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -154,13 +145,13 @@ public class XmlListParser {
             String key = deviceNode.getKey();
             switch (deviceNode.getType()) {
                 case ATTR:
-                    device.attributes.put(key, deviceNode);
+                    device.getAttributes().put(key, deviceNode);
                     break;
                 case INT:
-                    device.internals.put(key, deviceNode);
+                    device.getInternals().put(key, deviceNode);
                     break;
                 case STATE:
-                    device.states.put(key, deviceNode);
+                    device.getStates().put(key, deviceNode);
                     break;
                 default:
             }
@@ -168,13 +159,15 @@ public class XmlListParser {
         addToHeaderIfPresent(attributes, device, "sets", node.getNodeName());
         addToHeaderIfPresent(attributes, device, "attrs", node.getNodeName());
 
+        sanitiser.sanitise(node.getNodeName(), device);
+
         return device;
     }
 
-    private void addToHeaderIfPresent(NamedNodeMap attributes, MutableXmlListDevice device, String attributeKey, String deviceType) {
+    private void addToHeaderIfPresent(NamedNodeMap attributes, XmlListDevice device, String attributeKey, String deviceType) {
         Node attribute = attributes.getNamedItem(attributeKey);
         if (attribute != null) {
-            device.header.put(attributeKey,
+            device.getHeader().put(attributeKey,
                     sanitiser.sanitise(deviceType, new DeviceNode(DeviceNodeType.HEADER, attributeKey, attribute.getNodeValue(), null)));
         }
     }

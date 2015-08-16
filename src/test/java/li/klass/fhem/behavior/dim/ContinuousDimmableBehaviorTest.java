@@ -84,6 +84,6 @@ public class ContinuousDimmableBehaviorTest {
         ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(new SetList().parse("position:slider,0,5,100")).get();
 
         assertThat(behavior.getPositionForDimState(text)).isEqualTo(position);
-        assertThat(behavior.getDimStateForPosition(position)).isEqualTo(state);
+        assertThat(behavior.getDimStateForPosition(fhemDevice, position)).isEqualTo(state);
     }
 }

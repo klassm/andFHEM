@@ -106,7 +106,7 @@ public class DiscreteDimmableBehaviorTest {
     public void should_calculate_position(SetList setList, String state, int position) {
         DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.behaviorFor(setList).get();
 
-        assertThat(behavior.getDimStateForPosition(position)).isEqualTo(state);
+        assertThat(behavior.getDimStateForPosition(fhemDevice, position)).isEqualTo(state);
         assertThat(behavior.getPositionForDimState(state)).isEqualTo(position);
     }
 }

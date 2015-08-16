@@ -41,12 +41,21 @@ import com.google.common.base.Optional;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
+import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
+import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -55,11 +64,21 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
-
 public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     private Animation animation;
+
+    @Inject
+    ToggleableStrategy toggleableStrategy;
+
+    @Inject
+    DimmableStrategy dimmableStrategy;
+
+    @Inject
+    OnOffBehavior onOffBehavior;
+
+    @Inject
+    DeviceHookProvider deviceHookProvider;
 
     @Override
     protected void inject(ApplicationComponent daggerComponent) {
@@ -169,10 +188,12 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private void addActionIfRequired(GenericDevice device, TableLayout table, DeviceViewItem item, TableRow row) {
-        if (item.getSortKey().equalsIgnoreCase("state") && device.getSetList().contains("on", "off")) {
-            addRow(table, new OnOffActionRow(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
-                    .createRow(getInflater(), device, getContext()));
-            return;
+        if (item.getSortKey().equalsIgnoreCase("state")) {
+            if (dimmableStrategy.supports(device)) {
+                addRow(table, dimmableStrategy.createDetailView(device, row, getInflater(), getContext()));
+            } else if (toggleableStrategy.supports(device)) {
+                addRow(table, toggleableStrategy.createDetailView(device, row, getInflater(), getContext()));
+            }
         }
 
         SetListValue setListValue = device.getSetList().get(item.getSortKey());
@@ -181,10 +202,8 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         }
 
         if (setListValue instanceof SetListSliderValue) {
-            SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
             TableRow sliderRow = new StateChangingSeekBarFullWidth(
-                    getContext(), extractLeadingInt(item.getValueFor(device)),
-                    sliderValue, item.getSortKey(), row, applicationProperties)
+                    getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getSortKey()).get(), row)
                     .createRow(getInflater(), device);
             addRow(table, sliderRow);
         } else if (setListValue instanceof SetListGroupValue) {
@@ -232,5 +251,12 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
             return provider.getInternalsFor(device, showUnknown);
         }
+    }
+
+    @Override
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
+        super.fillOverviewStrategies(overviewStrategies);
+        overviewStrategies.add(toggleableStrategy);
+        overviewStrategies.add(dimmableStrategy);
     }
 }

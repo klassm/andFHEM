@@ -39,7 +39,6 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
-import static li.klass.fhem.util.ValueDescriptionUtil.append;
 
 @OverviewViewSettings(showState = false)
 @SupportsWidget(MediumInformationWidgetView.class)
@@ -64,11 +63,6 @@ public class EC3000Device extends FhemDevice<EC3000Device> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return USAGE;
-    }
-
-    @Override
-    public void setState(String value, DeviceNode node) {
-        super.setState(append(value, "W"), node);
     }
 
     @Override

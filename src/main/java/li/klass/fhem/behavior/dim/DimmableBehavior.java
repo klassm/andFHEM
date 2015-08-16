@@ -24,10 +24,14 @@
 
 package li.klass.fhem.behavior.dim;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
 
 public class DimmableBehavior {
 
@@ -61,7 +65,7 @@ public class DimmableBehavior {
 
 
     public String getDimStateForPosition(int position) {
-        return behavior.getDimStateForPosition(position);
+        return behavior.getDimStateForPosition(fhemDevice, position);
     }
 
     public int getPositionForDimState(String dimState) {
@@ -78,6 +82,10 @@ public class DimmableBehavior {
 
     public int getDimStep() {
         return behavior.getDimStep();
+    }
+
+    public void switchTo(StateUiService stateUiService, Context context, int state) {
+        behavior.switchTo(stateUiService, context, fhemDevice, state);
     }
 
     public FhemDevice getFhemDevice() {
@@ -103,5 +111,13 @@ public class DimmableBehavior {
         }
 
         return Optional.absent();
+    }
+
+    public static Optional<DimmableBehavior> continuousBehaviorFor(FhemDevice device, String attribute) {
+        if (device.getSetList().contains(attribute)) {
+            return Optional.absent();
+        }
+        SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(attribute);
+        return Optional.of(new DimmableBehavior(device, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
     }
 }

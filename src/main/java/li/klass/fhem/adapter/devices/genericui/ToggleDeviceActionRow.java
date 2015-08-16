@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -38,14 +39,16 @@ import li.klass.fhem.service.intent.DeviceIntentService;
 public class ToggleDeviceActionRow extends ToggleActionRow {
 
     public static final String HOLDER_KEY = ToggleDeviceActionRow.class.getName();
+    private final OnOffBehavior onOffBehavior;
 
-    public ToggleDeviceActionRow(LayoutInflater inflater, int layout) {
+    public ToggleDeviceActionRow(LayoutInflater inflater, int layout, OnOffBehavior onOffBehavior) {
         super(inflater, layout);
+        this.onOffBehavior = onOffBehavior;
     }
 
     @Override
     protected boolean isOn(FhemDevice device) {
-        return ((ToggleableDevice) device).isOnRespectingInvertHook();
+        return onOffBehavior.isOn(device);
     }
 
     @Override

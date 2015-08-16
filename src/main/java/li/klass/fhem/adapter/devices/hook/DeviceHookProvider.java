@@ -24,6 +24,9 @@
 
 package li.klass.fhem.adapter.devices.hook;
 
+import android.content.Context;
+
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
@@ -37,11 +40,14 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 @Singleton
 public class DeviceHookProvider {
 
-    static final String HOOK_ON_OFF = "onOffDevice";
-    static final String HOOK_ON = "onDevice";
-    static final String HOOK_OFF = "offDevice";
-    static final String HOOK_WEBCMD = "webcmdDevice";
-    static final String HOOK_TOGGLE = "toggleDevice";
+    public static final String HOOK_ON_OFF = "onOffDevice";
+    public static final String HOOK_ON = "onDevice";
+    public static final String HOOK_OFF = "offDevice";
+    public static final String HOOK_WEBCMD = "webcmdDevice";
+    public static final String HOOK_TOGGLE = "toggleDevice";
+    public static final String ON_STATE_NAME = "onStateName";
+    public static final String OFF_STATE_NAME = "offStateName";
+    public static final String INVERT_STATE = "invertState";
 
     private static final ImmutableMap<String, ButtonHook> HOOK_MAPPING =
             ImmutableMap.<String, ButtonHook>builder()
@@ -67,5 +73,18 @@ public class DeviceHookProvider {
             }
         }
         return ButtonHook.NORMAL;
+    }
+
+    public String getOnStateName(FhemDevice device) {
+        return device.getXmlListDevice().attributeValueFor(ON_STATE_NAME).or("on");
+    }
+
+    public String getOffStateName(FhemDevice device) {
+        return device.getXmlListDevice().attributeValueFor(OFF_STATE_NAME).or("off");
+    }
+
+    public boolean invertState(FhemDevice device) {
+        Optional<String> hookValue = device.getXmlListDevice().attributeValueFor(INVERT_STATE);
+        return hookValue.isPresent() && hookValue.get().equalsIgnoreCase("true");
     }
 }

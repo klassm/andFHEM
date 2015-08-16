@@ -38,10 +38,10 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -103,8 +103,7 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBarFullWidth(
-                        context, ((PCA9532Device) device).getPwm0(),
-                        (SetListSliderValue) device.getSetList().get("PWM0"), "PWM0", applicationProperties)
+                        context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM0").get(), fieldTableRow)
                         .createRow(getInflater(), device));
             }
         });
@@ -113,8 +112,7 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBarFullWidth(
-                        context, ((PCA9532Device) device).getPwm1(),
-                        (SetListSliderValue) device.getSetList().get("PWM1"), "PWM1", applicationProperties)
+                        context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM1").get(), fieldTableRow)
                         .createRow(getInflater(), device));
             }
         });

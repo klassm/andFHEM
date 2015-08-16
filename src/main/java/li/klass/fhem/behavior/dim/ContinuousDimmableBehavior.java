@@ -24,13 +24,20 @@
 
 package li.klass.fhem.behavior.dim;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+import java.util.Map;
+
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
@@ -39,7 +46,7 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     private SetListSliderValue slider;
     private String setListAttribute;
 
-    private ContinuousDimmableBehavior(SetListSliderValue sliderValue, String setListAttribute) {
+    ContinuousDimmableBehavior(SetListSliderValue sliderValue, String setListAttribute) {
         this.slider = sliderValue;
         this.setListAttribute = setListAttribute;
     }
@@ -56,8 +63,13 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
 
     @Override
     public int getCurrentDimPosition(FhemDevice device) {
-        String value = device.getXmlListDevice().getStates().get(setListAttribute).getValue();
+        String value = getValue(device).getValue();
         return getPositionForDimState(value);
+    }
+
+    private DeviceNode getValue(FhemDevice device) {
+        Map<String, DeviceNode> states = device.getXmlListDevice().getStates();
+        return states.containsKey(setListAttribute) ? states.get(setListAttribute) : states.get("state");
     }
 
     @Override
@@ -66,12 +78,24 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public String getDimStateForPosition(int position) {
+    public String getDimStateForPosition(FhemDevice fhemDevice, int position) {
+        if (setListAttribute.equalsIgnoreCase("state")) {
+            if (position == getDimLowerBound()) {
+                return "off";
+            } else if (position == getDimUpperBound()) {
+                return "on";
+            }
+        }
         return position + "";
     }
 
     @Override
     public int getPositionForDimState(String dimState) {
+        if ("on".equalsIgnoreCase(dimState)) {
+            return getDimUpperBound();
+        } else if ("off".equalsIgnoreCase(dimState)) {
+            return getDimLowerBound();
+        }
         return extractLeadingInt(dimState);
     }
 
@@ -82,6 +106,11 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public String getStateName() {
         return setListAttribute;
+    }
+
+    @Override
+    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, int state) {
+        stateUiService.setSubState(fhemDevice, setListAttribute, getDimStateForPosition(fhemDevice, state), context);
     }
 
     static Optional<ContinuousDimmableBehavior> behaviorFor(SetList setList) {

@@ -40,8 +40,8 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
-import li.klass.fhem.adapter.devices.overview.strategy.OverviewStrategy;
-import li.klass.fhem.adapter.devices.overview.strategy.WeatherDeviceOverviewStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.WeatherDeviceViewStrategy;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -51,7 +51,7 @@ import li.klass.fhem.util.ListViewUtil;
 public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
     @Inject
-    WeatherDeviceOverviewStrategy weatherDeviceOverviewStrategy;
+    WeatherDeviceViewStrategy weatherDeviceOverviewStrategy;
 
     @Override
     public Class<? extends FhemDevice> getSupportedDeviceClass() {
@@ -146,7 +146,7 @@ public class WeatherAdapter extends ExplicitOverviewDetailDeviceAdapter {
     }
 
     @Override
-    protected void fillOverviewStrategies(List<OverviewStrategy> overviewStrategies) {
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(weatherDeviceOverviewStrategy);
     }

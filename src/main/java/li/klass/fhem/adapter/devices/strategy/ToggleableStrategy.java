@@ -22,12 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.overview.strategy;
+package li.klass.fhem.adapter.devices.strategy;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.util.List;
 
@@ -38,11 +39,14 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
+import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
@@ -53,23 +57,20 @@ import static li.klass.fhem.adapter.devices.hook.ButtonHook.TOGGLE_DEVICE;
 import static li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE;
 
 @Singleton
-public class ToggleableOverviewStrategy extends OverviewStrategy {
-    @Inject
-    DefaultOverviewStrategy defaultOverviewStrategy;
-
+public class ToggleableStrategy extends ViewStrategy {
     @Inject
     DeviceHookProvider hookProvider;
 
     @Inject
-    public ToggleableOverviewStrategy() {
+    OnOffBehavior onOffBehavior;
+
+    @Inject
+    public ToggleableStrategy() {
     }
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
-        if (!device.supportsToggle()) {
-            return defaultOverviewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, deviceItems);
-        }
 
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
@@ -85,7 +86,7 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
 
     @Override
     public boolean supports(FhemDevice fhemDevice) {
-        return fhemDevice.getSetList().contains("on", "off");
+        return OnOffBehavior.supports(fhemDevice);
     }
 
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
@@ -113,7 +114,7 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
 
         ToggleDeviceActionRow actionRow = holder.getAdditionalHolderFor(HOLDER_KEY);
         if (actionRow == null) {
-            actionRow = new ToggleDeviceActionRow(layoutInflater, layoutId);
+            actionRow = new ToggleDeviceActionRow(layoutInflater, layoutId, onOffBehavior);
             holder.putAdditionalHolder(HOLDER_KEY, actionRow);
         }
         actionRow.fillWith(context, device, device.getAliasOrName());
@@ -123,10 +124,16 @@ public class ToggleableOverviewStrategy extends OverviewStrategy {
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
         OnOffActionRowForToggleables onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRowForToggleables.HOLDER_KEY);
         if (onOffActionRow == null) {
-            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider.buttonHookFor(device));
+            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior);
             holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow);
         }
         holder.getTableLayout().addView(onOffActionRow
                 .createRow(layoutInflater, device, holder.getTableLayout().getContext()));
+    }
+
+    @Override
+    public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
+        return new OnOffActionRowForToggleables(OnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior)
+                .createRow(inflater, device, context);
     }
 }

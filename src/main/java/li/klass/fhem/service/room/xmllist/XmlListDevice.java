@@ -24,16 +24,31 @@
 
 package li.klass.fhem.service.room.xmllist;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.common.collect.Maps.newHashMap;
+
 public class XmlListDevice implements Serializable {
+
+    public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     private String type;
 
-    private Map<String, DeviceNode> attributes;
-    private Map<String, DeviceNode> states;
-    private Map<String, DeviceNode> internals;
-    private Map<String, DeviceNode> header;
+    private Map<String, DeviceNode> attributes = newHashMap();
+    private Map<String, DeviceNode> states = newHashMap();
+    private Map<String, DeviceNode> internals = new HashMap<>();
+    private Map<String, DeviceNode> header = new HashMap<>();
+
+    public XmlListDevice(String type) {
+        this.type = type;
+    }
 
     public XmlListDevice(String type, Map<String, DeviceNode> attributes, Map<String, DeviceNode> states,
                          Map<String, DeviceNode> internals, Map<String, DeviceNode> header) {
@@ -64,6 +79,9 @@ public class XmlListDevice implements Serializable {
         return header;
     }
 
+    public void setState(String key, String value) {
+        getStates().put("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow()));
+    }
     @Override
     public String toString() {
         return "XmlListDevice{" +
@@ -72,5 +90,16 @@ public class XmlListDevice implements Serializable {
                 ", states=" + states +
                 ", internals=" + internals +
                 '}';
+    }
+
+    public Optional<String> attributeValueFor(String key) {
+        if (attributes.containsKey(key)) {
+            return Optional.of(attributes.get(key).getValue());
+        }
+        return Optional.absent();
+    }
+
+    private String measuredNow() {
+        return new DateTime().toString(DATE_PATTERN);
     }
 }

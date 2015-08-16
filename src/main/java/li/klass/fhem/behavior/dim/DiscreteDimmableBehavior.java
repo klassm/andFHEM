@@ -24,6 +24,8 @@
 
 package li.klass.fhem.behavior.dim;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
@@ -31,6 +33,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 
@@ -79,18 +82,29 @@ class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public int getCurrentDimPosition(FhemDevice device) {
         String state = device.getInternalState();
+        if ("on".equalsIgnoreCase(state)) {
+            return getDimUpperBound();
+        } else if ("off".equalsIgnoreCase(state)) {
+            return getDimLowerBound();
+        }
         int position = foundDimStates.indexOf(state);
         return position == -1 ? 0 : position;
     }
 
     @Override
     public int getDimUpperBound() {
-        return foundDimStates.size();
+        return foundDimStates.size() + 1;
     }
 
     @Override
-    public String getDimStateForPosition(int position) {
-        return foundDimStates.get(position);
+    public String getDimStateForPosition(FhemDevice fhemDevice, int position) {
+        if (position == 0) {
+            return "off";
+        }
+        if (position == foundDimStates.size() + 1) {
+            return "on";
+        }
+        return foundDimStates.get(position - 1);
     }
 
     @Override
@@ -101,5 +115,10 @@ class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public String getStateName() {
         return "state";
+    }
+
+    @Override
+    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, int state) {
+        stateUiService.setState(fhemDevice, getDimStateForPosition(fhemDevice, state), context);
     }
 }

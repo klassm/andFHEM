@@ -67,8 +67,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     protected Map<String, String> eventMapReverse = newHashMap();
     protected Map<String, String> eventMap = newHashMap();
     protected SetList setList = new SetList();
-    @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
-    private String state;
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
     private long lastMeasureTime = -1;
@@ -86,13 +84,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     protected OverviewViewSettings getExplicitOverviewSettings() {
         return null;
-    }
-
-    @XmllistAttribute("state")
-    public void setState(String value, DeviceNode node) {
-        if (node.getType() == INT || node.getType() == GCM_UPDATE) {
-            this.state = value;
-        }
     }
 
     @XmllistAttribute("WEBCMD")
@@ -298,16 +289,17 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return comparableAttribute.compareTo(otherComparableAttribute);
     }
 
+    @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     public String getState() {
-        return state;
+        DeviceNode state = getXmlListDevice().getStates().get("state");
+        if (state == null) {
+            state = getXmlListDevice().getInternals().get("STATE");
+        }
+        return state.getValue();
     }
 
     public void setState(String state) {
-        if (eventMap.containsKey(state)) {
-            this.state = eventMap.get(state);
-        } else {
-            this.state = state;
-        }
+        getXmlListDevice().setState("state", state);
     }
 
     public String getInternalState() {
@@ -343,6 +335,10 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public Map<String, String> getEventMap() {
         return eventMap;
+    }
+
+    public Map<String, String> getEventMapReverse() {
+        return eventMapReverse;
     }
 
     public SetList getSetList() {
@@ -422,7 +418,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     public String toString() {
         return "Device{" +
                 ", name='" + name + '\'' +
-                ", state='" + state + '\'' +
                 ", alias='" + alias + '\'' +
                 ", measured='" + measured + '\'' +
                 ", definition='" + definition + '\'' +

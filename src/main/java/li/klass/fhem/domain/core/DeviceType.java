@@ -160,7 +160,7 @@ public enum DeviceType {
     OREGON("OREGON", OregonDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     USBWX("USBWX", USBWXDevice.class),
-    FS20("FS20", FS20Device.class, new DimmableAdapter()),
+//    FS20("FS20", FS20Device.class, new DimmableAdapter()),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),

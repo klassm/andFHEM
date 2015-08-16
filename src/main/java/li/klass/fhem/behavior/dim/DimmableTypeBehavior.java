@@ -24,6 +24,9 @@
 
 package li.klass.fhem.behavior.dim;
 
+import android.content.Context;
+
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
 interface DimmableTypeBehavior {
@@ -35,9 +38,11 @@ interface DimmableTypeBehavior {
 
     int getCurrentDimPosition(FhemDevice device);
 
-    String getDimStateForPosition(int position);
+    String getDimStateForPosition(FhemDevice fhemDevice, int position);
 
     int getPositionForDimState(String dimState);
 
     String getStateName();
+
+    void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, int state);
 }

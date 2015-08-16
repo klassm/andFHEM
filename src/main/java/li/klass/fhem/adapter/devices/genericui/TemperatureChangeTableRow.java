@@ -43,7 +43,6 @@ import li.klass.fhem.util.device.DeviceActionUtil;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton {
-    private final TextView updateView;
     private double newTemperature;
     private String intentAction;
     private int valueStringId;
@@ -63,10 +62,9 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
     public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                      String intentAction, int valueStringId, double minTemperature,
                                      double maxTemperature, ApplicationProperties applicationProperties) {
-        super(context, temperatureToDimProgress(initialTemperature, minTemperature),
-                temperatureToDimProgress(maxTemperature, minTemperature));
+        super(context, temperatureToDimProgress(initialTemperature, minTemperature), 0,
+                temperatureToDimProgress(maxTemperature, minTemperature), updateTableRow);
 
-        this.updateView = (TextView) updateTableRow.findViewById(R.id.value);
         this.minTemperature = minTemperature;
         this.intentAction = intentAction;
         this.valueStringId = valueStringId;
@@ -79,7 +77,7 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
     }
 
     @Override
-    public void onProgressChanged(Context context, FhemDevice device, int progress) {
+    public void onProgressChanged(TextView updateView, Context context, FhemDevice device, int progress) {
         this.newTemperature = dimProgressToTemperature(progress, minTemperature);
         updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
     }

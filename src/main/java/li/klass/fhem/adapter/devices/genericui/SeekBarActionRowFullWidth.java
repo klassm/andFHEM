@@ -38,11 +38,7 @@ public abstract class SeekBarActionRowFullWidth {
     private int layoutId;
     protected int maximumProgress;
     protected int minimumProgress;
-    private TextView updateView;
-
-    public SeekBarActionRowFullWidth(int initialProgress, int maximumProgress, int layoutId) {
-        this(initialProgress, 0, maximumProgress, layoutId, null);
-    }
+    protected TextView updateView;
 
     public SeekBarActionRowFullWidth(int initialProgress, int minimumProgress, int maximumProgress, int layoutId,
                                      TableRow updateRow) {
@@ -88,9 +84,8 @@ public abstract class SeekBarActionRowFullWidth {
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress + minimumProgress;
-                SeekBarActionRowFullWidth.this.onProgressChanged(seekBar.getContext(), device, progress);
-                if (updateView != null) {
-                    updateView.setText(toUpdateText(device, progress));
+                if (updateView != null && fromUser) {
+                    SeekBarActionRowFullWidth.this.onProgressChanged(updateView, seekBar.getContext(), device, progress);
                 }
             }
 
@@ -105,7 +100,8 @@ public abstract class SeekBarActionRowFullWidth {
         };
     }
 
-    public void onProgressChanged(Context context, FhemDevice device, int progress) {
+    public void onProgressChanged(TextView updateView, Context context, FhemDevice device, int progress) {
+        updateView.setText(toUpdateText(device, progress));
     }
 
     public String toUpdateText(FhemDevice device, int progress) {

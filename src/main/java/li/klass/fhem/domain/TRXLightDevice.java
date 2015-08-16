@@ -53,15 +53,6 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     private String type;
 
     @Override
-    public void setState(String value, DeviceNode node) {
-        super.setState(value, node);
-
-        if (node.isStateNode()) {
-            setMeasured(node.getMeasured());
-        }
-    }
-
-    @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.functionalityForDimmable(this);
     }

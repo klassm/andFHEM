@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
@@ -47,6 +48,9 @@ import li.klass.fhem.service.intent.DeviceIntentService;
 public class ToggleWidgetView extends DeviceAppWidgetView {
     @Inject
     DeviceHookProvider deviceHookProvider;
+
+    @Inject
+    OnOffBehavior onOffBehavior;
 
     @Override
     public int getWidgetName() {
@@ -62,7 +66,7 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         ToggleableDevice toggleable = (ToggleableDevice) device;
 
-        boolean isOn = toggleable.isOnRespectingInvertHook();
+        boolean isOn = onOffBehavior.isOn(device);
 
         Intent actionIntent;
 

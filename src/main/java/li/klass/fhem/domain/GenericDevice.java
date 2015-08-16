@@ -30,6 +30,8 @@ import com.google.common.collect.Iterables;
 
 import java.util.Map;
 
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
@@ -43,8 +45,13 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
-        DeviceFunctionality deviceGroup = super.getDeviceGroup();
-        return deviceGroup == null ? DeviceFunctionality.UNKNOWN : deviceGroup;
+        if (DimmableBehavior.behaviorFor(this).isPresent()) {
+            return DeviceFunctionality.DIMMER;
+        } else if (OnOffBehavior.supports(this)) {
+            return DeviceFunctionality.SWITCH;
+        } else {
+            return DeviceFunctionality.UNKNOWN;
+        }
     }
 
     @Override

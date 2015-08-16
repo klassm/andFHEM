@@ -27,6 +27,8 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -36,13 +38,13 @@ import javax.inject.Singleton;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ReflectionUtil;
 import li.klass.fhem.util.Tasker;
 
 @Singleton
 public class GenericDeviceService {
-
     @Inject
     CommandExecutionService commandExecutionService;
 
@@ -57,6 +59,7 @@ public class GenericDeviceService {
 
         if (device.shouldUpdateStateOnDevice(targetState)) {
             device.setState(device.formatStateTextToSet(targetState));
+            device.getXmlListDevice().setState("state", targetState);
         }
 
         Tasker.sendTaskerNotifyIntent(context, device.getName(),
@@ -77,6 +80,7 @@ public class GenericDeviceService {
 
     private void invokeDeviceUpdateFor(FhemDevice<?> device, String subStateName, String value) {
 
+        device.getXmlListDevice().setState(subStateName, value);
         Class<? extends FhemDevice> clazz = device.getClass();
         if (!invokeDeviceUpdateForMethods(device, subStateName, value, clazz)) {
             invokeDeviceUpdateForFields(device, subStateName, value, clazz);

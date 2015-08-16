@@ -38,13 +38,6 @@ public class SWAPDevice extends ToggleableDevice<SWAPDevice> {
 
     private int rgb = 0;
 
-    @Override
-    public void setState(String value, DeviceNode node) {
-        if (value.endsWith("°C")) {
-            super.setState(appendTemperature(extractLeadingDouble(value)), node);
-        }
-    }
-
     @XmllistAttribute("0B_RGBLEVEL")
     public void setRgbLevel(String value) {
         if (value != null && value.matches("[0-9A-F]{8}")) {

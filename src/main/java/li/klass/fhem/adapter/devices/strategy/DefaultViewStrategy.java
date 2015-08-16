@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.overview.strategy;
+package li.klass.fhem.adapter.devices.strategy;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -42,14 +42,15 @@ import javax.inject.Singleton;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 @Singleton
-public class DefaultOverviewStrategy extends OverviewStrategy {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultOverviewStrategy.class);
+public class DefaultViewStrategy extends ViewStrategy {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultViewStrategy.class);
 
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
@@ -58,7 +59,7 @@ public class DefaultOverviewStrategy extends OverviewStrategy {
     DeviceDescMapping deviceDescMapping;
 
     @Inject
-    public DefaultOverviewStrategy() {
+    public DefaultViewStrategy() {
     }
 
     @Override
@@ -78,6 +79,11 @@ public class DefaultOverviewStrategy extends OverviewStrategy {
     @Override
     public boolean supports(FhemDevice fhemDevice) {
         return true;
+    }
+
+    @Override
+    TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
+        return null;
     }
 
     private int getOverviewLayout() {
