@@ -24,8 +24,11 @@
 
 package li.klass.fhem.service.graph.gplot;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.google.common.io.Resources;
@@ -59,7 +62,7 @@ import static java.util.Collections.emptyMap;
 @Singleton
 public class GPlotParser {
 
-    public static final Pattern SETS_PATTERN = Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]([^\"^\']+)[\"'\\]]");
+    public static final Pattern SETS_PATTERN = Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]?([^\"^']+)[\"'\\]]?");
     public static final Pattern AXIS_PATTERN = Pattern.compile("axes x1y([12])");
     public static final Pattern TITLE_PATTERN = Pattern.compile("title '([^']*)'");
     public static final Pattern TYPE_PATTERN = Pattern.compile("with ([a-zA-Z]+)");
@@ -119,21 +122,29 @@ public class GPlotParser {
         String rangeKey = prefix + "range";
         Optional<Range<Double>> optRange = Optional.absent();
         if (setsDeclarations.containsKey(rangeKey)) {
-            String rangeValue = setsDeclarations.get(rangeKey);
+            String rangeValue = setsDeclarations.get(rangeKey).replaceAll("[\\[\\]]", "")
+                    .replace("min", "")
+                    .replace("max", "")
+                    .trim();
             String[] parts = rangeValue.split(":");
 
-            Range<Double> range;
-            if (rangeValue.startsWith(":")) {
-                range = Range.atMost(Double.parseDouble(parts[0]));
-            } else if (rangeValue.endsWith(":")) {
-                range = Range.atLeast(Double.parseDouble(parts[0]));
-            } else {
-                range = Range.closed(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]));
-            }
-            optRange = Optional.of(range);
+            optRange = calculateRange(rangeValue, parts);
         }
 
         return new GPlotAxis(rightLabel, optRange);
+    }
+
+    @NonNull
+    private Optional<Range<Double>> calculateRange(String rangeValue, String[] parts) {
+        if (Strings.isNullOrEmpty(rangeValue) || rangeValue.equals(":")) {
+            return Optional.absent();
+        } else if (rangeValue.startsWith(":")) {
+            return Optional.of(Range.atMost(Double.parseDouble(parts[0])));
+        } else if (rangeValue.endsWith(":")) {
+            return Optional.of(Range.atLeast(Double.parseDouble(parts[0])));
+        } else {
+            return Optional.of(Range.closed(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])));
+        }
     }
 
     private List<GPlotSeries> extractSeriesFrom(List<String> lines) {

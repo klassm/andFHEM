@@ -271,7 +271,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
                 axis.setAxisMinValue(range.lowerEndpoint().floatValue());
             }
             if (range.hasUpperBound()) {
-                axis.setAxisMinValue(range.upperEndpoint().floatValue());
+                axis.setAxisMaxValue(range.upperEndpoint().floatValue());
             }
         }
     }
