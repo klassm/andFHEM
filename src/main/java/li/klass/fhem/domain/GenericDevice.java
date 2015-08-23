@@ -41,14 +41,18 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
+import static li.klass.fhem.behavior.dim.DimmableBehavior.isDimDisabled;
+
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
-        if (DimmableBehavior.behaviorFor(this).isPresent()) {
+        if (DimmableBehavior.behaviorFor(this).isPresent() && !isDimDisabled(this)) {
             return DeviceFunctionality.DIMMER;
         } else if (OnOffBehavior.supports(this)) {
             return DeviceFunctionality.SWITCH;
+        } else if (deviceConfiguration.isPresent()) {
+            return deviceConfiguration.get().getDefaultGroup();
         } else {
             return DeviceFunctionality.UNKNOWN;
         }
@@ -85,4 +89,6 @@ public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice>
         }
         return new OverviewViewSettingsCache(showState, showMeasured);
     }
+
+
 }

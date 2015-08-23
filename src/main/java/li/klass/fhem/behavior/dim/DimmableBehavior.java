@@ -32,6 +32,7 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 public class DimmableBehavior {
 
@@ -119,5 +120,11 @@ public class DimmableBehavior {
         }
         SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(attribute);
         return Optional.of(new DimmableBehavior(device, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
+    }
+
+
+    public static boolean isDimDisabled(FhemDevice device) {
+        DeviceNode disableDim = device.getXmlListDevice().getAttributes().get("disableDim");
+        return disableDim != null && "true".equalsIgnoreCase(disableDim.getValue());
     }
 }

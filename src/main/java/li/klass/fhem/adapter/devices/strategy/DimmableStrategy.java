@@ -48,8 +48,9 @@ import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.util.ApplicationProperties;
+
+import static li.klass.fhem.behavior.dim.DimmableBehavior.isDimDisabled;
 
 @Singleton
 public class DimmableStrategy extends ViewStrategy {
@@ -91,8 +92,7 @@ public class DimmableStrategy extends ViewStrategy {
 
     @Override
     public boolean supports(FhemDevice fhemDevice) {
-        DeviceNode disableDim = fhemDevice.getXmlListDevice().getAttributes().get("disableDim");
-        if (disableDim != null && "true".equalsIgnoreCase(disableDim.getValue())) {
+        if (isDimDisabled(fhemDevice)) {
             return false;
         }
         ButtonHook hook = deviceHookProvider.buttonHookFor(fhemDevice);
@@ -103,8 +103,8 @@ public class DimmableStrategy extends ViewStrategy {
     @Override
     public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
         Optional<DimmableBehavior> dimmableBehaviorOpt = DimmableBehavior.behaviorFor(device);
-            DimmableBehavior behavior = dimmableBehaviorOpt.get();
-            return new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, behavior, row)
-                    .createRow(inflater, device);
+        DimmableBehavior behavior = dimmableBehaviorOpt.get();
+        return new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, behavior, row)
+                .createRow(inflater, device);
     }
 }
