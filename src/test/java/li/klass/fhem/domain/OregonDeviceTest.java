@@ -33,24 +33,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OregonDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        OregonDevice device = getDefaultDevice(OregonDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getBattery()).isEqualTo("90 (%)");
-        assertThat(device.getDewpoint()).isEqualTo("4.3 (°C)");
-        assertThat(device.getForecast()).isEqualTo("rain");
-        assertThat(device.getHumidity()).isEqualTo("46.0 (%)");
-        assertThat(device.getPressure()).isEqualTo("1000.0 (hPa)");
-        assertThat(device.getTemperature()).isEqualTo("15.9 (°C)");
-        assertThat(device.getRainRate()).isEqualTo("0 (mm/h)");
-        assertThat(device.getRainTotal()).isEqualTo("976.2998 (l/m²)");
-        assertThat(device.getWindAvgSpeed()).isEqualTo("0.0 (km/h)");
-        assertThat(device.getWindDirection()).isEqualTo("245 SW");
-        assertThat(device.getWindSpeed()).isEqualTo("0.0 (km/h)");
-        assertThat(device.getUvValue()).isEqualTo("10");
-        assertThat(device.getUvRisk()).isEqualTo("high");
+        assertThat(stateValueFor(device, "battery")).isEqualTo("90 (%)");
+        assertThat(stateValueFor(device, "dewpoint")).isEqualTo("4.3 (°C)");
+        assertThat(stateValueFor(device, "forecast")).isEqualTo("rain");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("46.0 (%)");
+        assertThat(stateValueFor(device, "pressure")).isEqualTo("1000.0 (hPa)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("15.9 (°C)");
+        assertThat(stateValueFor(device, "rain_rate")).isEqualTo("0 (mm/h)");
+        assertThat(stateValueFor(device, "rain_total")).isEqualTo("976.2998 (l/m²)");
+        assertThat(stateValueFor(device, "wind_avspeed")).isEqualTo("0.0 (km/h)");
+        assertThat(stateValueFor(device, "wind_dir")).isEqualTo("245 SW");
+        assertThat(stateValueFor(device, "wind_speed")).isEqualTo("0.0 (km/h)");
+        assertThat(stateValueFor(device, "uv_val")).isEqualTo("10");
+        assertThat(stateValueFor(device, "uv_risk")).isEqualTo("high");
         assertThat(device.getState()).isEqualTo("T: 15.9  H: 46");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);

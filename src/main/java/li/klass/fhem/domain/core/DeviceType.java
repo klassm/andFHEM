@@ -96,7 +96,6 @@ import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.NetatmoDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
-import li.klass.fhem.domain.OregonDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwSwitchDevice;
 import li.klass.fhem.domain.OwcountDevice;
@@ -154,7 +153,6 @@ public enum DeviceType {
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
-    OREGON("OREGON", OregonDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     USBWX("USBWX", USBWXDevice.class),
     FILE_LOG("FileLog", LogDevice.class),
