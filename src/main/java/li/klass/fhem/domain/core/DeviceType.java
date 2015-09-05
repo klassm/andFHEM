@@ -55,7 +55,6 @@ import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
-import li.klass.fhem.adapter.devices.UniRollAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
@@ -126,7 +125,6 @@ import li.klass.fhem.domain.TRXSecurityDevice;
 import li.klass.fhem.domain.TRXWeatherDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
-import li.klass.fhem.domain.UniRollDevice;
 import li.klass.fhem.domain.WatchdogDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
@@ -168,7 +166,6 @@ public enum DeviceType {
     HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
-    UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
     TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),

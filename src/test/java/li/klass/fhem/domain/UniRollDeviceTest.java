@@ -24,8 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -33,7 +34,7 @@ import static org.hamcrest.core.Is.is;
 public class UniRollDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInFirstDevice() {
-        UniRollDevice device = getDefaultDevice(UniRollDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
