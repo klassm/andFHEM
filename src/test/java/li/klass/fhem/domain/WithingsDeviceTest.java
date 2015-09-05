@@ -33,37 +33,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WithingsDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void body_device_is_read_correctly() {
-        WithingsDevice device = getDeviceFor("body", WithingsDevice.class);
+        GenericDevice device = getDeviceFor("body", GenericDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("body");
-        assertThat(device.getSubType()).isEqualTo(WithingsDevice.SubType.USER);
 
-        assertThat(device.getFatFreeMass()).isEqualTo("68.0 (kg)");
-        assertThat(device.getFatMassWeight()).isEqualTo("17.0 (kg)");
-        assertThat(device.getFatRatio()).isEqualTo("20.0 (%)");
-        assertThat(device.getHeartPulse()).isEqualTo("70");
-        assertThat(device.getWeight()).isEqualTo("85.0 (kg)");
-        assertThat(device.getHeight()).isEqualTo("1.9 (m)");
+        assertThat(stateValueFor(device, "fatFreeMass")).isEqualTo("68.0 (kg)");
+        assertThat(stateValueFor(device, "fatMassWeight")).isEqualTo("17.0 (kg)");
+        assertThat(stateValueFor(device, "fatRatio")).isEqualTo("20.0 (%)");
+        assertThat(stateValueFor(device, "heartPulse")).isEqualTo("70");
+        assertThat(stateValueFor(device, "weight")).isEqualTo("85.0 (kg)");
+        assertThat(stateValueFor(device, "height")).isEqualTo("1.9 (m)");
     }
 
     @Test
     public void scale_device_is_read_correctly() {
-        WithingsDevice device = getDeviceFor("scale", WithingsDevice.class);
+        GenericDevice device = getDeviceFor("scale", GenericDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("scale");
-        assertThat(device.getSubType()).isEqualTo(WithingsDevice.SubType.DEVICE);
 
-        assertThat(device.getBatteryLevel()).isEqualTo("91 (%)");
-        assertThat(device.getCo2()).isEqualTo("967 (ppm)");
-        assertThat(device.getTemperature()).isEqualTo("23.6 (°C)");
-    }
-
-    @Test
-    public void withings_account_device_is_ignored() {
-        WithingsDevice device = getDeviceFor("withings", WithingsDevice.class);
-        assertThat(device).isNull();
+        assertThat(stateValueFor(device, "batteryLevel")).isEqualTo("91 (%)");
+        assertThat(stateValueFor(device, "co2")).isEqualTo("967 (ppm)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("23.6 (°C)");
     }
 
     @Override

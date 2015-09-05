@@ -715,5 +715,56 @@
         "showInOverview": true
       }
     ]
+  },
+  "withings": {
+    "defaultGroup": "UNKNOWN",
+    "supportedWidgets": [
+      "TemperatureWidgetView"
+    ],
+    "states": [
+      {
+        "key": "co2",
+        "desc": "co2",
+        "showInOverview": true
+      },
+      {
+        "key": "temperature",
+        "desc": "temperature",
+        "showInOverview": true,
+        "markers": [
+          "WidgetTemperatureField"
+        ]
+      },
+      {
+        "key": "weight",
+        "desc": "weight",
+        "showInOverview": true
+      },
+      {
+        "key": "fatRatio",
+        "desc": "fatRatio",
+        "showInOverview": true
+      },
+      {
+        "key": "fatFreeMass",
+        "desc": "fatFreeMass"
+      },
+      {
+        "key": "fatMass",
+        "desc": "fatMassWeight"
+      },
+      {
+        "key": "heartPulse",
+        "desc": "heartPulse"
+      },
+      {
+        "key": "height",
+        "desc": "height"
+      },
+      {
+        "key": "batteryLevel",
+        "desc": "battery"
+      }
+    ]
   }
 }

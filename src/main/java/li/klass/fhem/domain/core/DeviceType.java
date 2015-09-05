@@ -134,7 +134,6 @@ import li.klass.fhem.domain.WatchdogDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
-import li.klass.fhem.domain.WithingsDevice;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
@@ -200,7 +199,6 @@ public enum DeviceType {
     THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
     EC3000("EC3000", EC3000Device.class),
-    WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
