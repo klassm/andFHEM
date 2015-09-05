@@ -52,8 +52,8 @@ import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
-import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -167,21 +167,28 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         statesCaption.setText(caption);
 
         final TableLayout table = (TableLayout) statesCard.findViewById(R.id.table);
-        fillTable(device, table, itemProvider, !hasConfiguration);
+
+        boolean showExpandButton = hasConfiguration;
+        List<DeviceViewItem> itemsToShow = getSortedClassItems(device, itemProvider, false);
+        List<DeviceViewItem> allItems = getSortedClassItems(device, itemProvider, true);
+        if (itemsToShow.isEmpty() || itemsToShow.size() == allItems.size()) {
+            itemsToShow = allItems;
+            showExpandButton = false;
+        }
+        fillTable(device, table, itemProvider, itemsToShow);
 
         final Button button = (Button) statesCard.findViewById(R.id.expandButton);
-        button.setVisibility(hasConfiguration ? View.VISIBLE : View.GONE);
+        button.setVisibility(showExpandButton ? View.VISIBLE : View.GONE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillTable(device, table, itemProvider, true);
+                fillTable(device, table, itemProvider, getSortedClassItems(device, itemProvider, true));
                 button.setVisibility(View.GONE);
             }
         });
     }
 
-    private void fillTable(GenericDevice device, TableLayout table, ItemProvider itemProvider, boolean showUnknown) {
-        List<DeviceViewItem> items = getSortedClassItems(device, itemProvider, showUnknown);
+    private void fillTable(GenericDevice device, TableLayout table, ItemProvider itemProvider, List<DeviceViewItem> items) {
         table.removeAllViews();
 
         for (DeviceViewItem item : items) {

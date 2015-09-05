@@ -33,50 +33,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GPIO4DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GPIO4Device device = getDeviceFor("temp", GPIO4Device.class);
+        GenericDevice device = getDeviceFor("temp", GenericDevice.class);
 
-        assertThat(device.getTemperature()).isEqualTo("22.937 (°C)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("22.937 (°C)");
         assertThat(device.getState()).isEqualTo("22.937 °C (Mittelwert: 22.7 °C)");
-
-        // this is not supported and, thus, removed
-        GPIO4Device rPi = getDeviceFor("RPi", GPIO4Device.class);
-        assertThat(rPi).isNull();
     }
 
     @Test
     public void testDS18B20Device() {
-        GPIO4Device device = getDeviceFor("DS18B20", GPIO4Device.class);
+        GenericDevice device = getDeviceFor("DS18B20", GenericDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.isSupported()).isEqualTo(true);
-        assertThat(device.getTemperature()).isEqualTo("20.437 (°C)");
-    }
-
-    @Test
-    public void testAdditionalAttributesDevice() {
-        GPIO4Device device = getDeviceFor("additionalAttributes", GPIO4Device.class);
-        assertThat(device).isNotNull();
-
-        assertThat(device.getAverageDay()).isEqualTo("20.6 (°C)");
-        assertThat(device.getAverageMonth()).isEqualTo("20.3 (°C)");
-        assertThat(device.getMinDay()).isEqualTo("20.1 (°C)");
-        assertThat(device.getMinMonth()).isEqualTo("0.0 (°C)");
-        assertThat(device.getMaxDay()).isEqualTo("22.2 (°C)");
-        assertThat(device.getMaxMonth()).isEqualTo("22.6 (°C)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("20.437 (°C)");
     }
 
     @Test
     public void testOtherModelsCanBeRead() {
-        assertThat(getDeviceFor("Sensor_5", GPIO4Device.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_4", GPIO4Device.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_3", GPIO4Device.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_2", GPIO4Device.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_1", GPIO4Device.class)).isNotNull();
-    }
-
-    @Test
-    public void testDeviceWithoutTemperatureDoesNotShowUp() {
-        assertThat(getDeviceFor("RPi", GPIO4Device.class)).isNull();
+        assertThat(getDeviceFor("Sensor_5", GenericDevice.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_4", GenericDevice.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_3", GenericDevice.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_2", GenericDevice.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_1", GenericDevice.class)).isNotNull();
     }
 
     @Override

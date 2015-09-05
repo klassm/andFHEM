@@ -139,25 +139,33 @@
   "CUL_EM": {
     "defaultGroup": "USAGE",
     "sensorDevice": true,
-    "supportedWidgets": ["MediumInformationWidgetView"],
+    "supportedWidgets": [
+      "MediumInformationWidgetView"
+    ],
     "states": [
       {
         "key": "current",
         "desc": "currentUsage",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine1"]
+        "markers": [
+          "WidgetMediumLine1"
+        ]
       },
       {
         "key": "cum_day",
         "desc": "dayUsage",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine2"]
+        "markers": [
+          "WidgetMediumLine2"
+        ]
       },
       {
         "key": "cum_month",
         "desc": "monthUsage",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine3"]
+        "markers": [
+          "WidgetMediumLine3"
+        ]
       },
       {
         "key": "total",
@@ -169,38 +177,50 @@
   "CUL_TX": {
     "defaultGroup": "TEMPERATURE",
     "sensorDevice": true,
-    "supportedWidgets": ["TemperatureWidgetView"],
+    "supportedWidgets": [
+      "TemperatureWidgetView"
+    ],
     "states": [
       {
         "key": "temperature",
         "desc": "temperature",
         "showInOverview": true,
-        "markers": ["WidgetTemperatureField"]
+        "markers": [
+          "WidgetTemperatureField"
+        ]
       },
       {
         "key": "humidity",
         "desc": "humidity",
         "showInOverview": true,
-        "markers": ["WidgetTemperatureAdditionalField"]
+        "markers": [
+          "WidgetTemperatureAdditionalField"
+        ]
       }
     ]
   },
   "CUL_WS": {
     "defaultGroup": "TEMPERATURE",
     "sensorDevice": true,
-    "supportedWidgets": ["TemperatureWidgetView"],
+    "supportedWidgets": [
+      "TemperatureWidgetView"
+    ],
     "states": [
       {
         "key": "temperature",
         "desc": "temperature",
         "showInOverview": true,
-        "markers": ["WidgetTemperatureField"]
+        "markers": [
+          "WidgetTemperatureField"
+        ]
       },
       {
         "key": "humidity",
         "desc": "humidity",
         "showInOverview": true,
-        "markers": ["WidgetTemperatureAdditionalField"]
+        "markers": [
+          "WidgetTemperatureAdditionalField"
+        ]
       },
       {
         "key": "dewpoint",
@@ -284,7 +304,6 @@
       }
     ]
   },
-
   "FHEMduino_Env": {
     "defaultGroup": "TEMPERATURE",
     "sensorDevice": true,
@@ -338,7 +357,9 @@
         "key": "wind",
         "desc": "wind",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine2"]
+        "markers": [
+          "WidgetMediumLine2"
+        ]
       },
       {
         "key": "humidity",
@@ -448,7 +469,9 @@
         "key": "dewpoint",
         "desc": "dewpoint",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine3"]
+        "markers": [
+          "WidgetMediumLine3"
+        ]
       },
       {
         "key": "humidity",
@@ -466,19 +489,25 @@
     "sensorDevice": true,
     "showStateInOverview": false,
     "showMeasuredInOverview": true,
-    "supportedWidgets": ["MediumInformationWidgetView"],
+    "supportedWidgets": [
+      "MediumInformationWidgetView"
+    ],
     "states": [
       {
         "key": "Momentanleistung",
         "desc": "currentUsage",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine1"]
+        "markers": [
+          "WidgetMediumLine1"
+        ]
       },
       {
         "key": "Zählerstand-Bezug-Total",
         "desc": "counterReading",
         "showInOverview": true,
-        "markers": ["WidgetMediumLine2"]
+        "markers": [
+          "WidgetMediumLine2"
+        ]
       }
     ]
   },
@@ -519,5 +548,40 @@
   },
   "pilight": {
     "defaultGroup": "SWITCH"
+  },
+  "GPIO4": {
+    "sensorDevice": true,
+    "defaultGroup": "TEMPERATURE",
+    "states": [
+      {
+        "key": "temperature",
+        "desc": "temperature",
+        "showInOverview": true
+      },
+      {
+        "key": "T_avg_day",
+        "desc": "avgDay"
+      },
+      {
+        "key": "T_avg_month",
+        "desc": "avgMonth"
+      },
+      {
+        "key": "T_max_day",
+        "desc": "maxDay"
+      },
+      {
+        "key": "T_max_month",
+        "desc": "maxMonth"
+      },
+      {
+        "key": "T_min_day",
+        "desc": "minDay"
+      },
+      {
+        "key": "T_min_month",
+        "desc": "minMonth"
+      }
+    ]
   }
 }

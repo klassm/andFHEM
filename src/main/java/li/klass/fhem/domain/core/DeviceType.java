@@ -81,7 +81,6 @@ import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
-import li.klass.fhem.domain.GPIO4Device;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HM485Device;
@@ -186,7 +185,6 @@ public enum DeviceType {
     PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
-    GPIO4("GPIO4", GPIO4Device.class),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
