@@ -1,0 +1,20 @@
+{
+  "defaultGroup": "WEATHER",
+  "states": [
+    {
+      "key": "pressure",
+      "desc": "pressure",
+      "showInOverview": true
+    },
+    {
+      "key": "pressure-nn",
+      "desc": "pressureNN",
+      "showInOverview": true
+    },
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true
+    }
+  ]
+}

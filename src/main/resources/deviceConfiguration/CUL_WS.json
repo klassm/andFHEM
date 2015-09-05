@@ -1,0 +1,29 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "sensorDevice": true,
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "dewpoint",
+      "desc": "dewpoint"
+    }
+  ]
+}

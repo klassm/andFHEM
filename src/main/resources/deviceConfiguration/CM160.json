@@ -1,0 +1,41 @@
+{
+  "defaultGroup": "USAGE",
+  "states": [
+    {
+      "key": "A",
+      "desc": "energy_current",
+      "showInOverview": true
+    },
+    {
+      "key": "W",
+      "desc": "energy_power",
+      "showInOverview": true
+    },
+    {
+      "key": "C",
+      "desc": "cost",
+      "showInOverview": true
+    },
+    {
+      "key": "CO2",
+      "desc": "co2",
+      "showInOverview": true
+    },
+    {
+      "key": "cumDay",
+      "desc": "dayUsage"
+    },
+    {
+      "key": "cumHour",
+      "desc": "hourUsage"
+    },
+    {
+      "key": "cumMonth",
+      "desc": "monthUsage"
+    },
+    {
+      "key": "cumYear",
+      "desc": "yearUsage"
+    }
+  ]
+}

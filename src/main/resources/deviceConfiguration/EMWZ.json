@@ -1,0 +1,23 @@
+{
+  "defaultGroup": "USAGE",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "cum_kWh",
+      "desc": "cumulativeUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "energy",
+      "desc": "energy"
+    },
+    {
+      "key": "power",
+      "desc": "power"
+    },
+    {
+      "key": "price_CF",
+      "desc": "price"
+    }
+  ]
+}

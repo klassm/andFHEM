@@ -1,0 +1,9 @@
+{
+  "defaultGroup": "SWITCH",
+  "attributes": [
+    {
+      "key": "IODev",
+      "desc": "ioDev"
+    }
+  ]
+}

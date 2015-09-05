@@ -1,0 +1,30 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "warnings",
+      "desc": "warnings",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2",
+        "WidgetTemperatureAdditionalField"
+      ]
+    }
+  ]
+}

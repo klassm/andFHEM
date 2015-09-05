@@ -1,0 +1,38 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "dewpoint",
+      "desc": "dewpoint",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine3"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2",
+        "WidgetTemperatureAdditionalField"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "sensorDevice": true,
+  "defaultGroup": "WEATHER",
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true
+    },
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "forecast",
+      "desc": "forecast",
+      "showInOverview": true
+    },
+    {
+      "key": "dewpoint",
+      "desc": "dewpoint"
+    },
+    {
+      "key": "rain_rate",
+      "desc": "rainRate"
+    },
+    {
+      "key": "rain_total",
+      "desc": "rainTotal"
+    },
+    {
+      "key": "wind_avspeed",
+      "desc": "windAvgSpeed"
+    },
+    {
+      "key": "wind_dir",
+      "desc": "windDirection"
+    },
+    {
+      "key": "rain_rate",
+      "desc": "rainRate"
+    },
+    {
+      "key": "wind_speed",
+      "desc": "windSpeed"
+    },
+    {
+      "key": "uv_val",
+      "desc": "uvValue"
+    },
+    {
+      "key": "uv_risk",
+      "desc": "uvRisk"
+    }
+  ]
+}

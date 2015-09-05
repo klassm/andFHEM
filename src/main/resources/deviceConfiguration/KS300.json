@@ -1,0 +1,55 @@
+{
+  "defaultGroup": "WEATHER",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "wind",
+      "desc": "wind",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine3",
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "rain",
+      "desc": "rain",
+      "showInOverview": true
+    },
+    {
+      "key": "avg_day",
+      "desc": "avgDay"
+    },
+    {
+      "key": "avg_month",
+      "desc": "avgMonth"
+    },
+    {
+      "key": "israining",
+      "desc": "isRaining"
+    }
+  ]
+}

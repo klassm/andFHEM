@@ -1,0 +1,30 @@
+{
+  "defaultGroup": "USAGE",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "actual",
+      "desc": "currentUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "day",
+      "desc": "dayUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "month",
+      "desc": "monthUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "year",
+      "desc": "yearUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "day_last",
+      "desc": "dayLastUsage"
+    }
+  ]
+}

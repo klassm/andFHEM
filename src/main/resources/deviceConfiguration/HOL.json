@@ -1,0 +1,25 @@
+{
+  "defaultGroup": "FHEM",
+  "internals": [
+    {
+      "key": "currentSwitchDevice",
+      "desc": "currentSwitchDevice"
+    },
+    {
+      "key": "currentSwitchTime",
+      "desc": "currentSwitchTime"
+    },
+    {
+      "key": "lastTrigger",
+      "desc": "lastSwitchTime"
+    },
+    {
+      "key": "nextTrigger",
+      "desc": "nextSwitchTime"
+    },
+    {
+      "key": "STATE",
+      "desc": "state"
+    }
+  ]
+}

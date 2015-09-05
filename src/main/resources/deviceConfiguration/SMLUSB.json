@@ -1,0 +1,27 @@
+{
+  "defaultGroup": "USAGE",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "Momentanleistung",
+      "desc": "currentUsage",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "Zählerstand-Bezug-Total",
+      "desc": "counterReading",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    }
+  ]
+}

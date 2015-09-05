@@ -1,0 +1,9 @@
+{
+  "defaultGroup": "SWITCH",
+  "attributes": [
+    {
+      "key": "model",
+      "desc": "model"
+    }
+  ]
+}

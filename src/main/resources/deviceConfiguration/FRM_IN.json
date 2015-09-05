@@ -1,0 +1,11 @@
+{
+  "defaultGroup": "SMOKE_DETECTOR",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "alarm",
+      "desc": "alarm",
+      "showInOverview": true
+    }
+  ]
+}

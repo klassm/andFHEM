@@ -1,0 +1,38 @@
+{
+  "defaultGroup": "USAGE",
+  "sensorDevice": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "current",
+      "desc": "currentUsage",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "cum_day",
+      "desc": "dayUsage",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "cum_month",
+      "desc": "monthUsage",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine3"
+      ]
+    },
+    {
+      "key": "total",
+      "desc": "cumulativeUsage",
+      "showInOverview": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "states": [
+    {
+      "key": "Battery",
+      "desc": "battery"
+    },
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true
+    }
+  ]
+}

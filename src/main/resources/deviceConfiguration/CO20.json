@@ -1,0 +1,10 @@
+{
+  "defaultGroup": "WEATHER",
+  "states": [
+    {
+      "key": "voc",
+      "desc": "VOC",
+      "showInOverview": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "defaultGroup": "USAGE",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "power",
+      "desc": "power",
+      "showInOverview": true
+    },
+    {
+      "key": "energy",
+      "desc": "energy"
+    },
+    {
+      "key": "voltage",
+      "desc": "voltage"
+    },
+    {
+      "key": "current",
+      "desc": "cumulativeUsage"
+    }
+  ]
+}
