@@ -33,14 +33,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class USBWXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        USBWXDevice device = getDefaultDevice(USBWXDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getDewpoint()).isEqualTo("10.3 (°C)");
-        assertThat(device.getHumidity()).isEqualTo("60.0 (%)");
-        assertThat(device.getTemperature()).isEqualTo("18.2 (°C)");
+        assertThat(stateValueFor(device, "dewpoint")).isEqualTo("10.3 (°C)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("60.0 (%)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("18.2 (°C)");
 
         assertThat(device.getState()).isEqualTo("T: 18.2  H: 60");
 

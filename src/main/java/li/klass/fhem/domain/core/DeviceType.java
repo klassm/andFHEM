@@ -128,7 +128,6 @@ import li.klass.fhem.domain.TRXSecurityDevice;
 import li.klass.fhem.domain.TRXWeatherDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
-import li.klass.fhem.domain.USBWXDevice;
 import li.klass.fhem.domain.UniRollDevice;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.WatchdogDevice;
@@ -153,7 +152,6 @@ public enum DeviceType {
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
-    USBWX("USBWX", USBWXDevice.class),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),
