@@ -85,7 +85,6 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HM485Device;
 import li.klass.fhem.domain.HMSDevice;
-import li.klass.fhem.domain.HOLDevice;
 import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.HourCounterDevice;
@@ -165,7 +164,6 @@ public enum DeviceType {
     RFXCOM("RFXCOM", RFXCOMDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
-    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter()),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),

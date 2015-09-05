@@ -26,6 +26,7 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import org.junit.Before;
@@ -38,6 +39,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
@@ -108,6 +110,7 @@ public class RoomListServiceTest {
             setXmlListDevice(new XmlListDevice(DeviceType.GENERIC.getXmllistTag(), Maps.<String,
                     DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap()));
             setRooms(newArrayList(rooms));
+            setDeviceConfiguration(Optional.<DeviceConfiguration>absent());
             this.supported = supported;
         }
 

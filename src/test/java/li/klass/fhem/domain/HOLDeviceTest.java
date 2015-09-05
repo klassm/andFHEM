@@ -33,21 +33,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HOLDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        HOLDevice device = getDefaultDevice(HOLDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("off");
 
-        assertThat(device.getCurrentSwitchDevice()).isEqualTo("mat_halogen");
-        assertThat(device.getCurrentSwitchTime()).isEqualTo("600 (s)");
-        assertThat(device.getLastTrigger()).isEqualTo("2012-09-09 20:05:17");
-        assertThat(device.getNextTrigger()).isEqualTo("2012-09-09 20:15:22");
+        assertThat(internalValueFor(device, "currentSwitchDevice")).isEqualTo("mat_halogen");
+        assertThat(internalValueFor(device, "currentSwitchTime")).isEqualTo("600 (s)");
+        assertThat(internalValueFor(device, "lastTrigger")).isEqualTo("2012-09-09 20:05:17");
+        assertThat(internalValueFor(device, "nextTrigger")).isEqualTo("2012-09-09 20:15:22");
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
 
-        HOLDevice device1 = getDeviceFor("device1", HOLDevice.class);
+        GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
         assertThat(device1.getState()).isEqualTo("on");
     }
 

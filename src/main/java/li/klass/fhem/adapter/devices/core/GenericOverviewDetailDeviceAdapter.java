@@ -186,6 +186,10 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                 button.setVisibility(View.GONE);
             }
         });
+
+        if (itemsToShow.isEmpty()) {
+            statesCard.setVisibility(View.GONE);
+        }
     }
 
     private void fillTable(GenericDevice device, TableLayout table, ItemProvider itemProvider, List<DeviceViewItem> items) {

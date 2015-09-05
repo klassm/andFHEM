@@ -172,6 +172,10 @@ public abstract class DeviceXMLParsingBase {
         return xmllistValueFor(key, device.getXmlListDevice().getAttributes());
     }
 
+    protected String internalValueFor(Device device, String key) {
+        return xmllistValueFor(key, device.getXmlListDevice().getInternals());
+    }
+
     private String xmllistValueFor(String key, Map<String, DeviceNode> map) {
         DeviceNode deviceNode = map.get(key);
         if (deviceNode == null) return null;

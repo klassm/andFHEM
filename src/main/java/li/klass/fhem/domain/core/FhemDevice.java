@@ -42,6 +42,7 @@ import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DateFormatUtil;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
@@ -51,8 +52,6 @@ import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
-import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.GCM_UPDATE;
-import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.INT;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
@@ -302,9 +301,18 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         if (eventMap.containsKey(state)) {
             state = eventMap.get(state);
         }
-        getXmlListDevice().setState("state", state);
-        getXmlListDevice().setInternal("STATE", state);
-        getXmlListDevice().setHeader("state", state);
+
+        XmlListDevice device = getXmlListDevice();
+        boolean containsState = device.getStates().containsKey("state");
+        if (containsState) {
+            device.setState("state", state);
+        }
+        if (device.getInternals().containsKey("STATE") || !containsState) {
+            device.setInternal("STATE", state);
+        }
+        if (device.getHeader().containsKey("state")) {
+            device.setHeader("state", state);
+        }
     }
 
     public String getInternalState() {
