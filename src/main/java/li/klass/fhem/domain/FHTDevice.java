@@ -43,7 +43,6 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
-import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
@@ -57,7 +56,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevice,
-        WindowOpenTempDevice, HeatingDevice<FHTMode, FHTConfiguration, FromToHeatingInterval, FHTDevice>, TemperatureDevice {
+        WindowOpenTempDevice, HeatingDevice<FHTMode, FHTConfiguration, FromToHeatingInterval, FHTDevice> {
 
     private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
     public static double MAXIMUM_TEMPERATURE = 30.5;

@@ -33,14 +33,13 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @DetailViewSettings(showState = false)
-public class WithingsDevice extends FhemDevice<WithingsDevice> implements TemperatureDevice {
+public class WithingsDevice extends FhemDevice<WithingsDevice> {
     @ShowField(description = ResourceIdMapper.fatFreeMass)
     @XmllistAttribute("fatFreeMass")
     private String fatFreeMass;

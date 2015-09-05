@@ -32,12 +32,11 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
-public class USBWXDevice extends FhemDevice<USBWXDevice> implements TemperatureDevice {
+public class USBWXDevice extends FhemDevice<USBWXDevice> {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetTemperatureAdditionalField

@@ -43,7 +43,6 @@ import li.klass.fhem.domain.heating.ComfortTempDevice;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
-import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
@@ -61,7 +60,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString
 @SupportsWidget(TemperatureWidgetView.class)
 public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice,
         HeatingDevice<MaxDevice.HeatingMode, MAXConfiguration, FilledTemperatureInterval, MaxDevice>,
-        WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice, TemperatureDevice {
+        WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice {
 
     public static final MAXConfiguration heatingConfiguration = new MAXConfiguration();
     public static double MAXIMUM_TEMPERATURE = 30.5;

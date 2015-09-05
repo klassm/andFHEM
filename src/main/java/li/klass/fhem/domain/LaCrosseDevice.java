@@ -28,10 +28,9 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
-public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> implements TemperatureDevice {
+public class LaCrosseDevice extends FhemDevice<LaCrosseDevice> {
 
     @ShowField(description = ResourceIdMapper.battery)
     @XmllistAttribute("battery")

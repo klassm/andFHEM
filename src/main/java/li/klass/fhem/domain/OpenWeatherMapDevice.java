@@ -35,12 +35,11 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @SuppressWarnings("unused")
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
-public class OpenWeatherMapDevice extends FhemDevice<OpenWeatherMapDevice> implements TemperatureDevice {
+public class OpenWeatherMapDevice extends FhemDevice<OpenWeatherMapDevice> {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
