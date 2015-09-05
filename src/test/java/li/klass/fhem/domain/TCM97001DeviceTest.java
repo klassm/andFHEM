@@ -34,16 +34,10 @@ public class TCM97001DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() throws Exception {
-        TCM97001Device device = getDeviceFor("CUL_TCM97001_102", TCM97001Device.class);
+        GenericDevice device = getDeviceFor("CUL_TCM97001_102", GenericDevice.class);
         assertThat(device).isNotNull();
-        assertThat(device.getTemperature()).isEqualTo("4.1 (°C)");
-        assertThat(device.getBattery()).isEqualTo("Low");
-    }
-
-    @Test
-    public void should_ignore_devices_without_temperature() {
-        TCM97001Device device = getDeviceFor("CUL_TCM97001_13", TCM97001Device.class);
-        assertThat(device).isNull();
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("4.1 (°C)");
+        assertThat(stateValueFor(device, "Battery")).isEqualTo("Low");
     }
 
     @Override

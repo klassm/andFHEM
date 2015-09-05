@@ -122,7 +122,6 @@ import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.StructureDevice;
-import li.klass.fhem.domain.TCM97001Device;
 import li.klass.fhem.domain.TRXDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.TRXSecurityDevice;
@@ -216,7 +215,6 @@ public enum DeviceType {
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
-    TCM97001("CUL_TCM97001", TCM97001Device.class),
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
     HOURCOUNTER("HourCounter", HourCounterDevice.class),
 
