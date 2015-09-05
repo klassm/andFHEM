@@ -33,18 +33,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WOLDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        WOLDevice device = getDefaultDevice(WOLDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getIp()).isEqualTo("192.168.0.24");
-        assertThat(device.getMac()).isEqualTo("72:75:AD:4A:17:43");
-        assertThat(device.isRunning()).isEqualTo("off");
-        assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.getShutdownCommand()).isEqualTo("sh /some/crazy/command.sh");
-
-        assertThat(device.getSetList().getEntries()).isEmpty();
+        assertThat(internalValueFor(device, "IP")).isEqualTo("192.168.0.24");
+        assertThat(internalValueFor(device, "MAC")).isEqualTo("72:75:AD:4A:17:43");
+        assertThat(stateValueFor(device, "isRunning")).isEqualTo("false");
+        assertThat(device.getState()).isEqualTo("off");
+        assertThat(attributeValueFor(device, "shutdownCmd")).isEqualTo("sh /some/crazy/command.sh");
     }
 
     @Override

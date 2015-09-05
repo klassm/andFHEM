@@ -61,7 +61,6 @@ import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
-import li.klass.fhem.adapter.devices.WOLAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
@@ -211,8 +210,6 @@ public interface ApplicationComponent {
     void inject(WebLinkAdapter object);
 
     void inject(WifiLightDeviceAdapter object);
-
-    void inject(WOLAdapter object);
 
     void inject(YamahaAVRAdapter object);
 
@@ -366,7 +363,7 @@ public interface ApplicationComponent {
 
     void inject(OnOffBehavior object);
 
-    void inject (ToggleableStrategy object);
+    void inject(ToggleableStrategy object);
 
 
     XmlListParser getXmlListParser();

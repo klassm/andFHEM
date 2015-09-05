@@ -47,7 +47,6 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.GCMSendDevice;
-import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
@@ -67,7 +66,6 @@ import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
-import li.klass.fhem.service.device.WOLService;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
@@ -78,7 +76,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
-import static li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
@@ -126,8 +123,6 @@ public class DeviceIntentService extends ConvenientIntentService {
     CommandExecutionService commandExecutionService;
     @Inject
     AtService atService;
-    @Inject
-    WOLService wolService;
     @Inject
     DimmableDeviceService dimmableDeviceService;
     @Inject
@@ -241,8 +236,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             String newAlias = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ALIAS);
             deviceService.setAlias(device, newAlias, this);
 
-        } else if (DEVICE_REFRESH_STATE.equals(action)) {
-            wolService.requestRefreshState((WOLDevice) device, this);
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
             result = toggleIntent(device);
 

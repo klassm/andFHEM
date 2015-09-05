@@ -1,0 +1,33 @@
+{
+  "defaultGroup": "NETWORK",
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "state",
+      "desc": "state",
+      "markers": [
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "isRunning",
+      "desc": "isRunning"
+    }
+  ],
+  "internals": [
+    {
+      "key": "IP",
+      "desc": "ip",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "MAC",
+      "desc": "mac"
+    }
+  ]
+}

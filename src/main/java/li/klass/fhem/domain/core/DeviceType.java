@@ -56,7 +56,6 @@ import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
-import li.klass.fhem.adapter.devices.WOLAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
@@ -129,7 +128,6 @@ import li.klass.fhem.domain.TRXWeatherDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
 import li.klass.fhem.domain.UniRollDevice;
-import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.WatchdogDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
@@ -147,7 +145,6 @@ public enum DeviceType {
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
-    WOL("WOL", WOLDevice.class, new WOLAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),

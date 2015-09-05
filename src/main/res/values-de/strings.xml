@@ -94,6 +94,7 @@
     <string name="mac">MAC Adresse</string>
     <string name="ip">IP Adresse</string>
     <string name="wake">Wecken</string>
+    <string name="isRunning">Läuft gerade?</string>
     <string name="shutdown">Ausschalten</string>
     <string name="stateAppendix">State appendix</string>
     <string name="requestRefresh">Update anfordern</string>
