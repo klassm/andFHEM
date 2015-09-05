@@ -29,6 +29,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -83,7 +84,7 @@ public class DeviceHookProviderTest {
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap());
-        xmlListDevice.getAttributes().put(hookAttribute, new DeviceNode(ATTR, hookAttribute, value, null));
+        xmlListDevice.getAttributes().put(hookAttribute, new DeviceNode(ATTR, hookAttribute, value, (DateTime) null));
 
         GenericDevice device = new GenericDevice();
         device.setXmlListDevice(xmlListDevice);

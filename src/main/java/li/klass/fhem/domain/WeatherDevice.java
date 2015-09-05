@@ -94,7 +94,7 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
         }
     }
 
-    private void parseForecast(String keyValue, String nodeContent, String measured) {
+    private void parseForecast(String keyValue, String nodeContent, DateTime measuredDate) {
         try {
             int underscorePosition = keyValue.indexOf("_");
             String name = keyValue.substring(underscorePosition + 1);
@@ -103,7 +103,6 @@ public class WeatherDevice extends FhemDevice<WeatherDevice> {
             if (((Integer) 1).equals(prefix)) return;
 
             if (!forecastMap.containsKey(prefix)) {
-                DateTime measuredDate = PARSE_DATE_FORMAT.parseDateTime(measured);
                 DateTime forecastDate = measuredDate.plusDays(prefix - 1);
                 String forecastTimeString = WeatherDeviceForecast.FORECAST_DATE_FORMAT.print(forecastDate);
 

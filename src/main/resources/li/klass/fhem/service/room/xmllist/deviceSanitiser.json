@@ -526,6 +526,24 @@
         "append": "m/s",
         "extract": "double"
       }
+    },
+    "HourCounter": {
+      "Zaehlerstand": {
+        "replace": "([^ ]+) ([\\w\\d³]+)",
+        "replaceBy": "$1 ($2)"
+      },
+      "verbrauchTagEuro": {
+        "append": "€",
+        "extract": "double"
+      },
+      "verbrauchGesamtEuro": {
+        "append": "€",
+        "extract": "double"
+      },
+      "verbrauchTagkWh": {
+        "append": "kWh",
+        "extract": "double"
+      }
     }
   }
 }

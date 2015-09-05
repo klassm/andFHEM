@@ -1,0 +1,25 @@
+{
+  "defaultGroup": "USAGE",
+  "states": [
+    {
+      "key": "Zaehlerstand",
+      "desc": "cumulativeUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "verbrauchTagkWh",
+      "desc": "dayUsage",
+      "showInOverview": true
+    },
+    {
+      "key": "verbrauchGesamtEuro",
+      "desc": "price",
+      "showInOverview": true
+    },
+    {
+      "key": "verbrauchTagEuro",
+      "desc": "pricePerDay",
+      "showInOverview": true
+    }
+  ]
+}

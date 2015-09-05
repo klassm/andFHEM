@@ -24,14 +24,11 @@
 
 package li.klass.fhem.service.room.xmllist;
 
-import android.support.annotation.NonNull;
-
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
+import org.joda.time.DateTime;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -168,7 +165,7 @@ public class XmlListParser {
         Node attribute = attributes.getNamedItem(attributeKey);
         if (attribute != null) {
             device.getHeader().put(attributeKey,
-                    sanitiser.sanitise(deviceType, new DeviceNode(DeviceNodeType.HEADER, attributeKey, attribute.getNodeValue(), null)));
+                    sanitiser.sanitise(deviceType, new DeviceNode(DeviceNodeType.HEADER, attributeKey, attribute.getNodeValue(), (DateTime) null)));
         }
     }
 

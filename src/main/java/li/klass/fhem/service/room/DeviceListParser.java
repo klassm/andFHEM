@@ -33,6 +33,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -435,9 +436,9 @@ public class DeviceListParser {
         for (Map.Entry<String, String> entry : updates.entrySet()) {
             try {
                 handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue(),
-                        new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), null));
+                        new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), DateTime.now()));
                 device.getXmlListDevice().getStates().put(entry.getKey(),
-                        new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), null));
+                        new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), DateTime.now()));
             } catch (Exception e) {
                 LOG.error("fillDeviceWith - handle " + entry, e);
             }

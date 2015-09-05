@@ -31,6 +31,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.util.DateFormatUtil;
 
 @OverviewViewSettings(showState = true)
 public class RFXX10RECDevice extends FhemDevice<RFXX10RECDevice> {
@@ -47,7 +48,7 @@ public class RFXX10RECDevice extends FhemDevice<RFXX10RECDevice> {
 
     @XmllistAttribute("stateChange")
     public void setStateChange(String value, DeviceNode node) {
-        lastStateChangeTime = node.getMeasured();
+        lastStateChangeTime = DateFormatUtil.formatTime(node.getMeasured());
         lastState = value;
     }
 

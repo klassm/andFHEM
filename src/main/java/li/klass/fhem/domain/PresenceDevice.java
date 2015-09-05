@@ -30,23 +30,12 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
-
-import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class PresenceDevice extends FhemDevice<PresenceDevice> {
     @ShowField(description = ResourceIdMapper.mode)
     @XmllistAttribute("mode")
     private String mode;
-
-    @Override
-    public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
-        if (node.getType() == STATE && "state".equalsIgnoreCase(node.getMeasured())) {
-            setMeasured(node.getMeasured());
-        }
-        super.onChildItemRead(type, key, value, node);
-    }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {

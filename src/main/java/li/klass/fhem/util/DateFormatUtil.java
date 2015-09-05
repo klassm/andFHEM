@@ -51,6 +51,16 @@ public class DateFormatUtil {
         return DATE_FORMAT.print(date);
     }
 
+    public static String formatTime(DateTime time) {
+        if (time == null) {
+            return null;
+        }
+        if (time.toLocalDate().equals(LocalDate.now())) {
+            return ANDFHEM_TIME_FORMAT.print(time);
+        } else {
+            return ANDFHEM_DATE_FORMAT.print(time);
+        }
+    }
 
     public static String formatTime(String input) {
         try {
@@ -58,11 +68,7 @@ public class DateFormatUtil {
                 return null;
             }
             DateTime dateTime = FHEM_DATE_FORMAT.parseDateTime(input);
-            if (dateTime.toLocalDate().equals(LocalDate.now())) {
-                return ANDFHEM_TIME_FORMAT.print(dateTime);
-            } else {
-                return ANDFHEM_DATE_FORMAT.print(dateTime);
-            }
+            return formatTime(dateTime);
         } catch (Exception e) {
             LOGGER.error("cannot format " + input, e);
             return input;

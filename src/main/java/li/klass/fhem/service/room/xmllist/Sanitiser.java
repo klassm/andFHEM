@@ -27,6 +27,7 @@ package li.klass.fhem.service.room.xmllist;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,7 +117,7 @@ public class Sanitiser {
             String value = object.getString("value");
 
             if (!xmlListDevice.getAttributes().containsKey(key)) {
-                xmlListDevice.getAttributes().put(key, new DeviceNode(ATTR, key, value, null));
+                xmlListDevice.getAttributes().put(key, new DeviceNode(ATTR, key, value, (DateTime) null));
             }
         }
     }
@@ -129,7 +130,7 @@ public class Sanitiser {
 
         String key = deviceNode.getKey();
         String value = deviceNode.getValue();
-        String measured = deviceNode.getMeasured();
+        DateTime measured = deviceNode.getMeasured();
         DeviceNode.DeviceNodeType type = deviceNode.getType();
 
         value = value.replaceAll("&deg;", "°");

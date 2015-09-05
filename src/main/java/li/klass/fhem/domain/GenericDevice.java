@@ -26,8 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import com.google.common.collect.Iterables;
-
 import java.util.Map;
 
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
@@ -62,10 +60,25 @@ public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice>
     public void afterDeviceXMLRead(Context context) {
         super.afterDeviceXMLRead(context);
         Map<String, DeviceNode> states = getXmlListDevice().getStates();
-        DeviceNode node = states.containsKey("state") ? states.get("state") : Iterables.getFirst(states.values(), null);
+
+
+        DeviceNode node = states.containsKey("state") ? states.get("state") : getMostRecentlyMeasuredNode();
         if (node != null) {
             setMeasured(node.getMeasured());
         }
+    }
+
+    private DeviceNode getMostRecentlyMeasuredNode() {
+        Map<String, DeviceNode> states = getXmlListDevice().getStates();
+        if (states.isEmpty()) return null;
+
+        DeviceNode mostRecent = null;
+        for (DeviceNode node : states.values()) {
+            if (mostRecent == null || (node.getMeasured() != null && node.getMeasured().isAfter(mostRecent.getMeasured()))) {
+                mostRecent = node;
+            }
+        }
+        return mostRecent;
     }
 
     @Override

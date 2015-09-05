@@ -30,6 +30,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -89,7 +90,7 @@ public class DimmableBehaviorTest {
     @UseDataProvider("dimUpDownPositionProvider")
     public void should_calculate_dim_up_and_down_positions(int currentPosition, int expectedDimDownPosition, int expectedDimUpPosition) {
         XmlListDevice xmlListDevice = mock(XmlListDevice.class);
-        given(xmlListDevice.getStates()).willReturn(ImmutableMap.of("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", currentPosition + "", null)));
+        given(xmlListDevice.getStates()).willReturn(ImmutableMap.of("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", currentPosition + "", (DateTime) null)));
         GenericDevice device = new GenericDevice();
         device.setXmlListDevice(xmlListDevice);
         device.setSetList("state:slider,0,1,100");

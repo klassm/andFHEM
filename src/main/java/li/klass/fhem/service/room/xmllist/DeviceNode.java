@@ -24,9 +24,12 @@
 
 package li.klass.fhem.service.room.xmllist;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static li.klass.fhem.util.DateFormatUtil.FHEM_DATE_FORMAT;
 
 public class DeviceNode implements Serializable {
     public enum DeviceNodeType {
@@ -35,10 +38,22 @@ public class DeviceNode implements Serializable {
 
     private String key;
     private String value;
-    private String measured;
+    private DateTime measured;
     private DeviceNodeType nodeType;
 
     public DeviceNode(DeviceNodeType nodeType, String key, String value, String measured) {
+        this(nodeType, key, value, parseMeasured(measured));
+    }
+
+    private static DateTime parseMeasured(String measured) {
+        try {
+            return FHEM_DATE_FORMAT.parseDateTime(measured);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public DeviceNode(DeviceNodeType nodeType, String key, String value, DateTime measured) {
         this.key = checkNotNull(key);
         this.value = checkNotNull(value);
         this.nodeType = checkNotNull(nodeType);
@@ -53,7 +68,7 @@ public class DeviceNode implements Serializable {
         return value;
     }
 
-    public String getMeasured() {
+    public DateTime getMeasured() {
         return measured;
     }
 

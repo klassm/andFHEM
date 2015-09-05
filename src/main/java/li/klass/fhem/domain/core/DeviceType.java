@@ -86,7 +86,6 @@ import li.klass.fhem.domain.HM485Device;
 import li.klass.fhem.domain.HMSDevice;
 import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
-import li.klass.fhem.domain.HourCounterDevice;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.LightSceneDevice;
@@ -209,7 +208,6 @@ public enum DeviceType {
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
-    HOURCOUNTER("HourCounter", HourCounterDevice.class),
 
     GENERIC("__generic__", GenericDevice.class, new GenericOverviewDetailDeviceAdapter());
 

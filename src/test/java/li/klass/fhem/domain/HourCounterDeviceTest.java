@@ -49,14 +49,14 @@ public class HourCounterDeviceTest extends DeviceXMLParsingBase {
     @UseDataProvider("PROVIDER")
     public void should_read_device_attributes(String deviceName, String totalCounter, String totalPrice,
                                               String dayPrice, String dayCounter, String measured) {
-        HourCounterDevice device = getDeviceFor(deviceName, HourCounterDevice.class);
+        GenericDevice device = getDeviceFor(deviceName, GenericDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getMeasured()).isEqualTo(measured);
-        assertThat(device.getCumulativeUsage()).isEqualTo(totalCounter);
-        assertThat(device.getPrice()).isEqualTo(totalPrice);
-        assertThat(device.getPricePerDay()).isEqualTo(dayPrice);
-        assertThat(device.getDayKwh()).isEqualTo(dayCounter);
+        assertThat(stateValueFor(device, "Zaehlerstand")).isEqualTo(totalCounter);
+        assertThat(stateValueFor(device, "verbrauchGesamtEuro")).isEqualTo(totalPrice);
+        assertThat(stateValueFor(device, "verbrauchTagEuro")).isEqualTo(dayPrice);
+        assertThat(stateValueFor(device, "verbrauchTagkWh")).isEqualTo(dayCounter);
     }
 
     @Override

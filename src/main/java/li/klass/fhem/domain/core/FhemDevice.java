@@ -29,6 +29,7 @@ import android.content.Context;
 import com.google.common.base.Joiner;
 
 import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
 
 import java.util.Arrays;
 import java.util.List;
@@ -202,7 +203,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public void setRoomConcatenated(String roomsConcatenated) {
-        getXmlListDevice().getAttributes().put("room", new DeviceNode(DeviceNodeType.ATTR, "room", roomsConcatenated, null));
+        getXmlListDevice().getAttributes().put("room", new DeviceNode(DeviceNodeType.ATTR, "room", roomsConcatenated, (DateTime) null));
     }
 
     /**
@@ -232,6 +233,11 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     public void setMeasured(String measuredIn) {
         this.measured = DateFormatUtil.formatTime(measuredIn);
         this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measuredIn);
+    }
+
+    public void setMeasured(DateTime measuredIn) {
+        this.measured = DateFormatUtil.formatTime(measuredIn);
+        this.lastMeasureTime = measuredIn.getMillis();
     }
 
     public long getLastMeasureTime() {
