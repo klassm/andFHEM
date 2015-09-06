@@ -33,13 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RFXX10RECDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        RFXX10RECDevice device = getDefaultDevice(RFXX10RECDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getLastState()).isEqualTo("Open");
-        assertThat(device.getLastStateChangedTime()).isEqualTo("25.09.2011 22:12");
+        assertThat(stateValueFor(device, "stateChange")).isEqualTo("Open");
         assertThat(device.getState()).isEqualTo("Open");
 
         assertThat(device.getSetList().getEntries()).isEmpty();

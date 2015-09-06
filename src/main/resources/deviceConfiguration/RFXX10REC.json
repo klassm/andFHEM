@@ -1,0 +1,11 @@
+{
+  "defaultGroup": "WINDOW",
+  "showStateInOverview": true,
+  "showMeasuredInOverview": true,
+  "states": [
+    {
+      "key": "stateChange",
+      "desc": "lastState"
+    }
+  ]
+}

@@ -104,7 +104,6 @@ import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.PresenceDevice;
-import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.RevoltDevice;
@@ -134,7 +133,6 @@ public enum DeviceType {
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
-    RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),

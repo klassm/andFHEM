@@ -2,10 +2,6 @@
   "defaultGroup": "PRESENCE",
   "showStateInOverview": false,
   "showMeasuredInOverview": true,
-  "supportedWidgets": [
-    "MediumInformationWidgetView",
-    "TemperatureWidgetView"
-  ],
   "states": [
     {
       "key": "location",
