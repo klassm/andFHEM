@@ -1,0 +1,5 @@
+{
+  "defaultGroup": "SMOKE_DETECTOR",
+  "showStateInOverview": true,
+  "showMeasuredInOverview": true
+}

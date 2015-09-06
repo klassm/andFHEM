@@ -118,9 +118,7 @@ import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.StructureDevice;
-import li.klass.fhem.domain.TRXDevice;
 import li.klass.fhem.domain.TRXLightDevice;
-import li.klass.fhem.domain.TRXSecurityDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
 import li.klass.fhem.domain.WeatherDevice;
@@ -150,7 +148,6 @@ public enum DeviceType {
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
-    TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
     STRUCTURE("structure", StructureDevice.class, new DimmableAdapter()),
     TWILIGHT("Twilight", TwilightDevice.class),
@@ -160,7 +157,6 @@ public enum DeviceType {
     HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
-    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
