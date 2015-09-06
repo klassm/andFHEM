@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SonosTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        SonosDevice device = getDefaultDevice(SonosDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

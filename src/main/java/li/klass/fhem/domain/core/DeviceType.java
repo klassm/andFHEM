@@ -114,7 +114,6 @@ import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SomfyDevice;
-import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.TRXLightDevice;
@@ -157,7 +156,6 @@ public enum DeviceType {
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
-    SONOS("SONOS", SonosDevice.class),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
