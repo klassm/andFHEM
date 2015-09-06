@@ -103,7 +103,6 @@ import li.klass.fhem.domain.PCF8574Device;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
-import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.RevoltDevice;
@@ -150,7 +149,6 @@ public enum DeviceType {
     HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
-    PRESENCE("PRESENCE", PresenceDevice.class),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),

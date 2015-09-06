@@ -1,0 +1,11 @@
+{
+  "defaultGroup": "NETWORK",
+  "showStateInOverview": true,
+  "showMeasuredInOverview": true,
+  "states": [
+    {
+      "key": "mode",
+      "desc": "mode"
+    }
+  ]
+}
