@@ -117,7 +117,6 @@ import li.klass.fhem.domain.SomfyDevice;
 import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.StatisticsDevice;
-import li.klass.fhem.domain.StructureDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
@@ -149,7 +148,6 @@ public enum DeviceType {
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
-    STRUCTURE("structure", StructureDevice.class, new DimmableAdapter()),
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),

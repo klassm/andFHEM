@@ -24,6 +24,8 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import java.util.Locale;
+
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 public class XmlDeviceViewItem implements DeviceViewItem {
@@ -71,7 +73,7 @@ public class XmlDeviceViewItem implements DeviceViewItem {
 
     @Override
     public String getSortKey() {
-        return key;
+        return key.toLowerCase(Locale.getDefault());
     }
 
     @Override
@@ -83,5 +85,20 @@ public class XmlDeviceViewItem implements DeviceViewItem {
                 ", isShowInDetail=" + isShowInDetail +
                 ", isShowInOverview=" + isShowInOverview +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DeviceViewItem)) {
+            return false;
+        }
+        DeviceViewItem other = (DeviceViewItem) o;
+        return other.getSortKey().equals(getSortKey());
+    }
+
+    @Override
+    public int hashCode() {
+        return getSortKey().hashCode();
     }
 }

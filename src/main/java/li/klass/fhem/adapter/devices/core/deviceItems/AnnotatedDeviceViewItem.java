@@ -61,6 +61,20 @@ public abstract class AnnotatedDeviceViewItem implements DeviceViewItem {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "::" + getName(null);
+        return getClass().getSimpleName() + "::" + getSortKey();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DeviceViewItem)) {
+            return false;
+        }
+        DeviceViewItem other = (DeviceViewItem) o;
+        return other.getSortKey().equals(getSortKey());
+    }
+
+    @Override
+    public int hashCode() {
+        return getSortKey().hashCode();
     }
 }

@@ -59,9 +59,9 @@ import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 
 public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
@@ -180,9 +180,15 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device);
         registerListenersFor(device, xmlViewItems);
 
-        return deviceViewItemSorter.sortedViewItemsFrom(concat(annotatedClassItems, xmlViewItems));
+        return deviceViewItemSorter.sortedViewItemsFrom(mergeSets(annotatedClassItems, xmlViewItems));
     }
 
+    private Iterable<DeviceViewItem> mergeSets(Set<DeviceViewItem> annotatedClassItems, Set<DeviceViewItem> xmlViewItems) {
+        Set<DeviceViewItem> result = newHashSet();
+        result.addAll(annotatedClassItems);
+        result.addAll(xmlViewItems);
+        return result;
+    }
 
     protected void registerListenersFor(FhemDevice device, Set<DeviceViewItem> xmlViewItems) {
         for (DeviceViewItem xmlViewItem : xmlViewItems) {

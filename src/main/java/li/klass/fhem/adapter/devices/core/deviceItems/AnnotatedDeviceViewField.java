@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.genericview.ShowFieldCache;
@@ -57,7 +58,7 @@ public class AnnotatedDeviceViewField extends AnnotatedDeviceViewItem {
 
     @Override
     public String getSortKey() {
-        return field.getName();
+        return field.getName().toLowerCase(Locale.getDefault());
     }
 
     @Override

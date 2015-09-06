@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.genericview.ShowFieldCache;
@@ -49,15 +50,9 @@ public class AnnotatedDeviceViewMethod extends AnnotatedDeviceViewItem {
     static String getterNameToName(String name) {
         if (!name.startsWith("get")) return name;
 
-        name = name.replace("get", "");
-
-        int firstChar = name.charAt(0);
-        if (firstChar >= 'A' && firstChar <= 'Z') {
-            firstChar = firstChar - 'A' + 'a';
-        }
-
-        name = "" + ((char) firstChar) + name.substring(1);
-        return name;
+        return name
+                .replace("get", "")
+                .toLowerCase(Locale.getDefault());
     }
 
     @Override

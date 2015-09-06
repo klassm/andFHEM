@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StructureDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
-        StructureDevice device = getDefaultDevice(StructureDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -49,24 +49,19 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithSetList() {
-        StructureDevice device = getDeviceFor("deviceWithSetlist", StructureDevice.class);
+        GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
 
         assertThat((SetListGroupValue) device.getSetList().get("state")).isEqualTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
     public void testSlider() {
-        StructureDevice device = getDeviceFor("slider", StructureDevice.class);
+        GenericDevice device = getDeviceFor("slider", GenericDevice.class);
         assertThat(device).isNotNull();
 
         SetListValue value = device.getSetList().get("pct");
         assertThat(value).isInstanceOf(SetListSliderValue.class);
         assertThat((SetListSliderValue) value).isEqualTo(new SetListSliderValue(10, 2, 110));
-
-        assertThat(device.supportsDim()).isEqualTo(true);
-        assertThat(device.getDimLowerBound()).isEqualTo(10);
-        assertThat(device.getDimStep()).isEqualTo(2);
-        assertThat(device.getDimUpperBound()).isEqualTo(110);
     }
 
     @Override
