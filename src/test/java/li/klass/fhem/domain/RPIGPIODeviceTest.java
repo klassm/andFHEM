@@ -34,14 +34,14 @@ import static org.hamcrest.core.Is.is;
 public class RPIGPIODeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        RPIGPIODevice device = getDefaultDevice(RPIGPIODevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getState(), is("on"));
 
-        assertThat(device.getPinLevel(), is("high"));
+        assertThat(stateValueFor(device, "PinLevel"), is("high"));
     }
 
     @Override

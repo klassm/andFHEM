@@ -105,7 +105,6 @@ import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
-import li.klass.fhem.domain.RPIGPIODevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.RevoltDevice;
@@ -165,7 +164,6 @@ public enum DeviceType {
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     PCA301("PCA301", PCA301Device.class, new ToggleableAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter()),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
