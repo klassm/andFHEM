@@ -1,0 +1,65 @@
+{
+  "defaultGroup": "WEATHER",
+  "sensorDevice": true,
+  "showMeasuredInOverview": true,
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine3",
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "battery",
+      "desc": "battery",
+      "showInOverview": true
+    },
+    {
+      "key": "wind_speed",
+      "desc": "windSpeed",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "wind_dir",
+      "desc": "windDirection",
+      "showInOverview": true
+    },
+    {
+      "key": "dewpoint",
+      "desc": "dewpoint"
+    },
+    {
+      "key": "rain_total",
+      "desc": "rain",
+      "showInOverview": true
+    },
+    {
+      "key": "wind_avspeed",
+      "desc": "windAvgSpeed"
+    },
+    {
+      "key": "windchill",
+      "desc": "windchill"
+    }
+  ]
+}

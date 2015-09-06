@@ -121,7 +121,6 @@ import li.klass.fhem.domain.StructureDevice;
 import li.klass.fhem.domain.TRXDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.TRXSecurityDevice;
-import li.klass.fhem.domain.TRXWeatherDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
 import li.klass.fhem.domain.WeatherDevice;
@@ -150,7 +149,6 @@ public enum DeviceType {
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
-    TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),

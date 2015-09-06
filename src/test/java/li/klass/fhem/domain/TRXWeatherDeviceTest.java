@@ -33,13 +33,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        TRXWeatherDevice device = getDefaultDevice(TRXWeatherDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getTemperature()).isEqualTo("21.1 (°C)");
-        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("21.1 (°C)");
+        assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
         assertThat(device.getState()).isEqualTo("T: 21.1 BAT: ok");
 
         assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
@@ -47,25 +47,25 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInHumidityDevice() {
-        TRXWeatherDevice device = getDeviceFor("device1", TRXWeatherDevice.class);
+        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
 
-        assertThat(device.getHumidity()).isEqualTo("59.0 (%)");
-        assertThat(device.getDewpoint()).isEqualTo("11.1 (°C)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("59.0 (%)");
+        assertThat(stateValueFor(device, "dewpoint")).isEqualTo("11.1 (°C)");
     }
 
     @Test
     public void testRainAttributes() {
-        TRXWeatherDevice device = getDeviceFor("rain", TRXWeatherDevice.class);
-        assertThat(device.getRain()).isEqualTo("343 (l/m²)");
+        GenericDevice device = getDeviceFor("rain", GenericDevice.class);
+        assertThat(stateValueFor(device, "rain_total")).isEqualTo("343 (l/m²)");
     }
 
     @Test
     public void testWindAttributes() {
-        TRXWeatherDevice device = getDeviceFor("wind", TRXWeatherDevice.class);
-        assertThat(device.getWindAverageSpeed()).isEqualTo("3.0 (km/h)");
-        assertThat(device.getWindDirection()).isEqualTo("180 S");
-        assertThat(device.getWindSpeed()).isEqualTo("0.0 (km/h)");
-        assertThat(device.getWindchill()).isEqualTo("10.4 (°C)");
+        GenericDevice device = getDeviceFor("wind", GenericDevice.class);
+        assertThat(stateValueFor(device, "wind_avspeed")).isEqualTo("3.0 (km/h)");
+        assertThat(stateValueFor(device, "wind_dir")).isEqualTo("180 S");
+        assertThat(stateValueFor(device, "wind_speed")).isEqualTo("0.0 (km/h)");
+        assertThat(stateValueFor(device, "windchill")).isEqualTo("10.4 (°C)");
     }
 
     @Override
