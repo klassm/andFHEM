@@ -124,7 +124,6 @@ import li.klass.fhem.domain.TRXSecurityDevice;
 import li.klass.fhem.domain.TRXWeatherDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
-import li.klass.fhem.domain.WatchdogDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
@@ -149,7 +148,6 @@ public enum DeviceType {
     STATISTICS("statistics", StatisticsDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
-    WATCHDOG("watchdog", WatchdogDevice.class),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),

@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WatchdogDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        WatchdogDevice device = getDefaultDevice(WatchdogDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
