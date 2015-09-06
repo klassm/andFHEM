@@ -2,9 +2,9 @@
   "defaultGroup": "NETWORK",
   "showStateInOverview": true,
   "showMeasuredInOverview": true,
-  "states": [
+  "internals": [
     {
-      "key": "mode",
+      "key": "MODE",
       "desc": "mode"
     }
   ]

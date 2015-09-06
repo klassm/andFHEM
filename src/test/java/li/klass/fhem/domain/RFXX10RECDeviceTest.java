@@ -38,7 +38,7 @@ public class RFXX10RECDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(stateValueFor(device, "stateChange")).isEqualTo("Open");
+        assertThat(stateValueFor(device, "statechange")).isEqualTo("Open");
         assertThat(device.getState()).isEqualTo("Open");
 
         assertThat(device.getSetList().getEntries()).isEmpty();

@@ -36,7 +36,7 @@ public class PresenceDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         GenericDevice device = getDefaultDevice(GenericDevice.class);
         assertThat(device.getState()).isEqualTo("present");
-        assertThat(stateValueFor(device, "Mode")).isEqualTo("fritzbox");
+        assertThat(internalValueFor(device, "MODE")).isEqualTo("fritzbox");
     }
 
     @Override

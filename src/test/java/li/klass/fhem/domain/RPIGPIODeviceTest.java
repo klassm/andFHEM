@@ -41,7 +41,7 @@ public class RPIGPIODeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("on"));
 
-        assertThat(stateValueFor(device, "PinLevel"), is("high"));
+        assertThat(stateValueFor(device, "Pinlevel"), is("high"));
     }
 
     @Override
