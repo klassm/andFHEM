@@ -104,7 +104,6 @@ import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.PresenceDevice;
-import li.klass.fhem.domain.RFXCOMDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.RPIGPIODevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
@@ -149,7 +148,6 @@ public enum DeviceType {
     DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),
     LGTV("LGTV", LGTVDevice.class),
-    RFXCOM("RFXCOM", RFXCOMDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
