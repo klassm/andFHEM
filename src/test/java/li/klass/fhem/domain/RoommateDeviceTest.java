@@ -33,10 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RoommateDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes_correctly() {
-        RoommateDevice device = getDeviceFor("rr_Elena", RoommateDevice.class);
+        GenericDevice device = getDeviceFor("rr_Elena", GenericDevice.class);
 
-        assertThat(device.getLocation()).isEqualTo("home");
-        assertThat(device.getMood()).isEqualTo("calm");
+        assertThat(stateValueFor(device, "location")).isEqualTo("home");
+        assertThat(stateValueFor(device, "mood")).isEqualTo("calm");
     }
 
     @Override

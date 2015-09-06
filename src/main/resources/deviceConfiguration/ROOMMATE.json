@@ -1,0 +1,21 @@
+{
+  "defaultGroup": "PRESENCE",
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "location",
+      "desc": "location",
+      "showInOverview": true
+    },
+    {
+      "key": "mood",
+      "desc": "mood",
+      "showInOverview": true
+    }
+  ]
+}

@@ -108,7 +108,6 @@ import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.RevoltDevice;
-import li.klass.fhem.domain.RoommateDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.domain.SWAPDevice;
@@ -178,7 +177,6 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     NETATMO("netatmo", NetatmoDevice.class),
-    ROOMMATE("ROOMMATE", RoommateDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),
