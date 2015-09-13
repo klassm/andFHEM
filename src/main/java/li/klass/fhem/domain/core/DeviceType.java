@@ -105,7 +105,6 @@ import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
-import li.klass.fhem.domain.RevoltDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.domain.SWAPDevice;
@@ -175,7 +174,6 @@ public enum DeviceType {
     NETATMO("netatmo", NetatmoDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
-    REVOLT("Revolt", RevoltDevice.class),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),

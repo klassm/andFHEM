@@ -33,12 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RevoltDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        RevoltDevice device = getDeviceFor("Revolt_Kueche", RevoltDevice.class);
+        GenericDevice device = getDeviceFor("Revolt_Kueche", GenericDevice.class);
         assertThat(device).isNotNull();
-        assertThat(device.getPower()).isEqualTo("113.3 (W)");
-        assertThat(device.getEnergy()).isEqualTo("1.25 (kWh)");
-        assertThat(device.getPowerFactor()).isEqualTo("0.98");
-        assertThat(device.getFrequency()).isEqualTo("50 (Hz)");
+        assertThat(stateValueFor(device, "power")).isEqualTo("113.3 (W)");
+        assertThat(stateValueFor(device, "energy")).isEqualTo("1.25 (kWh)");
+        assertThat(stateValueFor(device, "pf")).isEqualTo("0.98");
+        assertThat(stateValueFor(device, "frequency")).isEqualTo("50.0 (Hz)");
     }
 
     @Override

@@ -544,6 +544,24 @@
         "append": "kWh",
         "extract": "double"
       }
+    },
+    "Revolt": {
+      "power": {
+        "append": "W",
+        "extract": "double"
+      },
+      "energy": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "voltage": {
+        "append": "V",
+        "extract": "double"
+      },
+      "frequency": {
+        "append": "Hz",
+        "extract": "double"
+      }
     }
   }
 }

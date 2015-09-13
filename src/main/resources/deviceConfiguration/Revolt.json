@@ -1,0 +1,27 @@
+{
+  "defaultGroup": "USAGE",
+  "states": [
+    {
+      "key": "power",
+      "desc": "power",
+      "showInOverview": true
+    },
+    {
+      "key": "energy",
+      "desc": "energy_power",
+      "showInOverview": true
+    },
+    {
+      "key": "voltage",
+      "desc": "voltage"
+    },
+    {
+      "key": "frequency",
+      "desc": "energy_frequency"
+    },
+    {
+      "key": "pf",
+      "desc": "energy_powerFactor"
+    }
+  ]
+}
