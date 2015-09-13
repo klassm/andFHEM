@@ -1,0 +1,20 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true
+    },
+    {
+      "key": "battery",
+      "desc": "battery"
+    }
+  ]
+}

@@ -85,7 +85,6 @@ import li.klass.fhem.domain.HM485Device;
 import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
-import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.MiLightDevice;
@@ -152,7 +151,6 @@ public enum DeviceType {
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
-    LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter()),
