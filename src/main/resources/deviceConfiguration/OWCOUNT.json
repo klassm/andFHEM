@@ -1,0 +1,36 @@
+{
+  "defaultGroup": "USAGE",
+  "sensorDevice": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "counters.A",
+      "desc": "counterA",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "counters.B",
+      "desc": "counterB",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "present",
+      "desc": "present"
+    },
+    {
+      "key": "warnings",
+      "desc": "warnings",
+      "markers": [
+        "WidgetMediumLine3"
+      ]
+    }
+  ]
+}

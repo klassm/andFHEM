@@ -93,7 +93,6 @@ import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwSwitchDevice;
-import li.klass.fhem.domain.OwcountDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PCF8574Device;
@@ -127,7 +126,6 @@ public enum DeviceType {
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
-    OWCOUNT("OWCOUNT", OwcountDevice.class),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),

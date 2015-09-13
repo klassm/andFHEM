@@ -73,7 +73,7 @@
     <string name="inputD">Eingang D</string>
     <string name="counterReadingTariff1">Zählerstand Tarif1</string>
     <string name="counterReading">Zählerstand</string>
-    <string name="present">Sendend</string>
+    <string name="present">Anwesend</string>
     <string name="currentUsage">Aktueller Verbrauch</string>
     <string name="currentVoltage">Aktuelle Spannung</string>
     <string name="hourUsage">Stundenverbrauch</string>
