@@ -562,6 +562,16 @@
         "append": "Hz",
         "extract": "double"
       }
+    },
+    "PCA301": {
+      "consumption": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "power": {
+        "append": "W",
+        "extract": "double"
+      }
     }
   }
 }

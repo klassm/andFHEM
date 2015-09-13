@@ -1,0 +1,19 @@
+{
+  "defaultGroup": "SWITCH",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "consumption",
+      "desc": "energy_consumption",
+      "showInOverview": true
+    },
+    {
+      "key": "power",
+      "desc": "energy_power"
+    },
+    {
+      "key": "state",
+      "desc": "state"
+    }
+  ]
+}

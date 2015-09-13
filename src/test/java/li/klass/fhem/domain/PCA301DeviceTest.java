@@ -28,22 +28,21 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PCA301DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        PCA301Device device = getDefaultDevice(PCA301Device.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getSetList().contains("on", "off"), is(true));
-        assertThat(device.supportsToggle(), is(true));
+        assertThat(device.getSetList().contains("on", "off")).isTrue();
+        assertThat(device.supportsToggle()).isTrue();
 
-        assertThat(device.getConsumption(), is("5 (kWh)"));
-        assertThat(device.getPower(), is("3.7 (W)"));
+        assertThat(stateValueFor(device, "consumption")).isEqualTo("5.0 (kWh)");
+        assertThat(stateValueFor(device, "power")).isEqualTo("3.7 (W)");
     }
 
     @Override

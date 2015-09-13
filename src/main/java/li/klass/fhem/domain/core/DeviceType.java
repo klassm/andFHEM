@@ -95,7 +95,6 @@ import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwSwitchDevice;
 import li.klass.fhem.domain.OwcountDevice;
 import li.klass.fhem.domain.OwthermDevice;
-import li.klass.fhem.domain.PCA301Device;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PCF8574Device;
 import li.klass.fhem.domain.PIDDevice;
@@ -153,7 +152,6 @@ public enum DeviceType {
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
-    PCA301("PCA301", PCA301Device.class, new ToggleableAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     LACROSSE("LaCrosse", LaCrosseDevice.class),
