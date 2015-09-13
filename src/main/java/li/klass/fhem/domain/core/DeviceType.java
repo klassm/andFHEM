@@ -82,7 +82,6 @@ import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HM485Device;
-import li.klass.fhem.domain.HMSDevice;
 import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
@@ -128,7 +127,6 @@ public enum DeviceType {
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
-    HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),

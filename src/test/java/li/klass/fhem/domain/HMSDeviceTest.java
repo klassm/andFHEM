@@ -38,16 +38,16 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_temperature_humidity_device_correctly() {
-        HMSDevice device = getDefaultDevice(HMSDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity()).isEqualTo("40.0 (%)");
-        assertThat(device.getTemperature()).isEqualTo("12.6 (°C)");
-        assertThat(device.getModel()).isEqualTo("HMS100T");
-        assertThat(device.getBattery()).isEqualTo("ok");
-        assertThat(device.getSwitchDetect()).isEqualTo("on");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("40.0 (%)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("12.6 (°C)");
+        assertThat(stateValueFor(device, "type")).isEqualTo("HMS100T");
+        assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
+        assertThat(stateValueFor(device, "switch_detect")).isEqualTo("on");
         assertThat(device.getState()).isEqualTo("T: 12.6  Bat: ok");
 
         assertThat(device.getSetList().getEntries()).isEmpty();
@@ -55,12 +55,12 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_waterDetect_device_correctly() {
-        HMSDevice device = getDeviceFor("water", HMSDevice.class);
+        GenericDevice device = getDeviceFor("water", GenericDevice.class);
 
-        assertThat(device.getTemperature()).isNull();
-        assertThat(device.getHumidity()).isNull();
+        assertThat(stateValueFor(device, "temperature")).isNull();
+        assertThat(stateValueFor(device, "humidity")).isNull();
 
-        assertThat(device.getWaterDetect()).isEqualTo("no");
+        assertThat(stateValueFor(device, "water_detect")).isEqualTo("off");
     }
 
     @Override

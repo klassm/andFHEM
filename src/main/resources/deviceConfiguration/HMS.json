@@ -1,0 +1,50 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "battery",
+      "desc": "battery",
+      "markers": [
+        "WidgetMediumLine3"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2",
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "type",
+      "desc": "model"
+    },
+    {
+      "key": "switch_detect",
+      "desc": "state",
+      "showInOverview": true
+    },
+    {
+      "key": "water_detect",
+      "desc": "waterDetect",
+      "showInOverview": true
+    }
+  ]
+}
