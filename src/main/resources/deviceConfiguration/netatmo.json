@@ -1,0 +1,35 @@
+{
+  "sensorDevice": true,
+  "defaultGroup": "WEATHER",
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true
+    },
+    {
+      "key": "co2",
+      "desc": "co2",
+      "showInOverview": true
+    },
+    {
+      "key": "noise",
+      "desc": "noise"
+    },
+    {
+      "key": "pressure",
+      "desc": "pressure"
+    }
+  ]
+}

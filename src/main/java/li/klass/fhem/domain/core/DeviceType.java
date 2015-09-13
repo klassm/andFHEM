@@ -89,7 +89,6 @@ import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.MiLightDevice;
-import li.klass.fhem.domain.NetatmoDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OwDevice;
@@ -169,7 +168,6 @@ public enum DeviceType {
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
     EC3000("EC3000", EC3000Device.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
-    NETATMO("netatmo", NetatmoDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),

@@ -34,35 +34,27 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_Netatmo_DEVICE() {
-        NetatmoDevice device = getDeviceFor("netatmo_device", NetatmoDevice.class);
+        GenericDevice device = getDeviceFor("netatmo_device", GenericDevice.class);
 
         assertThat(device.getAlias()).isEqualTo("Indoor");
-        assertThat(device.getCo2()).isEqualTo("650 (ppm)");
-        assertThat(device.getHumidity()).isEqualTo("66.0 (%)");
-        assertThat(device.getNoise()).isEqualTo("52 (dB)");
-        assertThat(device.getPressure()).isEqualTo("960.2 (hPa)");
-        assertThat(device.getTemperature()).isEqualTo("26.6 (°C)");
-        assertThat(device.getSubType()).isEqualTo("DEVICE");
+        assertThat(stateValueFor(device, "co2")).isEqualTo("650 (ppm)");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("66.0 (%)");
+        assertThat(stateValueFor(device, "noise")).isEqualTo("52 (dB)");
+        assertThat(stateValueFor(device, "pressure")).isEqualTo("960.2 (hPa)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("26.6 (°C)");
 
         assertThat(device.isSupported()).isTrue();
     }
 
     @Test
     public void should_read_Netatmo_MODULE() {
-        NetatmoDevice device = getDeviceFor("netatmo_module", NetatmoDevice.class);
+        GenericDevice device = getDeviceFor("netatmo_module", GenericDevice.class);
 
         assertThat(device.getAlias()).isEqualTo("Outdoor");
-        assertThat(device.getHumidity()).isEqualTo("60.0 (%)");
-        assertThat(device.getTemperature()).isEqualTo("28.2 (°C)");
-        assertThat(device.getSubType()).isEqualTo("MODULE");
+        assertThat(stateValueFor(device, "humidity")).isEqualTo("60.0 (%)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("28.2 (°C)");
 
         assertThat(device.isSupported()).isTrue();
-    }
-
-    @Test
-    public void should_ignore_Netatmo_ACCOUNT() {
-        NetatmoDevice device = getDeviceFor("netatmo", NetatmoDevice.class);
-        assertThat(device).isNull();
     }
 
     @Override
