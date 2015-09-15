@@ -35,25 +35,22 @@
         tools:ignore="AlwaysShowAction,UnusedAttribute"/>
     <item
         android:id="@+id/menu_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_menu_prefs"
         android:title="@string/preferences"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction,UnusedAttribute"/>
     <item
         android:id="@+id/menu_help"
-        android:icon="@android:drawable/ic_menu_help"
         app:showAsAction="never"
         android:title="@string/help"
         tools:ignore="UnusedAttribute"/>
     <item
         android:id="@+id/menu_premium"
-        android:icon="@android:drawable/ic_menu_agenda"
         app:showAsAction="never"
         android:title="@string/premium"
         tools:ignore="UnusedAttribute"/>
     <item
         android:id="@+id/menu_about"
-        android:icon="@android:drawable/ic_menu_info_details"
         app:showAsAction="never"
         android:title="@string/about"
         tools:ignore="UnusedAttribute"/>
