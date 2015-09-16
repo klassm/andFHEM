@@ -251,7 +251,7 @@
     <string name="video_size">Videogröße</string>
     <string name="lock">Schloss</string>
 
-    <string name="connectionManage">Verwalten</string>
+    <string name="connectionManage">Verwalten\u2026</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
     <string name="connectionName">Name</string>
     <string name="connectionType">Typ</string>

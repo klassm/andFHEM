@@ -27,9 +27,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minHeight="?attr/listPreferredItemHeightSmall"
     android:orientation="vertical"
-    android:gravity="bottom"
-    android:padding="2dp">
+    android:gravity="center_vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,15 +41,13 @@
         android:id="@+id/name"
         android:textStyle="bold"
         android:text="@string/dummy_serverName"
-        android:ellipsize="end"
-        android:textColor="@color/whitegrey"/>
+        android:ellipsize="end" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/type"
-        android:layout_marginTop="-6dp"
-        android:textColor="@color/whitegrey"
+        android:layout_marginTop="-2dp"
         android:text="@string/dummy_serverType"
         android:textSize="12sp" />
 

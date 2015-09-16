@@ -24,15 +24,15 @@
 
 package li.klass.fhem.activities.core;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
@@ -55,11 +55,10 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSpec>
-        implements ActionBar.OnNavigationListener {
-
-    private final ActionBar actionBar;
+        implements Spinner.OnItemSelectedListener {
 
     private int currentlySelectedPosition = -1;
+    private Spinner parent;
 
     private static class ManagementPill extends FHEMServerSpec {
         private ManagementPill() {
@@ -75,37 +74,32 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
 
     private static final ManagementPill MANAGEMENT_PILL = new ManagementPill();
 
-    public AvailableConnectionDataAdapter(Context context, ActionBar actionBar) {
-        super(context, R.layout.connection_spinner_item, new ArrayList<FHEMServerSpec>());
-        this.actionBar = actionBar;
+    public AvailableConnectionDataAdapter(Spinner parent) {
+        super(parent.getContext(), R.layout.connection_spinner_item, new ArrayList<FHEMServerSpec>());
+        this.parent = parent;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         FHEMServerSpec server = data.get(position);
 
-        if (server instanceof ManagementPill) {
-            return handleManagementView(parent);
-        } else {
-            return handleServerView(server);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.connection_spinner_item, parent, false);
         }
-    }
 
-    private View handleManagementView(ViewGroup parent) {
-        return inflater.inflate(R.layout.connection_manage_item, parent, false);
-    }
+        TextView nameView = (TextView) convertView.findViewById(R.id.name);
+        TextView typeView = (TextView) convertView.findViewById(R.id.type);
 
-    private View handleServerView(FHEMServerSpec server) {
-        View view = inflater.inflate(resource, null);
-        assert view != null;
+        if (server instanceof ManagementPill) {
+            nameView.setText(R.string.connectionManage);
+            typeView.setVisibility(View.GONE);
+        } else {
+            nameView.setText(server.getName());
+            typeView.setText(server.getServerType().name());
+            typeView.setVisibility(View.VISIBLE);
+        }
 
-        TextView nameView = (TextView) view.findViewById(R.id.name);
-        nameView.setText(server.getName());
-
-        TextView typeView = (TextView) view.findViewById(R.id.type);
-        typeView.setText(server.getServerType().name());
-
-        return view;
+        return convertView;
     }
 
     @SuppressWarnings("unchecked")
@@ -140,7 +134,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
         for (int i = 0; i < data.size(); i++) {
             Log.v(AvailableConnectionDataAdapter.class.getName(), data.get(i) + " - " + id);
             if (data.get(i).getId().equals(id)) {
-                actionBar.setSelectedNavigationItem(i);
+                parent.setSelection(i);
             }
         }
     }
@@ -152,23 +146,24 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
     }
 
     @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        if (itemPosition == data.size() - 1) {
-            actionBar.setSelectedNavigationItem(currentlySelectedPosition);
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        if (pos == data.size() - 1) {
+            parent.setSelection(currentlySelectedPosition);
 
             Intent intent = new Intent(Actions.SHOW_FRAGMENT);
             intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_LIST);
             context.sendBroadcast(intent);
-
-            return true;
+        } else {
+            currentlySelectedPosition = pos;
+            Intent intent = new Intent(Actions.CONNECTION_SET_SELECTED);
+            intent.setClass(context, ConnectionsIntentService.class);
+            intent.putExtra(BundleExtraKeys.CONNECTION_ID, data.get(pos).getId());
+            context.startService(intent);
         }
+    }
 
-        Intent intent = new Intent(Actions.CONNECTION_SET_SELECTED);
-        intent.setClass(context, ConnectionsIntentService.class);
-        intent.putExtra(BundleExtraKeys.CONNECTION_ID, data.get(itemPosition).getId());
-        context.startService(intent);
-
-        currentlySelectedPosition = itemPosition;
-        return true;
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        currentlySelectedPosition = -1;
     }
 }

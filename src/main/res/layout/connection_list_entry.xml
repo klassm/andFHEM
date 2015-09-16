@@ -28,24 +28,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/connectionListName"
         android:contentDescription="@string/connectionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:ellipsize="end"
-        android:gravity="center_vertical|start"
         android:lines="1"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/connectionListType"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-4dp"
-        android:gravity="center_vertical|start"
         android:text=""
         android:textSize="12sp" />
 

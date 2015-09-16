@@ -52,7 +52,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/drawer" />
+            app:menu="@menu/drawer"
+            app:headerLayout="@layout/drawer_header" />
 
     </android.support.v4.widget.RepairedDrawerLayout>
 </LinearLayout>
