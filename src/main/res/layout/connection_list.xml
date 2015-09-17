@@ -49,7 +49,7 @@
         android:id="@+id/connectionList"
         android:layout_below="@id/create"
         android:layout_above="@+id/adContainer"
-        android:listSelector="@drawable/theme_listview_item"/>
+        style="@style/listView"/>
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -33,6 +33,9 @@
         <item name="android:stateListAnimator">@anim/button_elevation</item>
     </style>
 
+    <style name="listView">
+        <item name="android:listSelector">?android:attr/listChoiceBackgroundIndicator</item>
+    </style>
     <style name="spinner" parent="spinnerGeneric">
         <item name="android:spinnerMode">dropdown</item>
     </style>

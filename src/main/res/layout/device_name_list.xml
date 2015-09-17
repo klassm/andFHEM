@@ -42,6 +42,6 @@
         android:dividerHeight="0dp"
         android:divider="@drawable/empty"
         android:fastScrollEnabled="true"
-        android:listSelector="@drawable/theme_listview_item"
+        style="@style/listView"
         />
 </LinearLayout>

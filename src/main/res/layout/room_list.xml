@@ -37,7 +37,7 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/adContainer"
         android:layout_below="@+id/errorHeader"
-        android:listSelector="@drawable/theme_listview_item"
+        style="@style/listView"
         tools:ignore="UnknownIdInLayout"/>
 
     <LinearLayout

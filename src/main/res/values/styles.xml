@@ -136,6 +136,10 @@
         <item name="android:minHeight">40dp</item>
     </style>
 
+    <style name="listView">
+        <item name="android:listSelector">@drawable/theme_listview_item</item>
+    </style>
+
     <style name="fragmentContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
