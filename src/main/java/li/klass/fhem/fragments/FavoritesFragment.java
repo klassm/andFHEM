@@ -33,11 +33,10 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.DeviceListFragment;
-import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.util.Reject;
 
-public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment {
+public class FavoritesFragment extends DeviceListFragment {
 
     @Override
     protected String getUpdateAction() {

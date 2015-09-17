@@ -55,7 +55,6 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.service.intent.LicenseIntentService;
@@ -65,7 +64,7 @@ import li.klass.fhem.util.Reject;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 
-public class ConnectionListFragment extends BaseFragment implements TopLevelFragment {
+public class ConnectionListFragment extends BaseFragment {
 
     public static final String TAG = ConnectionListFragment.class.getName();
     public static final int CONTEXT_MENU_DELETE = 1;

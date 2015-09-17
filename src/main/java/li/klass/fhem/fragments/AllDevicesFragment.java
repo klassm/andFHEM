@@ -30,10 +30,9 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.DeviceListFragment;
-import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.intent.RoomListIntentService;
 
-public class AllDevicesFragment extends DeviceListFragment implements TopLevelFragment {
+public class AllDevicesFragment extends DeviceListFragment {
     @Override
     protected Class<?> getUpdateActionIntentTargetClass() {
         return RoomListIntentService.class;
