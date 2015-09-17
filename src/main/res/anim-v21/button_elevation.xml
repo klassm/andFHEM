@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -23,17 +22,15 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<resources>
-
-    <style name="seekBar" parent="seekBarGeneric">
-        <!-- Disable seekbar drawable -->
-    </style>
-
-    <style name="button" parent="buttonBase">
-        <item name="android:stateListAnimator">@anim/button_elevation</item>
-    </style>
-
-    <style name="spinner" parent="spinnerGeneric">
-        <item name="android:spinnerMode">dropdown</item>
-    </style>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true" android:state_pressed="true">
+        <objectAnimator android:duration="@android:integer/config_shortAnimTime"
+            android:propertyName="translationZ" android:valueTo="1dip"
+            android:valueType="floatType" />
+    </item>
+    <item>
+        <objectAnimator android:duration="@android:integer/config_shortAnimTime"
+            android:propertyName="translationZ" android:valueTo="2dip"
+            android:valueType="floatType" />
+    </item>
+</selector>
