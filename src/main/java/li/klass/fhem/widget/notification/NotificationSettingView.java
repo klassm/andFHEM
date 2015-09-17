@@ -24,15 +24,11 @@
 
 package li.klass.fhem.widget.notification;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RadioButton;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -43,38 +39,22 @@ import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 
 public class NotificationSettingView {
+    private static final int[] VALUES = new int[] {
+        NotificationService.ALL_UPDATES, NotificationService.STATE_UPDATES,
+        NotificationService.NO_UPDATES
+    };
+    private static final int[] DESCRIPTION_IDS = new int[] {
+        R.string.notificationAllUpdates, R.string.notificationStateUpdates,
+        R.string.notificationNoUpdates
+    };
 
     private final Context context;
     private final String deviceName;
-    private View view;
 
     public NotificationSettingView(Context context, String deviceName) {
         this.context = context;
         this.deviceName = deviceName;
     }
-
-    @SuppressLint("InflateParams")
-    private View createView(int value) {
-        view = LayoutInflater.from(context).inflate(R.layout.notification_device_settings, null);
-        RadioButton allUpdates = (RadioButton) view.findViewById(R.id.allUpdates);
-        RadioButton stateUpdates = (RadioButton) view.findViewById(R.id.stateUpdates);
-        RadioButton noUpdates = (RadioButton) view.findViewById(R.id.noUpdates);
-
-        switch (value) {
-            case NotificationService.ALL_UPDATES:
-                allUpdates.setChecked(true);
-                break;
-            case NotificationService.STATE_UPDATES:
-                stateUpdates.setChecked(true);
-                break;
-            case NotificationService.NO_UPDATES:
-                noUpdates.setChecked(true);
-                break;
-        }
-
-        return view;
-    }
-
 
     public void show(Context context) {
         context.startService(new Intent(Actions.NOTIFICATION_GET_FOR_DEVICE)
@@ -93,42 +73,33 @@ public class NotificationSettingView {
     }
 
     private void showWith(int value) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder
+        int selected = -1;
+        CharSequence[] descriptions = new CharSequence[DESCRIPTION_IDS.length];
+        for (int i = 0; i < DESCRIPTION_IDS.length; i++) {
+            descriptions[i] = context.getString(DESCRIPTION_IDS[i]);
+            if (value == VALUES[i]) {
+                selected = i;
+            }
+        }
+
+        new AlertDialog.Builder(context)
                 .setTitle(deviceName)
-                .setView(createView(value))
-                .setPositiveButton(R.string.okButton,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                                int updateType = getUpdateType();
-
-                                context.startService(new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE)
-                                        .setClass(context, NotificationIntentService.class)
-                                        .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                                        .putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, updateType));
-                            }
-                        }
-                )
-                .setNegativeButton(R.string.cancelButton,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .create();
-        builder.show();
-    }
-
-    private int getUpdateType() {
-        RadioButton allUpdates = (RadioButton) view.findViewById(R.id.allUpdates);
-        RadioButton stateUpdates = (RadioButton) view.findViewById(R.id.stateUpdates);
-        RadioButton noUpdates = (RadioButton) view.findViewById(R.id.noUpdates);
-
-        if (allUpdates.isChecked()) return NotificationService.ALL_UPDATES;
-        if (stateUpdates.isChecked()) return NotificationService.STATE_UPDATES;
-        if (noUpdates.isChecked()) return NotificationService.NO_UPDATES;
-        return 0;
+                .setSingleChoiceItems(descriptions, selected, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        context.startService(new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE)
+                                .setClass(context, NotificationIntentService.class)
+                                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                                .putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, VALUES[which]));
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }
