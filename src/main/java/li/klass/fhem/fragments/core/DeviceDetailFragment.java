@@ -31,9 +31,13 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -46,13 +50,29 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.service.room.FavoritesService;
+import li.klass.fhem.util.device.DeviceActionUtil;
+import li.klass.fhem.widget.notification.NotificationSettingView;
+
+import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
+import static li.klass.fhem.constants.Actions.FAVORITE_REMOVE;
 
 public class DeviceDetailFragment extends BaseFragment {
+    @Inject
+    FavoritesService favoritesService;
 
     @Inject
     AdvertisementService advertisementService;
     private String deviceName;
+    private FhemDevice device;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void setArguments(Bundle args) {
@@ -97,7 +117,7 @@ public class DeviceDetailFragment extends BaseFragment {
                 activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                    FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                     long lastUpdate = resultData.getLong(BundleExtraKeys.LAST_UPDATE);
 
                     if (device == null) return;
@@ -106,6 +126,7 @@ public class DeviceDetailFragment extends BaseFragment {
                     if (adapter == null) {
                         return;
                     }
+                    activity.supportInvalidateOptionsMenu();
                     adapter.attach(DeviceDetailFragment.this.getActivity());
                     ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
                     if (scrollView != null) {
@@ -124,5 +145,57 @@ public class DeviceDetailFragment extends BaseFragment {
             name = getArguments().getString(BundleExtraKeys.DEVICE_NAME);
         }
         return name;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (device != null) {
+            inflater.inflate(R.menu.device_menu, menu);
+            if (favoritesService.isFavorite(deviceName, getActivity())) {
+                menu.removeItem(R.id.menu_favorites_add);
+            } else {
+                menu.removeItem(R.id.menu_favorites_remove);
+            }
+            menu.removeItem(R.id.menu_rename);
+            menu.removeItem(R.id.menu_delete);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_favorites_add:
+            case R.id.menu_favorites_remove: {
+                final boolean isAdd = item.getItemId() == R.id.menu_favorites_add;
+                getActivity().startService(new Intent(isAdd ? FAVORITE_ADD : FAVORITE_REMOVE)
+                        .setClass(getActivity(), FavoritesIntentService.class)
+                        .putExtra(BundleExtraKeys.DEVICE, device)
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS) return;
+
+                        Toast.makeText(getActivity(),
+                                isAdd ? R.string.context_favoriteadded : R.string.context_favoriteremoved,
+                                Toast.LENGTH_SHORT).show();
+                        update(false);
+                    }
+                        }));
+                break;
+            }
+            case R.id.menu_room:
+                DeviceActionUtil.moveDevice(getActivity(), device);
+                break;
+            case R.id.menu_alias:
+                DeviceActionUtil.setAlias(getActivity(), device);
+                break;
+            case R.id.menu_notification:
+                new NotificationSettingView(getActivity(), deviceName).show(getActivity());
+                break;
+            default:
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
