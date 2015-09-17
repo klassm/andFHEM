@@ -53,13 +53,12 @@
         tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_room"
-        android:icon="@drawable/ic_menu_room"
+        android:icon="@drawable/room_list"
         app:showAsAction="ifRoom"
         android:title="@string/context_move"
         tools:ignore="UnusedAttribute" />
     <item
         android:id="@+id/menu_alias"
-        android:icon="@drawable/ic_menu_alias"
         app:showAsAction="ifRoom"
         android:title="@string/context_alias"
         tools:ignore="UnusedAttribute" />
