@@ -25,15 +25,19 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:bottom="5dp">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
             <corners android:radius="3dp" />
             <solid android:color="@color/focusedColor" />
             <stroke android:color="@color/darkGrey" android:width="1dp" />
         </shape>
     </item>
-    <item android:right="10dp" android:left="10dp" android:top="30dp" android:bottom="3dp">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="line">
+    <item
+        android:right="10dp"
+        android:left="10dp"
+        android:top="30dp"
+        android:bottom="2dp">
+        <shape android:shape="line">
             <corners android:radius="3dp" />
             <stroke android:width="5dp" android:color="@color/offRed" />
         </shape>

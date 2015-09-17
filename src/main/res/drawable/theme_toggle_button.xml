@@ -44,8 +44,5 @@
     <item android:drawable="@drawable/theme_toggle_off_focused"
           android:state_checked="false"
           android:state_focused="true"/>
-    <item android:drawable="@drawable/theme_toggle_off_normal"
-          android:state_checked="false"
-          android:state_focused="false"/>
     <item android:drawable="@drawable/theme_toggle_off_normal"/>
 </selector>
