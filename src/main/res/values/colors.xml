@@ -41,6 +41,7 @@
 
     <color name="widgetBackground">#AAE1E1E1</color>
 
+    <color name="inactiveBackground">#10000000</color>
     <color name="activeGreen">#E0FFD4</color>
     <color name="offRed">#44FF0000</color>
     <color name="red">#FF0000</color>

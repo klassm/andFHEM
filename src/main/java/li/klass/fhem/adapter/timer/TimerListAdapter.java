@@ -80,7 +80,7 @@ public class TimerListAdapter extends ListDataAdapter<AtDevice> {
         TextView timerNextTrigger = (TextView) view.findViewById(R.id.timerNextTrigger);
         timerNextTrigger.setText(context.getString(R.string.timer_next_trigger) + ": " + device.getNextTrigger());
 
-        int color = device.isActive() ? R.color.activeGreen : android.R.color.white;
+        int color = device.isActive() ? android.R.color.transparent : R.color.inactiveBackground;
         int colorResource = context.getResources().getColor(color);
         view.setBackgroundColor(colorResource);
 
