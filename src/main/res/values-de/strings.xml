@@ -624,7 +624,7 @@
     <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen.</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
-    <string name="androidBugDialogDatePickerContent">Lollipop beinhaltet aktuell einen Bug, der den nachfolgenden Dialog zum Absturz bringt. Deshalb ist dieser bis zu einer Reparatur seitens Google deaktiviert. Google hat den Fehler bereits behoben, bisher aber noch kein neues Android-Update freigegeben, das diese Fehlerbehebung enthält.</string>
+    <string name="androidBugDialogDatePickerContent">Android 5.0 beinhaltet einen Bug, der den nachfolgenden Dialog zum Absturz bringt, weshalb dieses Feature in dieser Android-Version nicht verwendet werden kann.</string>
 
     <string name="accessibility_description">Dieser Bedienungshilfen-Dienst erlaubt andFHEM, jedes Google Now-Sprachkommando mitzuhören. AndFHEM speichert diese Daten nicht, versucht aber daraus FHEM-Kommandos zu generieren.</string>
 

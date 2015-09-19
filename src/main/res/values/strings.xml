@@ -665,7 +665,7 @@
     <string name="currentStatus_billingInitError">Cannot initialize connection to Google billing!</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deactivated</string>
-    <string name="androidBugDialogDatePickerContent">Lollipop currently contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled until Google has released an update repairing this issue. Effectively, Google has already accepted the fix but has not released an update yet.</string>
+    <string name="androidBugDialogDatePickerContent">Android 5.0 contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled in this version.</string>
 
     <string name="accessibility_description">This accessibility service will allow andFHEM to listen to any text entered in Google Now. andFHEM will not store any information and will only try to send FHEM commands based on your input.</string>
 

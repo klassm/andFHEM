@@ -54,7 +54,7 @@ public class AndroidBug {
     public static View handleColorStateBug(BugHandler bugHandler) {
         try {
             return bugHandler.defaultAction();
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             LOG.error("color state bug encountered", e);
             return bugHandler.bugEncountered();
         }
