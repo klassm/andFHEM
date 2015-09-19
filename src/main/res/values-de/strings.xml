@@ -378,6 +378,9 @@
     <string name="save">Speichern</string>
     <string name="reset">Zurücksetzen</string>
 
+    <string name="doneTitle">Fertig!</string>
+    <string name="heatingConfigurationSaveNotification">Die Konfiguration wurde gespeichert. Es kann eine Weile dauern bis die Konfiguration im Gerät übernommen ist.</string>
+
     <string name="temperatureGraph">Temperatur Graph</string>
     <string name="temperatureHumidityGraph">Temperatur &amp; Luftfeuchtigkeit Graph</string>
     <string name="temperatureHumidityDewpointGraph">Temperatur &amp; Luftfeuchtigkeit &amp; Taupunkt Graph</string>

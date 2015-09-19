@@ -85,7 +85,7 @@ public class CULHMConfigurationTest {
 
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).setChangedTemperature(23);
 
-        List<String> commands = configuration.generateScheduleCommands(device, weekProfile);
+        List<String> commands = configuration.generateScheduleCommands(device.getName(), weekProfile);
 
         assertThat(commands).contains("set name tempListSat 08:00 16.0 19:30 20.0 24:00 23.0");
     }

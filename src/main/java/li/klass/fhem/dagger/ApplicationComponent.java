@@ -139,7 +139,7 @@ import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
-@Component(modules = {ApplicationModule.class})
+@Component(modules = {ApplicationModule.class, DetailActionsModule.class})
 public interface ApplicationComponent {
 
     void inject(DeviceFunctionalityOrderPreference object);

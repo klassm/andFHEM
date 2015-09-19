@@ -24,15 +24,23 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
+import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
+import li.klass.fhem.util.StateToSet;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.util.DayUtil.Day;
 
 public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>>
@@ -45,6 +53,8 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
     public final String offTime;
     public final int maximumNumberOfHeatingIntervals;
     public final NumberOfIntervalsType numberOfIntervalsType;
+
+    private static final Logger LOG = LoggerFactory.getLogger(HeatingConfiguration.class);
 
     public HeatingConfiguration(String offTime, int maximumNumberOfHeatingIntervals, NumberOfIntervalsType numberOfIntervalsType) {
         this.offTime = offTime;
@@ -62,6 +72,13 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         return interval;
     }
 
+    public void fillWith(WeekProfile<H, C, D> weekProfile, XmlListDevice xmlListDevice) {
+        Map<String, DeviceNode> states = xmlListDevice.getStates();
+        for (DeviceNode node : states.values()) {
+            readNode(weekProfile, node.getKey(), node.getValue());
+        }
+        afterXMLRead(weekProfile);
+    }
 
     public abstract void readNode(WeekProfile<H, C, D> weekProfile, String key, String value);
 
@@ -69,7 +86,26 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
 
     public abstract DayProfile<H, D, C> createDayProfileFor(Day day, C configuration);
 
-    public abstract List<String> generateScheduleCommands(D device, WeekProfile<H, C, D> weekProfile);
+    public List<String> generateScheduleCommands(String deviceName, WeekProfile<H, C, D> weekProfile) {
+        List<StateToSet> statesToSet = generatedStatesToSet(weekProfile);
+        List<String> result = newArrayList();
+        for (StateToSet state : statesToSet) {
+            result.add("set " + deviceName + " " + state.getKey() + " " + state.getValue());
+        }
+        return result;
+    }
+
+    public List<StateToSet> generatedStatesToSet(WeekProfile<H, C, D> weekProfile) {
+        List<StateToSet> result = newArrayList();
+        List<DayProfile<H, D, C>> changedDayProfiles = weekProfile.getChangedDayProfiles();
+        LOG.info("generateScheduleCommands - {} day(s) contain changes", changedDayProfiles.size());
+        for (DayProfile<H, D, C> dayProfile : changedDayProfiles) {
+            result.addAll(generateStateToSetFor(dayProfile));
+        }
+        return result;
+    }
+
+    protected abstract List<StateToSet> generateStateToSetFor(DayProfile<H, D, C> dayProfile);
 
     public String getOffTime() {
         return null;

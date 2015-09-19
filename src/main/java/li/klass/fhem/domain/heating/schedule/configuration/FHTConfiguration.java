@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +33,9 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
+import li.klass.fhem.util.StateToSet;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, FHTDevice, FHTConfiguration> {
     public static final String OFF_TIME = "00:00";
@@ -72,62 +73,84 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
         }
     }
 
-    public List<String> generateScheduleCommands(FHTDevice device,
-                                                 WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile) {
-        List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
-        if (changedDayProfiles.size() == 0) return Collections.emptyList();
+    @Override
+    protected List<StateToSet> generateStateToSetFor(DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile) {
+        DayUtil.Day day = dayProfile.getDay();
+        String shortDayName = DayUtil.getShortNameFor(day);
+        List<StateToSet> result = newArrayList();
 
-        List<String> commandParts = generateCommandParts(changedDayProfiles);
-        return generateCommands(device, commandParts);
-    }
+        for (int i = 0; i < dayProfile.getNumberOfHeatingIntervals(); i++) {
+            FromToHeatingInterval heatingInterval = dayProfile.getHeatingIntervalAt(i);
 
-    protected List<String> generateCommandParts(List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles) {
-        List<String> commandParts = new ArrayList<>();
+            if (heatingInterval.isModified()) {
 
-        for (DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile : changedDayProfiles) {
-            DayUtil.Day day = dayProfile.getDay();
-            String shortDayName = DayUtil.getShortNameFor(day);
-
-            for (int i = 0; i < dayProfile.getNumberOfHeatingIntervals(); i++) {
-                FromToHeatingInterval heatingInterval = dayProfile.getHeatingIntervalAt(i);
-
-                if (heatingInterval.isModified()) {
-
-                    if (!heatingInterval.getFromTime().equals(heatingInterval.getChangedFromTime())) {
-                        commandParts.add(shortDayName + "-from" + (i + 1) + " " + heatingInterval.getChangedFromTime());
-                    }
-                    if (!heatingInterval.getToTime().equals(heatingInterval.getChangedToTime())) {
-                        commandParts.add(shortDayName + "-to" + (i + 1) + " " + heatingInterval.getChangedToTime());
-                    }
+                if (!heatingInterval.getFromTime().equals(heatingInterval.getChangedFromTime())) {
+                    result.add(new StateToSet(shortDayName + "-from" + (i + 1), heatingInterval.getChangedFromTime()));
+                }
+                if (!heatingInterval.getToTime().equals(heatingInterval.getChangedToTime())) {
+                    result.add(new StateToSet(shortDayName + "-to" + (i + 1), heatingInterval.getChangedToTime()));
                 }
             }
         }
-
-        return commandParts;
+        return result;
     }
-
-    protected List<String> generateCommands(FHTDevice device, List<String> commandParts) {
-        List<String> commands = new ArrayList<>();
-        StringBuilder currentCommand = new StringBuilder();
-        int currentCommandSize = 0;
-
-        for (String commandPart : commandParts) {
-            if (currentCommandSize >= 8) {
-                commands.add("set " + device.getName() + " " + currentCommand.toString().trim());
-                currentCommand = new StringBuilder();
-                currentCommandSize = 0;
-            }
-            currentCommand.append(commandPart).append(" ");
-
-            currentCommandSize++;
-        }
-
-        if (currentCommand.length() > 0) {
-            commands.add("set " + device.getName() + " " + currentCommand.toString().trim());
-        }
-
-        return commands;
-    }
+//
+//    public List<String> generateScheduleCommands(String deviceName,
+//                                                 WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile) {
+//        List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
+//        if (changedDayProfiles.size() == 0) return Collections.emptyList();
+//
+//        List<String> commandParts = generateCommandParts(changedDayProfiles);
+//        return generateCommands(deviceName, commandParts);
+//    }
+//
+//    protected List<String> generateCommandParts(List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles) {
+//        List<String> commandParts = new ArrayList<>();
+//
+//        for (DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile : changedDayProfiles) {
+//            DayUtil.Day day = dayProfile.getDay();
+//            String shortDayName = DayUtil.getShortNameFor(day);
+//
+//            for (int i = 0; i < dayProfile.getNumberOfHeatingIntervals(); i++) {
+//                FromToHeatingInterval heatingInterval = dayProfile.getHeatingIntervalAt(i);
+//
+//                if (heatingInterval.isModified()) {
+//
+//                    if (!heatingInterval.getFromTime().equals(heatingInterval.getChangedFromTime())) {
+//                        commandParts.add(shortDayName + "-from" + (i + 1) + " " + heatingInterval.getChangedFromTime());
+//                    }
+//                    if (!heatingInterval.getToTime().equals(heatingInterval.getChangedToTime())) {
+//                        commandParts.add(shortDayName + "-to" + (i + 1) + " " + heatingInterval.getChangedToTime());
+//                    }
+//                }
+//            }
+//        }
+//
+//        return commandParts;
+//    }
+//
+//    protected List<String> generateCommands(String deviceName, List<String> commandParts) {
+//        List<String> commands = new ArrayList<>();
+//        StringBuilder currentCommand = new StringBuilder();
+//        int currentCommandSize = 0;
+//
+//        for (String commandPart : commandParts) {
+//            if (currentCommandSize >= 8) {
+//                commands.add("set " + deviceName + " " + currentCommand.toString().trim());
+//                currentCommand = new StringBuilder();
+//                currentCommandSize = 0;
+//            }
+//            currentCommand.append(commandPart).append(" ");
+//
+//            currentCommandSize++;
+//        }
+//
+//        if (currentCommand.length() > 0) {
+//            commands.add("set " + deviceName + " " + currentCommand.toString().trim());
+//        }
+//
+//        return commands;
+//    }
 
     @Override
     public FromToHeatingInterval createHeatingInterval() {

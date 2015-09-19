@@ -83,7 +83,7 @@ public class MAXConfigurationTest {
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).setChangedTemperature(23);
         getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).setChangedTemperature(23);
 
-        List<String> commands = configuration.generateScheduleCommands(device, weekProfile);
+        List<String> commands = configuration.generateScheduleCommands(device.getName(), weekProfile);
 
         assertThat(commands).contains("set name weekProfile Sat 23.0,07:00,22.0,23:00,15.0")
                 .contains("set name weekProfile Fri 23.0,06:00,22.0,23:00,15.0");

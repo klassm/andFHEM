@@ -27,13 +27,13 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.util.DayUtil;
+import li.klass.fhem.util.StateToSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -71,39 +71,11 @@ public class FHTConfigurationTest {
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedToTime("04:25");
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(1).setChangedToTime("07:25");
 
-        List<String> parts = configuration.generateCommandParts(weekProfile.getChangedDayProfiles());
-        assertThat(parts)
-                .hasSize(4)
-                .contains("mon-from1 03:25")
-                .contains("mon-from2 06:25")
-                .contains("mon-to1 04:25")
-                .contains("mon-to2 07:25");
-    }
-
-    @Test
-    public void testGenerateCommands() {
-        FHTDevice device = new FHTDevice();
-        device.setName("name");
-
-        List<String> commandParts = Arrays.asList(
-                "mon-from1 03:25",
-                "mon-to1 06:25",
-                "mon-from2 09:25",
-                "mon-to2 12:25",
-                "tue-from1 03:25",
-                "tue-to1 06:25",
-                "tue-from2 09:25",
-                "tue-to2 12:25",
-                "wed-from1 03:25",
-                "wed-to1 06:25",
-                "wed-from2 09:25",
-                "wed-to2 12:25"
-        );
-
-        List<String> commands = configuration.generateCommands(device, commandParts);
-        assertThat(commands)
-                .hasSize(2)
-                .contains("set name mon-from1 03:25 mon-to1 06:25 mon-from2 09:25 mon-to2 12:25 tue-from1 03:25 tue-to1 06:25 tue-from2 09:25 tue-to2 12:25")
-                .contains("set name wed-from1 03:25 wed-to1 06:25 wed-from2 09:25 wed-to2 12:25");
+        List<StateToSet> parts = configuration.generatedStatesToSet(weekProfile);
+        assertThat(parts).containsOnly(
+                new StateToSet("mon-from1", "03:25"),
+                new StateToSet("mon-from2", "06:25"),
+                new StateToSet("mon-to1", "04:25"),
+                new StateToSet("mon-to2", "07:25"));
     }
 }

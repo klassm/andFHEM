@@ -61,6 +61,7 @@ public class BundleExtraKeys {
     public static final String END_DATE = "ENDDATE";
     public static final String DEVICE_DIM_PROGRESS = "DIMPROGRESS";
     public static final String DEVICE_TARGET_STATE = "TARGETSTATE";
+    public static final String STATES = "STATES";
     public static final String DEVICE_TEMPERATURE = "TEMPERATURE";
     public static final String DEVICE_MODE = "DEVICEMODE";
     public static final String DEVICE_HOLIDAY1 = "HOLIDAY1";
@@ -125,4 +126,6 @@ public class BundleExtraKeys {
 
     public static final String SENDER = "SENDER";
     public static final String RESEND_TRY = "RESEND_TRY";
+    public static final String HEATING_CONFIGURATION = "HEATING_CONFIGURATION";
+    public static final String WEEK_PROFILE = "WEEK_PROFILE";
 }

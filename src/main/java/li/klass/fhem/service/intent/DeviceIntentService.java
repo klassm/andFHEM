@@ -71,6 +71,7 @@ import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
@@ -88,6 +89,7 @@ import static li.klass.fhem.constants.Actions.DEVICE_SET_MODE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_WEEK_PROFILE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY;
@@ -98,6 +100,7 @@ import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.DONE;
@@ -250,6 +253,13 @@ public class DeviceIntentService extends ConvenientIntentService {
             String value = intent.getStringExtra(STATE_VALUE);
 
             genericDeviceService.setSubState(device, name, value, this);
+
+        } else if (DEVICE_SET_SUB_STATES.equals(action)) {
+            @SuppressWarnings("unchecked")
+            List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
+            String value = intent.getStringExtra(STATE_VALUE);
+
+            genericDeviceService.setSubStates(device, statesToSet, this);
 
         } else if (GCM_ADD_SELF.equals(action)) {
             gcmSendDeviceService.addSelf((GCMSendDevice) device, this);

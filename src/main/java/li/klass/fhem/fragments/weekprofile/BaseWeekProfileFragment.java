@@ -26,14 +26,12 @@ package li.klass.fhem.fragments.weekprofile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.common.base.Preconditions;
+import java.util.ArrayList;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
@@ -41,27 +39,39 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.util.FhemResultReceiver;
+import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.widget.NestedListView;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.HEATING_CONFIGURATION;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> extends BaseFragment {
+
     private String deviceName;
+    private HeatingConfiguration heatingConfiguration;
+    private WeekProfile weekProfile;
 
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
 
-        Preconditions.checkArgument(args.containsKey(DEVICE_NAME));
+        checkArgument(args.containsKey(DEVICE_NAME));
+        checkArgument(args.containsKey(HEATING_CONFIGURATION));
+
         deviceName = args.getString(DEVICE_NAME);
+        heatingConfiguration = (HeatingConfiguration) args.getSerializable(HEATING_CONFIGURATION);
     }
 
     @Override
@@ -74,23 +84,25 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         View view = inflater.inflate(R.layout.weekprofile, container, false);
 
         Button saveButton = (Button) view.findViewById(R.id.save);
+        update(false);
         saveButton.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_SET_WEEK_PROFILE);
-                intent.setClass(getActivity(), DeviceIntentService.class);
-                intent.putExtra(DEVICE_NAME, deviceName);
-                intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        super.onReceiveResult(resultCode, resultData);
-                        if (resultCode != ResultCodes.SUCCESS) return;
-
-                        update(false);
-                    }
-                });
-                getActivity().startService(intent);
+                ArrayList<StateToSet> commands = newArrayList(weekProfile.getStatesToSet(deviceName));
+                getActivity().startService(new Intent(Actions.DEVICE_SET_SUB_STATES)
+                        .setClass(getActivity(), DeviceIntentService.class)
+                        .putExtra(DEVICE_NAME, deviceName)
+                        .putExtra(BundleExtraKeys.STATES, commands)
+                        .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                if (resultCode != ResultCodes.SUCCESS) return;
+                                backToDevice();
+                                update(true);
+                            }
+                        }));
             }
         });
 
@@ -98,17 +110,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_RESET_WEEK_PROFILE);
-                intent.setClass(getActivity(), DeviceIntentService.class);
-                intent.putExtra(DEVICE_NAME, deviceName);
-                intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        super.onReceiveResult(resultCode, resultData);
-                        update(false);
-                    }
-                });
-                getActivity().startService(intent);
+                update(false);
             }
         });
 
@@ -127,32 +129,38 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         return view;
     }
 
+    private void backToDevice() {
+        DialogUtil.showAlertDialog(getActivity(), R.string.doneTitle, R.string.heatingConfigurationSaveNotification, new DialogUtil.AlertOnClickListener() {
+            @Override
+            public void onClick() {
+                back();
+            }
+        });
+    }
+
     @Override
     public void update(boolean doUpdate) {
 
-        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.setClass(getActivity(), RoomListIntentService.class);
-        intent.putExtra(DO_REFRESH, doUpdate);
-        intent.putExtra(DEVICE_NAME, deviceName);
-        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
+        getActivity().startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
+                .setClass(getActivity(), RoomListIntentService.class)
+                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == ResultCodes.SUCCESS && getView() != null) {
+                            FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                            if (device == null) {
+                                return;
+                            }
 
-                if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                    FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                    if (device == null || !(device instanceof HeatingDevice)) {
-                        return;
+                            weekProfile = new WeekProfile<>(heatingConfiguration);
+                            weekProfile.fillWith(device.getXmlListDevice());
+
+                            updateChangeButtonsHolderVisibility(weekProfile);
+                        }
                     }
-
-                    @SuppressWarnings("unchecked")
-                    HeatingDevice<?, ?, H, ? extends FhemDevice> heatingDevice = (HeatingDevice) device;
-
-                    updateChangeButtonsHolderVisibility(heatingDevice.getWeekProfile());
-                }
-            }
-        });
-        getActivity().startService(intent);
+                }));
     }
 
     @SuppressWarnings("unchecked")

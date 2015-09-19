@@ -31,6 +31,10 @@ public class ValueExtractUtil {
         return extractLeadingDouble(text, -1);
     }
 
+    public static float extractLeadingFloat(String text) {
+        return (float) extractLeadingDouble(text, -1);
+    }
+
     public static double extractLeadingDouble(String text, int digits) {
         text = extractLeadingNumericText(text, digits);
         if (Strings.isNullOrEmpty(text)) return 0;

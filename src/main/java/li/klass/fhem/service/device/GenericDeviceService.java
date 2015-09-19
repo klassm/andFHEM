@@ -27,8 +27,14 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -38,10 +44,28 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ReflectionUtil;
+import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.util.Tasker;
+
+import static com.google.common.collect.FluentIterable.from;
 
 @Singleton
 public class GenericDeviceService {
+    public static final Function<List<StateToSet>, String> FHT_CONCAT = new Function<List<StateToSet>, String>() {
+        @Override
+        public String apply(List<StateToSet> input) {
+            return fhtConcat(input);
+        }
+
+        private String fhtConcat(List<StateToSet> input) {
+            return from(input).transform(new Function<StateToSet, String>() {
+                @Override
+                public String apply(StateToSet input) {
+                    return input.getKey() + " " + input.getValue();
+                }
+            }).join(Joiner.on(" "));
+        }
+    };
     @Inject
     CommandExecutionService commandExecutionService;
 
@@ -50,9 +74,17 @@ public class GenericDeviceService {
     }
 
     public void setState(FhemDevice<?> device, String targetState, Context context) {
+        setState(device, targetState, context, true);
+    }
+
+    public void setState(FhemDevice<?> device, String targetState, Context context, boolean invokeUpdate) {
         targetState = device.formatTargetState(targetState);
 
         commandExecutionService.executeSafely("set " + getInternalName(device) + " " + targetState, context);
+
+        if (!invokeUpdate) {
+            return;
+        }
 
         if (device.shouldUpdateStateOnDevice(targetState)) {
             device.setState(device.formatStateTextToSet(targetState));
@@ -68,6 +100,20 @@ public class GenericDeviceService {
                 subStateName, value);
 
         invokeDeviceUpdateFor(device, subStateName, value);
+    }
+
+    public void setSubStates(FhemDevice device, List<StateToSet> statesToSet, Context context) {
+        if (device.getXmlListDevice().getType().equalsIgnoreCase("FHT") && statesToSet.size() > 1) {
+            Iterable<List<StateToSet>> partitions = Iterables.partition(statesToSet, 8);
+            ImmutableList<String> parts = from(partitions).transform(FHT_CONCAT).toList();
+            for (String toSet : parts) {
+                setState(device, toSet, context, false);
+            }
+        } else {
+            for (StateToSet toSet : statesToSet) {
+                setSubState(device, toSet.getKey(), toSet.getValue(), context);
+            }
+        }
     }
 
     private String getInternalName(FhemDevice<?> device) {
@@ -112,7 +158,7 @@ public class GenericDeviceService {
                     && method.getParameterTypes().length == 1) {
                 method.invoke(device, value);
                 return true;
-                }
+            }
         } catch (Exception e) {
             Log.e(GenericDeviceService.class.getName(), "error during invoke of " + method.getName() + " for device " + clazz.getSimpleName(), e);
         }

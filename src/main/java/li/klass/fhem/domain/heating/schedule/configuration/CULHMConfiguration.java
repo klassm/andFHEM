@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import com.google.common.collect.ImmutableList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,7 @@ import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
+import li.klass.fhem.util.StateToSet;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -80,19 +83,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         return new DayProfile<>(day, configuration);
     }
 
-    @Override
-    public List<String> generateScheduleCommands(CULHMDevice device, WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile) {
-        List<String> result = newArrayList();
-        List<DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
-        LOG.info("generateScheduleCommands - {} day(s) contain changes", changedDayProfiles.size());
-        for (DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile : changedDayProfiles) {
-            result.add(generateCommandFor(device, dayProfile));
-        }
-
-        return result;
-    }
-
-    public String generateCommandFor(CULHMDevice device, DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
+    public List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
         StringBuilder command = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = newArrayList(dayProfile.getHeatingIntervals());
@@ -110,7 +101,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         char firstChar = shortName.charAt(0);
         shortName = ((char) (firstChar - 'a' + 'A')) + shortName.substring(1);
 
-        return "set " + device.getName() + " tempList" + shortName + " " + command.toString();
+        return ImmutableList.of(new StateToSet("tempList" + shortName, command.toString()));
     }
 
     @Override

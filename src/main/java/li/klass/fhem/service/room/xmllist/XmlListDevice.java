@@ -93,6 +93,10 @@ public class XmlListDevice implements Serializable {
         getAttributes().put(key, new DeviceNode(DeviceNode.DeviceNodeType.ATTR, key, value, measuredNow()));
     }
 
+    public String getName() {
+        return getInternals().get("NAME").getValue();
+    }
+
     @Override
     public String toString() {
         return "XmlListDevice{" +

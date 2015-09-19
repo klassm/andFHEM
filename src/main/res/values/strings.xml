@@ -380,6 +380,9 @@
     <string name="save">Save</string>
     <string name="reset">Reset</string>
 
+    <string name="doneTitle">Done!</string>
+    <string name="heatingConfigurationSaveNotification">The configuration was saved. However, it can take a while until it will show up within the device.</string>
+
     <string name="temperatureGraph">Temperature Graph</string>
     <string name="temperatureHumidityGraph">Temperature &amp; Humidity Graph</string>
     <string name="temperatureHumidityDewpointGraph">Temperature &amp; Humidity &amp; Dewpoint Graph</string>

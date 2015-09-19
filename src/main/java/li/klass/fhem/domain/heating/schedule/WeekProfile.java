@@ -36,6 +36,8 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.configuration.IntervalType;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.util.DayUtil.Day;
 
@@ -79,12 +81,20 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return dayProfiles.get(day);
     }
 
+    public void fillWith(XmlListDevice xmlListDevice) {
+        configuration.fillWith(this, xmlListDevice);
+    }
+
     public void readNode(String key, String value) {
         configuration.readNode(this, key, value);
     }
 
-    public List<String> getSubmitCommands(D device) {
-        return configuration.generateScheduleCommands(device, this);
+    public List<String> getSubmitCommands(String deviceName) {
+        return configuration.generateScheduleCommands(deviceName, this);
+    }
+
+    public List<StateToSet> getStatesToSet(String deviceName) {
+        return configuration.generatedStatesToSet(this);
     }
 
     public void acceptChanges() {

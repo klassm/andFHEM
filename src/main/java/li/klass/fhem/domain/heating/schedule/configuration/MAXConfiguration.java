@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +37,7 @@ import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
+import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
@@ -114,20 +117,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     }
 
     @Override
-    public List<String> generateScheduleCommands(MaxDevice device, WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile) {
-        List<String> result = new ArrayList<>();
-
-        List<? extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
-        for (DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile : changedDayProfiles) {
-            result.add(generateCommandFor(device, dayProfile));
-        }
-
-        return result;
-    }
-
-    protected <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>>
-    String generateCommandFor(MaxDevice device, D dayProfile) {
-
+    protected List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile) {
         StringBuilder builder = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = new ArrayList<>(dayProfile.getHeatingIntervals());
@@ -149,9 +139,8 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         char firstChar = shortName.charAt(0);
         shortName = ((char) (firstChar - 'a' + 'A')) + shortName.substring(1);
 
-        return "set " + device.getName() + " weekProfile " + shortName + " " + builder.toString();
+        return ImmutableList.of(new StateToSet("weekProfile", shortName + " " + builder.toString()));
     }
-
 
     @Override
     public void afterXMLRead(WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile) {
