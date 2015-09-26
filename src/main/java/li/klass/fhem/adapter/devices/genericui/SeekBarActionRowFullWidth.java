@@ -32,19 +32,31 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.util.DimConversionUtil;
+
+import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
 
 public abstract class SeekBarActionRowFullWidth {
-    protected int initialProgress;
+    protected float initialProgress;
     private int layoutId;
-    protected int maximumProgress;
-    protected int minimumProgress;
+    protected float maximumProgress;
+    protected float minimumProgress;
     protected TextView updateView;
+    private float step;
 
-    public SeekBarActionRowFullWidth(int initialProgress, int minimumProgress, int maximumProgress, int layoutId,
+    public SeekBarActionRowFullWidth(float initialProgress, float minimumProgress, float maximumProgress, int layoutId,
                                      TableRow updateRow) {
-        this.initialProgress = initialProgress - minimumProgress;
+        this(initialProgress, minimumProgress, 1, maximumProgress, layoutId, updateRow);
+    }
+
+    public SeekBarActionRowFullWidth(float initialProgress, float minimumProgress, float step, float maximumProgress, int layoutId,
+                                     TableRow updateRow) {
+        this.initialProgress = initialProgress;
         this.maximumProgress = maximumProgress;
         this.minimumProgress = minimumProgress;
+        this.step = step;
+
         this.layoutId = layoutId;
 
         setUpdateRow(updateRow);
@@ -57,15 +69,19 @@ public abstract class SeekBarActionRowFullWidth {
     }
 
     public TableRow createRow(LayoutInflater inflater, FhemDevice device) {
+        return createRow(inflater, device.getXmlListDevice());
+    }
+
+    public TableRow createRow(LayoutInflater inflater, XmlListDevice device) {
         return createRow(inflater, device, 1);
     }
 
-    public TableRow createRow(LayoutInflater inflater, FhemDevice device, int layoutSpan) {
+    public TableRow createRow(LayoutInflater inflater, XmlListDevice device, int layoutSpan) {
         TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setMax(maximumProgress - minimumProgress);
-        seekBar.setProgress(initialProgress);
+        seekBar.setMax(toSeekbarProgress(maximumProgress, minimumProgress, step));
+        seekBar.setProgress(toSeekbarProgress(initialProgress, minimumProgress, step));
 
         if (layoutSpan != 1) {
             TableRow.LayoutParams layoutParams = (TableRow.LayoutParams) seekBar.getLayoutParams();
@@ -76,16 +92,16 @@ public abstract class SeekBarActionRowFullWidth {
         return row;
     }
 
-    private SeekBar.OnSeekBarChangeListener createListener(final FhemDevice device) {
+    private SeekBar.OnSeekBarChangeListener createListener(final XmlListDevice device) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public int progress = initialProgress;
+            public float progress = initialProgress;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-                this.progress = progress + minimumProgress;
+                this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step);
                 if (updateView != null && fromUser) {
-                    SeekBarActionRowFullWidth.this.onProgressChanged(updateView, seekBar.getContext(), device, progress);
+                    SeekBarActionRowFullWidth.this.onProgressChanged(updateView, seekBar.getContext(), device, this.progress);
                 }
             }
 
@@ -100,13 +116,13 @@ public abstract class SeekBarActionRowFullWidth {
         };
     }
 
-    public void onProgressChanged(TextView updateView, Context context, FhemDevice device, int progress) {
+    public void onProgressChanged(TextView updateView, Context context, XmlListDevice device, float progress) {
         updateView.setText(toUpdateText(device, progress));
     }
 
-    public String toUpdateText(FhemDevice device, int progress) {
+    public String toUpdateText(XmlListDevice device, float progress) {
         return progress + "";
     }
 
-    public abstract void onStopTrackingTouch(final Context context, FhemDevice device, int progress);
+    public abstract void onStopTrackingTouch(final Context context, XmlListDevice device, float progress);
 }

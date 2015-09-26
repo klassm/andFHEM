@@ -24,13 +24,36 @@
 
 package li.klass.fhem.adapter.devices.core.generic.detail.actions;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
+
+import java.util.Locale;
+import java.util.Map;
+
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class DeviceDetailActionProvider implements GenericDetailActionProvider {
+    private Map<String, StateAttributeAction> stateAttributeActionMap = Maps.newHashMap();
+
     @Override
     public boolean supports(XmlListDevice xmlListDevice) {
         return xmlListDevice.getType().equalsIgnoreCase(getDeviceType());
     }
 
     protected abstract String getDeviceType();
+
+    @Override
+    public Optional<StateAttributeAction> stateAttributeActionFor(DeviceViewItem item) {
+        String key = item.getSortKey().toLowerCase(Locale.getDefault());
+        if (stateAttributeActionMap.containsKey(key)) {
+            return Optional.of(stateAttributeActionMap.get(key));
+        }
+        return Optional.absent();
+    }
+
+    protected void addStateAttributeAction(String key, StateAttributeAction stateAttributeAction) {
+        stateAttributeActionMap.put(key, stateAttributeAction);
+    }
 }

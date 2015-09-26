@@ -341,13 +341,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public int getDimPosition() {
+    public float getDimPosition() {
         if (subType != DIMMER && subType != SHUTTER) return 0;
         return super.getDimPosition();
     }
 
     @Override
-    public int getDimLowerBound() {
+    public float getDimLowerBound() {
         if (getStateSliderValue() != null) {
             return super.getDimLowerBound();
         }
@@ -355,7 +355,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public int getDimStep() {
+    public float getDimStep() {
         if (getStateSliderValue() != null) {
             return super.getDimStep();
         }
@@ -363,7 +363,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public int getDimUpperBound() {
+    public float getDimUpperBound() {
         if (getStateSliderValue() != null) {
             return super.getDimUpperBound();
         }

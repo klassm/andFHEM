@@ -22,15 +22,15 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.generic.detail.actions;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.state;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-public interface DetailAction {
-    View createView(XmlListDevice device, Context context, LayoutInflater inflater, ViewGroup parent);
+public interface StateAttributeAction {
+    TableRow createRow(XmlListDevice device, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent);
 }

@@ -74,7 +74,7 @@ public class PioneerAvrZoneDeviceAdapter extends ToggleableAdapter {
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), ((PioneerAvrZoneDevice) device).getInput(), "input")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
 

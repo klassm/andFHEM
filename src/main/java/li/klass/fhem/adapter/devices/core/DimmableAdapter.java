@@ -104,8 +104,8 @@ public class DimmableAdapter extends ToggleableAdapter {
             dim(context, dimmableDevice, dimmableDevice.getDimDownPosition());
         }
 
-        protected void dim(Context context, DimmableDevice device, int newPosition) {
-            int currentPosition = device.getDimPosition();
+        protected void dim(Context context, DimmableDevice device, float newPosition) {
+            float currentPosition = device.getDimPosition();
             if (currentPosition != newPosition) {
                 stateUiService.setDim(device, newPosition, context);
             }

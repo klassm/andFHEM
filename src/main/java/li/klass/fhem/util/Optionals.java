@@ -22,26 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.util;
 
-import org.junit.Test;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+public class Optionals {
+    public static final Predicate<Optional<?>> PRESENT = new Predicate<Optional<?>>() {
+        @Override
+        public boolean apply(Optional<?> input) {
+            return input.isPresent();
+        }
+    };
 
-public class TemperatureChangeTableRowTest {
-    @Test
-    public void testDimProgressToTemperature() {
-        assertThat(TemperatureChangeTableRow.dimProgressToTemperature(50, 5.5), is(30.5));
-        assertThat(TemperatureChangeTableRow.dimProgressToTemperature(20, 5.5), is(15.5));
-        assertThat(TemperatureChangeTableRow.dimProgressToTemperature(10, 5.5), is(10.5));
+    public static <T> Function<Optional<T>, T> get() {
+        return new Function<Optional<T>, T>() {
+            @Override
+            public T apply(Optional<T> input) {
+                return input.get();
+            }
+        };
     }
-
-    @Test
-    public void testTemperatureToDimProgress() {
-        assertThat(TemperatureChangeTableRow.temperatureToDimProgress(30.5, 5.5), is(50));
-        assertThat(TemperatureChangeTableRow.temperatureToDimProgress(15.5, 5.5), is(20));
-        assertThat(TemperatureChangeTableRow.temperatureToDimProgress(10.5, 5.5), is(10));
-    }
-
 }

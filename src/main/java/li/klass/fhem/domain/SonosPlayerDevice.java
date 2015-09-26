@@ -30,6 +30,7 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
+import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
 public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> implements VolumeDevice {
@@ -153,7 +154,7 @@ public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> implements 
         return "yes".equals(mute);
     }
 
-    public int getVolumeAsInt() {
-        return Integer.valueOf(volume);
+    public float getVolumeAsFloat() {
+        return ValueExtractUtil.extractLeadingFloat(volume);
     }
 }

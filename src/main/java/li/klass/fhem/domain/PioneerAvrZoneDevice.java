@@ -31,7 +31,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
 public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice> implements VolumeDevice {
@@ -76,8 +76,8 @@ public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice>
     }
 
     @Override
-    public int getVolumeAsInt() {
-        return extractLeadingInt(volume);
+    public float getVolumeAsFloat() {
+        return extractLeadingFloat(volume);
     }
 
     @Override

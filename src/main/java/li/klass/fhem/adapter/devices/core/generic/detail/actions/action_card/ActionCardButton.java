@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.generic.detail.actions;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -33,15 +33,15 @@ import android.widget.Button;
 import li.klass.fhem.R;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-public abstract class DetailButtonAction implements DetailAction {
+public abstract class ActionCardButton implements ActionCardAction {
 
     private final String buttonText;
 
-    public DetailButtonAction(String buttonText) {
+    public ActionCardButton(String buttonText) {
         this.buttonText = buttonText;
     }
 
-    public DetailButtonAction(int buttonText, Context context) {
+    public ActionCardButton(int buttonText, Context context) {
         this.buttonText = context.getString(buttonText);
     }
 
@@ -52,7 +52,7 @@ public abstract class DetailButtonAction implements DetailAction {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DetailButtonAction.this.onClick(device, context);
+                ActionCardButton.this.onClick(device, context);
             }
         });
 

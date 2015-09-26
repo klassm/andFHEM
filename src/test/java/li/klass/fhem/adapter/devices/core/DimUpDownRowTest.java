@@ -71,16 +71,16 @@ public class DimUpDownRowTest {
     @DataProvider
     public static Object[][] UP_DOWN_PROVIDER() {
         return new Object[][]{
-                {0, 0, 1, Optional.absent(), Optional.of(1)},
-                {49, 48, 50, Optional.of(48), Optional.of(50)},
-                {100, 99, 100, Optional.of(99), Optional.absent()}
+                {0f, 0f, 1f, Optional.absent(), Optional.of(1)},
+                {49f, 48f, 50f, Optional.of(48), Optional.of(50)},
+                {100f, 99f, 100f, Optional.of(99), Optional.absent()}
         };
     }
 
     @SuppressWarnings("unchecked")
     @Test
     @UseDataProvider("UP_DOWN_PROVIDER")
-    public void should_dim_up(int currentProgress, int dimDownProgress, int dimUpProgress,
+    public void should_dim_up(float currentProgress, float dimDownProgress, float dimUpProgress,
                               @SuppressWarnings("unused") Optional<Integer> expectedDimDownCommand,
                               Optional<Integer> expectedDimUpCommand) {
         // given
@@ -102,7 +102,7 @@ public class DimUpDownRowTest {
     @SuppressWarnings("unchecked")
     @Test
     @UseDataProvider("UP_DOWN_PROVIDER")
-    public void should_dim_down(int currentProgress, int dimDownProgress, int dimUpProgress,
+    public void should_dim_down(float currentProgress, float dimDownProgress, float dimUpProgress,
                                 Optional<Integer> expectedDimDownCommand,
                                 @SuppressWarnings("unused") Optional<Integer> expectedDimUpCommand) {
         // given

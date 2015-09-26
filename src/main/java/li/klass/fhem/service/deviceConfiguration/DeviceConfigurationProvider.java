@@ -55,7 +55,7 @@ public class DeviceConfigurationProvider {
     public static final String MARKERS = "markers";
     private static final String SHOW_STATE_IN_OVERVIEW = "showStateInOverview";
     private static final String SHOW_MEASURED_IN_OVERVIEW = "showMeasuredInOverview";
-    public static final String SHOW_AFTER = "SHOW_AFTER";
+    public static final String SHOW_AFTER = "showAfter";
     private static final String ATTRIBUTES = "attributes";
     private static final String INTERNALS = "internals";
     private final JSONObject options;

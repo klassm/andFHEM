@@ -37,7 +37,7 @@ public class YamahaAVRDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.isMuted()).isTrue();
         assertThat(device.getInput()).isEqualTo("netradio");
-        assertThat(device.getVolumeAsInt()).isEqualTo(-53);
+        assertThat(device.getVolumeAsFloat()).isEqualTo(-53);
         assertThat(device.getState()).isEqualTo("off");
     }
 

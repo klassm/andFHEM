@@ -31,7 +31,6 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Map;
 
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
@@ -39,10 +38,10 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
-class ContinuousDimmableBehavior implements DimmableTypeBehavior {
-    private static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
+public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
+    public static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
     private SetListSliderValue slider;
     private String setListAttribute;
 
@@ -52,17 +51,17 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public int getDimLowerBound() {
+    public float getDimLowerBound() {
         return slider.getStart();
     }
 
     @Override
-    public int getDimStep() {
+    public float getDimStep() {
         return slider.getStep();
     }
 
     @Override
-    public int getCurrentDimPosition(FhemDevice device) {
+    public float getCurrentDimPosition(FhemDevice device) {
         String value = getValue(device).getValue();
         return getPositionForDimState(value);
     }
@@ -73,12 +72,12 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public int getDimUpperBound() {
+    public float getDimUpperBound() {
         return slider.getStop();
     }
 
     @Override
-    public String getDimStateForPosition(FhemDevice fhemDevice, int position) {
+    public String getDimStateForPosition(FhemDevice fhemDevice, float position) {
         if (setListAttribute.equalsIgnoreCase("state")) {
             if (position == getDimLowerBound()) {
                 return "off";
@@ -86,17 +85,17 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
                 return "on";
             }
         }
-        return position + "";
+        return (position + "").replace(".0", "");
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
+    public float getPositionForDimState(String dimState) {
         if ("on".equalsIgnoreCase(dimState)) {
             return getDimUpperBound();
         } else if ("off".equalsIgnoreCase(dimState)) {
             return getDimLowerBound();
         }
-        return extractLeadingInt(dimState);
+        return extractLeadingFloat(dimState);
     }
 
     public SetListSliderValue getSlider() {
@@ -109,7 +108,7 @@ class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, int state) {
+    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state) {
         stateUiService.setSubState(fhemDevice, setListAttribute, getDimStateForPosition(fhemDevice, state), context);
     }
 

@@ -78,12 +78,12 @@ public class OnkyoAvrDeviceAdapter extends ToggleableAdapter {
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), avrDevice.getInput(), "input")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
 
                 SetListGroupValue sleepSetList = (SetListGroupValue) device.getSetList().get("sleep");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.sleep, R.string.sleep, sleepSetList.getGroupStates(), avrDevice.getSleep(), "sleep")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
 

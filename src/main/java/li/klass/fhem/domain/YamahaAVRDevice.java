@@ -62,7 +62,7 @@ public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> implement
     }
 
     @Override
-    public int getVolumeAsInt() {
+    public float getVolumeAsFloat() {
         return volume;
     }
 

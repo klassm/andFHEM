@@ -73,7 +73,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), ((PioneerAvrDevice) device).getInput(), "input")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
 
@@ -91,7 +91,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
                 SetListGroupValue listeningModeSetList = (SetListGroupValue) device.getSetList().get("listeningMode");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.audioMode, R.string.audioMode, listeningModeSetList.getGroupStates(), ((PioneerAvrDevice) device).getListeningMode(), "listeningMode")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
     }

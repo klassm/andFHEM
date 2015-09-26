@@ -30,19 +30,19 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
 interface DimmableTypeBehavior {
-    int getDimLowerBound();
+    float getDimLowerBound();
 
-    int getDimUpperBound();
+    float getDimUpperBound();
 
-    int getDimStep();
+    float getDimStep();
 
-    int getCurrentDimPosition(FhemDevice device);
+    float getCurrentDimPosition(FhemDevice device);
 
-    String getDimStateForPosition(FhemDevice fhemDevice, int position);
+    String getDimStateForPosition(FhemDevice fhemDevice, float position);
 
-    int getPositionForDimState(String dimState);
+    float getPositionForDimState(String dimState);
 
     String getStateName();
 
-    void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, int state);
+    void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state);
 }

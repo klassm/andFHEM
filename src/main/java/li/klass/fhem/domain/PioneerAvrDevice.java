@@ -56,8 +56,8 @@ public class PioneerAvrDevice extends ToggleableDevice<PioneerAvrDevice> impleme
     }
 
     @Override
-    public int getVolumeAsInt() {
-        return ValueExtractUtil.extractLeadingInt(volume);
+    public float getVolumeAsFloat() {
+        return ValueExtractUtil.extractLeadingFloat(volume);
     }
 
     public String getMute() {

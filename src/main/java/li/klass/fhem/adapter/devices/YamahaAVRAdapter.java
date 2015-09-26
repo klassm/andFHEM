@@ -86,7 +86,7 @@ public class YamahaAVRAdapter extends ToggleableAdapter {
                 SetListGroupValue groupValue = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context, R.string.input, R.string.input,
                         groupValue.getGroupStates(), ((YamahaAVRDevice) device).getInput(), "input")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
     }

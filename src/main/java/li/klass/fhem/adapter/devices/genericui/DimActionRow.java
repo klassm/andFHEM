@@ -25,24 +25,19 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.util.DimConversionUtil;
 
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
-import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
 
 public class DimActionRow {
     private final StateUiService stateUiService;
@@ -72,8 +67,8 @@ public class DimActionRow {
 
         DimmableDevice dimmableDevice = (DimmableDevice) device;
         seekBar.setOnSeekBarChangeListener(createListener(behavior));
-        seekBar.setMax(behavior.getDimUpperBound());
-        seekBar.setProgress(behavior.getCurrentDimPosition());
+        seekBar.setMax(toSeekbarProgress(behavior.getDimUpperBound(), behavior.getDimLowerBound(), behavior.getDimStep()));
+        seekBar.setProgress(toSeekbarProgress(behavior.getCurrentDimPosition(), behavior.getDimLowerBound(), behavior.getDimStep()));
         description.setText(dimmableDevice.getAliasOrName());
         if (updateRow != null) {
             updateView = (TextView) updateRow.findViewById(R.id.value);
@@ -83,14 +78,14 @@ public class DimActionRow {
     private SeekBar.OnSeekBarChangeListener createListener(final DimmableBehavior behavior) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public int progress = behavior.getCurrentDimPosition();
+            public float progress = behavior.getCurrentDimPosition();
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-                this.progress = progress;
+                this.progress = DimConversionUtil.toDimState(progress, behavior.getDimLowerBound(), behavior.getDimStep());
 
                 if (updateView != null) {
-                    updateView.setText(behavior.getDimStateForPosition(progress));
+                    updateView.setText(behavior.getDimStateForPosition(this.progress));
                 }
             }
 

@@ -64,7 +64,7 @@ public class SBPlayerDevice extends ToggleableDevice<SBPlayerDevice> implements 
     }
 
     @Override
-    public int getVolumeAsInt() {
-        return ValueExtractUtil.extractLeadingInt(volume);
+    public float getVolumeAsFloat() {
+        return ValueExtractUtil.extractLeadingFloat(volume);
     }
 }

@@ -45,12 +45,10 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
@@ -61,7 +59,6 @@ import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.service.device.AtService;
 import li.klass.fhem.service.device.DeviceService;
 import li.klass.fhem.service.device.DimmableDeviceService;
-import li.klass.fhem.service.device.FHTService;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.device.HeatingService;
@@ -77,16 +74,13 @@ import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
-import static li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_COMFORT_TEMPERATURE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_ECO_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_MODE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES;
@@ -112,8 +106,6 @@ public class DeviceIntentService extends ConvenientIntentService {
 
     @Inject
     RoomListService roomListService;
-    @Inject
-    FHTService fhtService;
     @Inject
     HeatingService heatingService;
     @Inject
@@ -167,21 +159,8 @@ public class DeviceIntentService extends ConvenientIntentService {
             result = setStateIntent(intent, device);
         } else if (DEVICE_DIM.equals(action)) {
             result = dimIntent(intent, device);
-        } else if (DEVICE_SET_DAY_TEMPERATURE.equals(action)) {
-            double dayTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            fhtService.setDayTemperature((FHTDevice) device, dayTemperature, this);
-        } else if (DEVICE_SET_NIGHT_TEMPERATURE.equals(action)) {
-            double nightTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            fhtService.setNightTemperature((FHTDevice) device, nightTemperature, this);
         } else if (DEVICE_SET_MODE.equals(action)) {
-            if (device instanceof FHTDevice) {
-                FHTMode mode = (FHTMode) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
-                double desiredTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, FHTDevice.MINIMUM_TEMPERATURE);
-                int holiday1 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY1, -1);
-                int holiday2 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY2, -1);
-
-                fhtService.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2, this);
-            } else if (device instanceof HeatingDevice) {
+            if (device instanceof HeatingDevice) {
                 Enum mode = (Enum) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
                 HeatingDevice heatingDevice = (HeatingDevice) device;
 
@@ -219,14 +198,10 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_RESET_WEEK_PROFILE.equals(action)) {
             if (!(device instanceof HeatingDevice)) return ERROR;
             heatingService.resetWeekProfile((HeatingDevice) device);
-
-        } else if (DEVICE_REFRESH_VALUES.equals(action)) {
-            fhtService.refreshValues((FHTDevice) device, this);
-
         } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName, this);
-            notificationService.rename(device.getName(), newName, this);
+            notificationService.rename(deviceName, newName, this);
 
         } else if (DEVICE_DELETE.equals(action)) {
             deviceService.deleteDevice(device, this);
@@ -257,7 +232,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_SET_SUB_STATES.equals(action)) {
             @SuppressWarnings("unchecked")
             List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
-            String value = intent.getStringExtra(STATE_VALUE);
 
             genericDeviceService.setSubStates(device, statesToSet, this);
 
@@ -346,7 +320,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private STATE dimIntent(Intent intent, FhemDevice device) {
-        int dimProgress = intent.getIntExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
+        float dimProgress = intent.getFloatExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
         if (device instanceof DimmableDevice) {
             dimmableDeviceService.dim((DimmableDevice) device, dimProgress, this);
             return STATE.SUCCESS;
@@ -354,6 +328,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         return STATE.ERROR;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private STATE processTimerIntent(Intent intent, boolean isModify) {
         Bundle extras = intent.getExtras();
 

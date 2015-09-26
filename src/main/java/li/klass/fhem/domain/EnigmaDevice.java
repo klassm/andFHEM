@@ -193,7 +193,7 @@ public class EnigmaDevice extends ToggleableDevice<EnigmaDevice> implements Volu
     }
 
     @Override
-    public int getVolumeAsInt() {
-        return ValueExtractUtil.extractLeadingInt(volume);
+    public float getVolumeAsFloat() {
+        return ValueExtractUtil.extractLeadingFloat(volume);
     }
 }

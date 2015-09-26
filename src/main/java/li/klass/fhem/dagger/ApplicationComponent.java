@@ -37,7 +37,6 @@ import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
-import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
@@ -167,8 +166,6 @@ public interface ApplicationComponent {
     void inject(DummyAdapter object);
 
     void inject(EnOceanAdapter object);
-
-    void inject(FHTAdapter object);
 
     void inject(FloorplanAdapter object);
 

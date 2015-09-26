@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.util.DayUtil;
@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FHTConfigurationTest {
 
     private FHTConfiguration configuration = new FHTConfiguration();
-    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile;
+    private WeekProfile<FromToHeatingInterval, FHTConfiguration, GenericDevice> weekProfile;
 
     @Before
     public void before() {
@@ -62,10 +62,10 @@ public class FHTConfigurationTest {
 
     @Test
     public void testGenerateCommandParts() {
-        FHTDevice device = new FHTDevice();
+        GenericDevice device = new GenericDevice();
         device.setName("name");
 
-        WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<>(configuration);
+        WeekProfile<FromToHeatingInterval, FHTConfiguration, GenericDevice> weekProfile = new WeekProfile<>(configuration);
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedFromTime("03:25");
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(1).setChangedFromTime("06:25");
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedToTime("04:25");

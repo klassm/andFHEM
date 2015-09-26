@@ -27,7 +27,7 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import java.util.List;
 import java.util.Locale;
 
-import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
@@ -37,7 +37,7 @@ import li.klass.fhem.util.StateToSet;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, FHTDevice, FHTConfiguration> {
+public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, GenericDevice, FHTConfiguration> {
     public static final String OFF_TIME = "00:00";
 
     public FHTConfiguration() {
@@ -45,7 +45,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     @Override
-    public void readNode(WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile, String key, String value) {
+    public void readNode(WeekProfile<FromToHeatingInterval, FHTConfiguration, GenericDevice> weekProfile, String key, String value) {
         key = key.toUpperCase(Locale.getDefault());
         if (!key.endsWith("FROM1") && !key.endsWith("FROM2") && !key.endsWith("TO1") && !key.endsWith("TO2")) {
             return;
@@ -56,7 +56,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
         if (day == null) return;
 
-        DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile = weekProfile.getDayProfileFor(day);
+        DayProfile<FromToHeatingInterval, GenericDevice, FHTConfiguration> dayProfile = weekProfile.getDayProfileFor(day);
         Reject.ifNull(dayProfile);
 
         int intervalId = (key.charAt(key.length() - 1) - '0') - 1;
@@ -74,7 +74,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     @Override
-    protected List<StateToSet> generateStateToSetFor(DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile) {
+    protected List<StateToSet> generateStateToSetFor(DayProfile<FromToHeatingInterval, GenericDevice, FHTConfiguration> dayProfile) {
         DayUtil.Day day = dayProfile.getDay();
         String shortDayName = DayUtil.getShortNameFor(day);
         List<StateToSet> result = newArrayList();
@@ -94,63 +94,6 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
         }
         return result;
     }
-//
-//    public List<String> generateScheduleCommands(String deviceName,
-//                                                 WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile) {
-//        List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
-//        if (changedDayProfiles.size() == 0) return Collections.emptyList();
-//
-//        List<String> commandParts = generateCommandParts(changedDayProfiles);
-//        return generateCommands(deviceName, commandParts);
-//    }
-//
-//    protected List<String> generateCommandParts(List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles) {
-//        List<String> commandParts = new ArrayList<>();
-//
-//        for (DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile : changedDayProfiles) {
-//            DayUtil.Day day = dayProfile.getDay();
-//            String shortDayName = DayUtil.getShortNameFor(day);
-//
-//            for (int i = 0; i < dayProfile.getNumberOfHeatingIntervals(); i++) {
-//                FromToHeatingInterval heatingInterval = dayProfile.getHeatingIntervalAt(i);
-//
-//                if (heatingInterval.isModified()) {
-//
-//                    if (!heatingInterval.getFromTime().equals(heatingInterval.getChangedFromTime())) {
-//                        commandParts.add(shortDayName + "-from" + (i + 1) + " " + heatingInterval.getChangedFromTime());
-//                    }
-//                    if (!heatingInterval.getToTime().equals(heatingInterval.getChangedToTime())) {
-//                        commandParts.add(shortDayName + "-to" + (i + 1) + " " + heatingInterval.getChangedToTime());
-//                    }
-//                }
-//            }
-//        }
-//
-//        return commandParts;
-//    }
-//
-//    protected List<String> generateCommands(String deviceName, List<String> commandParts) {
-//        List<String> commands = new ArrayList<>();
-//        StringBuilder currentCommand = new StringBuilder();
-//        int currentCommandSize = 0;
-//
-//        for (String commandPart : commandParts) {
-//            if (currentCommandSize >= 8) {
-//                commands.add("set " + deviceName + " " + currentCommand.toString().trim());
-//                currentCommand = new StringBuilder();
-//                currentCommandSize = 0;
-//            }
-//            currentCommand.append(commandPart).append(" ");
-//
-//            currentCommandSize++;
-//        }
-//
-//        if (currentCommand.length() > 0) {
-//            commands.add("set " + deviceName + " " + currentCommand.toString().trim());
-//        }
-//
-//        return commands;
-//    }
 
     @Override
     public FromToHeatingInterval createHeatingInterval() {
@@ -158,7 +101,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     @Override
-    public DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> createDayProfileFor(DayUtil.Day day, FHTConfiguration configuration) {
+    public DayProfile<FromToHeatingInterval, GenericDevice, FHTConfiguration> createDayProfileFor(DayUtil.Day day, FHTConfiguration configuration) {
         return new DayProfile<>(day, configuration);
     }
 

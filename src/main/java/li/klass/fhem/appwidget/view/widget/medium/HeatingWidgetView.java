@@ -34,8 +34,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class HeatingWidgetView extends DeviceAppWidgetView {
     @Override
@@ -50,21 +50,23 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
-        FHTDevice fhtDevice = (FHTDevice) device;
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
 
-        if (fhtDevice.getWarnings() != null && fhtDevice.getWarnings().toLowerCase(Locale.getDefault()).contains("open")) {
+        String warnings = xmlListDevice.getState("warnings").get();
+        String temperature = xmlListDevice.getState("temperature").get();
+        String desiredTemp = xmlListDevice.getState("desired-temp").get();
+
+        if (warnings != null && warnings.toLowerCase(Locale.getDefault()).contains("open")) {
             view.setViewVisibility(R.id.windowOpen, View.VISIBLE);
         } else {
             view.setViewVisibility(R.id.windowOpen, View.GONE);
         }
 
         String target = context.getString(R.string.target);
-        String temperature = fhtDevice.getTemperature();
         setTextViewOrHide(view, R.id.temperature, temperature);
 
-        String desiredTempDesc = fhtDevice.getDesiredTempDesc();
-        if (temperature != null && desiredTempDesc != null) {
-            String text = target + ": " + desiredTempDesc;
+        if (temperature != null && desiredTemp != null) {
+            String text = target + ": " + desiredTemp;
             setTextViewOrHide(view, R.id.additional, text);
         } else {
             view.setViewVisibility(R.id.additional, View.GONE);
@@ -75,7 +77,10 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
 
     @Override
     public boolean supports(FhemDevice<?> device) {
-        return device instanceof FHTDevice;
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
+        return xmlListDevice.containsState("warnings")
+                && xmlListDevice.containsState("temperature")
+                && xmlListDevice.containsState("desired-temp");
     }
 
     @Override

@@ -210,7 +210,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
                     } else if (setListValue instanceof SetListGroupValue) {
                         SetListGroupValue groupValue = (SetListGroupValue) setListValue;
                         tableLayout.addView(new StateChangingSpinnerActionRow(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
-                                .createRow(device, tableLayout));
+                                .createRow(device.getXmlListDevice(), tableLayout));
                     }
                 }
             });

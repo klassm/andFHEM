@@ -99,6 +99,8 @@ public class DeviceConfiguration implements Serializable {
             this.desc = checkNotNull(desc);
             this.markers = checkNotNull(markers);
             this.showInOverview = showInOverview;
+            this.showAfter = showAfter;
+            this.showInDetail = showInDetail;
         }
 
         public String getKey() {

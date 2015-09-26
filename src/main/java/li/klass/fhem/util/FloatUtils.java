@@ -25,6 +25,10 @@
 package li.klass.fhem.util;
 
 public class FloatUtils {
+    public static boolean isEqual(float float1, float float2) {
+        return isEqual(float1, float2, 0.001f);
+    }
+
     public static boolean isEqual(float float1, float float2, float offset) {
         return Math.abs(float1 - float2) <= offset;
     }

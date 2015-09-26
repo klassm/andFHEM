@@ -25,18 +25,19 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.util.ValueExtractUtil;
 
 public class HM485Device extends DimmableContinuousStatesDevice<HM485Device> {
     @Override
-    public String getDimStateForPosition(int position) {
-        return "level " + position;
+    public String getDimStateNameForDimStateValue(float value) {
+        return "level " + (int) value;
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
+    public float getPositionForDimState(String dimState) {
         if (!dimState.matches("level_[0-9]+")) return 0;
 
-        return Integer.valueOf(dimState.replaceAll("level_", ""));
+        return ValueExtractUtil.extractLeadingFloat(dimState.replaceAll("level_", ""));
     }
 
     @Override

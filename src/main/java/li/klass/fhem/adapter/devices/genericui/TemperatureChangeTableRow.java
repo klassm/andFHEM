@@ -34,20 +34,19 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton {
     private double newTemperature;
     private String intentAction;
     private int valueStringId;
     private Context context;
-    private double minTemperature;
     private boolean sendIntents = true;
     private ApplicationProperties applicationProperties;
 
@@ -62,32 +61,25 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
     public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                      String intentAction, int valueStringId, double minTemperature,
                                      double maxTemperature, ApplicationProperties applicationProperties) {
-        super(context, temperatureToDimProgress(initialTemperature, minTemperature), 0,
-                temperatureToDimProgress(maxTemperature, minTemperature), updateTableRow);
+        super(context, (float) initialTemperature, 0.5f, (float) minTemperature, (float) maxTemperature, updateTableRow);
 
-        this.minTemperature = minTemperature;
         this.intentAction = intentAction;
         this.valueStringId = valueStringId;
         this.context = context;
         this.applicationProperties = applicationProperties;
-    }
+        this.newTemperature = initialProgress;
 
-    public static int temperatureToDimProgress(double temperature, double minTemperature) {
-        return (int) ((temperature - minTemperature) / 0.5);
-    }
-
-    @Override
-    public void onProgressChanged(TextView updateView, Context context, FhemDevice device, int progress) {
-        this.newTemperature = dimProgressToTemperature(progress, minTemperature);
-        updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
-    }
-
-    public static double dimProgressToTemperature(double progress, double minTemperature) {
-        return minTemperature + (progress * 0.5);
+        updateView.setText(appendTemperature(initialTemperature));
     }
 
     @Override
-    public void onStopTrackingTouch(final Context seekBarContext, final FhemDevice device, int progress) {
+    public void onProgressChanged(TextView updateView, Context context, XmlListDevice device, float progress) {
+        this.newTemperature = progress;
+        updateView.setText(appendTemperature(newTemperature));
+    }
+
+    @Override
+    public void onStopTrackingTouch(final Context seekBarContext, final XmlListDevice device, float progress) {
         if (!sendIntents) return;
         if (progress == initialProgress) return;
 
@@ -107,29 +99,29 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
         Resources resources = context.getResources();
 
         String attributeText = resources.getString(attributeStringId);
-        String temperatureText = ValueDescriptionUtil.appendTemperature(newTemperature);
+        String temperatureText = appendTemperature(newTemperature);
 
         String text = resources.getString(R.string.areYouSureText);
         return String.format(text, attributeText, temperatureText);
     }
 
-    private void setValue(FhemDevice device, double newValue) {
-        Intent intent = new Intent(intentAction);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
+    private void setValue(XmlListDevice device, double newValue) {
+        Intent intent = new Intent(intentAction)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
         onIntentCreation(intent);
 
         context.startService(intent);
 
-        updateView.setText(ValueDescriptionUtil.appendTemperature(newValue));
+        updateView.setText(appendTemperature(newValue));
     }
 
     protected void onIntentCreation(Intent intent) {
     }
 
     @Override
-    public void onButtonSetValue(FhemDevice device, int value) {
+    public void onButtonSetValue(XmlListDevice device, int value) {
         setValue(device, value);
     }
 

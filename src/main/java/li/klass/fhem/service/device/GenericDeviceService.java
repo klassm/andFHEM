@@ -48,6 +48,7 @@ import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.util.Tasker;
 
 import static com.google.common.collect.FluentIterable.from;
+import static li.klass.fhem.behavior.dim.ContinuousDimmableBehavior.DIM_ATTRIBUTES;
 
 @Singleton
 public class GenericDeviceService {
@@ -99,7 +100,11 @@ public class GenericDeviceService {
         Tasker.sendTaskerNotifyIntent(context, device.getName(),
                 subStateName, value);
 
-        invokeDeviceUpdateFor(device, subStateName, value);
+        if (DIM_ATTRIBUTES.contains(subStateName)) {
+            device.setState(value);
+        } else {
+            invokeDeviceUpdateFor(device, subStateName, value);
+        }
     }
 
     public void setSubStates(FhemDevice device, List<StateToSet> statesToSet, Context context) {
@@ -108,6 +113,9 @@ public class GenericDeviceService {
             ImmutableList<String> parts = from(partitions).transform(FHT_CONCAT).toList();
             for (String toSet : parts) {
                 setState(device, toSet, context, false);
+            }
+            for (StateToSet toSet : statesToSet) {
+                invokeDeviceUpdateFor(device, toSet.getKey(), toSet.getValue());
             }
         } else {
             for (StateToSet toSet : statesToSet) {

@@ -62,7 +62,7 @@ public class StateUiService {
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 
-    public void setDim(DimmableDevice<?> device, int progress, Context context) {
+    public void setDim(DimmableDevice<?> device, float progress, Context context) {
         context.startService(new Intent(Actions.DEVICE_DIM)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)

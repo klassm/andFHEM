@@ -27,46 +27,30 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 import android.widget.TableRow;
 
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
+
+import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
 
 public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWidth {
 
-    private final int lowerBound;
-    private final int dimStep;
-    private final int upperBound;
-
-    public DeviceDimActionRowFullWidth(int dimState, int lowerBound, int dimStep, int upperBound, TableRow updateRow, int layoutId) {
+    public DeviceDimActionRowFullWidth(float dimState, float lowerBound, float dimStep, float upperBound, TableRow updateRow, int layoutId) {
         super(
-                toDimProgress(dimState, lowerBound, dimStep),
+                toSeekbarProgress(dimState, lowerBound, dimStep),
                 0,
-                toDimProgress(upperBound, lowerBound, dimStep),
+                toSeekbarProgress(upperBound, lowerBound, dimStep),
                 layoutId, updateRow);
-
-        this.lowerBound = lowerBound;
-        this.dimStep = dimStep;
-        this.upperBound = upperBound;
     }
 
-    public void onStopTrackingTouch(final Context context, FhemDevice device, int progress) {
-        int dimProgress = dimProgressToDimState(progress, lowerBound, dimStep);
-        onStopDim(context, device, dimProgress);
+    public void onStopTrackingTouch(final Context context, XmlListDevice device, float progress) {
+        onStopDim(context, device, progress);
     }
 
     @Override
-    public String toUpdateText(FhemDevice device, int progress) {
-        int dimProgress = dimProgressToDimState(progress, lowerBound, dimStep);
-        return toDimUpdateText(device, dimProgress);
+    public String toUpdateText(XmlListDevice device, float progress) {
+        return toDimUpdateText(device, progress);
     }
 
-    public abstract void onStopDim(Context context, FhemDevice device, int progress);
+    public abstract void onStopDim(Context context, XmlListDevice device, float progress);
 
-    public abstract String toDimUpdateText(FhemDevice device, int progress);
-
-    static int toDimProgress(int progress, int lowerBound, int step) {
-        return (progress - lowerBound) / step;
-    }
-
-    static int dimProgressToDimState(int progress, int lowerBound, int step) {
-        return progress * step + lowerBound;
-    }
+    public abstract String toDimUpdateText(XmlListDevice device, float progress);
 }

@@ -78,7 +78,7 @@ public class DimWidgetView extends DeviceAppWidgetView {
     }
 
     private void update(Context context, DimmableDevice device, RemoteViews view, int widgetId, ResultReceiver resultReceiver) {
-        view.setTextViewText(R.id.state, device.getDimStateForPosition(device.getDimPosition()));
+        view.setTextViewText(R.id.state, device.getDimStateNameForDimStateValue(device.getDimPosition()));
 
         Intent dimDownIntent = sendTargetDimState(context, device, "dimdown", resultReceiver);
         view.setOnClickPendingIntent(R.id.dimDown, PendingIntent.getService(context, (widgetId + "dimDown").hashCode(), dimDownIntent,

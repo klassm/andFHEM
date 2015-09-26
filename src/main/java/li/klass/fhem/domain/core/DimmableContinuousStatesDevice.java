@@ -26,25 +26,26 @@ package li.klass.fhem.domain.core;
 
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.util.FloatUtils;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
 public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> extends DimmableDevice<D> {
     @Override
-    public String getDimStateForPosition(int position) {
+    public String getDimStateNameForDimStateValue(float value) {
         if (supportsOnOffDimMapping()) {
-            if (position == getDimUpperBound()) return getEventMapStateFor("on");
-            if (position == getDimLowerBound()) return getEventMapStateFor("off");
+            if (FloatUtils.isEqual(value, getDimUpperBound())) return getEventMapStateFor("on");
+            if (FloatUtils.isEqual(value, getDimLowerBound())) return getEventMapStateFor("off");
         }
 
         String prefix = getSetListDimStateAttributeName().equals("state") ? "" : getSetListDimStateAttributeName() + " ";
-        return prefix + position;
+        return prefix + value;
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
+    public float getPositionForDimState(String dimState) {
         dimState = dimState.replaceAll(getSetListDimStateAttributeName(), "").replaceAll("[\\(\\)% ]", "");
         if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState) || getOnStateName().equals(dimState))
             return getDimUpperBound();
@@ -52,7 +53,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
             return getDimLowerBound();
         if (!isDecimalNumber(dimState)) return 0;
 
-        return extractLeadingInt(dimState);
+        return extractLeadingFloat(dimState);
     }
 
     @Override
@@ -73,7 +74,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
     }
 
     @Override
-    public int getDimLowerBound() {
+    public float getDimLowerBound() {
         SetListSliderValue stateSliderValue = getStateSliderValue();
         if (stateSliderValue == null) return 0;
 
@@ -81,7 +82,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
     }
 
     @Override
-    public int getDimUpperBound() {
+    public float getDimUpperBound() {
         SetListSliderValue stateSliderValue = getStateSliderValue();
         if (stateSliderValue == null) return 100;
 
@@ -89,7 +90,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
     }
 
     @Override
-    public int getDimStep() {
+    public float getDimStep() {
         SetListSliderValue stateSliderValue = getStateSliderValue();
         if (stateSliderValue == null) return 1;
 

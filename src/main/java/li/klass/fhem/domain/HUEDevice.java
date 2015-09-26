@@ -88,10 +88,10 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
     @Override
     public void setState(String state) {
         if (state.equals("off")) pct = 0;
-        if (state.equals("on")) pct = getDimUpperBound();
+        if (state.equals("on")) pct = (int) getDimUpperBound();
 
         if (state.startsWith("pct")) {
-            pct = getPositionForDimState(state);
+            pct = (int) getPositionForDimState(state);
             super.setState(ValueDescriptionUtil.appendPercent(pct));
         } else {
             super.setState(state);

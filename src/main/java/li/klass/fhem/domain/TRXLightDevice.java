@@ -33,13 +33,12 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
 public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice> {
 
-    private static final ArrayList<String> dimLevels = new ArrayList<String>();
+    private static final ArrayList<String> dimLevels = new ArrayList<>();
 
     static {
         dimLevels.add("off");
@@ -78,7 +77,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
+    public float getPositionForDimState(String dimState) {
         if (dimState.equals("on")) {
             dimState = "level 15";
         }

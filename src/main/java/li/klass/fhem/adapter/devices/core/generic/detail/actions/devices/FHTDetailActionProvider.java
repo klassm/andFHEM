@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.generic.detail.actions;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,24 +31,35 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.ModeStateOverwrite;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.service.DateService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class FHTDetailActionProvider extends DeviceDetailActionProvider {
-    @Override
-    protected String getDeviceType() {
-        return "FHT";
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+    public static double MINIMUM_TEMPERATURE = 5.5;
+
+    @Inject
+    public FHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
+        addStateAttributeAction("mode", new ModeStateOverwrite(applicationProperties, dateService));
     }
 
     @Override
-    public List<DetailAction> actionsFor(Context context) {
-        return ImmutableList.<DetailAction>of(
-                new DetailButtonAction(R.string.timetable, context) {
+    public List<ActionCardAction> actionsFor(Context context) {
+        return ImmutableList.<ActionCardAction>of(
+                new ActionCardButton(R.string.timetable, context) {
                     @Override
                     protected void onClick(XmlListDevice device, Context context) {
                         context.sendBroadcast(
@@ -59,18 +70,22 @@ public class FHTDetailActionProvider extends DeviceDetailActionProvider {
                         );
                     }
                 },
-                new DetailButtonAction(R.string.requestRefresh, context) {
+                new ActionCardButton(R.string.requestRefresh, context) {
                     @Override
                     protected void onClick(XmlListDevice device, Context context) {
                         context.startService(
-                                new Intent(Actions.DEVICE_REFRESH_VALUES)
+                                new Intent(Actions.DEVICE_SET_STATE)
                                         .setClass(context, DeviceIntentService.class)
                                         .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                                        .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "refreshvalues")
                         );
                     }
-
-
                 }
         );
+    }
+
+    @Override
+    protected String getDeviceType() {
+        return "FHT";
     }
 }

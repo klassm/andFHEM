@@ -86,14 +86,14 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
     }
 
     @Override
-    public String getDimStateForPosition(int position) {
-        return "value " + position + "";
+    public String getDimStateNameForDimStateValue(float value) {
+        return "value " + (int) value + "";
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
+    public float getPositionForDimState(String dimState) {
         dimState = dimState.replace("value", "").trim();
-        return ValueExtractUtil.extractLeadingInt(dimState);
+        return ValueExtractUtil.extractLeadingFloat(dimState);
     }
 
     @Override

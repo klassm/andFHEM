@@ -29,17 +29,17 @@ import java.util.List;
 public abstract class DimmableDiscreteStatesDevice<D extends FhemDevice<D>> extends DimmableDevice<D> {
 
     @Override
-    public int getDimUpperBound() {
+    public float getDimUpperBound() {
         return getDimStates().size() - 1;
     }
 
     @Override
-    public String getDimStateForPosition(int position) {
-        return getDimStates().get(position);
+    public String getDimStateNameForDimStateValue(float value) {
+        return getDimStates().get((int) value);
     }
 
     @Override
-    public int getPositionForDimState(String dimState) {
+    public float getPositionForDimState(String dimState) {
         return getDimStates().indexOf(dimState);
     }
 

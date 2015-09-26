@@ -39,7 +39,7 @@ import li.klass.fhem.domain.setlist.SetList;
 
 import static com.google.common.collect.FluentIterable.from;
 
-class DiscreteDimmableBehavior implements DimmableTypeBehavior {
+public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
 
     public static final Pattern DIM_STATE_PATTERN = Pattern.compile("dim[0-9]+[%]?");
     private static final Predicate<String> DIMMABLE_STATE = new Predicate<String>() {
@@ -70,39 +70,40 @@ class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public int getDimLowerBound() {
+    public float getDimLowerBound() {
         return 0;
     }
 
     @Override
-    public int getDimStep() {
-        return 0;
+    public float getDimStep() {
+        return 1;
     }
 
     @Override
-    public int getCurrentDimPosition(FhemDevice device) {
+    public float getCurrentDimPosition(FhemDevice device) {
         String state = device.getInternalState();
-        int position = getPositionForDimState(state);
+        float position = getPositionForDimState(state);
         return position == -1 ? 0 : position;
     }
 
     @Override
-    public int getDimUpperBound() {
+    public float getDimUpperBound() {
         return foundDimStates.size() + 1;
     }
 
     @Override
-    public String getDimStateForPosition(FhemDevice fhemDevice, int position) {
-        if (position == getDimLowerBound()) {
+    public String getDimStateForPosition(FhemDevice fhemDevice, float position) {
+        int pos = (int) position;
+        if (pos == getDimLowerBound()) {
             return "off";
-        } else if (position == getDimUpperBound()) {
+        } else if (pos == getDimUpperBound()) {
             return "on";
         }
-        return foundDimStates.get(position - 1);
+        return foundDimStates.get(pos - 1);
     }
 
     @Override
-    public int getPositionForDimState(String state) {
+    public float getPositionForDimState(String state) {
         if ("on".equalsIgnoreCase(state)) {
             return getDimUpperBound();
         } else if ("off".equalsIgnoreCase(state)) {
@@ -117,7 +118,7 @@ class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, int state) {
+    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state) {
         stateUiService.setState(fhemDevice, getDimStateForPosition(fhemDevice, state), context);
     }
 }

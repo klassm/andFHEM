@@ -78,6 +78,17 @@ public class XmlListDevice implements Serializable {
         return header;
     }
 
+    public boolean containsState(String state) {
+        return states.containsKey(state);
+    }
+
+    public Optional<String> getState(String state) {
+        if (containsState(state)) {
+            return Optional.of(states.get(state).getValue());
+        }
+        return Optional.absent();
+    }
+
     public void setState(String key, String value) {
         getStates().put(key, new DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow()));
     }
@@ -89,6 +100,7 @@ public class XmlListDevice implements Serializable {
     public void setHeader(String key, String value) {
         getHeader().put(key, new DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow()));
     }
+
     public void setAttribute(String key, String value) {
         getAttributes().put(key, new DeviceNode(DeviceNode.DeviceNodeType.ATTR, key, value, measuredNow()));
     }

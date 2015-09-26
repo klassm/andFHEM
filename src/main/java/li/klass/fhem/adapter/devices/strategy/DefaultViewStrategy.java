@@ -31,6 +31,8 @@ import android.view.View;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.common.base.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +48,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 @Singleton
@@ -98,6 +101,7 @@ public class DefaultViewStrategy extends ViewStrategy {
 
         try {
             OverviewViewSettings annotation = device.getOverviewViewSettingsCache();
+            Optional<DeviceConfiguration> config = device.getDeviceConfiguration();
             int currentGenericRow = 0;
             for (DeviceViewItem item : items) {
                 String name = item.getSortKey();
@@ -111,6 +115,15 @@ public class DefaultViewStrategy extends ViewStrategy {
                     if (name.equalsIgnoreCase("measured")) {
                         if (!annotation.showMeasured()) continue;
                         alwaysShow = true;
+                    }
+                }
+                if (config.isPresent()) {
+                    DeviceConfiguration deviceConfiguration = config.get();
+                    if (name.equalsIgnoreCase("state") && !deviceConfiguration.isShowStateInOverview()) {
+                        continue;
+                    }
+                    if (name.equalsIgnoreCase("measured") && !deviceConfiguration.isShowMeasuredInOverview()) {
+                        continue;
                     }
                 }
                 if (alwaysShow || item.isShowInOverview()) {

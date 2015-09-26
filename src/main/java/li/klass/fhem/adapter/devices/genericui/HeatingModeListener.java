@@ -37,6 +37,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
@@ -55,7 +56,7 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
         tableLayout.addView(new SpinnerActionRow(context, R.string.mode, R.string.setMode, toStringList(heatingDevice.getHeatingModes()), selected) {
 
             @Override
-            public void onItemSelected(final Context context, FhemDevice device, String item) {
+            public void onItemSelected(final Context context, XmlListDevice device, String item) {
                 M mode = EnumUtils.valueOf(heatingDevice.getHeatingModes(), item);
 
                 if (mode == getUnknownMode() || mode == null) {
@@ -65,7 +66,7 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
 
                 changeMode(mode, device, context);
             }
-        }.createRow(device, tableLayout));
+        }.createRow(device.getXmlListDevice(), tableLayout));
     }
 
     protected boolean doAddField(FhemDevice device) {
@@ -76,7 +77,7 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
         return null;
     }
 
-    protected void changeMode(M newMode, FhemDevice device, Context context) {
+    protected void changeMode(M newMode, XmlListDevice device, Context context) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
         intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

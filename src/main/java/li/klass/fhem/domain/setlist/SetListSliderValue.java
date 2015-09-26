@@ -24,34 +24,34 @@
 
 package li.klass.fhem.domain.setlist;
 
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
 public class SetListSliderValue implements SetListValue {
-    private final int start;
-    private final int stop;
-    private final int step;
+    private final float start;
+    private final float stop;
+    private final float step;
 
     public SetListSliderValue(String[] parts) {
-        start = extractLeadingInt(parts[1]);
-        step = extractLeadingInt(parts[2]);
-        stop = extractLeadingInt(parts[3]);
+        start = extractLeadingFloat(parts[1]);
+        step = extractLeadingFloat(parts[2]);
+        stop = extractLeadingFloat(parts[3]);
     }
 
-    public SetListSliderValue(int start, int step, int stop) {
+    public SetListSliderValue(float start, float step, float stop) {
         this.step = step;
         this.stop = stop;
         this.start = start;
     }
 
-    public int getStart() {
+    public float getStart() {
         return start;
     }
 
-    public int getStop() {
+    public float getStop() {
         return stop;
     }
 
-    public int getStep() {
+    public float getStep() {
         return step;
     }
 
@@ -69,6 +69,7 @@ public class SetListSliderValue implements SetListValue {
         return "slider," + start + "," + step + "," + stop;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,9 +86,9 @@ public class SetListSliderValue implements SetListValue {
 
     @Override
     public int hashCode() {
-        int result = start;
+        float result = start;
         result = 31 * result + stop;
         result = 31 * result + step;
-        return result;
+        return (int) (result * 100);
     }
 }

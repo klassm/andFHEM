@@ -37,7 +37,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class SpinnerActionRow {
     private String description;
@@ -62,7 +62,7 @@ public abstract class SpinnerActionRow {
         this.context = context;
     }
 
-    public TableRow createRow(final FhemDevice device, ViewGroup viewGroup) {
+    public TableRow createRow(final XmlListDevice device, ViewGroup viewGroup) {
         ignoreItemSelection = true;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,5 +108,5 @@ public abstract class SpinnerActionRow {
         selectedPosition = temporarySelectedPosition;
     }
 
-    public abstract void onItemSelected(final Context context, FhemDevice device, String item);
+    public abstract void onItemSelected(final Context context, XmlListDevice device, String item);
 }

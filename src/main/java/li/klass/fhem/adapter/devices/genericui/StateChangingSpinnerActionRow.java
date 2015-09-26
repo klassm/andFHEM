@@ -32,8 +32,8 @@ import java.util.List;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class StateChangingSpinnerActionRow extends SpinnerActionRow {
 
@@ -53,7 +53,7 @@ public class StateChangingSpinnerActionRow extends SpinnerActionRow {
     }
 
     @Override
-    public void onItemSelected(Context context, FhemDevice device, String item) {
+    public void onItemSelected(Context context, XmlListDevice device, String item) {
 
         context.startService(
                 new Intent(Actions.DEVICE_SET_SUB_STATE)

@@ -31,7 +31,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
 public class VolumeUtilBehavior {
-    public static int volumeFor(FhemDevice fhemDevice) {
+    public static float volumeFor(FhemDevice fhemDevice) {
         String volume = fhemDevice.getXmlListDevice().getStates().get("volume").getValue();
         SetListSliderValue volumeSetList = (SetListSliderValue) fhemDevice.getSetList().get("volume");
         if (volume.equalsIgnoreCase("on")) {

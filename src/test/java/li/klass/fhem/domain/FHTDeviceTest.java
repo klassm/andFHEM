@@ -27,41 +27,35 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.fht.FHTMode;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.data.Offset.offset;
 
 public class FHTDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        FHTDevice device = getDefaultDevice(FHTDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getActuator()).isEqualTo("0.0 (%)");
-        assertThat(device.getDayTemperature()).isCloseTo(22, offset(0.01));
-        assertThat(device.getDayTemperatureDesc()).isEqualTo("22.0 (°C)");
-        assertThat(device.getNightTemperature()).isCloseTo(6.5, offset(0.01));
-        assertThat(device.getNightTemperatureDesc()).isEqualTo("6.5 (°C)");
-        assertThat(device.getWindowOpenTemp()).isCloseTo(6.5, offset(0.01));
-        assertThat(device.getWindowOpenTempDesc()).isEqualTo("6.5 (°C)");
-        assertThat(device.getTemperature()).isEqualTo("23.1 (°C)");
-        assertThat(device.getHeatingMode()).isEqualTo(FHTMode.AUTO);
-        assertThat(device.getWarnings()).isEqualTo("Window open");
-        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(stateValueFor(device, "actuator")).isEqualTo("0 (%)");
+        assertThat(stateValueFor(device, "day-temp")).isEqualTo("22.0 (°C)");
+        assertThat(stateValueFor(device, "night-temp")).isEqualTo("6.5 (°C)");
+        assertThat(stateValueFor(device, "windowopen-temp")).isEqualTo("6.5 (°C)");
+        assertThat(stateValueFor(device, "measured-temp")).isEqualTo("23.1 (°C)");
+        assertThat(attributeValueFor(device, "mode")).isEqualTo("auto");
+        assertThat(stateValueFor(device, "warnings")).isEqualTo("Window open");
+        assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
+        assertThat(stateValueFor(device, "desired-temp")).isEqualTo("6.5 (°C)");
         assertThat(device.getState()).isEqualTo("???");
-        assertThat(device.getDesiredTemp()).isCloseTo(6.5, offset(0.01));
-        assertThat(device.getDesiredTempDesc()).isEqualTo("6.5 (°C)");
 
         assertThat(device.getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp")).isEqualTo(true);
     }
 
     @Test
     public void testDeviceWithMultipleActors() {
-        FHTDevice device = getDeviceFor("fht_multi_actuators", FHTDevice.class);
+        GenericDevice device = getDeviceFor("fht_multi_actuators", GenericDevice.class);
         assertThat(device).isNotNull();
     }
 

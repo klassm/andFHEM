@@ -25,16 +25,11 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TableRow;
 
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndButton {
@@ -44,24 +39,29 @@ public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndB
     private DimmableBehavior dimmableBehavior;
 
     public StateChangingSeekBarFullWidth(Context context, StateUiService stateUiService, ApplicationProperties applicationProperties, DimmableBehavior dimmableBehavior, TableRow updateRow) {
-        super(context, dimmableBehavior.getCurrentDimPosition(), dimmableBehavior.getDimLowerBound(), dimmableBehavior.getDimUpperBound(), updateRow);
+        super(context,
+                dimmableBehavior.getCurrentDimPosition(),
+                dimmableBehavior.getDimStep(),
+                dimmableBehavior.getDimLowerBound(),
+                dimmableBehavior.getDimUpperBound(),
+                updateRow);
         this.dimmableBehavior = dimmableBehavior;
         this.stateUiService = stateUiService;
         this.applicationProperties = applicationProperties;
     }
 
     @Override
-    public void onButtonSetValue(FhemDevice device, int value) {
+    public void onButtonSetValue(XmlListDevice device, int value) {
         onStopTrackingTouch(context, device, value);
     }
 
     @Override
-    public void onStopTrackingTouch(Context context, FhemDevice device, int progress) {
+    public void onStopTrackingTouch(Context context, XmlListDevice device, float progress) {
         dimmableBehavior.switchTo(stateUiService, context, progress);
     }
 
     @Override
-    public String toUpdateText(FhemDevice device, int progress) {
+    public String toUpdateText(XmlListDevice device, float progress) {
         return dimmableBehavior.getDimStateForPosition(progress);
     }
 

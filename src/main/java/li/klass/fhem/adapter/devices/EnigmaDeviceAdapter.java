@@ -73,12 +73,12 @@ public class EnigmaDeviceAdapter extends ToggleableAdapter {
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), enigmaDevice.getInput(), "input")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
 
                 SetListGroupValue channelSetList = (SetListGroupValue) device.getSetList().get("channel");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.channel, R.string.channel, channelSetList.getGroupStates(), enigmaDevice.getChannel(), "channel")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
 

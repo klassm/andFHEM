@@ -24,29 +24,31 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.util.FloatUtils;
+
 public abstract class DimmableDevice<D extends FhemDevice<D>> extends ToggleableDevice<D> {
-    public int getDimPosition() {
-        int position = getPositionForDimStateInternal(getDimStateFieldValue());
+    public float getDimPosition() {
+        float position = getPositionForDimStateInternal(getDimStateFieldValue());
         if (position == -1) {
             return 0;
         }
         return position;
     }
 
-    public int getDimUpPosition() {
-        int currentPosition = getDimPosition();
-        if (currentPosition + 1 > getDimUpperBound()) {
+    public float getDimUpPosition() {
+        float currentPosition = getDimPosition();
+        if (currentPosition + getDimStep() > getDimUpperBound()) {
             return getDimUpperBound();
         }
-        return currentPosition + 1;
+        return currentPosition + getDimStep();
     }
 
-    public int getDimDownPosition() {
-        int currentPosition = getDimPosition();
-        if (currentPosition - 1 < getDimLowerBound()) {
+    public float getDimDownPosition() {
+        float currentPosition = getDimPosition();
+        if (currentPosition - getDimStep() < getDimLowerBound()) {
             return getDimLowerBound();
         }
-        return currentPosition - 1;
+        return currentPosition - getDimStep();
     }
 
     public String getDimStateFieldValue() {
@@ -56,9 +58,9 @@ public abstract class DimmableDevice<D extends FhemDevice<D>> extends Toggleable
     @Override
     public String formatTargetState(String targetState) {
         if (targetState.equals("dimup")) {
-            return getDimStateForPosition(getDimUpPosition());
+            return getDimStateNameForDimStateValue(getDimUpPosition());
         } else if (targetState.equals("dimdown")) {
-            return getDimStateForPosition(getDimDownPosition());
+            return getDimStateNameForDimStateValue(getDimDownPosition());
         }
         return super.formatTargetState(targetState);
     }
@@ -67,27 +69,27 @@ public abstract class DimmableDevice<D extends FhemDevice<D>> extends Toggleable
     public String formatStateTextToSet(String stateToSet) {
         if (!supportsDim()) return super.formatStateTextToSet(stateToSet);
 
-        int position = getPositionForDimStateInternal(stateToSet);
-        if (position == getDimUpperBound()) {
+        float position = getPositionForDimStateInternal(stateToSet);
+        if (FloatUtils.isEqual(position, getDimUpperBound())) {
             return "on";
         }
-        if (position == getDimLowerBound()) {
+        if (FloatUtils.isEqual(position, getDimLowerBound())) {
             return "off";
         }
         return super.formatStateTextToSet(stateToSet);
     }
 
-    public int getDimLowerBound() {
+    public float getDimLowerBound() {
         return 0;
     }
 
-    public abstract int getDimUpperBound();
+    public abstract float getDimUpperBound();
 
-    public int getDimStep() {
+    public float getDimStep() {
         return 1;
     }
 
-    public int getPositionForDimStateInternal(String dimState) {
+    public float getPositionForDimStateInternal(String dimState) {
         if (dimState == null) return -1;
         if (dimState.equals("on")) return getDimUpperBound();
         if (dimState.equals("off")) return getDimLowerBound();
@@ -96,14 +98,14 @@ public abstract class DimmableDevice<D extends FhemDevice<D>> extends Toggleable
     }
 
     /**
-     * Get the dim state for a given position. This is sent to FHEM within the set command!
+     * Get the dim state for a given value. This is sent to FHEM within the set command!
      *
-     * @param position position to look for
-     * @return state for the given position.
+     * @param value value to look for
+     * @return state for the given value.
      */
-    public abstract String getDimStateForPosition(int position);
+    public abstract String getDimStateNameForDimStateValue(float value);
 
-    public abstract int getPositionForDimState(String dimState);
+    public abstract float getPositionForDimState(String dimState);
 
     public abstract boolean supportsDim();
 }

@@ -66,7 +66,7 @@ public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("activity");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.activity, R.string.activity, inputSetList.getGroupStates(), ((HarmonyDevice) device).getActivity(), "activity")
-                        .createRow(device, tableLayout));
+                        .createRow(device.getXmlListDevice(), tableLayout));
             }
         });
     }

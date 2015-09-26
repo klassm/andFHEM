@@ -25,7 +25,7 @@
 package li.klass.fhem.domain.multimedia;
 
 public interface VolumeDevice {
-    public boolean isMuted();
+    boolean isMuted();
 
-    public int getVolumeAsInt();
+    float getVolumeAsFloat();
 }

@@ -34,6 +34,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class DimmableDeviceDimActionRowFullWidth extends DeviceDimActionRowFullWidth {
 
@@ -46,31 +47,24 @@ public class DimmableDeviceDimActionRowFullWidth extends DeviceDimActionRowFullW
                 device.getDimUpperBound(), updateRow, layoutId);
     }
 
-    public void onStopTrackingTouch(final Context context, FhemDevice device, int progress) {
-        DimmableDevice dimmableDevice = (DimmableDevice) device;
-        int dimProgress = dimProgressToDimState(progress, dimmableDevice.getDimLowerBound(), dimmableDevice.getDimStep());
-
-        Intent intent = new Intent(Actions.DEVICE_DIM);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, dimProgress);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-        context.startService(intent);
+    public void onStopTrackingTouch(final Context context, FhemDevice device, float progress) {
+        context.startService(new Intent(Actions.DEVICE_DIM)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 
     @Override
-    public void onStopDim(Context context, FhemDevice device, int progress) {
-        Intent intent = new Intent(Actions.DEVICE_DIM);
-        intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-        context.startService(intent);
+    public void onStopDim(Context context, XmlListDevice device, float progress) {
+        context.startService(new Intent(Actions.DEVICE_DIM)
+                .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 
     @Override
-    public String toDimUpdateText(FhemDevice device, int progress) {
-        return ((DimmableDevice) device).getDimStateForPosition(progress);
+    public String toDimUpdateText(XmlListDevice device, float progress) {
+        return progress + "";
     }
 }

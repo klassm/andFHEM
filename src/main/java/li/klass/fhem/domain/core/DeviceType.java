@@ -32,7 +32,6 @@ import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
-import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
@@ -75,7 +74,6 @@ import li.klass.fhem.domain.EnOceanDevice;
 import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
-import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
@@ -122,7 +120,6 @@ public enum DeviceType {
 
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    FHT("FHT", FHTDevice.class, new FHTAdapter()),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     FILE_LOG("FileLog", LogDevice.class),

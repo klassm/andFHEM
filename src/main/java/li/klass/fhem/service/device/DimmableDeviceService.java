@@ -50,11 +50,11 @@ public class DimmableDeviceService {
      *
      * @param device      concerned device
      * @param dimProgress dim state to set. The progress will be matched against the available FS20 dim options.
-     * @param context
+     * @param context context
      */
-    public void dim(DimmableDevice device, int dimProgress, Context context) {
+    public void dim(DimmableDevice device, float dimProgress, Context context) {
         if (!device.supportsDim()) return;
-        String newState = device.getDimStateForPosition(dimProgress);
+        String newState = device.getDimStateNameForDimStateValue(dimProgress).replace(".0", "");
 
         genericDeviceService.setState(device, newState, context);
     }

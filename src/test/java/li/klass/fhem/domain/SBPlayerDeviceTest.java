@@ -37,7 +37,7 @@ public class SBPlayerDeviceTest extends DeviceXMLParsingBase {
         SBPlayerDevice device = getDeviceFor("Unten", SBPlayerDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.isMuted()).isTrue();
-        assertThat(device.getVolumeAsInt()).isEqualTo(0);
+        assertThat(device.getVolumeAsFloat()).isEqualTo(0);
     }
 
     @Override

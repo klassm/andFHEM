@@ -32,7 +32,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
@@ -44,12 +44,13 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
     public static final int LAYOUT_DETAIL = R.layout.device_detail_seekbarrow_with_button;
     protected Context context;
 
-    public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int minimumProgress, int maximumProgress, TableRow updateRow) {
-        super(initialProgress, minimumProgress, maximumProgress, LAYOUT_DETAIL, updateRow);
+    public SeekBarActionRowFullWidthAndButton(Context context, float initialProgress, float step, float minimumProgress, float maximumProgress, TableRow updateRow) {
+        super(initialProgress, minimumProgress, step, maximumProgress, LAYOUT_DETAIL, updateRow);
         this.context = context;
     }
+
     @Override
-    public TableRow createRow(LayoutInflater inflater, FhemDevice device, int layoutSpan) {
+    public TableRow createRow(LayoutInflater inflater, XmlListDevice device, int layoutSpan) {
         TableRow row = super.createRow(inflater, device, 1);
         applySetButtonIfRequired(device, row);
 
@@ -63,7 +64,7 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
         return row;
     }
 
-    private void applySetButtonIfRequired(final FhemDevice device, TableRow row) {
+    private void applySetButtonIfRequired(final XmlListDevice device, TableRow row) {
         Button button = (Button) row.findViewById(R.id.button);
         if (button == null) return;
         button.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +90,7 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
         }
     }
 
-    public abstract void onButtonSetValue(FhemDevice device, int value);
+    public abstract void onButtonSetValue(XmlListDevice device, int value);
 
     protected boolean showButton() {
         return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false, context);
@@ -98,7 +99,7 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
     protected abstract ApplicationProperties getApplicationProperties();
 
     @Override
-    public TableRow createRow(final LayoutInflater inflater, final FhemDevice device) {
+    public TableRow createRow(final LayoutInflater inflater, final XmlListDevice device) {
         TableRow row = super.createRow(inflater, device);
         applySetButtonIfRequired(device, row);
 

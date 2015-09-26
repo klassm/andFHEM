@@ -55,6 +55,7 @@ import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DialogUtil;
 
 import static android.view.View.GONE;
@@ -78,12 +79,11 @@ public class AvailableTargetStatesDialogUtil {
         }
 
         private <D extends FhemDevice<?>> void switchDeviceState(String newState, D device, final Context context) {
-            Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-            intent.setClass(context, DeviceIntentService.class);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-            context.startService(intent);
+            context.startService(new Intent(Actions.DEVICE_SET_STATE)
+                    .setClass(context, DeviceIntentService.class)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState)
+                    .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
         }
 
         private <D extends FhemDevice<?>> void switchDeviceSubState(String newState, String newSubState, D device, final Context context) {
@@ -91,13 +91,12 @@ public class AvailableTargetStatesDialogUtil {
                 switchDeviceState(newSubState, device, context);
                 return;
             }
-            Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-            intent.setClass(context, DeviceIntentService.class);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.STATE_NAME, newState);
-            intent.putExtra(BundleExtraKeys.STATE_VALUE, newSubState);
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-            context.startService(intent);
+            context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
+                    .setClass(context, DeviceIntentService.class)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                    .putExtra(BundleExtraKeys.STATE_NAME, newState)
+                    .putExtra(BundleExtraKeys.STATE_VALUE, newSubState)
+                    .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
         }
     };
 
@@ -123,6 +122,7 @@ public class AvailableTargetStatesDialogUtil {
                 if (convertView == null) {
                     convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
                 }
+                assert convertView != null;
                 TextView textView = (TextView) convertView.findViewById(R.id.text);
                 ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
 
@@ -156,12 +156,12 @@ public class AvailableTargetStatesDialogUtil {
         if (setListValue instanceof SetListSliderValue) {
             final SetListSliderValue sliderValue = (SetListSliderValue) setListValue;
             return new TypeHandler<D>() {
-                private int dimProgress = 0;
+                private float dimProgress = 0;
 
                 @Override
                 public View getContentViewFor(Context context, D device) {
                     TableLayout tableLayout = new TableLayout(context);
-                    int initialProgress = 0;
+                    float initialProgress = 0;
                     if (device instanceof DimmableDevice) {
                         initialProgress = ((DimmableDevice) device).getDimPosition();
                     }
@@ -171,12 +171,12 @@ public class AvailableTargetStatesDialogUtil {
                             null, R.layout.device_detail_seekbarrow_full_width) {
 
                         @Override
-                        public void onStopDim(Context context, FhemDevice device, int progress) {
+                        public void onStopDim(Context context, XmlListDevice device, float progress) {
                             dimProgress = progress;
                         }
 
                         @Override
-                        public String toDimUpdateText(FhemDevice device, int progress) {
+                        public String toDimUpdateText(XmlListDevice device, float progress) {
                             return null;
                         }
                     }.createRow(LayoutInflater.from(context), device));

@@ -1,0 +1,52 @@
+{
+  "defaultGroup": "HEATING",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "day_temp",
+      "desc": "dayTemperature",
+      "showAfter": "desired-temp"
+    },
+    {
+      "key": "windowopen-temp",
+      "desc": "windowOpenTemp",
+      "showAfter": "night-temp"
+    },
+    {
+      "key": "night-temp",
+      "desc": "nightTemperature",
+      "showAfter": "day-temp"
+    },
+    {
+      "key": "desired-temp",
+      "desc": "desiredTemperature",
+      "showAfter": "temperature"
+    },
+    {
+      "key": "mode",
+      "desc": "mode",
+      "showInOverview": true,
+      "showAfter": "actuator"
+    },
+    {
+      "key": "measured-temp",
+      "desc": "temperature",
+      "showInOverview": true
+    },
+    {
+      "key": "battery",
+      "desc": "battery",
+      "showAfter": "mode"
+    },
+    {
+      "key": "warnings",
+      "desc": "warnings"
+    },
+    {
+      "key": "actuator",
+      "desc": "actuator",
+      "showAfter": "temperature"
+    }
+  ]
+}

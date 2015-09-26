@@ -27,13 +27,15 @@ package li.klass.fhem.dagger;
 
 import dagger.Module;
 import dagger.Provides;
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.FHTDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider;
+import li.klass.fhem.service.DateService;
+import li.klass.fhem.util.ApplicationProperties;
 
 @Module
 public class DetailActionsModule {
     @Provides(type = Provides.Type.SET)
-    GenericDetailActionProvider provideFHTDetailActionProvider() {
-        return new FHTDetailActionProvider();
+    GenericDetailActionProvider provideFHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
+        return new FHTDetailActionProvider(applicationProperties, dateService);
     }
 }

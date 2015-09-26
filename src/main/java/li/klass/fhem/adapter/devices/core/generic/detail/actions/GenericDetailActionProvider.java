@@ -26,12 +26,25 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import java.util.List;
 
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public interface GenericDetailActionProvider {
     boolean supports(XmlListDevice xmlListDevice);
 
-    List<DetailAction> actionsFor(Context context);
+    /**
+     * Actions that show up within the actions view.
+     *
+     * @param context context
+     * @return list of actions
+     */
+    List<ActionCardAction> actionsFor(Context context);
+
+    Optional<StateAttributeAction> stateAttributeActionFor(DeviceViewItem item);
 }

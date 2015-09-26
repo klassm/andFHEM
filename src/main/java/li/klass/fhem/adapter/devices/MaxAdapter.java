@@ -49,11 +49,12 @@ import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
-import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.MaxDevice.HeatingMode;
 
 public class MaxAdapter extends ExplicitOverviewDetailDeviceAdapter {
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+    public static double MINIMUM_TEMPERATURE = 5.5;
+
     @Inject
     ApplicationProperties applicationProperties;
 
