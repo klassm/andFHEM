@@ -31,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -57,7 +58,7 @@ public class SetList implements Serializable {
             part = part.replaceAll(":noArg$", "");
         }
         if (!part.contains(":")) {
-            entries.put(part, SetListEmptyValue.INSTANCE);
+            entries.put(part.toLowerCase(Locale.getDefault()), SetListEmptyValue.INSTANCE);
             return;
         }
 
@@ -67,7 +68,7 @@ public class SetList implements Serializable {
 
         SetListValue setListValue = handleValue(value);
         if (setListValue != null) {
-            entries.put(key, setListValue);
+            entries.put(key.toLowerCase(Locale.getDefault()), setListValue);
         }
     }
 
@@ -93,7 +94,7 @@ public class SetList implements Serializable {
     }
 
     public SetListValue get(String key) {
-        return entries.get(key);
+        return entries.get(key.toLowerCase(Locale.getDefault()));
     }
 
     public boolean contains(String... keys) {

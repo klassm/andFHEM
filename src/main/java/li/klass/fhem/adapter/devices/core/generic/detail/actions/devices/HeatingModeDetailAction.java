@@ -22,42 +22,40 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.TableLayout;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
+import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener {
+public abstract class HeatingModeDetailAction<M extends Enum<M>> implements StateAttributeAction {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-        if (!doAddField(device)) return;
+    public TableRow createRow(XmlListDevice device, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent) {
+        M mode = getCurrentModeFor(device);
+        final M[] available = getAvailableModes();
 
-        final D heatingDevice = (D) device;
-        M mode = heatingDevice.getHeatingMode();
-        int selected = EnumUtils.positionOf(heatingDevice.getHeatingModes(), mode);
+        int selected = EnumUtils.positionOf(available, mode);
 
-        tableLayout.addView(new SpinnerActionRow(context, R.string.mode, R.string.setMode, toStringList(heatingDevice.getHeatingModes()), selected) {
+        return new SpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(available), selected) {
 
             @Override
             public void onItemSelected(final Context context, XmlListDevice device, String item) {
-                M mode = EnumUtils.valueOf(heatingDevice.getHeatingModes(), item);
+                M mode = EnumUtils.valueOf(available, item);
 
                 if (mode == getUnknownMode() || mode == null) {
                     revertSelection();
@@ -66,12 +64,14 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
 
                 changeMode(mode, device, context);
             }
-        }.createRow(device.getXmlListDevice(), tableLayout));
+        }.createRow(device, parent);
     }
 
-    protected boolean doAddField(FhemDevice device) {
+    @Override
+    public boolean supports(XmlListDevice xmlListDevice) {
         return true;
     }
+
 
     protected M getUnknownMode() {
         return null;
@@ -86,4 +86,8 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
 
         context.startService(intent);
     }
+
+    protected abstract M getCurrentModeFor(XmlListDevice device);
+
+    protected abstract M[] getAvailableModes();
 }

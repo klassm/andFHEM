@@ -53,6 +53,8 @@
     <string name="desiredTemperature">Wunschtemperatur</string>
     <string name="comfortTemperature">Komfort-Temperatur</string>
     <string name="ecoTemperature">Eco-Temperatur</string>
+    <string name="maximumTemperature">Maximaltemperatur</string>
+    <string name="minimumTemperature">Maximaltemperatur</string>
     <string name="forecast">Vorhersage</string>
     <string name="pressure">Luftdruck</string>
     <string name="pressureNN">Luftdruck NN</string>

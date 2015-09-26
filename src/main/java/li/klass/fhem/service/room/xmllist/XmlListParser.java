@@ -64,11 +64,12 @@ public class XmlListParser {
         Map<String, List<XmlListDevice>> result = Maps.newHashMap();
 
         // replace device tag extensions
-        xmlList = xmlList.replaceAll("_[0-9]+_LIST", "_LIST");
-        xmlList = xmlList.replaceAll("(<[/]?[A-Z0-9]+)_[0-9]+([ >])", "$1$2");
-        xmlList = xmlList.replaceAll("</>", "");
-        xmlList = xmlList.replaceAll("< [^>]*>", "");
-        xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");
+        xmlList = xmlList
+                .replaceAll("_[0-9]+_LIST", "_LIST")
+                .replaceAll("(<[/]?[A-Z0-9]+)_[0-9]+([ >])", "$1$2")
+                .replaceAll("< [^>]*>", "")
+                .replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "")
+                .replaceAll("\\\\B0", "°");
 
         Document document = documentFromXmlList(xmlList);
         Node baseNode = findFHZINFONode(document);

@@ -25,8 +25,8 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices;
 
 import android.content.Context;
-import android.content.Intent;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -38,24 +38,24 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton;
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.ModeStateOverwrite;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
-import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.service.DateService;
-import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.adapter.uiservice.FragmentUiService;
+import li.klass.fhem.domain.MAXMode;
+import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
-import li.klass.fhem.util.ApplicationProperties;
 
 @Singleton
-public class FHTDetailActionProvider extends DeviceDetailActionProvider {
-    public static double MAXIMUM_TEMPERATURE = 30.5;
-    public static double MINIMUM_TEMPERATURE = 5.5;
+public class MAXDetailActionProvider extends DeviceDetailActionProvider {
+    private final FragmentUiService fragmentUiService;
 
     @Inject
-    public FHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
-        addStateAttributeAction("mode", new ModeStateOverwrite(applicationProperties, dateService));
+    public MAXDetailActionProvider(FragmentUiService fragmentUiService) {
+        this.fragmentUiService = fragmentUiService;
+        addStateAttributeAction("mode", new MAXHeatingModeDetailAction());
+    }
+
+    private static boolean supportsHeating(XmlListDevice xmlListDevice) {
+        Optional<String> mode = xmlListDevice.getState("mode");
+        return mode.isPresent() && MAXMode.modeFor(mode.get()).isPresent();
     }
 
     @Override
@@ -64,23 +64,7 @@ public class FHTDetailActionProvider extends DeviceDetailActionProvider {
                 new ActionCardButton(R.string.timetable, context) {
                     @Override
                     protected void onClick(XmlListDevice device, Context context) {
-                        context.sendBroadcast(
-                                new Intent(Actions.SHOW_FRAGMENT)
-                                        .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FROM_TO_WEEK_PROFILE)
-                                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                        .putExtra(BundleExtraKeys.HEATING_CONFIGURATION, new FHTConfiguration())
-                        );
-                    }
-                },
-                new ActionCardButton(R.string.requestRefresh, context) {
-                    @Override
-                    protected void onClick(XmlListDevice device, Context context) {
-                        context.startService(
-                                new Intent(Actions.DEVICE_SET_STATE)
-                                        .setClass(context, DeviceIntentService.class)
-                                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                        .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "refreshvalues")
-                        );
+                        fragmentUiService.showIntervalWeekProfileFor(device, context, new MAXConfiguration());
                     }
                 }
         );
@@ -88,6 +72,23 @@ public class FHTDetailActionProvider extends DeviceDetailActionProvider {
 
     @Override
     protected String getDeviceType() {
-        return "FHT";
+        return "MAX";
+    }
+
+    private static class MAXHeatingModeDetailAction extends HeatingModeDetailAction<MAXMode> {
+        @Override
+        protected MAXMode getCurrentModeFor(XmlListDevice device) {
+            return MAXMode.modeFor(device.getState("mode").get()).get();
+        }
+
+        @Override
+        protected MAXMode[] getAvailableModes() {
+            return MAXMode.values();
+        }
+
+        @Override
+        public boolean supports(XmlListDevice xmlListDevice) {
+            return MAXDetailActionProvider.supportsHeating(xmlListDevice);
+        }
     }
 }

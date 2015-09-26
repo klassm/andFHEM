@@ -32,8 +32,9 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 @Singleton
 public class FragmentUiService {
@@ -42,9 +43,10 @@ public class FragmentUiService {
     public FragmentUiService() {
     }
 
-    public void showIntervalWeekProfileFor(FhemDevice<?> device, Context context) {
+    public void showIntervalWeekProfileFor(XmlListDevice device, Context context, HeatingConfiguration heatingConfiguration) {
         context.sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.HEATING_CONFIGURATION, heatingConfiguration));
     }
 }

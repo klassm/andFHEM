@@ -38,7 +38,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
-import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
@@ -84,7 +83,6 @@ import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LightSceneDevice;
-import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
@@ -120,7 +118,6 @@ public enum DeviceType {
 
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    MAX("MAX", MaxDevice.class, new MaxAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),
@@ -203,7 +200,7 @@ public enum DeviceType {
 
     public static <T extends FhemDevice<T>> DeviceAdapter getAdapterFor(T device) {
         DeviceType type = getDeviceTypeFor(device);
-        return type == null ? null : type.<T>getAdapter();
+        return type == null ? null : type.getAdapter();
     }
 
     public static <T extends FhemDevice> DeviceType getDeviceTypeFor(T device) {
@@ -214,7 +211,7 @@ public enum DeviceType {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends FhemDevice<T>> DeviceAdapter getAdapter() {
+    public DeviceAdapter getAdapter() {
         return adapter;
     }
 

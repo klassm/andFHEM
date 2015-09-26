@@ -27,97 +27,50 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.heating.schedule.DayProfile;
-import li.klass.fhem.domain.heating.schedule.WeekProfile;
-import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
-import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
-import li.klass.fhem.util.DayUtil;
 
-import static li.klass.fhem.domain.MaxDevice.HeatingMode.AUTO;
-import static li.klass.fhem.domain.MaxDevice.HeatingMode.BOOST;
-import static li.klass.fhem.domain.MaxDevice.HeatingMode.MANUAL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.data.Offset.offset;
 
 public class MaxDeviceTest extends DeviceXMLParsingBase {
-
-    @Test
-    public void testHeatingMode() {
-        MaxDevice maxDevice = new MaxDevice();
-
-        maxDevice.setMode("auto");
-        assertThat(maxDevice.getHeatingMode()).isEqualTo(AUTO);
-
-        maxDevice.setMode("boost");
-        assertThat(maxDevice.getHeatingMode()).isEqualTo(BOOST);
-
-        maxDevice.setMode("manual");
-        assertThat(maxDevice.getHeatingMode()).isEqualTo(MANUAL);
-    }
-
     @Test
     public void testShutterContactDevice() {
-        MaxDevice device = getDeviceFor("device", MaxDevice.class);
+        GenericDevice device = getDeviceFor("device", GenericDevice.class);
 
-        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
         assertThat(device.getState()).isEqualTo("closed");
-        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.WINDOW);
     }
 
     @Test
     public void testCubeDevice() {
-        MaxDevice device = getDeviceFor("device1", MaxDevice.class);
+        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
 
         assertThat(device.getState()).isEqualTo("connected");
-        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.CUBE);
     }
 
     @Test
     public void testPushButtonDevice() {
-        MaxDevice device = getDeviceFor("device2", MaxDevice.class);
+        GenericDevice device = getDeviceFor("device2", GenericDevice.class);
 
         assertThat(device.getState()).isEqualTo("waiting for data");
-        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.SWITCH);
     }
 
     @Test
     public void testHeatingThermostatDevice() {
-        MaxDevice device = getDeviceFor("device3", MaxDevice.class);
+        GenericDevice device = getDeviceFor("device3", GenericDevice.class);
 
         assertThat(device.getState()).isEqualTo("17.0 °C");
-        assertThat(device.getSubType()).isEqualTo(MaxDevice.SubType.TEMPERATURE);
-        assertThat(device.getBattery()).isEqualTo("ok");
-        assertThat(device.getActuator()).isEqualTo("0 (%)");
-        assertThat(device.getDesiredTempDesc()).isEqualTo("on");
-        assertThat(device.getDesiredTemp()).isCloseTo(30.5, offset(0.1));
-        assertThat(device.getTemperature()).isEqualTo("21.0 (°C)");
-        assertThat(device.getWindowOpenTempDesc()).isEqualTo("12.0 (°C)");
-        assertThat(device.getEcoTempDesc()).isEqualTo("16.5 (°C)");
-        assertThat(device.getComfortTempDesc()).isEqualTo("19.0 (°C)");
-
-        assertThat(device.getHeatingMode()).isEqualTo(BOOST);
-    }
-
-    @Test
-    public void testJournalDevice() {
-        MaxDevice device = getDeviceFor("journalDevice", MaxDevice.class);
-
-        WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = device.getWeekProfile();
-        assertThat(weekProfile).isNotNull();
-
-        DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> tuesday = weekProfile.getDayProfileFor(DayUtil.Day.TUESDAY);
-        assertThat(tuesday.getHeatingIntervals().size()).isEqualTo(6);
-        assertThat(tuesday.getHeatingIntervalAt(0).getSwitchTime()).isEqualTo("00:00");
-        assertThat(tuesday.getHeatingIntervalAt(0).getTemperature()).isCloseTo(17, offset(0.1));
+        assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
+        assertThat(stateValueFor(device, "valveposition")).isEqualTo("0 (%)");
+        assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("30.5 (°C)");
+        assertThat(stateValueFor(device, "temperature")).isEqualTo("21.0 (°C)");
     }
 
     @Test
     public void testOnOffTemperatureDevice() {
-        MaxDevice device = getDeviceFor("on_off", MaxDevice.class);
+        GenericDevice device = getDeviceFor("on_off", GenericDevice.class);
 
-        assertThat(device.getDesiredTemp()).isCloseTo(30.5, offset(0.01));
-        assertThat(device.getWindowOpenTemp()).isCloseTo(4.5, offset(0.01));
-        assertThat(device.getEcoTemp()).isCloseTo(30.5, offset(0.01));
+        assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("30.5 (°C)");
+        assertThat(stateValueFor(device, "windowOpenTemperature")).isEqualTo("4.5 (°C)");
+        assertThat(stateValueFor(device, "ecoTemperature")).isEqualTo("30.5 (°C)");
     }
 
     @Override

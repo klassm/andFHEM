@@ -135,11 +135,26 @@ public class Sanitiser {
 
         value = value.replaceAll("&deg;", "°");
 
-        value = handleExtract(attributeOptions, value);
+        value = handleReplaceAll(attributeOptions, value);
         value = handleReplace(attributeOptions, value);
+        value = handleExtract(attributeOptions, value);
         value = handleAppend(attributeOptions, value);
 
         return new DeviceNode(type, key, value, measured);
+    }
+
+    private String handleReplaceAll(JSONObject attributeOptions, String value) {
+        JSONArray replaceAll = attributeOptions.optJSONArray("replaceAll");
+        if (replaceAll != null) {
+            for (int i = 0; i < replaceAll.length(); i++) {
+                JSONObject conf = replaceAll.optJSONObject(i);
+                String toSearch = conf.optString("search");
+                String searchReplace = conf.optString("replace");
+
+                value = value.replaceAll(toSearch, searchReplace);
+            }
+        }
+        return value.trim();
     }
 
     private String handleReplace(JSONObject attributeOptions, String value) {
@@ -150,6 +165,8 @@ public class Sanitiser {
         if (!isNullOrEmpty(replace)) {
             value = value.replaceAll(replace, replaceBy);
         }
+
+
         return value.trim();
     }
 

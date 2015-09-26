@@ -1,0 +1,53 @@
+{
+  "defaultGroup": "HEATING",
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true
+    },
+    {
+      "key": "mode",
+      "desc": "mode",
+      "showInOverview": true,
+      "showAfter": "temperature"
+    },
+    {
+      "key": "desiredTemperature",
+      "desc": "desiredTemperature",
+      "showAfter": "mode"
+    },
+    {
+      "key": "comfortTemperature",
+      "desc": "comfortTemperature",
+      "showAfter": "desiredTemperature"
+    },
+    {
+      "key": "ecoTemperature",
+      "desc": "ecoTemperature",
+      "showAfter": "comfortTemperature"
+    },
+    {
+      "key": "minimumTemperature",
+      "desc": "minimumTemperature",
+      "showAfter": "ecoTemperature"
+    },
+    {
+      "key": "maximumTemperature",
+      "desc": "maximumTemperature",
+      "showAfter": "minimumTemperature"
+    },
+    {
+      "key": "valveposition",
+      "desc": "actuator",
+      "showAfter": "minimumTemperature"
+    },
+    {
+      "key": "battery",
+      "desc": "battery",
+      "showAfter": "valveposition"
+    }
+  ]
+}

@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MAXConfigurationTest {
     private MAXConfiguration configuration = new MAXConfiguration();
-    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile;
+    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, GenericDevice> weekProfile;
 
     @Before
     public void before() {
@@ -77,7 +77,7 @@ public class MAXConfigurationTest {
         configuration.readNode(weekProfile, "weekprofile-6-Fri-temp", "15 °C /  22 °C /  15 °C");
         configuration.readNode(weekProfile, "weekprofile-6-Fri-time", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
-        MaxDevice device = new MaxDevice();
+        GenericDevice device = new GenericDevice();
         device.setName("name");
 
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).setChangedTemperature(23);
@@ -90,7 +90,7 @@ public class MAXConfigurationTest {
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
         assert dayProfile != null;
 
         return dayProfile.getHeatingIntervalAt(position);

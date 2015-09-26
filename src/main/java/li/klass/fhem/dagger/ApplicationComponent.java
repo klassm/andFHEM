@@ -43,7 +43,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
-import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
@@ -176,8 +175,6 @@ public interface ApplicationComponent {
     void inject(HueDeviceAdapter object);
 
     void inject(LightSceneAdapter object);
-
-    void inject(MaxAdapter object);
 
     void inject(OwSwitchDeviceAdapter object);
 

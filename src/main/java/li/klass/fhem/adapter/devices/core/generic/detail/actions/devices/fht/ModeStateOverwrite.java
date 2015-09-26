@@ -83,6 +83,11 @@ public class ModeStateOverwrite implements StateAttributeAction {
         }.createRow(device, parent);
     }
 
+    @Override
+    public boolean supports(XmlListDevice xmlListDevice) {
+        return true;
+    }
+
     private FHTMode modeFor(String stateValue) {
         try {
             return FHTMode.valueOf(stateValue.toUpperCase(Locale.getDefault()));
