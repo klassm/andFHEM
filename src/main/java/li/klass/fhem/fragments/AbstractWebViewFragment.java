@@ -39,6 +39,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.common.base.Optional;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +74,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
         view = inflater.inflate(R.layout.webview, container, false);
         assert view != null;
 
-        WebView webView = (WebView) view.findViewById(R.id.webView);
+        final WebView webView = (WebView) view.findViewById(R.id.webView);
 
 
         WebSettings settings = webView.getSettings();
@@ -139,7 +141,14 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                onPageLoadFinishedCallback(view, url);
+                if ("about:blank".equalsIgnoreCase(url)) {
+                    Optional<String> alternativeUrl = getAlternateLoadUrl();
+                    if (alternativeUrl.isPresent()) {
+                        webView.loadUrl(alternativeUrl.get());
+                    }
+                } else {
+                    onPageLoadFinishedCallback(view, url);
+                }
             }
         });
 
@@ -178,4 +187,8 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
     }
 
     protected abstract String getLoadUrl();
+
+    protected Optional<String> getAlternateLoadUrl() {
+        return Optional.absent();
+    }
 }
