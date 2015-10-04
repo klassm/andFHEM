@@ -584,19 +584,59 @@
       },
       "day-temp": {
         "append": "°C",
-        "extract": "double"
+        "extract": "double",
+        "replaceAll": [
+          {
+            "search": "on",
+            "replace": "30.5"
+          },
+          {
+            "search": "off",
+            "replace": "4.5"
+          }
+        ]
       },
       "desired-temp": {
         "append": "°C",
-        "extract": "double"
+        "extract": "double",
+        "replaceAll": [
+          {
+            "search": "on",
+            "replace": "30.5"
+          },
+          {
+            "search": "off",
+            "replace": "4.5"
+          }
+        ]
       },
       "night-temp": {
         "append": "°C",
-        "extract": "double"
+        "extract": "double",
+        "replaceAll": [
+          {
+            "search": "on",
+            "replace": "30.5"
+          },
+          {
+            "search": "off",
+            "replace": "4.5"
+          }
+        ]
       },
       "windowopen-temp": {
         "append": "°C",
-        "extract": "double"
+        "extract": "double",
+        "replaceAll": [
+          {
+            "search": "on",
+            "replace": "30.5"
+          },
+          {
+            "search": "off",
+            "replace": "4.5"
+          }
+        ]
       },
       "actuator": {
         "append": "%",
