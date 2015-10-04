@@ -29,12 +29,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Resources;
 
 import java.net.URL;
 import java.nio.charset.Charset;
 
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.util.BuildVersion;
 
 public class FloorplanFragment extends AbstractWebViewFragment {
@@ -77,8 +79,18 @@ public class FloorplanFragment extends AbstractWebViewFragment {
         }
     }
 
+    @Override
     protected String getLoadUrl() {
-        String url = connectionService.getCurrentServer(getActivity()).getUrl();
-        return url + "/floorplan/" + deviceName;
+        FHEMServerSpec server = connectionService.getCurrentServer(getActivity());
+        return server.getUrl() + "/floorplan/" + deviceName;
+    }
+
+    @Override
+    protected Optional<String> getAlternateLoadUrl() {
+        String url = connectionService.getCurrentServer(getActivity()).getAlternateUrl();
+        if (url == null) {
+            return Optional.absent();
+        }
+        return Optional.of(url + "/floorplan/" + deviceName);
     }
 }
