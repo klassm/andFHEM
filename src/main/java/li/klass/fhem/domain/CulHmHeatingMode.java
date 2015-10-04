@@ -22,31 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.culhm;
+package li.klass.fhem.domain;
 
-import org.junit.Test;
+import android.util.Log;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import com.google.common.base.Optional;
 
-import static li.klass.fhem.domain.CULHMDevice.SubType.SHUTTER;
-import static li.klass.fhem.domain.core.DeviceFunctionality.WINDOW;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import java.util.Locale;
 
-public class ShutterTest extends DeviceXMLParsingBase {
-    @Test
-    public void testShutterIsReadCorrectly() {
-        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
-        assertThat(device, is(notNullValue()));
-        assertThat(device.getSubType(), is(SHUTTER));
-        assertThat(device.getDeviceGroup(), is(WINDOW));
-        assertThat(device.supportsDim(), is(true));
-    }
+public enum CulHmHeatingMode {
+    MANUAL, AUTO, CENTRAL, BOOST, UNKNOWN;
 
-    @Override
-    protected String getFileName() {
-        return "shutter.xml";
+    public static Optional<CulHmHeatingMode> heatingModeFor(String value) {
+        if (value.equalsIgnoreCase("MANU")) {
+            value = MANUAL.name();
+        }
+        try {
+            return Optional.of(CulHmHeatingMode.valueOf(value.toUpperCase(Locale.getDefault())));
+        } catch (Exception e) {
+            Log.e(CulHmHeatingMode.class.getName(), "cannot set heating mode from value " + value, e);
+            return Optional.absent();
+        }
     }
 }

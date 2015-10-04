@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class ActionCardButton implements ActionCardAction {
@@ -60,4 +61,9 @@ public abstract class ActionCardButton implements ActionCardAction {
     }
 
     protected abstract void onClick(XmlListDevice device, Context context);
+
+    @Override
+    public boolean supports(GenericDevice genericDevice) {
+        return true;
+    }
 }

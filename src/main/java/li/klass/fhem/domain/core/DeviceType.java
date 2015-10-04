@@ -27,7 +27,6 @@ package li.klass.fhem.domain.core;
 import java.util.Locale;
 import java.util.Map;
 
-import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
@@ -64,7 +63,6 @@ import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
-import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.DMXDevice;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
@@ -123,7 +121,6 @@ public enum DeviceType {
     DB_LOG("DbLog", LogDevice.class),
     STATISTICS("statistics", StatisticsDevice.class),
     LGTV("LGTV", LGTVDevice.class),
-    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),

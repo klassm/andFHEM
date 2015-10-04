@@ -146,11 +146,22 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
         ImmutableList<View> views = from(detailActionProviders)
                 .transformAndConcat(actionProviderToActions())
-                .transform(toDetailActionView(genericDevice, linearLayout)).toList();
+                .filter(supportsAction(genericDevice))
+                .transform(toDetailActionView(genericDevice, linearLayout))
+                .toList();
 
         for (View view : views) {
             layout.addView(view);
         }
+    }
+
+    private Predicate<? super ActionCardAction> supportsAction(final GenericDevice genericDevice) {
+        return new Predicate<ActionCardAction>() {
+            @Override
+            public boolean apply(ActionCardAction input) {
+                return input.supports(genericDevice);
+            }
+        };
     }
 
     @NonNull

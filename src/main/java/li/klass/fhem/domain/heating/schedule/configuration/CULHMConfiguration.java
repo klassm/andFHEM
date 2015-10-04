@@ -26,13 +26,10 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 
 import com.google.common.collect.ImmutableList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
@@ -40,8 +37,9 @@ import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.StateToSet;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.CulHmDetailActionProvider.MINIMUM_TEMPERATURE;
 
-public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> {
+public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> {
 
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 24;
 
@@ -49,10 +47,8 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC);
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(CULHMConfiguration.class);
-
     @Override
-    public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile, String key, String value) {
+    public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, GenericDevice> weekProfile, String key, String value) {
         if (!key.matches("(R_(P1_)?[0-9]_)?tempList([a-zA-Z]{3})")) return;
 
         String shortName = key.replaceAll("(R_(P1_)?[0-9]_)?tempList", "");
@@ -77,13 +73,13 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     }
 
     @Override
-    public DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>
+    public DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration>
     createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
 
         return new DayProfile<>(day, configuration);
     }
 
-    public List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
+    public List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> dayProfile) {
         StringBuilder command = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = newArrayList(dayProfile.getHeatingIntervals());
@@ -105,13 +101,13 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     }
 
     @Override
-    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile) {
+    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, GenericDevice> weekProfile) {
         super.afterXMLRead(weekProfile);
 
-        List<DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>>
+        List<DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration>>
                 profiles = weekProfile.getSortedDayProfiles();
 
-        for (DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> profile : profiles) {
+        for (DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> profile : profiles) {
             addFixedMidnightIntervalIfRequired(profile);
         }
     }
@@ -124,7 +120,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
      * @param dayProfile day profile to add the midnight to.
      */
     private void addFixedMidnightIntervalIfRequired(
-            DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
+            DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> dayProfile) {
 
         List<FilledTemperatureInterval> intervals = dayProfile.getHeatingIntervals();
 
@@ -140,7 +136,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
             FilledTemperatureInterval heatingInterval = createHeatingInterval();
 
             heatingInterval.setChangedSwitchTime("24:00");
-            heatingInterval.setChangedTemperature(CULHMDevice.MINIMUM_TEMPERATURE);
+            heatingInterval.setChangedTemperature(MINIMUM_TEMPERATURE);
             heatingInterval.setTimeFixed(true);
 
             dayProfile.addHeatingInterval(heatingInterval);

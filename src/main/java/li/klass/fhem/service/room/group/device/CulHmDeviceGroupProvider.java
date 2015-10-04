@@ -22,32 +22,36 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.culhm;
+package li.klass.fhem.service.room.group.device;
 
-import org.junit.Test;
+import android.content.Context;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import com.google.common.base.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-public class KeyMaticTest extends DeviceXMLParsingBase {
+import li.klass.fhem.domain.CulHmSubType;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-    @Test
-    public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
-
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
-
-        assertThat(device.getState()).isEqualTo("locked");
-        assertThat(device.getBattery()).isEqualTo("ok");
-
-        assertThat(device.isSupported()).isTrue();
+@Singleton
+public class CulHmDeviceGroupProvider extends DeviceGroupProvider {
+    @Inject
+    public CulHmDeviceGroupProvider() {
+        super("CUL_HM");
     }
 
     @Override
-    protected String getFileName() {
-        return "keyMatic.xml";
+    public Optional<String> groupFor(XmlListDevice xmlListDevice, Context context) {
+        Optional<String> subTypeAttribute = xmlListDevice.getAttribute("subType");
+        if (!subTypeAttribute.isPresent()) {
+            return Optional.absent();
+        }
+
+        Optional<CulHmSubType> subType = CulHmSubType.subTypeFor(subTypeAttribute.get());
+        if (subType.isPresent()) {
+            return Optional.of(subType.get().getFunctionality().getCaptionText(context));
+        }
+        return Optional.absent();
     }
 }

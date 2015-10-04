@@ -45,16 +45,17 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 @Singleton
 public class MAXDetailActionProvider extends DeviceDetailActionProvider {
+    public static final String MODE_STATE_NAME = "mode";
     private final FragmentUiService fragmentUiService;
 
     @Inject
     public MAXDetailActionProvider(FragmentUiService fragmentUiService) {
         this.fragmentUiService = fragmentUiService;
-        addStateAttributeAction("mode", new MAXHeatingModeDetailAction());
+        addStateAttributeAction(MODE_STATE_NAME, new MAXHeatingModeDetailAction());
     }
 
     private static boolean supportsHeating(XmlListDevice xmlListDevice) {
-        Optional<String> mode = xmlListDevice.getState("mode");
+        Optional<String> mode = xmlListDevice.getState(MODE_STATE_NAME);
         return mode.isPresent() && MAXMode.modeFor(mode.get()).isPresent();
     }
 
@@ -78,7 +79,7 @@ public class MAXDetailActionProvider extends DeviceDetailActionProvider {
     private static class MAXHeatingModeDetailAction extends HeatingModeDetailAction<MAXMode> {
         @Override
         protected MAXMode getCurrentModeFor(XmlListDevice device) {
-            return MAXMode.modeFor(device.getState("mode").get()).get();
+            return MAXMode.modeFor(device.getState(MODE_STATE_NAME).get()).get();
         }
 
         @Override

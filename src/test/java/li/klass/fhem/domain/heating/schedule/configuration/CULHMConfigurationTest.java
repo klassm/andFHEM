@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CULHMConfigurationTest {
     private CULHMConfiguration configuration = new CULHMConfiguration();
-    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile;
+    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, GenericDevice> weekProfile;
 
     @Before
     public void before() {
@@ -62,7 +62,7 @@ public class CULHMConfigurationTest {
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
         Reject.ifNull(dayProfile);
 
         FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);
@@ -80,7 +80,7 @@ public class CULHMConfigurationTest {
     public void testGenerateCommand() {
         configuration.readNode(weekProfile, "tempListSat", "24:00 16.0 08:00 16.0 19:30 20");
 
-        CULHMDevice device = new CULHMDevice();
+        GenericDevice device = new GenericDevice();
         device.setName("name");
 
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).setChangedTemperature(23);

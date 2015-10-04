@@ -32,7 +32,6 @@ import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
-import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
@@ -133,11 +132,12 @@ import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandIntentService;
 import li.klass.fhem.service.intent.VoiceCommandIntentService;
+import li.klass.fhem.service.room.group.GroupProvider;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, DetailActionsModule.class})
+@Component(modules = {ApplicationModule.class, DetailActionsModule.class, DeviceGroupProviderModule.class})
 public interface ApplicationComponent {
 
     void inject(DeviceFunctionalityOrderPreference object);
@@ -157,8 +157,6 @@ public interface ApplicationComponent {
 
     void inject(BigWidgetSelectionActivity object);
 
-
-    void inject(CULHMAdapter object);
 
     void inject(DmxAdapter object);
 
@@ -362,4 +360,6 @@ public interface ApplicationComponent {
     GPlotHolder getGPlotHolder();
 
     DeviceConfigurationProvider getDeviceConfigurationProvider();
+
+    GroupProvider getGroupProvider();
 }

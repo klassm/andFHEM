@@ -22,32 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.culhm;
+package li.klass.fhem.service.room.group.device;
 
-import org.junit.Test;
+import android.content.Context;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import com.google.common.base.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-public class SmokeDetectorTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
+public abstract class DeviceGroupProvider {
 
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
+    private final String deviceType;
 
-        assertThat(device.getState()).isEqualTo("NACK");
-        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.SMOKE_DETECTOR);
-        assertThat(device.supportsDim()).isEqualTo(false);
-
-        assertThat(device.isSupported()).isTrue();
+    public DeviceGroupProvider(String deviceType) {
+        this.deviceType = deviceType;
     }
 
-    @Override
-    protected String getFileName() {
-        return "smokedetector.xml";
+    public String getDeviceType() {
+        return deviceType;
     }
+
+    public abstract Optional<String> groupFor(XmlListDevice xmlListDevice, Context context);
 }

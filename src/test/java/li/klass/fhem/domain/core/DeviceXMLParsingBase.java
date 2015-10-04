@@ -93,11 +93,14 @@ public abstract class DeviceXMLParsingBase {
     public void before() throws Exception {
         AndFHEMApplication.setContext(context);
 
-        ApplicationComponent applicationComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(new AndFHEMApplication())).build();
+        ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(new AndFHEMApplication())).build();
 
         setFieldValue(deviceListParser, "parser", applicationComponent.getXmlListParser());
         setFieldValue(deviceListParser, "gPlotHolder", applicationComponent.getGPlotHolder());
         setFieldValue(deviceListParser, "deviceConfigurationProvider", applicationComponent.getDeviceConfigurationProvider());
+        setFieldValue(deviceListParser, "groupProvider", applicationComponent.getGroupProvider());
+
 
         given(context.getSharedPreferences(anyString(), anyInt())).willReturn(sharedPreferences);
 

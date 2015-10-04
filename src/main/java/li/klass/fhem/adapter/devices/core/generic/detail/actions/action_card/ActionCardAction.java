@@ -29,8 +29,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public interface ActionCardAction {
     View createView(XmlListDevice device, Context context, LayoutInflater inflater, ViewGroup parent);
+
+    boolean supports(GenericDevice genericDevice);
 }

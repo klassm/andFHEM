@@ -51,6 +51,7 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -66,6 +67,7 @@ import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.service.room.group.GroupProvider;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
@@ -99,6 +101,9 @@ public class DeviceListParser {
 
     @Inject
     GPlotHolder gPlotHolder;
+
+    @Inject
+    GroupProvider groupProvider;
 
     @Inject
     public DeviceListParser() {
@@ -322,6 +327,11 @@ public class DeviceListParser {
             device.afterDeviceXMLRead(context);
 
             LOG.debug("loaded device with name " + device.getName());
+
+
+            if (device instanceof GenericDevice) {
+                xmlListDevice.setAttribute("group", groupProvider.functionalityFor(device, context));
+            }
 
             allDevices.put(device.getName(), device);
 

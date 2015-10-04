@@ -22,35 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.culhm;
+package li.klass.fhem.dagger;
 
-import org.junit.Test;
+import dagger.Module;
+import dagger.Provides;
+import li.klass.fhem.service.room.group.device.CulHmDeviceGroupProvider;
+import li.klass.fhem.service.room.group.device.DeviceGroupProvider;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class PowerSensorTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
-
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-
-        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.POWERSENSOR);
-        assertThat(device.supportsToggle()).isFalse();
-
-        assertThat(device.getPower()).isEqualTo("150.0 (W)");
-        assertThat(device.getCurrentVoltage()).isEqualTo("0.0 (V)");
-        assertThat(device.getFrequency()).isEqualTo("50.0 (Hz)");
-        assertThat(device.getCurrent()).isEqualTo("0.0 (mA)");
-
-        assertThat(device.isSupported()).isTrue();
-    }
-
-    @Override
-    protected String getFileName() {
-        return "powerSensor.xml";
+@Module
+public class DeviceGroupProviderModule {
+    @Provides(type = Provides.Type.SET)
+    public DeviceGroupProvider provideCUL_HMGroupProvider() {
+        return new CulHmDeviceGroupProvider();
     }
 }

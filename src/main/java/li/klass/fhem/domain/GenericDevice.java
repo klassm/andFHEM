@@ -28,9 +28,6 @@ import android.content.Context;
 
 import java.util.Map;
 
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
-import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
@@ -39,22 +36,20 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
-import static li.klass.fhem.behavior.dim.DimmableBehavior.isDimDisabled;
-
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice> {
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        if (DimmableBehavior.behaviorFor(this).isPresent() && !isDimDisabled(this)) {
-            return DeviceFunctionality.DIMMER;
-        } else if (OnOffBehavior.supports(this)) {
-            return DeviceFunctionality.SWITCH;
-        } else if (deviceConfiguration.isPresent()) {
-            return deviceConfiguration.get().getDefaultGroup();
-        } else {
-            return DeviceFunctionality.UNKNOWN;
-        }
-    }
+//    @Override
+//    public DeviceFunctionality getDeviceGroup() {
+//        if (DimmableBehavior.behaviorFor(this).isPresent() && !isDimDisabled(this)) {
+//            return DeviceFunctionality.DIMMER;
+//        } else if (OnOffBehavior.supports(this)) {
+//            return DeviceFunctionality.SWITCH;
+//        } else if (deviceConfiguration.isPresent()) {
+//            return deviceConfiguration.get().getDefaultGroup();
+//        } else {
+//            return DeviceFunctionality.UNKNOWN;
+//        }
+//    }
 
     @Override
     public void afterDeviceXMLRead(Context context) {
