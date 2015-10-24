@@ -25,12 +25,17 @@
 package li.klass.fhem.accesibility;
 
 import android.accessibilityservice.AccessibilityService;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import com.google.common.base.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Locale;
@@ -40,26 +45,46 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.intent.VoiceCommandIntentService;
 
 public class MyAccessibilityService extends AccessibilityService {
-    private DateTime lastCommandTime = new DateTime();
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(MyAccessibilityService.class);
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
-        DateTime now = new DateTime();
-        Interval interval = new Interval(lastCommandTime, now);
-        long millis = interval.toDurationMillis();
-        if (millis < 3000) return;
 
-        lastCommandTime = now;
+        Optional<String> text;
+        if (Build.VERSION.SDK_INT < 14) {
+            text = getTextForOldAndroidVersions(accessibilityEvent);
+        } else {
+            text = getTextForNewAndroidVersions(accessibilityEvent);
+        }
 
-        List<CharSequence> texts = accessibilityEvent.getText();
-        if (texts.isEmpty()) return;
+        if (!text.isPresent()) {
+            return;
+        }
 
-        String command = texts.get(0).toString();
+        String command = text.get();
+        LOGGER.info("command: {}", command);
         command = command.toLowerCase(Locale.getDefault());
         startService(new Intent(Actions.RECOGNIZE_VOICE_COMMAND)
                 .setClass(this, VoiceCommandIntentService.class)
                 .putExtra(BundleExtraKeys.COMMAND, command));
         Log.d(MyAccessibilityService.class.getName(), command);
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private Optional<String> getTextForNewAndroidVersions(AccessibilityEvent accessibilityEvent) {
+        AccessibilityNodeInfo source = accessibilityEvent.getSource();
+        if (source == null || source.getText() == null) {
+            return Optional.absent();
+        }
+        return Optional.of(source.getText().toString());
+    }
+
+    private Optional<String> getTextForOldAndroidVersions(AccessibilityEvent accessibilityEvent) {
+        List<CharSequence> texts = accessibilityEvent.getText();
+        if (texts.isEmpty()) return Optional.absent();
+
+        return Optional.of(texts.get(0).toString());
     }
 
     @Override
