@@ -42,7 +42,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.service.TextToSpeechService;
 import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.intent.voice.VoiceResult;
 import li.klass.fhem.service.room.RoomListService;
@@ -115,17 +114,8 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
             handleSuccess((VoiceResult.Success) voiceResult);
             return true;
         } else {
-            handleError((VoiceResult.Error) voiceResult);
             return false;
         }
-    }
-
-    private void handleError(VoiceResult.Error voiceResult) {
-        speak(getString(voiceResult.errorType.stringId));
-    }
-
-    private void speak(String text) {
-        startService(new Intent(Actions.SAY).putExtra(BundleExtraKeys.TEXT, text).setClass(this, TextToSpeechService.class));
     }
 
     private void handleSuccess(VoiceResult.Success success) {
