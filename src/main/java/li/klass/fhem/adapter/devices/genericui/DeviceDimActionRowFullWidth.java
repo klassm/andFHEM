@@ -29,16 +29,16 @@ import android.widget.TableRow;
 
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
-import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
-
 public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWidth {
 
     public DeviceDimActionRowFullWidth(float dimState, float lowerBound, float dimStep, float upperBound, TableRow updateRow, int layoutId) {
         super(
-                toSeekbarProgress(dimState, lowerBound, dimStep),
-                0,
-                toSeekbarProgress(upperBound, lowerBound, dimStep),
-                layoutId, updateRow);
+                dimState,
+                lowerBound,
+                dimStep,
+                upperBound,
+                layoutId,
+                updateRow);
     }
 
     public void onStopTrackingTouch(final Context context, XmlListDevice device, float progress) {

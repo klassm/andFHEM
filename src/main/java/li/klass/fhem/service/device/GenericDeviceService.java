@@ -100,6 +100,7 @@ public class GenericDeviceService {
         Tasker.sendTaskerNotifyIntent(context, device.getName(),
                 subStateName, value);
 
+        device.getXmlListDevice().setState(subStateName, value);
         if (DIM_ATTRIBUTES.contains(subStateName)) {
             device.setState(value);
         } else {

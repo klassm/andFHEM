@@ -29,6 +29,8 @@ import android.content.Context;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
+import org.joda.time.DateTime;
+
 import java.util.Map;
 
 import li.klass.fhem.adapter.uiservice.StateUiService;
@@ -68,7 +70,8 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
 
     private DeviceNode getValue(FhemDevice device) {
         Map<String, DeviceNode> states = device.getXmlListDevice().getStates();
-        return states.containsKey(setListAttribute) ? states.get(setListAttribute) : states.get("state");
+        DeviceNode value = states.containsKey(setListAttribute) ? states.get(setListAttribute) : states.get("state");
+        return value == null ? new DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", "", (DateTime) null) : value;
     }
 
     @Override

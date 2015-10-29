@@ -47,17 +47,10 @@ public class DimmableDeviceDimActionRowFullWidth extends DeviceDimActionRowFullW
                 device.getDimUpperBound(), updateRow, layoutId);
     }
 
-    public void onStopTrackingTouch(final Context context, FhemDevice device, float progress) {
-        context.startService(new Intent(Actions.DEVICE_DIM)
-                .setClass(context, DeviceIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
-    }
-
     @Override
     public void onStopDim(Context context, XmlListDevice device, float progress) {
         context.startService(new Intent(Actions.DEVICE_DIM)
+                .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
