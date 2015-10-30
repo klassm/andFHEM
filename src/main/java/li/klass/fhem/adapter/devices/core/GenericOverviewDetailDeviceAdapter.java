@@ -327,7 +327,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                 addRow(table, new OnOffActionRow(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
                         .createRow(getInflater(), device, getContext()));
             } else {
-                addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping), groupStates, item.getValueFor(device), item.getSortKey())
+                addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping), groupStates, item.getValueFor(device), item.getKey())
                         .createRow(device.getXmlListDevice(), table));
             }
         }

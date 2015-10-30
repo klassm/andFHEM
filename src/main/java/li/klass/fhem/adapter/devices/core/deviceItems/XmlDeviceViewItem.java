@@ -77,6 +77,11 @@ public class XmlDeviceViewItem implements DeviceViewItem {
     }
 
     @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
     public String toString() {
         return "XmlDeviceViewItem{" +
                 "key='" + key + '\'' +

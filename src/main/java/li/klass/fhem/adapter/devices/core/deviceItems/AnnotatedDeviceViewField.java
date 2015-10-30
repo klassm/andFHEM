@@ -62,6 +62,11 @@ public class AnnotatedDeviceViewField extends AnnotatedDeviceViewItem {
     }
 
     @Override
+    public String getKey() {
+        return field.getName();
+    }
+
+    @Override
     public ShowField getShowFieldAnnotation() {
         return showField;
     }

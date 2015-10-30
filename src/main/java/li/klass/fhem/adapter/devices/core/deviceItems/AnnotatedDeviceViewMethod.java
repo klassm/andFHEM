@@ -73,6 +73,11 @@ public class AnnotatedDeviceViewMethod extends AnnotatedDeviceViewItem {
     }
 
     @Override
+    public String getKey() {
+        return sortName;
+    }
+
+    @Override
     public ShowField getShowFieldAnnotation() {
         return showField;
     }

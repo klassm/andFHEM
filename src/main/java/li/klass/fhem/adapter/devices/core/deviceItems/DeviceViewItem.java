@@ -40,4 +40,6 @@ public interface DeviceViewItem {
     boolean isShowInOverview();
 
     String getSortKey();
+
+    String getKey();
 }
