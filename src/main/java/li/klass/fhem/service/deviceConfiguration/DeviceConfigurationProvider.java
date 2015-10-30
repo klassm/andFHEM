@@ -42,6 +42,7 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Collections.emptySet;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 @Singleton
 public class DeviceConfigurationProvider {
@@ -95,18 +96,30 @@ public class DeviceConfigurationProvider {
         }
 
         JSONObject jsonObject = configOpt.get();
+        String defaultGroupValue = trimToNull(jsonObject.optString(DEFAULT_GROUP));
+        DeviceFunctionality defaultGroup = defaultGroupValue != null ? DeviceFunctionality.valueOf(defaultGroupValue) : DeviceFunctionality.UNKNOWN;
+
         DeviceConfiguration.Builder builder = new DeviceConfiguration.Builder()
                 .withSensorDevice(jsonObject.optBoolean(SENSOR_DEVICE, false))
-                .withDefaultGroup(DeviceFunctionality.valueOf(jsonObject.optString(DEFAULT_GROUP)))
+                .withDefaultGroup(defaultGroup)
                 .withSupportedWidgets(transformStringJsonArray(jsonObject.optJSONArray(SUPPORTED_WIDGETS)))
                 .withShowStateInOverview(jsonObject.optBoolean(SHOW_STATE_IN_OVERVIEW, true))
                 .withShowMeasuredInOverview(jsonObject.optBoolean(SHOW_MEASURED_IN_OVERVIEW, true));
 
+        Optional<JSONObject> defaults = plainConfigurationFor("defaults");
+        if (defaults.isPresent()) {
+            addFields(defaults.get(), builder);
+        }
+
+        addFields(jsonObject, builder);
+
+        return Optional.of(builder.build());
+    }
+
+    private void addFields(JSONObject jsonObject, DeviceConfiguration.Builder builder) {
         addStates(jsonObject, builder);
         addAttributes(jsonObject, builder);
         addInternals(jsonObject, builder);
-
-        return Optional.of(builder.build());
     }
 
     private void addAttributes(JSONObject jsonObject, DeviceConfiguration.Builder builder) {

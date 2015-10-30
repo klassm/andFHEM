@@ -1,0 +1,149 @@
+{
+  "sensorDevice": true,
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "CommandAccepted",
+      "desc": "commandAccepted",
+      "showInOverview": false
+    },
+    {
+      "key": "controlMode",
+      "desc": "mode",
+      "showInOverview": true
+    },
+    {
+      "key": "desired-temp",
+      "desc": "desiredTemperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "measured-temp",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "ValvePosition",
+      "desc": "actuator",
+      "showInOverview": true
+    },
+    {
+      "key": "battery",
+      "desc": "battery",
+      "showInOverview": false
+    },
+    {
+      "key": "content",
+      "desc": "content",
+      "showInOverview": true
+    },
+    {
+      "key": "brightness",
+      "desc": "brightness",
+      "showInOverview": true
+    },
+    {
+      "key": "luminosity",
+      "desc": "brightness",
+      "showInOverview": true
+    },
+    {
+      "key": "motion",
+      "desc": "motion",
+      "showInOverview": false
+    },
+    {
+      "key": "windSpeed",
+      "desc": "windSpeed",
+      "showInOverview": false
+    },
+    {
+      "key": "windDirection",
+      "desc": "windDirection",
+      "showInOverview": false
+    },
+    {
+      "key": "sunshine",
+      "desc": "sunshine",
+      "showInOverview": false
+    },
+    {
+      "key": "isRaining",
+      "desc": "isRaining",
+      "showInOverview": false
+    },
+    {
+      "key": "rain",
+      "desc": "rain",
+      "showInOverview": false
+    },
+    {
+      "key": "power",
+      "desc": "currentPower",
+      "showInOverview": false
+    },
+    {
+      "key": "voltage",
+      "desc": "voltage",
+      "showInOverview": false
+    },
+    {
+      "key": "energy",
+      "desc": "energy",
+      "showInOverview": true
+    },
+    {
+      "key": "batVoltage",
+      "desc": "batteryVoltage",
+      "showInOverview": false
+    },
+    {
+      "key": "pressure",
+      "desc": "pressure",
+      "showInOverview": false
+    },
+    {
+      "key": "pressure-nn",
+      "desc": "pressureNN",
+      "showInOverview": false
+    },
+    {
+      "key": "frequency",
+      "desc": "energy_frequency",
+      "showInOverview": false
+    },
+    {
+      "key": "current",
+      "desc": "current",
+      "showInOverview": false
+    }
+  ],
+  "attributes": [
+    {
+      "key": "subType",
+      "desc": "type"
+    }
+  ]
+}

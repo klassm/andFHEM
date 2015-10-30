@@ -1,0 +1,27 @@
+{
+  "states": [],
+  "attributes": [
+    {
+      "key": "model",
+      "desc": "model"
+    },
+    {
+      "key": "room",
+      "desc": "rooms"
+    }
+  ],
+  "internals": [
+    {
+      "key": "NAME",
+      "desc": "deviceName"
+    },
+    {
+      "key": "DEF",
+      "desc": "definition"
+    },
+    {
+      "key": "STATE",
+      "desc": "state"
+    }
+  ]
+}
