@@ -22,7 +22,7 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- colorPrimary is used for the default action bar background -->
@@ -314,7 +314,7 @@
         <item name="android:paddingRight">4dp</item>
         <item name="android:maxLines">2</item>
         <item name="android:drawablePadding">2dp</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textAllCaps" tools:targetApi="ice_cream_sandwich">false</item>
     </style>
 
     <style name="cardCaption">
@@ -331,8 +331,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginRight">10dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginEnd" tools:ignore="NewApi">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginStart" tools:ignore="NewApi">10dp</item>
     </style>
 </resources>
