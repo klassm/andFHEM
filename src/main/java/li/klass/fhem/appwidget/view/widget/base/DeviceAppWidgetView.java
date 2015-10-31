@@ -172,9 +172,10 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls) {
         Optional<DeviceConfiguration> configuration = deviceConfigurationProvider.configurationFor(device);
         if (configuration.isPresent()) {
-            for (DeviceConfiguration.ViewItemConfig state : configuration.get().getStates()) {
+            Set<DeviceConfiguration.ViewItemConfig> states = configuration.get().getStates();
+            for (DeviceConfiguration.ViewItemConfig state : states) {
                 if (state.getMarkers().contains(annotationCls.getSimpleName())) {
-                    return device.getXmlListDevice().getStates().get(state.getKey()).getValue();
+                    return device.getXmlListDevice().stateValueFor(state.getKey()).orNull();
                 }
             }
         }

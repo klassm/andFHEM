@@ -139,6 +139,13 @@ public class XmlListDevice implements Serializable {
         return Optional.absent();
     }
 
+    public Optional<String> stateValueFor(String key) {
+        if (states.containsKey(key)) {
+            return Optional.of(attributes.get(key).getValue());
+        }
+        return Optional.absent();
+    }
+
     private String measuredNow() {
         return new DateTime().toString(DATE_PATTERN);
     }
