@@ -59,6 +59,7 @@ import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
+import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
@@ -304,6 +305,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                 addRow(table, dimmableStrategy.createDetailView(device, row, getInflater(), getContext()));
             } else if (toggleableStrategy.supports(device)) {
                 addRow(table, toggleableStrategy.createDetailView(device, row, getInflater(), getContext()));
+            }
+            if (!device.getWebCmd().isEmpty()) {
+                addRow(table, new WebCmdActionRow(WebCmdActionRow.LAYOUT_DETAIL, getContext()).createRow(getContext(), getInflater(), table, device));
             }
             return;
         }
