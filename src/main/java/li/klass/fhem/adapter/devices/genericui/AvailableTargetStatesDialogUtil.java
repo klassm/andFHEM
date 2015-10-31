@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -39,7 +40,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -60,6 +64,7 @@ import li.klass.fhem.util.DialogUtil;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.isValidAdditionalInformationValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -160,15 +165,22 @@ public class AvailableTargetStatesDialogUtil {
 
                 @Override
                 public View getContentViewFor(Context context, D device) {
-                    TableLayout tableLayout = new TableLayout(context);
                     float initialProgress = 0;
                     if (device instanceof DimmableDevice) {
                         initialProgress = ((DimmableDevice) device).getDimPosition();
                     }
 
+                    LayoutInflater inflater = getInflater(context);
+                    @SuppressLint("InflateParams") TableLayout tableLayout = (TableLayout) inflater.inflate(R.layout.availabletargetstates_action_with_seekbar, null, false);
+
+                    TableRow updateRow = (TableRow) tableLayout.findViewById(R.id.updateRow);
+                    assert updateRow != null;
+                    ((TextView) updateRow.findViewById(R.id.description)).setText("");
+                    ((TextView) updateRow.findViewById(R.id.value)).setText("");
+
                     tableLayout.addView(new DeviceDimActionRowFullWidth(initialProgress,
                             sliderValue.getStart(), sliderValue.getStep(), sliderValue.getStop(),
-                            null, R.layout.device_detail_seekbarrow_full_width) {
+                            updateRow, R.layout.device_detail_seekbarrow_full_width) {
 
                         @Override
                         public void onStopDim(Context context, XmlListDevice device, float progress) {
@@ -177,9 +189,9 @@ public class AvailableTargetStatesDialogUtil {
 
                         @Override
                         public String toDimUpdateText(XmlListDevice device, float progress) {
-                            return null;
+                            return progress + "";
                         }
-                    }.createRow(LayoutInflater.from(context), device));
+                    }.createRow(inflater, device));
                     return tableLayout;
                 }
 
@@ -245,6 +257,13 @@ public class AvailableTargetStatesDialogUtil {
             callback.onTargetStateSelected(option, null, device, context);
             return null;
         }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static
+    @NotNull
+    LayoutInflater getInflater(Context context) {
+        return checkNotNull(LayoutInflater.from(context));
     }
 
 
