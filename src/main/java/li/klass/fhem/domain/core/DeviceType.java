@@ -99,7 +99,6 @@ import li.klass.fhem.domain.STVDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SomfyDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
-import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.WeatherDevice;
@@ -118,7 +117,6 @@ public enum DeviceType {
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     FILE_LOG("FileLog", LogDevice.class),
     DB_LOG("DbLog", LogDevice.class),
-    STATISTICS("statistics", StatisticsDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),

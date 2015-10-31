@@ -52,7 +52,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
@@ -293,7 +292,7 @@ public class DeviceListParser {
             // We don't want to show log devices in any kind of view. Log devices
             // are already associated with their respective devices during after read
             // operations.
-            if (!(device instanceof LogDevice) && !(device instanceof StatisticsDevice)) {
+            if (!(device instanceof LogDevice)) {
                 roomDeviceList.addDevice(device, context);
             }
         }

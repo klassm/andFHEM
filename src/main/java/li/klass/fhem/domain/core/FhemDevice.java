@@ -72,8 +72,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     private long lastMeasureTime = -1;
     private Set<SvgGraphDefinition> svgGraphDefinitions = newHashSet();
 
-    private boolean hasStatisticsDevice = false;
-
     private DeviceFunctionality deviceFunctionality;
 
     private OverviewViewSettings overviewViewSettingsCache;
@@ -216,15 +214,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return getRooms().contains(room);
     }
 
-    public boolean isInAnyRoomOf(List<String> rooms) {
-        for (String room : rooms) {
-            if (isInRoom(room)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public String getMeasured() {
         return measured;
     }
@@ -236,6 +225,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public void setMeasured(DateTime measuredIn) {
+        measuredIn = measuredIn != null ? measuredIn : DateTime.now();
         this.measured = DateFormatUtil.formatTime(measuredIn);
         this.lastMeasureTime = measuredIn.getMillis();
     }
@@ -353,10 +343,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return eventMap;
     }
 
-    public Map<String, String> getEventMapReverse() {
-        return eventMapReverse;
-    }
-
     public SetList getSetList() {
         return setList;
     }
@@ -412,14 +398,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     protected boolean useTimeAndWeekAttributesForMeasureTime() {
         return true;
-    }
-
-    public boolean hasStatisticsDevice() {
-        return hasStatisticsDevice;
-    }
-
-    public void setHasStatisticsDevice(boolean hasStatisticsDevice) {
-        this.hasStatisticsDevice = hasStatisticsDevice;
     }
 
     public void addSvgGraphDefinition(SvgGraphDefinition svgGraphDefinition) {
