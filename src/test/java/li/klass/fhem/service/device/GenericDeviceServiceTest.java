@@ -22,48 +22,47 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.service.device;
 
 import android.content.Context;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.List;
-
-import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
-public class WebCmdActionRowTest {
-
+public class GenericDeviceServiceTest {
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
 
+    @InjectMocks
+    GenericDeviceService genericDeviceService;
+
     @Mock
-    private Context context;
+    CommandExecutionService commandExecutionService;
+
+    @Mock
+    Context context;
 
     @Test
-    public void should_handle_null_webcmds() {
+    public void should_not_set_substate_state() {
         // given
-        DummyWebCmdRow row = new DummyWebCmdRow("row", 0);
-        DummyDevice dummyDevice = new DummyDevice();
-
-        // expect
-        assertThat(dummyDevice.getWebCmd()).isEmpty();
+        GenericDevice device = new GenericDevice();
+        XmlListDevice xmllistDevice = new XmlListDevice("FS20");
+        xmllistDevice.setInternal("NAME", "someName");
+        device.setXmlListDevice(xmllistDevice);
 
         // when
-        List<String> items = row.getItems(dummyDevice);
+        genericDeviceService.setSubState(device, "state", "bla", context);
 
         // then
-        assertThat(items).hasSize(0);
-    }
-
-    private class DummyWebCmdRow extends WebCmdActionRow {
-        public DummyWebCmdRow(String description, int layout) {
-            super(description, layout);
-        }
+        verify(commandExecutionService).executeSafely("set someName bla", context);
     }
 }

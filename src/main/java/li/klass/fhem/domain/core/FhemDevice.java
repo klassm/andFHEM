@@ -309,11 +309,8 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         }
 
         XmlListDevice device = getXmlListDevice();
-        boolean containsState = device.getStates().containsKey("state");
-        if (containsState) {
-            device.setState("state", state);
-        }
-        if (device.getInternals().containsKey("STATE") || !containsState) {
+        device.setState("state", state);
+        if (device.getInternals().containsKey("STATE")) {
             device.setInternal("STATE", state);
         }
         if (device.getHeader().containsKey("state")) {

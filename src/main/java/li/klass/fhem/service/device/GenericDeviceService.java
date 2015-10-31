@@ -96,6 +96,10 @@ public class GenericDeviceService {
     }
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context) {
+        if ("STATE".equalsIgnoreCase(subStateName)) {
+            setState(device, value, context);
+            return;
+        }
         commandExecutionService.executeSafely("set " + getInternalName(device) + " " + subStateName + " " + value, context);
         Tasker.sendTaskerNotifyIntent(context, device.getName(),
                 subStateName, value);

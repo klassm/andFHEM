@@ -38,19 +38,6 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice> {
-//    @Override
-//    public DeviceFunctionality getDeviceGroup() {
-//        if (DimmableBehavior.behaviorFor(this).isPresent() && !isDimDisabled(this)) {
-//            return DeviceFunctionality.DIMMER;
-//        } else if (OnOffBehavior.supports(this)) {
-//            return DeviceFunctionality.SWITCH;
-//        } else if (deviceConfiguration.isPresent()) {
-//            return deviceConfiguration.get().getDefaultGroup();
-//        } else {
-//            return DeviceFunctionality.UNKNOWN;
-//        }
-//    }
-
     @Override
     public void afterDeviceXMLRead(Context context) {
         super.afterDeviceXMLRead(context);
