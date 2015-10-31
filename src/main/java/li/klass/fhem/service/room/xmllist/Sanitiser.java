@@ -43,6 +43,7 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.ATTR;
+import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
@@ -87,6 +88,7 @@ public class Sanitiser {
 
     private void handleGeneral(XmlListDevice xmlListDevice, JSONObject generalOptions) throws JSONException {
         handleGeneralAttributesIfNotPresent(generalOptions, xmlListDevice);
+        handleGeneralStatesIfNotPresent(generalOptions, xmlListDevice);
         handleGeneralAttributeAddIfModelDoesNotMatch(xmlListDevice, generalOptions);
     }
 
@@ -118,6 +120,21 @@ public class Sanitiser {
 
             if (!xmlListDevice.getAttributes().containsKey(key)) {
                 xmlListDevice.getAttributes().put(key, new DeviceNode(ATTR, key, value, (DateTime) null));
+            }
+        }
+    }
+
+    private void handleGeneralStatesIfNotPresent(JSONObject generalOptions, XmlListDevice xmlListDevice) throws JSONException {
+        JSONArray states = generalOptions.optJSONArray("addStatesIfNotPresent");
+        if (states == null) return;
+
+        for (int i = 0; i < states.length(); i++) {
+            JSONObject object = states.getJSONObject(i);
+            String key = object.getString("key");
+            String value = object.getString("value");
+
+            if (!xmlListDevice.getStates().containsKey(key)) {
+                xmlListDevice.getStates().put(key, new DeviceNode(STATE, key, value, (DateTime) null));
             }
         }
     }

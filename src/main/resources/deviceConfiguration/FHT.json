@@ -4,7 +4,7 @@
   "showStateInOverview": false,
   "states": [
     {
-      "key": "day_temp",
+      "key": "day-temp",
       "desc": "dayTemperature",
       "showAfter": "desired-temp"
     },
