@@ -68,6 +68,7 @@ public class XmlListParser {
                 .replaceAll("_[0-9]+_LIST", "_LIST")
                 .replaceAll("(<[/]?[A-Z0-9]+)_[0-9]+([ >])", "$1$2")
                 .replaceAll("< [^>]*>", "")
+                .replaceAll("</>", "")
                 .replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "")
                 .replaceAll("\\\\B0", "°");
 
