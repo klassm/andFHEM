@@ -141,7 +141,7 @@ public class XmlListDevice implements Serializable {
 
     public Optional<String> stateValueFor(String key) {
         if (states.containsKey(key)) {
-            return Optional.of(attributes.get(key).getValue());
+            return Optional.of(states.get(key).getValue());
         }
         return Optional.absent();
     }

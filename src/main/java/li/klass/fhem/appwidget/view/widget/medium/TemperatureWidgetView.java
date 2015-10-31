@@ -63,4 +63,9 @@ public class TemperatureWidgetView extends DeviceAppWidgetView {
     protected void inject(ApplicationComponent applicationComponent) {
         applicationComponent.inject(this);
     }
+
+    @Override
+    public boolean supports(FhemDevice<?> device) {
+        return super.supports(device) && valueForAnnotation(device, WidgetTemperatureField.class) != null;
+    }
 }
