@@ -2,11 +2,17 @@
   "defaultGroup": "HEATING",
   "sensorDevice": true,
   "showStateInOverview": false,
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
   "states": [
     {
       "key": "temperature",
       "desc": "temperature",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
     },
     {
       "key": "mode",
@@ -42,7 +48,10 @@
     {
       "key": "valveposition",
       "desc": "actuator",
-      "showAfter": "minimumTemperature"
+      "showAfter": "minimumTemperature",
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ]
     },
     {
       "key": "battery",
