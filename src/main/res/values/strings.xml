@@ -541,6 +541,8 @@
     <string name="twilight_light_indoor">Indoor twilight</string>
     <string name="twilight_light_weather">Weather twilight</string>
     <string name="twilight_light_daylight">Daylight</string>
+    <string name="twilight_condition">Condition</string>
+    <string name="twilight">Twilight</string>
 
     <string name="musicMute">Mute</string>
     <string name="musicRepeat">Repeat</string>

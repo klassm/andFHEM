@@ -1,0 +1,93 @@
+{
+  "defaultGroup": "WEATHER",
+  "sensorDevice": false,
+  "showMeasuredInOverview": true,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "nextEvent",
+      "desc": "twilight_next_event",
+      "showInOverview": true
+    },
+    {
+      "key": "nextEventTime",
+      "desc": "twilight_next_event_time",
+      "showInOverview": true
+    },
+    {
+      "key": "sr",
+      "desc": "twilight_sunrise",
+      "showInOverview": false
+    },
+    {
+      "key": "sr_astro",
+      "desc": "twilight_sunrise_astronomical",
+      "showInOverview": false
+    },
+    {
+      "key": "sr_civil",
+      "desc": "twilight_sunrise_civil",
+      "showInOverview": true
+    },
+    {
+      "key": "sr_indoor",
+      "desc": "twilight_sunrise_indoor",
+      "showInOverview": false
+    },
+    {
+      "key": "sr_naut",
+      "desc": "twilight_sunrise_nautical",
+      "showInOverview": false
+    },
+    {
+      "key": "sr_weather",
+      "desc": "twilight_sunrise_weather",
+      "showInOverview": false
+    },
+    {
+      "key": "ss",
+      "desc": "twilight_sunset",
+      "showInOverview": false
+    },
+    {
+      "key": "ss_astro",
+      "desc": "twilight_sunset_astronomical",
+      "showInOverview": true
+    },
+    {
+      "key": "ss_civil",
+      "desc": "twilight_sunset_indoor",
+      "showInOverview": false
+    },
+    {
+      "key": "ss_indoor",
+      "desc": "twilight_sunrise_nautical",
+      "showInOverview": false
+    },
+    {
+      "key": "ss_naut",
+      "desc": "twilight_sunset_nautical",
+      "showInOverview": false
+    },
+    {
+      "key": "ss_weather",
+      "desc": "twilight_sunset_weather",
+      "showInOverview": false
+    },
+    {
+      "key": "light",
+      "desc": "twilight_light",
+      "showInOverview": false
+    },
+    {
+      "key": "condition_txt",
+      "desc": "twilight_condition",
+      "showInOverview": false
+    },
+    {
+      "key": "twilight",
+      "desc": "twilight",
+      "showInOverview": false
+    }
+  ]
+}

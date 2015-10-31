@@ -536,6 +536,8 @@
     <string name="twilight_light_indoor">Raum-Dämmerung</string>
     <string name="twilight_light_weather">Wetter Dämmerung</string>
     <string name="twilight_light_daylight">Tageslicht</string>
+    <string name="twilight_condition">Wetterlage</string>
+    <string name="twilight">Dämmerung</string>
 
     <string name="musicMute">Stumm</string>
     <string name="musicRepeat">Wiederholung</string>
