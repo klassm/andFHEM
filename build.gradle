@@ -60,6 +60,11 @@ android {
         unitTests.returnDefaultValues = true
     }
 
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "2048M"
+    }
+
     defaultConfig {
         targetSdkVersion 22
         minSdkVersion 9
