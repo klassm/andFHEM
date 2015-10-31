@@ -319,7 +319,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
         if (setListValue instanceof SetListSliderValue) {
             TableRow sliderRow = new StateChangingSeekBarFullWidth(
-                    getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getSortKey()).get(), row)
+                    getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getKey()).get(), row)
                     .createRow(getInflater(), device);
             addRow(table, sliderRow);
         } else if (setListValue instanceof SetListGroupValue) {

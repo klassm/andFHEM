@@ -23,6 +23,7 @@
     {
       "key": "desiredTemperature",
       "desc": "desiredTemperature",
+      "showInOverview": true,
       "showAfter": "mode"
     },
     {
@@ -48,6 +49,7 @@
     {
       "key": "valveposition",
       "desc": "actuator",
+      "showInOverview": true,
       "showAfter": "minimumTemperature",
       "markers": [
         "WidgetTemperatureAdditionalField"

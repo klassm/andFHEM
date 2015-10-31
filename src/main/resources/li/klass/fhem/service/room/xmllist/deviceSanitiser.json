@@ -659,42 +659,6 @@
       }
     },
     "MAX": {
-      "__general__": {
-        "addStatesIfNotPresent": [
-          {
-            "key": "desiredTemperature",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "ecoTemperature",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "comfortTemperature",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "temperatureOffset",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "maximumTemperature",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "minimumTemperature",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "windowOpenTemperature",
-            "value": "4.5 (°C)"
-          },
-          {
-            "key": "windowOpenDuration",
-            "value": "4.5 (°C)"
-          }
-        ]
-      },
       "sets": {
         "replaceAll": [
           {

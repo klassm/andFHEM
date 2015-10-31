@@ -28,6 +28,8 @@ import android.content.Context;
 
 import com.google.common.base.Optional;
 
+import java.util.Locale;
+
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
@@ -115,10 +117,11 @@ public class DimmableBehavior {
     }
 
     public static Optional<DimmableBehavior> continuousBehaviorFor(FhemDevice device, String attribute) {
-        if (!device.getSetList().contains(attribute)) {
+        String sortAttribute = attribute.toLowerCase(Locale.getDefault());
+        if (!device.getSetList().contains(sortAttribute)) {
             return Optional.absent();
         }
-        SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(attribute);
+        SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(sortAttribute);
         return Optional.of(new DimmableBehavior(device, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
     }
 
