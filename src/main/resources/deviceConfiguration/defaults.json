@@ -1,5 +1,10 @@
 {
-  "states": [],
+  "states": [
+    {
+      "key": "state",
+      "desc": "state"
+    }
+  ],
   "attributes": [
     {
       "key": "model",
