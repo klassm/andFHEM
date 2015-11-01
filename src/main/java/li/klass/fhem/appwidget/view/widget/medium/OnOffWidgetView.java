@@ -67,8 +67,8 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
         String onStateName = deviceHookProvider.getOnStateName(device);
         String offStateName = deviceHookProvider.getOffStateName(device);
 
-        view.setTextViewText(R.id.widgetOnButton, onStateName);
-        view.setTextViewText(R.id.widgetOffButton, offStateName);
+        view.setTextViewText(R.id.widgetOnButton, device.getEventMapStateFor(onStateName));
+        view.setTextViewText(R.id.widgetOffButton, device.getEventMapStateFor(offStateName));
 
         int backgroundColor = isOn ? R.color.android_green : android.R.color.white;
         view.setInt(R.id.widgetOnButton, "setBackgroundColor", context.getResources().getColor(backgroundColor));
