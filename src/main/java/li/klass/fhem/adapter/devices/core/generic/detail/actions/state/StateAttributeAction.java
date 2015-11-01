@@ -32,7 +32,7 @@ import android.widget.TableRow;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public interface StateAttributeAction {
-    TableRow createRow(XmlListDevice device, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent);
+    TableRow createRow(XmlListDevice device, String key, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent);
 
     boolean supports(XmlListDevice xmlListDevice);
 }

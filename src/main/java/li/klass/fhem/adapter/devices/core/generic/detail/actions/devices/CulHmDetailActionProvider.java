@@ -119,7 +119,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
     private static class KFM100ContentView implements StateAttributeAction {
 
         @Override
-        public TableRow createRow(XmlListDevice device, String stateValue, final Context context, LayoutInflater inflater, ViewGroup parent) {
+        public TableRow createRow(XmlListDevice device, String key, String stateValue, final Context context, LayoutInflater inflater, ViewGroup parent) {
             String model = device.getAttribute("model").get();
             final double fillContentPercentage = determineContentPercentage(device, model);
 

@@ -25,66 +25,30 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
-import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
-import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
 public abstract class HeatingModeDetailAction<M extends Enum<M>> implements StateAttributeAction {
 
     @Override
-    public TableRow createRow(XmlListDevice device, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent) {
+    public TableRow createRow(XmlListDevice device, String key, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent) {
         M mode = getCurrentModeFor(device);
         final M[] available = getAvailableModes();
 
-        int selected = EnumUtils.positionOf(available, mode);
-
-        return new SpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(available), selected) {
-
-            @Override
-            public void onItemSelected(final Context context, XmlListDevice device, String item) {
-                M mode = EnumUtils.valueOf(available, item);
-
-                if (mode == getUnknownMode() || mode == null) {
-                    revertSelection();
-                    return;
-                }
-
-                changeMode(mode, device, context);
-            }
-        }.createRow(device, parent);
+        return new StateChangingSpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(available), mode.name(), key).createRow(device, parent);
     }
 
     @Override
     public boolean supports(XmlListDevice xmlListDevice) {
         return true;
-    }
-
-
-    protected M getUnknownMode() {
-        return null;
-    }
-
-    protected void changeMode(M newMode, XmlListDevice device, Context context) {
-        final Intent intent = new Intent(Actions.DEVICE_SET_MODE)
-                .setClass(context, DeviceIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.DEVICE_MODE, newMode)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-        context.startService(intent);
     }
 
     protected abstract M getCurrentModeFor(XmlListDevice device);

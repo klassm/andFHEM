@@ -294,7 +294,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         if (!attributeActions.isEmpty()) {
             for (StateAttributeAction action : attributeActions) {
                 if (action.supports(device.getXmlListDevice())) {
-                    addRow(table, action.createRow(device.getXmlListDevice(), item.getValueFor(device), getContext(), getInflater(), table));
+                    addRow(table, action.createRow(device.getXmlListDevice(), item.getKey(), item.getValueFor(device), getContext(), getInflater(), table));
                     return;
                 }
             }
