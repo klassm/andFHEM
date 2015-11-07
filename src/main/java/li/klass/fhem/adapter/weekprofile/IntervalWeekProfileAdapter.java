@@ -33,6 +33,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
@@ -48,6 +51,7 @@ public class IntervalWeekProfileAdapter
         extends BaseWeekProfileAdapter<FilledTemperatureInterval> {
 
     private final ApplicationProperties applicationProperties;
+    private static final Logger LOGGER = LoggerFactory.getLogger(IntervalWeekProfileAdapter.class);
 
     public IntervalWeekProfileAdapter(Context context, ApplicationProperties applicationProperties) {
         super(context);
@@ -83,10 +87,13 @@ public class IntervalWeekProfileAdapter
         setTemperatureAndInterval(view, R.id.set, child, viewGroup, new OnIntervalTemperatureChangedListener() {
             @Override
             public void onIntervalTemperatureChanged(String time, double temperature) {
+                LOGGER.info("onIntervalTemperatureChanged(time={}, temperature={})", time, temperature);
                 child.setChangedTemperature(temperature);
 
                 if (!child.isTimeFixed()) {
                     child.setChangedSwitchTime(time);
+                } else {
+                    LOGGER.info("onIntervalTemperatureChanged() - cannot change switch time, time is fixed!");
                 }
                 notifyWeekProfileChangedListener();
             }
@@ -237,7 +244,10 @@ public class IntervalWeekProfileAdapter
                     String time = timeToTimeString(hours, minutes);
 
                     if (listener != null) {
+                        LOGGER.debug("showDialog() - notifying listener");
                         listener.onIntervalTemperatureChanged(time, temperature);
+                    } else {
+                        LOGGER.error("showDialog() - no listener");
                     }
                     notifyWeekProfileChangedListener();
                 }

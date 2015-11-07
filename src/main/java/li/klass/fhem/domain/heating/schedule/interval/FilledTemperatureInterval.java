@@ -105,4 +105,15 @@ public class FilledTemperatureInterval extends BaseHeatingInterval implements Co
         changedTemperature = temperature;
         changedSwitchTime = switchTime;
     }
+
+    @Override
+    public String toString() {
+        return "FilledTemperatureInterval{" +
+                "timeFixed=" + timeFixed +
+                ", temperature=" + temperature +
+                ", changedTemperature=" + changedTemperature +
+                ", switchTime='" + switchTime + '\'' +
+                ", changedSwitchTime='" + changedSwitchTime + '\'' +
+                '}';
+    }
 }

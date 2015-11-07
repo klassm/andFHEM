@@ -131,4 +131,11 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
     public void afterXMLRead() {
         configuration.afterXMLRead(this);
     }
+
+    @Override
+    public String toString() {
+        return "WeekProfile{" +
+                "dayProfiles=" + dayProfiles +
+                '}';
+    }
 }

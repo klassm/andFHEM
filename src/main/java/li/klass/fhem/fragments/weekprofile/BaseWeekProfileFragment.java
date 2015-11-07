@@ -31,6 +31,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 import li.klass.fhem.R;
@@ -62,6 +65,8 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
     private String deviceName;
     private HeatingConfiguration heatingConfiguration;
     private WeekProfile weekProfile;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWeekProfileFragment.class);
 
     @Override
     public void setArguments(Bundle args) {
@@ -119,6 +124,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         adapter.registerWeekProfileChangedListener(new BaseWeekProfileAdapter.WeekProfileChangedListener() {
             @Override
             public void onWeekProfileChanged(WeekProfile weekProfile) {
+                LOGGER.info("onWeekProfileChanged() - {}", weekProfile.toString());
                 updateChangeButtonsHolderVisibility(weekProfile);
             }
         });

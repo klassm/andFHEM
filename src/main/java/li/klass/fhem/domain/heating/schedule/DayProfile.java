@@ -37,8 +37,8 @@ import li.klass.fhem.util.DayUtil;
 
 public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>> implements Serializable {
     private DayUtil.Day day;
-    private List<H> heatingIntervals = new ArrayList<H>();
-    private List<H> deletedIntervals = new ArrayList<H>();
+    private List<H> heatingIntervals = new ArrayList<>();
+    private List<H> deletedIntervals = new ArrayList<>();
 
     private final C heatingConfiguration;
 
@@ -136,5 +136,15 @@ public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, 
         deletedIntervals.clear();
 
         Collections.sort(heatingIntervals);
+    }
+
+    @Override
+    public String toString() {
+        return "DayProfile{" +
+                "day=" + day +
+                ", heatingIntervals=" + heatingIntervals +
+                ", deletedIntervals=" + deletedIntervals +
+                ", heatingConfiguration=" + heatingConfiguration +
+                '}';
     }
 }
