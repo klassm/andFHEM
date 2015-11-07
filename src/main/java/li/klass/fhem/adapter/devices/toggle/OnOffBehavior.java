@@ -56,7 +56,7 @@ public class OnOffBehavior {
         }
 
         for (String offState : getOffStateNames(device)) {
-            if (internalState.contains(offState)) {
+            if (internalState.contains(offState.toLowerCase(Locale.getDefault()))) {
                 return true;
             }
         }
