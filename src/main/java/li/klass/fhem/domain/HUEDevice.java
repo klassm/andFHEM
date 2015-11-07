@@ -64,7 +64,11 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
     @XmllistAttribute("SUBTYPE")
     public void setSubtype(String value) {
         try {
-            subType = SubType.valueOf(value.toUpperCase(Locale.getDefault()).replaceAll("EXT", ""));
+            String subTypeRaw = value
+                    .toUpperCase(Locale.getDefault())
+                    .replaceAll("EXT", "")
+                    .replaceAll("CTDIMMER", "COLORDIMMER");
+            subType = SubType.valueOf(subTypeRaw);
         } catch (Exception e) {
             subType = null;
         }
