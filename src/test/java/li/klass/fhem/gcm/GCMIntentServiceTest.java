@@ -49,6 +49,6 @@ public class GCMIntentServiceTest {
         Map<String, String> changes = service.extractChanges("device", "temperature:18.9<|>T:18.9 H: 61");
 
         // then
-        assertThat(changes).contains(entry("TEMPERATURE", "18.9"), entry("STATE", "T:18.9 H: 61"));
+        assertThat(changes).contains(entry("temperature", "18.9"), entry("state", "T:18.9 H: 61"));
     }
 }

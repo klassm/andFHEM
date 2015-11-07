@@ -451,9 +451,19 @@ public class DeviceListParser {
                 handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue(),
                         new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), DateTime.now()));
 
-                DeviceNode xmllistNode = new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), DateTime.now());
-                xmllistNode = sanitiser.sanitise(device.getXmlListDevice().getType(), xmllistNode);
-                device.getXmlListDevice().getStates().put(entry.getKey(), xmllistNode);
+                device.getXmlListDevice().getStates().put(entry.getKey(),
+                        sanitiser.sanitise(device.getXmlListDevice().getType(),
+                                new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), DateTime.now())
+                        )
+                );
+
+                if ("STATE".equalsIgnoreCase(entry.getKey())) {
+                    device.getXmlListDevice().getInternals().put("STATE",
+                            sanitiser.sanitise(device.getXmlListDevice().getType(),
+                                    new DeviceNode(DeviceNode.DeviceNodeType.INT, "STATE", entry.getValue(), DateTime.now())
+                            )
+                    );
+                }
             } catch (Exception e) {
                 LOG.error("fillDeviceWith - handle " + entry, e);
             }

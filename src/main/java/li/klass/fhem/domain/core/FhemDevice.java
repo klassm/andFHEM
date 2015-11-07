@@ -286,9 +286,9 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     public String getState() {
-        DeviceNode state = getXmlListDevice().getStates().get("state");
+        DeviceNode state = getXmlListDevice().getInternals().get("STATE");
         if (state == null) {
-            state = getXmlListDevice().getInternals().get("STATE");
+            state = getXmlListDevice().getStates().get("state");
         }
         return state.getValue();
     }
