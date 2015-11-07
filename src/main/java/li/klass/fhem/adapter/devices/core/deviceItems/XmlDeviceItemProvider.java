@@ -26,6 +26,8 @@ package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import com.google.common.base.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -135,13 +137,21 @@ public class XmlDeviceItemProvider {
     }
 
     private XmlDeviceViewItem itemFor(ViewItemConfig config, DeviceNode deviceNode) {
-        String jsonDesc = config.getDesc();
+        String jsonDesc = StringUtils.trimToNull(config.getDesc());
         String desc = jsonDesc != null ?
-                deviceDescMapping.descFor(ResourceIdMapper.valueOf(jsonDesc)) :
+                deviceDescMapping.descFor(getResourceIdFor(jsonDesc)) :
                 deviceDescMapping.descFor(deviceNode.getKey());
 
         String showAfter = config.getShowAfter() != null ? config.getShowAfter() : DeviceViewItem.FIRST;
         return new XmlDeviceViewItem(config.getKey(), desc,
                 deviceNode.getValue(), showAfter, config.isShowInDetail(), config.isShowInOverview());
+    }
+
+    private ResourceIdMapper getResourceIdFor(String jsonDesc) {
+        try {
+            return ResourceIdMapper.valueOf(jsonDesc);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("cannot find jsonDesc '" + jsonDesc + "'", e);
+        }
     }
 }
