@@ -38,7 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -157,10 +156,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 
             String key, value;
             if (parts.length > 2) {
-                key = "STATE";
+                key = "state";
                 value = change;
             } else {
-                key = parts[0].trim().toUpperCase(Locale.getDefault());
+                key = parts[0].trim();
                 value = parts[1].trim();
             }
 

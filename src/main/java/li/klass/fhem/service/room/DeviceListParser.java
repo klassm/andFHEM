@@ -68,6 +68,7 @@ import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.group.GroupProvider;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.service.room.xmllist.Sanitiser;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.util.StringEscapeUtil;
@@ -103,6 +104,9 @@ public class DeviceListParser {
 
     @Inject
     GroupProvider groupProvider;
+
+    @Inject
+    Sanitiser sanitiser;
 
     @Inject
     public DeviceListParser() {
@@ -446,8 +450,10 @@ public class DeviceListParser {
             try {
                 handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue(),
                         new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), DateTime.now()));
-                device.getXmlListDevice().getStates().put(entry.getKey(),
-                        new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), DateTime.now()));
+
+                DeviceNode xmllistNode = new DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.getKey(), entry.getValue(), DateTime.now());
+                xmllistNode = sanitiser.sanitise(device.getXmlListDevice().getType(), xmllistNode);
+                device.getXmlListDevice().getStates().put(entry.getKey(), xmllistNode);
             } catch (Exception e) {
                 LOG.error("fillDeviceWith - handle " + entry, e);
             }
