@@ -259,6 +259,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
         lineChart.setDescription("");
         lineChart.setNoDataText(getString(R.string.noGraphEntries));
         lineChart.setData(lineData);
+        lineChart.setMarkerView(new ChartMarkerView(this, xAxisLabels));
 
         lineChart.animateX(200);
     }
