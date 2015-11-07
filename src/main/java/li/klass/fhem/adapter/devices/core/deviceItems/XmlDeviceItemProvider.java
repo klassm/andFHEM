@@ -27,6 +27,8 @@ package li.klass.fhem.adapter.devices.core.deviceItems;
 import com.google.common.base.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Map;
@@ -51,6 +53,8 @@ public class XmlDeviceItemProvider {
 
     @Inject
     DeviceDescMapping deviceDescMapping;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlDeviceItemProvider.class);
 
     @Inject
     public XmlDeviceItemProvider() {
@@ -138,20 +142,23 @@ public class XmlDeviceItemProvider {
 
     private XmlDeviceViewItem itemFor(ViewItemConfig config, DeviceNode deviceNode) {
         String jsonDesc = StringUtils.trimToNull(config.getDesc());
-        String desc = jsonDesc != null ?
-                deviceDescMapping.descFor(getResourceIdFor(jsonDesc)) :
-                deviceDescMapping.descFor(deviceNode.getKey());
+        Optional<ResourceIdMapper> resource = getResourceIdFor(jsonDesc);
+        String desc = resource.isPresent() ? deviceDescMapping.descFor(resource.get()) : deviceDescMapping.descFor(deviceNode.getKey());
 
         String showAfter = config.getShowAfter() != null ? config.getShowAfter() : DeviceViewItem.FIRST;
         return new XmlDeviceViewItem(config.getKey(), desc,
                 deviceNode.getValue(), showAfter, config.isShowInDetail(), config.isShowInOverview());
     }
 
-    private ResourceIdMapper getResourceIdFor(String jsonDesc) {
+    private Optional<ResourceIdMapper> getResourceIdFor(String jsonDesc) {
         try {
-            return ResourceIdMapper.valueOf(jsonDesc);
+            if (jsonDesc == null) {
+                return Optional.absent();
+            }
+            return Optional.of(ResourceIdMapper.valueOf(jsonDesc));
         } catch (Exception e) {
-            throw new IllegalArgumentException("cannot find jsonDesc '" + jsonDesc + "'", e);
+            LOGGER.error("getResourceIdFor(jsonDesc=" + jsonDesc + "): cannot find jsonDesc", e);
+            return Optional.absent();
         }
     }
 }

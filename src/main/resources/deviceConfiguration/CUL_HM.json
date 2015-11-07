@@ -138,6 +138,11 @@
       "key": "current",
       "desc": "current",
       "showInOverview": false
+    },
+    {
+      "key": "lock",
+      "desc": "lock",
+      "showInOverview": true
     }
   ],
   "attributes": [

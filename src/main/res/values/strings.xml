@@ -251,6 +251,7 @@
     <string name="hdd_capacity">Capacity HDD</string>
     <string name="hdd_free">Free space</string>
     <string name="video_size">Video size</string>
+    <string name="lock">Lock</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>

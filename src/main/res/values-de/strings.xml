@@ -249,6 +249,7 @@
     <string name="hdd_capacity">Kapazität HDD</string>
     <string name="hdd_free">Freier Speicher</string>
     <string name="video_size">Videogröße</string>
+    <string name="lock">Schloss</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
