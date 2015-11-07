@@ -30,7 +30,6 @@ import dagger.Provides;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.CulHmDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider;
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.MAXDetailActionProvider;
 import li.klass.fhem.adapter.uiservice.FragmentUiService;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -40,11 +39,6 @@ public class DetailActionsModule {
     @Provides(type = Provides.Type.SET)
     GenericDetailActionProvider provideFHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
         return new FHTDetailActionProvider(applicationProperties, dateService);
-    }
-
-    @Provides(type = Provides.Type.SET)
-    GenericDetailActionProvider provideMAXDetailActionProvider(FragmentUiService fragmentUiService) {
-        return new MAXDetailActionProvider(fragmentUiService);
     }
 
     @Provides(type = Provides.Type.SET)

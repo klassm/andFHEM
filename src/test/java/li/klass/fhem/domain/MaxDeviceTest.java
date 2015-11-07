@@ -60,7 +60,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("17.0 °C");
         assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
         assertThat(stateValueFor(device, "valveposition")).isEqualTo("0 (%)");
-        assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("30.5 (°C)");
+        assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("on");
         assertThat(stateValueFor(device, "temperature")).isEqualTo("21.0 (°C)");
     }
 
@@ -68,9 +68,9 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
     public void testOnOffTemperatureDevice() {
         GenericDevice device = getDeviceFor("on_off", GenericDevice.class);
 
-        assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("30.5 (°C)");
-        assertThat(stateValueFor(device, "windowOpenTemperature")).isEqualTo("4.5 (°C)");
-        assertThat(stateValueFor(device, "ecoTemperature")).isEqualTo("30.5 (°C)");
+        assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("on");
+        assertThat(stateValueFor(device, "windowOpenTemperature")).isEqualTo("off");
+        assertThat(stateValueFor(device, "ecoTemperature")).isEqualTo("on");
     }
 
     @Override
