@@ -327,7 +327,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             List<String> groupStates = groupValue.getGroupStates();
             if (groupStates.size() <= 1) return;
 
-            if (groupStates.contains("on") && groupStates.contains("off")) {
+            if (groupStates.contains("on") && groupStates.contains("off") && groupStates.size() < 5) {
                 addRow(table, new OnOffActionRow(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
                         .createRow(getInflater(), device, getContext()));
             } else {
