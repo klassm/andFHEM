@@ -11,17 +11,47 @@
     {
       "key": "windowopen-temp",
       "desc": "windowOpenTemp",
-      "showAfter": "night-temp"
+      "showAfter": "night-temp",
+      "beforeCommandReplace": [
+        {
+          "search": "5.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "night-temp",
       "desc": "nightTemperature",
-      "showAfter": "day-temp"
+      "showAfter": "day-temp",
+      "beforeCommandReplace": [
+        {
+          "search": "5.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "desired-temp",
       "desc": "desiredTemperature",
-      "showAfter": "temperature"
+      "showAfter": "temperature",
+      "beforeCommandReplace": [
+        {
+          "search": "5.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "mode",

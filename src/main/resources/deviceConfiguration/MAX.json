@@ -29,22 +29,62 @@
     {
       "key": "comfortTemperature",
       "desc": "comfortTemperature",
-      "showAfter": "desiredTemperature"
+      "showAfter": "desiredTemperature",
+      "beforeCommandReplace": [
+        {
+          "search": "4.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "ecoTemperature",
       "desc": "ecoTemperature",
-      "showAfter": "comfortTemperature"
+      "showAfter": "comfortTemperature",
+      "beforeCommandReplace": [
+        {
+          "search": "4.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "minimumTemperature",
       "desc": "minimumTemperature",
-      "showAfter": "ecoTemperature"
+      "showAfter": "ecoTemperature",
+      "beforeCommandReplace": [
+        {
+          "search": "4.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "maximumTemperature",
       "desc": "maximumTemperature",
-      "showAfter": "minimumTemperature"
+      "showAfter": "minimumTemperature",
+      "beforeCommandReplace": [
+        {
+          "search": "4.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "valveposition",
@@ -53,6 +93,19 @@
       "showAfter": "minimumTemperature",
       "markers": [
         "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "weekProfile",
+      "beforeCommandReplace": [
+        {
+          "search": "4.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
       ]
     },
     {

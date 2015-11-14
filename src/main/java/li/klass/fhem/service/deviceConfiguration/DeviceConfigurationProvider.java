@@ -24,13 +24,18 @@
 
 package li.klass.fhem.service.deviceConfiguration;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.io.Resources;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -40,6 +45,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Collections.emptySet;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
@@ -60,6 +66,8 @@ public class DeviceConfigurationProvider {
     private static final String ATTRIBUTES = "attributes";
     private static final String INTERNALS = "internals";
     private final JSONObject options;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceConfigurationProvider.class);
 
     @Inject
     public DeviceConfigurationProvider() {
@@ -144,8 +152,29 @@ public class DeviceConfigurationProvider {
                 builder.withState(new DeviceConfiguration.ViewItemConfig(state.optString(KEY), state.optString(DESC), state.optString(SHOW_AFTER),
                         state.optBoolean(SHOW_IN_OVERVIEW, false), state.optBoolean("showInDetail", true),
                         transformStringJsonArray(state.optJSONArray(MARKERS))));
+
+                JSONArray beforeCommandReplace = state.optJSONArray("beforeCommandReplace");
+                if (beforeCommandReplace != null) {
+                    Map<String, String> commandReplace = handleCommandReplace(beforeCommandReplace);
+                    builder.withCommandReplace(state.optString(KEY), commandReplace);
+                }
+
             }
         }
+    }
+
+    @NonNull
+    private Map<String, String> handleCommandReplace(JSONArray beforeCommandReplace) {
+        Map<String, String> commandReplace = newHashMap();
+        for (int j = 0; j < beforeCommandReplace.length(); j++) {
+            try {
+                JSONObject toReplace = beforeCommandReplace.getJSONObject(j);
+                commandReplace.put(toReplace.getString("search"), toReplace.getString("replaceBy"));
+            } catch (Exception e) {
+                LOGGER.error("handleCommandReplace() - cannot read device configuration", e);
+            }
+        }
+        return commandReplace;
     }
 
     private void addInternals(JSONObject jsonObject, DeviceConfiguration.Builder builder) {

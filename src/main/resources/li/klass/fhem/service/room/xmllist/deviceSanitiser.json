@@ -748,6 +748,30 @@
             "replace": "4.5"
           }
         ]
+      },
+      "__general__": {
+        "addAttributesIfNotPresent": [
+          {
+            "key": "windowOpenTemperature",
+            "value": "4.5"
+          },
+          {
+            "key": "minimumTemperature",
+            "value": "4.5"
+          },
+          {
+            "key": "maximumTemperature",
+            "value": "4.5"
+          },
+          {
+            "key": "ecoTemperature",
+            "value": "4.5"
+          },
+          {
+            "key": "comfortTemperature",
+            "value": "4.5"
+          }
+        ]
       }
     },
     "CUL_HM": {

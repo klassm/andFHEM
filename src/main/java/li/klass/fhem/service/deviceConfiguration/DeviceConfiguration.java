@@ -24,14 +24,19 @@
 
 package li.klass.fhem.service.deviceConfiguration;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.newHashMap;
 
 public class DeviceConfiguration implements Serializable {
     private DeviceFunctionality defaultGroup;
@@ -42,6 +47,7 @@ public class DeviceConfiguration implements Serializable {
     private Set<ViewItemConfig> internals;
     private boolean showStateInOverview;
     private boolean showMeasuredInOverview;
+    private Map<String, Map<String, String>> stateCommandReplace;
 
     private DeviceConfiguration(Builder builder) {
         defaultGroup = checkNotNull(builder.defaultGroup);
@@ -52,6 +58,7 @@ public class DeviceConfiguration implements Serializable {
         sensorDevice = builder.sensorDevice;
         showStateInOverview = builder.showStateInOverview;
         showMeasuredInOverview = builder.showMeasuredInOverview;
+        stateCommandReplace = ImmutableMap.copyOf(builder.stateCommandReplace);
     }
 
     public DeviceFunctionality getDefaultGroup() {
@@ -84,6 +91,14 @@ public class DeviceConfiguration implements Serializable {
 
     public boolean isShowMeasuredInOverview() {
         return showMeasuredInOverview;
+    }
+
+    public Map<String, String> getCommandReplaceFor(String state) {
+        state = state.toUpperCase(Locale.getDefault());
+        if (stateCommandReplace.containsKey(state)) {
+            return stateCommandReplace.get(state);
+        }
+        return Collections.emptyMap();
     }
 
     public static class ViewItemConfig implements Serializable {
@@ -153,6 +168,7 @@ public class DeviceConfiguration implements Serializable {
         private Set<String> supportedWidgets = Sets.newHashSet();
         private boolean showStateInOverview;
         private boolean showMeasuredInOverview;
+        private Map<String, Map<String, String>> stateCommandReplace = newHashMap();
 
         public Builder() {
         }
@@ -194,6 +210,11 @@ public class DeviceConfiguration implements Serializable {
 
         public Builder withShowMeasuredInOverview(boolean showMeasuredInOverview) {
             this.showMeasuredInOverview = showMeasuredInOverview;
+            return this;
+        }
+
+        public Builder withCommandReplace(String state, Map<String, String> commandReplace) {
+            stateCommandReplace.put(state.toUpperCase(Locale.getDefault()), ImmutableMap.copyOf(commandReplace));
             return this;
         }
 

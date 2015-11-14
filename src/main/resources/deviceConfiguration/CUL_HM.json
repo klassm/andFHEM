@@ -18,7 +18,17 @@
     {
       "key": "desired-temp",
       "desc": "desiredTemperature",
-      "showInOverview": true
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "4.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
     },
     {
       "key": "measured-temp",

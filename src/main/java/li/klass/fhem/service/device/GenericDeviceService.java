@@ -35,6 +35,7 @@ import com.google.common.collect.Iterables;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -96,6 +97,13 @@ public class GenericDeviceService {
     }
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context) {
+        if (device.getDeviceConfiguration().isPresent()) {
+            Map<String, String> toReplace = device.getDeviceConfiguration().get().getCommandReplaceFor(subStateName);
+            for (Map.Entry<String, String> entry : toReplace.entrySet()) {
+                value = value.replaceAll("^" + entry.getKey() + "$", entry.getValue());
+            }
+        }
+
         if ("STATE".equalsIgnoreCase(subStateName)) {
             setState(device, value, context);
             return;
