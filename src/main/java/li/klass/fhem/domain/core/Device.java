@@ -36,7 +36,7 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public abstract class Device implements Serializable {
 
-    protected Optional<DeviceConfiguration> deviceConfiguration;
+    protected Optional<DeviceConfiguration> deviceConfiguration = Optional.absent();
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
 

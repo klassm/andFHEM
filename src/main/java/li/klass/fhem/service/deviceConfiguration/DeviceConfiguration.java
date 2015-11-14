@@ -160,7 +160,7 @@ public class DeviceConfiguration implements Serializable {
     }
 
     public static final class Builder {
-        private DeviceFunctionality defaultGroup;
+        private DeviceFunctionality defaultGroup = DeviceFunctionality.UNKNOWN;
         private boolean sensorDevice = false;
         private Set<ViewItemConfig> states = Sets.newHashSet();
         private Set<ViewItemConfig> attributes = Sets.newHashSet();

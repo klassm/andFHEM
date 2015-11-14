@@ -26,18 +26,27 @@ package li.klass.fhem.service.device;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
 import static org.mockito.Mockito.verify;
 
+@RunWith(DataProviderRunner.class)
 public class GenericDeviceServiceTest {
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
@@ -64,5 +73,32 @@ public class GenericDeviceServiceTest {
 
         // then
         verify(commandExecutionService).executeSafely("set someName bla", context);
+    }
+
+    @DataProvider
+    public static Object[][] stateReplaceProvider() {
+        return new Object[][]{
+                {"4.5", "on"},
+                {"30.5", "off"},
+                {"14.5", "14.5"},
+        };
+    }
+
+    @Test
+    @UseDataProvider("stateReplaceProvider")
+    public void should_replace_state_value(String toSet, String expected) {
+        // given
+        GenericDevice device = new GenericDevice();
+        String stateName = "myState";
+        device.setDeviceConfiguration(Optional.of(new DeviceConfiguration.Builder().withCommandReplace(stateName, ImmutableMap.of("4.5", "on", "30.5", "off")).build()));
+        XmlListDevice xmllistDevice = new XmlListDevice("FS20");
+        xmllistDevice.setInternal("NAME", "someName");
+        device.setXmlListDevice(xmllistDevice);
+
+        // when
+        genericDeviceService.setSubState(device, stateName, toSet, context);
+
+        // then
+        verify(commandExecutionService).executeSafely("set someName " + stateName + " " + expected, context);
     }
 }
