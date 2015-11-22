@@ -30,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.configuration.IntervalType;
@@ -115,21 +113,16 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
      * @param time time to check
      * @return formatted time
      */
-    public String formatTime(String time) {
-        String offTime = configuration.getOffTime();
-        if (offTime != null && offTime.equals(time)) {
-            return AndFHEMApplication.getContext().getResources().getString(R.string.off);
-        } else {
-            return time;
-        }
+    public String formatTimeForDisplay(String time) {
+        return configuration.formatTimeForDisplay(time);
+    }
+
+    public String formatTimeForCommand(String time) {
+        return configuration.formatTimeForCommand(time);
     }
 
     public IntervalType getIntervalType() {
         return configuration.getIntervalType();
-    }
-
-    public void afterXMLRead() {
-        configuration.afterXMLRead(this);
     }
 
     @Override

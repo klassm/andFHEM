@@ -27,6 +27,8 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import java.util.List;
 import java.util.Locale;
 
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
@@ -38,7 +40,7 @@ import li.klass.fhem.util.StateToSet;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, GenericDevice, FHTConfiguration> {
-    public static final String OFF_TIME = "00:00";
+    public static final String OFF_TIME = "24:00";
 
     public FHTConfiguration() {
         super(OFF_TIME, 2, NumberOfIntervalsType.FIXED);
@@ -61,10 +63,6 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
         int intervalId = (key.charAt(key.length() - 1) - '0') - 1;
         FromToHeatingInterval interval = dayProfile.getHeatingIntervalAt(intervalId);
-
-        if (value.equals("24:00")) {
-            value = "00:00";
-        }
 
         if (key.contains("FROM")) {
             interval.setFromTime(value);
@@ -106,7 +104,13 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     @Override
-    public String getOffTime() {
-        return OFF_TIME;
+    public String formatTimeForDisplay(String time) {
+        String off = AndFHEMApplication.getContext().getResources().getString(R.string.off);
+        return time.replaceAll("24:00", off);
+    }
+
+    @Override
+    public String formatTimeForCommand(String time) {
+        return time.replaceAll("00:00", "24:00");
     }
 }

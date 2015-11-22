@@ -46,16 +46,16 @@ import static li.klass.fhem.util.DayUtil.Day;
 public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>>
         implements Serializable {
 
-    public enum NumberOfIntervalsType {
-        FIXED, DYNAMIC
-    }
 
+    public enum NumberOfIntervalsType {
+        FIXED, DYNAMIC;
+
+    }
     public final String offTime;
     public final int maximumNumberOfHeatingIntervals;
+
     public final NumberOfIntervalsType numberOfIntervalsType;
-
     private static final Logger LOG = LoggerFactory.getLogger(HeatingConfiguration.class);
-
     public HeatingConfiguration(String offTime, int maximumNumberOfHeatingIntervals, NumberOfIntervalsType numberOfIntervalsType) {
         this.offTime = offTime;
         this.maximumNumberOfHeatingIntervals = maximumNumberOfHeatingIntervals;
@@ -107,8 +107,12 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
 
     protected abstract List<StateToSet> generateStateToSetFor(DayProfile<H, D, C> dayProfile);
 
-    public String getOffTime() {
-        return null;
+    public String formatTimeForDisplay(String time) {
+        return time;
+    }
+
+    public String formatTimeForCommand(String time) {
+        return time;
     }
 
     public void afterXMLRead(WeekProfile<H, C, D> weekProfile) {

@@ -66,6 +66,7 @@ public class FromToWeekProfileAdapter
         setChangeTimeButton(view, R.id.fromSet, child.getChangedFromTime(), new OnTimeChangedListener() {
             @Override
             public void onTimeChanged(String newTime) {
+                newTime = weekProfile.formatTimeForCommand(newTime);
                 child.setChangedFromTime(newTime);
                 notifyWeekProfileChangedListener();
             }
@@ -74,6 +75,7 @@ public class FromToWeekProfileAdapter
         setChangeTimeButton(view, R.id.toSet, child.getChangedToTime(), new OnTimeChangedListener() {
             @Override
             public void onTimeChanged(String newTime) {
+                newTime = weekProfile.formatTimeForCommand(newTime);
                 child.setChangedToTime(newTime);
                 notifyWeekProfileChangedListener();
             }
