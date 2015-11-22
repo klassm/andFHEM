@@ -78,11 +78,12 @@ public class GenericDeviceServiceTest {
     @DataProvider
     public static Object[][] stateReplaceProvider() {
         return new Object[][]{
-                {"4.5", "on"},
-                {"4.5,10.3", "on,10.3"},
+                {"weekProfile 4.5", "weekProfile on"},
+                {"weekProfile 4.5,10.3", "weekProfile on,10.3"},
+                {"weekProfile 30.5", "weekProfile off"},
+                {"weekProfile 30.5,5.5", "weekProfile off,5.5"},
+                {"weekProfile 14.5", "weekProfile 14.5"},
                 {"30.5", "off"},
-                {"30.5,5.5", "off,5.5"},
-                {"14.5", "14.5"},
         };
     }
 
@@ -90,8 +91,6 @@ public class GenericDeviceServiceTest {
     @UseDataProvider("stateReplaceProvider")
     public void should_replace_state_value(String toSet, String expected) {
         // given
-        toSet = "weekProfile " + toSet;
-        expected = "weekProfile " + expected;
         GenericDevice device = new GenericDevice();
         String stateName = "myState";
         device.setDeviceConfiguration(Optional.of(new DeviceConfiguration.Builder().withCommandReplace(stateName, ImmutableMap.of("4\\.5", "on", "30\\.5", "off")).build()));
