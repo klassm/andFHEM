@@ -100,7 +100,7 @@ public class GenericDeviceService {
         if (device.getDeviceConfiguration().isPresent()) {
             Map<String, String> toReplace = device.getDeviceConfiguration().get().getCommandReplaceFor(subStateName);
             for (Map.Entry<String, String> entry : toReplace.entrySet()) {
-                value = value.replaceAll("^" + entry.getKey() + "$", entry.getValue());
+                value = value.replaceAll("([ ,])" + entry.getKey(), "$1" + entry.getValue());
             }
         }
 

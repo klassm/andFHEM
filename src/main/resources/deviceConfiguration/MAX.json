@@ -32,11 +32,11 @@
       "showAfter": "desiredTemperature",
       "beforeCommandReplace": [
         {
-          "search": "4.5",
+          "search": "4\\.5",
           "replaceBy": "off"
         },
         {
-          "search": "30.5",
+          "search": "30\\.5",
           "replaceBy": "on"
         }
       ]
@@ -47,11 +47,11 @@
       "showAfter": "comfortTemperature",
       "beforeCommandReplace": [
         {
-          "search": "4.5",
+          "search": "4\\.5",
           "replaceBy": "off"
         },
         {
-          "search": "30.5",
+          "search": "30\\.5",
           "replaceBy": "on"
         }
       ]
@@ -62,11 +62,11 @@
       "showAfter": "ecoTemperature",
       "beforeCommandReplace": [
         {
-          "search": "4.5",
+          "search": "4\\.5",
           "replaceBy": "off"
         },
         {
-          "search": "30.5",
+          "search": "30\\.5",
           "replaceBy": "on"
         }
       ]
@@ -77,11 +77,11 @@
       "showAfter": "minimumTemperature",
       "beforeCommandReplace": [
         {
-          "search": "4.5",
+          "search": "4\\.5",
           "replaceBy": "off"
         },
         {
-          "search": "30.5",
+          "search": "30\\.5",
           "replaceBy": "on"
         }
       ]
@@ -99,11 +99,11 @@
       "key": "weekProfile",
       "beforeCommandReplace": [
         {
-          "search": "4.5",
+          "search": "4\\.5",
           "replaceBy": "off"
         },
         {
-          "search": "30.5",
+          "search": "30\\.5",
           "replaceBy": "on"
         }
       ]
