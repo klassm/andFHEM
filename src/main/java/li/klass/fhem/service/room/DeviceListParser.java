@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -227,7 +228,9 @@ public class DeviceListParser {
                 DeviceNode titleDef = input.getAttributes().get("title");
                 String title = titleDef == null ? "" : titleDef.getValue();
 
-                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title);
+                List<String> plotfunction = Arrays.asList(input.getAttribute("plotfunction").or("").trim().split(" "));
+
+                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
             }
         }).filter(notNull()).toSet();
     }

@@ -91,7 +91,7 @@ public class GraphService {
         series.addAll(svgGraphDefinition.getPlotDefinition().getRightAxis().getSeries());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), plotSeries, startDate, endDate, context));
+            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
         }
 
         return data;
@@ -106,16 +106,17 @@ public class GraphService {
      * @param startDate   read FileLog entries from the given date
      * @param endDate     read FileLog entries up to the given date
      * @param context     context
+     * @param plotfunction SPEC parameters to replace
      * @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(LogDevice logDevice,
                                                        GPlotSeries gPlotSeries,
-                                                       DateTime startDate, DateTime endDate, Context context) {
-        return findGraphEntries(loadLogData(logDevice, startDate, endDate, gPlotSeries, context));
+                                                       DateTime startDate, DateTime endDate, Context context, List<String> plotfunction) {
+        return findGraphEntries(loadLogData(logDevice, startDate, endDate, gPlotSeries, context, plotfunction));
     }
 
     public String loadLogData(LogDevice logDevice, DateTime fromDate, DateTime toDate,
-                              GPlotSeries plotSeries, Context context) {
+                              GPlotSeries plotSeries, Context context, List<String> plotfunction) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
         String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
 
@@ -124,6 +125,10 @@ public class GraphService {
         @SuppressWarnings("unchecked")
         String command = logDevice.getGraphCommandFor(fromDateFormatted,
                 toDateFormatted, plotSeries);
+
+        for (int i = 0; i < plotfunction.size(); i++) {
+            command = command.replaceAll("<SPEC" + (i + 1) + ">", plotfunction.get(i));
+        }
 
         String data = commandExecutionService.executeSafely(command, context);
         if (data != null) {

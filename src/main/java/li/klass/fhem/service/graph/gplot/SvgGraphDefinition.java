@@ -39,13 +39,15 @@ public class SvgGraphDefinition implements Serializable {
     private final String title;
 
     private static final Pattern LABEL_PATTERN = Pattern.compile("<L([0-9]+)>");
+    private final List<String> plotfunction;
 
-    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice logDevice, List<String> labels, String title) {
+    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice logDevice, List<String> labels, String title, List<String> plotfunction) {
         this.name = name;
         this.gPlotDefinition = gPlotDefinition;
         this.logDevice = logDevice;
         this.labels = labels;
         this.title = title;
+        this.plotfunction = plotfunction;
     }
 
     public String getName() {
@@ -62,6 +64,10 @@ public class SvgGraphDefinition implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public List<String> getPlotfunction() {
+        return plotfunction;
     }
 
     @Override
@@ -96,6 +102,7 @@ public class SvgGraphDefinition implements Serializable {
                 ", logDevice=" + logDevice +
                 ", labels=" + labels +
                 ", title='" + title + '\'' +
+                ", plotfunction='" + plotfunction + '\'' +
                 '}';
     }
 

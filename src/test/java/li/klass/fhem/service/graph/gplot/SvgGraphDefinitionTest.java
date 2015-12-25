@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static li.klass.fhem.service.graph.gplot.GPlotDefinitionTestdataBuilder.defaultGPlotDefinition;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,14 +43,14 @@ public class SvgGraphDefinitionTest {
     public static Object[][] datapoint() {
         return new Object[][]{
                 {
-                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title"),
+                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.<String>emptyList()),
                         "myText", "myText"
                 },
                 {
-                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title"),
+                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.<String>emptyList()),
                         "myText<L1>", "myTextbla"
                 }, {
-                new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title"),
+                new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.<String>emptyList()),
                 "myText<L3>", "myText"
         },
         };

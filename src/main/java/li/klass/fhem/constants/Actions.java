@@ -55,20 +55,16 @@ public class Actions {
     public static final String DEVICE_SET_STATE = prefix + "SET_STATE";
     public static final String DEVICE_DIM = prefix + "DEVICE_DIM";
     public static final String DEVICE_SET_MODE = prefix + "DEVICE_SET_MODE";
-    public static final String DEVICE_SET_DAY_TEMPERATURE = prefix + "DEVICE_SET_DAY_TEMPERATURE";
-    public static final String DEVICE_SET_NIGHT_TEMPERATURE = prefix + "DEVICE_SET_NIGHT_TEMPERATURE";
     public static final String DEVICE_SET_WINDOW_OPEN_TEMPERATURE = prefix + "DEVICE_SET_WINDOW_OPEN_TEMPERATURE";
     public static final String DEVICE_SET_COMFORT_TEMPERATURE = prefix + "DEVICE_SET_COMFORT_TEMPERATURE";
     public static final String DEVICE_SET_ECO_TEMPERATURE = prefix + "DEVICE_SET_ECO_TEMPERATURE";
     public static final String DEVICE_SET_WEEK_PROFILE = prefix + "DEVICE_SET_WEEK_PROFILE";
     public static final String DEVICE_RESET_WEEK_PROFILE = prefix + "DEVICE_RESET_WEEK_PROFILE";
     public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";
-    public static final String DEVICE_REFRESH_VALUES = prefix + "DEVICE_REFRESH_VALUES";
     public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";
     public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
-    public static final String DEVICE_REFRESH_STATE = prefix + "DEVICE_REFRESH_STATE";
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
 
     public static final String DEVICE_TIMER_NEW = prefix + "DEVICE_TIMER_NEW";
