@@ -32,7 +32,6 @@ import android.util.Base64;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
 
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -167,9 +166,6 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<>((InputStream) new BufferedInputStream(connection.getInputStream()));
         } catch (ConnectTimeoutException e) {
             LOG.info("connection timed out", e);
-            return handleError(urlSuffix, isRetry, url, e);
-        } catch (ClientProtocolException e) {
-            LOG.info("cannot connect, invalid URL? (" + url + ")", e);
             return handleError(urlSuffix, isRetry, url, e);
         } catch (IOException e) {
             LOG.info("cannot connect to host", e);

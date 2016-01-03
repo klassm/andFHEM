@@ -63,6 +63,8 @@ public class SetList implements Serializable {
         }
 
         String[] keyValue = part.split(":");
+        if (keyValue.length == 0) return;
+
         String key = keyValue[0];
         String value = keyValue.length == 2 ? keyValue[1] : "";
 

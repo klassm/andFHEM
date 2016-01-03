@@ -107,4 +107,10 @@ public class SetListTest {
         assertThat(setList.getEntries()).hasSize(1);
         assertThat(setList.getEntries().get("on")).isEqualTo(SetListEmptyValue.INSTANCE);
     }
+
+    @Test
+    public void testOnlyColon() {
+        setList.parse(" : ");
+        assertThat(setList.getEntries()).isEmpty();
+    }
 }

@@ -1,0 +1,10 @@
+{
+  "defaultGroup": "FHEM",
+  "showStateInOverview": true,
+  "internals": [
+    {
+      "key": "ipAddress",
+      "desc": "ip"
+    }
+  ]
+}

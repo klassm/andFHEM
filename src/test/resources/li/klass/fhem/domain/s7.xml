@@ -1,0 +1,123 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <S7_LIST>
+        <S7 name="S7300"
+            attrs="verbose:0,1,2,3,4,5 room group comment:textField-long alias eventMap userReadings:textField-long cmdIcon devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr"
+            sets="" state="connected to PLC">
+            <INT key="ActiveTransmission" value="0" />
+            <INT key="CFGFN" value="/opt/fhem/FHEM/CFG_S7.cfg" />
+            <INT key="DEF" value="192.168.7.40 0 2" />
+            <INT key="Interval" value="1" />
+            <INT key="LocalTSAP" value="256" />
+            <INT key="NAME" value="S7300" />
+            <INT key="NR" value="28" />
+            <INT key="RemoteTSAP" value="258" />
+            <INT key="S7300_MSGCNT" value="1584848" />
+            <INT key="S7300_TIME" value="2015-12-25 18:32:44" />
+            <INT key="S7TYPE" value="NATIVE" />
+            <INT key="STATE" value="connected to PLC" />
+            <INT key="TYPE" value="S7" />
+            <INT key="ipAddress" value="192.168.7.40" />
+            <INT key="maxPDUlength" value="240" />
+            <ATTR key="room" value="Interfaces" />
+            <STATE key="state" measured="2015-12-23 05:36:20" value="connected to PLC" />
+        </S7>
+    </S7_LIST>
+    <S7_ARead_LIST>
+        <S7_ARead name="1Temp"
+            attrs="verbose:0,1,2,3,4,5 room group comment:textField-long alias eventMap userReadings:textField-long IODev offset multiplicator event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat cmdIcon devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr"
+            sets="" state="62.8472213745117">
+            <INT key="ADDRESS" value="6" />
+            <INT key="AREA" value="flags" />
+            <INT key="CFGFN" value="/opt/fhem/FHEM/CFG_S7.cfg" />
+            <INT key="DATATYPE" value="float" />
+            <INT key="DB" value="0" />
+            <INT key="DEF" value="flags 0 6 float" />
+            <INT key="LASTInputDev" value="S7300" />
+            <INT key="LENGTH" value="4" />
+            <INT key="MSGCNT" value="990530" />
+            <INT key="NAME" value="1Temp" />
+            <INT key="NR" value="37" />
+            <INT key="S7300_MSGCNT" value="990530" />
+            <INT key="S7300_RAWMSG"
+                value="AR flags 0 0 181 S7300 47,06,30,01,00,d0,42,7b,63,8e,41,03,aa,aa,42,4c,dc,72,c1,9f,95,55,00,00,00,00,0f,f0,42,48,00,00,42,38,00,00,00,00,00,00,10,00,00,00,00,42,70,00,00,42,7c,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,02,be,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00" />
+            <INT key="S7300_TIME" value="2015-12-25 18:32:44" />
+            <INT key="STATE" value="62.8472213745117" />
+            <INT key="TYPE" value="S7_ARead" />
+            <INT key="IODev" value="S7300" />
+            <ATTR key="IODev" value="S7300" />
+            <STATE key="state" measured="2015-12-25 18:32:44" value="62.8472213745117" />
+        </S7_ARead>
+    </S7_ARead_LIST>
+    <S7_AWrite_LIST>
+        <S7_AWrite name="T_2401_S7"
+            attrs="verbose:0,1,2,3,4,5 room group comment:textField-long alias eventMap userReadings:textField-long IODev event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat cmdIcon devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr"
+            sets=" : " state="50.7999992370605">
+            <INT key="ADDRESS" value="0" />
+            <INT key="AREA" value="db" />
+            <INT key="CFGFN" value="/opt/fhem/FHEM/CFG_S7.cfg" />
+            <INT key="DATATYPE" value="float" />
+            <INT key="DB" value="30" />
+            <INT key="DEF" value="db 30 0 float" />
+            <INT key="LASTInputDev" value="S7300" />
+            <INT key="LENGTH" value="4" />
+            <INT key="MSGCNT" value="990530" />
+            <INT key="NAME" value="T_2401_S7" />
+            <INT key="NR" value="41" />
+            <INT key="S7300_MSGCNT" value="990530" />
+            <INT key="S7300_RAWMSG" value="AW db 30 0 8 S7300 42,4b,33,33,42,29,33,33" />
+            <INT key="S7300_TIME" value="2015-12-25 18:32:44" />
+            <INT key="STATE" value="50.7999992370605" />
+            <INT key="TYPE" value="S7_AWrite" />
+            <INT key="IODev" value="S7300" />
+            <ATTR key="IODev" value="S7300" />
+            <STATE key="state" measured="2015-12-25 18:32:44" value="50.7999992370605" />
+        </S7_AWrite>
+        <S7_AWrite name="T_2402_S7"
+            attrs="verbose:0,1,2,3,4,5 room group comment:textField-long alias eventMap userReadings:textField-long IODev event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat cmdIcon devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr"
+            sets=" : " state="42.2999992370605">
+            <INT key="ADDRESS" value="4" />
+            <INT key="AREA" value="db" />
+            <INT key="CFGFN" value="/opt/fhem/FHEM/CFG_S7.cfg" />
+            <INT key="DATATYPE" value="float" />
+            <INT key="DB" value="30" />
+            <INT key="DEF" value="db 30 4 float" />
+            <INT key="LASTInputDev" value="S7300" />
+            <INT key="LENGTH" value="4" />
+            <INT key="MSGCNT" value="396212" />
+            <INT key="NAME" value="T_2402_S7" />
+            <INT key="NR" value="43" />
+            <INT key="S7300_MSGCNT" value="396212" />
+            <INT key="S7300_RAWMSG" value="AW db 30 0 8 S7300 42,4b,33,33,42,29,33,33" />
+            <INT key="S7300_TIME" value="2015-12-25 18:32:44" />
+            <INT key="STATE" value="42.2999992370605" />
+            <INT key="TYPE" value="S7_AWrite" />
+            <INT key="IODev" value="S7300" />
+            <ATTR key="IODev" value="S7300" />
+            <STATE key="state" measured="2015-12-25 18:32:44" value="42.2999992370605" />
+        </S7_AWrite>
+    </S7_AWrite_LIST>
+</FHZINFO>
