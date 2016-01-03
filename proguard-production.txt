@@ -7,7 +7,6 @@
 -keep class li.klass.** { *; }
 -keep class android.** { *; }
 
--keep public class android.app.Notification
 -keep public class com.google.android.gms.**
 -dontwarn com.google.android.gms.**
 
