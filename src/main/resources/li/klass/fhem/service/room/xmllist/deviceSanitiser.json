@@ -444,14 +444,6 @@
       }
     },
     "EnOcean": {
-      "__general__": {
-        "addAttributesIfNotPresent": [
-          {
-            "key": "offStateName",
-            "value": "closes"
-          }
-        ]
-      }
     },
     "OWDevice": {
       "STATE": {

@@ -82,9 +82,9 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public String getDimStateForPosition(FhemDevice fhemDevice, float position) {
         if (setListAttribute.equalsIgnoreCase("state")) {
-            if (position == getDimLowerBound()) {
+            if (position == getDimLowerBound() && fhemDevice.getSetList().contains("off")) {
                 return "off";
-            } else if (position == getDimUpperBound()) {
+            } else if (position == getDimUpperBound() && fhemDevice.getSetList().contains("on")) {
                 return "on";
             }
         }
