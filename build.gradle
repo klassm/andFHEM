@@ -56,6 +56,8 @@ android {
     buildToolsVersion '22.0.1'
     testBuildType 'debug'
 
+    useLibrary 'org.apache.http.legacy'
+
     testOptions {
         unitTests.returnDefaultValues = true
     }
