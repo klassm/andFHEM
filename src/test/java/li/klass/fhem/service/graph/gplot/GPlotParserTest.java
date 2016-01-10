@@ -84,6 +84,7 @@ public class GPlotParserTest {
                         .withLineType(LineType.LINES)
                         .withLogDef("4:measured:0:")
                         .withAxis(Axis.RIGHT)
+                        .withColor(SeriesColor.RED)
                         .build()
         );
     }
@@ -105,60 +106,70 @@ public class GPlotParserTest {
                         .withLineType(LineType.LINES)
                         .withLogDef("4:::")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.RED)
                         .build(),
                 new Builder()
                         .withTitle("H")
                         .withLineType(LineType.LINES)
                         .withLogDef("6:::")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.GREEN)
                         .build(),
                 new Builder()
                         .withTitle("W")
                         .withLineType(LineType.LINES)
                         .withLogDef("8:::")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.BLUE)
                         .build(),
                 new Builder()
                         .withTitle("R/h")
                         .withLineType(LineType.LINES)
                         .withLogDef("10::0:delta-h")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.MAGENTA)
                         .build(),
                 new Builder()
                         .withTitle("R/d")
                         .withLineType(LineType.LINES)
                         .withLogDef("10::0:delta-d")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.BROWN)
                         .build(),
                 new Builder()
                         .withTitle("IR")
                         .withLineType(LineType.LINES)
                         .withLogDef("12::0:$fld[11]=~\"32768\"?1:0")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.WHITE)
                         .build(),
                 new Builder()
                         .withTitle("WD")
                         .withLineType(LineType.LINES)
                         .withLogDef("14::0:")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.OLIVE)
                         .build(),
                 new Builder()
                         .withTitle("WDR")
                         .withLineType(LineType.LINES)
                         .withLogDef("16::0:")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.GRAY)
                         .build(),
                 new Builder()
                         .withTitle("S")
                         .withLineType(LineType.LINES)
                         .withLogDef("18::0:delta-h")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.YELLOW)
                         .build(),
                 new Builder()
                         .withTitle("B")
                         .withLineType(LineType.LINES)
                         .withLogDef("20::0:")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.RED)
                         .build()
         );
 
@@ -184,6 +195,7 @@ public class GPlotParserTest {
                         .withLineType(LineType.LINES)
                         .withLogDef("4::0:")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.RED)
                         .build()
         );
 
@@ -207,6 +219,7 @@ public class GPlotParserTest {
                 new Builder()
                         .withTitle("Open/Closed")
                         .withLineType(LineType.LINES)
+                        .withColor(SeriesColor.RED)
                         .withLogDef("4:Window:0:$fld[3]=~\"Open\"?1:0")
                         .withAxis(Axis.LEFT)
                         .build()
@@ -247,6 +260,7 @@ public class GPlotParserTest {
                         .withLineType(LineType.LINES)
                         .withLogDef("<SPEC1>:eth0_diff:::$val=~s/^RX..([\\d.]*).*/$1/eg")
                         .withAxis(Axis.LEFT)
+                        .withColor(SeriesColor.RED)
                         .build(),
                 new Builder()
                         .withTitle("TX")

@@ -29,11 +29,11 @@ import com.google.common.collect.Range;
 
 import static li.klass.fhem.service.graph.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeriesBuilder;
 
-public class GPlotAxisTestdataBuilder {
+public class GPlotAxisTestdataCreator {
     public static GPlotAxis defaultGPlotAxis() {
         GPlotAxis axis = new GPlotAxis("myLabel", Optional.of(Range.atLeast(10D)));
-        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series1").withAxis(GPlotSeries.Axis.LEFT).build());
-        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series2").withAxis(GPlotSeries.Axis.LEFT).build());
+        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series1").withAxis(GPlotSeries.Axis.LEFT).withColor(GPlotSeries.SeriesColor.RED).build());
+        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series2").withAxis(GPlotSeries.Axis.LEFT).withColor(GPlotSeries.SeriesColor.RED).build());
         return axis;
     }
 }

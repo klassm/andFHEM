@@ -24,7 +24,7 @@
 
 package li.klass.fhem.service.graph.gplot;
 
-import static li.klass.fhem.service.graph.gplot.GPlotAxisTestdataBuilder.defaultGPlotAxis;
+import static li.klass.fhem.service.graph.gplot.GPlotAxisTestdataCreator.defaultGPlotAxis;
 
 public class GPlotDefinitionTestdataBuilder {
     public static GPlotDefinition defaultGPlotDefinition() {
