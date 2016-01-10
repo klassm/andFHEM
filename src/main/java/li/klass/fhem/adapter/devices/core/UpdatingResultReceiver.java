@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
 import android.os.ResultReceiver;
 
 import li.klass.fhem.constants.Actions;
@@ -36,6 +37,19 @@ import li.klass.fhem.constants.ResultCodes;
 public class UpdatingResultReceiver extends ResultReceiver {
 
     private final Context context;
+
+    @SuppressWarnings("unused")
+    private static final Creator<UpdatingResultReceiver> CREATOR = new Creator<UpdatingResultReceiver>() {
+        @Override
+        public UpdatingResultReceiver createFromParcel(Parcel source) {
+            return (UpdatingResultReceiver) ResultReceiver.CREATOR.createFromParcel(source);
+        }
+
+        @Override
+        public UpdatingResultReceiver[] newArray(int size) {
+            return new UpdatingResultReceiver[0];
+        }
+    };
 
     public UpdatingResultReceiver(Context context) {
         super(new Handler());

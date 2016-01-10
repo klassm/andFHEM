@@ -26,6 +26,8 @@ package li.klass.fhem.service.graph.gplot;
 
 import android.graphics.Color;
 
+import com.google.common.base.Optional;
+
 import java.io.Serializable;
 
 import static li.klass.fhem.service.graph.gplot.GPlotSeries.SeriesType.DEFAULT;
@@ -44,7 +46,7 @@ public class GPlotSeries implements Serializable {
         logDef = builder.logDef;
         lineType = builder.lineType;
         axis = builder.axis;
-        color = builder.color;
+        color = builder.color.get();
         seriesType = builder.seriesType;
         lineWidth = builder.lineWidth;
     }
@@ -166,8 +168,8 @@ public class GPlotSeries implements Serializable {
         private String title = "";
         private String logDef;
         private LineType lineType = LineType.LINES;
-        public Axis axis;
-        private SeriesColor color = SeriesColor.RED;
+        private Axis axis;
+        private Optional<SeriesColor> color = Optional.absent();
         private SeriesType seriesType = DEFAULT;
         private float lineWidth = 1;
 
@@ -198,7 +200,7 @@ public class GPlotSeries implements Serializable {
 
         public Builder withColor(final SeriesColor color) {
             if (color != null) {
-                this.color = color;
+                this.color = Optional.of(color);
             }
             return this;
         }
@@ -211,6 +213,10 @@ public class GPlotSeries implements Serializable {
         public Builder withLineWith(float lineWidth) {
             this.lineWidth = lineWidth;
             return this;
+        }
+
+        public boolean isColorSet() {
+            return this.color.isPresent();
         }
 
         public GPlotSeries build() {

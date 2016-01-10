@@ -30,6 +30,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
 import com.google.common.io.Resources;
 
@@ -40,6 +41,8 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,6 +56,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import li.klass.fhem.service.graph.gplot.GPlotSeries.SeriesColor;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.newArrayList;
@@ -71,16 +76,16 @@ public class GPlotParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GPlotParser.class);
 
-    private ImmutableMap<String, GPlotSeries.SeriesColor> TO_COLOR = ImmutableMap.<String, GPlotSeries.SeriesColor>builder()
-            .put("l0", GPlotSeries.SeriesColor.RED)
-            .put("l1", GPlotSeries.SeriesColor.GREEN)
-            .put("l2", GPlotSeries.SeriesColor.BLUE)
-            .put("l3", GPlotSeries.SeriesColor.MAGENTA)
-            .put("l4", GPlotSeries.SeriesColor.BROWN)
-            .put("l5", GPlotSeries.SeriesColor.WHITE)
-            .put("l6", GPlotSeries.SeriesColor.OLIVE)
-            .put("l7", GPlotSeries.SeriesColor.GRAY)
-            .put("l8", GPlotSeries.SeriesColor.YELLOW)
+    private ImmutableMap<String, SeriesColor> TO_COLOR = ImmutableMap.<String, SeriesColor>builder()
+            .put("l0", SeriesColor.RED)
+            .put("l1", SeriesColor.GREEN)
+            .put("l2", SeriesColor.BLUE)
+            .put("l3", SeriesColor.MAGENTA)
+            .put("l4", SeriesColor.BROWN)
+            .put("l5", SeriesColor.WHITE)
+            .put("l6", SeriesColor.OLIVE)
+            .put("l7", SeriesColor.GRAY)
+            .put("l8", SeriesColor.YELLOW)
             .build();
 
     @Inject
@@ -151,6 +156,7 @@ public class GPlotParser {
         List<GPlotSeries> result = newArrayList();
         Queue<GPlotSeries.Builder> builders = new LinkedList<>();
 
+        List<SeriesColor> colors = new ArrayList<>(Arrays.asList(SeriesColor.values()));
         boolean plotFound = false;
         for (String line : lines) {
             line = line.trim();
@@ -166,18 +172,23 @@ public class GPlotParser {
             } else if (plotFound) {
                 GPlotSeries.Builder builder = builders.peek();
                 if (builder == null) {
-                    System.out.println("builder is null");
+                    LOGGER.error("extractSeriesFrom - builder is null");
                     break;
                 }
 
                 boolean attributeFound = handleAxis(line, builder);
                 attributeFound = handleTitle(line, builder) | attributeFound;
                 attributeFound = handleLineType(line, builder) | attributeFound;
-                attributeFound = handleSeriesType(line, builder) | attributeFound;
+                attributeFound = handleSeriesType(line, builder, colors) | attributeFound;
                 attributeFound = handleLineWidth(line, builder) | attributeFound;
 
-                System.out.println(builder);
+                LOGGER.info("extractSeriesFrom - builder is " + builder);
                 if (attributeFound) {
+                    if (!builder.isColorSet()) {
+                        SeriesColor color = Iterables.getFirst(colors, SeriesColor.RED);
+                        builder.withColor(color);
+                        colors.remove(color);
+                    }
                     result.add(builder.build());
                     builders.remove();
                 }
@@ -197,7 +208,7 @@ public class GPlotParser {
         return false;
     }
 
-    private boolean handleSeriesType(String line, GPlotSeries.Builder builder) {
+    private boolean handleSeriesType(String line, GPlotSeries.Builder builder, List<SeriesColor> colors) {
         Matcher matcher = SERIES_TYPE_PATTERN.matcher(line);
         if (matcher.find()) {
             String colorDesc = matcher.group(1);
@@ -210,7 +221,10 @@ public class GPlotParser {
                 seriesType = GPlotSeries.SeriesType.DOT;
             }
 
-            builder.withColor(TO_COLOR.get(colorDesc));
+            SeriesColor color = TO_COLOR.get(colorDesc);
+            colors.remove(color);
+
+            builder.withColor(color);
             builder.withSeriesType(seriesType);
 
             return true;

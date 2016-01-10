@@ -339,7 +339,7 @@ public class GPlotParserTest {
     }
 
     @DataProvider
-    public static Object[][] ALL_GPLOT_FILES_PROVIDER() throws Exception {
+    public static Object[][] allGplotFilesProvider() throws Exception {
         File resourceDirectory = new File(GPlotParser.class.getResource(".").toURI());
         File[] files = resourceDirectory.listFiles(new FilenameFilter() {
             @Override
@@ -357,7 +357,7 @@ public class GPlotParserTest {
     }
 
     @Test
-    @UseDataProvider("ALL_GPLOT_FILES_PROVIDER")
+    @UseDataProvider("allGplotFilesProvider")
     public void should_find_at_least_one_series_in_GPlot_Files(File file) throws Exception {
         // given
         String content = Resources.toString(file.toURI().toURL(), Charsets.UTF_8);
@@ -396,6 +396,46 @@ public class GPlotParserTest {
                         .withColor(SeriesColor.RED)
                         .withSeriesType(SeriesType.FILL)
                         .withAxis(Axis.RIGHT)
+                        .withLineWith(1)
+                        .build());
+    }
+
+    @Test
+    public void should_parse_temp4hum4_gplot() throws Exception {
+        // given
+        String content = readGPlot("temp4hum4.gplot");
+
+        // when
+        GPlotDefinition definition = gPlotParser.parse(content);
+
+        // then
+        GPlotAxis leftAxis = definition.getLeftAxis();
+        assertThat(leftAxis.getLabel()).isEqualTo("Humidity (%)");
+        assertThat(leftAxis.getRange().isPresent()).isFalse();
+
+        GPlotAxis rightAxis = definition.getRightAxis();
+        assertThat(rightAxis.getLabel()).isEqualTo("Temperature in C");
+        assertThat(rightAxis.getRange().isPresent()).isFalse();
+
+        assertThat(rightAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Measured temperature")
+                        .withLineType(LineType.LINES)
+                        .withLogDef("4:temperature:10:")
+                        .withColor(SeriesColor.RED)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(1)
+                        .build());
+
+        assertThat(leftAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Humidity (%)")
+                        .withLineType(LineType.LINES)
+                        .withLogDef("4:humidity:50:")
+                        .withColor(SeriesColor.GREEN)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.LEFT)
                         .withLineWith(1)
                         .build());
     }
