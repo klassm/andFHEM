@@ -29,13 +29,6 @@
                 android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ProgressBar
-        android:id="@+id/updateProgress"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
     <include layout="@layout/device_view_header"/>
 
     <ScrollView android:layout_width="fill_parent"
@@ -51,4 +44,12 @@
         android:orientation="vertical"
         android:id="@+id/adContainer"
         android:layout_alignParentBottom="true" />
+
+    <ProgressBar
+        android:id="@+id/updateProgress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
 </RelativeLayout>
