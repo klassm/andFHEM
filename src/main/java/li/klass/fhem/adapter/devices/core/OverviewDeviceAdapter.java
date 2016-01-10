@@ -34,6 +34,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -218,6 +219,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     }
 
     protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener listener) {
+        fieldName = fieldName.toLowerCase(Locale.getDefault());
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
             fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener>());
         }
