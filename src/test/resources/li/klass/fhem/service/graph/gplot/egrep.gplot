@@ -1,0 +1,20 @@
+set terminal png transparent size <SIZE> crop
+set output '<OUT>.png'
+set xdata time
+set timefmt "%Y-%m-%d_%H:%M:%S"
+set xlabel " "
+set y2tics
+set title '<L1>'
+set grid xtics y2tics
+set y2label "Temperatur in Grad Celsius"
+set ylabel "Signal in %"
+#FileLog 4:desiredTemperature:0:
+#FileLog 4:temperature:0:
+#FileLog 4:valveposition:0:
+plot \
+"< egrep 'desiredTemperature' <IN>"\
+  using 1:4 axes x1y2 title 'Soll-Temperatur (C)' with lines lw 2 \
+"< egrep 'temperature' <IN>"\
+  using 1:4 axes x1y2 title 'Ist-Temperatur(ungenau)(C)' with lines lw 2 \
+"< egrep 'valveposition' <IN>"\
+  using 1:4 axes x1y1 title 'Ventil (%)' with lines lw 2

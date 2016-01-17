@@ -454,6 +454,55 @@ public class GPlotParserTest {
                         .build());
     }
 
+    @Test
+    public void should_parse_egrep_files() throws Exception {
+        // given
+        String content = readGPlot("egrep.gplot");
+
+        // when
+        GPlotDefinition definition = gPlotParser.parse(content);
+
+        // then
+        GPlotAxis leftAxis = definition.getLeftAxis();
+        assertThat(leftAxis.getLabel()).isEqualTo("Signal in %");
+        assertThat(leftAxis.getRange().isPresent()).isFalse();
+
+        GPlotAxis rightAxis = definition.getRightAxis();
+        assertThat(rightAxis.getLabel()).isEqualTo("Temperatur in Grad Celsius");
+        assertThat(rightAxis.getRange().isPresent()).isFalse();
+
+        assertThat(rightAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Soll-Temperatur (C)")
+                        .withLineType(LineType.LINES)
+                        .withLogDef("4:desiredTemperature:0:")
+                        .withColor(SeriesColor.RED)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(2)
+                        .build(),
+                new Builder()
+                        .withTitle("Ist-Temperatur(ungenau)(C)")
+                        .withLineType(LineType.LINES)
+                        .withLogDef("4:temperature:0:")
+                        .withColor(SeriesColor.GREEN)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(2)
+                        .build());
+
+        assertThat(leftAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Ventil (%)")
+                        .withLineType(LineType.LINES)
+                        .withLogDef("4:valveposition:0:")
+                        .withColor(SeriesColor.BLUE)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.LEFT)
+                        .withLineWith(2)
+                        .build());
+    }
+
     private String readGPlot(String fileName) throws IOException {
         return Resources.toString(Resources.getResource(GPlotParser.class, fileName), Charsets.UTF_8);
     }

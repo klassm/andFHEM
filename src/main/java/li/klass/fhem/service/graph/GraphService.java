@@ -112,7 +112,9 @@ public class GraphService {
     private List<GraphEntry> getCurrentGraphEntriesFor(LogDevice logDevice,
                                                        GPlotSeries gPlotSeries,
                                                        DateTime startDate, DateTime endDate, Context context, List<String> plotfunction) {
-        return findGraphEntries(loadLogData(logDevice, startDate, endDate, gPlotSeries, context, plotfunction));
+        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, startDate, endDate, gPlotSeries, context, plotfunction));
+        LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size(), logDevice.getName());
+        return graphEntries;
     }
 
     public String loadLogData(LogDevice logDevice, DateTime fromDate, DateTime toDate,
