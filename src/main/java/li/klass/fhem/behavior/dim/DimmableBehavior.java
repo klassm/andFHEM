@@ -117,11 +117,10 @@ public class DimmableBehavior {
     }
 
     public static Optional<DimmableBehavior> continuousBehaviorFor(FhemDevice device, String attribute) {
-        String sortAttribute = attribute.toLowerCase(Locale.getDefault());
-        if (!device.getSetList().contains(sortAttribute)) {
+        if (!device.getSetList().contains(attribute)) {
             return Optional.absent();
         }
-        SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(sortAttribute);
+        SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(attribute);
         return Optional.of(new DimmableBehavior(device, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
     }
 

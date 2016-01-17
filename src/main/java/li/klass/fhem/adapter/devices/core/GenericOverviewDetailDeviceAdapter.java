@@ -312,7 +312,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             return;
         }
 
-        SetListValue setListValue = device.getSetList().get(item.getSortKey());
+        SetListValue setListValue = device.getSetList().get(item.getKey());
         if (setListValue == null) {
             return;
         }
