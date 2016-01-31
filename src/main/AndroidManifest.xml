@@ -237,6 +237,8 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.LOAD_PROPERTIES" />
+                <action android:name="li.klass.fhem.constants.Actions.NEXT_ALARM_CLOCK" />
+                <action android:name="li.klass.fhem.constants.Actions.SCHEDULE_ALARM_CLOCK_UPDATE" />
             </intent-filter>
         </service>
 

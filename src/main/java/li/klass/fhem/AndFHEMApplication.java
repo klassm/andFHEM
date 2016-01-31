@@ -25,7 +25,10 @@
 package li.klass.fhem;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
@@ -40,9 +43,12 @@ import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
+import li.klass.fhem.service.intent.AppActionsIntentService;
+import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.InstalledApplications;
 
@@ -98,6 +104,8 @@ public class AndFHEMApplication extends MultiDexApplication {
         daggerComponent.inject(this);
 
         setApplicationInformation();
+
+        startService(new Intent(Actions.SCHEDULE_ALARM_CLOCK_UPDATE).setClass(this, AppActionsIntentService.class));
     }
 
     private static void setDefaultUncaughtExceptionHandler() {
