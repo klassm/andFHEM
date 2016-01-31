@@ -1,0 +1,23 @@
+{
+  "defaultGroup": "USAGE",
+  "showMeasuredInOverview": true,
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "electricityPower",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "electricityConsumed",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    }
+  ]
+}

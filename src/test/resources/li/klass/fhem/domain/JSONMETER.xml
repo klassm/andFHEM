@@ -1,0 +1,63 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <JSONMETER_LIST>
+        <JSONMETER name="Youless" state="Connected"
+            sets="update:noArg activeTariff:0,1,2,3,4,5,6,7,8,9 resetStatistics:all,statElectricityConsumed...,statElectricityConsumedTariff...,statElectricityPower... restartJsonAnalysis:noArg INTERVAL:slider,0,10,600"
+            attrs="verbose:0,1,2,3,4,5 room group comment:textField-long alias eventMap userReadings:textField-long disable:0,1 doStatistics:0,1 timeOut pathString port alwaysAnalyse:0,1 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat cmdIcon devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="LS110 192.168.178.14 60" />
+            <INT key="HOST" value="192.168.178.14" />
+            <INT key="INTERVAL" value="60" />
+            <INT key="NAME" value="Youless" />
+            <INT key="NOTIFYDEV" value="global" />
+            <INT key="NR" value="181" />
+            <INT key="PORT" value="80" />
+            <INT key="STATE" value="Connected" />
+            <INT key="TYPE" value="JSONMETER" />
+            <INT key="deviceType" value="LS110" />
+            <INT key="urlPath" value="a?f=j" />
+            <ATTR key="doStatistics" value="1" />
+            <ATTR key="room" value="Zählerschrank" />
+            <STATE key="electricityConsumed" value="62759786" measured="2016-01-17 15:14:57" />
+            <STATE key="electricityPower" value="294" measured="2016-01-17 15:14:57" />
+            <STATE key="statElectricityConsumed"
+                value="Hour: 66 Day: 4000 Month: 4000 Year: 4000 (since: 2016-01-17_01:33:33 )"
+                measured="2016-01-17 15:14:57" />
+            <STATE key="statElectricityConsumedLast" value="Hour: 320 Day: - Month: - Year: -"
+                measured="2016-01-17 15:00:50" />
+            <STATE key="statElectricityConsumedToday" value="4000" measured="2016-01-17 15:14:57" />
+            <STATE key="statElectricityPowerDay"
+                value="Min: 190 Avg: 380 Max: 2000 (since: 2016-01-17_01:33:33 )"
+                measured="2016-01-17 15:14:57" />
+            <STATE key="statElectricityPowerMonth"
+                value="Min: 190 Avg: 380 Max: 2000 (since: 2016-01-17_01:33:33 )"
+                measured="2016-01-17 15:14:57" />
+            <STATE key="statElectricityPowerYear"
+                value="Min: 190 Avg: 380 Max: 2000 (since: 2016-01-17_01:33:33 )"
+                measured="2016-01-17 15:14:57" />
+            <STATE key="state" value="Connected" measured="2016-01-17 15:14:57" />
+        </JSONMETER>
+    </JSONMETER_LIST>
+</FHZINFO>
