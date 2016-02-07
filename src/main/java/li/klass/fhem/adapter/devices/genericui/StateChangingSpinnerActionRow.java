@@ -48,7 +48,7 @@ public class StateChangingSpinnerActionRow extends SpinnerActionRow {
     public StateChangingSpinnerActionRow(Context context, String description, String prompt,
                                          List<String> spinnerValues, String selectedValue,
                                          String commandAttribute) {
-        super(context, description, prompt, spinnerValues, spinnerValues.indexOf(selectedValue));
+        super(context, description, prompt, spinnerValues, selectedValue);
         this.commandAttribute = commandAttribute;
     }
 

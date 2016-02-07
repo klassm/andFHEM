@@ -114,9 +114,7 @@
         <item name="android:layout_marginBottom">0dp</item>
     </style>
 
-    <style name="spinnerGeneric"> <!-- parent="android:style/Widget.Spinner" -->
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:padding">3dp</item>
+    <style name="spinnerGeneric">
     </style>
 
     <style name="spinner" parent="spinnerGeneric">

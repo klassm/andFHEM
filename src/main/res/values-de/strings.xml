@@ -644,4 +644,5 @@
     <string name="detailStatesSection">Zustände</string>
     <string name="detailAttributesSection">Attribute</string>
     <string name="detailInternalsSection">Interna</string>
+    <string name="selectValue">wählen …</string>
 </resources>

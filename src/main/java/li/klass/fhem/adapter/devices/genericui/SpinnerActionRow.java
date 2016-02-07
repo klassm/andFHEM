@@ -34,6 +34,8 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -52,6 +54,18 @@ public abstract class SpinnerActionRow {
 
     public SpinnerActionRow(Context context, int description, int prompt, List<String> spinnerValues, int selectedPosition) {
         this(context, context.getString(description), context.getString(prompt), spinnerValues, selectedPosition);
+    }
+
+    public SpinnerActionRow(Context context, String description, String prompt, List<String> spinnerValues, String selectedValue) {
+        if (!spinnerValues.contains(selectedValue)) {
+            selectedValue = context.getString(R.string.selectValue);
+            spinnerValues = ImmutableList.<String>builder().add(selectedValue).addAll(spinnerValues).build();
+        }
+        this.description = description;
+        this.prompt = prompt;
+        this.spinnerValues = spinnerValues;
+        this.selectedPosition = spinnerValues.indexOf(selectedValue);
+        this.context = context;
     }
 
     public SpinnerActionRow(Context context, String description, String prompt, List<String> spinnerValues, int selectedPosition) {
