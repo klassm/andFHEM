@@ -76,7 +76,6 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
         final WebView webView = (WebView) view.findViewById(R.id.webView);
 
-
         WebSettings settings = webView.getSettings();
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
@@ -144,7 +143,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                 if ("about:blank".equalsIgnoreCase(url)) {
                     Optional<String> alternativeUrl = getAlternateLoadUrl();
                     if (alternativeUrl.isPresent()) {
-                        webView.loadUrl(alternativeUrl.get());
+                        webView.loadUrl(handleUrl(connectionService.getCurrentServer(getContext()).getAlternateUrl(), alternativeUrl.get()));
                     }
                 } else {
                     onPageLoadFinishedCallback(view, url);
@@ -153,6 +152,25 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
         });
 
         return view;
+    }
+
+    private String handleUrl(String serverUrl, String toLoad) {
+        if (!toLoad.startsWith("/")) {
+            return toLoad;
+        }
+        try {
+            URL url = new URL(serverUrl);
+            String newUrl = url.getProtocol() + "://" + url.getHost();
+            if (url.getPort() != -1) {
+                newUrl += ":" + url.getPort();
+            }
+            newUrl += toLoad;
+
+            return newUrl;
+        } catch (MalformedURLException e) {
+            LOG.error("cannot parse URL", e);
+            return toLoad;
+        }
     }
 
     protected void onPageLoadFinishedCallback(WebView view, String url) {
@@ -177,7 +195,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                 }
             }
 
-            webView.loadUrl(getLoadUrl());
+            webView.loadUrl(handleUrl(connectionService.getCurrentServer(getContext()).getUrl(), getLoadUrl()));
         } catch (MalformedURLException e) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection);
