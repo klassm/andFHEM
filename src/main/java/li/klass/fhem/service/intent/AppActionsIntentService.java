@@ -88,7 +88,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
                 AlarmManager.AlarmClockInfo nextAlarmClock = getAlarmManager().getNextAlarmClock();
                 if (nextAlarmClock != null) {
                     long triggerTime = nextAlarmClock.getTriggerTime();
-                    String time = new DateTime(new Date(triggerTime)).toString("dd.mm.YYYY HH:MM");
+                    String time = new DateTime(new Date(triggerTime)).toString("dd.MM.YYYY HH:mm");
                     LOGGER.info("handleIntent() - notifying allarm clock receiver for time {}", time);
                     deviceService.setState(nextAlarmClockReceiver.get(), time, this);
                 }
