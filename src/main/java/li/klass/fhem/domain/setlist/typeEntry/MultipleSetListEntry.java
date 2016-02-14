@@ -22,10 +22,21 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist;
+package li.klass.fhem.domain.setlist.typeEntry;
 
-import java.io.Serializable;
+import java.util.Arrays;
 
-public interface SetListValue extends Serializable {
-    String asText();
+import li.klass.fhem.domain.setlist.SetListItemType;
+
+import static org.apache.commons.lang3.StringUtils.join;
+
+public class MultipleSetListEntry extends BaseGroupSetListEntry {
+    public MultipleSetListEntry(String key, String... groupStates) {
+        super(key, SetListItemType.MULTIPLE, Arrays.copyOfRange(groupStates, 1, groupStates.length));
+    }
+
+    @Override
+    public String asText() {
+        return key + ":" + type.getType() + join(groupStates, ",");
+    }
 }

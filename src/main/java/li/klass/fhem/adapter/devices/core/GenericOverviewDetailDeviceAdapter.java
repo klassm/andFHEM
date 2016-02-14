@@ -69,9 +69,9 @@ import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.util.Optionals;
 
@@ -312,18 +312,18 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             return;
         }
 
-        SetListValue setListValue = device.getSetList().get(item.getKey());
-        if (setListValue == null) {
+        SetListEntry setListEntry = device.getSetList().get(item.getKey());
+        if (setListEntry == null) {
             return;
         }
 
-        if (setListValue instanceof SetListSliderValue) {
+        if (setListEntry instanceof SliderSetListEntry) {
             TableRow sliderRow = new StateChangingSeekBarFullWidth(
                     getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getKey()).get(), row)
                     .createRow(getInflater(), device);
             addRow(table, sliderRow);
-        } else if (setListValue instanceof SetListGroupValue) {
-            SetListGroupValue groupValue = (SetListGroupValue) setListValue;
+        } else if (setListEntry instanceof GroupSetListEntry) {
+            GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;
             List<String> groupStates = groupValue.getGroupStates();
             if (groupStates.size() <= 1) return;
 

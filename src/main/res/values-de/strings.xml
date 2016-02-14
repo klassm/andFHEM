@@ -645,4 +645,5 @@
     <string name="detailAttributesSection">Attribute</string>
     <string name="detailInternalsSection">Interna</string>
     <string name="selectValue">wählen …</string>
+    <string name="customText">benutzerdefiniert</string>
 </resources>

@@ -22,29 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.content.Context;
 
-import li.klass.fhem.R;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
 
-public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
-    public AvailableTargetStatesSwitchAction() {
-        super(R.string.switchSetOptions);
+public class NoArgSetListTargetStateHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+    @Override
+    public boolean canHandle(SetListEntry entry) {
+        return entry instanceof NoArgSetListEntry;
     }
 
     @Override
-    public void onButtonClick(Context context, FhemDevice device) {
-        showSwitchOptionsMenu(context, device);
-    }
-
-    private void showSwitchOptionsMenu(final Context context, final FhemDevice device) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device);
-    }
-
-    @Override
-    public boolean isVisible(FhemDevice device) {
-        return device.getSetList().size() > 0;
+    public void handle(SetListEntry entry, Context context, D device, StateUiService stateUiService) {
+        NoArgSetListEntry noArgSetListEntry = (NoArgSetListEntry) entry;
+        stateUiService.setState(device, noArgSetListEntry.getKey(), context);
     }
 }

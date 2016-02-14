@@ -40,7 +40,7 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
@@ -70,7 +70,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
                 tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
 
-                SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
+                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), ((PioneerAvrDevice) device).getInput(), "input")
                         .createRow(device.getXmlListDevice(), tableLayout));
@@ -88,7 +88,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-                SetListGroupValue listeningModeSetList = (SetListGroupValue) device.getSetList().get("listeningMode");
+                GroupSetListEntry listeningModeSetList = (GroupSetListEntry) device.getSetList().get("listeningMode");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.audioMode, R.string.audioMode, listeningModeSetList.getGroupStates(), ((PioneerAvrDevice) device).getListeningMode(), "listeningMode")
                         .createRow(device.getXmlListDevice(), tableLayout));

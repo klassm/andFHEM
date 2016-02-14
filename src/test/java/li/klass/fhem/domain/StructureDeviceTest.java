@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,7 +51,7 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithSetList() {
         GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
 
-        assertThat((SetListGroupValue) device.getSetList().get("state")).isEqualTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"));
+        assertThat((GroupSetListEntry) device.getSetList().get("state")).isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
@@ -59,9 +59,9 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
         GenericDevice device = getDeviceFor("slider", GenericDevice.class);
         assertThat(device).isNotNull();
 
-        SetListValue value = device.getSetList().get("pct");
-        assertThat(value).isInstanceOf(SetListSliderValue.class);
-        assertThat((SetListSliderValue) value).isEqualTo(new SetListSliderValue(10, 2, 110));
+        SetListEntry value = device.getSetList().get("pct");
+        assertThat(value).isInstanceOf(SliderSetListEntry.class);
+        assertThat((SliderSetListEntry) value).isEqualTo(new SliderSetListEntry("pct", 10, 2, 110));
     }
 
     @Override

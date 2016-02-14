@@ -24,8 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.util.FloatUtils;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
@@ -61,10 +61,10 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
         return getStateSliderValue() != null;
     }
 
-    protected SetListSliderValue getStateSliderValue() {
-        SetListValue stateEntry = getSetList().get(getSetListDimStateAttributeName());
-        if (stateEntry instanceof SetListSliderValue) {
-            return (SetListSliderValue) stateEntry;
+    protected SliderSetListEntry getStateSliderValue() {
+        SetListEntry stateEntry = getSetList().get(getSetListDimStateAttributeName());
+        if (stateEntry instanceof SliderSetListEntry) {
+            return (SliderSetListEntry) stateEntry;
         }
         return null;
     }
@@ -75,7 +75,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
 
     @Override
     public float getDimLowerBound() {
-        SetListSliderValue stateSliderValue = getStateSliderValue();
+        SliderSetListEntry stateSliderValue = getStateSliderValue();
         if (stateSliderValue == null) return 0;
 
         return stateSliderValue.getStart();
@@ -83,7 +83,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
 
     @Override
     public float getDimUpperBound() {
-        SetListSliderValue stateSliderValue = getStateSliderValue();
+        SliderSetListEntry stateSliderValue = getStateSliderValue();
         if (stateSliderValue == null) return 100;
 
         return stateSliderValue.getStop();
@@ -91,7 +91,7 @@ public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> ex
 
     @Override
     public float getDimStep() {
-        SetListSliderValue stateSliderValue = getStateSliderValue();
+        SliderSetListEntry stateSliderValue = getStateSliderValue();
         if (stateSliderValue == null) return 1;
 
         return stateSliderValue.getStep();

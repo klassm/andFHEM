@@ -32,8 +32,8 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
-import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
@@ -57,13 +57,10 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     public void afterDeviceXMLRead(Context context) {
         super.afterDeviceXMLRead(context);
 
-        SetListValue value = getSetList().get("state");
+        SetListEntry value = getSetList().get("state");
 
-        if (value instanceof SetListGroupValue) {
-            SetListGroupValue groupValue = (SetListGroupValue) value;
-            if (groupValue.getGroupStates().size() == 1 && groupValue.asType().equalsIgnoreCase("time")) {
-                timerDevice = true;
-            }
+        if (value instanceof TimeSetListEntry) {
+            timerDevice = true;
         }
     }
 

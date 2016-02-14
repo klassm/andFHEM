@@ -29,7 +29,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.multimedia.VolumeDevice;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -61,7 +61,7 @@ public class STVDevice extends FhemDevice<STVDevice> implements VolumeDevice {
 
     @Override
     public float getVolumeAsFloat() {
-        SetListSliderValue setListSliderValue = (SetListSliderValue) getSetList().get("volume");
+        SliderSetListEntry setListSliderValue = (SliderSetListEntry) getSetList().get("volume");
         switch (volume) {
             case "on":
                 return setListSliderValue.getStop();

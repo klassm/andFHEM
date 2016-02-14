@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -42,32 +42,31 @@ import static org.mockito.Mockito.mock;
 public class ContinuousDimmableBehaviorTest {
     @DataProvider
     public static Object[][] continuousProvider() {
-        SetListSliderValue slider = new SetListSliderValue(0, 5, 100);
         return new Object[][]{
-                {new SetList().parse("dim:slider,0,5,100"), slider, "dim"},
-                {new SetList().parse("state:slider,0,5,100"), slider, "state"},
-                {new SetList().parse("pct:slider,0,5,100"), slider, "pct"},
-                {new SetList().parse("value:slider,0,5,100"), slider, "value"},
-                {new SetList().parse("position:slider,0,5,100"), slider, "position"},
-                {new SetList().parse("level:slider,0,5,100"), slider, "level"},
-                {new SetList().parse("state:slider,0,5,100 dim:slider,1,2,100"), slider, "state"},
-                {new SetList().parse("dim:slider,0,5,100 level:slider,1,2,100"), slider, "dim"},
-                {new SetList().parse("level:slider,0,5,100 pct:slider,1,2,100"), slider, "level"},
-                {new SetList().parse("pct:slider,0,5,100 position:slider,1,2,100"), slider, "pct"},
-                {new SetList().parse("position:slider,0,5,100 value:slider,1,2,100"), slider, "position"},
+                {new SetList().parse("dim:slider,0,5,100"), new SliderSetListEntry("dim", 0, 5, 100)},
+                {new SetList().parse("state:slider,0,5,100"), new SliderSetListEntry("state", 0, 5, 100)},
+                {new SetList().parse("pct:slider,0,5,100"), new SliderSetListEntry("pct", 0, 5, 100)},
+                {new SetList().parse("value:slider,0,5,100"), new SliderSetListEntry("value", 0, 5, 100)},
+                {new SetList().parse("position:slider,0,5,100"), new SliderSetListEntry("position", 0, 5, 100)},
+                {new SetList().parse("level:slider,0,5,100"), new SliderSetListEntry("level", 0, 5, 100)},
+                {new SetList().parse("state:slider,0,5,100 dim:slider,1,2,100"), new SliderSetListEntry("state", 0, 5, 100)},
+                {new SetList().parse("dim:slider,0,5,100 level:slider,1,2,100"), new SliderSetListEntry("dim", 0, 5, 100)},
+                {new SetList().parse("level:slider,0,5,100 pct:slider,1,2,100"), new SliderSetListEntry("level", 0, 5, 100)},
+                {new SetList().parse("pct:slider,0,5,100 position:slider,1,2,100"), new SliderSetListEntry("pct", 0, 5, 100)},
+                {new SetList().parse("position:slider,0,5,100 value:slider,1,2,100"), new SliderSetListEntry("position", 0, 5, 100)},
         };
     }
 
     @Test
     @UseDataProvider("continuousProvider")
-    public void should_extract_dim_attribute(SetList setList, SetListSliderValue expectedSlider, String expectedAttribute) {
+    public void should_extract_dim_attribute(SetList setList, SliderSetListEntry expectedSlider) {
         ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(setList).get();
 
         assertThat(behavior.getSlider()).isEqualToComparingFieldByField(expectedSlider);
         assertThat(behavior.getDimLowerBound()).isEqualTo(expectedSlider.getStart());
         assertThat(behavior.getDimStep()).isEqualTo(expectedSlider.getStep());
         assertThat(behavior.getDimUpperBound()).isEqualTo(expectedSlider.getStop());
-        assertThat(behavior.getStateName()).isEqualTo(expectedAttribute);
+        assertThat(behavior.getStateName()).isEqualTo(expectedSlider.getKey());
     }
 
     @DataProvider

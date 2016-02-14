@@ -25,7 +25,7 @@
 package li.klass.fhem.behavior.util.vol;
 
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
@@ -33,7 +33,7 @@ import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 public class VolumeUtilBehavior {
     public static float volumeFor(FhemDevice fhemDevice) {
         String volume = fhemDevice.getXmlListDevice().getStates().get("volume").getValue();
-        SetListSliderValue volumeSetList = (SetListSliderValue) fhemDevice.getSetList().get("volume");
+        SliderSetListEntry volumeSetList = (SliderSetListEntry) fhemDevice.getSetList().get("volume");
         if (volume.equalsIgnoreCase("on")) {
             return volumeSetList.getStop();
         } else if (volume.equalsIgnoreCase("off")) {

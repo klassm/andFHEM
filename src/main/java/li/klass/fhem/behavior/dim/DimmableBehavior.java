@@ -28,12 +28,10 @@ import android.content.Context;
 
 import com.google.common.base.Optional;
 
-import java.util.Locale;
-
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 public class DimmableBehavior {
@@ -120,7 +118,7 @@ public class DimmableBehavior {
         if (!device.getSetList().contains(attribute)) {
             return Optional.absent();
         }
-        SetListSliderValue setListSliderValue = (SetListSliderValue) device.getSetList().get(attribute);
+        SliderSetListEntry setListSliderValue = (SliderSetListEntry) device.getSetList().get(attribute);
         return Optional.of(new DimmableBehavior(device, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
     }
 

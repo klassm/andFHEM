@@ -32,7 +32,7 @@ import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.setlist.SetList;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
@@ -66,7 +66,7 @@ public class GenericDevice extends DimmableContinuousStatesDevice<GenericDevice>
     @Override
     protected String getSetListDimStateAttributeName() {
         SetList setList = getSetList();
-        if (setList.contains("dim") && setList.get("dim") instanceof SetListSliderValue) {
+        if (setList.contains("dim") && setList.get("dim") instanceof SliderSetListEntry) {
             return "dim";
         }
         return super.getSetListDimStateAttributeName();

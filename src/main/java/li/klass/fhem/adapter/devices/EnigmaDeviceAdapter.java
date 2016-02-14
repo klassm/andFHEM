@@ -40,7 +40,7 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class EnigmaDeviceAdapter extends ToggleableAdapter {
@@ -70,12 +70,12 @@ public class EnigmaDeviceAdapter extends ToggleableAdapter {
                 tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
 
-                SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
+                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), enigmaDevice.getInput(), "input")
                         .createRow(device.getXmlListDevice(), tableLayout));
 
-                SetListGroupValue channelSetList = (SetListGroupValue) device.getSetList().get("channel");
+                GroupSetListEntry channelSetList = (GroupSetListEntry) device.getSetList().get("channel");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.channel, R.string.channel, channelSetList.getGroupStates(), enigmaDevice.getChannel(), "channel")
                         .createRow(device.getXmlListDevice(), tableLayout));

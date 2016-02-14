@@ -52,9 +52,9 @@ import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
@@ -203,13 +203,13 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
             registerFieldListener(key, new FieldNameAddedToDetailListener() {
                 @Override
                 protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-                    SetListValue setListValue = device.getSetList().get(key);
-                    if (setListValue instanceof SetListSliderValue) {
+                    SetListEntry setListEntry = device.getSetList().get(key);
+                    if (setListEntry instanceof SliderSetListEntry) {
                         tableLayout.addView(
                                 new StateChangingSeekBarFullWidth(getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key).get(), fieldTableRow)
                                         .createRow(getInflater(), device));
-                    } else if (setListValue instanceof SetListGroupValue) {
-                        SetListGroupValue groupValue = (SetListGroupValue) setListValue;
+                    } else if (setListEntry instanceof GroupSetListEntry) {
+                        GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;
                         tableLayout.addView(new StateChangingSpinnerActionRow(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
                                 .createRow(device.getXmlListDevice(), tableLayout));
                     }

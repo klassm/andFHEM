@@ -22,29 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.domain.setlist;
 
-import android.content.Context;
+import java.io.Serializable;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.FhemDevice;
+public interface SetListEntry extends Serializable {
+    String asText();
 
-public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
-    public AvailableTargetStatesSwitchAction() {
-        super(R.string.switchSetOptions);
-    }
-
-    @Override
-    public void onButtonClick(Context context, FhemDevice device) {
-        showSwitchOptionsMenu(context, device);
-    }
-
-    private void showSwitchOptionsMenu(final Context context, final FhemDevice device) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device);
-    }
-
-    @Override
-    public boolean isVisible(FhemDevice device) {
-        return device.getSetList().size() > 0;
-    }
+    String getKey();
 }

@@ -22,16 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist;
+package li.klass.fhem.domain.setlist.typeEntry;
 
-public class SetListEmptyValue implements SetListValue {
-    public static final SetListEmptyValue INSTANCE = new SetListEmptyValue();
+import li.klass.fhem.domain.setlist.SetListItem;
+import li.klass.fhem.domain.setlist.SetListItemType;
 
-    private SetListEmptyValue() {
+public class TimeSetListEntry extends SetListItem {
+    public TimeSetListEntry(String key) {
+        super(key, SetListItemType.TIME);
     }
 
     @Override
     public String asText() {
-        return null;
+        return key + ":" + type.getType();
     }
 }

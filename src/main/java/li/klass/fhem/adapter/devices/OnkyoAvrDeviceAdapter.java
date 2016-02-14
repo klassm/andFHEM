@@ -40,7 +40,7 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class OnkyoAvrDeviceAdapter extends ToggleableAdapter {
@@ -75,12 +75,12 @@ public class OnkyoAvrDeviceAdapter extends ToggleableAdapter {
                 tableLayout.addView(new MuteActionRow(stateUiService)
                         .createRow(getInflater(), device, context));
 
-                SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
+                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), avrDevice.getInput(), "input")
                         .createRow(device.getXmlListDevice(), tableLayout));
 
-                SetListGroupValue sleepSetList = (SetListGroupValue) device.getSetList().get("sleep");
+                GroupSetListEntry sleepSetList = (GroupSetListEntry) device.getSetList().get("sleep");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.sleep, R.string.sleep, sleepSetList.getGroupStates(), avrDevice.getSleep(), "sleep")
                         .createRow(device.getXmlListDevice(), tableLayout));

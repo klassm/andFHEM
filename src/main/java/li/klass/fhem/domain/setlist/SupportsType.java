@@ -22,29 +22,39 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.domain.setlist;
 
-import android.content.Context;
+import com.google.common.base.Optional;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.FhemDevice;
+import java.util.Locale;
 
-public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
-    public AvailableTargetStatesSwitchAction() {
-        super(R.string.switchSetOptions);
+class SupportsType {
+
+    private final String type;
+    private Optional<Integer> expectedLength;
+
+    public SupportsType(String type) {
+        this(type, Optional.<Integer>absent());
     }
 
-    @Override
-    public void onButtonClick(Context context, FhemDevice device) {
-        showSwitchOptionsMenu(context, device);
+    public SupportsType(String type, int length) {
+        this(type, Optional.of(length));
     }
 
-    private void showSwitchOptionsMenu(final Context context, final FhemDevice device) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device);
+    public SupportsType(String type, Optional<Integer> expectedLength) {
+        this.type = type;
+        this.expectedLength = expectedLength;
     }
 
-    @Override
-    public boolean isVisible(FhemDevice device) {
-        return device.getSetList().size() > 0;
+    public boolean supports(String[] parts) {
+        //noinspection SimplifiableIfStatement
+        if (parts.length == 0 || !type.toLowerCase(Locale.getDefault()).equals(parts[0].toLowerCase(Locale.getDefault()))) {
+            return false;
+        }
+        return !(expectedLength.isPresent() && parts.length != expectedLength.get());
+    }
+
+    public String getType() {
+        return type;
     }
 }

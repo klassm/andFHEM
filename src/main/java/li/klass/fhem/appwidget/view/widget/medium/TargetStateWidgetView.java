@@ -29,8 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import org.apache.commons.lang3.StringUtils;
-
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil;
 import li.klass.fhem.appwidget.WidgetConfiguration;
@@ -94,25 +92,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
                                                    final int appWidgetId, FhemDevice device,
                                                    final WidgetConfigurationCreatedCallback callback) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device,
-                new AvailableTargetStatesDialogUtil.TargetStateSelectedCallback() {
-                    @Override
-                    public void onTargetStateSelected(String state, String subState,
-                                                      FhemDevice device, Context context) {
-                        if (state.equals("state")) {
-                            state = subState;
-                            subState = null;
-                        }
-
-                        String toSet = state;
-                        if (!StringUtils.isBlank(subState)) {
-                            toSet += " " + subState;
-                        }
-
-                        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
-                                widgetType, device.getName(), toSet));
-                    }
-                }
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device
         );
     }
 

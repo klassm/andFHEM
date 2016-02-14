@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.setlist.SetList;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,8 +63,8 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithSetList() {
         DummyDevice device = getDeviceFor("deviceWithSetlist", DummyDevice.class);
 
-        assertThat((SetListGroupValue) device.getSetList().get("state"))
-                .isEqualTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"));
+        assertThat((GroupSetListEntry) device.getSetList().get("state"))
+                .isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
         assertThat(device.supportsDim()).isEqualTo(false);
     }
 

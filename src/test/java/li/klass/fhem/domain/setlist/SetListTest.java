@@ -24,93 +24,139 @@
 
 package li.klass.fhem.domain.setlist;
 
-import org.junit.Before;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import org.assertj.core.data.MapEntry;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.MultipleSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
+@RunWith(DataProviderRunner.class)
 public class SetListTest {
-    private SetList setList;
-
-    @Before
-    public void setUp() {
-        setList = new SetList();
+    @DataProvider
+    public static Object[][] setListProvider() {
+        return new Object[][]{
+                {
+                        new TestCase("only colon")
+                                .withSetList(" : ")
+                                .thenExpectEmptySetList()
+                },
+                {
+                        new TestCase("noArg")
+                                .withSetList("on:noArg")
+                                .thenExpect(entry("on", new NoArgSetListEntry("on")))
+                },
+                {
+                        new TestCase("empty :textField")
+                                .withSetList("0:noArg 1:noArg :textField")
+                                .thenExpect(entry("0", new NoArgSetListEntry("0")), entry("1", new NoArgSetListEntry("1")), entry("state", new TextFieldSetListEntry("state")))
+                },
+                {
+                        new TestCase("empty set list")
+                                .withSetList("")
+                                .thenExpectEmptySetList()
+                },
+                {
+                        new TestCase("leading trailing whitepace")
+                                .withSetList(" on off ")
+                                .thenExpect(entry("on", new NoArgSetListEntry("on")), entry("off", new NoArgSetListEntry("off")))
+                },
+                {
+                        new TestCase("colon without values leads to group")
+                                .withSetList("state:")
+                                .thenExpect(entry("state", new GroupSetListEntry("state")))
+                },
+                {
+                        new TestCase("slider")
+                                .withSetList("state:slider,1,2,3 dim:slider,0,5,100")
+                                .thenExpect(entry("state", new SliderSetListEntry("state", 1, 2, 3)), entry("dim", new SliderSetListEntry("dim", 0, 5, 100)))
+                },
+                {
+                        new TestCase("group")
+                                .withSetList("level:1,2,3 state:on,off")
+                                .thenExpect(entry("level", new GroupSetListEntry("level", "1", "2", "3")), entry("state", new GroupSetListEntry("state", "on", "off")))
+                },
+                {
+                        new TestCase("time")
+                                .withSetList("state:time")
+                                .thenExpect(entry("state", new TimeSetListEntry("state")))
+                },
+                {
+                        new TestCase("multiple")
+                                .withSetList("blab:multiple,bla,blub")
+                                .thenExpect(entry("blab", new MultipleSetListEntry("blab", "multiple", "bla", "blub")))
+                },
+                {
+                        new TestCase("multiple-strict")
+                                .withSetList("blab:multiple-strict,bla,blub")
+                                .thenExpect(entry("blab", new MultipleStrictSetListEntry("blab", "multiple-strict", "bla", "blub")))
+                },
+                {
+                        new TestCase("textField")
+                                .withSetList("blab:textField")
+                                .thenExpect(entry("blab", new TextFieldSetListEntry("blab")))
+                },
+                {
+                        new TestCase("textField-long")
+                                .withSetList("blab:textField-long")
+                                .thenExpect(entry("blab", new TextFieldLongSetListEntry("blab")))
+                }
+        };
     }
 
+    @UseDataProvider("setListProvider")
     @Test
-    public void testStateValuesSetList() {
-        setList.parse("on off");
-        assertThat(setList.getEntries()).hasSize(2);
-        assertThat(setList.getEntries().get("on")).isEqualTo(SetListEmptyValue.INSTANCE);
-        assertThat(setList.getEntries().get("off")).isEqualTo(SetListEmptyValue.INSTANCE);
+    public void should_parse_set_list(TestCase testCase) {
+        SetList setList = new SetList();
 
-        assertThat(setList.toString()).isEqualTo("off on");
+        setList.parse(testCase.setList);
+
+        assertThat(setList.getEntries()).containsOnly(testCase.expected);
     }
 
-    @Test
-    public void testTypedValueSetList() {
-        setList.parse("state:time");
-        assertThat(setList.getEntries()).hasSize(1);
+    private static class TestCase {
+        private final String desc;
+        private String setList;
+        private MapEntry[] expected;
 
-        SetListGroupValue state = (SetListGroupValue) setList.getEntries().get("state");
-        assertThat(state).isEqualTo(new SetListGroupValue("time"));
-        assertThat(state.asText()).isEqualTo("time");
-    }
+        public TestCase(String desc) {
+            this.desc = desc;
+        }
 
-    @Test
-    public void testGroupValueSetList() {
-        setList.parse("level:1,2,3 state:on,off");
-        assertThat(setList.getEntries()).hasSize(2);
-        assertThat(setList.getEntries().get("level")).isEqualTo(new SetListGroupValue("1", "2", "3"));
-        assertThat(setList.getEntries().get("state")).isEqualTo(new SetListGroupValue("on", "off"));
-    }
+        public TestCase withSetList(String setList) {
+            this.setList = setList;
+            return this;
+        }
 
-    @Test
-    public void testSliderValueSetList() {
-        setList.parse("state:slider,1,2,3 dim:slider,0,5,100");
-        assertThat(setList.getEntries()).hasSize(2);
-        assertThat(setList.getEntries().get("state")).isEqualTo(new SetListSliderValue(1, 2, 3));
-        assertThat(setList.getEntries().get("dim")).isEqualTo(new SetListSliderValue(0, 5, 100));
-    }
+        public TestCase thenExpect(MapEntry... expected) {
+            this.expected = expected;
+            return this;
+        }
 
-    @Test
-    public void testColonWithoutValuesLeadsToGroup() {
-        setList.parse("state:");
-        assertThat(setList.getEntries().get("state")).isInstanceOf(SetListGroupValue.class);
-    }
+        public TestCase thenExpectEmptySetList() {
+            this.expected = new MapEntry[0];
+            return this;
+        }
 
-    @Test
-    public void testTrailingWhitespace() {
-        setList.parse("on off ");
-        assertThat(setList.getEntries()).hasSize(2);
-        assertThat(setList.getEntries()).containsKey("on");
-        assertThat(setList.getEntries()).containsKey("off");
-    }
-
-    @Test
-    public void testLeadingWhitespace() {
-        setList.parse(" on off");
-        assertThat(setList.getEntries()).hasSize(2);
-        assertThat(setList.getEntries()).containsKey("on");
-        assertThat(setList.getEntries()).containsKey("off");
-    }
-
-    @Test
-    public void testEmptySetList() {
-        setList.parse("");
-        assertThat(setList.size()).isEqualTo(0);
-    }
-
-    @Test
-    public void testNoArgEntry() {
-        setList.parse("on:noArg");
-        assertThat(setList.getEntries()).hasSize(1);
-        assertThat(setList.getEntries().get("on")).isEqualTo(SetListEmptyValue.INSTANCE);
-    }
-
-    @Test
-    public void testOnlyColon() {
-        setList.parse(" : ");
-        assertThat(setList.getEntries()).isEmpty();
+        @Override
+        public String toString() {
+            return desc + " {" +
+                    "setList='" + setList + '\'' +
+                    ", expected=" + expected +
+                    '}';
+        }
     }
 }

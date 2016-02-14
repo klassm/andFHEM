@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.setlist;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,11 +34,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class SetList implements Serializable {
-    private Map<String, SetListValue> entries = Maps.newHashMap();
+    private Map<String, SetListEntry> entries = Maps.newHashMap();
 
     public SetList parse(String text) {
         if (isEmpty(text)) return this;
@@ -57,30 +60,39 @@ public class SetList implements Serializable {
             part = part.replaceAll(":noArg$", "");
         }
         if (!part.contains(":")) {
-            entries.put(part, SetListEmptyValue.INSTANCE);
+            entries.put(part, new NoArgSetListEntry(part));
             return;
         }
 
         String[] keyValue = part.split(":");
         if (keyValue.length == 0) return;
 
-        String key = keyValue[0];
+        String key = StringUtils.trimToNull(keyValue[0]);
+        key = key == null ? "state" : key;
         String value = keyValue.length == 2 ? keyValue[1] : "";
 
-        SetListValue setListValue = handleValue(value);
-        if (setListValue != null) {
-            entries.put(key, setListValue);
+        Optional<SetListItem> setListEntry = handle(key, value);
+        if (setListEntry.isPresent()) {
+            entries.put(key, setListEntry.get());
         }
     }
 
-    private SetListValue handleValue(String value) {
+    private Optional<SetListItem> handle(String key, String value) {
         String[] parts = value.split(",");
 
-        if (parts.length == 4 && parts[0].equals("slider")) {
-            return new SetListSliderValue(parts);
-        }
+        SetListItemType type = findType(parts);
+        return type.getSetListItemFor(key, parts);
+    }
 
-        return new SetListGroupValue(parts);
+    private SetListItemType findType(String[] parts) {
+        for (SetListItemType type : SetListItemType.values()) {
+            if (type.supports(parts)) {
+                return type;
+            }
+        }
+        return parts.length == 0
+                ? SetListItemType.NO_ARG
+                : SetListItemType.GROUP;
     }
 
     public List<String> getSortedKeys() {
@@ -90,11 +102,11 @@ public class SetList implements Serializable {
     }
 
 
-    public Map<String, SetListValue> getEntries() {
+    public Map<String, SetListEntry> getEntries() {
         return Collections.unmodifiableMap(entries);
     }
 
-    public SetListValue get(String key) {
+    public SetListEntry get(String key) {
         return entries.get(key);
     }
 
@@ -119,13 +131,8 @@ public class SetList implements Serializable {
 
         List<String> parts = newArrayList();
         for (String key : keys) {
-            SetListValue value = entries.get(key);
-            String text = value.asText();
-            if (text == null) {
-                parts.add(key);
-            } else {
-                parts.add(key + ":" + text);
-            }
+            SetListEntry value = entries.get(key);
+            parts.add(value.asText());
         }
 
         return StringUtils.join(parts, " ");

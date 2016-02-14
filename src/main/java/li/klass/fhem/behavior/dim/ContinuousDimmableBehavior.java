@@ -36,18 +36,18 @@ import java.util.Map;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.domain.setlist.SetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
 public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     public static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
-    private SetListSliderValue slider;
+    private SliderSetListEntry slider;
     private String setListAttribute;
 
-    ContinuousDimmableBehavior(SetListSliderValue sliderValue, String setListAttribute) {
+    ContinuousDimmableBehavior(SliderSetListEntry sliderValue, String setListAttribute) {
         this.slider = sliderValue;
         this.setListAttribute = setListAttribute;
     }
@@ -101,7 +101,7 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
         return extractLeadingFloat(dimState);
     }
 
-    public SetListSliderValue getSlider() {
+    public SliderSetListEntry getSlider() {
         return slider;
     }
 
@@ -120,9 +120,9 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
             if (!setList.contains(dimAttribute)) {
                 continue;
             }
-            SetListValue setListValue = setList.get(dimAttribute);
-            if (setListValue instanceof SetListSliderValue) {
-                return Optional.of(new ContinuousDimmableBehavior((SetListSliderValue) setListValue, dimAttribute));
+            SetListEntry setListEntry = setList.get(dimAttribute);
+            if (setListEntry instanceof SliderSetListEntry) {
+                return Optional.of(new ContinuousDimmableBehavior((SliderSetListEntry) setListEntry, dimAttribute));
             }
             return Optional.absent();
         }

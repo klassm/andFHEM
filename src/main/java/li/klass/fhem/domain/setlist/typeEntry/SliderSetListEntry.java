@@ -22,22 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist;
+package li.klass.fhem.domain.setlist.typeEntry;
+
+import li.klass.fhem.domain.setlist.SetListItem;
+import li.klass.fhem.domain.setlist.SetListItemType;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
-public class SetListSliderValue implements SetListValue {
+public class SliderSetListEntry extends SetListItem {
     private final float start;
     private final float stop;
     private final float step;
 
-    public SetListSliderValue(String[] parts) {
-        start = extractLeadingFloat(parts[1]);
-        step = extractLeadingFloat(parts[2]);
-        stop = extractLeadingFloat(parts[3]);
+    public SliderSetListEntry(String key, String[] parts) {
+        this(key, extractLeadingFloat(parts[1]), extractLeadingFloat(parts[2]), extractLeadingFloat(parts[3]));
     }
 
-    public SetListSliderValue(float start, float step, float stop) {
+    public SliderSetListEntry(String key, float start, float step, float stop) {
+        super(key, SetListItemType.SLIDER);
+
         this.step = step;
         this.stop = stop;
         this.start = start;
@@ -69,26 +72,27 @@ public class SetListSliderValue implements SetListValue {
         return "slider," + start + "," + step + "," + stop;
     }
 
-    @SuppressWarnings("RedundantIfStatement")
+    @SuppressWarnings("SimplifiableIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        SetListSliderValue that = (SetListSliderValue) o;
+        SliderSetListEntry that = (SliderSetListEntry) o;
 
-        if (start != that.start) return false;
-        if (step != that.step) return false;
-        if (stop != that.stop) return false;
+        if (Float.compare(that.start, start) != 0) return false;
+        if (Float.compare(that.stop, stop) != 0) return false;
+        return Float.compare(that.step, step) == 0;
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        float result = start;
-        result = 31 * result + stop;
-        result = 31 * result + step;
-        return (int) (result * 100);
+        int result = super.hashCode();
+        result = 31 * result + (start != +0.0f ? Float.floatToIntBits(start) : 0);
+        result = 31 * result + (stop != +0.0f ? Float.floatToIntBits(stop) : 0);
+        result = 31 * result + (step != +0.0f ? Float.floatToIntBits(step) : 0);
+        return result;
     }
 }

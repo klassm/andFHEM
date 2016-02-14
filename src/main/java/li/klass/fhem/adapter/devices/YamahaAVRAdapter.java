@@ -40,7 +40,7 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class YamahaAVRAdapter extends ToggleableAdapter {
@@ -83,7 +83,7 @@ public class YamahaAVRAdapter extends ToggleableAdapter {
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-                SetListGroupValue groupValue = (SetListGroupValue) device.getSetList().get("input");
+                GroupSetListEntry groupValue = (GroupSetListEntry) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context, R.string.input, R.string.input,
                         groupValue.getGroupStates(), ((YamahaAVRDevice) device).getInput(), "input")
                         .createRow(device.getXmlListDevice(), tableLayout));

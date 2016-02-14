@@ -39,7 +39,7 @@ import li.klass.fhem.adapter.devices.genericui.multimedia.PlayerDetailAction;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
 public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     public HarmonyDeviceAdapter() {
@@ -63,7 +63,7 @@ public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-                SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("activity");
+                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("activity");
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.activity, R.string.activity, inputSetList.getGroupStates(), ((HarmonyDevice) device).getActivity(), "activity")
                         .createRow(device.getXmlListDevice(), tableLayout));

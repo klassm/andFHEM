@@ -29,7 +29,7 @@ import java.util.List;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
 @SuppressWarnings("unused")
 @DetailViewSettings(showMeasured = true, showState = true)
@@ -51,7 +51,7 @@ public class LightSceneDevice extends FhemDevice<LightSceneDevice> {
     }
 
     public List<String> getScenes() {
-        SetListGroupValue sceneGroup = (SetListGroupValue) getSetList().get("scene");
+        GroupSetListEntry sceneGroup = (GroupSetListEntry) getSetList().get("scene");
         return sceneGroup.getGroupStates();
     }
 

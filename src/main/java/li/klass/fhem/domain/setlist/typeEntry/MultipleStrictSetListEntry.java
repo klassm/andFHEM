@@ -22,29 +22,21 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.domain.setlist.typeEntry;
 
-import android.content.Context;
+import java.util.Arrays;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetListItemType;
 
-public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
-    public AvailableTargetStatesSwitchAction() {
-        super(R.string.switchSetOptions);
+import static org.apache.commons.lang3.StringUtils.join;
+
+public class MultipleStrictSetListEntry extends BaseGroupSetListEntry {
+    public MultipleStrictSetListEntry(String key, String... groupStates) {
+        super(key, SetListItemType.MULTIPLE_STRICT, Arrays.copyOfRange(groupStates, 1, groupStates.length));
     }
 
     @Override
-    public void onButtonClick(Context context, FhemDevice device) {
-        showSwitchOptionsMenu(context, device);
-    }
-
-    private void showSwitchOptionsMenu(final Context context, final FhemDevice device) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device);
-    }
-
-    @Override
-    public boolean isVisible(FhemDevice device) {
-        return device.getSetList().size() > 0;
+    public String asText() {
+        return key + ":" + type.getType() + join(groupStates, ",");
     }
 }

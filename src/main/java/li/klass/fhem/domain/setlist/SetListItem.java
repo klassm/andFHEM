@@ -24,56 +24,49 @@
 
 package li.klass.fhem.domain.setlist;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collections;
-import java.util.List;
+public abstract class SetListItem implements SetListEntry {
+    protected final String key;
+    protected final SetListItemType type;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.commons.lang3.StringUtils.join;
 
-public class SetListGroupValue implements SetListValue {
-    private final List<String> groupStates;
-
-    public SetListGroupValue(String... groupStates) {
-        checkNotNull(groupStates);
-        this.groupStates = Lists.newArrayList(groupStates);
+    public SetListItem(String key, SetListItemType type) {
+        key = StringUtils.trimToNull(key);
+        this.key = key == null ? "state" : key;
+        this.type = type;
     }
 
     @Override
-    public String asText() {
-        return join(groupStates, ",");
+    public String getKey() {
+        return key;
     }
 
-    public List<String> getGroupStates() {
-        return Collections.unmodifiableList(groupStates);
-    }
-
-    public String asType() {
-        Preconditions.checkArgument(groupStates.size() == 1);
-        return groupStates.get(0);
-    }
-
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SetListGroupValue that = (SetListGroupValue) o;
+        SetListItem that = (SetListItem) o;
 
-        return groupStates.equals(that.groupStates);
+        if (key != null ? !key.equals(that.key) : that.key != null) return false;
+        return type == that.type;
+
     }
 
     @Override
     public int hashCode() {
-        return groupStates != null ? groupStates.hashCode() : 0;
+        int result = key != null ? key.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return "SetListGroupValue{" +
-                "groupStates=" + groupStates +
+        return "SetListItem{" +
+                "key='" + key + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

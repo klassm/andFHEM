@@ -46,12 +46,16 @@ public class StateUiService {
 
     public void setSubState(FhemDevice<?> device,
                             String stateName, String value, Context context) {
-        context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
-                .setClass(context, DeviceIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.STATE_NAME, stateName)
-                .putExtra(BundleExtraKeys.STATE_VALUE, value)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+        if ("state".equalsIgnoreCase(stateName)) {
+            setState(device, value, context);
+        } else {
+            context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
+                    .setClass(context, DeviceIntentService.class)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                    .putExtra(BundleExtraKeys.STATE_NAME, stateName)
+                    .putExtra(BundleExtraKeys.STATE_VALUE, value)
+                    .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+        }
     }
 
     public void setState(FhemDevice<?> device, String value, Context context) {
