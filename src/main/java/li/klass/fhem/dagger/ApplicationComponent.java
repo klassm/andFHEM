@@ -32,6 +32,7 @@ import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
+import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
@@ -348,6 +349,8 @@ public interface ApplicationComponent {
     void inject(ImportExportService object);
 
     void inject(AndFHEMApplication object);
+
+    void inject(ConditionQueryLocaleReceiver object);
 
 
     void inject(OnOffBehavior object);

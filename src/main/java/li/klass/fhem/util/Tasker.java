@@ -27,6 +27,9 @@ package li.klass.fhem.util;
 import android.content.Context;
 import android.content.Intent;
 
+import li.klass.fhem.activities.locale.ConditionQueryLocaleSettingActivity;
+import li.klass.fhem.activities.locale.LocaleIntentConstants;
+import li.klass.fhem.activities.locale.TaskerPlugin;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
@@ -38,5 +41,13 @@ public class Tasker {
         taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);
         taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_VALUE, value);
         context.sendBroadcast(taskerNotifyIntent);
+    }
+
+    public static void requestQuery(Context context) {
+        Intent requestQueryIntentForTasker = new Intent(LocaleIntentConstants.ACTION_REQUEST_QUERY)
+                .putExtra(LocaleIntentConstants.EXTRA_ACTIVITY,
+                        ConditionQueryLocaleSettingActivity.class.getName());;
+        TaskerPlugin.Event.addPassThroughMessageID(requestQueryIntentForTasker);
+        context.sendBroadcast(requestQueryIntentForTasker);
     }
 }

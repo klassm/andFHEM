@@ -39,12 +39,15 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.activities.locale.ConditionQueryLocaleSettingActivity;
+import li.klass.fhem.activities.locale.TaskerPlugin;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.Tasker;
 
 import static li.klass.fhem.constants.Actions.CLEAR_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST;
@@ -124,6 +127,7 @@ public class RoomListIntentService extends ConvenientIntentService {
             boolean vibrateUponNotification = intent.getBooleanExtra(VIBRATE, false);
 
             roomListService.parseReceivedDeviceStateMap(deviceName, updates, vibrateUponNotification, this);
+            Tasker.requestQuery(this);
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             LOG.trace("handleIntent() - remote update finished");
             roomListService.remoteUpdateFinished(this, intent.getBooleanExtra(BundleExtraKeys.SUCCESS, true));

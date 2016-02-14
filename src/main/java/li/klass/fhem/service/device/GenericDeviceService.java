@@ -92,8 +92,8 @@ public class GenericDeviceService {
             device.setState(device.formatStateTextToSet(targetState));
         }
 
-        Tasker.sendTaskerNotifyIntent(context, device.getName(),
-                "state", targetState);
+        Tasker.sendTaskerNotifyIntent(context, device.getName(), "state", targetState);
+        Tasker.requestQuery(context);
     }
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context) {
@@ -111,8 +111,8 @@ public class GenericDeviceService {
             return;
         }
         commandExecutionService.executeSafely("set " + getInternalName(device) + " " + subStateName + " " + value, context);
-        Tasker.sendTaskerNotifyIntent(context, device.getName(),
-                subStateName, value);
+        Tasker.sendTaskerNotifyIntent(context, device.getName(), subStateName, value);
+        Tasker.requestQuery(context);
 
         device.getXmlListDevice().setState(subStateName, value);
         if (DIM_ATTRIBUTES.contains(subStateName)) {

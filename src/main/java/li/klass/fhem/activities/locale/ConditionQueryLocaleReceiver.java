@@ -30,11 +30,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.common.base.Optional;
+
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED;
@@ -45,6 +52,14 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
 
     public static final String TAG = ConditionQueryLocaleReceiver.class.getName();
 
+    @Inject
+    RoomListService roomListService;
+
+    public ConditionQueryLocaleReceiver() {
+        ApplicationComponent daggerComponent = AndFHEMApplication.getApplication().getDaggerComponent();
+        daggerComponent.inject(this);
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e(TAG, intent.getAction());
@@ -52,32 +67,17 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         final String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
 
-        context.startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
-                .setClass(context, RoomListIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
-                            finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
-                            return;
-                        }
-
-                        FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                        if (device == null) {
-                            finishConditionIntent(RESULT_CONDITION_UNKNOWN);
-                        } else if (device.getInternalState().equalsIgnoreCase(targetState)) {
-                            finishConditionIntent(RESULT_CONDITION_SATISFIED);
-                        } else if (device.getInternalState().matches(targetState)) {
-                            finishConditionIntent(RESULT_CONDITION_SATISFIED);
-                        } else {
-                            finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
-                        }
-                    }
-                }));
-    }
-
-    private void finishConditionIntent(int resultCode) {
-        setResult(resultCode, "", new Bundle());
+        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, context);
+        if (!device.isPresent()) {
+            setResultCode(RESULT_CONDITION_UNSATISFIED);
+            return;
+        }
+        boolean satisfied = targetState != null && (targetState.equalsIgnoreCase(device.get().getInternalState())
+                || device.get().getInternalState().matches(targetState));
+        if (satisfied) {
+            setResultCode(RESULT_CONDITION_SATISFIED);
+        } else {
+            setResultCode(RESULT_CONDITION_UNSATISFIED);
+        }
     }
 }
