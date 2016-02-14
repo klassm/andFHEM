@@ -786,5 +786,15 @@
         ]
       }
     }
+  },
+  "JSONMETER": {
+    "electricityConsumed": {
+      "append": "kWh",
+      "extract": "int"
+    },
+    "electricityPower": {
+      "append": "W",
+      "extract": "int"
+    }
   }
 }
