@@ -32,7 +32,6 @@ import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.DEC
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.NUMERIC;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TEMPERATURE;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TIME;
-import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TIME_WITH_SECOND;
 
 public enum DeviceStateRequiringAdditionalInformation {
     PCT("pct", NUMERIC),
@@ -41,8 +40,8 @@ public enum DeviceStateRequiringAdditionalInformation {
     DESIRED("desired", NUMERIC),
     ON_FOR_TIMER("on-for-timer", DEC_QUARTER),
     OFF_FOR_TIMER("off-for-timer", DEC_QUARTER),
-    ON_TILL("on-till", TIME, TIME_WITH_SECOND),
-    OFF_TILL("off-till", TIME, TIME_WITH_SECOND),
+    ON_TILL("on-till", TIME),
+    OFF_TILL("off-till", TIME),
     RAMP_ON_TIME("ramp-on-time", NUMERIC),
     RAMP_OFF_TIME("ramp-off-time", NUMERIC),
     DAY("day", NUMERIC),
@@ -57,7 +56,6 @@ public enum DeviceStateRequiringAdditionalInformation {
     FRI_TO1("fri-to1", TIME),
     FRI_TO2("fri-to2", TIME),
     HOLIDAY1("holiday1", NUMERIC),
-    HOLIDAY2("holiday2"),
     HOUR("hour", NUMERIC),
     LOWTEMP_OFFSET("lowtemp-offset", TEMPERATURE),
     MANU_TEMP("manu-temp", TEMPERATURE),
@@ -93,11 +91,11 @@ public enum DeviceStateRequiringAdditionalInformation {
     YEAR("year", NUMERIC);
 
     private String fhemStateRegexp = null;
-    private DeviceStateAdditionalInformationType[] additionalInformationTypes;
+    private DeviceStateAdditionalInformationType additionalType;
 
-    private DeviceStateRequiringAdditionalInformation(String fhemStateRegexp, DeviceStateAdditionalInformationType... additionalInformationTypes) {
+    DeviceStateRequiringAdditionalInformation(String fhemStateRegexp, DeviceStateAdditionalInformationType additionalType) {
         this.fhemStateRegexp = fhemStateRegexp;
-        this.additionalInformationTypes = additionalInformationTypes;
+        this.additionalType = additionalType;
     }
 
     public static DeviceStateRequiringAdditionalInformation deviceStateForFHEM(String state) {
@@ -111,8 +109,8 @@ public enum DeviceStateRequiringAdditionalInformation {
         return null;
     }
 
-    public DeviceStateAdditionalInformationType[] getAdditionalInformationTypes() {
-        return additionalInformationTypes;
+    public DeviceStateAdditionalInformationType getAdditionalType() {
+        return additionalType;
     }
 
     public static boolean requiresAdditionalInformation(String state) {
@@ -122,13 +120,7 @@ public enum DeviceStateRequiringAdditionalInformation {
     public static boolean isValidAdditionalInformationValue(String value,
                                                             DeviceStateRequiringAdditionalInformation specialDeviceState) {
 
-        for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
-            if (type.matches(value.toLowerCase(Locale.getDefault()))) {
-                return true;
-            }
-        }
-
-        return false;
+        return specialDeviceState.getAdditionalType().matches(value.toLowerCase(Locale.getDefault()));
     }
 }
 

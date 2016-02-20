@@ -31,19 +31,30 @@ import android.widget.EditText;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
+import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
-import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
-import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
+import li.klass.fhem.util.DialogUtil;
 
-public class TextFieldTargetStateHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class SpecialButtonHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
-        return entry instanceof TextFieldSetListEntry || entry instanceof TextFieldLongSetListEntry;
+        return entry instanceof NoArgSetListEntry
+                && DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.getKey()) != null;
     }
 
     @Override
     public void handle(final SetListEntry entry, final Context context, final D device, final StateUiService stateUiService) {
+        DeviceStateRequiringAdditionalInformation additionalInformation = DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.getKey());
+        final DeviceStateAdditionalInformationType type = additionalInformation.getAdditionalType();
+        if (type == DeviceStateAdditionalInformationType.TIME) {
+            new TimeTargetStateHandler<D>().handle(new TimeSetListEntry(entry.getKey()), context, device, stateUiService);
+            return;
+        }
+
         final EditText editText = new EditText(context);
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
@@ -57,8 +68,13 @@ public class TextFieldTargetStateHandler<D extends FhemDevice<?>> implements Set
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        stateUiService.setSubState(device, entry.getKey(), editText.getText().toString(), context);
-                        dialog.dismiss();
+                        String value = editText.getText().toString();
+                        if (!type.matches(value)) {
+                            DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
+                        } else {
+                            stateUiService.setSubState(device, entry.getKey(), value, context);
+                            dialog.dismiss();
+                        }
                     }
                 })
                 .show();

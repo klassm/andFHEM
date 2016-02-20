@@ -43,6 +43,7 @@ import li.klass.fhem.adapter.devices.genericui.availableTargetStates.MultipleSet
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.NoArgSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SliderSetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TextFieldTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TimeTargetStateHandler;
 import li.klass.fhem.adapter.uiservice.StateUiService;
@@ -57,12 +58,13 @@ import static android.view.View.VISIBLE;
 public class AvailableTargetStatesDialogUtil {
 
     private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS = ImmutableList.of(
-            new NoArgSetListTargetStateHandler<>(),
             new GroupSetListTargetStateHandler<>(),
             new SliderSetListTargetStateHandler<>(),
             new TimeTargetStateHandler<>(),
             new TextFieldTargetStateHandler<>(),
-            new MultipleSetListTargetStateHandler<>()
+            new MultipleSetListTargetStateHandler<>(),
+            new SpecialButtonHandler<>(),
+            new NoArgSetListTargetStateHandler<>() // must be last entry!
     );
 
     public static <D extends FhemDevice<D>> void showSwitchOptionsMenu(final Context context, final D device) {

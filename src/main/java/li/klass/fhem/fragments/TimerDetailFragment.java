@@ -517,9 +517,9 @@ public class TimerDetailFragment extends BaseFragment {
             if (stateAppendix != null) {
                 appendixView.setText(stateAppendix);
             } else {
-                DeviceStateAdditionalInformationType[] requiredAppendixType = specialDeviceState.getAdditionalInformationTypes();
-                if (requiredAppendixType != null && requiredAppendixType.length > 0) {
-                    appendixView.setText(requiredAppendixType[0].getExample());
+                DeviceStateAdditionalInformationType requiredAppendixType = specialDeviceState.getAdditionalType();
+                if (requiredAppendixType != null) {
+                    appendixView.setText(requiredAppendixType.getExample());
                 }
             }
         }
