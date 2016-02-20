@@ -47,6 +47,8 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         implements Serializable {
 
 
+    private final int intervalMinutesMustBeDivisibleBy;
+
     public enum NumberOfIntervalsType {
         FIXED, DYNAMIC;
 
@@ -56,10 +58,12 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
 
     public final NumberOfIntervalsType numberOfIntervalsType;
     private static final Logger LOG = LoggerFactory.getLogger(HeatingConfiguration.class);
-    public HeatingConfiguration(String offTime, int maximumNumberOfHeatingIntervals, NumberOfIntervalsType numberOfIntervalsType) {
+
+    public HeatingConfiguration(String offTime, int maximumNumberOfHeatingIntervals, NumberOfIntervalsType numberOfIntervalsType, int intervalMinutesMustBeDivisibleBy) {
         this.offTime = offTime;
         this.maximumNumberOfHeatingIntervals = maximumNumberOfHeatingIntervals;
         this.numberOfIntervalsType = numberOfIntervalsType;
+        this.intervalMinutesMustBeDivisibleBy = intervalMinutesMustBeDivisibleBy;
     }
 
     protected H getOrCreateInterval(WeekProfile<H, C, D> weekProfile, DayUtil.Day day, int index) {
@@ -116,6 +120,10 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
     }
 
     public void afterXMLRead(WeekProfile<H, C, D> weekProfile) {
+    }
+
+    public int getIntervalMinutesMustBeDivisibleBy() {
+        return intervalMinutesMustBeDivisibleBy;
     }
 
     public IntervalType getIntervalType() {

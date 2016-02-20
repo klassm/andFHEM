@@ -44,7 +44,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 24;
 
     public CULHMConfiguration() {
-        super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC);
+        super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC, 10);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     public static final String OFF_TIME = "24:00";
 
     public FHTConfiguration() {
-        super(OFF_TIME, 2, NumberOfIntervalsType.FIXED);
+        super(OFF_TIME, 2, NumberOfIntervalsType.FIXED, 10);
     }
 
     @Override

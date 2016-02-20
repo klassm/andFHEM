@@ -48,7 +48,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     public static final double MINIMUM_TEMPERATURE = 4.5;
 
     public MAXConfiguration() {
-        super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC);
+        super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC, 5);
     }
 
     @Override

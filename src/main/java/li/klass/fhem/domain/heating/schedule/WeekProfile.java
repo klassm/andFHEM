@@ -125,6 +125,10 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return configuration.getIntervalType();
     }
 
+    public C getConfiguration() {
+        return configuration;
+    }
+
     @Override
     public String toString() {
         return "WeekProfile{" +

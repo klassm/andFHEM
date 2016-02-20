@@ -2,7 +2,11 @@ package li.klass.fhem.domain.core;
 
 import org.junit.Test;
 
-import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.*;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.ANY;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.DEC_QUARTER;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.NUMERIC;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TEMPERATURE;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TIME;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -41,13 +45,6 @@ public class DeviceStateAdditionalInformationTypeTest {
         assertThat(TIME.matches("24:00"), is(true));
         assertThat(TIME.matches("23:24"), is(true));
         assertThat(TIME.matches("23.24"), is(false));
-    }
-
-    @Test
-    public void testTimeWithSecondMatches() {
-        assertThat(TIME_WITH_SECOND.matches("24:00:00"), is(true));
-        assertThat(TIME_WITH_SECOND.matches("23:24:10"), is(true));
-        assertThat(TIME_WITH_SECOND.matches("23.24"), is(false));
     }
 
     @Test

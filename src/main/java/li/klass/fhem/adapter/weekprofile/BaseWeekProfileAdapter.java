@@ -95,7 +95,8 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
     }
 
     protected String timeToTimeString(int hourOfDay, int minuteOfDay) {
-        int minutes = (minuteOfDay + 9) / 10 * 10;
+        int intervalMinutesMustBeDivisibleBy = weekProfile.getConfiguration().getIntervalMinutesMustBeDivisibleBy();
+        int minutes = (minuteOfDay + intervalMinutesMustBeDivisibleBy - 1) / intervalMinutesMustBeDivisibleBy * intervalMinutesMustBeDivisibleBy;
         if (minutes == 60) minutes = 0;
 
         if (minutes == 0 && minuteOfDay != 0) hourOfDay += 1;
