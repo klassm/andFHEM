@@ -27,12 +27,14 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -50,22 +52,25 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
-import li.klass.fhem.domain.setlist.typeEntry.BaseGroupSetListEntry;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.google.common.collect.FluentIterable.from;
 
 public class AvailableTargetStatesDialogUtil {
 
-    private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS = ImmutableList.of(
+    private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
             new GroupSetListTargetStateHandler<>(),
             new SliderSetListTargetStateHandler<>(),
             new TimeTargetStateHandler<>(),
             new TextFieldTargetStateHandler<>(),
             new MultipleSetListTargetStateHandler<>(),
-            new SpecialButtonHandler<>(),
-            new NoArgSetListTargetStateHandler<>() // must be last entry!
+            new SpecialButtonHandler<>()
     );
+    private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS = ImmutableList.<SetListTargetStateHandler<FhemDevice<?>>>builder()
+            .addAll(HANDLERS_WITHOUT_NO_ARG)
+            .add(new NoArgSetListTargetStateHandler<>()) // must be last entry!
+            .build();
 
     public static <D extends FhemDevice<D>> void showSwitchOptionsMenu(final Context context, final D device) {
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
@@ -83,27 +88,7 @@ public class AvailableTargetStatesDialogUtil {
                 dialog.dismiss();
             }
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.list_item_with_arrow, eventMapOptions) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
-                }
-                assert convertView != null;
-                TextView textView = (TextView) convertView.findViewById(R.id.text);
-                ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
-
-                textView.setText(getItem(position));
-
-                String setOption = setOptions.get(position);
-                SetList setList = device.getSetList();
-                final SetListEntry setListEntry = setList.get(setOption);
-
-                imageView.setVisibility(setListEntry instanceof BaseGroupSetListEntry ? VISIBLE : GONE);
-
-                return convertView;
-            }
-        };
+        ArrayAdapter<String> adapter = new SetListArrayAdapter<>(context, eventMapOptions, setOptions, device);
         contextMenu.setAdapter(adapter, clickListener);
 
         contextMenu.show();
@@ -117,5 +102,52 @@ public class AvailableTargetStatesDialogUtil {
             }
         }
         return false;
+    }
+
+    private static class SetListArrayAdapter<D extends FhemDevice<?>> extends ArrayAdapter<String> {
+        private final Context context;
+        private final List<String> setOptions;
+        private final D device;
+
+        public SetListArrayAdapter(Context context, String[] eventMapOptions, List<String> setOptions, D device) {
+            super(context, R.layout.list_item_with_arrow, eventMapOptions);
+            this.context = context;
+            this.setOptions = setOptions;
+            this.device = device;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
+            }
+            assert convertView != null;
+            TextView textView = (TextView) convertView.findViewById(R.id.text);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+
+            textView.setText(getItem(position));
+
+            String setOption = setOptions.get(position);
+            SetList setList = device.getSetList();
+            final SetListEntry setListEntry = setList.get(setOption);
+
+            imageView.setVisibility(requiresAdditionalInformation(setListEntry) ? VISIBLE : GONE);
+
+            return convertView;
+        }
+
+        private boolean requiresAdditionalInformation(final SetListEntry entry) {
+            return from(HANDLERS_WITHOUT_NO_ARG).anyMatch(canHandle(entry));
+        }
+
+        @NonNull
+        private Predicate<SetListTargetStateHandler<FhemDevice<?>>> canHandle(final SetListEntry entry) {
+            return new Predicate<SetListTargetStateHandler<FhemDevice<?>>>() {
+                @Override
+                public boolean apply(SetListTargetStateHandler<FhemDevice<?>> input) {
+                    return input.canHandle(entry);
+                }
+            };
+        }
     }
 }
