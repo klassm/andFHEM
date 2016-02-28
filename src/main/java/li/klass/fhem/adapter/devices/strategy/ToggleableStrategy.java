@@ -30,6 +30,8 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.google.common.base.Optional;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -96,7 +98,7 @@ public class ToggleableStrategy extends ViewStrategy {
             if (hook == WEBCMD_DEVICE) {
                 addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater);
             } else {
-                addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater);
+                addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent());
             }
         } else {
             addToggleDeviceActionRow(holder, device, LAYOUT_OVERVIEW, layoutInflater);
@@ -121,10 +123,10 @@ public class ToggleableStrategy extends ViewStrategy {
         holder.getTableLayout().addView(actionRow.getView());
     }
 
-    private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
+    private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater, Optional<Integer> text) {
         OnOffActionRowForToggleables onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRowForToggleables.HOLDER_KEY);
         if (onOffActionRow == null) {
-            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior);
+            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior, text);
             holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow);
         }
         holder.getTableLayout().addView(onOffActionRow
@@ -133,7 +135,7 @@ public class ToggleableStrategy extends ViewStrategy {
 
     @Override
     public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior)
+        return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank))
                 .createRow(inflater, device, context);
     }
 }

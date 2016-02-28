@@ -30,7 +30,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
-import li.klass.fhem.R;
+import com.google.common.base.Optional;
+
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
@@ -41,8 +42,8 @@ public class OnOffActionRowForToggleables extends OnOffStateActionRow {
     private final DeviceHookProvider hookProvider;
     private final OnOffBehavior onOffBehavior;
 
-    public OnOffActionRowForToggleables(int layoutId, DeviceHookProvider hookProvider, OnOffBehavior onOffBehavior) {
-        super(layoutId, R.string.blank);
+    public OnOffActionRowForToggleables(int layoutId, DeviceHookProvider hookProvider, OnOffBehavior onOffBehavior, Optional<Integer> text) {
+        super(layoutId, text);
         this.hookProvider = hookProvider;
         this.onOffBehavior = onOffBehavior;
     }

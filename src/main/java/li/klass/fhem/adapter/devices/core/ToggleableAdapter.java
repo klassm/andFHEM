@@ -27,10 +27,13 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.widget.TableLayout;
 
+import com.google.common.base.Optional;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
@@ -73,7 +76,7 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior)
+        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior, Optional.of(R.string.blank))
                 .createRow(getInflater(), device, context));
     }
 
