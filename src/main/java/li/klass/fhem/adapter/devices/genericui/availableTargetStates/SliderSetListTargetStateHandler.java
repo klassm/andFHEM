@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDimActionRowFullWidth;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
@@ -51,7 +50,7 @@ public class SliderSetListTargetStateHandler<D extends FhemDevice<?>> implements
     }
 
     @Override
-    public void handle(SetListEntry entry, final Context context, final D device, final StateUiService stateUiService) {
+    public void handle(SetListEntry entry, final Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
         final SliderSetListEntry sliderSetListEntry = (SliderSetListEntry) entry;
 
         float initialProgress = 0;
@@ -88,13 +87,14 @@ public class SliderSetListTargetStateHandler<D extends FhemDevice<?>> implements
                 .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        callback.onNothingSelected(device);
                         dialog.dismiss();
                     }
                 })
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        stateUiService.setSubState(device, sliderSetListEntry.getKey(), dimProgress + "", context);
+                        callback.onSubStateSelected(device, sliderSetListEntry.getKey(), dimProgress + "");
                         dialog.dismiss();
                     }
                 })

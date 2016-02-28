@@ -31,7 +31,6 @@ import android.content.DialogInterface;
 import com.google.common.collect.Iterables;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
@@ -44,7 +43,7 @@ public class GroupSetListTargetStateHandler<D extends FhemDevice<?>> implements 
     }
 
     @Override
-    public void handle(SetListEntry entry, final Context context, final D device, final StateUiService stateUiService) {
+    public void handle(SetListEntry entry, final Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
         final GroupSetListEntry groupSetListEntry = (GroupSetListEntry) entry;
 
         new AlertDialog.Builder(context)
@@ -52,13 +51,15 @@ public class GroupSetListTargetStateHandler<D extends FhemDevice<?>> implements 
                 .setItems(Iterables.toArray(groupSetListEntry.getGroupStates(), CharSequence.class), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        stateUiService.setSubState(device, groupSetListEntry.getKey(), groupSetListEntry.getGroupStates().get(which), context);
+                        String subState = groupSetListEntry.getGroupStates().get(which);
+                        callback.onSubStateSelected(device, groupSetListEntry.getKey(), subState);
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        callback.onNothingSelected(device);
                         dialog.dismiss();
                     }
                 })

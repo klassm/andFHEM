@@ -24,13 +24,13 @@
 
 package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
-import android.content.Context;
-
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListEntry;
 
-public interface SetListTargetStateHandler<D extends FhemDevice<?>> {
-    boolean canHandle(SetListEntry entry);
+public interface OnTargetStateSelectedCallback<D extends FhemDevice<?>> {
 
-    void handle(SetListEntry entry, Context context, D device, OnTargetStateSelectedCallback<D> callback);
+    void onStateSelected(D device, String targetState);
+
+    void onSubStateSelected(D device, String state, String subState);
+
+    void onNothingSelected(D device);
 }

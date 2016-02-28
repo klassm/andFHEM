@@ -27,10 +27,12 @@ package li.klass.fhem.appwidget.view.widget.medium;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
@@ -92,8 +94,28 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
                                                    final int appWidgetId, FhemDevice device,
                                                    final WidgetConfigurationCreatedCallback callback) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device
-        );
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback));
+    }
+
+    @NonNull
+    private OnTargetStateSelectedCallback widgetCreatingCallback(final WidgetType widgetType, final int appWidgetId, final WidgetConfigurationCreatedCallback callback) {
+        return new OnTargetStateSelectedCallback() {
+            @Override
+            public void onStateSelected(FhemDevice device, String targetState) {
+                callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
+                        widgetType, device.getName(), targetState));
+            }
+
+            @Override
+            public void onSubStateSelected(FhemDevice device, String state, String subState) {
+                callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
+                        widgetType, device.getName(), state + " " + subState));
+            }
+
+            @Override
+            public void onNothingSelected(FhemDevice device) {
+            }
+        };
     }
 
     @Override

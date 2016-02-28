@@ -33,6 +33,7 @@ import android.widget.ToggleButton;
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
@@ -68,7 +69,7 @@ public class WebCmdActionRow extends HolderActionRow<String> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command));
+                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command), new StateChangingTargetStateSelectedCallback(context, new StateUiService()));
                 if (!result) {
                     new StateUiService().setState(device, command, context);
                 }

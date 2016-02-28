@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.content.Context;
 
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
@@ -38,8 +37,8 @@ public class NoArgSetListTargetStateHandler<D extends FhemDevice<?>> implements 
     }
 
     @Override
-    public void handle(SetListEntry entry, Context context, D device, StateUiService stateUiService) {
+    public void handle(SetListEntry entry, Context context, D device, OnTargetStateSelectedCallback<D> callback) {
         NoArgSetListEntry noArgSetListEntry = (NoArgSetListEntry) entry;
-        stateUiService.setState(device, noArgSetListEntry.getKey(), context);
+        callback.onStateSelected(device, noArgSetListEntry.getKey());
     }
 }

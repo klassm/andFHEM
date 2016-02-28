@@ -30,7 +30,6 @@ import android.content.DialogInterface;
 import android.widget.EditText;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
@@ -43,7 +42,7 @@ public class TextFieldTargetStateHandler<D extends FhemDevice<?>> implements Set
     }
 
     @Override
-    public void handle(final SetListEntry entry, final Context context, final D device, final StateUiService stateUiService) {
+    public void handle(final SetListEntry entry, final Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
         final EditText editText = new EditText(context);
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
@@ -51,13 +50,14 @@ public class TextFieldTargetStateHandler<D extends FhemDevice<?>> implements Set
                 .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        callback.onNothingSelected(device);
                         dialog.dismiss();
                     }
                 })
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        stateUiService.setSubState(device, entry.getKey(), editText.getText().toString(), context);
+                        callback.onSubStateSelected(device, entry.getKey(), editText.getText().toString());
                         dialog.dismiss();
                     }
                 })

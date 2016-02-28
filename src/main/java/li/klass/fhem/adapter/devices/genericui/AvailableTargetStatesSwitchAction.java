@@ -27,6 +27,8 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
@@ -40,7 +42,7 @@ public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAct
     }
 
     private void showSwitchOptionsMenu(final Context context, final FhemDevice device) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device);
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, new StateChangingTargetStateSelectedCallback(context, new StateUiService()));
     }
 
     @Override

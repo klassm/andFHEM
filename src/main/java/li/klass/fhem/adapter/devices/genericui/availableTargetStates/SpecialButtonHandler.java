@@ -30,7 +30,6 @@ import android.content.DialogInterface;
 import android.widget.EditText;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -47,11 +46,11 @@ public class SpecialButtonHandler<D extends FhemDevice<?>> implements SetListTar
     }
 
     @Override
-    public void handle(final SetListEntry entry, final Context context, final D device, final StateUiService stateUiService) {
+    public void handle(final SetListEntry entry, final Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
         DeviceStateRequiringAdditionalInformation additionalInformation = DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.getKey());
         final DeviceStateAdditionalInformationType type = additionalInformation.getAdditionalType();
         if (type == DeviceStateAdditionalInformationType.TIME) {
-            new TimeTargetStateHandler<D>().handle(new TimeSetListEntry(entry.getKey()), context, device, stateUiService);
+            new TimeTargetStateHandler<D>().handle(new TimeSetListEntry(entry.getKey()), context, device, callback);
             return;
         }
 
@@ -63,6 +62,7 @@ public class SpecialButtonHandler<D extends FhemDevice<?>> implements SetListTar
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        callback.onNothingSelected(device);
                     }
                 })
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
@@ -72,7 +72,7 @@ public class SpecialButtonHandler<D extends FhemDevice<?>> implements SetListTar
                         if (!type.matches(value)) {
                             DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
                         } else {
-                            stateUiService.setSubState(device, entry.getKey(), value, context);
+                            callback.onSubStateSelected(device, entry.getKey(), value);
                             dialog.dismiss();
                         }
                     }

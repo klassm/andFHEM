@@ -26,11 +26,30 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.content.Context;
 
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListEntry;
 
-public interface SetListTargetStateHandler<D extends FhemDevice<?>> {
-    boolean canHandle(SetListEntry entry);
+public class StateChangingTargetStateSelectedCallback<D extends FhemDevice<?>> implements OnTargetStateSelectedCallback<D> {
 
-    void handle(SetListEntry entry, Context context, D device, OnTargetStateSelectedCallback<D> callback);
+    private final StateUiService stateUiService;
+    private final Context context;
+
+    public StateChangingTargetStateSelectedCallback(Context context, StateUiService stateUiService) {
+        this.stateUiService = stateUiService;
+        this.context = context;
+    }
+
+    @Override
+    public void onStateSelected(D device, String targetState) {
+        stateUiService.setState(device, targetState, context);
+    }
+
+    @Override
+    public void onSubStateSelected(D device, String state, String subState) {
+        stateUiService.setSubState(device, state, subState, context);
+    }
+
+    @Override
+    public void onNothingSelected(D device) {
+    }
 }

@@ -43,12 +43,12 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.GroupSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.MultipleSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.NoArgSetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SliderSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TextFieldTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TimeTargetStateHandler;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
@@ -72,7 +72,7 @@ public class AvailableTargetStatesDialogUtil {
             .add(new NoArgSetListTargetStateHandler<>()) // must be last entry!
             .build();
 
-    public static <D extends FhemDevice<D>> void showSwitchOptionsMenu(final Context context, final D device) {
+    public static <D extends FhemDevice<D>> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
         final List<String> setOptions = device.getSetList().getSortedKeys();
@@ -83,7 +83,7 @@ public class AvailableTargetStatesDialogUtil {
             public void onClick(final DialogInterface dialog, int position) {
                 final String option = setOptions.get(position);
 
-                handleSelectedOption(context, device, device.getSetList().get(option));
+                handleSelectedOption(context, device, device.getSetList().get(option), callback);
 
                 dialog.dismiss();
             }
@@ -94,10 +94,10 @@ public class AvailableTargetStatesDialogUtil {
         contextMenu.show();
     }
 
-    public static <D extends FhemDevice<D>> boolean handleSelectedOption(Context context, D device, SetListEntry option) {
+    public static <D extends FhemDevice<D>> boolean handleSelectedOption(Context context, D device, SetListEntry option, OnTargetStateSelectedCallback callback) {
         for (SetListTargetStateHandler<FhemDevice<?>> handler : HANDLERS) {
             if (handler.canHandle(option)) {
-                handler.handle(option, context, device, new StateUiService());
+                handler.handle(option, context, device, callback);
                 return true;
             }
         }

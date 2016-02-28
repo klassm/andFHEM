@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
@@ -45,7 +44,7 @@ public class TimeTargetStateHandler<D extends FhemDevice<?>> implements SetListT
     }
 
     @Override
-    public void handle(final SetListEntry entry, final Context context, final D device, final StateUiService stateUiService) {
+    public void handle(final SetListEntry entry, final Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
         final TimePicker timePicker = new TimePicker(context);
         DateTime now = DateTime.now();
         timePicker.setCurrentHour(now.getHourOfDay());
@@ -58,6 +57,7 @@ public class TimeTargetStateHandler<D extends FhemDevice<?>> implements SetListT
                 .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        callback.onNothingSelected(device);
                         dialog.dismiss();
                     }
                 })
@@ -66,7 +66,7 @@ public class TimeTargetStateHandler<D extends FhemDevice<?>> implements SetListT
                     public void onClick(DialogInterface dialog, int which) {
                         String hourOut = StringUtils.leftPad("" + timePicker.getCurrentHour(), 2, '0');
                         String minuteOut = StringUtils.leftPad("" + timePicker.getCurrentMinute(), 2, '0');
-                        stateUiService.setSubState(device, entry.getKey(), hourOut + ":" + minuteOut, context);
+                        callback.onSubStateSelected(device, entry.getKey(), hourOut + ":" + minuteOut);
                     }
                 })
                 .show();
