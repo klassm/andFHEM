@@ -39,10 +39,10 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
+import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow;
+import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
@@ -133,7 +133,7 @@ public class ToggleableStrategy extends ViewStrategy {
 
     @Override
     public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        return new OnOffActionRowForToggleables(OnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior)
+        return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior)
                 .createRow(inflater, device, context);
     }
 }

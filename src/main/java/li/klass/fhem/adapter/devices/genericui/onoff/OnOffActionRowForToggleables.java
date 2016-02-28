@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.genericui.onoff;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,19 +30,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.ToggleableDevice;
 
-public class OnOffActionRowForToggleables extends OnOffActionRow {
+public class OnOffActionRowForToggleables extends OnOffStateActionRow {
 
     private final DeviceHookProvider hookProvider;
     private final OnOffBehavior onOffBehavior;
 
     public OnOffActionRowForToggleables(int layoutId, DeviceHookProvider hookProvider, OnOffBehavior onOffBehavior) {
-        super(layoutId);
+        super(layoutId, R.string.blank);
         this.hookProvider = hookProvider;
         this.onOffBehavior = onOffBehavior;
     }
@@ -79,7 +79,7 @@ public class OnOffActionRowForToggleables extends OnOffActionRow {
     }
 
     @Override
-    protected boolean isOn(FhemDevice device) {
+    protected boolean isOn(FhemDevice device, Context context) {
         return onOffBehavior.isOn(device);
     }
 }

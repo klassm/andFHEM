@@ -25,14 +25,10 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.content.Intent;
 
 import java.util.List;
 
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class StateChangingSpinnerActionRow extends SpinnerActionRow {
@@ -55,13 +51,6 @@ public class StateChangingSpinnerActionRow extends SpinnerActionRow {
     @Override
     public void onItemSelected(Context context, XmlListDevice device, String item) {
 
-        context.startService(
-                new Intent(Actions.DEVICE_SET_SUB_STATE)
-                        .setClass(context, DeviceIntentService.class)
-                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                        .putExtra(BundleExtraKeys.STATE_NAME, commandAttribute)
-                        .putExtra(BundleExtraKeys.STATE_VALUE, item)
-                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context))
-        );
+        new StateUiService().setSubState(device, commandAttribute, item, context);
     }
 }

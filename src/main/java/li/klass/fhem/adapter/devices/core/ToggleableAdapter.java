@@ -31,12 +31,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
+import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
-import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;

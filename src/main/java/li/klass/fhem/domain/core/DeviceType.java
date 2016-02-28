@@ -55,7 +55,6 @@ import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
-import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
@@ -104,7 +103,6 @@ import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
-import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
@@ -130,7 +128,6 @@ public enum DeviceType {
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
-    YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
     SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),

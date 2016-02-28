@@ -36,6 +36,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 @Singleton
 public class StateUiService {
@@ -45,6 +46,11 @@ public class StateUiService {
 
 
     public void setSubState(FhemDevice<?> device,
+                            String stateName, String value, Context context) {
+        setSubState(device.getXmlListDevice(), stateName, value, context);
+    }
+
+    public void setSubState(XmlListDevice device,
                             String stateName, String value, Context context) {
         if ("state".equalsIgnoreCase(stateName)) {
             setState(device, value, context);
@@ -59,6 +65,10 @@ public class StateUiService {
     }
 
     public void setState(FhemDevice<?> device, String value, Context context) {
+        setState(device.getXmlListDevice(), value, context);
+    }
+
+    public void setState(XmlListDevice device, String value, Context context) {
         context.startService(new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, value)

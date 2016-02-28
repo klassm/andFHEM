@@ -22,44 +22,32 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.genericui.onoff;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.onoff.OnOffStateActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffStateActionRow {
+public class OnOffSubStateActionRow extends AbstractOnOffActionRow {
 
-    private final StateUiService stateUiService;
+    private final String subState;
 
-    public StateChangingYesNoTwoButtonActionRow(StateUiService stateUiService, int description) {
-        super(AbstractOnOffActionRow.LAYOUT_DETAIL, description);
-        this.stateUiService = stateUiService;
-    }
-
-    @Override
-    protected String getOnStateText(FhemDevice device, Context context) {
-        return context.getString(R.string.yes);
-    }
-
-    @Override
-    protected String getOffStateText(FhemDevice device, Context context) {
-        return context.getString(R.string.no);
-    }
-
-    @Override
-    public void onButtonClick(Context context, FhemDevice device, String targetState) {
-        stateUiService.setState(device, targetState, context);
+    public OnOffSubStateActionRow(int layoutId, String subState) {
+        super(layoutId, Optional.of(R.string.blank));
+        this.subState = subState;
     }
 
     @Override
     protected boolean isOn(FhemDevice device, Context context) {
-        return isYes(device);
+        return !getOffStateName(device, context).equalsIgnoreCase(device.getXmlListDevice().getState(subState).or("off"));
     }
 
-    protected abstract boolean isYes(FhemDevice device);
+    @Override
+    public void onButtonClick(Context context, FhemDevice device, String targetState) {
+        new StateUiService().setSubState(device, subState, targetState, context);
+    }
 }

@@ -1,0 +1,20 @@
+{
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "defaultGroup": "REMOTE_CONTROL",
+  "states": [
+    {
+      "key": "volume_level",
+      "desc": "musicVolume",
+      "showInOverview": true
+    },
+    {
+      "key": "input",
+      "desc": "input"
+    },
+    {
+      "key": "mute",
+      "desc": "musicMute"
+    }
+  ]
+}

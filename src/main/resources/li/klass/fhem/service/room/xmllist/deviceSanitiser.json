@@ -785,16 +785,22 @@
           }
         ]
       }
-    }
-  },
-  "JSONMETER": {
-    "electricityConsumed": {
-      "append": "kWh",
-      "extract": "int"
     },
-    "electricityPower": {
-      "append": "W",
-      "extract": "int"
+    "YAMAHA_AVR": {
+      "sets": {
+        "replace": "volume",
+        "replaceBy": "volume_level"
+      }
+    },
+    "JSONMETER": {
+      "electricityConsumed": {
+        "append": "kWh",
+        "extract": "int"
+      },
+      "electricityPower": {
+        "append": "W",
+        "extract": "int"
+      }
     }
   }
 }

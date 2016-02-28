@@ -22,27 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.genericui.onoff;
 
-import org.junit.Test;
+import android.content.Context;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import com.google.common.base.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class YamahaAVRDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        YamahaAVRDevice device = getDefaultDevice(YamahaAVRDevice.class);
+public class OnOffStateActionRow extends AbstractOnOffActionRow {
 
-        assertThat(device.isMuted()).isTrue();
-        assertThat(device.getInput()).isEqualTo("netradio");
-        assertThat(device.getVolumeAsFloat()).isEqualTo(-53);
-        assertThat(device.getState()).isEqualTo("off");
+    public OnOffStateActionRow(int layoutId, int description) {
+        super(layoutId, description);
     }
 
-    @Override
-    protected String getFileName() {
-        return "yamaha_avr.xml";
+    public OnOffStateActionRow(int layoutId, Optional<Integer> description) {
+        super(layoutId, description);
+    }
+
+    public void onButtonClick(final Context context, FhemDevice device, String targetState) {
+        new StateUiService().setState(device, targetState, context);
     }
 }

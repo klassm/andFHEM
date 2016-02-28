@@ -56,10 +56,11 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailAc
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction;
-import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
+import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow;
+import li.klass.fhem.adapter.devices.genericui.onoff.OnOffSubStateActionRow;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
@@ -329,7 +330,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
             if ((groupStates.contains("on") && groupStates.contains("off") || groupStates.contains("ON") && groupStates.contains("OFF"))
                     && groupStates.size() < 5) {
-                addRow(table, new OnOffActionRow(OnOffActionRow.LAYOUT_DETAIL, Optional.<Integer>absent())
+                addRow(table, new OnOffSubStateActionRow(AbstractOnOffActionRow.LAYOUT_DETAIL, groupValue.getKey())
                         .createRow(getInflater(), device, getContext()));
             } else {
                 addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping), groupStates, item.getValueFor(device), item.getKey())

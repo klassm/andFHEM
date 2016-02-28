@@ -22,10 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.genericui.onoff;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,32 +37,23 @@ import com.google.common.base.Optional;
 import java.util.Map;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class OnOffActionRow {
-
+public abstract class AbstractOnOffActionRow {
     public static final String HOLDER_KEY = "OnOffActionRow";
     public static final int LAYOUT_DETAIL = R.layout.device_detail_onoffbuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_onoffbuttonrow;
-    private final int layoutId;
-    private final Optional<Integer> description;
+    protected final int layoutId;
+    protected final Optional<Integer> description;
 
-
-    public OnOffActionRow(int layoutId) {
-        this(layoutId, Optional.<Integer>absent());
-    }
-
-    public OnOffActionRow(int layoutId, int description) {
-        this(layoutId, Optional.of(description));
-    }
-
-    public OnOffActionRow(int layoutId, Optional<Integer> description) {
+    public AbstractOnOffActionRow(int layoutId, Optional<Integer> description) {
         this.layoutId = layoutId;
         this.description = description;
+    }
+
+    public AbstractOnOffActionRow(int layoutId, int description) {
+        this.layoutId = layoutId;
+        this.description = Optional.of(description);
     }
 
     @SuppressWarnings("unchecked")
@@ -84,7 +74,7 @@ public class OnOffActionRow {
         offButton.setOnClickListener(createListener(context, device, offStateName));
         offButton.setText(getOffStateText(device, context));
 
-        if (isOn(device)) {
+        if (isOn(device, context)) {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
             offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
         } else {
@@ -127,7 +117,7 @@ public class OnOffActionRow {
         return eventMap.containsKey(offStateName) ? eventMap.get(offStateName) : context.getString(R.string.off);
     }
 
-    protected boolean isOn(FhemDevice device) {
+    protected boolean isOn(FhemDevice device, Context context) {
         return false;
     }
 
@@ -140,13 +130,5 @@ public class OnOffActionRow {
         };
     }
 
-    public void onButtonClick(final Context context, FhemDevice device, String targetState) {
-        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-        context.startService(intent);
-    }
+    public abstract void onButtonClick(final Context context, FhemDevice device, String targetState);
 }
