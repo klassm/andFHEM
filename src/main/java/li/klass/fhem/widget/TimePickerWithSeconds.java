@@ -28,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -118,7 +119,13 @@ public class TimePickerWithSeconds extends LinearLayout {
     }
 
     public int getSeconds() {
+        clearCurrentFocus();
         return secondPicker.getValue();
+    }
+
+    private void clearCurrentFocus() {
+        View focused = getFocusedChild();
+        if (focused != null) focused.clearFocus();
     }
 
     public void setSeconds(int seconds) {
@@ -126,6 +133,7 @@ public class TimePickerWithSeconds extends LinearLayout {
     }
 
     public int getMinutes() {
+        clearCurrentFocus();
         return minutePicker.getValue();
     }
 
@@ -134,6 +142,7 @@ public class TimePickerWithSeconds extends LinearLayout {
     }
 
     public int getHours() {
+        clearCurrentFocus();
         return hourPicker.getValue();
     }
 
