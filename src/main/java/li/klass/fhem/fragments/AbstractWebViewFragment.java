@@ -27,6 +27,7 @@ package li.klass.fhem.fragments;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,15 +48,19 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.cert.X509Certificate;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.ssl.AndFHEMMemorizingTrustManager;
+import li.klass.fhem.util.ReflectionUtil;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
@@ -75,7 +80,6 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
         assert view != null;
 
         final WebView webView = (WebView) view.findViewById(R.id.webView);
-
         WebSettings settings = webView.getSettings();
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
@@ -100,8 +104,36 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onReceivedSslError(WebView view, @NotNull SslErrorHandler handler, SslError error) {
-                handler.proceed();
+            public void onReceivedSslError(WebView view, @NotNull final SslErrorHandler handler, SslError error) {
+                SslCertificate certificate = error.getCertificate();
+                try {
+                    final AndFHEMMemorizingTrustManager trustManager = new AndFHEMMemorizingTrustManager(getContext());
+                    trustManager.bindDisplayActivity(getActivity());
+                    final X509Certificate x509Certificate = (X509Certificate) ReflectionUtil.getFieldValue(certificate, certificate.getClass().getDeclaredField("mX509Certificate"));
+                    final String hostname;
+                    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        handler.proceed();
+                        return;
+                    }
+                    hostname = new URL(error.getUrl()).getHost();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (trustManager.checkCertificate(x509Certificate, hostname)) {
+                                handler.proceed();
+                            } else {
+                                handler.cancel();
+                            }
+                            trustManager.unbindDisplayActivity(getActivity());
+                        }
+                    }).start();
+
+
+                } catch (Exception e) {
+                    LOG.error("cannot handle error", e);
+                    handler.cancel();
+                }
             }
 
             @SuppressWarnings("ConstantConditions")

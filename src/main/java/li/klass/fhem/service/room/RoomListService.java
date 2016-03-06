@@ -272,7 +272,9 @@ public class RoomListService extends AbstractService {
 
     private void answerError(Intent resendIntent) {
         ResultReceiver receiver = resendIntent.getParcelableExtra(BundleExtraKeys.RESULT_RECEIVER);
-        receiver.send(ResultCodes.ERROR, new Bundle());
+        if (receiver != null) {
+            receiver.send(ResultCodes.ERROR, new Bundle());
+        }
     }
 
     private void resend(Intent intent, Context context) {

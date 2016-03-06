@@ -220,8 +220,8 @@ public class FHEMWEBConnection extends FHEMConnection {
     @Override
     protected void onSetServerSpec() {
         try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            MemorizingTrustManager mtm = new MemorizingTrustManager(AndFHEMApplication.getContext());
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(AndFHEMApplication.getContext());
             KeyManager[] clientKeys = null;
             if (serverSpec.getClientCertificatePath() != null) {
                 File clientCertificate = new File(serverSpec.getClientCertificatePath());
@@ -233,10 +233,10 @@ public class FHEMWEBConnection extends FHEMConnection {
                     clientKeys = keyManagerFactory.getKeyManagers();
                 }
             }
-            sc.init(clientKeys, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            sslContext.init(clientKeys, new X509TrustManager[]{memorizingTrustManager}, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(
-                    mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+                    memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
         } catch (Exception e) {
             LOG.error("Error initializing HttpsUrlConnection", e);
         }
