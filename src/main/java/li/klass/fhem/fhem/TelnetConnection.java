@@ -72,25 +72,19 @@ public class TelnetConnection extends FHEMConnection {
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             printStream = new PrintStream(outputStream);
 
-            boolean passwordSent = false;
+            waitForFilledStream(inputStream, 5000);
+
             String passwordRead = readUntil(inputStream, PASSWORD_PROMPT);
             if (passwordRead != null && passwordRead.contains(PASSWORD_PROMPT)) {
                 LOG.info("sending password");
-                writeCommand(printStream, serverSpec.getPassword());
-                passwordSent = true;
+                if (!writeCommand(inputStream, printStream, serverSpec.getPassword())) {
+                    return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
+                }
             }
 
-            writeCommand(printStream, "\n\n");
-
-            if (!waitForFilledStream(inputStream, 5000)) {
+            if (!writeCommand(inputStream, printStream, command + "\r\n")) {
                 return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
             }
-
-            // to discard
-            String toDiscard = read(inputStream);
-            LOG.debug("discarding {}", toDiscard);
-
-            writeCommand(printStream, command);
 
             // If we send an xmllist, we are done when finding the closing FHZINFO tag.
             // If another command is used, the tag ending delimiter is obsolete, not found and
@@ -102,9 +96,7 @@ public class TelnetConnection extends FHEMConnection {
                 result = read(inputStream);
             }
 
-            if (result == null && passwordSent) {
-                return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
-            } else if (result == null) {
+            if (result == null) {
                 return new RequestResult<>(RequestResultError.INVALID_CONTENT);
             }
 
@@ -153,23 +145,26 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     private String readUntil(InputStream inputStream, String... blockers) throws IOException {
-        waitForFilledStream(inputStream, 3000);
-
         StringBuilder buffer = new StringBuilder();
-        while (inputStream.available() > 0 || waitForFilledStream(inputStream, 300)) {
+        while (true) {
+            if (inputStream.available() == 0 && ! waitForFilledStream(inputStream, 5000)) {
+                LOG.error("read data, but did not find end token, read content was '{}'", buffer.toString());
+                return null;
+            }
             char readChar = (char) inputStream.read();
             buffer.append(readChar);
             for (String blocker : blockers) {
                 if (StringUtil.endsWith(buffer, blocker)) return buffer.toString();
             }
         }
-        LOG.error("read data, but did not find end token, read content was '{}'");
-        return null;
     }
 
-    private void writeCommand(PrintStream printStream, String command) {
+    private boolean writeCommand(InputStream inputStream, PrintStream printStream, String command) throws IOException {
+        LOG.debug("sending command {}", command);
         printStream.println(command);
         printStream.flush();
+
+        return waitForFilledStream(inputStream, 5000);
     }
 
     private boolean waitForFilledStream(InputStream inputStream, int timeToWait) throws IOException {
