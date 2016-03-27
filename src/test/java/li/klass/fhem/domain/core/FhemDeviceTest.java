@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
@@ -54,7 +55,7 @@ public class FhemDeviceTest {
     };
 
     @DataProvider
-    public static Object[][] SORT_DATAPOINT() {
+    public static Object[][] sortDatapoint() {
         return new Object[][]{
                 {
                         asList(deviceFor("b", null, null), deviceFor("a", null, null), deviceFor("1", null, null)),
@@ -72,7 +73,7 @@ public class FhemDeviceTest {
     }
 
     @Test
-    @UseDataProvider("SORT_DATAPOINT")
+    @UseDataProvider("sortDatapoint")
     public void should_sort_devices(List<FhemDevice> devices, List<String> expectedDeviceNameOrder) {
         // given
         devices = newArrayList(devices);
@@ -87,8 +88,10 @@ public class FhemDeviceTest {
 
     private static FhemDevice deviceFor(String name, String alias, String sortBy) {
         GenericDevice device = new GenericDevice();
-        device.setName(name);
-        device.setAlias(alias);
+        XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+        xmlListDevice.setInternal("NAME", name);
+        xmlListDevice.setAttribute("alias", alias);
+        device.setXmlListDevice(xmlListDevice);
         device.setSortBy(sortBy);
 
         return device;

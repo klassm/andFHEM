@@ -42,7 +42,6 @@ import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @RunWith(DataProviderRunner.class)
 public class OnOffBehaviorTest {
@@ -85,15 +84,17 @@ public class OnOffBehaviorTest {
     public void should_handle_invert_state_hook(String readState, boolean isOn) {
         //  given
         ToggleableDevice device = new EIBDevice();
-        device.setXmlListDevice(new XmlListDevice("BLUB"));
+        XmlListDevice xmlListDevice = new XmlListDevice("BLUB");
+        xmlListDevice.setInternal("NAME", "Name");
+        device.setXmlListDevice(xmlListDevice);
         device.setState(readState);
-        device.setName("on");
         given(deviceHookProvider.invertState(device)).willReturn(false);
 
         ToggleableDevice device2 = new EIBDevice();
-        device2.setXmlListDevice(new XmlListDevice("BLA"));
+        XmlListDevice xmlListDevice2 = new XmlListDevice("BLA");
+        xmlListDevice.setInternal("NAME", "name");
+        device2.setXmlListDevice(xmlListDevice2);
         device2.setState(readState);
-        device.setName("off");
         given(deviceHookProvider.invertState(device2)).willReturn(true);
 
         // expect

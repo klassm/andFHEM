@@ -106,9 +106,10 @@ public class RoomListServiceTest {
         private final boolean supported;
 
         TestDevice(String name, boolean supported, String... rooms) {
-            setName(name);
-            setXmlListDevice(new XmlListDevice(DeviceType.GENERIC.getXmllistTag(), Maps.<String,
-                    DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap()));
+            XmlListDevice xmlListDevice = new XmlListDevice(DeviceType.GENERIC.getXmllistTag(), Maps.<String,
+                    DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap(), Maps.<String, DeviceNode>newHashMap());
+            xmlListDevice.setInternal("NAME", name);
+            setXmlListDevice(xmlListDevice);
             setRooms(newArrayList(rooms));
             setDeviceConfiguration(Optional.<DeviceConfiguration>absent());
             this.supported = supported;

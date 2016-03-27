@@ -59,8 +59,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
 
     protected List<String> webCmd = newArrayList();
-    protected String name;
-    protected String alias;
 
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
@@ -164,6 +162,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @ShowField(description = ResourceIdMapper.deviceName, showAfter = ShowField.FIRST)
     public String getAliasOrName() {
+        String alias = getAlias();
         if (alias != null && alias.length() != 0) {
             return alias;
         }
@@ -171,12 +170,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public String getName() {
-        return name;
-    }
-
-    @XmllistAttribute("NAME")
-    public void setName(String name) {
-        this.name = name;
+        return getXmlListDevice().getName();
     }
 
     public List<String> getRooms() {
@@ -265,14 +259,15 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FhemDevice device = (FhemDevice) o;
-
-        return !(name != null ? !name.equals(device.name) : device.name != null);
+        FhemDevice other = (FhemDevice) o;
+        String name = getName();
+        return (other.getName() == null && name == null) || (name != null && name.equals(other.getName()));
 
     }
 
     @Override
     public int hashCode() {
+        String name = getName();
         return name != null ? name.hashCode() : 0;
     }
 
@@ -315,12 +310,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public String getAlias() {
-        return alias;
-    }
-
-    @XmllistAttribute("ALIAS")
-    public void setAlias(String alias) {
-        this.alias = alias;
+        return getXmlListDevice().getAttribute("alias").orNull();
     }
 
     public String getDefinition() {
@@ -410,6 +400,8 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @Override
     public String toString() {
+        String name = getName();
+        String alias = getAlias();
         return "Device{" +
                 ", name='" + name + '\'' +
                 ", alias='" + alias + '\'' +

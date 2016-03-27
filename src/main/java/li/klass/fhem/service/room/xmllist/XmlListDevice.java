@@ -32,7 +32,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 public class XmlListDevice implements Serializable {
 
@@ -40,8 +40,8 @@ public class XmlListDevice implements Serializable {
 
     private String type;
 
-    private Map<String, DeviceNode> attributes = newHashMap();
-    private Map<String, DeviceNode> states = newHashMap();
+    private Map<String, DeviceNode> attributes = new HashMap<>();
+    private Map<String, DeviceNode> states = new HashMap<>();
     private Map<String, DeviceNode> internals = new HashMap<>();
     private Map<String, DeviceNode> header = new HashMap<>();
 
@@ -113,13 +113,19 @@ public class XmlListDevice implements Serializable {
     }
 
     public void setAttribute(String key, String value) {
+        value = trimToNull(value);
+        if (value == null) {
+            getAttributes().remove(key);
+            return;
+        }
         if (!(value.equalsIgnoreCase(getAttribute(key).orNull()))) {
             getAttributes().put(key, new DeviceNode(DeviceNode.DeviceNodeType.ATTR, key, value, measuredNow()));
         }
     }
 
     public String getName() {
-        return getInternals().get("NAME").getValue();
+        DeviceNode nameNode = getInternals().get("NAME");
+        return nameNode == null ? null : nameNode.getValue();
     }
 
     @Override

@@ -33,6 +33,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,7 +79,9 @@ public class MAXConfigurationTest {
         configuration.readNode(weekProfile, "weekprofile-6-Fri-time", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
         GenericDevice device = new GenericDevice();
-        device.setName("name");
+        XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+        xmlListDevice.setInternal("NAME", "name");
+        device.setXmlListDevice(xmlListDevice);
 
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).setChangedTemperature(23);
         getHeatingIntervalAt(DayUtil.Day.FRIDAY, 0).setChangedTemperature(23);

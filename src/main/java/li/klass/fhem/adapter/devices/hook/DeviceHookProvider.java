@@ -24,8 +24,6 @@
 
 package li.klass.fhem.adapter.devices.hook;
 
-import android.content.Context;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 

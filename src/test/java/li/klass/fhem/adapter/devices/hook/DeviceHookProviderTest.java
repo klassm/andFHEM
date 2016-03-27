@@ -85,7 +85,7 @@ public class DeviceHookProviderTest {
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap());
         xmlListDevice.getAttributes().put(hookAttribute, new DeviceNode(ATTR, hookAttribute, value, (DateTime) null));
-
+        xmlListDevice.setInternal("NAME", "name");
         GenericDevice device = new GenericDevice();
         device.setXmlListDevice(xmlListDevice);
 

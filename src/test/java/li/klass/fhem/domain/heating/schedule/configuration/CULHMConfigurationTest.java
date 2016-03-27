@@ -33,6 +33,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
 
@@ -81,7 +82,9 @@ public class CULHMConfigurationTest {
         configuration.readNode(weekProfile, "tempListSat", "24:00 16.0 08:00 16.0 19:30 20");
 
         GenericDevice device = new GenericDevice();
-        device.setName("name");
+        XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+        xmlListDevice.setInternal("NAME", "name");
+        device.setXmlListDevice(xmlListDevice);
 
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).setChangedTemperature(23);
 

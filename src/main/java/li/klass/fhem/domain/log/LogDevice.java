@@ -124,7 +124,7 @@ public class LogDevice extends FhemDevice<LogDevice> {
      */
     public String getGraphCommandFor(String fromDateFormatted, String toDateFormatted,
                                      GPlotSeries plotSeries) {
-        return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
+        return String.format(COMMAND_TEMPLATE, getName(), fromDateFormatted, toDateFormatted,
                 plotSeries.getLogDef());
     }
 }

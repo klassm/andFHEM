@@ -63,7 +63,7 @@ public class DeviceService {
      */
     public void renameDevice(final FhemDevice device, final String newName, Context context) {
         commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, context);
-        device.setName(newName);
+        device.getXmlListDevice().setInternal("NAME", newName);
     }
 
     /**
@@ -92,7 +92,7 @@ public class DeviceService {
         } else {
             commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias, context);
         }
-        device.setAlias(alias);
+        device.getXmlListDevice().setAttribute("alias", alias);
     }
 
     /**

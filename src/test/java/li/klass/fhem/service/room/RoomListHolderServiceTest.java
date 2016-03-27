@@ -44,6 +44,7 @@ import java.util.List;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -61,7 +62,9 @@ public class RoomListHolderServiceTest {
         @Override
         public FhemDevice apply(Pair<String, Integer> input) {
             FHEMWEBDevice device = new FHEMWEBDevice();
-            device.setName(input.getLeft());
+            XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+            xmlListDevice.setInternal("NAME", input.getLeft());
+            device.setXmlListDevice(xmlListDevice);
             device.setPort(String.valueOf(input.getRight()));
             return device;
         }

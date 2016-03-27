@@ -32,6 +32,7 @@ import java.util.List;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.StateToSet;
 
@@ -63,7 +64,9 @@ public class FHTConfigurationTest {
     @Test
     public void testGenerateCommandParts() {
         GenericDevice device = new GenericDevice();
-        device.setName("name");
+        XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+        xmlListDevice.setInternal("NAME", "name");
+        device.setXmlListDevice(xmlListDevice);
 
         WeekProfile<FromToHeatingInterval, FHTConfiguration, GenericDevice> weekProfile = new WeekProfile<>(configuration);
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedFromTime("03:25");

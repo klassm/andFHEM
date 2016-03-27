@@ -44,6 +44,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -224,7 +225,8 @@ public class VoiceCommandServiceTest {
                 return Lists.newArrayList("group");
             }
         };
-        lightSceneDevice.setName("device");
+        lightSceneDevice.setXmlListDevice(new XmlListDevice("dummy"));
+        lightSceneDevice.getXmlListDevice().setInternal("NAME", "device");
         lightSceneDevice.getSetList().parse("scene:off,on");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
@@ -246,12 +248,14 @@ public class VoiceCommandServiceTest {
 
     public class TestDummy extends GenericDevice {
         public TestDummy(String name) {
-            setName(name);
+            XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+            xmlListDevice.setInternal("NAME", name);
+            setXmlListDevice(xmlListDevice);
         }
 
         public TestDummy(String name, String alias) {
-            setName(name);
-            setAlias(alias);
+            this(name);
+            getXmlListDevice().setAttribute("alias", alias);
         }
 
         @Override
