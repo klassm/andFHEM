@@ -13,7 +13,7 @@
     {
       "key": "controlMode",
       "desc": "mode",
-      "showInOverview": true
+      "showInOverview": false
     },
     {
       "key": "desired-temp",
@@ -57,7 +57,7 @@
     {
       "key": "ValvePosition",
       "desc": "actuator",
-      "showInOverview": true
+      "showInOverview": false
     },
     {
       "key": "battery",
