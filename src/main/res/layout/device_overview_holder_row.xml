@@ -36,12 +36,14 @@
     <TextView
         android:id="@+id/description"
         style="@style/deviceOverviewLayoutDeviceName"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:text="@string/dummy_text"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_weight="1">
         <org.apmem.tools.layouts.FlowLayout
             android:id="@+id/holder"
