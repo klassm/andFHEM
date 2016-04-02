@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -25,4 +24,9 @@
 
 <resources>
     <dimen name="button_horizontal_separator">5dp</dimen>
+
+    <dimen name="app_defaultsize_w">632.0dip</dimen>
+    <dimen name="app_defaultsize_h">598.0dip</dimen>
+    <dimen name="app_minimumsize_w">632.0dip</dimen>
+    <dimen name="app_minimumsize_h">598.0dip</dimen>
 </resources>
