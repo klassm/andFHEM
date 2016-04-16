@@ -67,6 +67,7 @@ import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StateToSet;
 
@@ -110,6 +111,8 @@ public class DeviceIntentService extends ConvenientIntentService {
     HeatingService heatingService;
     @Inject
     DeviceService deviceService;
+    @Inject
+    FavoritesService favoritesService;
     @Inject
     GenericDeviceService genericDeviceService;
     @Inject
@@ -202,6 +205,8 @@ public class DeviceIntentService extends ConvenientIntentService {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName, this);
             notificationService.rename(deviceName, newName, this);
+            favoritesService.removeFavorite(getBaseContext(), deviceName);
+            favoritesService.addFavorite(getBaseContext(), newName);
 
         } else if (DEVICE_DELETE.equals(action)) {
             deviceService.deleteDevice(device, this);

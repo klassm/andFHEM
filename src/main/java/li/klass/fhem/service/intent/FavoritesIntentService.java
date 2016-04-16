@@ -74,11 +74,11 @@ public class FavoritesIntentService extends ConvenientIntentService {
             sendSingleExtraResult(resultReceiver, SUCCESS, DEVICE_LIST, favorites);
         } else if (FAVORITE_ADD.equals(action)) {
             FhemDevice device = (FhemDevice) intent.getSerializableExtra(DEVICE);
-            favoritesService.addFavorite(device, this);
+            favoritesService.addFavorite(this, device.getName());
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
         } else if (FAVORITE_REMOVE.equals(action)) {
             FhemDevice device = (FhemDevice) intent.getSerializableExtra(DEVICE);
-            favoritesService.removeFavorite(device, this);
+            favoritesService.removeFavorite(this, device.getName());
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
         } else if (FAVORITES_PRESENT.equals(action)) {
             boolean hasFavorites = favoritesService.hasFavorites(this);

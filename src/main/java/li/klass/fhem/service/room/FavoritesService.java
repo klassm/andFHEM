@@ -50,11 +50,11 @@ public class FavoritesService {
     /**
      * Adds a new favorite device.
      *
-     * @param device device to add.
+     * @param deviceName name of the device to add
      */
-    public void addFavorite(FhemDevice device, Context context) {
+    public void addFavorite(Context context, String deviceName) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
-        editor.putString(device.getName(), device.getName()).apply();
+        editor.putString(deviceName, deviceName).apply();
     }
 
     /**
@@ -67,11 +67,11 @@ public class FavoritesService {
     /**
      * Removes a favorite.
      *
-     * @param device favorite to remove.
+     * @param deviceName name of the device to remove
      */
-    public void removeFavorite(FhemDevice device, Context context) {
+    public void removeFavorite(Context context, String deviceName) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
-        editor.remove(device.getName()).apply();
+        editor.remove(deviceName).apply();
     }
 
     /**
