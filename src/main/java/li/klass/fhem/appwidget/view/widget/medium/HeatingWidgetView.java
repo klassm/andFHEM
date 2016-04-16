@@ -28,6 +28,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.R;
@@ -38,6 +40,10 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class HeatingWidgetView extends DeviceAppWidgetView {
+
+    public static final List<String> TEMPERATURE_STATES = Arrays.asList("temperature", "measured-temp");
+    public static final List<String> DESIRED_TEMPERATURE_STATES = Arrays.asList("desired-temp", "desiredTemperature");
+
     @Override
     public int getWidgetName() {
         return R.string.widget_heating;
@@ -52,9 +58,9 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
 
-        String warnings = xmlListDevice.getState("warnings").get();
-        String temperature = xmlListDevice.getState("temperature").get();
-        String desiredTemp = xmlListDevice.getState("desired-temp").get();
+        String warnings = xmlListDevice.getState("warnings").orNull();
+        String temperature = xmlListDevice.getFirstStateOf(TEMPERATURE_STATES).get();
+        String desiredTemp = xmlListDevice.getFirstStateOf(DESIRED_TEMPERATURE_STATES).get();
 
         if (warnings != null && warnings.toLowerCase(Locale.getDefault()).contains("open")) {
             view.setViewVisibility(R.id.windowOpen, View.VISIBLE);
@@ -78,9 +84,8 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     @Override
     public boolean supports(FhemDevice<?> device) {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
-        return xmlListDevice.containsState("warnings")
-                && xmlListDevice.containsState("temperature")
-                && xmlListDevice.containsState("desired-temp");
+        return xmlListDevice.containsAnyOfStates(TEMPERATURE_STATES)
+                && xmlListDevice.containsAnyOfStates(DESIRED_TEMPERATURE_STATES);
     }
 
     @Override

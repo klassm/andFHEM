@@ -29,6 +29,8 @@ import com.google.common.base.Optional;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +81,17 @@ public class XmlListDevice implements Serializable {
     }
 
     public boolean containsState(String state) {
-        return states.containsKey(state);
+        return containsAnyOfStates(Collections.singleton(state));
+    }
+
+    public boolean containsAnyOfStates(Collection<String> toFind) {
+        for (String state : toFind) {
+            if (states.containsKey(state)) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
     public boolean containsAttribute(String attribute) {
@@ -89,6 +101,16 @@ public class XmlListDevice implements Serializable {
     public Optional<String> getState(String state) {
         if (containsState(state)) {
             return Optional.of(states.get(state).getValue());
+        }
+        return Optional.absent();
+    }
+
+    public Optional<String> getFirstStateOf(Collection<String> toFind) {
+        for (String state : toFind) {
+            Optional<String> found = getState(state);
+            if (found.isPresent()) {
+                return found;
+            }
         }
         return Optional.absent();
     }
