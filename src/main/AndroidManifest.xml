@@ -313,6 +313,8 @@
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.EXECUTE_COMMAND" />
                 <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMANDS_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMAND_DELETE" />
+                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMAND_EDIT" />
             </intent-filter>
         </service>
 

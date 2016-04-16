@@ -74,6 +74,7 @@ public class BundleExtraKeys {
     public static final String LAST_UPDATE = "LAST_UPDATE";
 
     public static final String COMMAND = "COMMAND";
+    public static final String COMMAND_NEW_NAME = "COMMAND_NEW_NAME";
     public static final String COMMAND_RESULT = "COMMAND_RESULT";
     public static final String RECENT_COMMANDS = "RECENT_COMMANDS";
 

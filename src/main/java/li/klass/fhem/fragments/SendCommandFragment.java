@@ -31,7 +31,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,12 +48,14 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.SendCommandIntentService;
+import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.ListViewUtil;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -79,7 +86,7 @@ public class SendCommandFragment extends BaseFragment {
             }
         });
 
-        ListView recentCommandsList = (ListView) view.findViewById(R.id.command_history);
+        final ListView recentCommandsList = (ListView) view.findViewById(R.id.command_history);
         recentCommandsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         recentCommandsList.setAdapter(recentCommandsAdapter);
         recentCommandsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,40 +97,46 @@ public class SendCommandFragment extends BaseFragment {
                 sendCommandIntent(command);
             }
         });
+        recentCommandsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showContextMenuFor(recentCommands.get(position));
+                return true;
+            }
+        });
 
         return view;
     }
 
     private void sendCommandIntent(String command) {
         final Context context = getActivity();
-        Intent intent = new Intent(Actions.EXECUTE_COMMAND);
-        intent.setClass(getActivity(), SendCommandIntentService.class);
-        intent.putExtra(BundleExtraKeys.COMMAND, command);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultData != null && resultCode == ResultCodes.SUCCESS && resultData.containsKey(BundleExtraKeys.COMMAND_RESULT)) {
-                    String result = resultData.getString(BundleExtraKeys.COMMAND_RESULT);
-                    if (result == null || result.equals("")) {
-                        update(false);
-                        return;
-                    }
+        getActivity().startService(new Intent(Actions.EXECUTE_COMMAND)
+                .setClass(getActivity(), SendCommandIntentService.class)
+                .putExtra(BundleExtraKeys.COMMAND, command)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultData != null && resultCode == ResultCodes.SUCCESS && resultData.containsKey(BundleExtraKeys.COMMAND_RESULT)) {
+                            String result = resultData.getString(BundleExtraKeys.COMMAND_RESULT);
+                            if (result == null || result.equals("")) {
+                                update(false);
+                                return;
+                            }
 
-                    if (isEmpty(result.replaceAll("[\\r\\n]", ""))) return;
-                    new AlertDialog.Builder(context)
-                            .setTitle(R.string.command_execution_result)
-                            .setMessage(result)
-                            .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                    update(false);
-                                }
-                            }).show();
-                }
-            }
-        });
-        getActivity().startService(intent);
+                            if (isEmpty(result.replaceAll("[\\r\\n]", ""))) return;
+                            new AlertDialog.Builder(context)
+                                    .setTitle(R.string.command_execution_result)
+                                    .setMessage(result)
+                                    .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                            update(false);
+                                        }
+                                    }).show();
+                        }
+                    }
+                }));
     }
 
     @Override
@@ -143,10 +156,7 @@ public class SendCommandFragment extends BaseFragment {
                 recentCommands = resultData.getStringArrayList(BundleExtraKeys.RECENT_COMMANDS);
                 recentCommandsAdapter.clear();
 
-                // careful: addAll method is only available since API level 11 (Android 3.0)
-                for (String recentCommand : recentCommands) {
-                    recentCommandsAdapter.add(recentCommand);
-                }
+                recentCommandsAdapter.addAll(recentCommands);
                 recentCommandsAdapter.notifyDataSetChanged();
 
                 ListViewUtil.setHeightBasedOnChildren((ListView) view.findViewById(R.id.command_history));
@@ -155,6 +165,52 @@ public class SendCommandFragment extends BaseFragment {
             }
         });
         getActivity().startService(intent);
+    }
+
+
+    private void showContextMenuFor(final String command) {
+        ((AppCompatActivity) getActivity()).startSupportActionMode(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.sendcommand_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_delete:
+                        getContext().startService(new Intent(Actions.RECENT_COMMAND_DELETE)
+                                .putExtra(BundleExtraKeys.COMMAND, command)
+                                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()))
+                                .setClass(getContext(), SendCommandIntentService.class));
+                        break;
+                    case R.id.menu_edit:
+                        DialogUtil.showInputBox(getContext(), getString(R.string.context_edit), command, new DialogUtil.InputDialogListener() {
+                            @Override
+                            public void onClick(String text) {
+                                getContext().startService(new Intent(Actions.RECENT_COMMAND_EDIT)
+                                        .putExtra(BundleExtraKeys.COMMAND, command)
+                                        .putExtra(BundleExtraKeys.COMMAND_NEW_NAME, text)
+                                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()))
+                                        .setClass(getContext(), SendCommandIntentService.class));
+                            }
+                        });
+                }
+                mode.finish();
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+            }
+        });
     }
 
     @Override

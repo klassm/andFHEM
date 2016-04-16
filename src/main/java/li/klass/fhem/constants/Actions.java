@@ -63,6 +63,8 @@ public class Actions {
     public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";
     public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";
     public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
+    public static final String RECENT_COMMAND_DELETE = prefix + "RECENT_COMMAND_DELETE";
+    public static final String RECENT_COMMAND_EDIT = prefix + "RECENT_COMMAND_EDIT";
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";

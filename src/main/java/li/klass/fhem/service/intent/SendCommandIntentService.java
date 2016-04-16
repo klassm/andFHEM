@@ -31,7 +31,14 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,23 +47,31 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.constants.Actions.EXECUTE_COMMAND;
+import static li.klass.fhem.constants.Actions.RECENT_COMMAND_DELETE;
+import static li.klass.fhem.constants.Actions.RECENT_COMMAND_EDIT;
 import static li.klass.fhem.constants.Actions.RECENT_COMMAND_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.RECENT_COMMANDS;
 
 public class SendCommandIntentService extends ConvenientIntentService {
-    private static final String PREFERENCES_NAME = "SendCommandStorage";
-    private static final String CURRENT_STORAGE_POINTER_NAME = "currentPointer";
-    private static final String STORAGE_PREFIX = "RECENT_COMMAND_";
-    private static final int COMMAND_STORAGE_SIZE = 6;
+    public static final String PREFERENCES_NAME = "SendCommandStorage";
+    public static final String COMMANDS_JSON_PROPERTY = "commands";
+    public static final String COMMANDS_PROPERTY = "RECENT_COMMANDS";
+    public static final int MAX_NUMBER_OF_COMMANDS = 10;
+
+    private static final Logger LOG = LoggerFactory.getLogger(SendCommandIntentService.class);
 
     @Inject
     ConnectionService connectionService;
 
     @Inject
     CommandExecutionService commandExecutionService;
+
+    @Inject
+    SharedPreferencesService sharedPreferencesService;
 
     public SendCommandIntentService() {
         super(SendCommandIntentService.class.getName());
@@ -71,55 +86,96 @@ public class SendCommandIntentService extends ConvenientIntentService {
             executeCommand(intent, resultReceiver);
         } else if (RECENT_COMMAND_LIST.equals(action)) {
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, RECENT_COMMANDS, getRecentCommands());
+        } else if (RECENT_COMMAND_DELETE.equals(action)) {
+            deleteCommand(intent.getStringExtra(BundleExtraKeys.COMMAND));
+        } else if (RECENT_COMMAND_EDIT.equals(action)) {
+            editCommand(intent.getStringExtra(BundleExtraKeys.COMMAND), intent.getStringExtra(BundleExtraKeys.COMMAND_NEW_NAME));
         }
 
         return STATE.SUCCESS;
+    }
+
+    private void editCommand(String oldCommand, String newCommand) {
+        ArrayList<String> commands = getRecentCommands();
+        int index = commands.indexOf(oldCommand);
+        checkArgument(index != -1);
+        commands.add(index, newCommand);
+        commands.remove(oldCommand);
+        storeRecentCommands(commands);
+    }
+
+    private void deleteCommand(String command) {
+        ArrayList<String> commands = getRecentCommands();
+        commands.remove(command);
+        storeRecentCommands(commands);
     }
 
     private void executeCommand(Intent intent, ResultReceiver resultReceiver) {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
 
+        String result = executeCommand(command, connectionId);
+        sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
+    }
+
+    String executeCommand(String command, String connectionId) {
         if (!Strings.isNullOrEmpty(connectionId) && connectionService.exists(connectionId, this)) {
             connectionService.setSelectedId(connectionId, this);
         }
 
         String result = commandExecutionService.executeSafely(command, this);
 
-        sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
         storeRecentCommand(command);
-    }
 
-    private ArrayList<String> getRecentCommands() {
-        ArrayList<String> result = newArrayList();
-        int currentStoragePointer = getCurrentStoragePointer();
-        for (int i = 1; i <= COMMAND_STORAGE_SIZE; i++) {
-            String commandKey = STORAGE_PREFIX + ((currentStoragePointer - i + COMMAND_STORAGE_SIZE) % COMMAND_STORAGE_SIZE);
-            String command = getRecentCommandsPreferences().getString(commandKey, null);
-            if (command != null) {
-                result.add(command);
-            }
-        }
         return result;
     }
 
+    ArrayList<String> getRecentCommands() {
+        String recentCommandsValue = getRecentCommandsPreferences().getString(COMMANDS_PROPERTY, null);
+        ArrayList<String> commandsResult = new ArrayList<>();
+        if (recentCommandsValue == null) {
+            return commandsResult;
+        }
+        try {
+            JSONArray commandsJson = new JSONObject(recentCommandsValue).optJSONArray(COMMANDS_JSON_PROPERTY);
+            if (commandsJson != null) {
+                for (int i = 0; i < commandsJson.length(); i++) {
+                    commandsResult.add(commandsJson.get(i).toString());
+                }
+            }
+            return commandsResult;
+        } catch (JSONException e) {
+            return new ArrayList<>();
+        }
+    }
+
     private void storeRecentCommand(String command) {
-        int currentStoragePointer = getCurrentStoragePointer();
-        getRecentCommandsPreferences().edit().putString(STORAGE_PREFIX + currentStoragePointer, command).commit();
-        incrementCurrentStoragePointer();
+        List<String> commands = getRecentCommands();
+        if (commands.contains(command)) {
+            commands.remove(command);
+        }
+        commands.add(0, command);
+
+        storeRecentCommands(commands);
     }
 
-    private int getCurrentStoragePointer() {
-        return getRecentCommandsPreferences().getInt(CURRENT_STORAGE_POINTER_NAME, 0);
-    }
+    private void storeRecentCommands(List<String> commands) {
+        try {
+            if (commands.size() > MAX_NUMBER_OF_COMMANDS) {
+                commands = commands.subList(0, MAX_NUMBER_OF_COMMANDS);
+            }
+            JSONObject json = new JSONObject();
+            JSONArray commandsJsonArray = new JSONArray(commands);
+            json.put(COMMANDS_JSON_PROPERTY, commandsJsonArray);
 
-    private void incrementCurrentStoragePointer() {
-        int currentStoragePointer = getCurrentStoragePointer();
-        getRecentCommandsPreferences().edit().putInt(CURRENT_STORAGE_POINTER_NAME, (currentStoragePointer + 1) % COMMAND_STORAGE_SIZE).commit();
+            getRecentCommandsPreferences().edit().putString(COMMANDS_PROPERTY, json.toString()).apply();
+        } catch (JSONException e) {
+            LOG.error("cannot store " + commands, e);
+        }
     }
 
     private SharedPreferences getRecentCommandsPreferences() {
-        return this.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        return sharedPreferencesService.getPreferences(PREFERENCES_NAME, getBaseContext());
     }
 
     @Override

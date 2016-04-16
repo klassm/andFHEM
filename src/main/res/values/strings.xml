@@ -298,6 +298,7 @@
     <string name="context_alias">Set alias</string>
     <string name="context_delete">Delete</string>
     <string name="context_move">Move</string>
+    <string name="context_edit">Edit</string>
     <string name="context_notification">Notifications</string>
 
     <string name="areYouSure">Are you sure?</string>
