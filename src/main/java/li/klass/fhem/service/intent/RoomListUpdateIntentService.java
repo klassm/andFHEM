@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -45,6 +46,7 @@ import li.klass.fhem.service.room.RoomListHolderService;
 
 import static com.google.common.base.Optional.absent;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 
 public class RoomListUpdateIntentService extends ConvenientIntentService {
     private static final Logger LOG = LoggerFactory.getLogger(RoomListUpdateIntentService.class);
@@ -67,15 +69,17 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         String action = intent.getAction();
 
         if (action.equals(Actions.DO_REMOTE_UPDATE)) {
-            return doRemoteUpdate();
+            return doRemoteUpdate(Optional.fromNullable(intent.getStringExtra(DEVICE_NAME)));
         } else {
             return STATE.DONE;
         }
     }
 
-    private STATE doRemoteUpdate() {
+    private STATE doRemoteUpdate(Optional<String> deviceName) {
         LOG.info("doRemoteUpdate() - starting remote update");
-        Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap();
+        Optional<RoomDeviceList> result = deviceName.isPresent()
+                ? getRemoteDeviceUpdate(deviceName.get())
+                : getRemoteRoomDeviceListMap();
         LOG.info("doRemoteUpdate() - remote device list update finished");
         boolean success = false;
         if (result.isPresent()) {
@@ -88,15 +92,36 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         return STATE.DONE;
     }
 
+    private Optional<RoomDeviceList> getRemoteDeviceUpdate(String deviceName) {
+        LOG.info("getRemoteDeviceUpdate(deviceName=%s) - fetching xmllist from remote", deviceName);
+        try {
+            String message = getResources().getString(R.string.updatingDeviceListForDevice, deviceName);
+            getBaseContext().sendBroadcast(new Intent(Actions.SHOW_TOAST).putExtra(BundleExtraKeys.CONTENT, message));
+            String result = commandExecutionService.executeSafely("xmllist " + deviceName, this);
+            if (result == null) return absent();
+            Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, this));
+            RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap();
+            if (parsed.isPresent()) {
+                cached.addDevice(parsed.get().getDeviceFor(deviceName), getBaseContext());
+            }
+            return Optional.of(cached);
+        } catch (CommandExecutionException e) {
+            LOG.info("getRemoteDeviceUpdate - error during command execution", e);
+            return Optional.absent();
+        }
+    }
+
     private synchronized Optional<RoomDeviceList> getRemoteRoomDeviceListMap() {
-        LOG.info("getRemoteRoomDeviceListMap() - getRemoteRoomDeviceListMap() : fetching device list from remote");
+        LOG.info("getRemoteRoomDeviceListMap - fetching device list from remote");
+        String message = getResources().getString(R.string.updatingDeviceList);
+        getBaseContext().sendBroadcast(new Intent(Actions.SHOW_TOAST).putExtra(BundleExtraKeys.CONTENT, message));
 
         try {
             String result = commandExecutionService.executeSafely("xmllist", this);
             if (result == null) return absent();
             return Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, this));
         } catch (CommandExecutionException e) {
-            LOG.info("getRemoteRoomDeviceListMap() - error during command execution", e);
+            LOG.info("getRemoteRoomDeviceListMap - error during command execution", e);
             return Optional.absent();
         }
     }

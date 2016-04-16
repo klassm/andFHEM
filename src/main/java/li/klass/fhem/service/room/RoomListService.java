@@ -48,7 +48,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHEMWEBDevice;
@@ -70,10 +69,15 @@ import static li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
+import static li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.RESEND_TRY;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
+import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
 import static li.klass.fhem.domain.core.DeviceType.AT;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.DateFormatUtil.toReadable;
@@ -130,10 +134,10 @@ public class RoomListService extends AbstractService {
 
         context.startService(new Intent(NOTIFICATION_TRIGGER)
                 .setClass(context, NotificationIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra(BundleExtraKeys.DEVICE, device)
-                .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
-                .putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification));
+                .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(DEVICE, device)
+                .putExtra(UPDATE_MAP, (Serializable) updateMap)
+                .putExtra(VIBRATE, vibrateUponNotification));
 
         context.sendBroadcast(new Intent(DO_UPDATE));
 
@@ -224,6 +228,7 @@ public class RoomListService extends AbstractService {
             resendIntents.add(createResendIntent(intent));
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
                 context.startService(new Intent(DO_REMOTE_UPDATE)
+                        .putExtra(DEVICE_NAME, intent.getStringExtra(DEVICE_NAME))
                         .setClass(context, RoomListUpdateIntentService.class));
             }
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");
@@ -253,7 +258,7 @@ public class RoomListService extends AbstractService {
                 context.sendBroadcast(new Intent(REDRAW_ALL_WIDGETS));
                 context.startService(new Intent(REDRAW_ALL_WIDGETS)
                         .setClass(context, AppWidgetUpdateService.class)
-                        .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
+                        .putExtra(ALLOW_REMOTE_UPDATES, false));
 
                 LOG.info("remoteUpdateFinished() - remote update finished, device list is {}");
             } else {
@@ -271,7 +276,7 @@ public class RoomListService extends AbstractService {
     }
 
     private void answerError(Intent resendIntent) {
-        ResultReceiver receiver = resendIntent.getParcelableExtra(BundleExtraKeys.RESULT_RECEIVER);
+        ResultReceiver receiver = resendIntent.getParcelableExtra(RESULT_RECEIVER);
         if (receiver != null) {
             receiver.send(ResultCodes.ERROR, new Bundle());
         }

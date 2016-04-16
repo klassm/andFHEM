@@ -81,11 +81,11 @@ public class DeviceDetailFragment extends BaseFragment {
 
         if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
-        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.setClass(getActivity(), RoomListIntentService.class);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        getActivity().startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
+                .setClass(getActivity(), RoomListIntentService.class)
+                .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
@@ -113,7 +113,6 @@ public class DeviceDetailFragment extends BaseFragment {
                     }
                 }
             }
-        });
-        getActivity().startService(intent);
+                }));
     }
 }

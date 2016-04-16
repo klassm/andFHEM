@@ -216,7 +216,9 @@ public class RoomDeviceList implements Serializable {
 
         List<String> groups = device.getInternalDeviceGroupOrGroupAttributes(context);
         for (String group : groups) {
-            getOrCreateDeviceList(group).add(device);
+            Set<FhemDevice> groupList = getOrCreateDeviceList(group);
+            groupList.remove(device);
+            groupList.add(device);
         }
 
         return this;

@@ -282,6 +282,8 @@
     <string name="update">Aktualisieren</string>
     <string name="loading">Laden …</string>
     <string name="executing">Ausführend …</string>
+    <string name="updatingDeviceList">Aktualisiere Geräteliste …</string>
+    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s…</string>
     <string name="help">Hilfe</string>
     <string name="command_execution_result">Kommando Ergebnis</string>
 

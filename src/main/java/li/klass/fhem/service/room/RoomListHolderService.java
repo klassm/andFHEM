@@ -171,7 +171,7 @@ public class RoomListHolderService {
      * @return cached room device list map
      */
     @SuppressWarnings("unchecked")
-    RoomDeviceList getCachedRoomDeviceListMap() {
+    public RoomDeviceList getCachedRoomDeviceListMap() {
         if (cachedRoomList != null || fileStoreNotFilled) {
             return cachedRoomList;
         }
