@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList;
 
 import org.joda.time.DateTime;
 
+import java.util.Locale;
 import java.util.Map;
 
 import li.klass.fhem.adapter.uiservice.StateUiService;
@@ -44,6 +45,8 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
 public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     public static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
+    private static final ImmutableList<String> UPPER_BOUND_STATES = ImmutableList.of("on", "close", "closed");
+    private static final ImmutableList<String> LOWER_BOUND_STATES = ImmutableList.of("off", "open", "opened");
     private SliderSetListEntry slider;
     private String setListAttribute;
 
@@ -93,9 +96,10 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
 
     @Override
     public float getPositionForDimState(String dimState) {
-        if ("on".equalsIgnoreCase(dimState)) {
+        dimState = dimState.toLowerCase(Locale.getDefault());
+        if (UPPER_BOUND_STATES.contains(dimState)) {
             return getDimUpperBound();
-        } else if ("off".equalsIgnoreCase(dimState)) {
+        } else if (LOWER_BOUND_STATES.contains(dimState)) {
             return getDimLowerBound();
         }
         return extractLeadingFloat(dimState);
