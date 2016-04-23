@@ -1,0 +1,38 @@
+{
+  "sensorDevice": true,
+  "defaultGroup": "WEATHER",
+  "sanitise": {
+    "c_temperature": {
+      "extract": "double",
+      "append": "°C"
+    },
+    "c_humidity": {
+      "extract": "double",
+      "append": "%"
+    },
+    "c_windDir": {
+      "extract": "double",
+      "append": "°"
+    },
+    "c_windSpeed": {
+      "extract": "double",
+      "append": "km/h"
+    },
+    "c_tempMax": {
+      "extract": "double",
+      "append": "°C"
+    },
+    "c_tempMin": {
+      "extract": "double",
+      "append": "°C"
+    },
+    "c_sunset": {
+      "replace": "T",
+      "replaceBy": " "
+    },
+    "c_sunrise": {
+      "replace": "T",
+      "replaceBy": " "
+    }
+  }
+}

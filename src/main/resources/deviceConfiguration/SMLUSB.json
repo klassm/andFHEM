@@ -23,5 +23,15 @@
         "WidgetMediumLine2"
       ]
     }
-  ]
+  ],
+  "sanitise": {
+    "Zählerstand-Bezug-Total": {
+      "append": "kWh",
+      "extract": "double"
+    },
+    "Momentanleistung": {
+      "append": "W",
+      "extract": "double"
+    }
+  }
 }

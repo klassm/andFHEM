@@ -16,5 +16,11 @@
       "key": "mute",
       "desc": "musicMute"
     }
-  ]
+  ],
+  "sanitise": {
+    "sets": {
+      "replace": "volume",
+      "replaceBy": "volume_level"
+    }
+  }
 }

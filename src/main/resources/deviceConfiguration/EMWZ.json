@@ -19,5 +19,19 @@
       "key": "price_CF",
       "desc": "price"
     }
-  ]
+  ],
+  "sanitise": {
+    "cum_kWh": {
+      "append": "kWh"
+    },
+    "energy": {
+      "append": "Wh"
+    },
+    "power": {
+      "append": "W"
+    },
+    "price_CF": {
+      "append": "EUR/W"
+    }
+  }
 }

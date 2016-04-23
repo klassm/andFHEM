@@ -1,0 +1,20 @@
+{
+  "sensorDevice": true,
+  "defaultGroup": "USAGE",
+  "sanitise": {
+    "consumption": {
+      "append": "kWh"
+    },
+    "power": {
+      "append": "W"
+    },
+    "Euro": {
+      "append": "€",
+      "extract": "double",
+      "extractDigits": 2
+    },
+    "STATE": {
+      "append": "W"
+    }
+  }
+}

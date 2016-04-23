@@ -15,5 +15,15 @@
       "key": "state",
       "desc": "state"
     }
-  ]
+  ],
+  "sanitise": {
+    "consumption": {
+      "append": "kWh",
+      "extract": "double"
+    },
+    "power": {
+      "append": "W",
+      "extract": "double"
+    }
+  }
 }

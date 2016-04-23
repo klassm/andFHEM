@@ -34,5 +34,23 @@
       "desc": "cumulativeUsage",
       "showInOverview": true
     }
-  ]
+  ],
+  "sanitise": {
+    "current": {
+      "append": "kWh"
+    },
+    "total": {
+      "append": "kWh"
+    },
+    "cum_day": {
+      "replace": "CUM_DAY: ([0-9]+\\.[0-9]+).*",
+      "replaceBy": "$1",
+      "append": "kWh"
+    },
+    "cum_month": {
+      "replace": "CUM_MONTH: ([0-9]+\\.[0-9]+).*",
+      "replaceBy": "$1",
+      "append": "kWh"
+    }
+  }
 }

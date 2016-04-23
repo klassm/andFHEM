@@ -26,5 +26,15 @@
       "desc": "energy_current",
       "showInOverview": true
     }
-  ]
+  ],
+  "sanitise": {
+    "power": {
+      "append": "W",
+      "extract": "double"
+    },
+    "energy": {
+      "append": "kWh",
+      "extract": "double"
+    }
+  }
 }

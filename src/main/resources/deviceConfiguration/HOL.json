@@ -21,5 +21,10 @@
       "key": "STATE",
       "desc": "state"
     }
-  ]
+  ],
+  "sanitise": {
+    "currentSwitchTime": {
+      "append": "s"
+    }
+  }
 }

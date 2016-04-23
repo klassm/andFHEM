@@ -35,5 +35,28 @@
       "key": "totalEnergyYear",
       "desc": "totalEnergyYear"
     }
-  ]
+  ],
+  "sanitise": {
+    "currentPower": {
+      "append": "W"
+    },
+    "gridCurrent": {
+      "append": "A"
+    },
+    "gridVoltage": {
+      "append": "V"
+    },
+    "totalEnergy": {
+      "append": "kWh"
+    },
+    "totalEnergyDay": {
+      "append": "kWh"
+    },
+    "totalEnergyMonth": {
+      "append": "kWh"
+    },
+    "totalEnergyYear": {
+      "append": "kWh"
+    }
+  }
 }

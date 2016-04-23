@@ -51,5 +51,11 @@
       "key": "israining",
       "desc": "isRaining"
     }
-  ]
+  ],
+  "sanitise": {
+    "rain": {
+      "append": "l/m²",
+      "extract": "double"
+    }
+  }
 }

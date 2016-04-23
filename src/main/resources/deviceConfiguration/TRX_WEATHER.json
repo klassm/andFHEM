@@ -61,5 +61,13 @@
       "key": "windchill",
       "desc": "windchill"
     }
-  ]
+  ],
+  "sanitise": {
+    "rain_total": {
+      "append": "l/m²"
+    },
+    "windchill": {
+      "append": "°C"
+    }
+  }
 }

@@ -31,10 +31,12 @@ import com.google.common.base.Optional;
 import com.google.common.io.Resources;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,11 +62,13 @@ public class DeviceConfigurationProvider {
     public static final String DESC = "desc";
     public static final String KEY = "key";
     public static final String MARKERS = "markers";
+    public static final String SANITISE_KEY = "sanitise";
     private static final String SHOW_STATE_IN_OVERVIEW = "showStateInOverview";
     private static final String SHOW_MEASURED_IN_OVERVIEW = "showMeasuredInOverview";
     public static final String SHOW_AFTER = "showAfter";
     private static final String ATTRIBUTES = "attributes";
     private static final String INTERNALS = "internals";
+    public static final String DEFAULTS_CONFIGURATION = "defaults";
     private final JSONObject options;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceConfigurationProvider.class);
@@ -97,6 +101,27 @@ public class DeviceConfigurationProvider {
         return configurationFor(device.getType());
     }
 
+    public Optional<JSONObject> sanitiseConfigurationFor(String type) {
+        try {
+            JSONObject typeConfiguration = plainConfigurationFor(type).or(new JSONObject());
+            JSONObject typeSanitiseConfig = Optional.fromNullable(typeConfiguration.optJSONObject(SANITISE_KEY)).or(new JSONObject());
+            JSONObject defaultsConfiguration = plainConfigurationFor(DEFAULTS_CONFIGURATION).or(new JSONObject());
+            JSONObject defaultsSanitiseConfiguration = Optional.fromNullable(defaultsConfiguration.optJSONObject(SANITISE_KEY)).or(new JSONObject());
+
+            Iterator<String> keyIterator = defaultsSanitiseConfiguration.keys();
+            while (keyIterator.hasNext()) {
+                String key = keyIterator.next();
+                if (!typeSanitiseConfig.has(key)) {
+                    typeSanitiseConfig.put(key, defaultsSanitiseConfiguration.optJSONObject(key));
+                }
+            }
+            return Optional.of(typeSanitiseConfig);
+        } catch (JSONException e) {
+            LOGGER.error("sanitiseConfigurationFor(" + type + ")", e);
+            return Optional.absent();
+        }
+    }
+
     public Optional<DeviceConfiguration> configurationFor(String type) {
         Optional<JSONObject> configOpt = plainConfigurationFor(type);
         if (!configOpt.isPresent()) {
@@ -114,7 +139,7 @@ public class DeviceConfigurationProvider {
                 .withShowStateInOverview(jsonObject.optBoolean(SHOW_STATE_IN_OVERVIEW, true))
                 .withShowMeasuredInOverview(jsonObject.optBoolean(SHOW_MEASURED_IN_OVERVIEW, true));
 
-        Optional<JSONObject> defaults = plainConfigurationFor("defaults");
+        Optional<JSONObject> defaults = plainConfigurationFor(DEFAULTS_CONFIGURATION);
         if (defaults.isPresent()) {
             addFields(defaults.get(), builder);
         }

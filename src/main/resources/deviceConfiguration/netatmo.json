@@ -31,5 +31,10 @@
       "key": "pressure",
       "desc": "pressure"
     }
-  ]
+  ],
+  "sanitise": {
+    "noise": {
+      "append": "dB"
+    }
+  }
 }

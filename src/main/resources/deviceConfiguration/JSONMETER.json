@@ -19,5 +19,15 @@
         "WidgetMediumLine2"
       ]
     }
-  ]
+  ],
+  "sanitise": {
+    "electricityConsumed": {
+      "append": "kWh",
+      "extract": "int"
+    },
+    "electricityPower": {
+      "append": "W",
+      "extract": "int"
+    }
+  }
 }

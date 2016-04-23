@@ -31,5 +31,31 @@
       "key": "T_min_month",
       "desc": "minMonth"
     }
-  ]
+  ],
+  "sanitise": {
+    "T_avg_day": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "T_avg_month": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "T_max_day": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "T_max_month": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "T_min_day": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "T_min_month": {
+      "append": "°C",
+      "extract": "double"
+    }
+  }
 }

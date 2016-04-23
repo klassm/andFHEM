@@ -1,0 +1,10 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "REMOTE_CONTROL",
+  "sanitise": {
+    "DEF": {
+      "replace": "([^ ]+).*",
+      "replaceBy": "$1"
+    }
+  }
+}

@@ -1,3 +1,9 @@
 {
-  "defaultGroup": "SWITCH"
+  "defaultGroup": "SWITCH",
+  "sanitise": {
+    "STATE": {
+      "replace": "ok",
+      "replaceBy": ""
+    }
+  }
 }

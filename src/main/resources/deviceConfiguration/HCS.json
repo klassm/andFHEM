@@ -1,0 +1,28 @@
+{
+  "sensorDevice": true,
+  "defaultGroup": "HEATING",
+  "sanitise": {
+    "thermostatThresholdOn": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "thermostatThresholdOff": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "valveThresholdOn": {
+      "append": "%"
+    },
+    "valveThresholdOff": {
+      "append": "%"
+    },
+    "ecoTemperatureOn": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "ecoTemperatureOff": {
+      "append": "°C",
+      "extract": "double"
+    }
+  }
+}

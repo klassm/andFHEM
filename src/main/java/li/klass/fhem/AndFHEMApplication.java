@@ -25,8 +25,6 @@
 package li.klass.fhem;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,7 +46,6 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.service.intent.AppActionsIntentService;
-import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.InstalledApplications;
 

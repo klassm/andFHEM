@@ -6,5 +6,11 @@
       "desc": "VOC",
       "showInOverview": true
     }
-  ]
+  ],
+  "sanitise": {
+    "voc": {
+      "extract": "int",
+      "append": "ppm"
+    }
+  }
 }

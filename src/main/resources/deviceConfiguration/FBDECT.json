@@ -19,5 +19,19 @@
       "key": "current",
       "desc": "cumulativeUsage"
     }
-  ]
+  ],
+  "sanitise": {
+    "energy": {
+      "extract": "int",
+      "append": "Wh"
+    },
+    "power": {
+      "extract": "double",
+      "append": "W"
+    },
+    "current": {
+      "extract": "double",
+      "append": "A"
+    }
+  }
 }

@@ -26,5 +26,11 @@
       "key": "IODev",
       "desc": "ioDev"
     }
-  ]
+  ],
+  "sanitise": {
+    "taupunkttemp": {
+      "append": "°C",
+      "extract": "double"
+    }
+  }
 }

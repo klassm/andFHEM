@@ -24,9 +24,6 @@
 
 package li.klass.fhem.service.room.xmllist;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,11 +31,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -50,16 +46,13 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 @Singleton
 public class Sanitiser {
 
-    private final JSONObject options;
     private static final Logger LOGGER = LoggerFactory.getLogger(Sanitiser.class);
 
     @Inject
+    DeviceConfigurationProvider deviceConfigurationProvider;
+
+    @Inject
     public Sanitiser() {
-        try {
-            options = new JSONObject(Resources.toString(Resources.getResource(Sanitiser.class, "deviceSanitiser.json"), Charsets.UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public DeviceNode sanitise(String deviceType, DeviceNode deviceNode) {
@@ -74,7 +67,7 @@ public class Sanitiser {
 
     public void sanitise(String deviceType, XmlListDevice xmlListDevice) {
         try {
-            JSONObject typeOptions = options.getJSONObject("deviceTypes").optJSONObject(deviceType);
+            JSONObject typeOptions = optionsFor(deviceType);
             if (typeOptions == null) return;
 
             JSONObject generalOptions = typeOptions.optJSONObject("__general__");
@@ -217,27 +210,6 @@ public class Sanitiser {
     }
 
     private JSONObject optionsFor(String type) {
-        try {
-            JSONObject defaults = options.getJSONObject("defaults");
-            JSONObject typeOptions = options.getJSONObject("deviceTypes").optJSONObject(type);
-
-            JSONObject result = new JSONObject();
-            putAllInto(defaults, result);
-            if (typeOptions != null) {
-                putAllInto(typeOptions, result);
-            }
-
-            return result;
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void putAllInto(JSONObject from, JSONObject into) throws JSONException {
-        Iterator<String> keys = from.keys();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            into.put(key, from.get(key));
-        }
+        return deviceConfigurationProvider.sanitiseConfigurationFor(type).or(new JSONObject());
     }
 }

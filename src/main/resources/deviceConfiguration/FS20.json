@@ -1,0 +1,17 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "SWITCH",
+  "sanitise": {
+    "__general__": {
+      "addAttributeIfModelDoesNotMatch": {
+        "models": [
+          "FS20DI",
+          "FS20DI10",
+          "FS20DU"
+        ],
+        "key": "disableDim",
+        "value": "true"
+      }
+    }
+  }
+}

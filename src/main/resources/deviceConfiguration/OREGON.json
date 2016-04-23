@@ -59,5 +59,17 @@
       "key": "uv_risk",
       "desc": "uvRisk"
     }
-  ]
+  ],
+  "sanitise": {
+    "rain_rate": {
+      "append": "mm/h"
+    },
+    "rain_total": {
+      "append": "l/m²",
+      "extract": "double"
+    },
+    "battery": {
+      "append": "%"
+    }
+  }
 }

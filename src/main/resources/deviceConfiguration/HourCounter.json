@@ -21,5 +21,23 @@
       "desc": "pricePerDay",
       "showInOverview": true
     }
-  ]
+  ],
+  "sanitise": {
+    "verbrauchTagkWh": {
+      "append": "kWh",
+      "extract": "double"
+    },
+    "verbrauchGesamtEuro": {
+      "append": "€",
+      "extract": "double"
+    },
+    "verbrauchTagEuro": {
+      "append": "€",
+      "extract": "double"
+    },
+    "Zaehlerstand": {
+      "replace": "([^ ]+) ([\\w\\d³]+)",
+      "replaceBy": "$1 ($2)"
+    }
+  }
 }
