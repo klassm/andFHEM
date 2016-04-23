@@ -26,12 +26,16 @@ package li.klass.fhem.service.intent.voice;
 
 import android.content.Context;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,6 +55,7 @@ import static com.google.common.collect.FluentIterable.from;
 public class VoiceCommandService {
 
     public static final String COMMAND_START = "schal[kt]e|switch|set";
+    public static final String SET_COMMAND_START = "set";
     private Map<String, String> START_REPLACE = ImmutableMap.<String, String>builder()
             .put(COMMAND_START, "set").build();
 
@@ -81,30 +86,42 @@ public class VoiceCommandService {
     public Optional<VoiceResult> resultFor(String voiceCommand, Context context) {
         voiceCommand = replaceArticles(voiceCommand.toLowerCase(Locale.getDefault()));
 
-        String[] parts = voiceCommand.split(" ");
-
-        if (parts.length == 3) {
-            return handleSetCommand(parts, context);
-        } else if (parts.length == 2) {
-            return handleShortcut(parts, context);
+        List<String> parts = Arrays.asList(voiceCommand.split(" "));
+        if (parts.isEmpty()) {
+            return Optional.absent();
         }
 
+        Optional<VoiceResult> shortcutResult = handleShortcut(parts, context);
+        if (shortcutResult.isPresent()) {
+            return shortcutResult;
+        }
+
+        return handleSetCommand(parts, context);
+    }
+
+    private Optional<VoiceResult> handleShortcut(List<String> parts, Context context) {
+        Optional<String> shortcut = shortcutCommandFor(parts.get(0));
+        if (shortcut.isPresent() && parts.size() > 1) {
+            ImmutableList<String> partsToSet = ImmutableList.<String>builder()
+                    .add(SET_COMMAND_START)
+                    .addAll(parts.subList(1, parts.size()))
+                    .add(shortcut.get())
+                    .build();
+            return handleSetCommand(partsToSet, context);
+        }
         return Optional.absent();
     }
 
-    private Optional<VoiceResult> handleShortcut(String[] parts, Context context) {
-        if (!SHORTCUTS.containsKey(parts[0])) {
-            return Optional.absent();
-        }
-        return handleSetCommand(new String[]{"set", parts[1], SHORTCUTS.get(parts[0])}, context);
+    private Optional<String> shortcutCommandFor(String shortcut) {
+        return Optional.fromNullable(SHORTCUTS.get(shortcut));
     }
 
-    private Optional<VoiceResult> handleSetCommand(String[] parts, Context context) {
-        String starter = replace(parts[0], START_REPLACE);
-        if (!starter.equals("set")) return Optional.absent();
+    private Optional<VoiceResult> handleSetCommand(List<String> parts, Context context) {
+        String starter = replace(parts.get(0), START_REPLACE);
+        if (!starter.equals(SET_COMMAND_START) || parts.size() < 3) return Optional.absent();
 
-        final String deviceName = parts[1];
-        final String state = replace(parts[2], STATE_REPLACE);
+        final String deviceName = Joiner.on(" ").join(parts.subList(1, parts.size() - 1));
+        final String state = replace(Iterables.getLast(parts), STATE_REPLACE);
 
         RoomDeviceList devices = roomListService.getAllRoomsDeviceList(context);
         List<FhemDevice> deviceMatches = from(devices.getAllDevices()).filter(filterDevicePredicate(deviceName, state)).toList();

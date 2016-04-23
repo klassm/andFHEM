@@ -47,6 +47,8 @@ import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
+import static com.tngtech.java.junit.dataprovider.DataProviders.$;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
@@ -67,20 +69,20 @@ public class VoiceCommandServiceTest {
 
     @DataProvider
     public static Object[][] voiceCommandsForDevice() {
-        return new Object[][]{
-                {"schalte lampe ein", new VoiceResult.Success("lampe", "on")},
-                {"schalke lampe ein", new VoiceResult.Success("lampe", "on")},
-                {"schalke lampe 1", new VoiceResult.Success("lampe", "on")},
-                {"schalke lampe an", new VoiceResult.Success("lampe", "on")},
-                {"schalte lampe aus", new VoiceResult.Success("lampe", "off")},
-                {"switch lampe on", new VoiceResult.Success("lampe", "on")},
-                {"switch lampe off", new VoiceResult.Success("lampe", "off")},
-                {"schalte den lampe ein", new VoiceResult.Success("lampe", "on")},
-                {"schalte der lampe ein", new VoiceResult.Success("lampe", "on")},
-                {"schalte die lampe ein", new VoiceResult.Success("lampe", "on")},
-                {"schalte das lampe ein", new VoiceResult.Success("lampe", "on")},
-                {"schalte the lampe ein", new VoiceResult.Success("lampe", "on")},
-        };
+        return $$(
+                $("schalte lampe ein", new VoiceResult.Success("lampe", "on")),
+                $("schalke lampe ein", new VoiceResult.Success("lampe", "on")),
+                $("schalke lampe 1", new VoiceResult.Success("lampe", "on")),
+                $("schalke lampe an", new VoiceResult.Success("lampe", "on")),
+                $("schalte lampe aus", new VoiceResult.Success("lampe", "off")),
+                $("switch lampe on", new VoiceResult.Success("lampe", "on")),
+                $("switch lampe off", new VoiceResult.Success("lampe", "off")),
+                $("schalte den lampe ein", new VoiceResult.Success("lampe", "on")),
+                $("schalte der lampe ein", new VoiceResult.Success("lampe", "on")),
+                $("schalte die lampe ein", new VoiceResult.Success("lampe", "on")),
+                $("schalte das lampe ein", new VoiceResult.Success("lampe", "on")),
+                $("schalte the lampe ein", new VoiceResult.Success("lampe", "on"))
+        );
     }
 
     @Test
@@ -177,7 +179,8 @@ public class VoiceCommandServiceTest {
                 {"start lampe", new VoiceResult.Success("lampe", "on")},
                 {"stop lampe", new VoiceResult.Success("lampe", "off")},
                 {"end lampe", new VoiceResult.Success("lampe", "off")},
-                {"begin lampe", new VoiceResult.Success("lampe", "on")}
+                {"begin lampe", new VoiceResult.Success("lampe", "on")},
+                {"starte garten leuchte", new VoiceResult.Success("lampe", "on")}
         };
     }
 
@@ -187,6 +190,7 @@ public class VoiceCommandServiceTest {
     public void should_handle_shortcuts(String shortcut, VoiceResult expectedResult) {
         // given
         TestDummy device = new TestDummy("lampe");
+        device.setPronunciation("garten leuchte");
         device.getSetList().parse("on off");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
@@ -199,17 +203,26 @@ public class VoiceCommandServiceTest {
         assertThat(result.get()).isEqualTo(expectedResult);
     }
 
+    @DataProvider
+    public static Object[][] pronunciation() {
+        return $$(
+                $("voice"),
+                $("voice blub")
+        );
+    }
+
+    @UseDataProvider("pronunciation")
     @Test
-    public void should_treat_voice_pronunciation_attribute() {
+    public void should_treat_voice_pronunciation_attribute(String pronunciation) {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        device.setPronunciation("voice");
+        device.setPronunciation(pronunciation);
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("set voice on", context);
+        Optional<VoiceResult> result = service.resultFor("set " + pronunciation + " on", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
