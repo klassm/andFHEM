@@ -82,7 +82,6 @@ import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
-import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwSwitchDevice;
 import li.klass.fhem.domain.OwthermDevice;
@@ -132,7 +131,6 @@ public enum DeviceType {
     SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
-    OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),

@@ -33,19 +33,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OpenWeatherMapDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        OpenWeatherMapDevice device = getDefaultDevice(OpenWeatherMapDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity()).isEqualTo("94.0 (%)");
-        assertThat(device.getTemperature()).isEqualTo("18.1 (°C)");
-        assertThat(device.getSunrise()).isEqualTo("2013-09-11 05:06:19");
-        assertThat(device.getSunset()).isEqualTo("2013-09-11 17:58:36");
-        assertThat(device.getTemperatureMaximum()).isEqualTo("20.6 (°C)");
-        assertThat(device.getTemperatureMinimum()).isEqualTo("16.7 (°C)");
-        assertThat(device.getWindDirection()).isEqualTo("326.5 (°)");
-        assertThat(device.getWindSpeed()).isEqualTo("5.31 (km/h)");
+        assertThat(stateValueFor(device, "c_humidity")).isEqualTo("94.0 (%)");
+        assertThat(stateValueFor(device, "c_temperature")).isEqualTo("18.1 (°C)");
+        assertThat(stateValueFor(device, "c_sunrise")).isEqualTo("2013-09-11 05:06:19");
+        assertThat(stateValueFor(device, "c_sunset")).isEqualTo("2013-09-11 17:58:36");
+        assertThat(stateValueFor(device, "c_tempMax")).isEqualTo("20.6 (°C)");
+        assertThat(stateValueFor(device, "c_tempMin")).isEqualTo("16.7 (°C)");
+        assertThat(stateValueFor(device, "c_windDir")).isEqualTo("326.5 (°)");
+        assertThat(stateValueFor(device, "c_windSpeed")).isEqualTo("5.31 (km/h)");
     }
 
     @Override

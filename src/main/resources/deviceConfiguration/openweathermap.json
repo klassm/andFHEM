@@ -1,6 +1,56 @@
 {
   "sensorDevice": true,
   "defaultGroup": "WEATHER",
+  "supportedWidgets": [
+    "MediumInformationWidgetView",
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "c_temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "c_humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2",
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "c_windDir",
+      "desc": "windDirection",
+      "showInOverview": true
+    },
+    {
+      "key": "c_windSpeed",
+      "desc": "windSpeed",
+      "showInOverview": true
+    },
+    {
+      "key": "c_tempMin",
+      "desc": "temperatureMinimum"
+    },
+    {
+      "key": "c_tempMax",
+      "desc": "temperatureMaximum"
+    },
+    {
+      "key": "c_sunrise",
+      "desc": "sunrise"
+    },
+    {
+      "key": "c_sunset",
+      "desc": "sunset"
+    }
+  ],
   "sanitise": {
     "c_temperature": {
       "extract": "double",
