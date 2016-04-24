@@ -71,16 +71,6 @@ public abstract class Device implements Serializable {
     }
 
     /**
-     * Indicates whether the internal device state should be updated with the value given in state to set
-     *
-     * @param stateToSet state to set
-     * @return true to update the internal state, else false
-     */
-    public boolean shouldUpdateStateOnDevice(String stateToSet) {
-        return true;
-    }
-
-    /**
      * Hook called for each xml attribute of a device. If false is returned, the attribute is ignored.
      * Note that the given key is provided in the form it is present within the xmllist. Thus,
      * it is not, as provided within #onChildItemRead, uppercase.

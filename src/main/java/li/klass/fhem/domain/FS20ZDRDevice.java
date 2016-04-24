@@ -46,11 +46,6 @@ public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
     }
 
     @Override
-    public boolean shouldUpdateStateOnDevice(String stateToSet) {
-        return (stateToSet.equalsIgnoreCase("on") || stateToSet.equalsIgnoreCase("off"));
-    }
-
-    @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }

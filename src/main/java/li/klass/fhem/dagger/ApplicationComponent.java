@@ -132,6 +132,7 @@ import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandIntentService;
 import li.klass.fhem.service.intent.VoiceCommandIntentService;
+import li.klass.fhem.service.room.RoomListUpdateService;
 import li.klass.fhem.service.room.group.GroupProvider;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
@@ -313,6 +314,8 @@ public interface ApplicationComponent {
     void inject(OtherWidgetsFragment object);
 
     void inject(DeviceNameSelectionNavigationFragment object);
+
+    void inject(RoomListUpdateService object);
 
 
     void inject(GCMIntentService object);

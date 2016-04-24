@@ -77,11 +77,6 @@ public class DMXDevice extends DimmableContinuousStatesDevice<DMXDevice> {
     }
 
     @Override
-    public boolean shouldUpdateStateOnDevice(String stateToSet) {
-        return stateToSet != null && stateToSet.startsWith("pct");
-    }
-
-    @Override
     protected String getSetListDimStateAttributeName() {
         return "pct";
     }

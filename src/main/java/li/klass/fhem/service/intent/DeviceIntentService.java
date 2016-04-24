@@ -232,7 +232,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
-            genericDeviceService.setSubState(device, name, value, this);
+            genericDeviceService.setSubState(device, name, value, this, true);
 
         } else if (DEVICE_SET_SUB_STATES.equals(action)) {
             @SuppressWarnings("unchecked")

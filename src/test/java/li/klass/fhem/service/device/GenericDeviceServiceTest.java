@@ -41,6 +41,7 @@ import org.mockito.Mock;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.service.room.RoomListUpdateService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
@@ -56,9 +57,10 @@ public class GenericDeviceServiceTest {
 
     @Mock
     CommandExecutionService commandExecutionService;
-
     @Mock
     Context context;
+    @Mock
+    RoomListUpdateService roomListUpdateService;
 
     @Test
     public void should_not_set_substate_state() {
@@ -69,7 +71,7 @@ public class GenericDeviceServiceTest {
         device.setXmlListDevice(xmllistDevice);
 
         // when
-        genericDeviceService.setSubState(device, "state", "bla", context);
+        genericDeviceService.setSubState(device, "state", "bla", context, false);
 
         // then
         verify(commandExecutionService).executeSafely("set someName bla", context);
@@ -99,7 +101,7 @@ public class GenericDeviceServiceTest {
         device.setXmlListDevice(xmllistDevice);
 
         // when
-        genericDeviceService.setSubState(device, stateName, toSet, context);
+        genericDeviceService.setSubState(device, stateName, toSet, context, false);
 
         // then
         verify(commandExecutionService).executeSafely("set someName " + stateName + " " + expected, context);
