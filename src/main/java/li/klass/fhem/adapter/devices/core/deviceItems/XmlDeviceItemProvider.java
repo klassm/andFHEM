@@ -41,8 +41,8 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration.ViewItemConfig;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.service.deviceConfiguration.ViewItemConfig;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 

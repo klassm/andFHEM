@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.deviceConfiguration;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
@@ -36,6 +38,7 @@ import java.util.Set;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class DeviceConfiguration implements Serializable {
@@ -73,6 +76,15 @@ public class DeviceConfiguration implements Serializable {
         return states;
     }
 
+    public Optional<ViewItemConfig> stateConfigFor(final String key) {
+        return from(getStates()).firstMatch(new Predicate<ViewItemConfig>() {
+            @Override
+            public boolean apply(ViewItemConfig input) {
+                return input.getKey().equalsIgnoreCase(key);
+            }
+        });
+    }
+
     public Set<ViewItemConfig> getAttributes() {
         return attributes;
     }
@@ -99,64 +111,6 @@ public class DeviceConfiguration implements Serializable {
             return stateCommandReplace.get(state);
         }
         return Collections.emptyMap();
-    }
-
-    public static class ViewItemConfig implements Serializable {
-        private final Set<String> markers;
-        String key;
-        String desc;
-        String showAfter;
-        boolean showInOverview = false;
-        boolean showInDetail = false;
-
-        public ViewItemConfig(String key, String desc, String showAfter, boolean showInOverview, boolean showInDetail, Set<String> markers) {
-            this.key = checkNotNull(key);
-            this.desc = checkNotNull(desc);
-            this.markers = checkNotNull(markers);
-            this.showInOverview = showInOverview;
-            this.showAfter = showAfter;
-            this.showInDetail = showInDetail;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public boolean isShowInOverview() {
-            return showInOverview;
-        }
-
-        public Set<String> getMarkers() {
-            return markers;
-        }
-
-        public String getShowAfter() {
-            return showAfter;
-        }
-
-        public boolean isShowInDetail() {
-            return showInDetail;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ViewItemConfig state = (ViewItemConfig) o;
-
-            return !(key != null ? !key.equals(state.key) : state.key != null);
-
-        }
-
-        @Override
-        public int hashCode() {
-            return key != null ? key.hashCode() : 0;
-        }
     }
 
     public static final class Builder {

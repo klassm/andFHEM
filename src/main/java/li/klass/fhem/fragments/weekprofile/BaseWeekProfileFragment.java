@@ -136,7 +136,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
     }
 
     private void backToDevice() {
-        DialogUtil.showAlertDialog(getActivity(), R.string.doneTitle, R.string.heatingConfigurationSaveNotification, new DialogUtil.AlertOnClickListener() {
+        DialogUtil.showAlertDialog(getActivity(), R.string.doneTitle, R.string.switchDelayNotification, new DialogUtil.AlertOnClickListener() {
             @Override
             public void onClick() {
                 back();

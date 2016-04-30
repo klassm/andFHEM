@@ -45,11 +45,6 @@ public abstract class SeekBarActionRowFullWidth {
     protected TextView updateView;
     private float step;
 
-    public SeekBarActionRowFullWidth(float initialProgress, float minimumProgress, float maximumProgress, int layoutId,
-                                     TableRow updateRow) {
-        this(initialProgress, minimumProgress, 1, maximumProgress, layoutId, updateRow);
-    }
-
     public SeekBarActionRowFullWidth(float initialProgress, float minimumProgress, float step, float maximumProgress, int layoutId,
                                      TableRow updateRow) {
         this.initialProgress = initialProgress;

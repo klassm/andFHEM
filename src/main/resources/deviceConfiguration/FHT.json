@@ -6,12 +6,14 @@
     {
       "key": "day-temp",
       "desc": "dayTemperature",
-      "showAfter": "desired-temp"
+      "showAfter": "desired-temp",
+      "showDelayNotificationOnSwitch": true
     },
     {
       "key": "windowopen-temp",
       "desc": "windowOpenTemp",
       "showAfter": "night-temp",
+      "showDelayNotificationOnSwitch": true,
       "beforeCommandReplace": [
         {
           "search": "5.5",
@@ -27,6 +29,7 @@
       "key": "night-temp",
       "desc": "nightTemperature",
       "showAfter": "day-temp",
+      "showDelayNotificationOnSwitch": true,
       "beforeCommandReplace": [
         {
           "search": "5.5",
@@ -42,6 +45,7 @@
       "key": "desired-temp",
       "desc": "desiredTemperature",
       "showAfter": "temperature",
+      "showDelayNotificationOnSwitch": true,
       "beforeCommandReplace": [
         {
           "search": "5.5",

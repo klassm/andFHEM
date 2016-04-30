@@ -34,12 +34,16 @@ import org.joda.time.DateTime;
 import java.util.Locale;
 import java.util.Map;
 
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.service.deviceConfiguration.ViewItemConfig;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
@@ -117,6 +121,14 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state) {
         stateUiService.setSubState(fhemDevice, setListAttribute, getDimStateForPosition(fhemDevice, state), context);
+
+        Optional<DeviceConfiguration> deviceConfiguration = fhemDevice.getDeviceConfiguration();
+        if (deviceConfiguration.isPresent()) {
+            Optional<ViewItemConfig> stateConfig = deviceConfiguration.get().stateConfigFor(slider.getKey());
+            if (stateConfig.isPresent() && stateConfig.get().isShowDelayNotificationOnSwitch()) {
+                DialogUtil.showAlertDialog(context, fhemDevice.getName(), context.getString(R.string.switchDelayNotification));
+            }
+        }
     }
 
     static Optional<ContinuousDimmableBehavior> behaviorFor(SetList setList) {

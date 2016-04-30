@@ -52,6 +52,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.service.deviceConfiguration.ViewItemConfig;
 import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
@@ -172,8 +173,8 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls) {
         Optional<DeviceConfiguration> configuration = deviceConfigurationProvider.configurationFor(device);
         if (configuration.isPresent()) {
-            Set<DeviceConfiguration.ViewItemConfig> states = configuration.get().getStates();
-            for (DeviceConfiguration.ViewItemConfig state : states) {
+            Set<ViewItemConfig> states = configuration.get().getStates();
+            for (ViewItemConfig state : states) {
                 if (state.getMarkers().contains(annotationCls.getSimpleName())) {
                     return device.getXmlListDevice().stateValueFor(state.getKey()).orNull();
                 }

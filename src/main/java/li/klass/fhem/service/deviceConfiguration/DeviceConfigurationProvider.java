@@ -59,6 +59,7 @@ public class DeviceConfigurationProvider {
     public static final String SENSOR_DEVICE = "sensorDevice";
     public static final String STATES = "states";
     public static final String SHOW_IN_OVERVIEW = "showInOverview";
+    public static final String SHOW_DELAY_NOTIFICATION_ON_SWITCH = "showDelayNotificationOnSwitch";
     public static final String DESC = "desc";
     public static final String KEY = "key";
     public static final String MARKERS = "markers";
@@ -160,10 +161,7 @@ public class DeviceConfigurationProvider {
         if (attributes != null) {
             for (int i = 0; i < attributes.length(); i++) {
                 JSONObject attribute = attributes.optJSONObject(i);
-
-                builder.withAttribute(new DeviceConfiguration.ViewItemConfig(attribute.optString(KEY), attribute.optString(DESC), attribute.optString(SHOW_AFTER),
-                        attribute.optBoolean(SHOW_IN_OVERVIEW, false), attribute.optBoolean("showInDetail", true),
-                        transformStringJsonArray(attribute.optJSONArray(MARKERS))));
+                builder.withAttribute(viewItemConfigFor(attribute));
             }
         }
     }
@@ -174,9 +172,7 @@ public class DeviceConfigurationProvider {
             for (int i = 0; i < states.length(); i++) {
                 JSONObject state = states.optJSONObject(i);
 
-                builder.withState(new DeviceConfiguration.ViewItemConfig(state.optString(KEY), state.optString(DESC), state.optString(SHOW_AFTER),
-                        state.optBoolean(SHOW_IN_OVERVIEW, false), state.optBoolean("showInDetail", true),
-                        transformStringJsonArray(state.optJSONArray(MARKERS))));
+                builder.withState(viewItemConfigFor(state));
 
                 JSONArray beforeCommandReplace = state.optJSONArray("beforeCommandReplace");
                 if (beforeCommandReplace != null) {
@@ -207,12 +203,22 @@ public class DeviceConfigurationProvider {
         if (internals != null) {
             for (int i = 0; i < internals.length(); i++) {
                 JSONObject internal = internals.optJSONObject(i);
-
-                builder.withInternal(new DeviceConfiguration.ViewItemConfig(internal.optString(KEY), internal.optString(DESC), internal.optString(SHOW_AFTER),
-                        internal.optBoolean(SHOW_IN_OVERVIEW, false), internal.optBoolean("showInDetail", true),
-                        transformStringJsonArray(internal.optJSONArray(MARKERS))));
+                builder.withInternal(viewItemConfigFor(internal));
             }
         }
+    }
+
+    @NonNull
+    private ViewItemConfig viewItemConfigFor(JSONObject jsonConfig) {
+        return new ViewItemConfig.Builder()
+                .withKey(jsonConfig.optString(KEY))
+                .withDesc(jsonConfig.optString(DESC))
+                .withShowAfter(jsonConfig.optString(SHOW_AFTER))
+                .withShowInOverview(jsonConfig.optBoolean(SHOW_IN_OVERVIEW, false))
+                .withShowInDetail(jsonConfig.optBoolean("showInDetail", true))
+                .withMarkers(transformStringJsonArray(jsonConfig.optJSONArray(MARKERS)))
+                .withShowDelayNotificationOnSwitch(jsonConfig.optBoolean(SHOW_DELAY_NOTIFICATION_ON_SWITCH))
+                .build();
     }
 
     private Set<String> transformStringJsonArray(JSONArray array) {
