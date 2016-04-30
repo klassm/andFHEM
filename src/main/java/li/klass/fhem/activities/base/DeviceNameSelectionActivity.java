@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -73,7 +72,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
                     .replace(android.R.id.content, deviceSelectionFragment)
                     .commitAllowingStateLoss();
         } catch (IllegalStateException e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " +
+            Log.e(getClass().getSimpleName(), "error while switching to fragment " +
                     DeviceNameSelectionFragment.class.getName(), e);
         }
     }
