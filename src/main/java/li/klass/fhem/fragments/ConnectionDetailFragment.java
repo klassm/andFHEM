@@ -363,6 +363,12 @@ public class ConnectionDetailFragment extends BaseFragment {
     }
 
     @Override
+    public CharSequence getTitle(Context context) {
+        // FIXME: maybe better 'Edit connection'?
+        return context.getString(R.string.connectionManageTitle);
+    }
+
+    @Override
     public void update(boolean doUpdate) {
         if (!isModify) {
             Log.e(TAG, "I can only update if a connection is being modified!");

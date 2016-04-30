@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -113,7 +112,8 @@ public abstract class DeviceAdapter {
         Intent intent = new Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName())
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.ROOM_NAME, (String) device.getRooms().get(0));
+                .putExtra(BundleExtraKeys.ROOM_NAME, (String) device.getRooms().get(0))
+                .putExtra(BundleExtraKeys.DEVICE_DISPLAY_NAME, device.getAliasOrName());
 
         intent = onFillDeviceDetailIntent(context, device, intent);
         if (intent != null) {

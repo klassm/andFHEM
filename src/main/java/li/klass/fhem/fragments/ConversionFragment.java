@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,11 @@ public class ConversionFragment extends BaseFragment {
     @Override
     protected boolean mayPullToRefresh() {
         return false;
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.conversion);
     }
 
     @Override

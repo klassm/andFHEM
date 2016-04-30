@@ -64,7 +64,6 @@ import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.intent.LicenseIntentService;
@@ -94,6 +93,7 @@ import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
 public class AndFHEMMainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
+        FragmentManager.OnBackStackChangedListener,
         SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
 
     private class Receiver extends BroadcastReceiver {
@@ -136,7 +136,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                                     String fragmentName = bundle.getString(FRAGMENT_NAME);
                                     fragmentType = getFragmentFor(fragmentName);
                                 }
-                                mDrawerLayout.closeDrawer(GravityCompat.START);
+                                drawerLayout.closeDrawer(GravityCompat.START);
                                 switchToFragment(fragmentType, intent.getExtras());
                             } else if (action.equals(Actions.DO_UPDATE)) {
                                 refreshFragments();
@@ -164,6 +164,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                                 redrawContent();
                             }
                         } catch (Exception e) {
+                            Log.e(TAG, "exception occurred while receiving broadcast", e);
                             Log.e(TAG, "exception occurred while receiving broadcast", e);
                         }
                     }
@@ -196,7 +197,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     private Receiver broadcastReceiver;
 
     private Timer timer;
-    private RepairedDrawerLayout mDrawerLayout;
+    private RepairedDrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private SwipeRefreshLayout refreshLayout;
     private NavigationView navigationView;
@@ -233,23 +234,21 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.main_view);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+
         initSwipeRefreshLayout();
         initDrawerLayout();
-        initConnectionSpinner();
 
         boolean hasFavorites = getIntent().getBooleanExtra(BundleExtraKeys.HAS_FAVORITES, true);
         if (savedInstanceState == null && !saveInstanceStateCalled) {
             handleStartupFragment(hasFavorites);
         }
+        showDrawerToggle(getSupportFragmentManager().getBackStackEntryCount() == 0);
     }
+
 
     private void handleStartupFragment(boolean hasFavorites) {
         String startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
@@ -272,8 +271,8 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         switchToFragment(fragmentType, startupBundle);
     }
 
-    private void initConnectionSpinner() {
-        Spinner connectionSpinner = (Spinner) findViewById(R.id.connection_spinner);
+    private void initConnectionSpinner(View spinner) {
+        Spinner connectionSpinner = (Spinner) spinner;
         availableConnectionDataAdapter = new AvailableConnectionDataAdapter(connectionSpinner);
         connectionSpinner.setAdapter(availableConnectionDataAdapter);
         connectionSpinner.setOnItemSelectedListener(availableConnectionDataAdapter);
@@ -297,8 +296,18 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackStackChanged() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            // We are at the topmost fragment, re-enable the drawer indicator
+            showDrawerToggle(true);
+        }
+        updateTitle();
+        updateNavigationVisibility();
+    }
+
+    @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
 
         switch (menuItem.getItemId()) {
             case R.id.menu_settings: {
@@ -313,9 +322,8 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                 return true;
             }
             case R.id.menu_premium: {
-                Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
-                premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
-                sendBroadcast(premiumIntent);
+                Intent premiumIntent = new Intent(this, PremiumActivity.class);
+                startActivity(premiumIntent);
                 return true;
             }
             case R.id.menu_about: {
@@ -348,9 +356,13 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         return true;
     }
 
+    private void showDrawerToggle(boolean enable) {
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(enable);
+    }
+
     private void initDrawerLayout() {
-        mDrawerLayout = (RepairedDrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        drawerLayout = (RepairedDrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         navigationView = (NavigationView) findViewById(R.id.nav_drawer);
         navigationView.setNavigationItemSelectedListener(this);
@@ -358,22 +370,22 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             navigationView.getMenu().removeItem(R.id.menu_premium);
         }
 
+        initConnectionSpinner(navigationView.getHeaderView(0).findViewById(R.id.connection_spinner));
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
                 R.string.drawerOpen, R.string.drawerClose) {
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(R.string.app_name);
                 supportInvalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(R.string.app_name);
                 supportInvalidateOptionsMenu();
             }
         };
-        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
     private void initSwipeRefreshLayout() {
@@ -473,6 +485,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
         handleTimerUpdates();
         handleOpenIntent();
+        updateTitle();
     }
 
     @Override
@@ -574,43 +587,12 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        // We pop fragments as long as:
-        // - there are more fragments on the back stack or
-        // - the popped fragment type is not equal to the current fragment type
-
-        boolean doFinish = false;
-
-        BaseFragment contentFragment = getContentFragment();
-        if (contentFragment == null) {
-            finish();
-            return;
-        }
-        FragmentType contentFragmentType = getFragmentFor(contentFragment.getClass());
-        while (true) {
-            if (!getSupportFragmentManager().popBackStackImmediate()) {
-                doFinish = true;
-                break;
-            }
-
-            BaseFragment current = getContentFragment();
-            if (current == null) {
-                doFinish = true;
-                break;
-            }
-
-            FragmentType currentFragmentType = getFragmentFor(current.getClass());
-            if (currentFragmentType != contentFragmentType) {
-                Log.i(TAG, "back press => switched to " + currentFragmentType);
-                break;
-            }
-        }
-
-        if (doFinish) {
-            finish();
-            billingService.stop();
-            Log.i(TAG, "cannot find more fragments on backstack => exiting");
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
         } else {
-            updateNavigationVisibility();
+            super.onBackPressed();
         }
     }
 
@@ -632,20 +614,43 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                 clearBackStack();
             }
 
-            BaseFragment contentFragment = createContentFragment(fragmentType, data);
-            BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
-
-            setContent(navigationFragment, contentFragment);
-
             int drawerId = fragmentType.getDrawerMenuId();
             if (drawerId > 0) {
                 MenuItem item = navigationView.getMenu().findItem(drawerId);
                 if (item != null) {
                     item.setChecked(true);
+                    mSelectedDrawerId = drawerId;
                 }
-                mSelectedDrawerId = drawerId;
             }
+
+            BaseFragment contentFragment = createContentFragment(fragmentType, data);
+            BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
+
+            setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment());
         }
+    }
+
+    private void updateTitle() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            return;
+        }
+
+        FragmentManager fm = getSupportFragmentManager();
+        CharSequence title = null;
+        int backstackCount = fm.getBackStackEntryCount();
+
+        if (backstackCount > 0) {
+            title = fm.getBackStackEntryAt(backstackCount - 1).getBreadCrumbTitle();
+        }
+        if (title == null && mSelectedDrawerId > 0) {
+            title = navigationView.getMenu().findItem(mSelectedDrawerId).getTitle();
+        }
+        if (title == null) {
+            title = getTitle();
+        }
+
+        actionBar.setTitle(title);
     }
 
     private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
@@ -684,7 +689,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         }
     }
 
-    private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
+    private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment, boolean addToBackStack) {
         if (saveInstanceStateCalled) return;
 
         boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
@@ -699,7 +704,6 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         @SuppressLint("CommitTransaction")
         FragmentTransaction transaction = fragmentManager
                 .beginTransaction()
-                .addToBackStack(contentFragment.getClass().getName())
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
                         android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.content, contentFragment, CONTENT_TAG);
@@ -707,9 +711,16 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         if (hasNavigation) {
             transaction.replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
         }
+        if (addToBackStack) {
+            transaction.addToBackStack(contentFragment.getClass().getName());
+            showDrawerToggle(false);
+        }
+
+        transaction.setBreadCrumbTitle(contentFragment.getTitle(this));
         transaction.commit();
 
         updateNavigationVisibility(navigationFragment, contentFragment);
+        updateTitle();
     }
 
     private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws Exception {
@@ -729,12 +740,14 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         if (item.getItemId() == android.R.id.home) {
-            if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-            } else {
-                mDrawerLayout.openDrawer(GravityCompat.START);
-            }
+            // if the drawer toggle didn't consume the home menu item, this means
+            // we disabled it and hence are showing the back button - act accordingly
+            onBackPressed();
             return true;
         }
 

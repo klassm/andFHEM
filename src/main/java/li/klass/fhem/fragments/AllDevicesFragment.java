@@ -24,6 +24,9 @@
 
 package li.klass.fhem.fragments;
 
+import android.content.Context;
+
+import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.DeviceListFragment;
@@ -34,6 +37,11 @@ public class AllDevicesFragment extends DeviceListFragment implements TopLevelFr
     @Override
     protected Class<?> getUpdateActionIntentTargetClass() {
         return RoomListIntentService.class;
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.alldevices);
     }
 
     @Override

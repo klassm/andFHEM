@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -539,6 +540,11 @@ public class TimerDetailFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.timer);
     }
 
     private EditText getTimerNameInput(View view) {

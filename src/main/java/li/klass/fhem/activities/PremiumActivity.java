@@ -22,14 +22,15 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments;
+package li.klass.fhem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
@@ -39,72 +40,75 @@ import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 
-public class PremiumFragment extends BaseFragment implements BillingService.ProductPurchasedListener {
+public class PremiumActivity extends AppCompatActivity implements BillingService.ProductPurchasedListener {
 
-    private static final String TAG = PremiumFragment.class.getName();
+    private static final String TAG = PremiumActivity.class.getName();
 
     @Inject
     BillingService billingService;
 
     @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.shop_premium, container, false);
-        view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
-        view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
+        setContentView(R.layout.shop_premium);
 
-        view.findViewById(R.id.shop_premium_buy).setOnClickListener(new View.OnClickListener() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
+        findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
+
+        findViewById(R.id.shop_premium_buy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID);
-                billingService.requestPurchase(getActivity(), AndFHEMApplication.INAPP_PREMIUM_ID,
-                        null, PremiumFragment.this);
+                billingService.requestPurchase(PremiumActivity.this,
+                        AndFHEMApplication.INAPP_PREMIUM_ID, null, PremiumActivity.this);
             }
         });
 
-        update(view);
-
-        return view;
+        update();
     }
 
-    public void update(final View view) {
-        view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
-        view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
+    public void update() {
+        findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
+        findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
-        getActivity().startService(new Intent(Actions.IS_PREMIUM)
-                .setClass(getActivity(), LicenseIntentService.class)
+        startService(new Intent(Actions.IS_PREMIUM)
+                .setClass(this, LicenseIntentService.class)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         boolean isPremium = resultCode == ResultCodes.SUCCESS && resultData.getBoolean(BundleExtraKeys.IS_PREMIUM, false);
 
                         if (isPremium) {
-                            view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
+                            findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
                         } else {
-                            view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
+                            findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
                         }
                     }
                 }));
 
-        getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+        sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onProductPurchased(String orderId, String productId) {
-        update(false);
-    }
-
-    @Override
-    public void update(boolean doUpdate) {
-        update(getView());
+        update();
     }
 }

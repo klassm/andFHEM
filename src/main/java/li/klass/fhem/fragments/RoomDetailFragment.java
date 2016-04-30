@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -64,5 +65,10 @@ public class RoomDetailFragment extends DeviceListFragment {
     @Override
     protected String getUpdateAction() {
         return Actions.GET_ROOM_DEVICE_LIST;
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return getArguments().getString(BundleExtraKeys.ROOM_NAME);
     }
 }

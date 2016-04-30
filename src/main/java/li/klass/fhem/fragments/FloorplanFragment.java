@@ -25,6 +25,7 @@
 package li.klass.fhem.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
@@ -35,6 +36,7 @@ import com.google.common.io.Resources;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
@@ -98,5 +100,10 @@ public class FloorplanFragment extends AbstractWebViewFragment {
             return Optional.absent();
         }
         return Optional.of(url + "/floorplan/" + deviceName);
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.functionalityFloorplan);
     }
 }

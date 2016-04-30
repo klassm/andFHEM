@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -58,5 +59,10 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
     @Override
     protected Class<?> getUpdateActionIntentTargetClass() {
         return FavoritesIntentService.class;
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.favorites);
     }
 }

@@ -43,7 +43,6 @@ public enum FragmentType {
     FROM_TO_WEEK_PROFILE(FromToWeekProfileFragment.class),
     INTERVAL_WEEK_PROFILE(IntervalWeekProfileFragment.class),
     FLOORPLAN(FloorplanFragment.class),
-    PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
     SEND_COMMAND(SendCommandFragment.class, R.id.send_command, null),
     DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),

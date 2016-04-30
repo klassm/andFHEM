@@ -92,6 +92,10 @@
             android:launchMode="singleTask" />
 
         <activity
+            android:name="li.klass.fhem.activities.PremiumActivity"
+            android:label="@string/premium" />
+
+        <activity
             android:name="li.klass.fhem.activities.PreferencesActivity"
             android:label="@string/preferences" />
 

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -144,6 +145,11 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         });
 
         return layout;
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.connectionManageTitle);
     }
 
     protected void fillEmptyView(LinearLayout view) {

@@ -102,7 +102,6 @@ import li.klass.fhem.fragments.ConnectionListFragment;
 import li.klass.fhem.fragments.ConversionFragment;
 import li.klass.fhem.fragments.FavoritesFragment;
 import li.klass.fhem.fragments.FloorplanFragment;
-import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.fragments.RoomDetailFragment;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.SendCommandFragment;
@@ -288,8 +287,6 @@ public interface ApplicationComponent {
     void inject(IntervalWeekProfileFragment object);
 
     void inject(FloorplanFragment object);
-
-    void inject(PremiumFragment object);
 
     void inject(RoomDetailFragment object);
 

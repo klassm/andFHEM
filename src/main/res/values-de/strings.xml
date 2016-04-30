@@ -66,7 +66,7 @@
     <string name="windDirection">Windrichtung</string>
     <string name="uvValue">UV Wert</string>
     <string name="uvRisk">UV Risiko</string>
-    <string name="rooms">Raum</string>
+    <string name="rooms">Räume</string>
     <string name="counterA">Zähler A</string>
     <string name="counterB">Zähler B</string>
     <string name="inputA">Eingang A</string>
@@ -251,6 +251,7 @@
     <string name="video_size">Videogröße</string>
     <string name="lock">Schloss</string>
 
+    <string name="connectionManageTitle">Verbindungen</string>
     <string name="connectionManage">Verwalten\u2026</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
     <string name="connectionName">Name</string>
@@ -503,6 +504,7 @@
     <string name="widget_rooms">Raum-Widgets</string>
     <string name="widget_others">Andere</string>
 
+    <string name="timer_detail_title">Zeitschaltuhr %1$s</string>
     <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>
     <string name="timer_overview_every_day">an jedem Tag</string>
     <string name="timer_overview_once">einmal</string>

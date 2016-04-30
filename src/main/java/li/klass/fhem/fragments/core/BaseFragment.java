@@ -309,6 +309,10 @@ public abstract class BaseFragment extends Fragment implements
         }
     }
 
+    public CharSequence getTitle(Context context) {
+        return null;
+    }
+
     protected void back() {
         Intent intent = new Intent(Actions.BACK);
         getActivity().sendBroadcast(intent);

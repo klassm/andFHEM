@@ -223,4 +223,9 @@ public class SendCommandFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         update(false);
     }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.send_command);
+    }
 }
