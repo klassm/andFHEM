@@ -28,8 +28,7 @@
 
     <ToggleButton
         android:id="@+id/toggleButton"
-        style="@style/toggleButton"
-        android:background="@drawable/theme_toggle_default_normal"
+        style="@style/fixedNormalToggleButton"
         android:layout_marginLeft="@dimen/button_horizontal_separator"
         android:layout_marginStart="@dimen/button_horizontal_separator" />
 

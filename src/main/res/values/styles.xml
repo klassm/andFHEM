@@ -79,6 +79,10 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="fixedNormalToggleButton" parent="toggleButton">
+        <item name="android:background">@drawable/theme_toggle_default_normal</item>
+    </style>
+
     <style name="seekBarGeneric">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -214,6 +218,18 @@
         <!--<item name="android:layout_gravity">right</item>-->
         <!--<item name="android:width">90dp</item>-->
 
+    </style>
+
+    <style name="alwaysOnDeviceOverviewButton" parent="deviceOverviewToggleButton">
+        <item name="android:background">@drawable/theme_on_button</item>
+    </style>
+
+    <style name="alwaysOffDeviceOverviewButton" parent="deviceOverviewToggleButton">
+        <item name="android:background">@drawable/theme_off_button</item>
+    </style>
+
+    <style name="fixedNormalDeviceOverviewToggleButton" parent="deviceOverviewToggleButton">
+        <item name="android:background">@drawable/theme_toggle_default_normal</item>
     </style>
 
     <style name="deviceOverviewSeekBar" parent="seekBar">

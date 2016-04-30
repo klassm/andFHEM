@@ -25,6 +25,4 @@
 
 <ToggleButton xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/toggleButton"
-              style="@style/toggleButton"
-              android:background="@drawable/theme_toggle_button"
-    />
+    style="@style/toggleButton" />

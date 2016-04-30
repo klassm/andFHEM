@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -23,7 +24,7 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/onButton"
-        style="@style/deviceOverviewToggleButton"
-        android:text="@string/ON"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/theme_toggle_off_normal" android:state_checked="true" />
+    <item android:drawable="@drawable/theme_toggle_default_normal" />
+</selector>

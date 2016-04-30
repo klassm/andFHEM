@@ -38,6 +38,7 @@ import java.util.Map;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.widget.CheckableButton;
 
 public abstract class AbstractOnOffActionRow {
     public static final String HOLDER_KEY = "OnOffActionRow";
@@ -60,8 +61,8 @@ public abstract class AbstractOnOffActionRow {
     public TableRow createRow(LayoutInflater inflater, final FhemDevice device, Context context) {
         TableRow tableRow = (TableRow) inflater.inflate(layoutId, null);
         TextView descriptionView = ((TextView) tableRow.findViewById(R.id.description));
-        Button onButton = findOnButton(tableRow);
-        Button offButton = findOffButton(tableRow);
+        CheckableButton onButton = (CheckableButton) findOnButton(tableRow);
+        CheckableButton offButton = (CheckableButton) findOffButton(tableRow);
 
         String text = description.isPresent() ? context.getString(description.get()) : device.getAliasOrName();
         descriptionView.setText(text);
@@ -74,7 +75,10 @@ public abstract class AbstractOnOffActionRow {
         offButton.setOnClickListener(createListener(context, device, offStateName));
         offButton.setText(getOffStateText(device, context));
 
-        if (isOn(device, context)) {
+        boolean on = isOn(device, context);
+        onButton.setChecked(on);
+        offButton.setChecked(!on);
+        if (on) {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
             offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
         } else {
