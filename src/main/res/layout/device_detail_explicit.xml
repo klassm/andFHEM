@@ -25,15 +25,15 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical"
-              style="@style/fragmentContent">
+    android:id="@+id/detailLayout"
+    style="@style/fragmentContent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <TextView
         style="@style/deviceDetailSectionCaption"
-        android:text="@string/generalDetails">
-    </TextView>
+        android:text="@string/generalDetails"/>
 
     <TextView
         android:id="@+id/general_details_notification"
@@ -43,7 +43,7 @@
         android:background="@color/activeGreen"
         android:padding="5dp"
         android:text=""
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/measure_error_notification"
@@ -54,21 +54,21 @@
         android:padding="5dp"
         android:text="@string/errorOutdatedData"
         android:textColor="@android:color/white"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TableLayout
         android:id="@+id/generic"
-        style="@style/deviceDetailTable">
-    </TableLayout>
+        style="@style/deviceDetailTable"></TableLayout>
 
 
     <LinearLayout
         android:id="@+id/graphButtons"
         style="@style/deviceDetailSectionContent"
         android:orientation="vertical">
+
         <TextView
             style="@style/deviceDetailSectionCaption"
-            android:text="@string/plots"/>
+            android:text="@string/plots" />
     </LinearLayout>
 
     <LinearLayout
@@ -78,12 +78,11 @@
 
         <TextView
             style="@style/deviceDetailSectionCaption"
-            android:text="@string/actions"/>
+            android:text="@string/actions" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/otherStuff"
         style="@style/deviceDetailSectionContent"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 </LinearLayout>

@@ -401,7 +401,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     @Override
     public boolean canChildScrollUp() {
         BaseFragment content = getContentFragment();
-        return content != null ? content.canChildScrollUp() : false;
+        return content != null && content.canChildScrollUp();
     }
 
     @Override

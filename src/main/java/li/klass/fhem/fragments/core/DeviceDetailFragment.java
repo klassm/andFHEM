@@ -128,7 +128,7 @@ public class DeviceDetailFragment extends BaseFragment {
                             }
                             activity.supportInvalidateOptionsMenu();
                             adapter.attach(DeviceDetailFragment.this.getActivity());
-                            ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
+                            ScrollView scrollView = findScrollView();
                             if (scrollView != null) {
                                 scrollView.removeAllViews();
                                 scrollView.addView(adapter.createDetailView(activity, device, lastUpdate));
@@ -136,6 +136,10 @@ public class DeviceDetailFragment extends BaseFragment {
                         }
                     }
                 }));
+    }
+
+    private ScrollView findScrollView() {
+        return (ScrollView) getView().findViewById(R.id.deviceDetailView);
     }
 
     @Override
@@ -197,5 +201,10 @@ public class DeviceDetailFragment extends BaseFragment {
                 return false;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        return super.canChildScrollUp() ||  findScrollView().getScrollY() > 0;
     }
 }
