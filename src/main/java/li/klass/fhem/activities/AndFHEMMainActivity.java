@@ -139,7 +139,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 switchToFragment(fragmentType, intent.getExtras());
                             } else if (action.equals(Actions.DO_UPDATE)) {
-                                refreshFragments();
+                                refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false));
                             } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
                                 refreshLayout.setRefreshing(true);
                             } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
@@ -528,14 +528,14 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         return toReturn;
     }
 
-    private void refreshFragments() {
+    private void refreshFragments(boolean doUpdate) {
         BaseFragment content = getContentFragment();
         if (content != null) {
-            content.update(true);
+            content.update(doUpdate);
         }
         BaseFragment nav = getNavigationFragment();
         if (nav != null) {
-            nav.update(true);
+            nav.update(false);
         }
     }
 
