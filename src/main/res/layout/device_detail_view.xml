@@ -45,11 +45,4 @@
         android:id="@+id/adContainer"
         android:layout_alignParentBottom="true" />
 
-    <ProgressBar
-        android:id="@+id/updateProgress"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
 </RelativeLayout>

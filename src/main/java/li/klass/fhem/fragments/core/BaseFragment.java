@@ -31,16 +31,14 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.google.common.base.Optional;
 
 import java.io.Serializable;
 
@@ -51,20 +49,18 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.widget.SwipeRefreshLayout;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
-import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
-import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
-import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.STRING;
 import static li.klass.fhem.constants.BundleExtraKeys.STRING_ID;
 
-public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
+public abstract class BaseFragment extends Fragment implements
+        Updateable, Serializable, SwipeRefreshLayout.ChildScrollDelegate {
 
     private boolean isNavigation = false;
     private transient UIBroadcastReceiver broadcastReceiver;
@@ -96,6 +92,20 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                 }
             });
         }
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        if (!mayPullToRefresh()) {
+            return true;
+        }
+        return ViewCompat.canScrollVertically(getView(), -1);
+    }
+
+    @Override
+    public void update(boolean refresh) {
+        hideConnectionError();
+        updateInternal(refresh);
     }
 
     private void hideConnectionError() {
@@ -183,36 +193,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         emptyView.setVisibility(View.VISIBLE);
     }
 
-    private void hideUpdatingBar() {
-        View view = getView();
-        if (view == null) return;
-
-        Optional<ProgressBar> updatingBar = getUpdatingBar(view);
-        if (updatingBar.isPresent()) {
-            updatingBar.get().setVisibility(View.GONE);
-        }
-    }
-
-    protected Optional<ProgressBar> getUpdatingBar(View view) {
-        if (view == null) {
-            return Optional.absent();
-        } else {
-            return Optional.fromNullable((ProgressBar) view.findViewById(R.id.updateProgress));
-        }
-    }
-
-    protected void showUpdatingBar() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Optional<ProgressBar> updatingBar = getUpdatingBar(getView());
-                if (updatingBar.isPresent()) {
-                    updatingBar.get().setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
-
     protected void fillEmptyView(LinearLayout view, int text, ViewGroup container) {
         if (text != 0) {
             View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, container, false);
@@ -253,6 +233,10 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         return true;
     }
 
+    protected boolean mayPullToRefresh() {
+        return true;
+    }
+
     private void updateInternal(boolean doRefresh) {
         if (mayUpdateFromBroadcast()) {
             update(doRefresh);
@@ -268,13 +252,10 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             this.activity = activity;
 
             intentFilter = new IntentFilter();
-            intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(TOP_LEVEL_BACK);
             intentFilter.addAction(CONNECTION_ERROR);
             intentFilter.addAction(CONNECTION_ERROR_HIDE);
             intentFilter.addAction(REDRAW_ALL_WIDGETS);
-            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
-            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
         }
 
         @Override
@@ -289,10 +270,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                     if (action == null) return;
 
                     try {
-                        if (action.equals(DO_UPDATE)) {
-                            hideConnectionError();
-                            updateInternal(intent.getBooleanExtra(DO_REFRESH, false));
-                        } else if (action.equals(TOP_LEVEL_BACK)) {
+                        if (action.equals(TOP_LEVEL_BACK)) {
                             if (!isVisible()) return;
                             if (!backPressCalled) {
                                 backPressCalled = true;
@@ -310,10 +288,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                             showConnectionError(content);
                         } else if (action.equals(CONNECTION_ERROR_HIDE)) {
                             hideConnectionError();
-                        } else if (action.equalsIgnoreCase(SHOW_EXECUTING_DIALOG)) {
-                            showUpdatingBar();
-                        } else if (action.equalsIgnoreCase(DISMISS_EXECUTING_DIALOG)) {
-                            hideUpdatingBar();
                         }
                     } catch (Exception e) {
                         Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);

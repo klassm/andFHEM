@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     private String deviceName;
     private DeviceFilter deviceFilter;
     private int emptyText;
+    private GridViewWithSections deviceList;
 
     @Override
     public void setArguments(Bundle args) {
@@ -91,7 +93,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.device_name_list, container, false);
         assert view != null;
-        GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+        deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
         DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(),
                 new RoomDeviceList(""), columnWidth, applicationProperties);
@@ -109,6 +111,14 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         fillEmptyView(emptyView, getEmptyTextId(), container);
 
         return view;
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        if (ViewCompat.canScrollVertically(deviceList, -1)) {
+            return true;
+        }
+        return super.canChildScrollUp();
     }
 
     protected abstract void onDeviceNameClick(String parent, FhemDevice<?> child);

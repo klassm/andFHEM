@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
@@ -172,6 +173,8 @@ public abstract class DeviceListFragment extends BaseFragment {
     };
     private ActionMode actionMode;
 
+    private GridViewWithSections nestedListView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
@@ -184,7 +187,7 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         assert view != null;
 
-        GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+        nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
         assert nestedListView != null;
 
         LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
@@ -241,6 +244,14 @@ public abstract class DeviceListFragment extends BaseFragment {
 
 
         return view;
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        if (ViewCompat.canScrollVertically(nestedListView, -1)) {
+            return true;
+        }
+        return super.canChildScrollUp();
     }
 
     protected void fillEmptyView(LinearLayout view, ViewGroup viewGroup) {

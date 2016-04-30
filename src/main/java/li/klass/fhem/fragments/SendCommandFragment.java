@@ -108,6 +108,11 @@ public class SendCommandFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    protected boolean mayPullToRefresh() {
+        return false;
+    }
+
     private void sendCommandIntent(String command) {
         final Context context = getActivity();
         getActivity().startService(new Intent(Actions.EXECUTE_COMMAND)

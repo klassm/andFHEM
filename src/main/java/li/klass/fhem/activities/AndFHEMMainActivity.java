@@ -25,7 +25,6 @@
 package li.klass.fhem.activities;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -74,6 +73,7 @@ import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.update.UpdateHandler;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.widget.SwipeRefreshLayout;
 
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
 import static li.klass.fhem.constants.Actions.BACK;
@@ -94,9 +94,8 @@ import static li.klass.fhem.fragments.FragmentType.ALL_DEVICES;
 import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
-public class AndFHEMMainActivity extends AppCompatActivity {
-
-    private boolean showProgressIcon;
+public class AndFHEMMainActivity extends AppCompatActivity implements
+        SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
 
     private class Receiver extends BroadcastReceiver {
 
@@ -139,12 +138,12 @@ public class AndFHEMMainActivity extends AppCompatActivity {
                                     fragmentType = getFragmentFor(fragmentName);
                                 }
                                 switchToFragment(fragmentType, intent.getExtras());
-                            } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
-                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(Actions.DO_UPDATE)) {
+                                refreshFragments();
                             } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                                setShowRefreshProgressIcon(true);
+                                refreshLayout.setRefreshing(true);
                             } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                                setShowRefreshProgressIcon(false);
+                                refreshLayout.setRefreshing(false);
                             } else if (action.equals(SHOW_TOAST)) {
                                 String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
                                 if (content == null) {
@@ -201,6 +200,7 @@ public class AndFHEMMainActivity extends AppCompatActivity {
     private RepairedDrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private SwipeRefreshLayout refreshLayout;
     private boolean saveInstanceStateCalled;
 
     private AvailableConnectionDataAdapter availableConnectionDataAdapter;
@@ -243,6 +243,7 @@ public class AndFHEMMainActivity extends AppCompatActivity {
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
+        initSwipeRefreshLayout();
         initDrawerLayout();
 
         boolean hasFavorites = getIntent().getBooleanExtra(BundleExtraKeys.HAS_FAVORITES, true);
@@ -324,6 +325,21 @@ public class AndFHEMMainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
+    private void initSwipeRefreshLayout() {
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setChildScrollDelegate(this);
+        refreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.primary), 0,
+                getResources().getColor(R.color.accent), 0);
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        BaseFragment content = getContentFragment();
+        return content != null ? content.canChildScrollUp() : false;
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -335,6 +351,14 @@ public class AndFHEMMainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
         updateNavigationVisibility();
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshLayout.setRefreshing(true);
+        Intent refreshIntent = new Intent(Actions.DO_UPDATE);
+        refreshIntent.putExtra(DO_REFRESH, true);
+        sendBroadcast(refreshIntent);
     }
 
     private boolean updateNavigationVisibility() {
@@ -439,6 +463,17 @@ public class AndFHEMMainActivity extends AppCompatActivity {
         return toReturn;
     }
 
+    private void refreshFragments() {
+        BaseFragment content = getContentFragment();
+        if (content != null) {
+            content.update(true);
+        }
+        BaseFragment nav = getNavigationFragment();
+        if (nav != null) {
+            nav.update(true);
+        }
+    }
+
     private void handleTimerUpdates() {
         // We post this delayed, as otherwise we will block the application startup (causing
         // ugly ANRs).
@@ -482,18 +517,7 @@ public class AndFHEMMainActivity extends AppCompatActivity {
             Log.i(TAG, "onStop() : receiver was not registered, ignore ...");
         }
 
-        setShowRefreshProgressIcon(false);
-    }
-
-    @SuppressWarnings("NewApi")
-    @TargetApi(11)
-    private void setShowRefreshProgressIcon(boolean show) {
-        if (optionsMenu == null) return;
-        showProgressIcon = show;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            this.invalidateOptionsMenu();
-        }
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -651,16 +675,6 @@ public class AndFHEMMainActivity extends AppCompatActivity {
         }
         this.optionsMenu = menu;
 
-        MenuItem refreshItem = optionsMenu.findItem(R.id.menu_refresh);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (showProgressIcon) {
-                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
-            } else {
-                refreshItem.setActionView(null);
-            }
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -673,11 +687,6 @@ public class AndFHEMMainActivity extends AppCompatActivity {
             } else {
                 mDrawerLayout.openDrawer(mDrawerList);
             }
-        } else if (id == R.id.menu_refresh) {
-            Intent refreshIntent = new Intent(Actions.DO_UPDATE);
-            refreshIntent.putExtra(DO_REFRESH, true);
-            sendBroadcast(refreshIntent);
-            return true;
         } else if (id == R.id.menu_settings) {
             Intent settingsIntent = new Intent(this, PreferencesActivity.class);
             startActivityForResult(settingsIntent, RESULT_OK);

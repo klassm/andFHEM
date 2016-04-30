@@ -33,11 +33,17 @@
 
     <android.support.v4.widget.RepairedDrawerLayout
         android:id="@+id/drawer_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/content_view"/>
+        <li.klass.fhem.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/content_view" />
+
+        </li.klass.fhem.widget.SwipeRefreshLayout>
 
         <ListView
             android:id="@+id/left_drawer"

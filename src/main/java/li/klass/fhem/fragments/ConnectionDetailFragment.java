@@ -139,6 +139,11 @@ public class ConnectionDetailFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    protected boolean mayPullToRefresh() {
+        return false;
+    }
+
     private List<ServerType> getServerTypes() {
         final List<ServerType> connectionTypes = newArrayList();
         connectionTypes.addAll(Arrays.asList(ServerType.values()));

@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -66,6 +67,7 @@ public class TimerListFragment extends BaseFragment {
 
     private static final int CONTEXT_MENU_DELETE = 1;
     private AtDevice contextMenuClickedDevice;
+    private ListView listView;
 
     private boolean createNewDeviceCalled = false;
 
@@ -86,7 +88,7 @@ public class TimerListFragment extends BaseFragment {
 
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, container, false);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
-        ListView listView = (ListView) layout.findViewById(R.id.list);
+        listView = (ListView) layout.findViewById(R.id.list);
 
         listView.setEmptyView(emptyView);
         listView.setAdapter(listAdapter);
@@ -127,6 +129,14 @@ public class TimerListFragment extends BaseFragment {
         } else {
             update(false);
         }
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        if (ViewCompat.canScrollVertically(listView, -1)) {
+            return true;
+        }
+        return super.canChildScrollUp();
     }
 
     @Override
