@@ -56,11 +56,9 @@ public class WebCmdActionRow extends HolderActionRow<String> {
     public View viewFor(final String command, final FhemDevice device, LayoutInflater inflater,
                         final Context context, ViewGroup viewGroup) {
 
-        ToggleButton button = (ToggleButton) inflater.inflate(R.layout.webcmd_row_element, viewGroup, false);
+        View container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false);
+        ToggleButton button = (ToggleButton) container.findViewById(R.id.toggleButton);
         assert button != null;
-
-        button.setBackgroundDrawable(
-                context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
 
         button.setText(device.getEventMapStateFor(command));
         button.setTextOn(device.getEventMapStateFor(command));
@@ -76,6 +74,6 @@ public class WebCmdActionRow extends HolderActionRow<String> {
             }
         });
 
-        return button;
+        return container;
     }
 }

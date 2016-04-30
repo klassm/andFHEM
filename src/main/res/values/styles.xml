@@ -65,14 +65,12 @@
         <item name="colorAccent">@android:color/white</item>
     </style>
 
-    <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">
-        <item name="@android:windowBackground">@color/whitegrey</item>
-        <item name="@android:textColor">@color/black</item>
-    </style>
+    <style name="Theme.Dialog.Light" parent="@style/Theme.AppCompat.Light.Dialog" />
 
-    <style name="toggleButton">
+    <style name="toggleButton" parent="button">
         <item name="android:layout_height">50dp</item>
-        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">60dp</item>
         <item name="android:focusable">false</item>
         <item name="android:background">@drawable/theme_toggle_button</item>
         <item name="android:textColor">@android:color/black</item>
@@ -84,11 +82,10 @@
     <style name="seekBarGeneric">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
         <item name="android:max">100</item>
         <item name="android:focusable">false</item>
         <item name="android:minWidth">90dp</item>
@@ -99,7 +96,7 @@
         <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
     </style>
 
-    <style name="button" parent="android:style/Widget.Button">
+    <style name="button" parent="Widget.AppCompat.Button">
         <item name="android:focusable">false</item>
 
         <item name="android:layout_width">wrap_content</item>
@@ -111,7 +108,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
 
-        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_margin">4dp</item>
 
         <item name="android:textSize">12sp</item>
     </style>
@@ -140,7 +137,7 @@
         <item name="android:paddingRight">8dp</item>
     </style>
 
-    <style name="text" parent="@android:style/TextAppearance.Small">
+    <style name="text" parent="@style/TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/textColorDefault</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -206,7 +203,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:maxWidth">140dp</item>
-        <item name="android:minWidth">100dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
@@ -273,7 +269,6 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_span">2</item>
-        <item name="android:layout_marginLeft">20dp</item>
     </style>
 
     <style name="deviceDetailContentToggle" parent="toggleButton">

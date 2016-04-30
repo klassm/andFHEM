@@ -48,8 +48,8 @@
         <Button
             android:id="@+id/dimUp"
             style="@style/button"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="@dimen/button_horizontal_separator"
+            android:layout_marginStart="@dimen/button_horizontal_separator"
             android:background="@drawable/theme_button"
             android:text="@string/dimUp"/>
     </LinearLayout>
