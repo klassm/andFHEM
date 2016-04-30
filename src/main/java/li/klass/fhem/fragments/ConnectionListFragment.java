@@ -31,11 +31,12 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -87,6 +88,12 @@ public class ConnectionListFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
@@ -113,37 +120,44 @@ public class ConnectionListFragment extends BaseFragment {
         });
         registerForContextMenu(connectionList);
 
-
-        Button createButton = (Button) layout.findViewById(R.id.create);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final int size = getAdapter().getData().size();
-
-                getActivity().startService(new Intent(Actions.IS_PREMIUM)
-                        .setClass(getActivity(), LicenseIntentService.class)
-                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-                            @Override
-                            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                boolean isPremium = resultCode == ResultCodes.SUCCESS && resultData.getBoolean(BundleExtraKeys.IS_PREMIUM, false);
-
-                                if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                                    Intent intent = new Intent(Actions.SHOW_ALERT);
-                                    intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
-                                    intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
-                                    getActivity().sendBroadcast(intent);
-                                } else {
-                                    Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                                    intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
-
-                                    getActivity().sendBroadcast(intent);
-                                }
-                            }
-                        }));
-            }
-        });
-
         return layout;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.connections_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.connection_add) {
+            final int size = getAdapter().getData().size();
+
+            getActivity().startService(new Intent(Actions.IS_PREMIUM)
+                    .setClass(getActivity(), LicenseIntentService.class)
+                    .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                        @Override
+                        protected void onReceiveResult(int resultCode, Bundle resultData) {
+                            boolean isPremium = resultCode == ResultCodes.SUCCESS && resultData.getBoolean(BundleExtraKeys.IS_PREMIUM, false);
+
+                            if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                                Intent intent = new Intent(Actions.SHOW_ALERT);
+                                intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
+                                intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
+                                getActivity().sendBroadcast(intent);
+                            } else {
+                                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
+
+                                getActivity().sendBroadcast(intent);
+                            }
+                        }
+                    }));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

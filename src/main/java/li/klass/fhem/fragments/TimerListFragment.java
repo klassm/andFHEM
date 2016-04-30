@@ -33,12 +33,12 @@ import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -77,6 +77,12 @@ public class TimerListFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
@@ -86,7 +92,7 @@ public class TimerListFragment extends BaseFragment {
 
         TimerListAdapter listAdapter = new TimerListAdapter(context, Lists.<AtDevice>newArrayList());
 
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, container, false);
+        View layout = inflater.inflate(R.layout.timer_overview, container, false);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
         listView = (ListView) layout.findViewById(R.id.list);
 
@@ -105,19 +111,26 @@ public class TimerListFragment extends BaseFragment {
             }
         });
 
-        Button createNewButton = (Button) layout.findViewById(R.id.timer_create_new);
-        createNewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewDeviceCalled = true;
-
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL);
-                getActivity().sendBroadcast(intent);
-            }
-        });
-
         return layout;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.timers_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.timer_add) {
+            createNewDeviceCalled = true;
+
+            Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL);
+            getActivity().sendBroadcast(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

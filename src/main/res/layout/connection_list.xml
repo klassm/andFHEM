@@ -24,36 +24,37 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-    <Button
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:id="@+id/create"
-        style="@style/button"
-        android:text="@string/connectionCreate"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <LinearLayout android:id="@+id/emptyView"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/create"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        />
+        <LinearLayout
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-    <ListView android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:id="@+id/connectionList"
-        android:layout_below="@id/create"
-        android:layout_above="@+id/adContainer"
-        style="@style/listView"/>
+        <ListView
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:id="@+id/connectionList"
+            android:layout_above="@+id/adContainer"
+            style="@style/listView" />
+
+    </FrameLayout>
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/adContainer"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true" />
-</RelativeLayout>
+
+</LinearLayout>

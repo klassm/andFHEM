@@ -79,12 +79,5 @@
             android:id="@+id/connectionPreferences"
             android:layout_below="@id/connectionType" />
 
-        <Button
-            android:id="@+id/save"
-            style="@style/button"
-            android:layout_below="@id/connectionPreferences"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save" />
     </RelativeLayout>
 </ScrollView>

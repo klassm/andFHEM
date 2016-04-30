@@ -34,11 +34,13 @@ import android.support.v4.app.FragmentActivity;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -81,6 +83,12 @@ public class ConnectionDetailFragment extends BaseFragment {
     private boolean isModify = false;
     private ServerType connectionType;
     private ConnectionTypeDetailChangedListener detailChangedListener = null;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void setArguments(Bundle args) {
@@ -128,15 +136,22 @@ public class ConnectionDetailFragment extends BaseFragment {
             }
         });
 
-        Button saveButton = (Button) view.findViewById(R.id.save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleSave();
-            }
-        });
-
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.connection_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.save) {
+            handleSave();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -107,34 +107,34 @@ public class DeviceDetailFragment extends BaseFragment {
                 .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        super.onReceiveResult(resultCode, resultData);
 
-                FragmentActivity activity = getActivity();
-                if (activity == null) return;
+                        FragmentActivity activity = getActivity();
+                        if (activity == null) return;
 
-                activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                        activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
-                if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                    device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                    long lastUpdate = resultData.getLong(BundleExtraKeys.LAST_UPDATE);
+                        if (resultCode == ResultCodes.SUCCESS && getView() != null) {
+                            device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                            long lastUpdate = resultData.getLong(BundleExtraKeys.LAST_UPDATE);
 
-                    if (device == null) return;
+                            if (device == null) return;
 
-                    DeviceAdapter adapter = DeviceType.getAdapterFor(device);
-                    if (adapter == null) {
-                        return;
+                            DeviceAdapter adapter = DeviceType.getAdapterFor(device);
+                            if (adapter == null) {
+                                return;
+                            }
+                            activity.supportInvalidateOptionsMenu();
+                            adapter.attach(DeviceDetailFragment.this.getActivity());
+                            ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
+                            if (scrollView != null) {
+                                scrollView.removeAllViews();
+                                scrollView.addView(adapter.createDetailView(activity, device, lastUpdate));
+                            }
+                        }
                     }
-                    activity.supportInvalidateOptionsMenu();
-                    adapter.attach(DeviceDetailFragment.this.getActivity());
-                    ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
-                    if (scrollView != null) {
-                        scrollView.removeAllViews();
-                        scrollView.addView(adapter.createDetailView(activity, device, lastUpdate));
-                    }
-                }
-            }
                 }));
     }
 
@@ -172,15 +172,15 @@ public class DeviceDetailFragment extends BaseFragment {
                         .setClass(getActivity(), FavoritesIntentService.class)
                         .putExtra(BundleExtraKeys.DEVICE, device)
                         .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        if (resultCode != ResultCodes.SUCCESS) return;
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                if (resultCode != ResultCodes.SUCCESS) return;
 
-                        Toast.makeText(getActivity(),
-                                isAdd ? R.string.context_favoriteadded : R.string.context_favoriteremoved,
-                                Toast.LENGTH_SHORT).show();
-                        update(false);
-                    }
+                                Toast.makeText(getActivity(),
+                                        isAdd ? R.string.context_favoriteadded : R.string.context_favoriteremoved,
+                                        Toast.LENGTH_SHORT).show();
+                                update(false);
+                            }
                         }));
                 break;
             }

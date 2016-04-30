@@ -30,6 +30,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -117,6 +120,12 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
@@ -147,7 +156,6 @@ public class TimerDetailFragment extends BaseFragment {
         createTargetStateSpinner(view);
         createTimerTypeSpinner(view);
         createSwitchTimeButton(view);
-        createSendAndResetButtons(view);
         createIsActiveCheckbox(view);
 
 
@@ -160,6 +168,26 @@ public class TimerDetailFragment extends BaseFragment {
 
         updateTargetDevice(targetDevice);
         updateTimerInformation();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.timer_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.reset:
+                setValuesForCurrentTimerDevice(timerDevice);
+                return true;
+            case R.id.save:
+                save();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void createSelectDeviceButton(View view) {
@@ -193,24 +221,6 @@ public class TimerDetailFragment extends BaseFragment {
             }
         });
 
-    }
-
-    private void createSendAndResetButtons(View view) {
-        Button resetButton = (Button) view.findViewById(R.id.reset);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setValuesForCurrentTimerDevice(timerDevice);
-            }
-        });
-
-        Button saveButton = (Button) view.findViewById(R.id.save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save();
-            }
-        });
     }
 
     private void createSwitchTimeButton(final View view) {
