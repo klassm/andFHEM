@@ -24,23 +24,43 @@
 
 package li.klass.fhem.appwidget;
 
+import com.google.common.collect.ImmutableList;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.Collections;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 
+import static com.tngtech.java.junit.dataprovider.DataProviders.$;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static li.klass.fhem.appwidget.WidgetConfiguration.escape;
 import static li.klass.fhem.appwidget.WidgetConfiguration.unescape;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(DataProviderRunner.class)
 public class WidgetConfigurationTest {
 
-    @Test
-    public void should_serialize_correctly() {
-        assertConfigurationSerialization(new WidgetConfiguration(5, WidgetType.DIM, "abc"));
-        assertConfigurationSerialization(new WidgetConfiguration(50000, WidgetType.STATUS, "def"));
-        assertConfigurationSerialization(new WidgetConfiguration(50000, WidgetType.STATUS, "d#ef"));
+    @DataProvider
+    public static Object[][] serializationProvider() {
+        return $$(
+                $(new WidgetConfiguration(5, WidgetType.DIM, ImmutableList.of("abc"), false)),
+                $(new WidgetConfiguration(5, WidgetType.DIM, ImmutableList.of("abc"), false)),
+                $(new WidgetConfiguration(50000, WidgetType.STATUS, ImmutableList.of("d#ef"), false)),
+                $(new WidgetConfiguration(50000, WidgetType.STATUS, ImmutableList.of("def", "hello"), false))
+        );
+    }
 
-        assertConfigurationSerialization(new WidgetConfiguration(50000, WidgetType.STATUS, "def", "hello"));
+    @Test
+    @UseDataProvider("serializationProvider")
+    public void should_serialize_correctly(WidgetConfiguration widgetConfiguration) {
+        String saveString = widgetConfiguration.toSaveString();
+        WidgetConfiguration loaded = WidgetConfiguration.fromSaveString(saveString);
+        assertThat(loaded).isEqualTo(widgetConfiguration);
     }
 
     @Test
@@ -59,56 +79,45 @@ public class WidgetConfigurationTest {
         assertThat(unescape(null)).isNull();
     }
 
-    @Test
-    public void should_deserialize_deprecated_WidgetConfigurations_with_payload_correctly() {
-        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#myDevice#" + WidgetType.STATUS.name() + "#abc");
 
-        assertThat(configuration.isOld).isTrue();
-        assertThat(configuration.widgetId).isEqualTo(123);
-        assertThat(configuration.payload).contains("myDevice", "abc");
-        assertThat(configuration.payload).hasSize(2);
-        assertThat(configuration.widgetType).isEqualTo(WidgetType.STATUS);
+    @DataProvider
+    public static Object[][] saveStringToConfigurationProvider() {
+        return $$(
+                $(new FromSaveStringTestCase()
+                        .withSaveString("123#" + WidgetType.STATUS.name() + "#abc")
+                        .thenExpect(new WidgetConfiguration(123, WidgetType.STATUS, ImmutableList.of("abc"), true))),
+                $(new FromSaveStringTestCase().withSaveString("123#" + WidgetType.STATUS.name())
+                        .thenExpect(new WidgetConfiguration(123, WidgetType.STATUS, Collections.<String>emptyList(), true))),
+                $(new FromSaveStringTestCase()
+                        .withSaveString(
+                                "{" +
+                                        "\"widgetId\": \"123\", " +
+                                        "\"widgetType\": \"STATUS\", " +
+                                        "\"payload\": [\"bla\", \"blub\"]" +
+                                        "}")
+                        .thenExpect(new WidgetConfiguration(123, WidgetType.STATUS, ImmutableList.of("bla", "blub"), false)))
+        );
     }
 
+    @UseDataProvider("saveStringToConfigurationProvider")
     @Test
-    public void should_deserialize_deprecated_WidgetConfigurations_without_payload_correctly() {
-        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#myDevice#" + WidgetType.STATUS.name());
-
-        assertThat(configuration.isOld).isTrue();
-        assertThat(configuration.widgetId).isEqualTo(123);
-        assertThat(configuration.payload).contains("myDevice");
-        assertThat(configuration.payload).hasSize(1);
-        assertThat(configuration.widgetType).isEqualTo(WidgetType.STATUS);
+    public void should_deserialize_save_string(FromSaveStringTestCase testCase) {
+        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(testCase.saveString);
+        assertThat(configuration).isEqualTo(testCase.expectedConfiguration);
     }
 
+    private static class FromSaveStringTestCase {
+        String saveString;
+        WidgetConfiguration expectedConfiguration;
 
-    @Test
-    public void should_deserialize_new_WidgetConfiguration_correctly() {
-        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#" + WidgetType.STATUS.name() + "#abc");
+        public FromSaveStringTestCase withSaveString(String saveString) {
+            this.saveString = saveString;
+            return this;
+        }
 
-        assertThat(configuration.isOld).isFalse();
-        assertThat(configuration.widgetId).isEqualTo(123);
-        assertThat(configuration.payload).contains("abc");
-        assertThat(configuration.payload).hasSize(1);
-        assertThat(configuration.widgetType).isEqualTo(WidgetType.STATUS);
-    }
-
-    @Test
-    public void should_handle_WidgetConfigurations_without_Payload() {
-        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#" + WidgetType.STATUS.name());
-
-        assertThat(configuration.isOld).isFalse();
-        assertThat(configuration.widgetId).isEqualTo(123);
-        assertThat(configuration.payload).isEmpty();
-        assertThat(configuration.widgetType).isEqualTo(WidgetType.STATUS);
-    }
-
-    private void assertConfigurationSerialization(WidgetConfiguration widgetConfiguration) {
-        String saveString = widgetConfiguration.toSaveString();
-        WidgetConfiguration loaded = WidgetConfiguration.fromSaveString(saveString);
-
-        assertThat(loaded.payload).isEqualTo(widgetConfiguration.payload);
-        assertThat(loaded.widgetId).isEqualTo(widgetConfiguration.widgetId);
-        assertThat(loaded.widgetType).isEqualTo(widgetConfiguration.widgetType);
+        public FromSaveStringTestCase thenExpect(WidgetConfiguration expectedConfiguration) {
+            this.expectedConfiguration = expectedConfiguration;
+            return this;
+        }
     }
 }
