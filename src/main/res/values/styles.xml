@@ -56,6 +56,15 @@
         </item>
     </style>
 
+    <style name="FullscreenTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorAccent">@android:color/white</item>
+    </style>
+
     <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">
         <item name="@android:windowBackground">@color/whitegrey</item>
         <item name="@android:textColor">@color/black</item>

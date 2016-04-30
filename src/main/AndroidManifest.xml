@@ -72,12 +72,12 @@
         <activity android:name="li.klass.fhem.activities.DuplicateInstallActivity" />
         <activity
             android:name="li.klass.fhem.activities.StartupActivity"
-            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="true"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:alwaysRetainTaskState="true"
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
