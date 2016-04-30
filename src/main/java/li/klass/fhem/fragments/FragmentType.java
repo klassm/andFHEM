@@ -35,38 +35,38 @@ import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
 
 public enum FragmentType {
-    FAVORITES(FavoritesFragment.class, R.string.favorites, null),
-    ROOM_LIST(RoomListFragment.class, R.string.roomList, null),
-    ALL_DEVICES(AllDevicesFragment.class, R.string.alldevices, RoomListFragment.class),
-    CONVERSION(ConversionFragment.class, R.string.conversion, null),
+    FAVORITES(FavoritesFragment.class, R.id.favorites, null),
+    ROOM_LIST(RoomListFragment.class, R.id.rooms, null),
+    ALL_DEVICES(AllDevicesFragment.class, R.id.all_devices, RoomListFragment.class),
+    CONVERSION(ConversionFragment.class, R.id.conversion, null),
     DEVICE_DETAIL(DeviceDetailFragment.class, DeviceNameListNavigationFragment.class),
     FROM_TO_WEEK_PROFILE(FromToWeekProfileFragment.class),
     INTERVAL_WEEK_PROFILE(IntervalWeekProfileFragment.class),
     FLOORPLAN(FloorplanFragment.class),
     PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
-    SEND_COMMAND(SendCommandFragment.class, R.string.send_command, null),
+    SEND_COMMAND(SendCommandFragment.class, R.id.send_command, null),
     DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
-    TIMER_OVERVIEW(TimerListFragment.class, R.string.timer, null),
+    TIMER_OVERVIEW(TimerListFragment.class, R.id.timer, null),
     TIMER_DETAIL(TimerDetailFragment.class),
     CONNECTION_LIST(ConnectionListFragment.class),
     CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class),
     WEB_VIEW(WebViewFragment.class),
-    OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class, R.string.widget_others, null);
+    OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;
-    private int fragmentTitle;
+    private int fragmentDrawerId;
 
     FragmentType(Class<? extends BaseFragment> fragmentClass) {
         this(fragmentClass, -1, null);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, int fragmentTitle,
+    FragmentType(Class<? extends BaseFragment> fragmentClass, int fragmentDrawerId,
                  Class<? extends BaseFragment> navigationFragment) {
         this.fragmentClass = fragmentClass;
-        this.fragmentTitle = fragmentTitle;
+        this.fragmentDrawerId = fragmentDrawerId;
         this.navigationFragment = navigationFragment;
     }
 
@@ -82,6 +82,15 @@ public enum FragmentType {
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    public static FragmentType getFragmentFor(int drawerId) {
+        for (FragmentType fragmentType : FragmentType.values()) {
+            if (fragmentType.fragmentDrawerId == drawerId) {
+                return fragmentType;
+            }
+        }
+        return null;
     }
 
     public static FragmentType getFragmentFor(Class<? extends BaseFragment> clazz) {
@@ -110,10 +119,10 @@ public enum FragmentType {
     }
 
     public boolean isTopLevelFragment() {
-        return fragmentTitle != -1;
+        return fragmentDrawerId != -1;
     }
 
-    public int getFragmentTitle() {
-        return fragmentTitle;
+    public int getDrawerMenuId() {
+        return fragmentDrawerId;
     }
 }

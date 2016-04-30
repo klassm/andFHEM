@@ -25,6 +25,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -45,15 +46,13 @@
 
         </li.klass.fhem.widget.SwipeRefreshLayout>
 
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="300dp"
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_drawer"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="#fff"
-            android:choiceMode="singleChoice"
-            android:divider="#e3e3e3"
-            android:dividerHeight="0.1dp"
-            android:listSelector="@drawable/theme_listview_item"/>
+            android:fitsSystemWindows="true"
+            app:menu="@menu/drawer" />
+
     </android.support.v4.widget.RepairedDrawerLayout>
 </LinearLayout>

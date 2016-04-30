@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/main_items"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/all_devices"
+            android:checked="true"
+            android:icon="@drawable/all_devices"
+            android:title="@string/alldevices" />
+        <item
+            android:id="@+id/favorites"
+            android:icon="@drawable/favorites"
+            android:title="@string/favorites" />
+        <item
+            android:id="@+id/rooms"
+            android:icon="@drawable/room_list"
+            android:title="@string/roomList" />
+        <item
+            android:id="@+id/timer"
+            android:icon="@drawable/timer"
+            android:title="@string/timer" />
+        <item
+            android:id="@+id/send_command"
+            android:icon="@drawable/send_command"
+            android:title="@string/send_command" />
+        <item
+            android:id="@+id/conversion"
+            android:icon="@drawable/conversion"
+            android:title="@string/conversion" />
+    </group>
+    <group android:id="@+id/secondary_items">
+        <item
+            android:id="@+id/menu_settings"
+            android:icon="@drawable/ic_menu_prefs"
+            android:title="@string/preferences" />
+        <item
+            android:id="@+id/menu_help"
+            android:icon="@drawable/ic_menu_help"
+            android:title="@string/help" />
+        <item
+            android:id="@+id/menu_premium"
+            android:icon="@drawable/ic_menu_premium"
+            android:title="@string/premium" />
+        <item
+            android:id="@+id/menu_about"
+            android:icon="@drawable/ic_menu_info"
+            android:title="@string/about" />
+    </group>
+</menu>

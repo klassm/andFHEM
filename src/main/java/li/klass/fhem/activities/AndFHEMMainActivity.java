@@ -35,6 +35,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -43,11 +44,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.common.base.Optional;
@@ -60,7 +58,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.AvailableConnectionDataAdapter;
-import li.klass.fhem.activities.core.NavigationDrawerAdapter;
 import li.klass.fhem.activities.core.UpdateTimerTask;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
@@ -95,6 +92,7 @@ import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
 public class AndFHEMMainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
 
     private class Receiver extends BroadcastReceiver {
@@ -179,8 +177,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     public static final String TAG = AndFHEMMainActivity.class.getName();
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
     public static final String CONTENT_TAG = "CONTENT_TAG";
-
-    protected Menu optionsMenu;
+    private static final String STATE_DRAWER_ID = "drawer_id";
 
     @Inject
     ApplicationProperties applicationProperties;
@@ -198,10 +195,12 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     private Timer timer;
     private RepairedDrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private SwipeRefreshLayout refreshLayout;
+    private NavigationView navigationView;
+
     private boolean saveInstanceStateCalled;
+    private int mSelectedDrawerId = -1;
 
     private AvailableConnectionDataAdapter availableConnectionDataAdapter;
 
@@ -282,30 +281,80 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         saveInstanceStateCalled = true;
+        outState.putInt(STATE_DRAWER_ID, mSelectedDrawerId);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mSelectedDrawerId = savedInstanceState.getInt(STATE_DRAWER_ID, -1);
+        if (mSelectedDrawerId > 0) {
+            navigationView.getMenu().findItem(mSelectedDrawerId).setChecked(true);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+        switch (menuItem.getItemId()) {
+            case R.id.menu_settings: {
+                Intent settingsIntent = new Intent(this, PreferencesActivity.class);
+                startActivityForResult(settingsIntent, RESULT_OK);
+                return true;
+            }
+            case R.id.menu_help: {
+                Uri helpUri = Uri.parse(ApplicationUrls.HELP_PAGE);
+                Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
+                startActivity(helpIntent);
+                return true;
+            }
+            case R.id.menu_premium: {
+                Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
+                premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
+                sendBroadcast(premiumIntent);
+                return true;
+            }
+            case R.id.menu_about: {
+                String version;
+                try {
+                    String pkg = getPackageName();
+                    version = getPackageManager().getPackageInfo(pkg, 0).versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    version = "?";
+                }
+                DialogUtil.showAlertDialog(this, R.string.about,
+                        "Matthias Klass\r\nVersion: " + version + "\r\n" +
+                                "andFHEM.klass.li\r\nandFHEM@klass.li\r\n" + getPackageName());
+                return true;
+            }
+        }
+
+        FragmentType fragmentType = FragmentType.getFragmentFor(menuItem.getItemId());
+        if (fragmentType == null) {
+            return false;
+        }
+
+        if (fragmentType == FragmentType.TIMER_OVERVIEW && Build.VERSION.SDK_INT < 11) {
+            String text = String.format(getString(R.string.feature_requires_android_version), 3);
+            DialogUtil.showAlertDialog(AndFHEMMainActivity.this, R.string.android_version, text);
+        } else {
+            switchToFragment(fragmentType, new Bundle());
+        }
+
+        return true;
     }
 
     private void initDrawerLayout() {
         mDrawerLayout = (RepairedDrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerList.setAdapter(new NavigationDrawerAdapter(this));
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FragmentType fragmentType = (FragmentType) view.getTag();
-
-                if (fragmentType == FragmentType.TIMER_OVERVIEW && Build.VERSION.SDK_INT < 11) {
-                    String text = String.format(getString(R.string.feature_requires_android_version), 3);
-                    DialogUtil.showAlertDialog(AndFHEMMainActivity.this, R.string.android_version, text);
-                    return;
-                }
-
-                switchToFragment(fragmentType, new Bundle());
-                mDrawerLayout.closeDrawers();
-            }
-        });
+        navigationView = (NavigationView) findViewById(R.id.nav_drawer);
+        navigationView.setNavigationItemSelectedListener(this);
+        if (getPackageName().equals(PREMIUM_PACKAGE)) {
+            navigationView.getMenu().removeItem(R.id.menu_premium);
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -327,6 +376,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     private void initSwipeRefreshLayout() {
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        assert refreshLayout != null;
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setChildScrollDelegate(this);
         refreshLayout.setColorSchemeColors(
@@ -584,6 +634,15 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
 
             setContent(navigationFragment, contentFragment);
+
+            int drawerId = fragmentType.getDrawerMenuId();
+            if (drawerId > 0) {
+                MenuItem item = navigationView.getMenu().findItem(drawerId);
+                if (item != null) {
+                    item.setChecked(true);
+                }
+                mSelectedDrawerId = drawerId;
+            }
         }
     }
 
@@ -666,51 +725,14 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressLint("NewApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        if (getPackageName().equals(PREMIUM_PACKAGE)) {
-            menu.removeItem(R.id.menu_premium);
-        }
-        this.optionsMenu = menu;
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-                mDrawerLayout.closeDrawer(mDrawerList);
+        if (item.getItemId() == android.R.id.home) {
+            if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
             } else {
-                mDrawerLayout.openDrawer(mDrawerList);
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
-        } else if (id == R.id.menu_settings) {
-            Intent settingsIntent = new Intent(this, PreferencesActivity.class);
-            startActivityForResult(settingsIntent, RESULT_OK);
-            return true;
-        } else if (id == R.id.menu_help) {
-            Uri helpUri = Uri.parse(ApplicationUrls.HELP_PAGE);
-            Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
-            startActivity(helpIntent);
-            return true;
-        } else if (id == R.id.menu_premium) {
-            Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
-            premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
-            sendBroadcast(premiumIntent);
-            return true;
-        } else if (id == R.id.menu_about) {
-            String version;
-            try {
-                String pkg = getPackageName();
-                version = getPackageManager().getPackageInfo(pkg, 0).versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                version = "?";
-            }
-            DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version + "\r\n" +
-                    "andFHEM.klass.li\r\nandFHEM@klass.li\r\n" + getPackageName());
             return true;
         }
 
