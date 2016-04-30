@@ -49,7 +49,7 @@
     <string name="maxDay">Tagesmaximum</string>
     <string name="maxMonth">Monatsmaximum</string>
     <string name="isRaining">Regnet es?</string>
-    <string name="sunshine">Sunshine</string>
+    <string name="sunshine">Sonnenschein</string>
     <string name="desiredTemperature">Wunschtemperatur</string>
     <string name="comfortTemperature">Komfort-Temperatur</string>
     <string name="ecoTemperature">Eco-Temperatur</string>
@@ -64,8 +64,8 @@
     <string name="windAvgSpeed">Wind Durchschnitt</string>
     <string name="windSpeed">Windgeschwindigkeit</string>
     <string name="windDirection">Windrichtung</string>
-    <string name="uvValue">UV Wert</string>
-    <string name="uvRisk">UV Risiko</string>
+    <string name="uvValue">UV-Wert</string>
+    <string name="uvRisk">UV-Risiko</string>
     <string name="rooms">Räume</string>
     <string name="counterA">Zähler A</string>
     <string name="counterB">Zähler B</string>
@@ -73,7 +73,7 @@
     <string name="inputB">Eingang B</string>
     <string name="inputC">Eingang C</string>
     <string name="inputD">Eingang D</string>
-    <string name="counterReadingTariff1">Zählerstand Tarif1</string>
+    <string name="counterReadingTariff1">Zählerstand Tarif 1</string>
     <string name="counterReading">Zählerstand</string>
     <string name="present">Anwesend</string>
     <string name="currentUsage">Aktueller Verbrauch</string>
@@ -93,8 +93,8 @@
     <string name="definition">Definition</string>
     <string name="regression">Regression</string>
     <string name="sum">Summe</string>
-    <string name="mac">MAC Adresse</string>
-    <string name="ip">IP Adresse</string>
+    <string name="mac">MAC-Adresse</string>
+    <string name="ip">IP-Adresse</string>
     <string name="wake">Wecken</string>
     <string name="isRunning">Läuft gerade?</string>
     <string name="shutdown">Ausschalten</string>
@@ -112,31 +112,31 @@
     <string name="error">Fehler!</string>
     <string name="error_send">Letzten Fehler senden</string>
     <string name="error_send_content">AndFHEM kann den letzten Fehler als Mail an den Entwickler senden. Fortfahren?</string>
-    <string name="error_send_no_error">Es kann kein Error gesendet werden, da kein Error registriert wurde.</string>
+    <string name="error_send_no_error">Es kann kein Fehler gesendet werden, da kein Fehler registriert wurde.</string>
     <string name="errorDeviceListLoad">Konnte %1$s Gerät(e) nicht laden (Typen: %2$s)!</string>
-    <string name="errorOutdatedData">Die Sensor Daten scheinen veraltet zu sein. Bitte prüfe die Geräteverbindung.</string>
-    <string name="errorDuplicateInstall">Die Applikation wurde zweimal installiert? Hast du die Premium Version und die normale Version parallel installiert? Bitte stelle sicher, dass nur eine Version installiert ist.</string>
+    <string name="errorOutdatedData">Die Sensordaten scheinen veraltet zu sein. Bitte prüfen Sie die Geräteverbindung.</string>
+    <string name="errorDuplicateInstall">Die App wurde scheinbar zweimal installiert. Haben Sie vielleicht die Premium-Version und die normale Version parallel installiert? Bitte stellen Sie sicher, dass nur eine Version installiert ist.</string>
     <string name="errorExternalStorageNotPresent">Kein Zugriff auf das Dateisystem.</string>
-    <string name="application_log_send">Sende Applikations-Log</string>
+    <string name="application_log_send">Protokoll senden</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>
     <string name="set_value">Wert setzen</string>
     <string name="set">Ändern</string>
-    <string name="android_version">Android Version</string>
+    <string name="android_version">Android-Version</string>
     <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
     <string name="unknown">unbekannt</string>
     <string name="type">Typ</string>
-    <string name="about">About</string>
+    <string name="about">Über andFHEM</string>
     <string name="commandAccepted">Kommando akzeptiert?</string>
-    <string name="up">hoch</string>
-    <string name="down">runter</string>
-    <string name="stop">stop</string>
+    <string name="up">Hoch</string>
+    <string name="down">Runter</string>
+    <string name="stop">Stop</string>
     <string name="visibility">Sichtbarkeit</string>
     <string name="rawValue">Rohwert</string>
     <string name="content">Inhalt</string>
     <string name="fillPercentage">Füllung</string>
-    <string name="maximumContent">Maximal Volumen</string>
+    <string name="maximumContent">Maximale Füllmenge</string>
     <string name="currentSwitchTime">Aktuelle Schaltdauer</string>
     <string name="currentSwitchDevice">Aktuelles Gerät</string>
     <string name="lastSwitchTime">Letzter Schaltvorgang</string>
@@ -147,18 +147,18 @@
     <string name="deactivated">deaktiviert</string>
     <string name="brightness">Helligkeit</string>
     <string name="motion">Bewegung</string>
-    <string name="thermostatThresholdOn">Thermostat On-Schwelle</string>
-    <string name="thermostatThresholdOff">Thermostat Off-Schwelle</string>
-    <string name="valveThresholdOff">Ventil Off-Schwelle</string>
-    <string name="valveThresholdOn">Ventil On-Schwelle</string>
-    <string name="ecoThresholdOn">Eco Off-Schwelle</string>
-    <string name="ecoThresholdOff">Eco On-Schwelle</string>
-    <string name="excludedDevices">Ausgenommene-Geräte</string>
+    <string name="thermostatThresholdOn">Thermostat-Anschaltschwelle</string>
+    <string name="thermostatThresholdOff">Thermostat-Ausschaltschwelle</string>
+    <string name="valveThresholdOff">Ventil-Anschaltschwelle</string>
+    <string name="valveThresholdOn">Ventil-Ausschaltschwelle</string>
+    <string name="ecoThresholdOn">Eco-Anschaltschwelle</string>
+    <string name="ecoThresholdOff">Eco-Ausschaltschwelle</string>
+    <string name="excludedDevices">Ausgenommene Geräte</string>
     <string name="idleDevices">Leerlauf-Geräte</string>
     <string name="demandDevices">Abruf-Geräte</string>
     <string name="target">Ziel</string>
     <string name="noGraphEntries">Keine Graph-Einträge gefunden, die entsprechend zum ausgewählten Zeitraum passen!
-        Stehen im FileLog Daten?
+        Sind im FileLog Daten vorhanden?
     </string>
     <string name="delete">Löschen</string>
     <string name="deleteConfirmIntervalText">Möchten Sie das Intervall wirklich löschen?</string>
@@ -176,7 +176,7 @@
     <string name="apiKey">API-Key</string>
     <string name="gcmAlreadyRegistered">Gerät ist bereits registriert!</string>
     <string name="gcmRegistrationNotActive">GCM ist nicht aktiv! Stimmt die Projekt-ID?</string>
-    <string name="gcmRegisterThis">Registriere dieses Gerät</string>
+    <string name="gcmRegisterThis">Dieses Gerät registrieren</string>
     <string name="gcmSuccessfullyRegistered">Gerät wurde registriert.</string>
     <string name="notificationAllUpdates">Alle Aktualisierungen</string>
     <string name="notificationStateUpdates">Nur Status-Updates</string>
@@ -191,7 +191,7 @@
     <string name="callMonEventConnect">Verbunden</string>
     <string name="callMonEventDisconnect">Aufgelegt</string>
     <string name="callMonEventMissed">Verpasst</string>
-    <string name="webcmd">WebCmds</string>
+    <string name="webcmd">Kommandos</string>
     <string name="temperatureMinimum">Min-Temperatur</string>
     <string name="temperatureMaximum">Max-Temperatur</string>
     <string name="sunrise">Sonnenaufgang</string>
@@ -207,7 +207,7 @@
     <string name="currentTitle">Aktueller Titel</string>
     <string name="serviceName">Service-Name</string>
     <string name="shutterPosition">Rolladen-Position</string>
-    <string name="sendEachColorChange">Sende jede Farbänderung</string>
+    <string name="sendEachColorChange">Jede Farbänderung senden</string>
     <string name="level">Level</string>
     <string name="scene">Szene</string>
     <string name="cost">Kosten</string>
@@ -220,9 +220,9 @@
     <string name="wrongPassword">Falsches Passwort!</string>
     <string name="password">Passwort</string>
     <string name="login">Login</string>
-    <string name="fatFreeMass">Masse fettfrei</string>
-    <string name="fatMass">Masse Fett</string>
-    <string name="fatRatio">Anteil Fett</string>
+    <string name="fatFreeMass">Fettfreie Masse</string>
+    <string name="fatMass">Fett-Masse</string>
+    <string name="fatRatio">Fettanteil</string>
     <string name="heartPulse">Puls</string>
     <string name="height">Größe</string>
     <string name="weight">Gewicht</string>
@@ -265,7 +265,7 @@
     <string name="connectionURLDesc">z.B. http://192.168.0.1:8083/fhem</string>
     <string name="connectionAlternateUrl">Alternative URL</string>
     <string name="connectionAlternateUrlPlaceholder">z.B. http://example.dyndns.com:8083/fhem</string>
-    <string name="connectionAlternateUrlDesc">Falls keine Verbindung zur primären URL aufgebaut werden kann wird der Aufbau einer Verbindung zur sekundären URL versucht. Dies ist vor allem für Router nötig, die keine externen Requests zurück ins eigene Netz leiten können.</string>
+    <string name="connectionAlternateUrlDesc">Falls keine Verbindung zur primären URL aufgebaut werden kann, wird der Aufbau einer Verbindung zur sekundären URL versucht. Dies ist vor allem für Router nötig, die keine externen Anfragen zurück ins eigene Netz leiten können.</string>
     <string name="connectionIP">IP</string>
     <string name="connectionIPDesc">z.B. 192.168.0.1</string>
     <string name="connectionPort">Port</string>
@@ -274,27 +274,27 @@
     <string name="connectionUrlHttp">URL muss mit "http" beginnen!</string>
     <string name="connectionCurrent">Aktuelle Verbindung</string>
     <string name="connectionClientCertificate">Client-Zertifikat</string>
-    <string name="connectionClientCertificatePassword">Client-Zertifikat Passwort</string>
+    <string name="connectionClientCertificatePassword">Passwort für Client-Zertifikat</string>
     <string name="connectionClientCertificatePasswordDesc">(optional)</string>
     <string name="connectionClientCertificateDesc">(optional)</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
     <string name="update">Aktualisieren</string>
-    <string name="loading">Laden …</string>
-    <string name="executing">Ausführend …</string>
-    <string name="updatingDeviceList">Aktualisiere Geräteliste …</string>
-    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s…</string>
+    <string name="loading">Lade\u2026</string>
+    <string name="executing">Führe aus\u2026</string>
+    <string name="updatingDeviceList">Aktualisiere Geräteliste \u2026</string>
+    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s\u2026</string>
     <string name="help">Hilfe</string>
-    <string name="command_execution_result">Kommando Ergebnis</string>
+    <string name="command_execution_result">Kommando-Ergebnis</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
     <string name="context_removefavorite">Aus Favoriten entfernen</string>
-    <string name="context_favoriteadded">Favorit wurde hinzugefügt!</string>
-    <string name="context_favoriteremoved">Favorit wurde gelöscht!</string>
+    <string name="context_favoriteadded">Favorit wurde hinzugefügt.</string>
+    <string name="context_favoriteremoved">Favorit wurde gelöscht.</string>
 
     <string name="context_rename">Umbenennen</string>
-    <string name="context_alias">Setze Alias</string>
+    <string name="context_alias">Alias vergeben</string>
     <string name="context_delete">Löschen</string>
     <string name="context_move">Verschieben</string>
     <string name="context_notification">Benachrichtigungen</string>
@@ -314,67 +314,67 @@
     <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
     <string name="prefAppearancePreferencesCategory">Darstellung</string>
     <string name="prefErrorsPreferencesCategory">Fehlerbehandlung</string>
-    <string name="prefErrorSendSummary">Sende den letzten Fehler. Vorsicht: Dies bezieht sich nur auf das Laden neuer Inhalte vom Server</string>
-    <string name="prefApplicationLogSendSummary">Sende das Applikationslog. Bitte diesen Knopf verwenden, wenn der Support detaillierte Informationen zum Applikationsstatus anfordert</string>
+    <string name="prefErrorSendSummary">Den letzten Fehler senden. Vorsicht: Dies bezieht sich nur auf das Laden neuer Inhalte vom Server</string>
+    <string name="prefApplicationLogSendSummary">Das App-Protokoll senden. Bitte diesen Knopf verwenden, wenn der Support detaillierte Informationen zum Status der App anfordert</string>
     <string name="prefWidgetCategory">Widgets</string>
-    <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
-    <string name="prefShowHiddenDevicesSummaryOn">Geräte aus dem Raum \'hidden\' werden angezeigt</string>
-    <string name="prefShowHiddenDevicesSummaryOff">Geräte aus dem Raum \'hidden\' werden nicht angezeigt</string>
-    <string name="prefDefaultTimespan">Graph Zeitspanne</string>
+    <string name="prefShowHiddenDevices">Versteckte Geräte anzeigen</string>
+    <string name="prefShowHiddenDevicesSummaryOn">Geräte des Raumes \'hidden\' werden angezeigt</string>
+    <string name="prefShowHiddenDevicesSummaryOff">Geräte des Raumes \'hidden\' werden nicht angezeigt</string>
+    <string name="prefDefaultTimespan">Graph-Zeitspanne</string>
     <string name="prefDefaultTimespanSummary">Standardmäßig wird eine Zeitspanne von \'%1$s\' angezeigt</string>
-    <string name="prefAutoUpdate">Automatischer Update</string>
-    <string name="prefAutoUpdateSummary">Soweit die Applikation läuft: aktualisiere die Geräteliste %1$s automatisch</string>
-    <string name="prefWidgetRemoteUpdate">Remote Aktualisierung</string>
-    <string name="prefWidgetRemoteUpdateSummaryOn">Widget Updates dürfen neue Daten vom FHEM-Server holen</string>
-    <string name="prefWidgetRemoteUpdateSummaryOff">Widget Updates dürfen keine neuen Daten vom FHEM-Server holen</string>
-    <string name="prefDeviceColumnWidth">Geräte Spaltenbreite</string>
+    <string name="prefAutoUpdate">Automatisches Update</string>
+    <string name="prefAutoUpdateSummary">Geräteliste %1$s automatisch aktualisieren, solange das Programm läuft</string>
+    <string name="prefWidgetRemoteUpdate">Remote-Aktualisierung</string>
+    <string name="prefWidgetRemoteUpdateSummaryOn">Widgetupdates können neue Daten vom FHEM-Server holen</string>
+    <string name="prefWidgetRemoteUpdateSummaryOff">Widgetupdates holen keine neuen Daten vom FHEM-Server</string>
+    <string name="prefDeviceColumnWidth">Geräte-Spaltenbreite</string>
     <string name="prefDeviceColumnWidthSummary">Spalten in den Gerätelisten haben eine Mindestbreite von %1$s dp</string>
-    <string name="prefDeviceListPaddingRight">Geräteliste Abstand rechts</string>
+    <string name="prefDeviceListPaddingRight">Gerätelisten-Abstand rechts</string>
     <string name="prefDeviceListPaddingRightSummary">Die Geräteliste beginnt %1$s dp von rechts</string>
-    <string name="prefWidgetUpdateTimeWLAN">WLAN Aktualisierungsintervall</string>
-    <string name="prefWidgetUpdateTimeWLANSummary">Wenn das Gerät mit einem WLAN verbunden ist werden Widgets alle %1$s aktualisiert</string>
-    <string name="prefWidgetUpdateTimeMobile">Mobilfunk Aktualisierungsintervall</string>
-    <string name="prefWidgetUpdateTimeMobileSummary">Wenn das Gerät nicht mit einem WLAN verbunden ist werden Widgets alle %1$s aktualisiert</string>
-    <string name="prefDeviceFunctionalityOrder">Gerätefunktion Reihenfolge</string>
-    <string name="prefDeviceFunctionalityOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Gerätefunktionen</string>
-    <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
-    <string name="prefUpdateOnApplicationStartSummaryOn">Hole eine neue Geräteliste wenn die Applikation gestartet wird</string>
-    <string name="prefUpdateOnApplicationStartSummaryOff">Hole keine neue Geräteliste wenn die Applikation gestartet wird</string>
-    <string name="prefShowSetValueButtons">\"Ändern\" Knöpfe für Schieber</string>
-    <string name="prefShowSetValueButtonsSummaryOn">Für Schieberegler wird zusätzlich ein \'Ändern\' Knopf angezeigt</string>
-    <string name="prefShowSetValueButtonsSummaryOff">Für Schieberegler wird kein \'Ändern\' Knopf angezeigt</string>
-    <string name="prefGCMProjectId">GCM Projektnummer</string>
-    <string name="prefGCMProjectIdSummary">Die GCM Projektnummer ist \'%1$s\'. Für Informationen zur Einrichtung von GCM siehe die Installationsanleitung in der Hilfe</string>
+    <string name="prefWidgetUpdateTimeWLAN">WLAN-Aktualisierungsintervall</string>
+    <string name="prefWidgetUpdateTimeWLANSummary">Wenn das Gerät mit einem WLAN verbunden ist, werden Widgets alle %1$s aktualisiert</string>
+    <string name="prefWidgetUpdateTimeMobile">Mobilfunk-Aktualisierungsintervall</string>
+    <string name="prefWidgetUpdateTimeMobileSummary">Wenn das Gerät nicht mit einem WLAN verbunden ist, werden Widgets alle %1$s aktualisiert</string>
+    <string name="prefDeviceFunctionalityOrder">Gerätefunktions-Reihenfolge</string>
+    <string name="prefDeviceFunctionalityOrderSummary">Angezeigte Gerätefunktioneren und deren Reihenfolge konfigurieren</string>
+    <string name="prefUpdateOnApplicationStart">Aktualisierung beim Start</string>
+    <string name="prefUpdateOnApplicationStartSummaryOn">Beim Start der App die Geräteliste aktualisieren</string>
+    <string name="prefUpdateOnApplicationStartSummaryOff">Beim Start der App die Geräteliste nicht aktualisieren</string>
+    <string name="prefShowSetValueButtons">\'Ändern\'-Knöpfe für Schieber</string>
+    <string name="prefShowSetValueButtonsSummaryOn">Für Schieberegler zusätzlich einen \'Ändern\'-Knopf anzeigen</string>
+    <string name="prefShowSetValueButtonsSummaryOff">Für Schieberegler keinen \'Ändern\'-Knopf anzeigen</string>
+    <string name="prefGCMProjectId">GCM-Projektnummer</string>
+    <string name="prefGCMProjectIdSummary">Die GCM-Projektnummer ist \'%1$s\'. Informationen zur Einrichtung von GCM können der Installationsanleitung in der Hilfe entnommen werden</string>
     <string name="prefGcmWidgetUpdate">Widget-Aktualisierug bei GCM-Nachricht</string>
     <string name="prefGcmWidgetUpdateSummaryOn">Bei Eingang einer GCM-Nachricht mit neuen Statusinformationen eines Gerätes werden die Widgets aktualisiert</string>
     <string name="prefGcmWidgetUpdateSummaryOff">Bei Eingang einer GCM-Nachricht mit neuen Statusinformationen eines Gerätes werden die Widgets nicht aktualisiert</string>
     <string name="prefStartupView">Start-Ansicht</string>
-    <string name="prefStartupViewSummary">Beim Applikationsstart wird \'%1$s\' angezeigt</string>
+    <string name="prefStartupViewSummary">Beim Start der App \'%1$s\' anzeigen</string>
     <string name="prefConnectionTimeout">Verbindungs-Wartezeit</string>
-    <string name="prefConnectionTimeoutSummary">Beende die Verbindung wenn der Server nach %1$s Sekunden nicht reagiert</string>
-    <string name="prefCommandExecutionRetries">Kommando Wiederholungen</string>
-    <string name="prefCommandExecutionRetriesSummary">Versuche ein Kommando %1$s mal zu senden, wenn die Ausführung fehlschlägt.</string>
+    <string name="prefConnectionTimeoutSummary">Verbindung beenden, wenn der Server nach %1$s Sekunden nicht reagiert</string>
+    <string name="prefCommandExecutionRetries">Kommando-Wiederholungen</string>
+    <string name="prefCommandExecutionRetriesSummary">Ein Kommando wird bis zu %1$s gesendet, wenn die Ausführung fehlschlägt.</string>
     <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
     <string name="prefFHEMWEBDeviceName">FHEMWEB-Gerätename</string>
-    <string name="prefFHEMWEBDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung (%1$s), so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
+    <string name="prefFHEMWEBDeviceNameSummary">Passt ein FHEMWEB-Gerätename zum Inhalt dieser Einstellung (%1$s), so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
     <string name="prefApplicationPassword">Passwort</string>
-    <string name="prefApplicationPasswordSummary">Passwort, welches beim Applikationsstart abgefragt wird.</string>
-    <string name="prefClearTrustedCertificatesSummary">Entferne alle Zertifikate aus dem Applikations Trust-Store</string>
+    <string name="prefApplicationPasswordSummary">Passwort, welches beim Start der App abgefragt wird.</string>
+    <string name="prefClearTrustedCertificatesSummary">Alle Zertifikate aus dem App-Trust-Store entfernen</string>
     <string name="prefClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
     <string name="prefClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
     <string name="prefVoiceCommand">Sprachkommandos</string>
-    <string name="prefVoiceCommandSummary">Aktiviere andFHEM als Eingabehilfe um Sprachkommandos zu verwenden. Sprachkommandos funktionieren nur in andFHEM Premium!</string>
+    <string name="prefVoiceCommandSummary">andFHEM muss als Eingabehilfe eingerichtet werden, um Sprachkommandos zu verwenden. Sprachkommandos funktionieren nur in andFHEM Premium!</string>
 
-    <string name="error_update">Error während Update Vorgang.</string>
+    <string name="error_update">Fehler während des Update-Vorgangs.</string>
     <string name="error_timeout">Zeitüberschreitung der Anforderung.</string>
-    <string name="error_host_connection">Keine Verbindung zum FHEM Server.</string>
-    <string name="error_device_list_parse">Konnte xml Geräte Liste nicht lesen.</string>
-    <string name="error_authentication">Falscher Benutzer / Passwort.</string>
-    <string name="error_invalid_content">Invalider Inhalt wurde geladen. Ist die URL wirklich richtig?</string>
-    <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server Logs lesen.</string>
+    <string name="error_host_connection">Keine Verbindung zum FHEM-Server.</string>
+    <string name="error_device_list_parse">Geräteliste konnte nicht gelesen werden.</string>
+    <string name="error_authentication">Falscher Benutzername oder Passwort.</string>
+    <string name="error_invalid_content">Ungültiger Inhalt wurde geladen. Ist die URL wirklich richtig?</string>
+    <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server-Logs lesen.</string>
     <string name="error_bad_request">Fehlerhafte Anfrage (400)"</string>
     <string name="error_not_found">Seite nicht gefunden (404)"</string>
-    <string name="error_internal">Interner Fehler. Bitte nochmal versuchen."</string>
+    <string name="error_internal">Interner Fehler. Bitte noch einmal versuchen."</string>
     <string name="error_timer_name_spaces">Der Name von Zeitschaltuhren darf keine Leerzeichen enthalten!</string>
     <string name="retry">Wiederholen</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
@@ -388,36 +388,36 @@
     <string name="doneTitle">Fertig!</string>
     <string name="switchDelayNotification">Die Konfiguration wurde gespeichert. Es kann eine Weile dauern bis die Konfiguration im Gerät übernommen ist.</string>
 
-    <string name="temperatureGraph">Temperatur Graph</string>
-    <string name="temperatureHumidityGraph">Temperatur &amp; Luftfeuchtigkeit Graph</string>
-    <string name="temperatureHumidityDewpointGraph">Temperatur &amp; Luftfeuchtigkeit &amp; Taupunkt Graph</string>
-    <string name="temperatureActuatorGraph">Temperatur &amp; Regler Graph</string>
-    <string name="brightnessSunshineGraph">Helligkeit &amp; Sonneneinstrahlung Graph</string>
-    <string name="brightnessGraph">Helligkeit Graph</string>
-    <string name="rainGraph">Regen Graph</string>
-    <string name="humidityGraph">Luftfeuchtigkeit Graph</string>
-    <string name="windGraph">Wind Graph</string>
-    <string name="actuatorGraph">Regler Graph</string>
-    <string name="pressureGraph">Luftdruck Graph</string>
-    <string name="usageGraph">Verbrauch Graph</string>
-    <string name="usageGraphCumulative">Verbrauch Graph (kumuliert)</string>
-    <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
-    <string name="stateGraph">Zustand-Graph</string>
-    <string name="contentGraph">Inhalt Graph</string>
-    <string name="dewpointGraph">Taupunkt Graph</string>
-    <string name="powerGraph">Energie Graph</string>
-    <string name="co2Graph">CO2 Graph</string>
-    <string name="weightGraph">Gewichtsgraph</string>
+    <string name="temperatureGraph">Temperatur-Graph</string>
+    <string name="temperatureHumidityGraph">Temperatur- &amp; Luftfeuchtigkeits-Graph</string>
+    <string name="temperatureHumidityDewpointGraph">Temperatur-, Luftfeuchtigkeits- &amp; Taupunkt-Graph</string>
+    <string name="temperatureActuatorGraph">Temperatur- &amp; Regler-Graph</string>
+    <string name="brightnessSunshineGraph">Helligkeits- &amp; Sonneneinstrahlungs-Graph</string>
+    <string name="brightnessGraph">Helligkeits-Graph</string>
+    <string name="rainGraph">Regen-Graph</string>
+    <string name="humidityGraph">Luftfeuchtigkeits-Graph</string>
+    <string name="windGraph">Wind-Graph</string>
+    <string name="actuatorGraph">Regler-Graph</string>
+    <string name="pressureGraph">Luftdruck-Graph</string>
+    <string name="usageGraph">Verbrauchs-Graph</string>
+    <string name="usageGraphCumulative">Verbrauchs-Graph (kumuliert)</string>
+    <string name="windSpeedGraph">Windgeschwindigkeits-Graph</string>
+    <string name="stateGraph">Zustands-Graph</string>
+    <string name="contentGraph">Inhalts-Graph</string>
+    <string name="dewpointGraph">Taupunkt-Graph</string>
+    <string name="powerGraph">Energie-Graph</string>
+    <string name="co2Graph">CO\u2082-Graph</string>
+    <string name="weightGraph">Gewichts-Graph</string>
     <string name="averagesGraph">Durchschnittswerte</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
     <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
     <string name="yAxisTemperature">Temperatur (°C)</string>
-    <string name="yAxisRain">Regen (l/m2)</string>
+    <string name="yAxisRain">Regen (l/m\u00b2)</string>
     <string name="yAxisActuator">Regler (%)</string>
     <string name="yAxisPressure">Luftdruck (hPa)</string>
     <string name="yAxisPressureNN">Luftdruck NN (hPa)</string>
-    <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
+    <string name="yAxisRainRate">Regenstärke (mm/h)</string>
     <string name="yAxisCurrentUsageW">aktueller Verbrauch (W)</string>
     <string name="yAxisCurrentUsagekW">aktueller Verbrauch (kW)</string>
     <string name="yAxisCurrentPowerW">aktuelle Leistung (W)</string>
@@ -427,7 +427,7 @@
     <string name="yAxisLitreContent">Inhalt (l)</string>
     <string name="yAxisEnergy">Energie (W)</string>
     <string name="yAxisRaw">Roh-Wert</string>
-    <string name="yAxisCO2">co2 (ppm)</string>
+    <string name="yAxisCO2">CO\u2082 (ppm)</string>
     <string name="yAxisWeight">Gewicht (kg)</string>
     <string name="yAxisFatRatio">Fettanteil</string>
 
@@ -436,7 +436,7 @@
     <string name="startTime">Start-Zeit</string>
     <string name="endTime">End-Zeit</string>
     <string name="startDateAfterEndDateMsg">Start-Datum muss vor End-Datum sein.</string>
-    <string name="optionChangeStartEndDate">Start- /End-Datum ändern</string>
+    <string name="optionChangeStartEndDate">Start- / End-Datum ändern</string>
 
     <string name="generalDetails">Allgemeine Informationen</string>
     <string name="plots">Graphen</string>
@@ -469,7 +469,7 @@
 
     <string name="billing_state_bought">Vielen Dank für den Kauf von andFHEM Premium!</string>
     <string name="premium">AndFHEM Premium</string>
-    <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation und erlaubt die Verwendung von mehr als einem FHEM-Server!</string>
+    <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der App und erlaubt die Verwendung von mehr als einem FHEM-Server!</string>
     <string name="shop_buyPemium">AndFHEM Premium kaufen</string>
     <string name="premium_multipleConnections">Für mehr als eine Verbindung wird AndFHEM Premium benötigt.</string>
 
@@ -497,8 +497,8 @@
     <string name="widget_send_command_link">Kommando senden</string>
     <string name="widget_device_list_update">Geräteliste aktualisieren</string>
     <string name="widget_room_detail">Verknüpfung</string>
-    <string name="widget_remote_update_started">Geräteliste wird aktualisiert &#8230;</string>
-    <string name="widget_application_password">Bei aktiviertem Applikations-Passwort können keine Widgets ausgewählt werden.</string>
+    <string name="widget_remote_update_started">Geräteliste wird aktualisiert\u2026</string>
+    <string name="widget_application_password">Bei aktiviertem App-Passwort können keine Widgets ausgewählt werden.</string>
 
     <string name="widget_devices">Geräte-Widgets</string>
     <string name="widget_rooms">Raum-Widgets</string>
@@ -512,7 +512,7 @@
     <string name="timer_overview_weekday">unter der Woche</string>
     <string name="timer_overview_at">um</string>
     <string name="timer_overview_every">alle</string>
-    <string name="timer_name">Zeitschaltuhr Name</string>
+    <string name="timer_name">Name der Zeitschaltuhr</string>
     <string name="target_device">Zielgerät</string>
     <string name="timer_repetition">Wiederholung</string>
     <string name="timer_targetState">Ziel-Zustand</string>
@@ -521,20 +521,20 @@
     <string name="timer_next_trigger">Nächster Schaltvorgang</string>
 
     <string name="twilight_light">Helligkeit</string>
-    <string name="twilight_next_event">Nächster Event</string>
+    <string name="twilight_next_event">Nächstes Ereignis</string>
     <string name="twilight_next_event_time">Nächster Zeitpunkt</string>
     <string name="twilight_sunrise">Sonnenaufgang</string>
     <string name="twilight_sunrise_astronomical">Astronomischer Sonnenaufgang</string>
     <string name="twilight_sunrise_nautical">Nautischer Sonnenaufgang</string>
     <string name="twilight_sunrise_civil">Ziviler Sonnenaufgang</string>
-    <string name="twilight_sunrise_indoor">Raum Sonnenaufgang</string>
-    <string name="twilight_sunrise_weather">Wetter Sonnenaufgang</string>
+    <string name="twilight_sunrise_indoor">Raum-Sonnenaufgang</string>
+    <string name="twilight_sunrise_weather">Wetter-Sonnenaufgang</string>
     <string name="twilight_sunset">Sonnenuntergang</string>
     <string name="twilight_sunset_astronomical">Astronomischer Sonnenuntergang</string>
     <string name="twilight_sunset_nautical">Nautischer Sonnenuntergang</string>
     <string name="twilight_sunset_civil">Ziviler Sonnenuntergang</string>
-    <string name="twilight_sunset_indoor">Raum Sonnenuntergang</string>
-    <string name="twilight_sunset_weather">Wetter Sonnenuntergang</string>
+    <string name="twilight_sunset_indoor">Raum-Sonnenuntergang</string>
+    <string name="twilight_sunset_weather">Wetter-Sonnenuntergang</string>
     <string name="twilight_light_total_night">Nacht</string>
     <string name="twilight_light_astronomical">Astronomische Dämmerung</string>
     <string name="twilight_light_nautical">Nautische Dämmerung</string>
@@ -547,7 +547,7 @@
 
     <string name="musicMute">Stumm</string>
     <string name="musicRepeat">Wiederholung</string>
-    <string name="musicShuffle">Mischen</string>
+    <string name="musicShuffle">Zufall</string>
     <string name="musicVolume">Lautstärke</string>
     <string name="musicAlbum">Album</string>
     <string name="musicSender">Sender</string>
@@ -556,24 +556,24 @@
     <string name="musicTrackNumber">Titel-Nummer</string>
     <string name="musicInfo">Info</string>
 
-    <string name="dummyConnectionNotification">Momentan werden nur Dummy Geräte angezeigt!</string>
+    <string name="dummyConnectionNotification">Momentan werden nur Dummy-Geräte angezeigt!</string>
 
-    <string name="localeSendCommandPlugin">AndFHEM Kommando</string>
-    <string name="localeSendCommandPluginInfoText">Bitte ein FHEM Kommando eingeben, das ausgeführt werden soll (z.B.
+    <string name="localeSendCommandPlugin">AndFHEM-Kommando</string>
+    <string name="localeSendCommandPluginInfoText">Bitte ein FHEM-Kommando eingeben, das ausgeführt werden soll (z.B.
         "set device off")
     </string>
-    <string name="localeDeviceState">AndFHEM Gerätestatus</string>
+    <string name="localeDeviceState">AndFHEM-Gerätestatus</string>
     <string name="localeDeviceStateInfo">Bitte ein Gerät auswählen und einen Zielstatus eingeben, bei dem das Ereignis
         als erfolgreich angesehen wird. (z.B. "off")
     </string>
-    <string name="localeConnectionChangePlugin">AndFHEM Verbindungswechsel</string>
+    <string name="localeConnectionChangePlugin">AndFHEM-Verbindungswechsel</string>
     <string name="localeConnectionChangePluginInfoText">Bitte eine Verbindung auswählen, auf die andFHEM wechseln soll.</string>
 
     <string name="drawerOpen">Drawer öffnen</string>
     <string name="drawerClose">Drawer schließen</string>
 
     <string name="noFavoritesCaption">Keine Favoriten gefunden!</string>
-    <string name="noFavoritesMessage">Um einen Favoriten zu erstellen klicken Sie bitte in der Geräteliste lange auf ein Gerät. Klicken Sie anschließend auf den Stern.</string>
+    <string name="noFavoritesMessage">Um einen Favoriten zu erstellen, klicken Sie bitte in der Geräteliste lange auf ein Gerät. Klicken Sie anschließend auf den Stern.</string>
     <string name="noRooms">Keine Räume gefunden!</string>
     <string name="noConnections">Keine Verbindungen gefunden!</string>
     <string name="noDevices">Keine Geräte gefunden!</string>
@@ -604,7 +604,7 @@
     <string name="widgetNoRooms">Es wurden keine Raum-Widgets für diese Widget-Größe gefunden.</string>
     <string name="widgetNoOther">Es sind keine weiteren Widgets für diese Widget-Größe verfügbar.</string>
 
-    <string name="rewind">zurückrückspulen</string>
+    <string name="rewind">zurückspulen</string>
     <string name="pause">pause</string>
     <string name="play">abspielen</string>
     <string name="forward">weiter</string>
@@ -624,26 +624,26 @@
     <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen.</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
-    <string name="androidBugDialogDatePickerContent">Lollipop beinhaltet aktuell einen Bug, der den nachfolgenden Dialog zum Absturz bringt. Deshalb ist dieser bis zu einer Reparatur seitens Google deaktiviert. Google hat den Fehler bereits behoben, bisher aber noch keinen neuen Android Update freigegeben.</string>
+    <string name="androidBugDialogDatePickerContent">Lollipop beinhaltet aktuell einen Bug, der den nachfolgenden Dialog zum Absturz bringt. Deshalb ist dieser bis zu einer Reparatur seitens Google deaktiviert. Google hat den Fehler bereits behoben, bisher aber noch kein neues Android-Update freigegeben, das diese Fehlerbehebung enthält.</string>
 
-    <string name="accessibility_description">Dieser Bedienungshilfe-Service erlaubt es andFHEM jedes Google Now Sprachkommando mitzuhören. AndFHEM speichert diese Daten nicht, versucht aber daraus FHEM Kommandos zu generieren.</string>
+    <string name="accessibility_description">Dieser Bedienungshilfen-Dienst erlaubt andFHEM, jedes Google Now-Sprachkommando mitzuhören. AndFHEM speichert diese Daten nicht, versucht aber daraus FHEM-Kommandos zu generieren.</string>
 
     <string name="voiceMoreThanOneDeviceMatches">Mehr als ein Gerät passt zu diesem Kommando.</string>
     <string name="voiceNoDeviceMatches">Kein Gerät passt zu diesem Kommando.</string>
 
     <string name="importPreferences">Import</string>
-    <string name="importPreferencesSummary">Importiert von einem bestehenden Backup die Applikationseinstellungen</string>
+    <string name="importPreferencesSummary">Importiert die App-Einstellungen aus einem bestehenden Backup</string>
     <string name="exportPreferences">Export</string>
-    <string name="exportPreferencesSummary">Erstellt ein neues Backup der Applikationseinstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
+    <string name="exportPreferencesSummary">Erstellt ein neues Backup der App-Einstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
     <string name="exportImportSuccess">Erfolg</string>
     <string name="exportImportError">Fehler</string>
-    <string name="exportSuccessLocation">Der Backup erfolgte nach</string>
-    <string name="importSuccess">Der Backup wurde erfolgreich angewendet.</string>
+    <string name="exportSuccessLocation">Das Backup erfolgte nach</string>
+    <string name="importSuccess">Das Backup wurde erfolgreich angewendet.</string>
     <string name="importExportPassword">Backup-Passwort</string>
-    <string name="exportPasswordDescription">Bitte gib ein Password für die Verschlüsselung des Backups ein. Bitte stelle sicher, dass du das Passwort bei einem späteren Import wieder weißt! Das Feld darf auch leer bleiben.</string>
-    <string name="importPasswordDescription">Bitte gib ein Password für die Entschlüsselung des Backups ein. Bitte stelle sicher, dass das Passwort mit dem Passwort übereinstimmt, das du bei der Erstellung des Backups angegeben hast! Das Feld darf auch leer bleiben.Please enter a password to decrypt the backup. The value must match the value you entered to create the backup. The value may also be empty.</string>
+    <string name="exportPasswordDescription">Geben Sie bitte ein Passwort für die Verschlüsselung des Backups ein. Das Feld darf auch leer bleiben.</string>
+    <string name="importPasswordDescription">Geben Sie bitte gib ein Passwort für die Entschlüsselung des Backups ein. Es muss mit dem bei der Erstellungen des Backups eingegebenen Passwort übereinstimmen. Wenn kein Passwort vergeben wurde, kann das Feld leer bleiben.</string>
     <string name="importErrorWrongPassword">Falsches Passwort</string>
-    <string name="importErrorInvalidFile">Diese Datei sieht nicht wie eine valide andFHEM Backup-Datei aus.</string>
+    <string name="importErrorInvalidFile">Diese Datei sieht nicht wie eine gültige andFHEM Backup-Datei aus.</string>
 
     <string name="detailCardExpand">Mehr …</string>
     <string name="detailStatesSection">Zustände</string>
@@ -651,5 +651,4 @@
     <string name="detailInternalsSection">Interna</string>
     <string name="selectValue">wählen …</string>
     <string name="customText">benutzerdefiniert</string>
-
 </resources>
