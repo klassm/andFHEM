@@ -25,14 +25,12 @@
 package li.klass.fhem.appwidget;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -41,40 +39,23 @@ import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
-import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.fragments.RoomListFragment;
-import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
-import li.klass.fhem.util.FhemResultReceiver;
 
 import static android.appwidget.AppWidgetManager.ACTION_APPWIDGET_CONFIGURE;
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_SIZE;
-import static li.klass.fhem.constants.BundleExtraKeys.EMPTY_TEXT_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK;
-import static li.klass.fhem.constants.BundleExtraKeys.ROOM_SELECTABLE_CALLBACK;
-import static li.klass.fhem.fragments.RoomListFragment.RoomClickedCallback;
-import static li.klass.fhem.fragments.RoomListFragment.RoomSelectableCallback;
 
-public abstract class AppWidgetSelectionActivity extends ActionBarActivity implements ActionBar.TabListener, Serializable {
-
-    public static final int TAG_DEVICES = 0;
-    public static final int TAG_ROOMS = 1;
-    public static final int TAG_OTHER = 2;
+public abstract class AppWidgetSelectionActivity extends AppCompatActivity implements SelectionCompletedCallback, Serializable {
     @Inject
     AppWidgetDataHolder appWidgetDataHolder;
 
@@ -115,74 +96,21 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
                 }
             });
         } else {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            setContentView(R.layout.appwidget_selection);
+            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            assert viewPager != null;
+            viewPager.setAdapter(new AppWidgetSelectionFragmentAdapter(getSupportFragmentManager(), this, widgetSize, this));
 
-            actionBar.addTab(actionBar.newTab().setText(R.string.widget_devices)
-                    .setTabListener(this).setTag(TAG_DEVICES));
-            actionBar.addTab(actionBar.newTab().setText(R.string.widget_rooms)
-                    .setTabListener(this).setTag(TAG_ROOMS));
-            actionBar.addTab(actionBar.newTab().setText(R.string.widget_others)
-                    .setTabListener(this).setTag(TAG_OTHER));
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            assert tabLayout != null;
+            tabLayout.setupWithViewPager(viewPager);
         }
     }
 
     protected abstract void inject(ApplicationComponent applicationComponent);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        switchToDevices();
-    }
 
-    private void switchToDevices() {
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
-            @Override
-            public boolean isSelectable(FhemDevice<?> device) {
-                return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device).isEmpty();
-            }
-        });
-
-        bundle.putParcelable(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS ||
-                        !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
-
-                FhemDevice<?> clickedDevice = (FhemDevice<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
-                deviceClicked(clickedDevice);
-            }
-        });
-
-        bundle.putInt(EMPTY_TEXT_ID, R.string.widgetNoDevices);
-
-        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment();
-        deviceSelectionFragment.setArguments(bundle);
-
-        switchTo(deviceSelectionFragment);
-    }
-
-    private void deviceClicked(FhemDevice<?> device) {
-        final List<WidgetType> widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device);
-        openWidgetTypeSelection(widgetTypes, this, device.getName());
-    }
-
-    private void switchTo(BaseFragment fragment) {
-        try {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(android.R.id.content, fragment)
-                    .commitAllowingStateLoss();
-        } catch (IllegalStateException e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " +
-                    DeviceNameSelectionFragment.class.getName(), e);
-        }
-    }
-
-    private void openWidgetTypeSelection(final List<WidgetType> widgetTypes, final Context context, final String... payload) {
+    private void openWidgetTypeSelection(final List<WidgetType> widgetTypes, final String... payload) {
         String[] widgetNames = new String[widgetTypes.size()];
         for (int i = 0; i < widgetTypes.size(); i++) {
             AppWidgetView widgetView = widgetTypes.get(i).widgetView;
@@ -197,16 +125,16 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
                         dialogInterface.dismiss();
 
                         WidgetType type = widgetTypes.get(position);
-                        createWidget(type, context, payload);
+                        createWidget(type, payload);
                     }
                 }).show();
     }
 
-    private void createWidget(WidgetType type, final Context context, String... payload) {
+    private void createWidget(WidgetType type, String... payload) {
         type.createWidgetConfiguration(this, widgetId, new WidgetConfigurationCreatedCallback() {
             @Override
             public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
-                appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration, context);
+                appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration, AppWidgetSelectionActivity.this);
 
                 Intent intent = new Intent(Actions.REDRAW_WIDGET);
                 intent.setClass(AppWidgetSelectionActivity.this, AppWidgetUpdateService.class);
@@ -221,73 +149,22 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
         }, payload);
     }
 
+
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        Integer tag = (Integer) tab.getTag();
-        switch (tag) {
-            case TAG_DEVICES:
-                switchToDevices();
-                break;
-            case TAG_ROOMS:
-                switchToRooms();
-                break;
-            case TAG_OTHER:
-                switchToOthers(this);
-                break;
-            default:
-                throw new IllegalStateException("don't know about " + tag);
-        }
+    public void onRoomSelect(String roomName) {
+        List<WidgetType> widgetTypes = WidgetType.getSupportedRoomWidgetsFor(widgetSize);
+        openWidgetTypeSelection(widgetTypes, roomName);
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onDeviceSelect(FhemDevice<?> clickedDevice) {
+
+        List<WidgetType> widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, clickedDevice);
+        openWidgetTypeSelection(widgetTypes, clickedDevice.getName());
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        onTabSelected(tab, fragmentTransaction);
-    }
-
-    private void switchToRooms() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ROOM_SELECTABLE_CALLBACK, new RoomSelectableCallback() {
-            @Override
-            public boolean isRoomSelectable(String roomName) {
-                return !WidgetType.getSupportedRoomWidgetsFor(widgetSize).isEmpty();
-            }
-        });
-        bundle.putSerializable(ON_CLICKED_CALLBACK, new RoomClickedCallback() {
-            @Override
-            public void onRoomClicked(String roomName) {
-                roomClicked(roomName);
-            }
-        });
-        bundle.putInt(EMPTY_TEXT_ID, R.string.widgetNoRooms);
-
-        RoomListFragment fragment = new RoomListFragment();
-        fragment.setArguments(bundle);
-
-        switchTo(fragment);
-    }
-
-    private void switchToOthers(final Context context) {
-        Bundle arguments = new Bundle();
-        arguments.putSerializable(APP_WIDGET_SIZE, widgetSize);
-        arguments.putSerializable(ON_CLICKED_CALLBACK, new OtherWidgetsFragment.OnWidgetClickedCallback() {
-            @Override
-            public void onWidgetClicked(WidgetType widgetType) {
-                createWidget(widgetType, context);
-            }
-        });
-
-        OtherWidgetsFragment otherWidgetsFragment = new OtherWidgetsFragment();
-        otherWidgetsFragment.setArguments(arguments);
-
-        switchTo(otherWidgetsFragment);
-    }
-
-    private void roomClicked(String roomName) {
-        final List<WidgetType> widgetTypes = WidgetType.getSupportedRoomWidgetsFor(widgetSize);
-        openWidgetTypeSelection(widgetTypes, this, roomName);
+    public void onOtherWidgetSelect(WidgetType widgetType) {
+        createWidget(widgetType);
     }
 }
