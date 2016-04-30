@@ -98,7 +98,7 @@
     <string name="wake">Wake</string>
     <string name="isRunning">Is Running?</string>
     <string name="shutdown">Shutdown</string>
-    <string name="stateAppendix">Zustand Anhang</string>
+    <string name="stateAppendix">Set %1$s to</string>
     <string name="requestRefresh">Request refresh</string>
     <string name="delta">Delta</string>
     <string name="weather">Weather</string>
