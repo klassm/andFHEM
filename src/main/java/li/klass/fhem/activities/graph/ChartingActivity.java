@@ -31,7 +31,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,7 +81,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static org.joda.time.Duration.standardHours;
 
-public class ChartingActivity extends ActionBarActivity implements Updateable {
+public class ChartingActivity extends AppCompatActivity implements Updateable {
 
     public static final int REQUEST_TIME_CHANGE = 1;
     public static final int DIALOG_EXECUTING = 2;

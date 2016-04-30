@@ -29,7 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -212,7 +212,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                         protected void onReceiveResult(int resultCode, Bundle resultData) {
                             contextMenuClickedDevice.set(child);
                             isClickedDeviceFavorite.set(resultData.getBoolean(IS_FAVORITE));
-                            actionMode = ((ActionBarActivity) getActivity()).startSupportActionMode(actionModeCallback);
+                            actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
                         }
                     });
                     DeviceListFragment.this.getActivity().startService(intent);
@@ -339,7 +339,7 @@ public abstract class DeviceListFragment extends BaseFragment {
             contextMenuClickedDevice.set((FhemDevice) tag);
             currentClickFragment.set(this);
 
-            ((ActionBarActivity) getActivity()).startSupportActionMode(actionModeCallback);
+            ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
         }
     }
 
