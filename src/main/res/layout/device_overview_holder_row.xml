@@ -26,19 +26,18 @@
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:f="http://schemas.android.com/apk/res-auto"
-    android:layout_marginRight="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginStart="10dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    style="@style/deviceOverviewLayout">
 
     <TextView
         android:id="@+id/description"
         style="@style/deviceOverviewLayoutDeviceName"
+        android:paddingTop="15dp"
         android:text="@string/dummy_text"/>
 
     <LinearLayout
+        style="@style/deviceOverviewContent"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
@@ -46,6 +45,10 @@
         <org.apmem.tools.layouts.FlowLayout
             android:id="@+id/holder"
             f:layoutDirection="ltr"
+            android:paddingLeft="0dp"
+            android:paddingStart="0dp"
+            android:paddingRight="3dp"
+            android:paddingEnd="3dp"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="horizontal"
