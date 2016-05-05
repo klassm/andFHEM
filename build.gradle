@@ -152,7 +152,7 @@ android {
 github {
     owner = 'klassm'
     repo = 'andFHEM'
-    token = buildProperties['githubToken']
+    token = buildProperties['githubToken'] ?: "??"
     tagName = appVersionName
     targetCommitish = 'master'
     name = appVersionName
