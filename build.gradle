@@ -170,9 +170,8 @@ project.gradle.taskGraph.whenReady {
 
 ext {
     supportLibVersion = '23.3.0'
-    buildProperties = new Properties()
+    buildProperties = getBuildProperties()
 }
-buildProperties = getBuildProperties()
 
 unMock {
     // URI to download the android-all.jar from. e.g. https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/
@@ -292,8 +291,11 @@ def getBuildProperty(String key) {
 
 def getBuildProperties() {
     def props = new Properties()
-    new File(System.getProperty("user.home") + "/andFHEM.properties").withInputStream {
-        stream -> props.load(stream)
+    def file = new File(System.getProperty("user.home") + "/andFHEM.properties")
+    if (file.exists()) {
+        file.withInputStream {
+            stream -> props.load(stream)
+        }
     }
     return props
 }
