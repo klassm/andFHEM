@@ -22,6 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
+def appVersionCode = 404
+def appVersionName = "4.0.4"
+
 buildscript {
     repositories {
         mavenCentral()
@@ -36,6 +39,7 @@ buildscript {
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.5.1'
         classpath 'de.mobilej.unmock:UnMockPlugin:0.3.6'
+        classpath 'co.riiid:gradle-github-plugin:0.4.2'
     }
 }
 
@@ -50,6 +54,7 @@ repositories {
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'co.riiid.gradle'
 
 android {
     compileSdkVersion 23
@@ -73,6 +78,8 @@ android {
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        versionCode appVersionCode
+        versionName appVersionName
     }
 
     compileOptions {
@@ -142,6 +149,19 @@ android {
     }
 }
 
+github {
+    owner = 'klassm'
+    repo = 'andFHEM'
+    token = buildProperties['githubToken']
+    tagName = appVersionName
+    targetCommitish = 'master'
+    name = appVersionName
+    body = "Release ${appVersionName}"
+    assets = [
+            'build/outputs/apk/workspace-inapp-release.apk'
+    ]
+}
+
 project.gradle.taskGraph.whenReady {
     connectedAndroidTest {
         ignoreFailures = true
@@ -150,7 +170,9 @@ project.gradle.taskGraph.whenReady {
 
 ext {
     supportLibVersion = '23.3.0'
+    buildProperties = new Properties()
 }
+buildProperties = getBuildProperties()
 
 unMock {
     // URI to download the android-all.jar from. e.g. https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/
