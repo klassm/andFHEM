@@ -27,6 +27,8 @@ package li.klass.fhem.util;
 import android.util.Log;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 public class CloseableUtil {
     public static void close(Closeable... closeables) {
@@ -39,6 +41,16 @@ public class CloseableUtil {
                 } catch (Exception e) {
                     Log.d(CloseableUtil.class.getName(), "error closing stream", e);
                 }
+            }
+        }
+    }
+
+    public static void close(HttpURLConnection connection) {
+        if (connection != null) {
+            try {
+                close(connection.getInputStream());
+            } catch (IOException e) {
+                Log.d(CloseableUtil.class.getName(), "error closing stream", e);
             }
         }
     }

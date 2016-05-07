@@ -136,14 +136,16 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry) {
         String url = null;
+        HttpURLConnection connection;
         try {
             url = serverUrl + urlSuffix;
             URL requestUrl = new URL(url);
 
             LOG.info("accessing URL {}", url);
-            HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+            connection = (HttpURLConnection) requestUrl.openConnection();
             connection.setConnectTimeout(SOCKET_TIMEOUT);
             connection.setReadTimeout(SOCKET_TIMEOUT);
+            connection.setDoOutput(false);
 
             String authString = (serverSpec.getUsername() + ":" + serverSpec.getPassword());
             connection.addRequestProperty("Authorization", "Basic " +
@@ -158,7 +160,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                 LOG.debug(msg);
                 ErrorHolder.setError(null, msg);
 
-                close(connection.getInputStream());
+                close(connection);
 
                 return errorResult;
             }
