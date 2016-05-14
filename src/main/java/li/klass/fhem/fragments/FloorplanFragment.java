@@ -106,4 +106,9 @@ public class FloorplanFragment extends AbstractWebViewFragment {
     public CharSequence getTitle(Context context) {
         return context.getString(R.string.functionalityFloorplan);
     }
+
+    @Override
+    public boolean canChildScrollUp() {
+        return true;
+    }
 }
