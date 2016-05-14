@@ -34,6 +34,7 @@
         android:id="@+id/description"
         style="@style/deviceOverviewLayoutDeviceName"
         android:paddingTop="15dp"
+        android:layout_width="0px"
         android:text="@string/dummy_text"/>
 
     <LinearLayout
