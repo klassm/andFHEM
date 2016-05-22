@@ -54,6 +54,8 @@ public class PremiumActivity extends AppCompatActivity implements BillingService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AndFHEMApplication.getApplication().getDaggerComponent().inject(this);
+
         setContentView(R.layout.shop_premium);
 
         ActionBar actionBar = getSupportActionBar();

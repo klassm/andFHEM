@@ -30,6 +30,7 @@ import dagger.Component;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.PreferencesActivity;
+import li.klass.fhem.activities.PremiumActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
@@ -156,6 +157,8 @@ public interface ApplicationComponent {
     void inject(MediumWidgetSelectionActivity object);
 
     void inject(BigWidgetSelectionActivity object);
+
+    void inject(PremiumActivity object);
 
 
     void inject(DmxAdapter object);
