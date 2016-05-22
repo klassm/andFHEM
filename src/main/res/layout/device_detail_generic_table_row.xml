@@ -33,7 +33,8 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/deviceDetailDescription"/>
+        style="@style/deviceDetailDescription"
+        android:maxWidth="150dp" />
 
     <TextView
         android:id="@+id/value"

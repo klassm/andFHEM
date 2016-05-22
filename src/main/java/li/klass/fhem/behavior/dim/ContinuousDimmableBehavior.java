@@ -26,6 +26,7 @@ package li.klass.fhem.behavior.dim;
 
 import android.content.Context;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
@@ -100,7 +101,10 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
 
     @Override
     public float getPositionForDimState(String dimState) {
-        dimState = dimState.toLowerCase(Locale.getDefault());
+        dimState = dimState.toLowerCase(Locale.getDefault())
+                .replaceAll(Joiner.on("|").join(DIM_ATTRIBUTES), "")
+                .replaceAll("%", "")
+                .trim();
         if (UPPER_BOUND_STATES.contains(dimState)) {
             return getDimUpperBound();
         } else if (LOWER_BOUND_STATES.contains(dimState)) {

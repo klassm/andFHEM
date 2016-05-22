@@ -28,14 +28,19 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
+import org.assertj.core.data.Offset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
+import static com.tngtech.java.junit.dataprovider.DataProviders.$;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @RunWith(DataProviderRunner.class)
@@ -86,5 +91,28 @@ public class ContinuousDimmableBehaviorTest {
 
         assertThat(behavior.getPositionForDimState(text)).isEqualTo(position);
         assertThat(behavior.getDimStateForPosition(mock(FhemDevice.class), position)).isEqualTo(state);
+    }
+
+    @DataProvider
+    public static Object[][] prefixDimProvider() {
+        return $$(
+                $("dim 30", 30f),
+                $("position 30", 30f),
+                $("position 30%", 30f)
+        );
+    }
+
+    @Test
+    @UseDataProvider("prefixDimProvider")
+    public void should_handle_states_with_prefix(String state, float expectedPosition) {
+        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(new SetList().parse("position:slider,0,5,100")).get();
+        FhemDevice device = mock(FhemDevice.class);
+        XmlListDevice xmlListDevice = new XmlListDevice("BLA");
+        xmlListDevice.setState("state", state);
+        given(device.getXmlListDevice()).willReturn(xmlListDevice);
+
+        float position = behavior.getCurrentDimPosition(device);
+
+        assertThat(position).isCloseTo(expectedPosition, Offset.offset(0.1f));
     }
 }
