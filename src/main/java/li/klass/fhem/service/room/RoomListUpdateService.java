@@ -58,15 +58,24 @@ public class RoomListUpdateService {
     public RoomListUpdateService() {
     }
 
-    public boolean update(String deviceName, Context context) {
-        Optional<RoomDeviceList> result = getRemoteDeviceUpdate(deviceName, context);
-        LOG.info("update({}) - remote device list update finished", deviceName);
+    public boolean updateSingleDevice(String deviceName, Context context) {
+        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, context);
+        LOG.info("updateSingleDevice({}) - remote device list update finished", deviceName);
+        return update(context, result);
+    }
+    public boolean updateRoom(String roomName, Context context) {
+        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, context);
+        LOG.info("updateRoom({}) - remote device list update finished", roomName);
+        return update(context, result);
+    }
+
+    private boolean update(Context context, Optional<RoomDeviceList> result) {
         boolean success = false;
         if (result.isPresent()) {
             success = roomListHolderService.storeDeviceListMap(result.get(), context);
-            if (success) LOG.info("update({}) - update was successful, sending result", deviceName);
+            if (success) LOG.info("update - update was successful, sending result");
         } else {
-            LOG.info("update({}) - update was not successful, sending empty device list", deviceName);
+            LOG.info("update - update was not successful, sending empty device list");
         }
         return success;
     }
@@ -74,29 +83,22 @@ public class RoomListUpdateService {
     public boolean updateAllDevices(Context context) {
         Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap(context);
         LOG.info("updateAllDevices() - remote device list update finished");
-        boolean success = false;
-        if (result.isPresent()) {
-            success = roomListHolderService.storeDeviceListMap(result.get(), context);
-            if (success) LOG.info("updateAllDevices() - update was successful, sending result");
-        } else {
-            LOG.info("updateAllDevices() - update was not successful, sending empty device list");
-        }
-        return success;
+        return update(context, result);
     }
 
-    private Optional<RoomDeviceList> getRemoteDeviceUpdate(String deviceName, Context context) {
-        LOG.info("getRemoteDeviceUpdate(deviceName=%s) - fetching xmllist from remote", deviceName);
+    private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, Context context) {
+        LOG.info("getPartialRemoteDeviceUpdate(devSpec=%s) - fetching xmllist from remote", devSpec);
         try {
-            String result = commandExecutionService.executeSafely("xmllist " + deviceName, context);
+            String result = commandExecutionService.executeSafely("xmllist " + devSpec, context);
             if (result == null) return absent();
             Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
             RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap();
             if (parsed.isPresent()) {
-                cached.addDevice(parsed.get().getDeviceFor(deviceName), context);
+                cached.addAllDevicesOf(parsed.get(), context);
             }
             return Optional.of(cached);
         } catch (CommandExecutionException e) {
-            LOG.info("getRemoteDeviceUpdate - error during command execution", e);
+            LOG.info("getPartialRemoteDeviceUpdate - error during command execution", e);
             return Optional.absent();
         }
     }

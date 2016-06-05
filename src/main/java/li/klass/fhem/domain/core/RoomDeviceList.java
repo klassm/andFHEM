@@ -223,4 +223,12 @@ public class RoomDeviceList implements Serializable {
 
         return this;
     }
+
+    public RoomDeviceList addAllDevicesOf(RoomDeviceList roomDeviceList, Context context) {
+        Set<FhemDevice> allDevices = roomDeviceList.getAllDevices();
+        for (FhemDevice device : allDevices) {
+            addDevice(device, context);
+        }
+        return this;
+    }
 }

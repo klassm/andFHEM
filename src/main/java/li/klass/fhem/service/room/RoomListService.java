@@ -75,6 +75,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.RESEND_TRY;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
 import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
@@ -229,6 +230,7 @@ public class RoomListService extends AbstractService {
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
                 context.startService(new Intent(DO_REMOTE_UPDATE)
                         .putExtra(DEVICE_NAME, intent.getStringExtra(DEVICE_NAME))
+                        .putExtra(ROOM_NAME, intent.getStringExtra(ROOM_NAME))
                         .setClass(context, RoomListUpdateIntentService.class));
             }
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");

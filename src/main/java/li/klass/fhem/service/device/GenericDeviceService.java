@@ -129,6 +129,6 @@ public class GenericDeviceService {
     }
 
     private boolean update(FhemDevice<?> device, Context context) {
-        return roomListUpdateService.update(device.getName(), context);
+        return roomListUpdateService.updateSingleDevice(device.getName(), context);
     }
 }
