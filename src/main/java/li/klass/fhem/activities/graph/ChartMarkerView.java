@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
 
 import java.util.List;
 
@@ -46,18 +47,18 @@ public class ChartMarkerView extends MarkerView {
     }
 
     @Override
-    public void refreshContent(Entry e, int dataSetIndex) {
+    public void refreshContent(Entry e, Highlight highlight) {
         ((TextView) findViewById(R.id.time)).setText(xAxisLabels.get(e.getXIndex()));
         ((TextView) findViewById(R.id.value)).setText(String.valueOf(e.getVal()));
     }
 
     @Override
-    public int getXOffset() {
+    public int getXOffset(float xpos) {
         return -(getWidth() / 2);
     }
 
     @Override
-    public int getYOffset() {
+    public int getYOffset(float ypos) {
         return -getHeight();
     }
 }

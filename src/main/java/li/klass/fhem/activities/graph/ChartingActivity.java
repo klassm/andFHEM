@@ -351,7 +351,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
             }
 
             if (isDiscreteSeries(series)) {
-                lineDataSet.setDrawCubic(false);
+                lineDataSet.setMode(LineDataSet.Mode.STEPPED);
             }
 
             lineData.addDataSet(lineDataSet);
