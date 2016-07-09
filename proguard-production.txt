@@ -1,3 +1,5 @@
+# all
+
 -dontwarn javax.**
 -dontwarn sun.misc.Unsafe
 -dontwarn com.actionbarsherlock.BuildConfig
