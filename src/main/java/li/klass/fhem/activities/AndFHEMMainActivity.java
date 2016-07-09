@@ -25,6 +25,7 @@
 package li.klass.fhem.activities;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +45,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
@@ -139,10 +141,13 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 switchToFragment(fragmentType, intent.getExtras());
                             } else if (action.equals(Actions.DO_UPDATE)) {
+                                updateShowRefreshProgressIcon();
                                 refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false));
                             } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                                updateShowRefreshProgressIcon();
                                 refreshLayout.setRefreshing(true);
                             } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                                updateShowRefreshProgressIcon();
                                 refreshLayout.setRefreshing(false);
                             } else if (action.equals(SHOW_TOAST)) {
                                 String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
@@ -195,6 +200,8 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     GCMSendDeviceService gcmSendDeviceService;
 
     private Receiver broadcastReceiver;
+
+    protected Menu optionsMenu;
 
     private Timer timer;
     private RepairedDrawerLayout drawerLayout;
@@ -583,6 +590,17 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         }
 
         refreshLayout.setRefreshing(false);
+        updateShowRefreshProgressIcon();
+    }
+
+    @SuppressWarnings("NewApi")
+    @TargetApi(11)
+    private void updateShowRefreshProgressIcon() {
+        if (optionsMenu == null) return;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            this.invalidateOptionsMenu();
+        }
     }
 
     @Override
@@ -749,8 +767,34 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             // we disabled it and hence are showing the back button - act accordingly
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.menu_refresh) {
+            sendBroadcast(new Intent(Actions.DO_UPDATE)
+                    .putExtra(DO_REFRESH, true));
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        if (getPackageName().equals(PREMIUM_PACKAGE)) {
+            menu.removeItem(R.id.menu_premium);
+        }
+        this.optionsMenu = menu;
+
+        MenuItem refreshItem = optionsMenu.findItem(R.id.menu_refresh);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (refreshLayout.isRefreshing()) {
+                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+            } else {
+                refreshItem.setActionView(null);
+            }
+        }
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
