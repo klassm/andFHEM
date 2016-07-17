@@ -81,14 +81,13 @@ public class GraphService {
     @SuppressWarnings("unchecked")
     public HashMap<GPlotSeries, List<GraphEntry>> getGraphData(FhemDevice device, SvgGraphDefinition svgGraphDefinition,
                                                                final DateTime startDate, final DateTime endDate, Context context) {
-
-        if (device.getSvgGraphDefinitions().isEmpty()) return null;
-
         HashMap<GPlotSeries, List<GraphEntry>> data = newHashMap();
 
         Set<GPlotSeries> series = Sets.newHashSet();
         series.addAll(svgGraphDefinition.getPlotDefinition().getLeftAxis().getSeries());
         series.addAll(svgGraphDefinition.getPlotDefinition().getRightAxis().getSeries());
+
+        LOG.info("getGraphData - getting graph data for device {} and {} series", device.getName(), series.size());
 
         for (GPlotSeries plotSeries : series) {
             data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
