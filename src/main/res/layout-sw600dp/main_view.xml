@@ -26,25 +26,17 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <android.support.v4.widget.RepairedDrawerLayout
+    <android.support.v4.widget.RepairedDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <li.klass.fhem.widget.SwipeRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include layout="@layout/content_view" />
-
-        </li.klass.fhem.widget.SwipeRefreshLayout>
+        <include layout="@layout/content_view" />
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_drawer"
@@ -52,8 +44,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/drawer"
-            app:headerLayout="@layout/drawer_header" />
+            app:headerLayout="@layout/drawer_header"
+            app:menu="@menu/drawer" />
 
     </android.support.v4.widget.RepairedDrawerLayout>
 
@@ -62,6 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:ignore="InconsistentLayout"/>
+        tools:ignore="InconsistentLayout" />
 
 </LinearLayout>
