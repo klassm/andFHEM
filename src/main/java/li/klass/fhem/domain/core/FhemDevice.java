@@ -27,6 +27,7 @@ package li.klass.fhem.domain.core;
 import android.content.Context;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableSet;
 
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
@@ -396,6 +397,10 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public Set<SvgGraphDefinition> getSvgGraphDefinitions() {
         return svgGraphDefinitions;
+    }
+
+    public void setSvgGraphDefinitions(Set<SvgGraphDefinition> svgGraphDefinitions) {
+        this.svgGraphDefinitions = ImmutableSet.copyOf(svgGraphDefinitions);
     }
 
     @Override

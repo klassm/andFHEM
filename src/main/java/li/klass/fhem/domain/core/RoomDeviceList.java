@@ -227,7 +227,11 @@ public class RoomDeviceList implements Serializable {
     public RoomDeviceList addAllDevicesOf(RoomDeviceList roomDeviceList, Context context) {
         Set<FhemDevice> allDevices = roomDeviceList.getAllDevices();
         for (FhemDevice device : allDevices) {
+            FhemDevice foundDevice = getDeviceFor(device.getName());
             addDevice(device, context);
+            if (foundDevice != null && device.getSvgGraphDefinitions().isEmpty()) {
+                device.setSvgGraphDefinitions(foundDevice.getSvgGraphDefinitions());
+            }
         }
         return this;
     }
