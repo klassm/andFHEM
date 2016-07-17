@@ -87,7 +87,7 @@ public class RoomListUpdateService {
     }
 
     private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, Context context) {
-        LOG.info("getPartialRemoteDeviceUpdate(devSpec=%s) - fetching xmllist from remote", devSpec);
+        LOG.info("getPartialRemoteDeviceUpdate(devSpec={}) - fetching xmllist from remote", devSpec);
         try {
             String result = commandExecutionService.executeSafely("xmllist " + devSpec, context);
             if (result == null) return absent();
