@@ -235,6 +235,9 @@ public class RoomListService extends AbstractService {
             }
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");
             return RemoteUpdateRequired.REQUIRED;
+        } else if (remoteUpdateInProgress.get()) {
+            resendIntents.add(createResendIntent(intent));
+            return RemoteUpdateRequired.REQUIRED;
         } else {
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is not required");
             return RemoteUpdateRequired.NOT_REQUIRED;
