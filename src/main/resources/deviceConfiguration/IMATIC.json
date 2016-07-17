@@ -1,0 +1,18 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "SWITCH",
+  "sanitise": {
+    "__general__": {
+      "addAttributesIfNotPresent": [
+        {
+          "key": "offStateName",
+          "value": "0"
+        },
+        {
+          "key": "onStateName",
+          "value": "1"
+        }
+      ]
+    }
+  }
+}
