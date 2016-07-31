@@ -55,7 +55,7 @@ import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
 public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSectionsAdapter<String, T> {
-    public static final int DEFAULT_COLUMN_WIDTH = 355;
+    public static final int DEFAULT_COLUMN_WIDTH = 1000;
 
     private final ApplicationProperties applicationProperties;
     protected RoomDeviceList roomDeviceList;
