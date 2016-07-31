@@ -24,7 +24,6 @@
 
 package li.klass.fhem.util.io;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
@@ -42,9 +41,15 @@ public class FileSystemService {
     public FileSystemService() {
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public File getDocumentsFolder() {
-        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        File directory;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        } else {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Documents";
+            directory = new File(path);
+        }
+
         if (!directory.exists()) {
             checkArgument(directory.mkdir());
         }
