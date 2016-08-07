@@ -1,0 +1,26 @@
+# Created by FHEM/98_SVG.pm, 2016-04-22 17:00:17
+set terminal png transparent size <SIZE> crop
+set output '<OUT>.png'
+set xdata time
+set timefmt "%Y-%m-%d_%H:%M:%S"
+set xlabel " "
+set title 'Anwesenheit'
+set ytics
+set y2tics
+set grid
+set ylabel "Anwesenheit"
+set y2label "Tür/Fenster"
+set yrange [0:100]
+set y2range [0:1]
+
+#logdb Handy1:state:::$val=($val=~'present'?50:0)
+#logdb Handy2:state:::$val=($val=~'present'?50:0)
+#logdb whg_tuer:onoff
+#logdb k_fenster:opened:::$val=($val=~'opened'?1:0)
+#logdb sz_fenster:opened:::$val=($val=~'opened'?1:0)
+
+plot "<IN>" using 1:2 axes x1y1 title 'Handy1' ls l1fill lw 1.5 with steps,\
+     "<IN>" using 1:2 axes x1y1 title 'Handy2' ls l3fill lw 1.5 with steps,\
+     "<IN>" using 1:2 axes x1y2 title 'Tür' ls l2 lw 2 with steps,\
+     "<IN>" using 1:2 axes x1y2 title 'Fenster Küche' ls l0 lw 1 with points,\
+     "<IN>" using 1:2 axes x1y2 title 'Fenster Schlafzimmer' ls l5 lw 1 with points

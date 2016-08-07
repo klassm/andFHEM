@@ -26,6 +26,7 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -195,18 +196,27 @@ public class DeviceListParser {
 
     private ImmutableSet<SvgGraphDefinition> createSvgGraphDefinitions(List<XmlListDevice> svgDevices, final Map<String, FhemDevice> allDevices) {
         if (svgDevices == null) return ImmutableSet.of();
-        return from(svgDevices).transform(new Function<XmlListDevice, SvgGraphDefinition>() {
+        return from(svgDevices).transform(deviceToGraphDefinition(allDevices)).filter(notNull()).toSet();
+    }
+
+    @NonNull
+    private Function<XmlListDevice, SvgGraphDefinition> deviceToGraphDefinition(final Map<String, FhemDevice> allDevices) {
+        return new Function<XmlListDevice, SvgGraphDefinition>() {
             @Override
             public SvgGraphDefinition apply(XmlListDevice input) {
+                LOG.info("deviceToGraphDefinition - trying to load graph definition for {}", input.getName());
+
                 String gplotFileName = input.getInternals().get("GPLOTFILE").getValue();
                 Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName);
                 if (!gPlotDefinitionOptional.isPresent()) {
+                    LOG.error("deviceToGraphDefinition - cannot find graph definition for {}", gplotFileName);
                     return null;
                 }
                 String name = input.getInternals().get("NAME").getValue();
 
                 String logDeviceName = input.getInternals().get("LOGDEVICE").getValue();
                 if (!allDevices.containsKey(logDeviceName)) {
+                    LOG.error("deviceToGraphDefinition - cannnot find LOGDEVICE {}", name);
                     return null;
                 }
 
@@ -214,6 +224,7 @@ public class DeviceListParser {
                 // ClassCastExceptions. We just want to make sure we only handle LogDevices here.
                 FhemDevice logDeviceFhemDevice = allDevices.get(logDeviceName);
                 if (!(logDeviceFhemDevice instanceof LogDevice)) {
+                    LOG.error("deviceToGraphDefinition - cannot find log device with name {}", logDeviceName);
                     return null;
                 }
 
@@ -232,7 +243,7 @@ public class DeviceListParser {
 
                 return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
             }
-        }).filter(notNull()).toSet();
+        };
     }
 
     private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, List<XmlListDevice> xmlListDevices,

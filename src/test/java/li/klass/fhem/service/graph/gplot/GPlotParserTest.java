@@ -48,6 +48,7 @@ import static li.klass.fhem.service.graph.gplot.GPlotSeries.LineType;
 import static li.klass.fhem.service.graph.gplot.GPlotSeries.SeriesColor;
 import static li.klass.fhem.service.graph.gplot.GPlotSeries.SeriesType;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
 public class GPlotParserTest {
@@ -500,6 +501,73 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.LEFT)
                         .withLineWith(2)
+                        .build());
+    }
+
+    @Test
+    public void should_parse_custom_gplot_file() throws Exception {
+        // given
+        String content = readGPlot("custom.gplot");
+
+        // when
+        GPlotDefinition definition = gPlotParser.parse(content);
+
+        // then
+        GPlotAxis leftAxis = definition.getLeftAxis();
+        assertThat(leftAxis.getLabel()).isEqualTo("Anwesenheit");
+        assertThat(leftAxis.getRange()).contains(Range.closed(0d, 100d));
+
+        GPlotAxis rightAxis = definition.getRightAxis();
+        assertThat(rightAxis.getLabel()).isEqualTo("Tür/Fenster");
+        assertThat(rightAxis.getRange()).contains(Range.closed(0d, 1d));
+
+        assertThat(leftAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Handy1")
+                        .withLineType(LineType.STEPS)
+                        .withLogDef("Handy1:state:::$val=($val=~'present'?50:0)")
+                        .withColor(SeriesColor.GREEN)
+                        .withSeriesType(SeriesType.FILL)
+                        .withAxis(Axis.LEFT)
+                        .withLineWith(1.5f)
+                        .build(),
+                new Builder()
+                        .withTitle("Handy2")
+                        .withLineType(LineType.STEPS)
+                        .withLogDef("Handy2:state:::$val=($val=~'present'?50:0)")
+                        .withColor(SeriesColor.MAGENTA)
+                        .withSeriesType(SeriesType.FILL)
+                        .withAxis(Axis.LEFT)
+                        .withLineWith(1.5f)
+                        .build());
+
+        assertThat(rightAxis.getSeries()).containsOnly(
+                new Builder()
+                        .withTitle("Tür")
+                        .withLineType(LineType.STEPS)
+                        .withLogDef("whg_tuer:onoff")
+                        .withColor(SeriesColor.BLUE)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(2)
+                        .build(),
+                new Builder()
+                        .withTitle("Fenster Küche")
+                        .withLineType(LineType.POINTS)
+                        .withLogDef("k_fenster:opened:::$val=($val=~'opened'?1:0)")
+                        .withColor(SeriesColor.RED)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(1)
+                        .build(),
+                new Builder()
+                        .withTitle("Fenster Schlafzimmer")
+                        .withLineType(LineType.POINTS)
+                        .withLogDef("sz_fenster:opened:::$val=($val=~'opened'?1:0)")
+                        .withColor(SeriesColor.WHITE)
+                        .withSeriesType(SeriesType.DEFAULT)
+                        .withAxis(Axis.RIGHT)
+                        .withLineWith(1)
                         .build());
     }
 
