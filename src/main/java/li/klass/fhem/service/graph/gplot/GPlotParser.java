@@ -96,7 +96,7 @@ public class GPlotParser {
         try {
             return Optional.of(parse(content));
         } catch (Exception e) {
-            LOGGER.info("parseSafe() - cannot parse: \r\n" + content, e);
+            LOGGER.warn("parseSafe() - cannot parse: \r\n" + content, e);
             return Optional.absent();
         }
     }
@@ -182,7 +182,7 @@ public class GPlotParser {
                 attributeFound = handleSeriesType(line, builder, colors) | attributeFound;
                 attributeFound = handleLineWidth(line, builder) | attributeFound;
 
-                LOGGER.info("extractSeriesFrom - builder is " + builder);
+                LOGGER.trace("extractSeriesFrom - builder is " + builder);
                 if (attributeFound) {
                     if (!builder.isColorSet()) {
                         SeriesColor color = Iterables.getFirst(colors, SeriesColor.RED);

@@ -241,6 +241,8 @@ public class DeviceListParser {
 
                 List<String> plotfunction = Arrays.asList(input.getAttribute("plotfunction").or("").trim().split(" "));
 
+                LOG.info("deviceToGraphDefinition - loaded graph definition is {}", gPlotDefinitionOptional.get());
+
                 return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
             }
         };

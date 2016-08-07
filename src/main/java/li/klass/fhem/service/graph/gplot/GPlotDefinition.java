@@ -65,4 +65,12 @@ public class GPlotDefinition implements Serializable {
         result = 31 * result + (rightAxis != null ? rightAxis.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "GPlotDefinition{" +
+                "leftAxis=" + leftAxis +
+                ", rightAxis=" + rightAxis +
+                '}';
+    }
 }
