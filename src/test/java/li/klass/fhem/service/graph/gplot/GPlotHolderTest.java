@@ -69,7 +69,7 @@ public class GPlotHolderTest {
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(ImmutableMap.of("abc", definition));
 
         // when
-        Optional<GPlotDefinition> foundDefinition = gPlotHolder.definitionFor("abc");
+        Optional<GPlotDefinition> foundDefinition = gPlotHolder.definitionFor("abc", false);
 
         // then
         assertThat(foundDefinition).isEqualTo(Optional.of(definition));
@@ -85,7 +85,7 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden");
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
 
         // then
         assertThat(garden).isEqualTo(Optional.of(definition));
@@ -98,7 +98,7 @@ public class GPlotHolderTest {
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden");
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
 
         // then
         assertThat(garden).isEqualTo(Optional.absent());
@@ -114,10 +114,10 @@ public class GPlotHolderTest {
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
-        gPlotHolder.definitionFor("garden");
+        gPlotHolder.definitionFor("garden", false);
 
         // when
-        gPlotHolder.definitionFor("garden");
+        gPlotHolder.definitionFor("garden", false);
 
         // then
         verify(gPlotParser, times(1)).parseSafe(anyString());
@@ -131,13 +131,30 @@ public class GPlotHolderTest {
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
-        gPlotHolder.definitionFor("garden");
+        gPlotHolder.definitionFor("garden", false);
 
         // when
-        gPlotHolder.definitionFor("garden");
+        gPlotHolder.definitionFor("garden", false);
 
         // then
         verify(commandExecutionService, times(1)).executeRequest(anyString(), any(Context.class));
         verify(gPlotParser, never()).parseSafe(anyString());
+    }
+
+    @Test
+    public void should_handle_config_db() throws Exception {
+        // given
+        GPlotDefinition definition = defaultGPlotDefinition();
+        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
+        String gplotRawDefinition = "myValue" + System.currentTimeMillis();
+        given(commandExecutionService.executeSafely(eq("configdb fileshow garden.gplot"), any(Context.class))).willReturn(gplotRawDefinition);
+        given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
+
+        // when
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", true);
+
+        // then
+        assertThat(garden).isEqualTo(Optional.of(definition));
+
     }
 }

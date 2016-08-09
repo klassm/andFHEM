@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.graph.gplot;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 
 import java.util.Map;
@@ -72,14 +74,18 @@ public class GPlotHolder {
         definitions.putAll(defaultFiles);
     }
 
-    public Optional<GPlotDefinition> definitionFor(String name) {
+    public Optional<GPlotDefinition> definitionFor(String name, boolean isConfigDb) {
         loadDefaultGPlotFiles();
 
         if (definitions.containsKey(name)) {
             return definitions.get(name);
         }
 
-        Optional<String> result = commandExecutionService.executeRequest("/gplot/" + name + ".gplot", AndFHEMApplication.getContext());
+        Context applicationContext = AndFHEMApplication.getContext();
+        Optional<String> result = isConfigDb
+                ? Optional.fromNullable(commandExecutionService.executeSafely("configdb fileshow " + name + ".gplot", applicationContext))
+                : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", applicationContext);
+
         if (result.isPresent()) {
             definitions.put(name, gPlotParser.parseSafe(result.get()));
         } else {

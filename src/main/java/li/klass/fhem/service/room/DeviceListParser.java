@@ -201,13 +201,14 @@ public class DeviceListParser {
 
     @NonNull
     private Function<XmlListDevice, SvgGraphDefinition> deviceToGraphDefinition(final Map<String, FhemDevice> allDevices) {
+        final boolean isConfigDb = isConfigDb(allDevices);
         return new Function<XmlListDevice, SvgGraphDefinition>() {
             @Override
             public SvgGraphDefinition apply(XmlListDevice input) {
                 LOG.info("deviceToGraphDefinition - trying to load graph definition for {}", input.getName());
 
                 String gplotFileName = input.getInternals().get("GPLOTFILE").getValue();
-                Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName);
+                Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName, isConfigDb);
                 if (!gPlotDefinitionOptional.isPresent()) {
                     LOG.error("deviceToGraphDefinition - cannot find graph definition for {}", gplotFileName);
                     return null;
@@ -246,6 +247,11 @@ public class DeviceListParser {
                 return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
             }
         };
+    }
+
+    private boolean isConfigDb(Map<String, FhemDevice> allDevices) {
+        FhemDevice globalDevice = allDevices.get("global");
+        return globalDevice != null && "configDB".equals(globalDevice.getXmlListDevice().getAttribute("configfile").orNull());
     }
 
     private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, List<XmlListDevice> xmlListDevices,
