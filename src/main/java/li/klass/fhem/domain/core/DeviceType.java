@@ -39,7 +39,6 @@ import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
-import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
@@ -83,7 +82,6 @@ import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OwDevice;
-import li.klass.fhem.domain.OwSwitchDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PCF8574Device;
@@ -134,7 +132,6 @@ public enum DeviceType {
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter()),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),

@@ -1,0 +1,78 @@
+{
+  "defaultGroup": "SWITCH",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "A",
+      "desc": "A",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    },
+    {
+      "key": "B",
+      "desc": "B",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    },
+    {
+      "key": "C",
+      "desc": "C",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    },
+    {
+      "key": "D",
+      "desc": "D",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    },
+    {
+      "key": "E",
+      "desc": "E",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    },
+    {
+      "key": "F",
+      "desc": "F",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    }
+  ],
+  "sanitise": {
+    "sets": {
+      "replace": ".*",
+      "replaceBy": "A:on,off B:on,off C:on,off D:on,off E:on,off F:on,off"
+    }
+  }
+}

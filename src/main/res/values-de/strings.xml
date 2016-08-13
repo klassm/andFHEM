@@ -651,4 +651,11 @@
     <string name="detailInternalsSection">Interna</string>
     <string name="selectValue">wählen …</string>
     <string name="customText">benutzerdefiniert</string>
+
+    <string name="A">A</string>
+    <string name="B">B</string>
+    <string name="C">C</string>
+    <string name="D">D</string>
+    <string name="E">E</string>
+    <string name="F">F</string>
 </resources>

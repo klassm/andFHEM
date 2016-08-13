@@ -46,7 +46,6 @@ import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
-import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
@@ -176,8 +175,6 @@ public interface ApplicationComponent {
     void inject(HueDeviceAdapter object);
 
     void inject(LightSceneAdapter object);
-
-    void inject(OwSwitchDeviceAdapter object);
 
     void inject(PCA9532DeviceAdapter object);
 

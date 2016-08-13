@@ -693,4 +693,11 @@
     <string name="detailInternalsSection">Internals</string>
     <string name="selectValue">select …</string>
     <string name="customText">custom</string>
+
+    <string name="A">A</string>
+    <string name="B">B</string>
+    <string name="C">C</string>
+    <string name="D">D</string>
+    <string name="E">E</string>
+    <string name="F">F</string>
 </resources>
