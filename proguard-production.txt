@@ -12,6 +12,10 @@
 -keep public class com.google.android.gms.**
 -dontwarn com.google.android.gms.**
 
+-dontwarn java.lang.ClassValue
+-dontwarn com.google.j2objc.annotations.Weak
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
 # Dagger
 
 -dontwarn dagger.internal.codegen.**
