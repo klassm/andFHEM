@@ -45,6 +45,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -83,6 +86,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     protected static AtomicReference<FhemDevice> contextMenuClickedDevice = new AtomicReference<>();
     protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<>();
     protected static AtomicBoolean isClickedDeviceFavorite = new AtomicBoolean(false);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceListFragment.class);
 
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
@@ -247,11 +251,18 @@ public abstract class DeviceListFragment extends BaseFragment {
     }
 
     @Override
-    public boolean canChildScrollUp() {
-        if (ViewCompat.canScrollVertically(nestedListView, -1)) {
-            return true;
+    public void onResume() {
+        super.onResume();
+        super.onStart();
+        if (nestedListView.getChildCount() == 0) {
+            LOGGER.info("onResume - with child count 0, starting update(false)");
+            update(false);
         }
-        return super.canChildScrollUp();
+    }
+
+    @Override
+    public boolean canChildScrollUp() {
+        return ViewCompat.canScrollVertically(nestedListView, -1) || super.canChildScrollUp();
     }
 
     protected void fillEmptyView(LinearLayout view, ViewGroup viewGroup) {
