@@ -67,6 +67,28 @@
           "replaceBy": "output $1"
         }
       ]
+    },
+    {
+      "key": "G",
+      "desc": "G",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
+    },
+    {
+      "key": "H",
+      "desc": "H",
+      "showInOverview": true,
+      "beforeCommandReplace": [
+        {
+          "search": "(.*)",
+          "replaceBy": "output $1"
+        }
+      ]
     }
   ],
   "sanitise": {
