@@ -47,6 +47,7 @@ import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetSta
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SliderSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonSecondsHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TextFieldTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TimeTargetStateHandler;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -65,6 +66,7 @@ public class AvailableTargetStatesDialogUtil {
             new TimeTargetStateHandler<>(),
             new TextFieldTargetStateHandler<>(),
             new MultipleSetListTargetStateHandler<>(),
+            new SpecialButtonSecondsHandler<>(),
             new SpecialButtonHandler<>()
     );
     private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS = ImmutableList.<SetListTargetStateHandler<FhemDevice<?>>>builder()

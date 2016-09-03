@@ -28,8 +28,8 @@ package li.klass.fhem.domain.core;
 import java.util.Locale;
 
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.ANY;
-import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.DEC_QUARTER;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.NUMERIC;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.SECONDS;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TEMPERATURE;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TIME;
 
@@ -38,8 +38,8 @@ public enum DeviceStateRequiringAdditionalInformation {
     VALVE("valve", NUMERIC),
     FACTORS("factors", ANY),
     DESIRED("desired", NUMERIC),
-    ON_FOR_TIMER("on-for-timer", DEC_QUARTER),
-    OFF_FOR_TIMER("off-for-timer", DEC_QUARTER),
+    ON_FOR_TIMER("on-for-timer", SECONDS),
+    OFF_FOR_TIMER("off-for-timer", SECONDS),
     ON_TILL("on-till", TIME),
     OFF_TILL("off-till", TIME),
     RAMP_ON_TIME("ramp-on-time", NUMERIC),

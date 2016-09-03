@@ -31,6 +31,7 @@ public enum DeviceStateAdditionalInformationType {
     DEC_QUARTER("[0-9]*(.(0|25|5[0]?|75))?", ""),
     ANY(".*", ""),
     TIME("[0-9]{2}:[0-9]{2}", "00:00"),
+    SECONDS("[0-9]*(.(0|25|5[0]?|75))?", ""),
     TEMPERATURE("[0-9]*(\\.[0-9]*)?", "00.00");
 
     private final Pattern pattern;
