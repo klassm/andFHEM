@@ -29,24 +29,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.security.Key;
 import java.util.Map;
+import java.util.Set;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.Tasker;
@@ -58,8 +69,13 @@ import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 public class GCMIntentService extends GCMBaseIntentService {
     private static final Logger LOG = LoggerFactory.getLogger(GCMIntentService.class);
 
+    private static final Set<String> DECRYPT_KEYS = ImmutableSet.of("type", "notifyId", "changes", "deviceName", "tickerText", "contentText", "contentTitle");
+
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    RoomListService roomListService;
 
     @Override
     public void onCreate() {
@@ -99,6 +115,8 @@ public class GCMIntentService extends GCMBaseIntentService {
             return;
         }
 
+        extras = decrypt(extras);
+
         String type = extras.getString("type");
         if ("message".equalsIgnoreCase(type)) {
             handleMessage(extras);
@@ -106,6 +124,68 @@ public class GCMIntentService extends GCMBaseIntentService {
             handleNotify(extras);
         } else {
             LOG.error("onMessage - unknown type: {}", type);
+        }
+    }
+
+    private Bundle decrypt(Bundle extras) {
+        if (!extras.containsKey("gcmDeviceName")) {
+            return extras;
+        }
+
+        Optional<FhemDevice> device = roomListService.getDeviceForName(extras.getString("gcmDeviceName"), this);
+        if (!device.isPresent()) {
+            return extras;
+        }
+
+        Optional<String> cryptKey = device.get().getXmlListDevice().getAttribute("cryptKey");
+        if (!cryptKey.isPresent()) {
+            return extras;
+        }
+
+        return decrypt(extras, cryptKey.get());
+    }
+
+    private Bundle decrypt(Bundle extras, String cryptKey) {
+        Optional<Cipher> cipherOptional = cipherFor(cryptKey);
+        if (!cipherOptional.isPresent()) {
+            return extras;
+        }
+
+        Cipher cipher = cipherOptional.get();
+        Bundle newBundle = new Bundle();
+        newBundle.putAll(extras);
+        for (String key : extras.keySet()) {
+            if (DECRYPT_KEYS.contains(key)) {
+                newBundle.putString(key, decrypt(cipher, extras.getString(key)));
+            }
+        }
+
+        return newBundle;
+    }
+
+    private String decrypt(Cipher cipher, String value) {
+        try {
+            byte[] hexBytes = Hex.decodeHex(value.toCharArray());
+            return new String(cipher.doFinal(hexBytes));
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("decrypt(" + value + ")", e);
+            return value;
+        }
+    }
+
+    @NonNull
+    private Optional<Cipher> cipherFor(String key) {
+        try {
+            byte[] keyBytes = key.getBytes();
+            Key skey = new SecretKeySpec(keyBytes, "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            IvParameterSpec ivSpec = new IvParameterSpec(keyBytes);
+            cipher.init(Cipher.DECRYPT_MODE, skey, ivSpec);
+            return Optional.of(cipher);
+        } catch (Exception e) {
+            LOG.error("cipherFor - cannot create cipher", e);
+            return Optional.absent();
         }
     }
 
