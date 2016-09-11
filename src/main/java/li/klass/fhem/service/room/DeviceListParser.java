@@ -187,7 +187,8 @@ public class DeviceListParser {
     private void attachSvgGraphsToDevices(ImmutableSet<SvgGraphDefinition> svgGraphDefinitions, Map<String, FhemDevice> allDevices) {
         for (Map.Entry<String, FhemDevice> entry : allDevices.entrySet()) {
             for (SvgGraphDefinition svgGraphDefinition : svgGraphDefinitions) {
-                if (svgGraphDefinition.getLogDevice().concernsDevice(entry.getKey())) {
+                if (svgGraphDefinition.getLogDevice().concernsDevice(entry.getKey()) ||
+                        svgGraphDefinition.getName().equalsIgnoreCase(entry.getKey())) {
                     entry.getValue().addSvgGraphDefinition(svgGraphDefinition);
                 }
             }

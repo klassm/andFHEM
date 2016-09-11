@@ -160,6 +160,7 @@
     <string name="noGraphEntries">Keine Graph-Einträge gefunden, die entsprechend zum ausgewählten Zeitraum passen!
         Sind im FileLog Daten vorhanden?
     </string>
+    <string name="showGraph">Zeige Graph</string>
     <string name="delete">Löschen</string>
     <string name="deleteConfirmIntervalText">Möchten Sie das Intervall wirklich löschen?</string>
     <string name="newInterval">Neues Intervall</string>
@@ -387,49 +388,6 @@
 
     <string name="doneTitle">Fertig!</string>
     <string name="switchDelayNotification">Die Konfiguration wurde gespeichert. Es kann eine Weile dauern bis die Konfiguration im Gerät übernommen ist.</string>
-
-    <string name="temperatureGraph">Temperatur-Graph</string>
-    <string name="temperatureHumidityGraph">Temperatur- &amp; Luftfeuchtigkeits-Graph</string>
-    <string name="temperatureHumidityDewpointGraph">Temperatur-, Luftfeuchtigkeits- &amp; Taupunkt-Graph</string>
-    <string name="temperatureActuatorGraph">Temperatur- &amp; Regler-Graph</string>
-    <string name="brightnessSunshineGraph">Helligkeits- &amp; Sonneneinstrahlungs-Graph</string>
-    <string name="brightnessGraph">Helligkeits-Graph</string>
-    <string name="rainGraph">Regen-Graph</string>
-    <string name="humidityGraph">Luftfeuchtigkeits-Graph</string>
-    <string name="windGraph">Wind-Graph</string>
-    <string name="actuatorGraph">Regler-Graph</string>
-    <string name="pressureGraph">Luftdruck-Graph</string>
-    <string name="usageGraph">Verbrauchs-Graph</string>
-    <string name="usageGraphCumulative">Verbrauchs-Graph (kumuliert)</string>
-    <string name="windSpeedGraph">Windgeschwindigkeits-Graph</string>
-    <string name="stateGraph">Zustands-Graph</string>
-    <string name="contentGraph">Inhalts-Graph</string>
-    <string name="dewpointGraph">Taupunkt-Graph</string>
-    <string name="powerGraph">Energie-Graph</string>
-    <string name="co2Graph">CO\u2082-Graph</string>
-    <string name="weightGraph">Gewichts-Graph</string>
-    <string name="averagesGraph">Durchschnittswerte</string>
-
-    <string name="yAxisWind">Wind (km/h)</string>
-    <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
-    <string name="yAxisTemperature">Temperatur (°C)</string>
-    <string name="yAxisRain">Regen (l/m\u00b2)</string>
-    <string name="yAxisActuator">Regler (%)</string>
-    <string name="yAxisPressure">Luftdruck (hPa)</string>
-    <string name="yAxisPressureNN">Luftdruck NN (hPa)</string>
-    <string name="yAxisRainRate">Regenstärke (mm/h)</string>
-    <string name="yAxisCurrentUsageW">aktueller Verbrauch (W)</string>
-    <string name="yAxisCurrentUsagekW">aktueller Verbrauch (kW)</string>
-    <string name="yAxisCurrentPowerW">aktuelle Leistung (W)</string>
-    <string name="yAxisCumulativeUsageKWh">kumulativer Verbrauch (kWh)</string>
-    <string name="yAxisCumulativeUsageWh">kumulativer Verbrauch (Wh)</string>
-    <string name="yAxisToggleState">an (1) / aus(0)</string>
-    <string name="yAxisLitreContent">Inhalt (l)</string>
-    <string name="yAxisEnergy">Energie (W)</string>
-    <string name="yAxisRaw">Roh-Wert</string>
-    <string name="yAxisCO2">CO\u2082 (ppm)</string>
-    <string name="yAxisWeight">Gewicht (kg)</string>
-    <string name="yAxisFatRatio">Fettanteil</string>
 
     <string name="startDate">Start-Datum</string>
     <string name="endDate">End-Datum</string>

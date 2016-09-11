@@ -62,7 +62,6 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
     private final FragmentUiService fragmentUiService;
 
     public static double MINIMUM_TEMPERATURE = 5.5;
-    public static double MAXIMUM_TEMPERATURE = 30.5;
 
     @Inject
     public CulHmDetailActionProvider(FragmentUiService fragmentUiService) {

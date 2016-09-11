@@ -160,6 +160,7 @@
     <string name="noGraphEntries">No graph entries found that match the selected time range. Does your FileLog contain
         any matching entries?
     </string>
+    <string name="showGraph">Show Graph</string>
     <string name="delete">Delete</string>
     <string name="deleteConfirmIntervalText">Do you really want to delete the interval?</string>
     <string name="newInterval">New interval</string>
@@ -389,51 +390,6 @@
 
     <string name="doneTitle">Done!</string>
     <string name="switchDelayNotification">The configuration was saved. However, it can take a while until it will show up within the device.</string>
-
-    <string name="temperatureGraph">Temperature Graph</string>
-    <string name="temperatureHumidityGraph">Temperature &amp; Humidity Graph</string>
-    <string name="temperatureHumidityDewpointGraph">Temperature &amp; Humidity &amp; Dewpoint Graph</string>
-    <string name="temperatureActuatorGraph">Temperature &amp; Actuator Graph</string>
-    <string name="brightnessSunshineGraph">Brightness &amp; Sunshine Graph</string>
-    <string name="brightnessGraph">Brightness Graph</string>
-    <string name="rainGraph">Rain Graph</string>
-    <string name="humidityGraph">Humidity Graph</string>
-    <string name="windGraph">Wind Graph</string>
-    <string name="actuatorGraph">Actuator Graph</string>
-    <string name="pressureGraph">Pressure Graph</string>
-    <string name="usageGraph">Usage Graph</string>
-    <string name="usageGraphCumulative">Usage Graph (cumulated)</string>
-    <string name="windSpeedGraph">Wind Speed Graph</string>
-    <string name="stateGraph">State Graph</string>
-    <string name="contentGraph">Content Graph</string>
-    <string name="dewpointGraph">Dewpoint Graph</string>
-    <string name="powerGraph">Power Graph</string>
-    <string name="co2Graph">CO2 Graph</string>
-    <string name="weightGraph">Weight Graph</string>
-    <string name="averagesGraph">Averages Graph</string>
-    <string name="VOCGraph" translatable="false">VOC Graph</string>
-
-    <string name="yAxisWind">wind (km/h)</string>
-    <string name="yAxisHumidity">humidity (%)</string>
-    <string name="yAxisTemperature">temperature (°C)</string>
-    <string name="yAxisRain">rain (l/m2)</string>
-    <string name="yAxisActuator">actuator (%)</string>
-    <string name="yAxisPressure">pressure (hPa)</string>
-    <string name="yAxisPressureNN">pressure nn (hPa)</string>
-    <string name="yAxisRainRate">rain rate (mm/hr)</string>
-    <string name="yAxisCurrentUsageW">current usage (W)</string>
-    <string name="yAxisCurrentUsagekW">current usage (kW)</string>
-    <string name="yAxisCurrentPowerW">current power(W)</string>
-    <string name="yAxisCumulativeUsageKWh">cumulative usage (kWh)</string>
-    <string name="yAxisCumulativeUsageWh">cumulative usage (Wh)</string>
-    <string name="yAxisToggleState">on (1) / off (0)</string>
-    <string name="yAxisLitreContent">content (l)</string>
-    <string name="yAxisEnergy">energy (W)</string>
-    <string name="yAxisRaw">raw value</string>
-    <string name="yAxisCO2">co2 (ppm)</string>
-    <string name="yAxisVOC" translatable="false">co2 (voc)</string>
-    <string name="yAxisWeight">weight (kg)</string>
-    <string name="yAxisFatRatio">fat ratio</string>
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
