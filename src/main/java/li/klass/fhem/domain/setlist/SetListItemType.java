@@ -30,6 +30,7 @@ import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.NotFoundSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
@@ -88,6 +89,12 @@ public enum SetListItemType {
         @Override
         public SetListItem entryFor(String key, String[] parts) {
             return new GroupSetListEntry(key, parts);
+        }
+    }),
+    NOT_FOUND(new SupportsType("not_found"), new EntryProvider() {
+        @Override
+        public SetListItem entryFor(String key, String[] parts) {
+            return new NotFoundSetListEntry(key);
         }
     });
 

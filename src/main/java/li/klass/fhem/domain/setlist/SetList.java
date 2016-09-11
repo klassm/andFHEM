@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.NotFoundSetListEntry;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -107,7 +108,9 @@ public class SetList implements Serializable {
     }
 
     public SetListEntry get(String key) {
-        return entries.get(key);
+        return entries.containsKey(key)
+                ? entries.get(key)
+                : new NotFoundSetListEntry(key);
     }
 
     public boolean contains(String... keys) {
