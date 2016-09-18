@@ -65,7 +65,7 @@ public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements Set
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int seconds = 60 * (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute() * 60);
+                        int seconds = 60 * (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute());
                         callback.onSubStateSelected(device, entry.getKey(), String.valueOf(seconds));
                     }
                 })
