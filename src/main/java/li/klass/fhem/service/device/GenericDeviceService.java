@@ -28,6 +28,7 @@ import android.content.Context;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -39,6 +40,7 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.room.RoomListUpdateService;
 import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.util.Tasker;
@@ -92,13 +94,19 @@ public class GenericDeviceService {
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context, boolean invokeDeviceUpdate) {
         if (device.getDeviceConfiguration().isPresent()) {
-            Map<String, String> toReplace = device.getDeviceConfiguration().get().getCommandReplaceFor(subStateName);
+            DeviceConfiguration configuration = device.getDeviceConfiguration().get();
+            Map<String, String> toReplace = configuration.getCommandReplaceFor(subStateName);
             for (Map.Entry<String, String> entry : toReplace.entrySet()) {
                 value = value
                         .replaceAll("([ ,])" + entry.getKey(), "$1" + entry.getValue())
                         .replaceAll("^" + entry.getKey(), entry.getValue());
             }
+            Optional<String> subStateReplaceForSubState = configuration.getSubStateReplaceFor(subStateName);
+            if (subStateReplaceForSubState.isPresent()) {
+                subStateName = subStateReplaceForSubState.get();
+            }
         }
+
 
         if ("STATE".equalsIgnoreCase(subStateName)) {
             setState(device, value, context);

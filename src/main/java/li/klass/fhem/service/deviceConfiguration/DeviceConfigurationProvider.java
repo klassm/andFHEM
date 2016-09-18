@@ -174,10 +174,15 @@ public class DeviceConfigurationProvider {
 
                 builder.withState(viewItemConfigFor(state));
 
+                String stateKey = state.optString(KEY);
                 JSONArray beforeCommandReplace = state.optJSONArray("beforeCommandReplace");
                 if (beforeCommandReplace != null) {
                     Map<String, String> commandReplace = handleCommandReplace(beforeCommandReplace);
-                    builder.withCommandReplace(state.optString(KEY), commandReplace);
+                    builder.withCommandReplace(stateKey, commandReplace);
+                }
+                String subStateReplace = state.optString("subStateReplace");
+                if (subStateReplace != null) {
+                    builder.withSubStateReplace(stateKey, subStateReplace);
                 }
 
             }

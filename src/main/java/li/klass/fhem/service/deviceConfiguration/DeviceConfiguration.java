@@ -31,6 +31,7 @@ import com.google.common.collect.Sets;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -42,15 +43,16 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class DeviceConfiguration implements Serializable {
-    private DeviceFunctionality defaultGroup;
-    private boolean sensorDevice;
+    private final DeviceFunctionality defaultGroup;
+    private final boolean sensorDevice;
     private final Set<String> supportedWidgets;
-    private Set<ViewItemConfig> states;
-    private Set<ViewItemConfig> attributes;
-    private Set<ViewItemConfig> internals;
-    private boolean showStateInOverview;
-    private boolean showMeasuredInOverview;
-    private Map<String, Map<String, String>> stateCommandReplace;
+    private final Set<ViewItemConfig> states;
+    private final Set<ViewItemConfig> attributes;
+    private final Set<ViewItemConfig> internals;
+    private final boolean showStateInOverview;
+    private final boolean showMeasuredInOverview;
+    private final Map<String, Map<String, String>> stateCommandReplace;
+    private final Map<String, String> subStateReplace;
 
     private DeviceConfiguration(Builder builder) {
         defaultGroup = checkNotNull(builder.defaultGroup);
@@ -62,6 +64,7 @@ public class DeviceConfiguration implements Serializable {
         showStateInOverview = builder.showStateInOverview;
         showMeasuredInOverview = builder.showMeasuredInOverview;
         stateCommandReplace = ImmutableMap.copyOf(builder.stateCommandReplace);
+        subStateReplace = builder.subStateReplace;
     }
 
     public DeviceFunctionality getDefaultGroup() {
@@ -105,6 +108,10 @@ public class DeviceConfiguration implements Serializable {
         return showMeasuredInOverview;
     }
 
+    public Optional<String> getSubStateReplaceFor(String key) {
+        return Optional.fromNullable(subStateReplace.get(key));
+    }
+
     public Map<String, String> getCommandReplaceFor(String state) {
         state = state.toUpperCase(Locale.getDefault());
         if (stateCommandReplace.containsKey(state)) {
@@ -123,6 +130,7 @@ public class DeviceConfiguration implements Serializable {
         private boolean showStateInOverview;
         private boolean showMeasuredInOverview;
         private Map<String, Map<String, String>> stateCommandReplace = newHashMap();
+        private Map<String, String> subStateReplace = new HashMap<>();
 
         public Builder() {
         }
@@ -169,6 +177,11 @@ public class DeviceConfiguration implements Serializable {
 
         public Builder withCommandReplace(String state, Map<String, String> commandReplace) {
             stateCommandReplace.put(state.toUpperCase(Locale.getDefault()), ImmutableMap.copyOf(commandReplace));
+            return this;
+        }
+
+        public Builder withSubStateReplace(String state, String value) {
+            this.subStateReplace.put(state, value);
             return this;
         }
 
