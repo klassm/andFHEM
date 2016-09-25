@@ -44,6 +44,7 @@ import li.klass.fhem.adapter.devices.genericui.availableTargetStates.GroupSetLis
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.MultipleSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.NoArgSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.RGBTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SliderSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonHandler;
@@ -61,6 +62,7 @@ import static com.google.common.collect.FluentIterable.from;
 public class AvailableTargetStatesDialogUtil {
 
     private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
+            new RGBTargetStateHandler<>(),
             new GroupSetListTargetStateHandler<>(),
             new SliderSetListTargetStateHandler<>(),
             new TimeTargetStateHandler<>(),

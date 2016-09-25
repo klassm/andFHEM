@@ -56,6 +56,7 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailAc
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction;
+import li.klass.fhem.adapter.devices.genericui.StateChangingColorPickerRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
@@ -72,6 +73,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.util.Optionals;
@@ -319,10 +321,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         }
 
         if (setListEntry instanceof SliderSetListEntry) {
-            TableRow sliderRow = new StateChangingSeekBarFullWidth(
+            addRow(table, new StateChangingSeekBarFullWidth(
                     getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getKey()).get(), row)
-                    .createRow(getInflater(), device);
-            addRow(table, sliderRow);
+                    .createRow(getInflater(), device));
         } else if (setListEntry instanceof GroupSetListEntry) {
             GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;
             List<String> groupStates = groupValue.getGroupStates();
@@ -336,6 +337,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                 addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping), groupStates, item.getValueFor(device), item.getKey())
                         .createRow(device.getXmlListDevice(), table));
             }
+        } else if (setListEntry instanceof RGBSetListEntry) {
+            addRow(table, new StateChangingColorPickerRow(stateUiService, device.getXmlListDevice(), (RGBSetListEntry) setListEntry)
+                    .createRow(getContext(), getInflater(), table));
         }
     }
 

@@ -24,17 +24,21 @@
 
 package li.klass.fhem.util;
 
-import org.junit.Test;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
-import static li.klass.fhem.test.hamcrest.IntegerMatcher.closeTo;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static li.klass.fhem.util.ColorUtil.extractBlue;
 import static li.klass.fhem.util.ColorUtil.extractGreen;
 import static li.klass.fhem.util.ColorUtil.extractRed;
 import static li.klass.fhem.util.ColorUtil.rgbToXY;
 import static li.klass.fhem.util.ColorUtil.xyToRgb;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(DataProviderRunner.class)
 public class ColorUtilTest {
     @Test
     public void testXY_RGB_Conversion() {
@@ -51,9 +55,25 @@ public class ColorUtilTest {
         ColorUtil.XYColor xyColor = rgbToXY(color);
         int rgb = xyToRgb(xyColor.xy, xyColor.brightness);
 
-        assertThat(extractRed(rgb), is(closeTo(red, 2)));
-        assertThat(extractBlue(rgb), is(closeTo(blue, 2)));
-        assertThat(extractGreen(rgb), is(closeTo(green, 2)));
+        assertThat(extractRed(rgb)).isBetween(red - 2, red + 2);
+        assertThat(extractBlue(rgb)).isBetween(blue - 2, blue + 2);
+        assertThat(extractGreen(rgb)).isBetween(green - 2, green + 2);
     }
 
+    @DataProvider
+    public static Object[][] rgbProvider() {
+        return new Object[][]{
+                {"FFFFFF", 0xFFFFFF},
+                {"ABCEFF", 0xABCEFF},
+                {"AbCEFf", 0xABCEFF},
+                {"0xAbCEFf", 0xABCEFF},
+                {"0x00AbCEFf", 0xABCEFF},
+        };
+    }
+
+    @UseDataProvider("rgbProvider")
+    @Test
+    public void should_convert_rgb(String in, int expected) {
+        assertThat(ColorUtil.fromRgbString(in)).isEqualTo(expected);
+    }
 }

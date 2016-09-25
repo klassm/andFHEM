@@ -24,40 +24,39 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.chiralcode.colorpicker.ColorPicker;
-import com.chiralcode.colorpicker.ColorPickerListener;
-
 import li.klass.fhem.R;
-import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.adapter.uiservice.StateUiService;
+import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.util.ColorUtil;
 
-public class ColorPickerRow implements ColorPickerListener {
-    private final int originalValue;
-    private int value;
-    private int alertDialogTitle;
+public class StateChangingColorPickerRow {
+    private final XmlListDevice xmlListDevice;
+    private final StateUiService stateUiService;
+    private final RGBSetListEntry rgbSetListEntry;
 
-    public ColorPickerRow(int value, int alertDialogTitle) {
-        this.originalValue = value;
-        this.value = value;
-        this.alertDialogTitle = alertDialogTitle;
+    public StateChangingColorPickerRow(StateUiService stateUiService, XmlListDevice xmlListDevice, RGBSetListEntry rgbSetListEntry) {
+        this.xmlListDevice = xmlListDevice;
+        this.stateUiService = stateUiService;
+        this.rgbSetListEntry = rgbSetListEntry;
     }
 
     public TableRow createRow(final Context context, final LayoutInflater inflater, ViewGroup viewGroup) {
         View view = inflater.inflate(R.layout.device_detail_colorpicker_row, viewGroup, false);
+        final String rgb = xmlListDevice.getState(rgbSetListEntry.getKey()).get();
         assert view != null;
 
-        value |= 0xFF000000;
         final View colorValueView = view.findViewById(R.id.color_value);
-        colorValueView.setBackgroundColor(value);
+        colorValueView.setBackgroundColor(ColorUtil.fromRgbString(rgb) | 0xFF000000);
 
         Button setButton = (Button) view.findViewById(R.id.set);
 
@@ -68,43 +67,19 @@ public class ColorPickerRow implements ColorPickerListener {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                @SuppressLint("InflateParams") final View contentView = inflater.inflate(R.layout.colorpicker_dialog, null);
-                assert contentView != null;
-
-                final CheckBox sendEachChangeCheckbox =
-                        (CheckBox) contentView.findViewById(R.id.sendEachChange);
-
-                final ColorPicker picker = (ColorPicker) contentView.findViewById(R.id.colorPicker);
-                picker.setColor(value);
-                picker.setListener(new ColorPickerListener() {
+                new RGBColorPickerDialog(context, rgb, new RGBColorPickerDialog.Callback() {
                     @Override
-                    public void onColorChange(int color) {
-                        if (!sendEachChangeCheckbox.isChecked()) return;
-
-                        // remove alpha channel first!
-                        ColorPickerRow.this.onColorChange(color & 0x00FFFFFF);
+                    public void onColorChanged(String newRGB, Dialog dialog) {
+                        stateUiService.setSubState(xmlListDevice, rgbSetListEntry.getKey(), newRGB, context);
                     }
-                });
 
-                String title = context.getString(alertDialogTitle);
-                DialogUtil.showContentDialog(context, title, contentView, new DialogUtil.AlertOnClickListener() {
                     @Override
-                    public void onClick() {
-                        value = picker.getColor();
-                        colorValueView.setBackgroundColor(value);
-
-                        if (originalValue != value) {
-                            onColorChange(value & 0x00FFFFFF);
-                        }
+                    public void onColorUnchanged(Dialog dialog) {
                     }
-                });
+                }).show();
             }
         });
 
         return (TableRow) view;
-    }
-
-    @Override
-    public void onColorChange(int color) {
     }
 }

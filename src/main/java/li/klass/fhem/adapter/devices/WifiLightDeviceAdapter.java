@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
-import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
+import li.klass.fhem.adapter.devices.genericui.OldColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.WifiLightDevice;
@@ -63,7 +63,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapter {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final FhemDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(((WifiLightDevice) device).getRgb(), R.string.hue) {
+                tableLayout.addView(new OldColorPickerRow(((WifiLightDevice) device).getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

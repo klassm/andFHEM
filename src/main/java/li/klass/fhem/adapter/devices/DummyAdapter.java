@@ -38,7 +38,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
-import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
+import li.klass.fhem.adapter.devices.genericui.OldColorPickerRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.DummyDevice;
@@ -104,7 +104,7 @@ public class DummyAdapter extends DimmableAdapter {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final FhemDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(((DummyDevice) device).getRGBColor(), R.string.hue) {
+                tableLayout.addView(new OldColorPickerRow(((DummyDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

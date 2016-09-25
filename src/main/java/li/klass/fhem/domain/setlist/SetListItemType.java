@@ -31,6 +31,7 @@ import li.klass.fhem.domain.setlist.typeEntry.MultipleSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NotFoundSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
@@ -41,6 +42,17 @@ public enum SetListItemType {
         @Override
         public SetListItem entryFor(String key, String[] parts) {
             return new NoArgSetListEntry(key);
+        }
+    }),
+    RGB(new SupportsType("colorpicker") {
+        @Override
+        public boolean supports(String[] parts) {
+            return super.supports(parts) && parts[1].equalsIgnoreCase("RGB");
+        }
+    }, new EntryProvider() {
+        @Override
+        public SetListItem entryFor(String key, String[] parts) {
+            return new RGBSetListEntry(key);
         }
     }),
     TIME(new SupportsType("time", 1), new EntryProvider() {
@@ -85,7 +97,8 @@ public enum SetListItemType {
             return null;
         }
     }),
-    GROUP(new SupportsType("group_dummy_key"), new EntryProvider() {
+    GROUP(new SupportsType("group_dummy_key") {
+    }, new EntryProvider() {
         @Override
         public SetListItem entryFor(String key, String[] parts) {
             return new GroupSetListEntry(key, parts);

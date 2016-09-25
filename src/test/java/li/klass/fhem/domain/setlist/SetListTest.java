@@ -36,6 +36,7 @@ import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
@@ -113,6 +114,16 @@ public class SetListTest {
                         new TestCase("textField-long")
                                 .withSetList("blab:textField-long")
                                 .thenExpect(entry("blab", new TextFieldLongSetListEntry("blab")))
+                },
+                {
+                        new TestCase("RGB")
+                                .withSetList("blab:colorpicker,RGB")
+                                .thenExpect(entry("blab", new RGBSetListEntry("blab")))
+                },
+                {
+                        new TestCase("colorPicker with group")
+                                .withSetList("ct:colorpicker,CT,154,1,500")
+                                .thenExpect(entry("ct", new NoArgSetListEntry("ct")))
                 }
         };
     }

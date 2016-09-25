@@ -129,4 +129,18 @@ public class ColorUtil {
     static int extractRed(int rgb) {
         return (rgb >> 16);
     }
+
+    public static int fromRgbString(String rgb) {
+        if (!rgb.startsWith("0x")) {
+            rgb = "0x" + rgb;
+        }
+        return Integer.decode(rgb) & 0x00FFFFFF;
+    }
+
+    public static String toHexStringWithoutPrefix(int color) {
+        return StringUtil.prefixPad(
+                Integer.toHexString(color),
+                "0", 6
+        );
+    }
 }

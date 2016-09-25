@@ -91,7 +91,7 @@ public class SetList implements Serializable {
                 return type;
             }
         }
-        return parts.length == 0
+        return parts.length == 0 || (parts.length >= 1 && "colorpicker".equalsIgnoreCase(parts[0]))
                 ? SetListItemType.NO_ARG
                 : SetListItemType.GROUP;
     }
