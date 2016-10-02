@@ -25,7 +25,6 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
-
 import com.google.common.base.Optional;
 
 import java.util.Locale;
@@ -34,11 +33,14 @@ public enum CulHmHeatingMode {
     MANUAL, AUTO, CENTRAL, BOOST, UNKNOWN;
 
     public static Optional<CulHmHeatingMode> heatingModeFor(String value) {
+        // If the command is not confirmed yet FHEM sets the state to the target state with the "SET_" prefix.
+        // We assume that the command goes well and remove the prefix ...
+        value = value.toUpperCase(Locale.getDefault()).replace("SET_", "");
         if (value.equalsIgnoreCase("MANU")) {
             value = MANUAL.name();
         }
         try {
-            return Optional.of(CulHmHeatingMode.valueOf(value.toUpperCase(Locale.getDefault())));
+            return Optional.of(CulHmHeatingMode.valueOf(value));
         } catch (Exception e) {
             Log.e(CulHmHeatingMode.class.getName(), "cannot set heating mode from value " + value, e);
             return Optional.absent();

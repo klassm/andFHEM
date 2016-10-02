@@ -28,15 +28,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import li.klass.fhem.domain.core.DeviceFunctionality;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
@@ -109,7 +105,7 @@ public class DeviceConfiguration implements Serializable {
     }
 
     public Optional<String> getSubStateReplaceFor(String key) {
-        return Optional.fromNullable(subStateReplace.get(key));
+        return Optional.fromNullable(StringUtils.trimToNull(subStateReplace.get(key)));
     }
 
     public Map<String, String> getCommandReplaceFor(String state) {
@@ -181,7 +177,10 @@ public class DeviceConfiguration implements Serializable {
         }
 
         public Builder withSubStateReplace(String state, String value) {
-            this.subStateReplace.put(state, value);
+            value = StringUtils.trimToNull(value);
+            if (value != null) {
+                this.subStateReplace.put(state, value);
+            }
             return this;
         }
 
