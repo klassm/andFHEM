@@ -33,7 +33,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 
@@ -79,9 +78,9 @@ public class DiscreteDimmableBehaviorTest {
     @DataProvider
     public static Object[][] upperBoundProvider() {
         return new Object[][]{
-                {new SetList().parse("dim10% dim20% dim30%"), 4},
-                {new SetList().parse("dim10% dim20% dim30% dim40%"), 5},
-                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), 6}
+                {new SetList().parse("dim10% dim20% dim30%"), 3},
+                {new SetList().parse("dim10% dim20% dim30% dim40%"), 4},
+                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), 5}
         };
     }
 
@@ -98,9 +97,9 @@ public class DiscreteDimmableBehaviorTest {
         return new Object[][]{
                 {new SetList().parse("dim10% dim20% dim30%"), "dim20%", 2},
                 {new SetList().parse("dim10% dim20% dim30% dim40%"), "dim30%", 3},
-                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), "dim50%", 5},
+                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), "on", 5},
                 {new SetList().parse("dim20% dim10%"), "dim10%", 1},
-                {new SetList().parse("dim20% dim10%"), "dim20%", 2}
+                {new SetList().parse("dim20% dim10%"), "on", 2}
         };
     }
 

@@ -30,6 +30,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,15 @@ public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
             return DIM_STATE_PATTERN.matcher(input).matches();
         }
     };
+    public static final Comparator<String> COMPARE_BY_DIM_VALUE = new Comparator<String>() {
+        @Override
+        public int compare(String lhs, String rhs) {
+            lhs = lhs.replace("dim", "").replace("%", "");
+            rhs = rhs.replace("dim", "").replace("%", "");
+
+            return ((Integer) Integer.parseInt(lhs)).compareTo(Integer.parseInt(rhs));
+        }
+    };
 
     private final ImmutableList<String> foundDimStates;
 
@@ -62,7 +72,7 @@ public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     static Optional<DiscreteDimmableBehavior> behaviorFor(SetList setList) {
 
         List<String> keys = setList.getSortedKeys();
-        ImmutableList<String> foundDimStates = from(keys).filter(DIMMABLE_STATE).toList();
+        ImmutableList<String> foundDimStates = from(keys).filter(DIMMABLE_STATE).toSortedList(COMPARE_BY_DIM_VALUE);
 
         return foundDimStates.isEmpty() ?
                 Optional.<DiscreteDimmableBehavior>absent() :
@@ -88,7 +98,7 @@ public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
 
     @Override
     public float getDimUpperBound() {
-        return foundDimStates.size() + 1;
+        return foundDimStates.size();
     }
 
     @Override
