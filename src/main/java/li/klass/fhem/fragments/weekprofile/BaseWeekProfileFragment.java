@@ -194,6 +194,11 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
     }
 
     @Override
+    protected boolean mayPullToRefresh() {
+        return false;
+    }
+
+    @Override
     protected boolean mayUpdateFromBroadcast() {
         return false;
     }
