@@ -3,7 +3,9 @@ general:
     - "build/docs/javadoc"
 machine:
   environment:
-      ANDROID_HOME: /usr/local/android-sdk-linux 
+      ANDROID_HOME: /usr/local/android-sdk-linux
+  java:
+    version: openjdk8
 dependencies:
   cache_directories:
   override:
@@ -13,5 +15,6 @@ test:
     - ./gradlew test
   post:
     - ./gradlew javadocinappdebug
-      
+
+
 
