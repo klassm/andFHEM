@@ -112,7 +112,7 @@ public class GCMSendDeviceService extends AbstractService {
     private void registerWithGCMInternal(Context context, String projectId) {
         if (isNullOrEmpty(projectId)) return;
 
-        if (!GCMRegistrar.isRegistered(context)) {
+        if (!GCMRegistrar.isRegisteredOnServer(context)) {
             GCMRegistrar.checkDevice(context);
             GCMRegistrar.checkManifest(context);
 
