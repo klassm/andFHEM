@@ -25,6 +25,16 @@
       "key": "energy",
       "desc": "energy_current",
       "showInOverview": true
+    },
+    {
+      "key": "alarm",
+      "desc": "alarm",
+      "showInOverview": true
+    },
+    {
+      "key": "battery",
+      "desc": "battery",
+      "showInOverview": false
     }
   ],
   "sanitise": {
