@@ -24,10 +24,14 @@
 
 package li.klass.fhem.domain;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
+import static com.tngtech.java.junit.dataprovider.DataProviders.testForEach;
 import static li.klass.fhem.domain.AtDevice.AtRepetition.FRIDAY;
 import static li.klass.fhem.domain.AtDevice.AtRepetition.ONCE;
 import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKDAY;
@@ -35,119 +39,198 @@ import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKEND;
 import static li.klass.fhem.domain.AtDevice.TimerType.ABSOLUTE;
 import static li.klass.fhem.domain.AtDevice.TimerType.RELATIVE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
-public class AtDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testParseDefinition() {
-        AtDevice device;
+@RunWith(DataProviderRunner.class)
+public class AtDeviceTest {
+    @DataProvider
+    public static Object[][] provider() {
+        return testForEach(
+                new TestCase()
+                        .withHours(17)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("on")
+                        .withTargetDevice("lamp")
+                        .withAdditionalInformation(null)
+                        .withRepetition(ONCE)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("17:00:00 set lamp on")
+                        .withAssembledDefinition("17:00:00 { fhem(\"set lamp on\") }"),
+                new TestCase()
+                        .withHours(23)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("off")
+                        .withTargetDevice("lamp")
+                        .withAdditionalInformation(null)
+                        .withRepetition(WEEKEND)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("*23:00:00 { fhem(\"set lamp off\") if ($we) }"),
+                new TestCase()
+                        .withHours(23)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("off-for-timer")
+                        .withTargetDevice("lamp")
+                        .withAdditionalInformation("200")
+                        .withRepetition(WEEKDAY)
+                        .withTimerType(RELATIVE)
+                        .withDefinition("+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (not $we) }")
+                        .withAssembledDefinition("+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }"),
+                new TestCase()
+                        .withHours(23)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("off-for-timer")
+                        .withTargetDevice("lamp")
+                        .withAdditionalInformation("200")
+                        .withRepetition(WEEKDAY)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (NOT $we) }")
+                        .withAssembledDefinition("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }"),
+                new TestCase()
+                        .withHours(23)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("off-for-timer")
+                        .withTargetDevice("lamp")
+                        .withAdditionalInformation("200")
+                        .withRepetition(WEEKDAY)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }"),
+                new TestCase()
+                        .withHours(23)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("off-for-timer")
+                        .withTargetDevice("lamp")
+                        .withAdditionalInformation("200")
+                        .withRepetition(WEEKDAY)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }"),
+                new TestCase()
+                        .withHours(7)
+                        .withMinutes(15)
+                        .withSeconds(0)
+                        .withTargetState("desired-temp")
+                        .withTargetDevice("Badezimmer")
+                        .withAdditionalInformation("00.00")
+                        .withRepetition(FRIDAY)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }"),
+                new TestCase()
+                        .withHours(19)
+                        .withMinutes(45)
+                        .withSeconds(0)
+                        .withTargetState("desired-temp")
+                        .withTargetDevice("EZ.Heizung_Clima")
+                        .withAdditionalInformation("24.00")
+                        .withRepetition(ONCE)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("19:45:00 { fhem(\"set EZ.Heizung_Clima desired-temp 24.00\") }"),
+                new TestCase()
+                        .withHours(17)
+                        .withMinutes(0)
+                        .withSeconds(0)
+                        .withTargetState("on")
+                        .withTargetDevice("d")
+                        .withAdditionalInformation(null)
+                        .withRepetition(ONCE)
+                        .withTimerType(ABSOLUTE)
+                        .withDefinition("2016-10-16T17:00:00 { fhem(\"set d on\") }")
+                        .withAssembledDefinition("17:00:00 { fhem(\"set d on\") }")
+        );
 
-        device = parse("17:00:00 set lamp on", 17, 0, 0, "lamp", "on", null,
-                ONCE, ABSOLUTE, true);
-        assemble(device, "17:00:00 { fhem(\"set lamp on\") }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off\") if ($we) }", 23, 0, 0, "lamp", "off", null,
-                WEEKEND, ABSOLUTE, true);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off\") if ($we) }");
-
-        device = parse("+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (not $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, RELATIVE, true);
-        assemble(device, "+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (NOT $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, ABSOLUTE, true);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, ABSOLUTE, true);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (0 && !$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 1) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, ABSOLUTE, true);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
-
-        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we && 0) }", 7, 15, 0, "Badezimmer",
-                "desired-temp", "00.00", WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we) }");
-
-        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }", 7, 15, 0, "Badezimmer",
-                "desired-temp", "00.00", FRIDAY, ABSOLUTE, true);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }");
-
-        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }", 7, 15, 0, "Badezimmer",
-                "desired-temp", "00.00", FRIDAY, ABSOLUTE, false);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }");
-
-        device = parse("19:45:00 { fhem(\"set EZ.Heizung_Clima desired-temp 24.00\") }", 19, 45, 0, "EZ.Heizung_Clima",
-                "desired-temp", "24.00", ONCE, ABSOLUTE, true);
-        assemble(device, "19:45:00 { fhem(\"set EZ.Heizung_Clima desired-temp 24.00\") }");
     }
 
-    private AtDevice parse(String definition,
-                           int expectedHours, int expectedMinutes, int expectedSeconds,
-                           String expectedTargetDevice, String expectedTargetState,
-                           String expectedAdditionalInformation,
-                           AtDevice.AtRepetition expectedRepetition,
-                           AtDevice.TimerType expectedTimerType, boolean isActive) {
+
+    @Test
+    @UseDataProvider("provider")
+    public void should_parse_and_assemble_definition(TestCase testCase) {
+        // given
         AtDevice device = new AtDevice();
-        device.parseDefinition(definition);
 
-        assertThat(device.getHours()).isEqualTo(expectedHours);
-        assertThat(device.getMinutes()).isEqualTo(expectedMinutes);
-        assertThat(device.getSeconds()).isEqualTo(expectedSeconds);
-        assertThat(device.getTargetState()).isEqualTo(expectedTargetState);
-        assertThat(device.getTargetDevice()).isEqualTo(expectedTargetDevice);
-        assertThat(device.getTargetStateAddtionalInformation()).isEqualTo(expectedAdditionalInformation);
-        assertThat(device.getRepetition()).isEqualTo(expectedRepetition);
-        assertThat(device.getTimerType()).isEqualTo(expectedTimerType);
-        assertThat(device.isActive()).isEqualTo(isActive);
+        // when
+        device.parseDefinition(testCase.definition);
 
-        return device;
+        // then
+        assertThat(device.getHours()).isEqualTo(testCase.hours);
+        assertThat(device.getMinutes()).isEqualTo(testCase.minutes);
+        assertThat(device.getSeconds()).isEqualTo(testCase.seconds);
+        assertThat(device.getTargetState()).isEqualTo(testCase.targetState);
+        assertThat(device.getTargetDevice()).isEqualTo(testCase.targetDevice);
+        assertThat(device.getTargetStateAddtionalInformation()).isEqualTo(testCase.additionalInformation);
+        assertThat(device.getRepetition()).isEqualTo(testCase.repetition);
+        assertThat(device.getTimerType()).isEqualTo(testCase.timerType);
+
+        // when
+        String assembledDefinition = device.toFHEMDefinition();
+
+        // then
+        assertThat(assembledDefinition).isEqualTo(testCase.assembledDefinition);
     }
 
-    private void assemble(AtDevice device, String expectedDefinition) {
-        assertEquals(expectedDefinition, device.toFHEMDefinition());
-    }
+    private static class TestCase {
+        int hours;
+        int minutes;
+        int seconds;
+        String targetDevice;
+        String targetState;
+        String additionalInformation;
+        AtDevice.AtRepetition repetition;
+        AtDevice.TimerType timerType;
+        String definition;
+        String assembledDefinition;
 
-    @Test
-    public void testForCorrectlySetAttributes() {
-        AtDevice device = getDefaultDevice(AtDevice.class);
+        TestCase withHours(int hours) {
+            this.hours = hours;
+            return this;
+        }
 
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
+        TestCase withMinutes(int minutes) {
+            this.minutes = minutes;
+            return this;
+        }
 
-        assertThat(device.getTimerType()).isEqualTo(ABSOLUTE);
-        assertThat(device.getFormattedSwitchTime()).isEqualTo("23:00:00");
-        assertThat(device.getHours()).isEqualTo(23);
-        assertThat(device.getMinutes()).isEqualTo(0);
-        assertThat(device.getSeconds()).isEqualTo(0);
-        assertThat(device.getNextTrigger()).isEqualTo("23:00:00");
-        assertThat(device.getRepetition()).isEqualTo(WEEKEND);
-        assertThat(device.getTargetDevice()).isEqualTo("lamp");
-        assertThat(device.getTargetState()).isEqualTo("off");
-        assertThat(device.getTargetStateAddtionalInformation()).isNullOrEmpty();
-    }
+        TestCase withSeconds(int seconds) {
+            this.seconds = seconds;
+            return this;
+        }
 
-    @Test
-    public void testReadDisableAttribute() {
-        AtDevice device = getDeviceFor("device1", AtDevice.class);
-        assertThat(device.isActive()).isFalse();
-    }
+        TestCase withTargetDevice(String targetDevice) {
+            this.targetDevice = targetDevice;
+            return this;
+        }
 
-    @Override
-    protected String getFileName() {
-        return "at.xml";
+        TestCase withTargetState(String targetState) {
+            this.targetState = targetState;
+            return this;
+        }
+
+        TestCase withAdditionalInformation(String additionalInformation) {
+            this.additionalInformation = additionalInformation;
+            return this;
+        }
+
+        TestCase withRepetition(AtDevice.AtRepetition repetition) {
+            this.repetition = repetition;
+            return this;
+        }
+
+        TestCase withTimerType(AtDevice.TimerType timerType) {
+            this.timerType = timerType;
+            return this;
+        }
+
+        TestCase withDefinition(String definition) {
+            this.definition = definition;
+            this.assembledDefinition = definition;
+            return this;
+        }
+
+        TestCase withAssembledDefinition(String assembledDefinition) {
+            this.assembledDefinition = assembledDefinition;
+            return this;
+        }
     }
 }

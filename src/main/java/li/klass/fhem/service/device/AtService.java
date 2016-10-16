@@ -60,7 +60,7 @@ public class AtService {
                           Context context) {
         AtDevice device = new AtDevice();
 
-        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
+        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device);
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
@@ -72,7 +72,7 @@ public class AtService {
         context.sendBroadcast(intent);
     }
 
-    private void setValues(int hour, int minute, int second, String repetition, String type, String targetDeviceName, String targetState, String targetStateAppendix, AtDevice device, boolean isActive) {
+    private void setValues(int hour, int minute, int second, String repetition, String type, String targetDeviceName, String targetState, String targetStateAppendix, AtDevice device) {
         device.setHour(hour);
         device.setMinute(minute);
         device.setSecond(second);
@@ -81,7 +81,6 @@ public class AtService {
         device.setTargetDevice(targetDeviceName);
         device.setTargetState(targetState);
         device.setTargetStateAddtionalInformation(targetStateAppendix);
-        device.setActive(isActive);
     }
 
     public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
@@ -94,7 +93,7 @@ public class AtService {
         }
 
         AtDevice device = deviceOptional.get();
-        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
+        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device);
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
 

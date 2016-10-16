@@ -80,6 +80,10 @@ public class XmlListDevice implements Serializable {
         return header;
     }
 
+    public boolean containsInternal(String key) {
+        return internals.containsKey(key);
+    }
+
     public boolean containsState(String state) {
         return containsAnyOfStates(Collections.singleton(state));
     }
@@ -118,6 +122,13 @@ public class XmlListDevice implements Serializable {
     public Optional<String> getAttribute(String attribute) {
         if (containsAttribute(attribute)) {
             return Optional.of(attributes.get(attribute).getValue());
+        }
+        return Optional.absent();
+    }
+
+    public Optional<String> getInternal(String key) {
+        if (containsInternal(key)) {
+            return Optional.of(internals.get(key).getValue());
         }
         return Optional.absent();
     }

@@ -104,7 +104,7 @@ public class TimerDetailFragment extends BaseFragment {
     private AtDevice.TimerType type;
     private boolean requiresStateAppendix;
     private String stateAppendix;
-    private boolean isActive;
+    private boolean isActive = true;
     private String savedTimerDeviceName;
 
     @Override
@@ -157,7 +157,6 @@ public class TimerDetailFragment extends BaseFragment {
         createTimerTypeSpinner(view);
         createSwitchTimeButton(view);
         createIsActiveCheckbox(view);
-
 
         return view;
     }
@@ -214,13 +213,17 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void createIsActiveCheckbox(View view) {
-        getIsActiveCheckbox(view).setOnClickListener(new View.OnClickListener() {
+        CheckBox isActiveCheckbox = getIsActiveCheckbox(view);
+        isActiveCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TimerDetailFragment.this.isActive = getIsActiveCheckbox(view).isChecked();
             }
         });
-
+        if (!isModify()) {
+            isActiveCheckbox.setChecked(true);
+            isActiveCheckbox.setEnabled(false);
+        }
     }
 
     private void createSwitchTimeButton(final View view) {

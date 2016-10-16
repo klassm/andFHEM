@@ -39,22 +39,20 @@ import java.util.regex.Pattern;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.XmllistAttribute;
 
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 public class AtDevice extends FhemDevice<AtDevice> {
 
-    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,\\\\.]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
-    public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
-    public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
+    private static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,\\\\.]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
+    private static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
+    private static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
     private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm:ss");
 
     private int hours;
     private int minutes;
     private int seconds;
-    private String nextTrigger;
-    private boolean isActive = true;
     private String targetDevice;
     private String targetState;
     private String targetStateAddtionalInformation;
@@ -67,12 +65,8 @@ public class AtDevice extends FhemDevice<AtDevice> {
         definition = parseDefinition(value) ? value : "";
     }
 
-    @XmllistAttribute("DISABLE")
-    public void readDISABLED(String value) {
-        isActive = value.equals("0");
-    }
-
     boolean parseDefinition(String nodeContent) {
+        nodeContent = nodeContent.replaceAll("[\\d]{4}-[\\d]{2}-[\\d]{2}T", "");
         Matcher prefixMatcher = PREFIX_PATTERN.matcher(nodeContent);
 
         if (!prefixMatcher.matches()) return false;
@@ -142,9 +136,9 @@ public class AtDevice extends FhemDevice<AtDevice> {
 
             if (!matcher.matches()) return false;
 
-            targetDevice = matcher.group(1);
-            targetState = matcher.group(2);
-            targetStateAddtionalInformation = matcher.group(3);
+            targetDevice = trimToNull(matcher.group(1));
+            targetState = trimToNull(matcher.group(2));
+            targetStateAddtionalInformation = trimToNull(matcher.group(3));
         }
         return true;
     }
@@ -154,18 +148,10 @@ public class AtDevice extends FhemDevice<AtDevice> {
             repetition = AtRepetition.WEEKEND;
         } else if (part.matches("(NOT|not|!)[ ]?\\$we")) {
             repetition = AtRepetition.WEEKDAY;
-        } else if (part.equals("0")) {
-            // TODO remove me in a few versions, was replaced by disable at device attribute
-            isActive = false;
         } else if (part.matches("\\$wday[ ]?==[ ]?[0-6]")) {
             int weekdayOrdinate = Integer.parseInt(part.substring(part.length() - 1));
             repetition = AtRepetition.getRepetitionForWeekdayOrdinate(weekdayOrdinate);
         }
-    }
-
-    @XmllistAttribute("STATE")
-    public void setState(String value) {
-        nextTrigger = value.replaceAll("Next: ", "");
     }
 
     @Override
@@ -226,7 +212,7 @@ public class AtDevice extends FhemDevice<AtDevice> {
     }
 
     public String getNextTrigger() {
-        return nextTrigger;
+        return getXmlListDevice().getInternal("TRIGGERTIME_FMT").orNull();
     }
 
     public void setHour(int hours) {
@@ -242,11 +228,7 @@ public class AtDevice extends FhemDevice<AtDevice> {
     }
 
     public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+        return !"1".equals(getXmlListDevice().getAttribute("disable").orNull());
     }
 
     public String toFHEMDefinition() {

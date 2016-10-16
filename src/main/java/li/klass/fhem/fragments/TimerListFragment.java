@@ -104,10 +104,9 @@ public class TimerListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AtDevice device = (AtDevice) view.getTag();
 
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                getActivity().sendBroadcast(intent);
+                getActivity().sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
+                        .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
             }
         });
 
@@ -154,31 +153,30 @@ public class TimerListFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
-        Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
-        intent.setClass(getActivity(), RoomListIntentService.class);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE_LIST)) {
-                    return;
-                }
+        getActivity().startService(new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST)
+                .setClass(getActivity(), RoomListIntentService.class)
+                .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE_LIST)) {
+                            return;
+                        }
 
-                RoomDeviceList roomDeviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
-                List<AtDevice> devices = roomDeviceList.getDevicesOfType(DeviceType.AT);
-                for (AtDevice atDevice : newArrayList(devices)) {
-                    if (!atDevice.isSupported()) devices.remove(atDevice);
-                }
+                        RoomDeviceList roomDeviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
+                        List<AtDevice> devices = roomDeviceList.getDevicesOfType(DeviceType.AT);
+                        for (AtDevice atDevice : newArrayList(devices)) {
+                            if (!atDevice.isSupported()) devices.remove(atDevice);
+                        }
 
-                TimerListAdapter adapter = getAdapter();
-                if (adapter == null) return;
+                        TimerListAdapter adapter = getAdapter();
+                        if (adapter == null) return;
 
-                adapter.updateData(devices);
+                        adapter.updateData(devices);
 
-                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
-            }
-        });
-        getActivity().startService(intent);
+                        getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                    }
+                }));
     }
 
     private TimerListAdapter getAdapter() {
