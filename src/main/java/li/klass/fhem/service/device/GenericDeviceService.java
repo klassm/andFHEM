@@ -25,6 +25,7 @@
 package li.klass.fhem.service.device;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -38,14 +39,18 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.room.RoomListUpdateService;
 import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.util.Tasker;
 
 import static com.google.common.collect.FluentIterable.from;
+import static li.klass.fhem.service.deviceConfiguration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND;
 
 @Singleton
 public class GenericDeviceService {
@@ -136,7 +141,11 @@ public class GenericDeviceService {
         }
     }
 
-    private boolean update(FhemDevice<?> device, Context context) {
-        return roomListUpdateService.updateSingleDevice(device.getName(), context);
+    private void update(FhemDevice<?> device, Context context) {
+        Integer delay = device.getDeviceConfiguration().transform(TO_DELAY_FOR_UPDATE_AFTER_COMMAND).or(0);
+        context.startService(new Intent(Actions.DO_REMOTE_UPDATE)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.DELAY, delay)
+                .setClass(context, RoomListUpdateIntentService.class));
     }
 }

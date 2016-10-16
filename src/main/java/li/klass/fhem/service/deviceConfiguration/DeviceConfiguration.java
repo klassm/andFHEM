@@ -24,21 +24,35 @@
 
 package li.klass.fhem.service.deviceConfiguration;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import li.klass.fhem.domain.core.DeviceFunctionality;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import li.klass.fhem.domain.core.DeviceFunctionality;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class DeviceConfiguration implements Serializable {
+    public static final Function<DeviceConfiguration, Integer> TO_DELAY_FOR_UPDATE_AFTER_COMMAND = new Function<DeviceConfiguration, Integer>() {
+        @Override
+        public Integer apply(DeviceConfiguration input) {
+            return input.getDelayForUpdateAfterCommand();
+        }
+    };
+
     private final DeviceFunctionality defaultGroup;
     private final boolean sensorDevice;
     private final Set<String> supportedWidgets;
@@ -49,6 +63,7 @@ public class DeviceConfiguration implements Serializable {
     private final boolean showMeasuredInOverview;
     private final Map<String, Map<String, String>> stateCommandReplace;
     private final Map<String, String> subStateReplace;
+    private final int delayForUpdateAfterCommand;
 
     private DeviceConfiguration(Builder builder) {
         defaultGroup = checkNotNull(builder.defaultGroup);
@@ -61,6 +76,7 @@ public class DeviceConfiguration implements Serializable {
         showMeasuredInOverview = builder.showMeasuredInOverview;
         stateCommandReplace = ImmutableMap.copyOf(builder.stateCommandReplace);
         subStateReplace = builder.subStateReplace;
+        delayForUpdateAfterCommand = builder.delayForUpdateAfterCommand;
     }
 
     public DeviceFunctionality getDefaultGroup() {
@@ -104,6 +120,10 @@ public class DeviceConfiguration implements Serializable {
         return showMeasuredInOverview;
     }
 
+    public int getDelayForUpdateAfterCommand() {
+        return delayForUpdateAfterCommand;
+    }
+
     public Optional<String> getSubStateReplaceFor(String key) {
         return Optional.fromNullable(StringUtils.trimToNull(subStateReplace.get(key)));
     }
@@ -127,6 +147,7 @@ public class DeviceConfiguration implements Serializable {
         private boolean showMeasuredInOverview;
         private Map<String, Map<String, String>> stateCommandReplace = newHashMap();
         private Map<String, String> subStateReplace = new HashMap<>();
+        private int delayForUpdateAfterCommand = 0;
 
         public Builder() {
         }
@@ -181,6 +202,11 @@ public class DeviceConfiguration implements Serializable {
             if (value != null) {
                 this.subStateReplace.put(state, value);
             }
+            return this;
+        }
+
+        public Builder withDelayForUpdateAfterCommand(int delay) {
+            this.delayForUpdateAfterCommand = delay;
             return this;
         }
 

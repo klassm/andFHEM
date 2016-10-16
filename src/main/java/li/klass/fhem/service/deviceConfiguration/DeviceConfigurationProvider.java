@@ -55,6 +55,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
 @Singleton
 public class DeviceConfigurationProvider {
     public static final String SUPPORTED_WIDGETS = "supportedWidgets";
+    public static final String DELAY_FOR_UPDATE_AFTER_COMMAND = "delayForUpdateAfterCommand";
     public static final String DEFAULT_GROUP = "defaultGroup";
     public static final String SENSOR_DEVICE = "sensorDevice";
     public static final String STATES = "states";
@@ -138,7 +139,8 @@ public class DeviceConfigurationProvider {
                 .withDefaultGroup(defaultGroup)
                 .withSupportedWidgets(transformStringJsonArray(jsonObject.optJSONArray(SUPPORTED_WIDGETS)))
                 .withShowStateInOverview(jsonObject.optBoolean(SHOW_STATE_IN_OVERVIEW, true))
-                .withShowMeasuredInOverview(jsonObject.optBoolean(SHOW_MEASURED_IN_OVERVIEW, true));
+                .withShowMeasuredInOverview(jsonObject.optBoolean(SHOW_MEASURED_IN_OVERVIEW, true))
+                .withDelayForUpdateAfterCommand(jsonObject.optInt(DELAY_FOR_UPDATE_AFTER_COMMAND, 0));
 
         Optional<JSONObject> defaults = plainConfigurationFor(DEFAULTS_CONFIGURATION);
         if (defaults.isPresent()) {

@@ -130,4 +130,5 @@ public class BundleExtraKeys {
     public static final String RESEND_TRY = "RESEND_TRY";
     public static final String HEATING_CONFIGURATION = "HEATING_CONFIGURATION";
     public static final String WEEK_PROFILE = "WEEK_PROFILE";
+    public static final String DELAY = "DELAY";
 }

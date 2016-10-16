@@ -92,7 +92,25 @@ public class CommandExecutionService extends AbstractService {
     }
 
     public String executeSafely(String command, Context context) {
+        return executeSafely(command, 0, context);
+    }
+
+    public String executeSafely(String command, int delay, Context context) {
         command = command.replaceAll("  ", " ");
+        LOG.info("executeSafely(command={}, delay={})", command, delay);
+        if (delay == 0) {
+            return executeImmediately(command, context);
+        } else {
+            executeDelayed(command, delay, context);
+            return null;
+        }
+    }
+
+    private void executeDelayed(String command, int delay, Context context) {
+        schedule(delay, new ResendCommand(command, 0, context));
+    }
+
+    private String executeImmediately(String command, Context context) {
         showExecutingDialog(context);
 
         RequestResult<String> result = execute(command, context);
@@ -141,7 +159,7 @@ public class CommandExecutionService extends AbstractService {
         return result;
     }
 
-    private ScheduledFuture<?> schedule(int timeoutForNextTry, ResendCommand resendCommand) {
+    public ScheduledFuture<?> schedule(int timeoutForNextTry, ResendCommand resendCommand) {
         LOG.info("schedule() - schedule {} in {} seconds", resendCommand, timeoutForNextTry);
         return getScheduledExecutorService().schedule(resendCommand,
                 timeoutForNextTry, SECONDS);

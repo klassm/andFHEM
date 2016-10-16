@@ -58,17 +58,17 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         String action = intent.getAction();
 
         if (action.equals(Actions.DO_REMOTE_UPDATE)) {
-            return doRemoteUpdate(Optional.fromNullable(intent.getStringExtra(DEVICE_NAME)), Optional.fromNullable(intent.getStringExtra(ROOM_NAME)));
+            return doRemoteUpdate(Optional.fromNullable(intent.getStringExtra(DEVICE_NAME)), Optional.fromNullable(intent.getStringExtra(ROOM_NAME)), intent.getIntExtra(BundleExtraKeys.DELAY, 0));
         } else {
             return STATE.DONE;
         }
     }
 
-    private STATE doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName) {
+    private STATE doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName, int delay) {
         LOG.info("doRemoteUpdate() - starting remote update");
         boolean success;
         if (deviceName.isPresent()) {
-            success = roomListUpdateService.updateSingleDevice(deviceName.get(), this);
+            success = roomListUpdateService.updateSingleDevice(deviceName.get(), delay, this);
         }
         else if (roomName.isPresent()) {
             success = roomListUpdateService.updateRoom(roomName.get(), this);

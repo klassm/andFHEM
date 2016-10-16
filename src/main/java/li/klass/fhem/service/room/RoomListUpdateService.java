@@ -58,13 +58,13 @@ public class RoomListUpdateService {
     public RoomListUpdateService() {
     }
 
-    public boolean updateSingleDevice(String deviceName, Context context) {
-        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, context);
+    public boolean updateSingleDevice(String deviceName, int delay, Context context) {
+        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, delay, context);
         LOG.info("updateSingleDevice({}) - remote device list update finished", deviceName);
         return update(context, result);
     }
     public boolean updateRoom(String roomName, Context context) {
-        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, context);
+        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, 0, context);
         LOG.info("updateRoom({}) - remote device list update finished", roomName);
         return update(context, result);
     }
@@ -86,10 +86,10 @@ public class RoomListUpdateService {
         return update(context, result);
     }
 
-    private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, Context context) {
+    private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, int delay, Context context) {
         LOG.info("getPartialRemoteDeviceUpdate(devSpec={}) - fetching xmllist from remote", devSpec);
         try {
-            String result = commandExecutionService.executeSafely("xmllist " + devSpec, context);
+            String result = commandExecutionService.executeSafely("xmllist " + devSpec, delay, context);
             if (result == null) return absent();
             Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
             RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap();
