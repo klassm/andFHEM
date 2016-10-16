@@ -27,7 +27,6 @@ package li.klass.fhem.fhem;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -434,7 +433,7 @@ public class NoSSLv3Factory extends SSLSocketFactory {
                     if (null != msetUseSessionTickets) {
                         msetUseSessionTickets.invoke(delegate, true);
                     }
-                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+                } catch (Exception ignored) {
                 }
             }
         }
