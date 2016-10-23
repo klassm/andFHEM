@@ -80,14 +80,14 @@ public class GenericDeviceService {
     public GenericDeviceService() {
     }
 
-    public void setState(FhemDevice<?> device, String targetState, Context context) {
-        setState(device, targetState, context, true);
+    public void setState(FhemDevice<?> device, String targetState, Optional<String> connectionId, Context context) {
+        setState(device, targetState, connectionId, context, true);
     }
 
-    public void setState(FhemDevice<?> device, String targetState, Context context, boolean invokeUpdate) {
+    public void setState(FhemDevice<?> device, String targetState, Optional<String> connectionId, Context context, boolean invokeUpdate) {
         targetState = device.formatTargetState(targetState);
 
-        commandExecutionService.executeSafely("set " + device.getName() + " " + targetState, context);
+        commandExecutionService.executeSafely("set " + device.getName() + " " + targetState, connectionId, context);
 
         if (invokeUpdate) {
             update(device, context);
@@ -97,7 +97,7 @@ public class GenericDeviceService {
         Tasker.requestQuery(context);
     }
 
-    public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context, boolean invokeDeviceUpdate) {
+    public void setSubState(FhemDevice<?> device, String subStateName, String value, Optional<String> connectionId, Context context, boolean invokeDeviceUpdate) {
         if (device.getDeviceConfiguration().isPresent()) {
             DeviceConfiguration configuration = device.getDeviceConfiguration().get();
             Map<String, String> toReplace = configuration.getCommandReplaceFor(subStateName);
@@ -114,10 +114,10 @@ public class GenericDeviceService {
 
 
         if ("STATE".equalsIgnoreCase(subStateName)) {
-            setState(device, value, context);
+            setState(device, value, connectionId, context);
             return;
         }
-        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, context);
+        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, connectionId, context);
         if (invokeDeviceUpdate) {
             update(device, context);
         }
@@ -125,17 +125,17 @@ public class GenericDeviceService {
         Tasker.requestQuery(context);
     }
 
-    public void setSubStates(FhemDevice device, List<StateToSet> statesToSet, Context context) {
+    public void setSubStates(FhemDevice device, List<StateToSet> statesToSet, Optional<String> connectionId, Context context) {
         if (device.getXmlListDevice().getType().equalsIgnoreCase("FHT") && statesToSet.size() > 1) {
             Iterable<List<StateToSet>> partitions = Iterables.partition(statesToSet, 8);
             ImmutableList<String> parts = from(partitions).transform(FHT_CONCAT).toList();
             for (String toSet : parts) {
-                setState(device, toSet, context, false);
+                setState(device, toSet, connectionId, context, false);
             }
             update(device, context);
         } else {
             for (StateToSet toSet : statesToSet) {
-                setSubState(device, toSet.getKey(), toSet.getValue(), context, false);
+                setSubState(device, toSet.getKey(), toSet.getValue(), connectionId, context, false);
             }
             update(device, context);
         }

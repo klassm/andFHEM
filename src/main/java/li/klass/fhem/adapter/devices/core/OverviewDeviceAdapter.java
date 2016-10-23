@@ -56,7 +56,6 @@ import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -138,17 +137,6 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         holder.description = (TextView) tableRow.findViewById(R.id.description);
         holder.value = (TextView) tableRow.findViewById(R.id.value);
         return holder;
-    }
-
-    protected boolean isOverviewError(FhemDevice device, long lastUpdate) {
-        // It does not make sense to show measure errors for data stemming out of a prestored
-        // XML file.
-        boolean sensorDevice = isSensorDevice(device);
-        return !(dataConnectionSwitch.getCurrentProvider(getContext()) instanceof DummyDataConnection) &&
-                lastUpdate != -1 &&
-                sensorDevice &&
-                isOutdatedData(device, lastUpdate);
-
     }
 
     protected boolean isSensorDevice(FhemDevice device) {

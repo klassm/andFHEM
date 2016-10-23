@@ -120,7 +120,7 @@ public class GraphServiceTest {
         given(logDevice.getGraphCommandFor(DATE_TIME_FORMATTER.print(from), DATE_TIME_FORMATTER.print(to), series))
                 .willReturn(command);
         String response = VALUE_PROVIDER.lowercaseString(20);
-        given(commandExecutionService.executeSafely(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), context)).willReturn(response);
+        given(commandExecutionService.executeSafely(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent(), context)).willReturn(response);
 
         // when
         String result = graphService.loadLogData(logDevice, from, to, series, context, plotfunction);

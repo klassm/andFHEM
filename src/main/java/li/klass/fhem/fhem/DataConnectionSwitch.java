@@ -26,6 +26,8 @@ package li.klass.fhem.fhem;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -46,20 +48,20 @@ public class DataConnectionSwitch {
     public DataConnectionSwitch() {
     }
 
-    public FHEMConnection getCurrentProvider(Context context) {
-        FHEMServerSpec selectedServer = connectionService.getCurrentServer(context);
-        FHEMConnection currentConnection = selectedServer.getServerType().getConnection();
-        currentConnection.setApplicationProperties(applicationProperties);
-
-        FHEMServerSpec currentServer = currentConnection.getServer();
-        if (currentServer == null || !currentServer.equals(selectedServer)) {
-            currentConnection.setServer(selectedServer);
+    public Optional<FHEMConnection> getProviderFor(Context context, Optional<String> connectionId) {
+        if (!connectionService.exists(connectionId, context)) {
+            return Optional.absent();
         }
+        FHEMServerSpec serverSpec = connectionService.getServerFor(context, connectionId);
+        FHEMConnection currentConnection = serverSpec.getServerType().getConnectionFor(serverSpec, applicationProperties);
+        return Optional.of(currentConnection);
+    }
 
-        return currentConnection;
+    public FHEMConnection getProviderFor(Context context) {
+        return getProviderFor(context, Optional.<String>absent()).get();
     }
 
     public boolean isDummyDataActive(Context context) {
-        return getCurrentProvider(context) instanceof DummyDataConnection;
+        return getProviderFor(context) instanceof DummyDataConnection;
     }
 }

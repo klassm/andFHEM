@@ -35,6 +35,8 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.google.common.base.Optional;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -139,7 +141,7 @@ public class ExternalApiService extends Service {
 
                                 @Override
                                 protected String doInBackground(String... params) {
-                                    return externalApiService.commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), externalApiService);
+                                    return externalApiService.commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), Optional.<String>absent(), externalApiService);
                                 }
 
                                 @Override

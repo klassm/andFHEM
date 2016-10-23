@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.android.gcm.GCMRegistrar;
+import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -85,7 +86,7 @@ public class GCMSendDeviceService extends AbstractService {
     private void setRegIdsAttributeFor(GCMSendDevice device, String[] newRegIds, Context context) {
         String regIdsAttribute = ArrayUtil.join(newRegIds, "|");
 
-        commandExecutionService.executeSafely(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute), context);
+        commandExecutionService.executeSafely(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute), Optional.<String>absent(), context);
         device.setRegIds(regIdsAttribute);
     }
 

@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.common.base.Optional;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ import static li.klass.fhem.fhem.connection.ServerType.FHEMWEB;
 @Singleton
 public class ConnectionService {
     public static final String DUMMY_DATA_ID = "-1";
-    public static final String TEST_DATA_ID = "-2";
+    private static final String TEST_DATA_ID = "-2";
     public static final String MANAGEMENT_DATA_ID = "-3";
     private static final Gson GSON = new Gson();
     public static final String PREFERENCES_NAME = "fhemConnections";
@@ -111,6 +112,10 @@ public class ConnectionService {
 
     }
 
+    public boolean exists(Optional<String> id, Context context) {
+        return !id.isPresent() || exists(id.get(), context);
+    }
+
     public boolean exists(String id, Context context) {
         return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
                 || getPreferences(context).contains(id);
@@ -150,7 +155,7 @@ public class ConnectionService {
     private void saveToPreferences(FHEMServerSpec server, Context context) {
         if (server.getServerType() == ServerType.DUMMY) return;
 
-        getPreferences(context).edit().putString(server.getId(), serialize(server)).commit();
+        getPreferences(context).edit().putString(server.getId(), serialize(server)).apply();
     }
 
     private SharedPreferences getPreferences(Context context) {
@@ -192,7 +197,7 @@ public class ConnectionService {
     public boolean delete(String id, Context context) {
         if (!exists(id, context)) return false;
 
-        getPreferences(context).edit().remove(id).commit();
+        getPreferences(context).edit().remove(id).apply();
 
         return true;
     }
@@ -234,7 +239,11 @@ public class ConnectionService {
     }
 
     public FHEMServerSpec getCurrentServer(Context context) {
-        return forId(getSelectedId(context), context);
+        return getServerFor(context, Optional.<String>absent());
+    }
+
+    public FHEMServerSpec getServerFor(Context context, Optional<String> id) {
+        return forId(id.or(getSelectedId(context)), context);
     }
 
     public String getSelectedId(Context context) {

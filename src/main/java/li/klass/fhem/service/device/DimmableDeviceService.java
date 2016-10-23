@@ -26,6 +26,8 @@ package li.klass.fhem.service.device;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -56,6 +58,6 @@ public class DimmableDeviceService {
         if (!device.supportsDim()) return;
         String newState = device.getDimStateNameForDimStateValue(dimProgress).replace(".0", "");
 
-        genericDeviceService.setState(device, newState, context);
+        genericDeviceService.setState(device, newState, Optional.<String>absent(), context);
     }
 }

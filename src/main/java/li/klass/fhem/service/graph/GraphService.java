@@ -54,9 +54,9 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Singleton
 public class GraphService {
-    public static final String ENTRY_FORMAT = "yyyy-MM-dd_HH:mm:ss";
-    public static final DateTimeFormatter GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern(ENTRY_FORMAT);
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
+    private static final String ENTRY_FORMAT = "yyyy-MM-dd_HH:mm:ss";
+    private static final DateTimeFormatter GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern(ENTRY_FORMAT);
+    static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphService.class);
 
@@ -131,7 +131,7 @@ public class GraphService {
             command = command.replaceAll("<SPEC" + (i + 1) + ">", plotfunction.get(i));
         }
 
-        String data = commandExecutionService.executeSafely(command, context);
+        String data = commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         if (data != null) {
             result.append("\n\r").append(data.replaceAll("#[^\\\\]*\\\\[rn]", ""));
         }

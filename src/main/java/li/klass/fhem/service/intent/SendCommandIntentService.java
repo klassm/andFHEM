@@ -29,7 +29,7 @@ import android.content.SharedPreferences;
 import android.os.ResultReceiver;
 import android.util.Log;
 
-import com.google.common.base.Strings;
+import com.google.common.base.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,19 +112,14 @@ public class SendCommandIntentService extends ConvenientIntentService {
 
     private void executeCommand(Intent intent, ResultReceiver resultReceiver) {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
-        String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
+        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
 
         String result = executeCommand(command, connectionId);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
     }
 
-    String executeCommand(String command, String connectionId) {
-        if (!Strings.isNullOrEmpty(connectionId) && connectionService.exists(connectionId, this)) {
-            connectionService.setSelectedId(connectionId, this);
-        }
-
-        String result = commandExecutionService.executeSafely(command, this);
-
+    String executeCommand(String command, Optional<String> connectionId) {
+        String result = commandExecutionService.executeSafely(command, connectionId, this);
         storeRecentCommand(command);
 
         return result;

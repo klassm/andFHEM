@@ -28,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -119,10 +120,9 @@ public class SendCommandIntentServiceTest {
         given(sharedPreferences.edit()).willReturn(editor);
         given(editor.putString(anyString(), anyString())).willReturn(editor);
 
-        intentService.executeCommand(command, connectionId);
+        intentService.executeCommand(command, Optional.of(connectionId));
 
-        verify(connectionService).setSelectedId(eq(connectionId), any(Context.class));
-        verify(commandExecutionService).executeSafely(eq(command), any(Context.class));
+        verify(commandExecutionService).executeSafely(eq(command), eq(Optional.of(connectionId)), any(Context.class));
         InOrder inOrder = Mockito.inOrder(editor);
         inOrder.verify(editor).putString(COMMANDS_PROPERTY, String.format("{\"%s\":%s}", COMMANDS_JSON_PROPERTY, "[\"" + command + "\",\"a\",\"b\",\"c\"]"));
         inOrder.verify(editor).apply();

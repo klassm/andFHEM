@@ -43,13 +43,14 @@ public abstract class FHEMConnection {
 
     public abstract RequestResult<Bitmap> requestBitmap(String relativePath);
 
-    public FHEMServerSpec getServer() {
-        return serverSpec;
+    public FHEMConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+        this.serverSpec = fhemServerSpec;
+        onSetServerSpec();
     }
 
-    public void setServer(FHEMServerSpec serverSpec) {
-        this.serverSpec = serverSpec;
-        onSetServerSpec();
+    public FHEMServerSpec getServer() {
+        return serverSpec;
     }
 
     protected void onSetServerSpec() {
@@ -66,9 +67,5 @@ public abstract class FHEMConnection {
         return 1000 * applicationProperties.getIntegerSharedPreference(
                 PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS,
                 context);
-    }
-
-    public void setApplicationProperties(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
     }
 }

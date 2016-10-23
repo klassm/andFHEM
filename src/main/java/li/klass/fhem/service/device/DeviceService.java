@@ -27,6 +27,7 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
 import javax.inject.Inject;
@@ -62,7 +63,7 @@ public class DeviceService {
      * @param context context
      */
     public void renameDevice(final FhemDevice device, final String newName, Context context) {
-        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, context);
+        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, Optional.<String>absent(), context);
         device.getXmlListDevice().setInternal("NAME", newName);
     }
 
@@ -72,7 +73,7 @@ public class DeviceService {
      * @param device concerned device
      */
     public void deleteDevice(final FhemDevice device, Context context) {
-        commandExecutionService.executeSafely("delete " + device.getName(), context);
+        commandExecutionService.executeSafely("delete " + device.getName(), Optional.<String>absent(), context);
         RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList(context);
         if (roomDeviceList != null) {
             roomDeviceList.removeDevice(device, context);
@@ -88,9 +89,9 @@ public class DeviceService {
      */
     public void setAlias(final FhemDevice device, final String alias, Context context) {
         if (Strings.isNullOrEmpty(alias)) {
-            commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias", context);
+            commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias", Optional.<String>absent(), context);
         } else {
-            commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias, context);
+            commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias, Optional.<String>absent(), context);
         }
         device.getXmlListDevice().setAttribute("alias", alias);
     }
@@ -103,7 +104,7 @@ public class DeviceService {
      * @param context             context
      */
     public void moveDevice(final FhemDevice device, final String newRoomConcatenated, Context context) {
-        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated, context);
+        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated, Optional.<String>absent(), context);
 
         device.setRoomConcatenated(newRoomConcatenated);
 

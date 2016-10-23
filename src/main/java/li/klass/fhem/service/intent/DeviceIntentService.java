@@ -232,13 +232,13 @@ public class DeviceIntentService extends ConvenientIntentService {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
-            genericDeviceService.setSubState(device, name, value, this, true);
+            genericDeviceService.setSubState(device, name, value, getConnectionIdFrom(intent), this, true);
 
         } else if (DEVICE_SET_SUB_STATES.equals(action)) {
             @SuppressWarnings("unchecked")
             List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
 
-            genericDeviceService.setSubStates(device, statesToSet, this);
+            genericDeviceService.setSubStates(device, statesToSet, getConnectionIdFrom(intent), this);
 
         } else if (GCM_ADD_SELF.equals(action)) {
             gcmSendDeviceService.addSelf((GCMSendDevice) device, this);
@@ -309,12 +309,17 @@ public class DeviceIntentService extends ConvenientIntentService {
     private STATE setStateIntent(Intent intent, FhemDevice device) {
         String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
         int timesToSend = intent.getIntExtra(BundleExtraKeys.TIMES_TO_SEND, 1);
+        Optional<String> connectionId = getConnectionIdFrom(intent);
 
         for (int i = 0; i < timesToSend; i++) {
-            genericDeviceService.setState(device, targetState, this);
+            genericDeviceService.setState(device, targetState, connectionId, this);
         }
 
         return STATE.SUCCESS;
+    }
+
+    private Optional<String> getConnectionIdFrom(Intent intent) {
+        return Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
     }
 
     /**

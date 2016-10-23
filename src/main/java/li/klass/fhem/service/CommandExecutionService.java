@@ -50,6 +50,7 @@ import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.FHEMWEBConnection;
 import li.klass.fhem.fhem.RequestResult;
+import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.Cache;
 import li.klass.fhem.util.CloseableUtil;
@@ -65,7 +66,7 @@ import static li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR;
 public class CommandExecutionService extends AbstractService {
 
     public static final int DEFAULT_NUMBER_OF_RETRIES = 3;
-    public static final int IMAGE_CACHE_SIZE = 20;
+    private static final int IMAGE_CACHE_SIZE = 20;
 
     private static final Logger LOG = LoggerFactory.getLogger(CommandExecutionService.class);
 
@@ -87,33 +88,33 @@ public class CommandExecutionService extends AbstractService {
         if (lastFailedCommand != null) {
             String command = lastFailedCommand;
             lastFailedCommand = null;
-            executeSafely(command, context);
+            executeSafely(command, Optional.<String>absent(), context);
         }
     }
 
-    public String executeSafely(String command, Context context) {
-        return executeSafely(command, 0, context);
+    public String executeSafely(String command, Optional<String> connectionId, Context context) {
+        return executeSafely(command, 0, connectionId, context);
     }
 
-    public String executeSafely(String command, int delay, Context context) {
+    public String executeSafely(String command, int delay, Optional<String> connectionId, Context context) {
         command = command.replaceAll("  ", " ");
         LOG.info("executeSafely(command={}, delay={})", command, delay);
         if (delay == 0) {
-            return executeImmediately(command, context);
+            return executeImmediately(command, connectionId, context);
         } else {
-            executeDelayed(command, delay, context);
+            executeDelayed(command, delay, connectionId, context);
             return null;
         }
     }
 
-    private void executeDelayed(String command, int delay, Context context) {
-        schedule(delay, new ResendCommand(command, 0, context));
+    private void executeDelayed(String command, int delay, Optional<String> connectionId, Context context) {
+        schedule(delay, new ResendCommand(command, 0, connectionId, context));
     }
 
-    private String executeImmediately(String command, Context context) {
+    private String executeImmediately(String command, Optional<String> connectionId, Context context) {
         showExecutingDialog(context);
 
-        RequestResult<String> result = execute(command, context);
+        RequestResult<String> result = execute(command, connectionId, context);
         if (result.handleErrors()) {
             lastFailedCommand = command;
             throw new CommandExecutionException();
@@ -128,16 +129,20 @@ public class CommandExecutionService extends AbstractService {
     /**
      * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
      *
-     * @param command command to execute
-     * @param context context
+     * @param command      command to execute
+     * @param connectionId connectionId
+     * @param context      context
      */
-    private RequestResult<String> execute(String command, Context context) {
-        return execute(command, 0, context);
+    private RequestResult<String> execute(String command, Optional<String> connectionId, Context context) {
+        return execute(command, 0, connectionId, context);
     }
 
-    private RequestResult<String> execute(String command, int currentTry, Context context) {
-        FHEMConnection currentProvider = dataConnectionSwitch.getCurrentProvider(context);
-        RequestResult<String> result = currentProvider.executeCommand(command, context);
+    private RequestResult<String> execute(String command, int currentTry, Optional<String> connectionId, Context context) {
+        Optional<FHEMConnection> currentProvider = dataConnectionSwitch.getProviderFor(context, connectionId);
+        if (!currentProvider.isPresent()) {
+            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+        }
+        RequestResult<String> result = currentProvider.get().executeCommand(command, context);
 
         LOG.info("execute() - executing command={}, try={}", command, currentTry);
 
@@ -147,7 +152,7 @@ public class CommandExecutionService extends AbstractService {
             } else if (shouldTryResend(command, result, currentTry, context)) {
                 int timeoutForNextTry = secondsForTry(currentTry);
 
-                ResendCommand resendCommand = new ResendCommand(command, currentTry + 1, context);
+                ResendCommand resendCommand = new ResendCommand(command, currentTry + 1, connectionId, context);
                 schedule(timeoutForNextTry, resendCommand);
             }
         } finally {
@@ -208,7 +213,7 @@ public class CommandExecutionService extends AbstractService {
             } else {
                 showExecutingDialog(context);
 
-                FHEMConnection provider = dataConnectionSwitch.getCurrentProvider(context);
+                FHEMConnection provider = dataConnectionSwitch.getProviderFor(context);
                 RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
 
                 if (result.handleErrors()) return null;
@@ -222,7 +227,7 @@ public class CommandExecutionService extends AbstractService {
     }
 
     public Optional<String> executeRequest(String relativPath, Context context) {
-        FHEMConnection provider = dataConnectionSwitch.getCurrentProvider(context);
+        FHEMConnection provider = dataConnectionSwitch.getProviderFor(context);
         if (!(provider instanceof FHEMWEBConnection)) {
             return Optional.absent();
         }
@@ -251,25 +256,29 @@ public class CommandExecutionService extends AbstractService {
 
     private class ResendCommand implements Runnable {
 
+        private Optional<String> connectionId;
         private final Context context;
         int currentTry;
         String command;
 
-        protected ResendCommand(String command, int currentTry, Context context) {
+        ResendCommand(String command, int currentTry, Optional<String> connectionId, Context context) {
             this.command = command;
             this.currentTry = currentTry;
+            this.connectionId = connectionId;
             this.context = context;
         }
 
         @Override
         public void run() {
-            execute(command, currentTry, context);
+            execute(command, currentTry, connectionId, context);
         }
 
         @Override
         public String toString() {
             return "ResendCommand{" +
-                    "currentTry=" + currentTry +
+                    "connectionId=" + connectionId +
+                    ", context=" + context +
+                    ", currentTry=" + currentTry +
                     ", command='" + command + '\'' +
                     '}';
         }

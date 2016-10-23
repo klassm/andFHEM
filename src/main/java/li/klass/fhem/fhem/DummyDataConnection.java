@@ -40,13 +40,15 @@ import java.io.IOException;
 import java.net.URL;
 
 import li.klass.fhem.fhem.connection.DummyServerSpec;
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class DummyDataConnection extends FHEMConnection {
-    public static final DummyDataConnection INSTANCE = new DummyDataConnection();
     private static final Logger LOG = LoggerFactory.getLogger(DummyDataConnection.class);
     public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-    private DummyDataConnection() {
+    public DummyDataConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+        super(fhemServerSpec, applicationProperties);
     }
 
     @Override
@@ -86,6 +88,7 @@ public class DummyDataConnection extends FHEMConnection {
                 today + "_03:24:26 6.2\r\n" +
                 today + "_04:26:58 7.3\r\n" +
                 today + "_05:32:03 8.2\r\n" +
+
                 today + "_06:37:08 9.3\r\n" +
                 today + "_07:39:41 8.3\r\n" +
                 today + "_08:42:13 6.3\r\n" +

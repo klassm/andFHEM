@@ -71,10 +71,10 @@ public class GenericDeviceServiceTest {
         device.setXmlListDevice(xmllistDevice);
 
         // when
-        genericDeviceService.setSubState(device, "state", "bla", context, false);
+        genericDeviceService.setSubState(device, "state", "bla", Optional.<String>absent(), context, false);
 
         // then
-        verify(commandExecutionService).executeSafely("set someName bla", context);
+        verify(commandExecutionService).executeSafely("set someName bla", Optional.<String>absent(), context);
     }
 
     @DataProvider
@@ -101,9 +101,9 @@ public class GenericDeviceServiceTest {
         device.setXmlListDevice(xmllistDevice);
 
         // when
-        genericDeviceService.setSubState(device, stateName, toSet, context, false);
+        genericDeviceService.setSubState(device, stateName, toSet, Optional.<String>absent(), context, false);
 
         // then
-        verify(commandExecutionService).executeSafely("set someName " + stateName + " " + expected, context);
+        verify(commandExecutionService).executeSafely("set someName " + stateName + " " + expected, Optional.<String>absent(), context);
     }
 }

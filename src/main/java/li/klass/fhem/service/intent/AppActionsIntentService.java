@@ -30,8 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.ResultReceiver;
-import android.provider.AlarmClock;
-import android.util.Log;
 
 import com.google.common.base.Optional;
 
@@ -46,9 +44,6 @@ import javax.inject.Inject;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.exception.CommandExecutionException;
-import li.klass.fhem.service.CommandExecutionService;
-import li.klass.fhem.service.device.DeviceService;
 import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -90,7 +85,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
                     long triggerTime = nextAlarmClock.getTriggerTime();
                     String time = new DateTime(new Date(triggerTime)).toString("dd.MM.YYYY HH:mm");
                     LOGGER.info("handleIntent() - notifying allarm clock receiver for time {}", time);
-                    deviceService.setState(nextAlarmClockReceiver.get(), time, this);
+                    deviceService.setState(nextAlarmClockReceiver.get(), time, Optional.<String>absent(), this);
                 }
             } else {
                 LOGGER.info("handleIntent() - found no alarm clock receiver");

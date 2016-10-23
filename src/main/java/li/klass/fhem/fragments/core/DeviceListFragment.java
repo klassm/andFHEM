@@ -45,6 +45,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -313,7 +315,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                         }
 
                         View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                        if (!dataConnectionSwitch.getCurrentProvider(getActivity()).getClass()
+                        if (!dataConnectionSwitch.getProviderFor(getActivity(), Optional.<String>absent()).getClass()
                                 .isAssignableFrom(DummyDataConnection.class)) {
                             dummyConnectionNotification.setVisibility(View.GONE);
                         } else {

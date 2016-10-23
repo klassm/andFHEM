@@ -40,6 +40,7 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.room.RoomListUpdateService;
 
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
@@ -58,23 +59,27 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         String action = intent.getAction();
 
         if (action.equals(Actions.DO_REMOTE_UPDATE)) {
-            return doRemoteUpdate(Optional.fromNullable(intent.getStringExtra(DEVICE_NAME)), Optional.fromNullable(intent.getStringExtra(ROOM_NAME)), intent.getIntExtra(BundleExtraKeys.DELAY, 0));
+            Optional<String> deviceName = Optional.fromNullable(intent.getStringExtra(DEVICE_NAME));
+            Optional<String> roomName = Optional.fromNullable(intent.getStringExtra(ROOM_NAME));
+            Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
+            int delay = intent.getIntExtra(BundleExtraKeys.DELAY, 0);
+            return doRemoteUpdate(deviceName, roomName, delay, connectionId);
         } else {
             return STATE.DONE;
         }
     }
 
-    private STATE doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName, int delay) {
+    private STATE doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName, int delay, Optional<String> connectionId) {
         LOG.info("doRemoteUpdate() - starting remote update");
         boolean success;
         if (deviceName.isPresent()) {
-            success = roomListUpdateService.updateSingleDevice(deviceName.get(), delay, this);
+            success = roomListUpdateService.updateSingleDevice(deviceName.get(), delay, connectionId, this);
         }
         else if (roomName.isPresent()) {
-            success = roomListUpdateService.updateRoom(roomName.get(), this);
+            success = roomListUpdateService.updateRoom(roomName.get(), connectionId, this);
         }
         else {
-            success = roomListUpdateService.updateAllDevices(this);
+            success = roomListUpdateService.updateAllDevices(connectionId, this);
         }
         LOG.info("doRemoteUpdate() - remote device list update finished");
         startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(BundleExtraKeys.SUCCESS, success).setClass(this, RoomListIntentService.class));

@@ -69,18 +69,17 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
 
         PendingIntent pendingIntent;
         if (requiresAdditionalInformation(state)) {
-            Intent actionIntent = new Intent(context, TargetStateAdditionalInformationActivity.class);
-            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
-            actionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent actionIntent = new Intent(context, TargetStateAdditionalInformationActivity.class)
+                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId,
                     actionIntent, FLAG_UPDATE_CURRENT);
         } else {
-            Intent actionIntent = new Intent(Actions.DEVICE_SET_STATE);
-            actionIntent.setClass(context, DeviceIntentService.class);
-            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
+            Intent actionIntent = new Intent(Actions.DEVICE_SET_STATE)
+                    .setClass(context, DeviceIntentService.class)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
 
             pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
                     FLAG_UPDATE_CURRENT);

@@ -58,6 +58,8 @@ import javax.net.ssl.X509TrustManager;
 import de.duenndns.ssl.MemorizingTrustManager;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.error.ErrorHolder;
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static li.klass.fhem.fhem.RequestResultError.AUTHENTICATION_ERROR;
@@ -81,13 +83,12 @@ public class FHEMWEBConnection extends FHEMConnection {
             .put(500, INTERNAL_SERVER_ERROR)
             .build();
 
-    public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
-
     static {
         HttpsURLConnection.setDefaultSSLSocketFactory(new NoSSLv3Factory());
     }
 
-    private FHEMWEBConnection() {
+    public FHEMWEBConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+        super(fhemServerSpec, applicationProperties);
     }
 
     @Override

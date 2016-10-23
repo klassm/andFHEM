@@ -64,7 +64,7 @@ public class AtService {
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
-        commandExecutionService.executeSafely(command, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         handleDisabled(timerName, isActive, context);
 
         Intent intent = new Intent(Actions.DO_UPDATE);
@@ -97,11 +97,11 @@ public class AtService {
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
 
-        commandExecutionService.executeSafely(command, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         handleDisabled(timerName, isActive, context);
     }
 
     private String handleDisabled(String timerName, boolean isActive, Context context) {
-        return commandExecutionService.executeSafely(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), context);
+        return commandExecutionService.executeSafely(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), Optional.<String>absent(), context);
     }
 }

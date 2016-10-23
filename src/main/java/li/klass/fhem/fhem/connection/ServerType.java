@@ -28,19 +28,39 @@ import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.FHEMWEBConnection;
 import li.klass.fhem.fhem.TelnetConnection;
+import li.klass.fhem.util.ApplicationProperties;
 
 public enum ServerType {
-    DUMMY(DummyDataConnection.INSTANCE),
-    FHEMWEB(FHEMWEBConnection.INSTANCE),
-    TELNET(TelnetConnection.INSTANCE);
+    DUMMY(new ConnectionProvider() {
+        @Override
+        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+            return new DummyDataConnection(fhemServerSpec, applicationProperties);
+        }
+    }),
+    FHEMWEB(new ConnectionProvider() {
+        @Override
+        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+            return new FHEMWEBConnection(fhemServerSpec, applicationProperties);
+        }
+    }),
+    TELNET(new ConnectionProvider() {
+        @Override
+        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+            return new TelnetConnection(fhemServerSpec, applicationProperties);
+        }
+    });
 
-    private final FHEMConnection connection;
+    private final ConnectionProvider provider;
 
-    ServerType(FHEMConnection connection) {
-        this.connection = connection;
+    ServerType(ConnectionProvider provider) {
+        this.provider = provider;
     }
 
-    public FHEMConnection getConnection() {
-        return connection;
+    public FHEMConnection getConnectionFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+        return provider.getFor(fhemServerSpec, applicationProperties);
+    }
+
+    private interface ConnectionProvider {
+        FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties);
     }
 }

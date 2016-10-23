@@ -58,13 +58,14 @@ public class RoomListUpdateService {
     public RoomListUpdateService() {
     }
 
-    public boolean updateSingleDevice(String deviceName, int delay, Context context) {
-        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, delay, context);
+    public boolean updateSingleDevice(String deviceName, int delay, Optional<String> connectionId, Context context) {
+        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, delay, connectionId, context);
         LOG.info("updateSingleDevice({}) - remote device list update finished", deviceName);
         return update(context, result);
     }
-    public boolean updateRoom(String roomName, Context context) {
-        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, 0, context);
+
+    public boolean updateRoom(String roomName, Optional<String> connectionId, Context context) {
+        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, 0, connectionId, context);
         LOG.info("updateRoom({}) - remote device list update finished", roomName);
         return update(context, result);
     }
@@ -80,16 +81,16 @@ public class RoomListUpdateService {
         return success;
     }
 
-    public boolean updateAllDevices(Context context) {
-        Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap(context);
+    public boolean updateAllDevices(Optional<String> connectionId, Context context) {
+        Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap(context, connectionId);
         LOG.info("updateAllDevices() - remote device list update finished");
         return update(context, result);
     }
 
-    private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, int delay, Context context) {
+    private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, int delay, Optional<String> connectionId, Context context) {
         LOG.info("getPartialRemoteDeviceUpdate(devSpec={}) - fetching xmllist from remote", devSpec);
         try {
-            String result = commandExecutionService.executeSafely("xmllist " + devSpec, delay, context);
+            String result = commandExecutionService.executeSafely("xmllist " + devSpec, delay, connectionId, context);
             if (result == null) return absent();
             Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
             RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(context);
@@ -103,11 +104,11 @@ public class RoomListUpdateService {
         }
     }
 
-    private synchronized Optional<RoomDeviceList> getRemoteRoomDeviceListMap(Context context) {
+    private synchronized Optional<RoomDeviceList> getRemoteRoomDeviceListMap(Context context, Optional<String> connectionId) {
         LOG.info("getRemoteRoomDeviceListMap - fetching device list from remote");
 
         try {
-            String result = commandExecutionService.executeSafely("xmllist", context);
+            String result = commandExecutionService.executeSafely("xmllist", connectionId, context);
             if (result == null) return absent();
             return Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
         } catch (CommandExecutionException e) {

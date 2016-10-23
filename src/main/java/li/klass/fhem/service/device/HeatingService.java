@@ -27,6 +27,8 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.base.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +72,7 @@ public class HeatingService {
     public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet, Context context) {
         String command = String.format(SET_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            commandExecutionService.executeSafely(command, context);
+            commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
             device.setDesiredTemp(desiredTemperatureToSet);
         }
     }
@@ -102,7 +104,7 @@ public class HeatingService {
         String command = String.format(SET_COMMAND, device.getName(),
                 device.getHeatingModeCommandField(),
                 mode.name().toLowerCase(Locale.getDefault()));
-        commandExecutionService.executeSafely(command, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         device.setHeatingMode(mode);
     }
 
@@ -122,7 +124,7 @@ public class HeatingService {
 
         Log.e(TAG, "set window open temp of device " + device.getName() + " to " + windowOpenTemp);
         String command = String.format(SET_COMMAND, device.getName(), device.getWindowOpenTempCommandFieldName(), windowOpenTemp);
-        commandExecutionService.executeSafely(command, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         device.setWindowOpenTemp(windowOpenTemp);
     }
 
@@ -133,7 +135,7 @@ public class HeatingService {
 
         Log.e(TAG, "set comfort temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getComfortTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         device.setComfortTemp(temperature);
     }
 
@@ -144,7 +146,7 @@ public class HeatingService {
 
         Log.i(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         device.setEcoTemp(temperature);
     }
 
@@ -155,7 +157,7 @@ public class HeatingService {
         LOGGER.info("setWeekProfileFor - generated {}", commands);
 
         for (String command : commands) {
-            commandExecutionService.executeSafely(command, context);
+            commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
         }
 
         weekProfile.acceptChanges();

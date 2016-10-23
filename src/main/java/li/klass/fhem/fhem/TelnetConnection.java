@@ -40,17 +40,19 @@ import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;
 import li.klass.fhem.util.StringUtil;
 
 public class TelnetConnection extends FHEMConnection {
     public static final String TAG = TelnetConnection.class.getName();
-    public static final TelnetConnection INSTANCE = new TelnetConnection();
     private static final String PASSWORD_PROMPT = "Password: ";
 
     private static final Logger LOG = LoggerFactory.getLogger(TelnetConnection.class.getName());
 
-    private TelnetConnection() {
+    public TelnetConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+        super(fhemServerSpec, applicationProperties);
     }
 
     public RequestResult<String> executeCommand(String command, Context context) {
