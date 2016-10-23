@@ -24,7 +24,6 @@
 
 package li.klass.fhem.service.room;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -37,6 +36,8 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 @Singleton
 public class FavoritesService {
@@ -44,6 +45,10 @@ public class FavoritesService {
 
     @Inject
     RoomListService roomListService;
+    @Inject
+    ConnectionService connectionService;
+    @Inject
+    SharedPreferencesService sharedPreferencesService;
 
     @Inject
     public FavoritesService() {
@@ -63,7 +68,17 @@ public class FavoritesService {
      * @return the {@link android.content.SharedPreferences} object.
      */
     private SharedPreferences getPreferences(Context context) {
-        return context.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+        String name = PREFERENCES_NAME + "_" + connectionService.getSelectedId(context);
+        SharedPreferences favoritesPreferences = sharedPreferencesService.getPreferences(name, context);
+        if (connectionService.listAll(context).size() == 1 && favoritesPreferences.getAll().isEmpty()) {
+            return copyOldPreferencesTo(name, context);
+        }
+        return favoritesPreferences;
+    }
+
+    private SharedPreferences copyOldPreferencesTo(String name, Context context) {
+        sharedPreferencesService.writeAllIn(name, sharedPreferencesService.listAllFrom(PREFERENCES_NAME, context), context);
+        return sharedPreferencesService.getPreferences(name, context);
     }
 
     /**
@@ -82,7 +97,6 @@ public class FavoritesService {
      * @return favorite {@link RoomDeviceList}
      */
     public RoomDeviceList getFavorites(Context context) {
-
         RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(Optional.<String>absent(), context);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
