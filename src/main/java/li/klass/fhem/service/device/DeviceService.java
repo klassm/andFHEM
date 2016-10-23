@@ -73,7 +73,7 @@ public class DeviceService {
      */
     public void deleteDevice(final FhemDevice device, Context context) {
         commandExecutionService.executeSafely("delete " + device.getName(), context);
-        RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList();
+        RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList(context);
         if (roomDeviceList != null) {
             roomDeviceList.removeDevice(device, context);
         }

@@ -92,7 +92,7 @@ public class RoomListUpdateService {
             String result = commandExecutionService.executeSafely("xmllist " + devSpec, delay, context);
             if (result == null) return absent();
             Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
-            RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap();
+            RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(context);
             if (parsed.isPresent()) {
                 cached.addAllDevicesOf(parsed.get(), context);
             }

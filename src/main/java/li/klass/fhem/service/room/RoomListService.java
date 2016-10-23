@@ -169,7 +169,7 @@ public class RoomListService extends AbstractService {
      * @return {@link RoomDeviceList} containing all devices
      */
     public RoomDeviceList getAllRoomsDeviceList(Context context) {
-        RoomDeviceList originalRoomDeviceList = getRoomDeviceList();
+        RoomDeviceList originalRoomDeviceList = getRoomDeviceList(context);
         return new RoomDeviceList(originalRoomDeviceList, context);
     }
 
@@ -181,9 +181,10 @@ public class RoomListService extends AbstractService {
      * this method from client code!</p>
      *
      * @return Currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}.
+     * @param context context
      */
-    public RoomDeviceList getRoomDeviceList() {
-        return roomListHolderService.getCachedRoomDeviceListMap();
+    public RoomDeviceList getRoomDeviceList(Context context) {
+        return roomListHolderService.getCachedRoomDeviceListMap(context);
     }
 
     public void resetUpdateProgress(Context context) {
@@ -222,7 +223,7 @@ public class RoomListService extends AbstractService {
      * {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#NOT_REQUIRED}
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
-        RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap();
+        RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap(context);
         boolean requiresUpdate = shouldUpdate(updatePeriod, context) || deviceList == null;
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
@@ -359,7 +360,7 @@ public class RoomListService extends AbstractService {
      * @return list of all room names
      */
     public ArrayList<String> getRoomNameList(Context context) {
-        RoomDeviceList roomDeviceList = getRoomDeviceList();
+        RoomDeviceList roomDeviceList = getRoomDeviceList(context);
         if (roomDeviceList == null) return newArrayList();
 
         Set<String> roomNames = Sets.newHashSet();
@@ -422,7 +423,7 @@ public class RoomListService extends AbstractService {
     public RoomDeviceList getDeviceListForRoom(String roomName, Context context) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
-        RoomDeviceList allRoomDeviceList = getRoomDeviceList();
+        RoomDeviceList allRoomDeviceList = getRoomDeviceList(context);
         if (allRoomDeviceList != null) {
             for (FhemDevice device : allRoomDeviceList.getAllDevices()) {
                 if (device.isInRoom(roomName)) {
