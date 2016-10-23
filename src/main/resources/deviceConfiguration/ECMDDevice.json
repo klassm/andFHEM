@@ -4,6 +4,10 @@
     "STATE": {
       "replace": "ok",
       "replaceBy": ""
+    },
+    "sets": {
+      "replace": "RGB",
+      "replaceBy": "RGB:colorpicker,RGB"
     }
   }
 }

@@ -42,7 +42,7 @@ public class RGBTargetStateHandler<D extends FhemDevice<?>> implements SetListTa
     public void handle(final SetListEntry entry, Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
         RGBSetListEntry rgbSetListEntry = (RGBSetListEntry) entry;
 
-        new RGBColorPickerDialog(context, device.getXmlListDevice().getState(rgbSetListEntry.getKey()).get(), new RGBColorPickerDialog.Callback() {
+        new RGBColorPickerDialog(context, device.getXmlListDevice().getState(rgbSetListEntry.getKey()).or("0xFFF"), new RGBColorPickerDialog.Callback() {
             @Override
             public void onColorChanged(String newRGB, Dialog dialog1) {
                 callback.onSubStateSelected(device, entry.getKey(), newRGB);
