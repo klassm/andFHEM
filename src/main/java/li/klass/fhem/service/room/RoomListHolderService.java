@@ -26,6 +26,8 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,33 +58,33 @@ public class RoomListHolderService {
     public RoomListHolderService() {
     }
 
-    public synchronized boolean storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {
-        return getCacheForCurrentConnection(context).storeDeviceListMap(roomDeviceList, context);
+    public synchronized boolean storeDeviceListMap(RoomDeviceList roomDeviceList, Optional<String> connectionId, Context context) {
+        return getCacheFor(connectionId, context).storeDeviceListMap(roomDeviceList, context);
     }
 
-    public synchronized void clearRoomDeviceList(Context context) {
-        getCacheForCurrentConnection(context).clearRoomDeviceList(context);
+    public synchronized void clearRoomDeviceList(Optional<String> connectionId, Context context) {
+        getCacheFor(connectionId, context).clearRoomDeviceList(context);
     }
 
-    public RoomDeviceList getCachedRoomDeviceListMap(Context context) {
-        return getCacheForCurrentConnection(context).getCachedRoomDeviceListMap();
+    public RoomDeviceList getCachedRoomDeviceListMap(Optional<String> connectionId, Context context) {
+        return getCacheFor(connectionId, context).getCachedRoomDeviceListMap();
     }
 
-    public RoomListCache getCacheForCurrentConnection(Context context) {
-        String selectedId = connectionService.getSelectedId(context);
-        return getCacheForConnectionId(selectedId);
-
+    private RoomListCache getCacheFor(Optional<String> connectionId, Context context) {
+        connectionId = connectionService.exists(connectionId, context) ? connectionId : Optional.<String>absent();
+        return getCacheForConnectionId(connectionId, context);
     }
 
-    public long getLastUpdate(Context context) {
-        return getCacheForCurrentConnection(context).getLastUpdate(context);
+    public long getLastUpdate(Optional<String> connectionId, Context context) {
+        return getCacheFor(connectionId, context).getLastUpdate(context);
     }
 
-    private RoomListCache getCacheForConnectionId(String selectedId) {
-        if (cache.containsKey(selectedId)) {
-            return cache.get(selectedId);
+    private RoomListCache getCacheForConnectionId(Optional<String> connectionId, Context context) {
+        String id = connectionId.or(connectionService.getSelectedId(context));
+        if (!cache.containsKey(id)) {
+            cache.put(id, new RoomListCache(id, applicationProperties, connectionService, sharedPreferencesService));
         }
-        return cache.put(selectedId, new RoomListCache(selectedId, applicationProperties, connectionService, sharedPreferencesService));
+        return cache.get(id);
     }
 
     public FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList roomDeviceList, Context context) {

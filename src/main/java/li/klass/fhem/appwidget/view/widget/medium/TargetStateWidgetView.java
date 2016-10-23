@@ -79,7 +79,8 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
             Intent actionIntent = new Intent(Actions.DEVICE_SET_STATE)
                     .setClass(context, DeviceIntentService.class)
                     .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
+                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
+                    .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId.orNull());
 
             pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
                     FLAG_UPDATE_CURRENT);

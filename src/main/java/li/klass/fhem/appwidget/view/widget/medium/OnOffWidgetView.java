@@ -76,7 +76,8 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
         Intent onIntent = new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, onStateName);
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, onStateName)
+                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId.orNull());
         PendingIntent onPendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId,
                 onIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.widgetOnButton, onPendingIntent);
@@ -84,7 +85,8 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
         Intent offIntent = new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, offStateName);
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, offStateName)
+                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId.orNull());
         PendingIntent offPendingIntent = PendingIntent.getService(context, -1 * widgetConfiguration.widgetId,
                 offIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.widgetOffButton, offPendingIntent);

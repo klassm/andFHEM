@@ -56,6 +56,7 @@ import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_RESET;
 import static li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP;
 import static li.klass.fhem.constants.Actions.UPDATE_IF_REQUIRED;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
@@ -83,6 +84,7 @@ public class RoomListIntentService extends ConvenientIntentService {
 
         LOG.info("handleIntent() - receiving intent with action {}", action);
 
+        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
         if (REMOTE_UPDATE_RESET.equals(action)) {
             LOG.trace("handleIntent() - resetting update progress");
             roomListService.resetUpdateProgress(this);
@@ -97,26 +99,26 @@ public class RoomListIntentService extends ConvenientIntentService {
 
         if (GET_ALL_ROOMS_DEVICE_LIST.equals(action)) {
             LOG.trace("handleIntent() - handling all rooms device list");
-            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(this);
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
+            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(connectionId, this);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList, connectionId);
         } else if (GET_ROOM_NAME_LIST.equals(action)) {
             LOG.trace("handleIntent() - resolving room name list");
-            ArrayList<String> roomNameList = roomListService.getRoomNameList(this);
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
+            ArrayList<String> roomNameList = roomListService.getRoomNameList(connectionId, this);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList, connectionId);
         } else if (GET_ROOM_DEVICE_LIST.equals(action)) {
             String roomName = intent.getStringExtra(ROOM_NAME);
             LOG.trace("handleIntent() - resolving device list for room={}", roomName);
-            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, this);
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
+            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, connectionId, this);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList, connectionId);
         } else if (GET_DEVICE_FOR_NAME.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             LOG.trace("handleIntent() - resolving device for name={}", deviceName);
-            Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, this);
+            Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, connectionId, this);
             if (!device.isPresent()) {
                 LOG.info("cannot find device for {}", deviceName);
                 return STATE.ERROR;
             }
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device.get());
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device.get(), connectionId);
         } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             LOG.trace("handleIntent() - updating device with update map, device={}", deviceName);
@@ -145,18 +147,18 @@ public class RoomListIntentService extends ConvenientIntentService {
                         .setClass(this, sender));
             }
         } else if (CLEAR_DEVICE_LIST.equals(action)) {
-            roomListService.clearDeviceList(this);
+            roomListService.clearDeviceList(connectionId, this);
         }
 
         return STATE.DONE;
     }
 
     private void sendResultWithLastUpdate(ResultReceiver receiver, int resultCode,
-                                          String bundleExtrasKey, Serializable value) {
+                                          String bundleExtrasKey, Serializable value, Optional<String> connectionId) {
         if (receiver != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(bundleExtrasKey, value);
-            bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate(this));
+            bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate(connectionId, this));
             receiver.send(resultCode, bundle);
         }
     }

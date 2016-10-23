@@ -47,7 +47,7 @@ public class DeviceNode implements Serializable {
 
     private static DateTime parseMeasured(String measured) {
         try {
-            return FHEM_DATE_FORMAT.parseDateTime(measured);
+            return measured == null ? null : FHEM_DATE_FORMAT.parseDateTime(measured);
         } catch (Exception e) {
             return null;
         }

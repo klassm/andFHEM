@@ -59,11 +59,12 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device,
                                   WidgetConfiguration widgetConfiguration) {
 
-        Intent listIntent = new Intent(context, AppWidgetListViewUpdateRemoteViewsService.class);
-        listIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetConfiguration.widgetId);
-        listIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
-        listIntent.putExtra(BundleExtraKeys.APP_WIDGET_TYPE_NAME, widgetConfiguration.widgetType.name());
-        listIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        Intent listIntent = new Intent(context, AppWidgetListViewUpdateRemoteViewsService.class)
+                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetConfiguration.widgetId)
+                .putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId)
+                .putExtra(BundleExtraKeys.APP_WIDGET_TYPE_NAME, widgetConfiguration.widgetType.name())
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId.orNull());
         listIntent.setData(Uri.parse(listIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         view.setRemoteAdapter(R.id.forecastList, listIntent);

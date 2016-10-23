@@ -85,7 +85,7 @@ public class AtService {
 
     public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
                        String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive, Context context) {
-        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, context);
+        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, Optional.<String>absent(), context);
 
         if (!deviceOptional.isPresent()) {
             LOG.info("cannot find device for {}", timerName);

@@ -54,15 +54,16 @@ public class ToggleableService {
     /**
      * Toggles the state of a toggleable device.
      *
-     * @param device  concerned device
-     * @param context context
+     * @param device       concerned device
+     * @param connectionId connectionId
+     * @param context      context
      */
-    public <D extends ToggleableDevice> void toggleState(D device, Context context) {
+    public <D extends ToggleableDevice> void toggleState(D device, Optional<String> connectionId, Context context) {
         if (onOffBehavior.isOnByState(device)) {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOffStateName(device), Optional.<String>absent(), context);
+            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOffStateName(device), connectionId, context);
             device.setState(device.getOffStateName());
         } else {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOnStateName(device), Optional.<String>absent(), context);
+            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOnStateName(device), connectionId, context);
             device.setState(device.getOnStateName());
         }
     }

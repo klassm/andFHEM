@@ -132,7 +132,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             return extras;
         }
 
-        Optional<FhemDevice> device = roomListService.getDeviceForName(extras.getString("gcmDeviceName"), this);
+        Optional<FhemDevice> device = roomListService.getDeviceForName(extras.getString("gcmDeviceName"), Optional.<String>absent(), this);
         if (!device.isPresent()) {
             return extras;
         }

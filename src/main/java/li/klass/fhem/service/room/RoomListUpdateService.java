@@ -61,19 +61,19 @@ public class RoomListUpdateService {
     public boolean updateSingleDevice(String deviceName, int delay, Optional<String> connectionId, Context context) {
         Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, delay, connectionId, context);
         LOG.info("updateSingleDevice({}) - remote device list update finished", deviceName);
-        return update(context, result);
+        return update(context, connectionId, result);
     }
 
     public boolean updateRoom(String roomName, Optional<String> connectionId, Context context) {
         Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, 0, connectionId, context);
         LOG.info("updateRoom({}) - remote device list update finished", roomName);
-        return update(context, result);
+        return update(context, connectionId, result);
     }
 
-    private boolean update(Context context, Optional<RoomDeviceList> result) {
+    private boolean update(Context context, Optional<String> connectionId, Optional<RoomDeviceList> result) {
         boolean success = false;
         if (result.isPresent()) {
-            success = roomListHolderService.storeDeviceListMap(result.get(), context);
+            success = roomListHolderService.storeDeviceListMap(result.get(), connectionId, context);
             if (success) LOG.info("update - update was successful, sending result");
         } else {
             LOG.info("update - update was not successful, sending empty device list");
@@ -84,7 +84,7 @@ public class RoomListUpdateService {
     public boolean updateAllDevices(Optional<String> connectionId, Context context) {
         Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap(context, connectionId);
         LOG.info("updateAllDevices() - remote device list update finished");
-        return update(context, result);
+        return update(context, connectionId, result);
     }
 
     private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, int delay, Optional<String> connectionId, Context context) {
@@ -93,7 +93,7 @@ public class RoomListUpdateService {
             String result = commandExecutionService.executeSafely("xmllist " + devSpec, delay, connectionId, context);
             if (result == null) return absent();
             Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
-            RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(context);
+            RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
             if (parsed.isPresent()) {
                 cached.addAllDevicesOf(parsed.get(), context);
             }

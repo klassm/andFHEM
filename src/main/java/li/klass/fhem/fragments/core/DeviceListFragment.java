@@ -45,8 +45,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +63,6 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -315,8 +312,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                         }
 
                         View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                        if (!dataConnectionSwitch.getProviderFor(getActivity(), Optional.<String>absent()).getClass()
-                                .isAssignableFrom(DummyDataConnection.class)) {
+                        if (!dataConnectionSwitch.isDummyDataActive(getActivity())) {
                             dummyConnectionNotification.setVisibility(View.GONE);
                         } else {
                             dummyConnectionNotification.setVisibility(View.VISIBLE);

@@ -94,6 +94,7 @@ import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
@@ -144,7 +145,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         }
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName, this);
+        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
+
+        Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName, connectionId, this);
         if (!deviceOptional.isPresent()) {
             LOG.info("handleIntent() - cannot find device for {}", deviceName);
         }
@@ -157,9 +160,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         if (DEVICE_GRAPH.equals(action)) {
             result = graphIntent(intent, device, resultReceiver);
         } else if (DEVICE_TOGGLE_STATE.equals(action)) {
-            result = toggleIntent(device);
+            result = toggleIntent(device, connectionId);
         } else if (DEVICE_SET_STATE.equals(action)) {
-            result = setStateIntent(intent, device);
+            result = setStateIntent(intent, device, connectionId);
         } else if (DEVICE_DIM.equals(action)) {
             result = dimIntent(intent, device);
         } else if (DEVICE_SET_MODE.equals(action)) {
@@ -220,7 +223,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             deviceService.setAlias(device, newAlias, this);
 
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
-            result = toggleIntent(device);
+            result = toggleIntent(device, connectionId);
 
         } else if (DEVICE_TIMER_MODIFY.equals(action)) {
             processTimerIntent(intent, true);
@@ -232,13 +235,13 @@ public class DeviceIntentService extends ConvenientIntentService {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
-            genericDeviceService.setSubState(device, name, value, getConnectionIdFrom(intent), this, true);
+            genericDeviceService.setSubState(device, name, value, connectionId, this, true);
 
         } else if (DEVICE_SET_SUB_STATES.equals(action)) {
             @SuppressWarnings("unchecked")
             List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
 
-            genericDeviceService.setSubStates(device, statesToSet, getConnectionIdFrom(intent), this);
+            genericDeviceService.setSubStates(device, statesToSet, connectionId, this);
 
         } else if (GCM_ADD_SELF.equals(action)) {
             gcmSendDeviceService.addSelf((GCMSendDevice) device, this);
@@ -288,11 +291,12 @@ public class DeviceIntentService extends ConvenientIntentService {
      * Toggle a device and notify the result receiver
      *
      * @param device device to toggle
+     * @param connectionId
      * @return success?
      */
-    private STATE toggleIntent(FhemDevice device) {
+    private STATE toggleIntent(FhemDevice device, Optional<String> connectionId) {
         if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
-            toggleableService.toggleState((ToggleableDevice) device, this);
+            toggleableService.toggleState((ToggleableDevice) device, connectionId, this);
             return SUCCESS;
         } else {
             return ERROR;
@@ -302,24 +306,20 @@ public class DeviceIntentService extends ConvenientIntentService {
     /**
      * Set the state of a device and notify the result receiver
      *
-     * @param intent received intent
-     * @param device device to set the state on
+     * @param intent       received intent
+     * @param device       device to set the state on
+     * @param connectionId
      * @return success ?
      */
-    private STATE setStateIntent(Intent intent, FhemDevice device) {
+    private STATE setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {
         String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
         int timesToSend = intent.getIntExtra(BundleExtraKeys.TIMES_TO_SEND, 1);
-        Optional<String> connectionId = getConnectionIdFrom(intent);
 
         for (int i = 0; i < timesToSend; i++) {
             genericDeviceService.setState(device, targetState, connectionId, this);
         }
 
         return STATE.SUCCESS;
-    }
-
-    private Optional<String> getConnectionIdFrom(Intent intent) {
-        return Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
     }
 
     /**

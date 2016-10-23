@@ -123,7 +123,7 @@ public class VoiceCommandService {
         final String deviceName = Joiner.on(" ").join(parts.subList(1, parts.size() - 1));
         final String state = replace(Iterables.getLast(parts), STATE_REPLACE);
 
-        RoomDeviceList devices = roomListService.getAllRoomsDeviceList(context);
+        RoomDeviceList devices = roomListService.getAllRoomsDeviceList(Optional.<String>absent(), context);
         List<FhemDevice> deviceMatches = from(devices.getAllDevices()).filter(filterDevicePredicate(deviceName, state)).toList();
         if (deviceMatches.isEmpty()) {
             return Optional.<VoiceResult>of(new VoiceResult.Error(VoiceResult.ErrorType.NO_DEVICE_MATCHED));

@@ -78,7 +78,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
             applicationProperties.load();
             return STATE.SUCCESS;
         } else if (Actions.UPDATE_NEXT_ALARM_CLOCK.equals(action) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Optional<FhemDevice> nextAlarmClockReceiver = roomListService.getDeviceForName("nextAlarmClock", this);
+            Optional<FhemDevice> nextAlarmClockReceiver = roomListService.getDeviceForName("nextAlarmClock", Optional.<String>absent(), this);
             if (nextAlarmClockReceiver.isPresent()) {
                 AlarmManager.AlarmClockInfo nextAlarmClock = getAlarmManager().getNextAlarmClock();
                 if (nextAlarmClock != null) {

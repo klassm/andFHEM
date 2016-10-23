@@ -28,6 +28,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.common.base.Optional;
+
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -81,7 +83,7 @@ public class FavoritesService {
      */
     public RoomDeviceList getFavorites(Context context) {
 
-        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(context);
+        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(Optional.<String>absent(), context);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
         favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());

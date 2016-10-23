@@ -48,6 +48,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHEMWEBDevice;
@@ -119,7 +120,7 @@ public class RoomListService extends AbstractService {
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification, Context context) {
 
-        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName, context);
+        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName, Optional.<String>absent(), context);
         if (!deviceOptional.isPresent()) {
             return;
         }
@@ -154,8 +155,8 @@ public class RoomListService extends AbstractService {
      * @return found device or null
      */
     @SuppressWarnings("unchecked")
-    public <T extends FhemDevice> Optional<T> getDeviceForName(String deviceName, Context context) {
-        return Optional.fromNullable((T) getAllRoomsDeviceList(context).getDeviceFor(deviceName));
+    public <T extends FhemDevice> Optional<T> getDeviceForName(String deviceName, Optional<String> connectionId, Context context) {
+        return Optional.fromNullable((T) getAllRoomsDeviceList(connectionId, context).getDeviceFor(deviceName));
     }
 
     /**
@@ -164,8 +165,8 @@ public class RoomListService extends AbstractService {
      *
      * @return {@link RoomDeviceList} containing all devices
      */
-    public RoomDeviceList getAllRoomsDeviceList(Context context) {
-        RoomDeviceList originalRoomDeviceList = getRoomDeviceList(context);
+    public RoomDeviceList getAllRoomsDeviceList(Optional<String> connectionId, Context context) {
+        RoomDeviceList originalRoomDeviceList = getRoomDeviceList(connectionId, context);
         return new RoomDeviceList(originalRoomDeviceList, context);
     }
 
@@ -179,8 +180,8 @@ public class RoomListService extends AbstractService {
      * @return Currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}.
      * @param context context
      */
-    public RoomDeviceList getRoomDeviceList(Context context) {
-        return roomListHolderService.getCachedRoomDeviceListMap(context);
+    public RoomDeviceList getRoomDeviceList(Optional<String> connectionId, Context context) {
+        return roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
     }
 
     public void resetUpdateProgress(Context context) {
@@ -219,8 +220,9 @@ public class RoomListService extends AbstractService {
      * {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#NOT_REQUIRED}
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
-        RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap(context);
-        boolean requiresUpdate = shouldUpdate(updatePeriod, context) || deviceList == null;
+        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
+        RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
+        boolean requiresUpdate = shouldUpdate(updatePeriod, connectionId, context) || deviceList == null;
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
@@ -309,7 +311,7 @@ public class RoomListService extends AbstractService {
         return resendIntent;
     }
 
-    private boolean shouldUpdate(long updatePeriod, Context context) {
+    private boolean shouldUpdate(long updatePeriod, Optional<String> connectionId, Context context) {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
             LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE");
             return true;
@@ -319,7 +321,7 @@ public class RoomListService extends AbstractService {
             return false;
         }
 
-        long lastUpdate = getLastUpdate(context);
+        long lastUpdate = getLastUpdate(connectionId, context);
         boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
 
         LOG.debug("shouldUpdate() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", (!shouldUpdate ? "no " : "to"), toReadable(lastUpdate), (updatePeriod / 1000 / 60));
@@ -327,13 +329,13 @@ public class RoomListService extends AbstractService {
         return shouldUpdate;
     }
 
-    public long getLastUpdate(Context context) {
-        return roomListHolderService.getLastUpdate(context);
+    public long getLastUpdate(Optional<String> connectionId, Context context) {
+        return roomListHolderService.getLastUpdate(connectionId, context);
     }
 
-    public ArrayList<String> getAvailableDeviceNames(Context context) {
+    public ArrayList<String> getAvailableDeviceNames(Optional<String> connectionId, Context context) {
         ArrayList<String> deviceNames = newArrayList();
-        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList(context);
+        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList(connectionId, context);
 
         for (FhemDevice device : allRoomsDeviceList.getAllDevices()) {
             deviceNames.add(device.getName() + "|" +
@@ -355,8 +357,8 @@ public class RoomListService extends AbstractService {
      * @param context context
      * @return list of all room names
      */
-    public ArrayList<String> getRoomNameList(Context context) {
-        RoomDeviceList roomDeviceList = getRoomDeviceList(context);
+    public ArrayList<String> getRoomNameList(Optional<String> connectionId, Context context) {
+        RoomDeviceList roomDeviceList = getRoomDeviceList(connectionId, context);
         if (roomDeviceList == null) return newArrayList();
 
         Set<String> roomNames = Sets.newHashSet();
@@ -416,10 +418,10 @@ public class RoomListService extends AbstractService {
      * @param roomName room name used for searching.
      * @return found {@link RoomDeviceList} or null
      */
-    public RoomDeviceList getDeviceListForRoom(String roomName, Context context) {
+    public RoomDeviceList getDeviceListForRoom(String roomName, Optional<String> connectionId, Context context) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
-        RoomDeviceList allRoomDeviceList = getRoomDeviceList(context);
+        RoomDeviceList allRoomDeviceList = getRoomDeviceList(connectionId, context);
         if (allRoomDeviceList != null) {
             for (FhemDevice device : allRoomDeviceList.getAllDevices()) {
                 if (device.isInRoom(roomName)) {
@@ -433,8 +435,8 @@ public class RoomListService extends AbstractService {
         return roomDeviceList;
     }
 
-    public void clearDeviceList(Context context) {
-        roomListHolderService.clearRoomDeviceList(context);
+    public void clearDeviceList(Optional<String> connectionId, Context context) {
+        roomListHolderService.clearRoomDeviceList(connectionId, context);
     }
 
     public enum RemoteUpdateRequired {
