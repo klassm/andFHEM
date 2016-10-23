@@ -1,6 +1,7 @@
 {
   "sensorDevice": false,
   "defaultGroup": "SWITCH",
+  "delayForUpdateAfterCommand": 2,
   "states": [
     {
       "key": "bri",
