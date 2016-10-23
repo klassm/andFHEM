@@ -24,6 +24,7 @@
 
 package li.klass.fhem.appwidget;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -31,8 +32,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Collections;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 
@@ -48,10 +47,10 @@ public class WidgetConfigurationTest {
     @DataProvider
     public static Object[][] serializationProvider() {
         return $$(
-                $(new WidgetConfiguration(5, WidgetType.DIM, ImmutableList.of("abc"), false)),
-                $(new WidgetConfiguration(5, WidgetType.DIM, ImmutableList.of("abc"), false)),
-                $(new WidgetConfiguration(50000, WidgetType.STATUS, ImmutableList.of("d#ef"), false)),
-                $(new WidgetConfiguration(50000, WidgetType.STATUS, ImmutableList.of("def", "hello"), false))
+                $(new WidgetConfiguration(5, WidgetType.DIM, Optional.of("connectionId"), ImmutableList.of("abc"))),
+                $(new WidgetConfiguration(5, WidgetType.DIM, Optional.<String>absent(), ImmutableList.of("abc"))),
+                $(new WidgetConfiguration(50000, WidgetType.STATUS, Optional.of("connectionIdla"), ImmutableList.of("d#ef"))),
+                $(new WidgetConfiguration(50000, WidgetType.STATUS, Optional.of("connectionIdBlo"), ImmutableList.of("def", "hello")))
         );
     }
 
@@ -77,47 +76,5 @@ public class WidgetConfigurationTest {
         assertThat(unescape("d@ef")).isEqualTo("d@ef");
         assertThat(unescape("def")).isEqualTo("def");
         assertThat(unescape(null)).isNull();
-    }
-
-
-    @DataProvider
-    public static Object[][] saveStringToConfigurationProvider() {
-        return $$(
-                $(new FromSaveStringTestCase()
-                        .withSaveString("123#" + WidgetType.STATUS.name() + "#abc")
-                        .thenExpect(new WidgetConfiguration(123, WidgetType.STATUS, ImmutableList.of("abc"), true))),
-                $(new FromSaveStringTestCase().withSaveString("123#" + WidgetType.STATUS.name())
-                        .thenExpect(new WidgetConfiguration(123, WidgetType.STATUS, Collections.<String>emptyList(), true))),
-                $(new FromSaveStringTestCase()
-                        .withSaveString(
-                                "{" +
-                                        "\"widgetId\": \"123\", " +
-                                        "\"widgetType\": \"STATUS\", " +
-                                        "\"payload\": [\"bla\", \"blub\"]" +
-                                        "}")
-                        .thenExpect(new WidgetConfiguration(123, WidgetType.STATUS, ImmutableList.of("bla", "blub"), false)))
-        );
-    }
-
-    @UseDataProvider("saveStringToConfigurationProvider")
-    @Test
-    public void should_deserialize_save_string(FromSaveStringTestCase testCase) {
-        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(testCase.saveString);
-        assertThat(configuration).isEqualTo(testCase.expectedConfiguration);
-    }
-
-    private static class FromSaveStringTestCase {
-        String saveString;
-        WidgetConfiguration expectedConfiguration;
-
-        public FromSaveStringTestCase withSaveString(String saveString) {
-            this.saveString = saveString;
-            return this;
-        }
-
-        public FromSaveStringTestCase thenExpect(WidgetConfiguration expectedConfiguration) {
-            this.expectedConfiguration = expectedConfiguration;
-            return this;
-        }
     }
 }

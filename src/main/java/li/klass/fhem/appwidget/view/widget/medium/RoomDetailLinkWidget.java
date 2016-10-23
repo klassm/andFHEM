@@ -30,6 +30,9 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.widget.RemoteViews;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
@@ -43,7 +46,7 @@ import li.klass.fhem.fragments.FragmentType;
 public class RoomDetailLinkWidget extends RoomAppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId, WidgetConfigurationCreatedCallback callback, String... payload) {
-        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, payload));
+        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, Optional.<String>absent(), ImmutableList.copyOf(payload)));
     }
 
     @Override

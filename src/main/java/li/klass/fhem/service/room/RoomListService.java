@@ -60,7 +60,6 @@ import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
@@ -109,9 +108,6 @@ public class RoomListService extends AbstractService {
 
     @Inject
     ApplicationProperties applicationProperties;
-
-    @Inject
-    SharedPreferencesService sharedPreferencesService;
 
     @Inject
     RoomListHolderService roomListHolderService;
@@ -332,7 +328,7 @@ public class RoomListService extends AbstractService {
     }
 
     public long getLastUpdate(Context context) {
-        return sharedPreferencesService.getPreferences(PREFERENCES_NAME, context).getLong(LAST_UPDATE_PROPERTY, 0L);
+        return roomListHolderService.getLastUpdate(context);
     }
 
     public ArrayList<String> getAvailableDeviceNames(Context context) {

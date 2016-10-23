@@ -40,10 +40,15 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
+
+import static li.klass.fhem.service.room.RoomListService.LAST_UPDATE_PROPERTY;
+import static li.klass.fhem.service.room.RoomListService.PREFERENCES_NAME;
 
 public class RoomListCache {
     private static final Logger LOG = LoggerFactory.getLogger(RoomListCache.class);
     public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";
+    private final SharedPreferencesService sharedPreferencesService;
 
     private String connectionId;
     private volatile RoomDeviceList cachedRoomList;
@@ -52,10 +57,11 @@ public class RoomListCache {
     ApplicationProperties applicationProperties;
     ConnectionService connectionService;
 
-    public RoomListCache(String connectionId, ApplicationProperties applicationProperties, ConnectionService connectionService) {
+    public RoomListCache(String connectionId, ApplicationProperties applicationProperties, ConnectionService connectionService, SharedPreferencesService sharedPreferencesService) {
         this.connectionId = connectionId;
         this.applicationProperties = applicationProperties;
         this.connectionService = connectionService;
+        this.sharedPreferencesService = sharedPreferencesService;
     }
 
     public synchronized boolean storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {
@@ -145,5 +151,9 @@ public class RoomListCache {
         }
 
         return cachedRoomList;
+    }
+
+    public long getLastUpdate(Context context) {
+        return sharedPreferencesService.getPreferences(PREFERENCES_NAME, context).getLong(LAST_UPDATE_PROPERTY + "_" + connectionId, 0L);
     }
 }

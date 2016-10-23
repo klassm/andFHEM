@@ -44,6 +44,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,7 +55,6 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
-import static li.klass.fhem.appwidget.WidgetConfiguration.fromSaveString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -130,9 +130,8 @@ public class AppWidgetDataHolderTest {
     @Test
     public void should_return_WidgetConfiguration() {
         // given
-        String saveString = "123#" + WidgetType.STATUS.name();
-        WidgetConfiguration widgetConfiguration = fromSaveString(saveString);
-        given(sharedPreferences.getString("1", null)).willReturn(saveString);
+        WidgetConfiguration widgetConfiguration = new WidgetConfiguration(1, WidgetType.UPDATE_WIDGET, Optional.<String>absent(), Collections.<String>emptyList());
+        given(sharedPreferences.getString("1", null)).willReturn(widgetConfiguration.toSaveString());
 
         // when
         Optional<WidgetConfiguration> result = holder.getWidgetConfiguration(1, context);
@@ -143,27 +142,9 @@ public class AppWidgetDataHolderTest {
     }
 
     @Test
-    public void should_update_old_WidgetConfigurations() {
-        // given
-        String saveString = "123#myDevice#" + WidgetType.STATUS.name();
-        WidgetConfiguration widgetConfiguration = fromSaveString(saveString);
-        given(sharedPreferences.getString("123", null)).willReturn(saveString);
-
-        // when
-        Optional<WidgetConfiguration> result = holder.getWidgetConfiguration(123, context);
-
-        // then
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get()).isEqualTo(widgetConfiguration);
-        verify(sharedPreferencesEditor).putString("123", widgetConfiguration.toSaveString());
-        verify(sharedPreferencesEditor).apply();
-    }
-
-    @Test
     public void should_save_WidgetConfiguration_to_preferences() {
         // given
-        String saveString = "123#" + WidgetType.STATUS.name();
-        WidgetConfiguration widgetConfiguration = fromSaveString(saveString);
+        WidgetConfiguration widgetConfiguration = new WidgetConfiguration(123, WidgetType.UPDATE_WIDGET, Optional.<String>absent(), Collections.<String>emptyList());
 
         // when
         holder.saveWidgetConfigurationToPreferences(widgetConfiguration, context);

@@ -36,6 +36,7 @@ import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 @Singleton
 public class RoomListHolderService {
@@ -45,6 +46,9 @@ public class RoomListHolderService {
 
     @Inject
     ConnectionService connectionService;
+
+    @Inject
+    SharedPreferencesService sharedPreferencesService;
 
     private Map<String, RoomListCache> cache = new HashMap<>();
 
@@ -70,11 +74,15 @@ public class RoomListHolderService {
 
     }
 
+    public long getLastUpdate(Context context) {
+        return getCacheForCurrentConnection(context).getLastUpdate(context);
+    }
+
     private RoomListCache getCacheForConnectionId(String selectedId) {
         if (cache.containsKey(selectedId)) {
             return cache.get(selectedId);
         }
-        return cache.put(selectedId, new RoomListCache(selectedId, applicationProperties, connectionService));
+        return cache.put(selectedId, new RoomListCache(selectedId, applicationProperties, connectionService, sharedPreferencesService));
     }
 
     public FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList roomDeviceList, Context context) {

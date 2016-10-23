@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
+import com.google.common.collect.ImmutableList;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback;
@@ -94,22 +96,22 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
                                                    final int appWidgetId, FhemDevice device,
                                                    final WidgetConfigurationCreatedCallback callback) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback));
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback, context));
     }
 
     @NonNull
-    private OnTargetStateSelectedCallback widgetCreatingCallback(final WidgetType widgetType, final int appWidgetId, final WidgetConfigurationCreatedCallback callback) {
+    private OnTargetStateSelectedCallback widgetCreatingCallback(final WidgetType widgetType, final int appWidgetId, final WidgetConfigurationCreatedCallback callback, final Context context) {
         return new OnTargetStateSelectedCallback() {
             @Override
             public void onStateSelected(FhemDevice device, String targetState) {
                 callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
-                        widgetType, device.getName(), targetState));
+                        widgetType, getCurrentConnectionId(context), ImmutableList.of(device.getName(), targetState)));
             }
 
             @Override
             public void onSubStateSelected(FhemDevice device, String state, String subState) {
                 callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
-                        widgetType, device.getName(), state + " " + subState));
+                        widgetType, getCurrentConnectionId(context), ImmutableList.of(device.getName(), state + " " + subState)));
             }
 
             @Override

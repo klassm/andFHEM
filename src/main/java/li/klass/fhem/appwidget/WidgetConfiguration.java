@@ -25,6 +25,9 @@ package li.klass.fhem.appwidget;
 
 import android.util.Log;
 
+import com.google.common.base.Optional;
+
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,54 +36,40 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
 
 public class WidgetConfiguration implements Serializable {
-    public static final String SAVE_SEPARATOR = "#";
-    public static final String PAYLOAD_SEPARATOR = "+";
-    public static final String PAYLOAD_SEPARATOR_REGEXP = "\\" + PAYLOAD_SEPARATOR;
-    public static final String ESCAPED_HASH_REPLACEMENT = "\\\\@";
-    public static final String JSON_WIDGET_ID = "widgetId";
-    public static final String JSON_WIDGET_TYPE = "widgetType";
-    public static final String JSON_PAYLOAD = "payload";
+    private static final String SAVE_SEPARATOR = "#";
+    private static final String PAYLOAD_SEPARATOR = "+";
+    private static final String ESCAPED_HASH_REPLACEMENT = "\\\\@";
+    private static final String JSON_WIDGET_ID = "widgetId";
+    private static final String JSON_WIDGET_TYPE = "widgetType";
+    private static final String JSON_PAYLOAD = "payload";
+    private static final String JSON_CONNECTION_ID = "connectionId";
 
     public final int widgetId;
     public final WidgetType widgetType;
     public final List<String> payload;
+    public final Optional<String> connectionId;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WidgetConfiguration.class);
 
-    // TODO remove me in one of the next versions (when all old widget configurations have been updated!
-    @Deprecated
-    public final boolean isOld;
-
-    public WidgetConfiguration(int widgetId, WidgetType widgetType, String... payload) {
-        this(widgetId, widgetType, asList(payload), false);
-    }
-
-    public WidgetConfiguration(int widgetId, WidgetType widgetType, List<String> payload, boolean isOld) {
+    public WidgetConfiguration(int widgetId, WidgetType widgetType, Optional<String> connectionId, List<String> payload) {
         this.widgetId = widgetId;
         this.widgetType = widgetType;
         this.payload = payload;
-        this.isOld = isOld;
+        this.connectionId = connectionId;
     }
 
     public static WidgetConfiguration fromSaveString(String value) {
         if (value == null) return null;
 
-        if (value.startsWith("{")) {
-            return handleJsonWidgetConfiguration(value);
-        } else {
-            return handleDeprecatedWidgetConfiguration(value);
-        }
+        return handleJsonWidgetConfiguration(value);
     }
 
     private static WidgetConfiguration handleJsonWidgetConfiguration(String value) {
@@ -89,13 +78,17 @@ public class WidgetConfiguration implements Serializable {
             return new WidgetConfiguration(
                     jsonObject.getInt(JSON_WIDGET_ID),
                     getWidgetTypeFromName(jsonObject.getString(JSON_WIDGET_TYPE)),
-                    payloadToList(jsonObject),
-                    false
+                    getConnectionIdFrom(jsonObject),
+                    payloadToList(jsonObject)
             );
         } catch (JSONException e) {
             LOGGER.error("handleJsonWidgetConfiguration - cannot handle \"{}\"", value);
             return null;
         }
+    }
+
+    private static Optional<String> getConnectionIdFrom(JSONObject jsonObject) {
+        return Optional.fromNullable(StringUtils.trimToNull(jsonObject.optString(JSON_CONNECTION_ID)));
     }
 
     private static List<String> payloadToList(JSONObject jsonObject) throws JSONException {
@@ -105,23 +98,6 @@ public class WidgetConfiguration implements Serializable {
             payload.add(array.getString(i));
         }
         return payload;
-    }
-
-    private static WidgetConfiguration handleDeprecatedWidgetConfiguration(String value) {
-
-        String[] parts = value.split(SAVE_SEPARATOR);
-
-        String widgetId = parts[0];
-        WidgetType widgetType = getWidgetTypeFromName(parts[1]);
-
-        List<String> payload;
-        if (parts.length >= 3) {
-            payload = Arrays.asList(unescape(parts[2]).split(PAYLOAD_SEPARATOR_REGEXP));
-        } else {
-            payload = newArrayList();
-        }
-
-        return new WidgetConfiguration(Integer.valueOf(widgetId), widgetType, payload, true);
     }
 
     private static WidgetType getWidgetTypeFromName(String widgetTypeName) {
@@ -150,6 +126,7 @@ public class WidgetConfiguration implements Serializable {
                     .put(JSON_WIDGET_ID, widgetId)
                     .put(JSON_WIDGET_TYPE, widgetType)
                     .put(JSON_PAYLOAD, new JSONArray(payload))
+                    .put(JSON_CONNECTION_ID, connectionId.orNull())
                     .toString();
         } catch (JSONException e) {
             LOGGER.error("cannot create widget configuration", e);
@@ -163,7 +140,7 @@ public class WidgetConfiguration implements Serializable {
                 "widgetId=" + widgetId +
                 ", widgetType=" + widgetType +
                 ", payload=" + payload +
-                ", isOld=" + isOld +
+                ", connectionId=" + connectionId +
                 '}';
     }
 

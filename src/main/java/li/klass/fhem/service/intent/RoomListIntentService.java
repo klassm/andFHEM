@@ -39,8 +39,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.activities.locale.ConditionQueryLocaleSettingActivity;
-import li.klass.fhem.activities.locale.TaskerPlugin;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;

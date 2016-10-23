@@ -28,10 +28,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,7 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.deviceConfiguration.ViewItemConfig;
@@ -66,6 +69,9 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     @Inject
     public DeviceConfigurationProvider deviceConfigurationProvider;
+
+    @Inject
+    protected ConnectionService connectionService;
 
     public static final Logger LOG = LoggerFactory.getLogger(DeviceAppWidgetView.class);
 
@@ -185,7 +191,13 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     protected void createDeviceWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                                    FhemDevice device, WidgetConfigurationCreatedCallback callback) {
-        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, device.getName()));
+        Optional<String> connectionId = getCurrentConnectionId(context);
+        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, connectionId, ImmutableList.of(device.getName())));
+    }
+
+    @NonNull
+    protected Optional<String> getCurrentConnectionId(Context context) {
+        return Optional.of(connectionService.getSelectedId(context));
     }
 
     protected void fillWidgetView(Context context, RemoteViews view,

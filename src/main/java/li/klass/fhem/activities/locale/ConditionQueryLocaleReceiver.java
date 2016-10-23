@@ -27,7 +27,6 @@ package li.klass.fhem.activities.locale;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.common.base.Optional;
@@ -35,17 +34,12 @@ import com.google.common.base.Optional;
 import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.util.FhemResultReceiver;
 
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED;
-import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNKNOWN;
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNSATISFIED;
 
 public class ConditionQueryLocaleReceiver extends BroadcastReceiver {

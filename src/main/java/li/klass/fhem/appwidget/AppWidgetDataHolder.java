@@ -166,12 +166,7 @@ public class AppWidgetDataHolder {
         if (value == null) {
             return Optional.absent();
         } else {
-            WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(value);
-            if (configuration != null && configuration.isOld) {
-                Log.e(TAG, "updated widget " + configuration);
-                saveWidgetConfigurationToPreferences(configuration, context);
-            }
-            return Optional.fromNullable(configuration);
+            return Optional.fromNullable(WidgetConfiguration.fromSaveString(value));
         }
     }
 
