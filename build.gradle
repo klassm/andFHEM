@@ -33,7 +33,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
 
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
@@ -73,7 +73,7 @@ android {
     }
 
     defaultConfig {
-        targetSdkVersion 22
+        targetSdkVersion 24
         minSdkVersion 11
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
