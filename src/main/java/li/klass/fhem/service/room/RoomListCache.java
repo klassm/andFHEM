@@ -47,7 +47,6 @@ import static li.klass.fhem.service.room.RoomListService.PREFERENCES_NAME;
 
 public class RoomListCache {
     private static final Logger LOG = LoggerFactory.getLogger(RoomListCache.class);
-    public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";
     private final SharedPreferencesService sharedPreferencesService;
 
     private String connectionId;

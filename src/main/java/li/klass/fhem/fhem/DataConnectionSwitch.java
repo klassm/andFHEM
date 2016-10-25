@@ -31,6 +31,7 @@ import com.google.common.base.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -52,9 +53,13 @@ public class DataConnectionSwitch {
         if (!connectionService.exists(connectionId, context)) {
             return Optional.absent();
         }
-        FHEMServerSpec serverSpec = connectionService.getServerFor(context, connectionId);
+        FHEMServerSpec serverSpec = getSpecFor(context, connectionId);
         FHEMConnection currentConnection = serverSpec.getServerType().getConnectionFor(serverSpec, applicationProperties);
         return Optional.of(currentConnection);
+    }
+
+    private FHEMServerSpec getSpecFor(Context context, Optional<String> connectionId) {
+        return connectionService.getServerFor(context, connectionId);
     }
 
     public FHEMConnection getProviderFor(Context context) {
@@ -62,6 +67,6 @@ public class DataConnectionSwitch {
     }
 
     public boolean isDummyDataActive(Context context) {
-        return getProviderFor(context) instanceof DummyDataConnection;
+        return getSpecFor(context, Optional.<String>absent()) instanceof DummyServerSpec;
     }
 }
