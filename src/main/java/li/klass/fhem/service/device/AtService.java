@@ -55,21 +55,25 @@ public class AtService {
     public AtService() {
     }
 
-    public void createNew(String timerName, int hour, int minute, int second, String repetition, String type,
-                          String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive,
-                          Context context) {
+    public void createNew(final String timerName, int hour, int minute, int second, String repetition, String type,
+                          String targetDeviceName, String targetState, String targetStateAppendix, final boolean isActive,
+                          final Context context) {
         AtDevice device = new AtDevice();
 
         setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device);
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-        handleDisabled(timerName, isActive, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                handleDisabled(timerName, isActive, context);
 
-        Intent intent = new Intent(Actions.DO_UPDATE);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-        context.sendBroadcast(intent);
+                Intent intent = new Intent(Actions.DO_UPDATE);
+                intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+                context.sendBroadcast(intent);
+            }
+        });
     }
 
     private void setValues(int hour, int minute, int second, String repetition, String type, String targetDeviceName, String targetState, String targetStateAppendix, AtDevice device) {
@@ -83,8 +87,8 @@ public class AtService {
         device.setTargetStateAddtionalInformation(targetStateAppendix);
     }
 
-    public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
-                       String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive, Context context) {
+    public void modify(final String timerName, int hour, int minute, int second, String repetition, String type,
+                       String targetDeviceName, String targetState, String targetStateAppendix, final boolean isActive, final Context context) {
         Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, Optional.<String>absent(), context);
 
         if (!deviceOptional.isPresent()) {
@@ -97,11 +101,16 @@ public class AtService {
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
 
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-        handleDisabled(timerName, isActive, context);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                handleDisabled(timerName, isActive, context);
+            }
+        });
+
     }
 
     private String handleDisabled(String timerName, boolean isActive, Context context) {
-        return commandExecutionService.executeSafely(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), Optional.<String>absent(), context);
+        return commandExecutionService.executeSync(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), Optional.<String>absent(), context);
     }
 }

@@ -24,11 +24,9 @@
 
 package li.klass.fhem.service.intent;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -37,10 +35,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,10 +54,8 @@ import static li.klass.fhem.service.intent.SendCommandIntentService.COMMANDS_PRO
 import static li.klass.fhem.service.intent.SendCommandIntentService.PREFERENCES_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(DataProviderRunner.class)
@@ -106,25 +100,5 @@ public class SendCommandIntentServiceTest {
         assertThat(result).containsExactlyElementsOf(expectedCommands);
         verifyZeroInteractions(commandExecutionService);
         verifyZeroInteractions(connectionService);
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    @Test
-    public void should_execute_command() {
-        String command = "myCommmand";
-        String connectionId = "myConnectionId";
-        given(connectionService.exists(eq(connectionId), any(Context.class))).willReturn(true);
-        given(sharedPreferencesService.getPreferences(eq(PREFERENCES_NAME), any(Context.class)))
-                .willReturn(sharedPreferences);
-        given(sharedPreferences.getString(COMMANDS_PROPERTY, null)).willReturn(String.format("{%s: %s}", COMMANDS_JSON_PROPERTY, "['a', 'b', 'c']"));
-        given(sharedPreferences.edit()).willReturn(editor);
-        given(editor.putString(anyString(), anyString())).willReturn(editor);
-
-        intentService.executeCommand(command, Optional.of(connectionId));
-
-        verify(commandExecutionService).executeSafely(eq(command), eq(Optional.of(connectionId)), any(Context.class));
-        InOrder inOrder = Mockito.inOrder(editor);
-        inOrder.verify(editor).putString(COMMANDS_PROPERTY, String.format("{\"%s\":%s}", COMMANDS_JSON_PROPERTY, "[\"" + command + "\",\"a\",\"b\",\"c\"]"));
-        inOrder.verify(editor).apply();
     }
 }

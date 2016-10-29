@@ -69,11 +69,16 @@ public class HeatingService {
      * @param desiredTemperatureToSet new desired temperature value
      * @param context                 context
      */
-    public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet, Context context) {
+    public void setDesiredTemperature(final DesiredTempDevice device, final double desiredTemperatureToSet, Context context) {
         String command = String.format(SET_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-            device.setDesiredTemp(desiredTemperatureToSet);
+            commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+                @Override
+                public void onResult(String result) {
+                    device.setDesiredTemp(desiredTemperatureToSet);
+                }
+            });
+
         }
     }
 
@@ -86,7 +91,7 @@ public class HeatingService {
      * @param context context
      */
     @SuppressWarnings("unchecked")
-    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?, ?>> void setMode(D device, MODE mode, Context context) {
+    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?, ?>> void setMode(final D device, final MODE mode, Context context) {
         if (mode == device.getHeatingMode()) {
             Log.e(TAG, "won't change heating mode, as it is already set!");
             return;
@@ -104,8 +109,13 @@ public class HeatingService {
         String command = String.format(SET_COMMAND, device.getName(),
                 device.getHeatingModeCommandField(),
                 mode.name().toLowerCase(Locale.getDefault()));
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-        device.setHeatingMode(mode);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.setHeatingMode(mode);
+            }
+        });
+
     }
 
 
@@ -117,37 +127,52 @@ public class HeatingService {
      * @param windowOpenTemp new window open temperature to set
      * @param context        context
      */
-    public void setWindowOpenTemp(WindowOpenTempDevice device, double windowOpenTemp, Context context) {
+    public void setWindowOpenTemp(final WindowOpenTempDevice device, final double windowOpenTemp, Context context) {
         if (device.getWindowOpenTemp() == windowOpenTemp) {
             return;
         }
 
         Log.e(TAG, "set window open temp of device " + device.getName() + " to " + windowOpenTemp);
         String command = String.format(SET_COMMAND, device.getName(), device.getWindowOpenTempCommandFieldName(), windowOpenTemp);
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-        device.setWindowOpenTemp(windowOpenTemp);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.setWindowOpenTemp(windowOpenTemp);
+            }
+        });
+
     }
 
-    public void setComfortTemperature(ComfortTempDevice device, double temperature, Context context) {
+    public void setComfortTemperature(final ComfortTempDevice device, final double temperature, Context context) {
         if (device.getComfortTemp() == temperature) {
             return;
         }
 
         Log.e(TAG, "set comfort temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getComfortTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-        device.setComfortTemp(temperature);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.setComfortTemp(temperature);
+            }
+        });
+
     }
 
-    public void setEcoTemperature(EcoTempDevice device, double temperature, Context context) {
+    public void setEcoTemperature(final EcoTempDevice device, final double temperature, Context context) {
         if (device.getEcoTemp() == temperature) {
             return;
         }
 
         Log.i(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
-        device.setEcoTemp(temperature);
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.setEcoTemp(temperature);
+            }
+        });
+
     }
 
     @SuppressWarnings("unchecked")
@@ -157,7 +182,7 @@ public class HeatingService {
         LOGGER.info("setWeekProfileFor - generated {}", commands);
 
         for (String command : commands) {
-            commandExecutionService.executeSafely(command, Optional.<String>absent(), context);
+            commandExecutionService.executeSync(command, Optional.<String>absent(), context);
         }
 
         weekProfile.acceptChanges();

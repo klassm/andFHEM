@@ -83,7 +83,7 @@ public class GPlotHolder {
 
         Context applicationContext = AndFHEMApplication.getContext();
         Optional<String> result = isConfigDb
-                ? Optional.fromNullable(commandExecutionService.executeSafely("configdb fileshow ./www/gplot/" + name + ".gplot", Optional.<String>absent(), applicationContext))
+                ? Optional.fromNullable(commandExecutionService.executeSync("configdb fileshow ./www/gplot/" + name + ".gplot", Optional.<String>absent(), applicationContext))
                 : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", applicationContext);
 
         if (result.isPresent()) {

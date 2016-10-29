@@ -26,6 +26,7 @@ package li.klass.fhem.service.intent;
 
 import android.content.Intent;
 import android.os.ResultReceiver;
+import android.support.annotation.NonNull;
 
 import com.google.common.base.Optional;
 
@@ -35,14 +36,15 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.room.RoomListUpdateService;
 
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DELAY;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.SUCCESS;
 
 public class RoomListUpdateIntentService extends ConvenientIntentService {
     private static final Logger LOG = LoggerFactory.getLogger(RoomListUpdateIntentService.class);
@@ -62,7 +64,7 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
             Optional<String> deviceName = Optional.fromNullable(intent.getStringExtra(DEVICE_NAME));
             Optional<String> roomName = Optional.fromNullable(intent.getStringExtra(ROOM_NAME));
             Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
-            int delay = intent.getIntExtra(BundleExtraKeys.DELAY, 0);
+            int delay = intent.getIntExtra(DELAY, 0);
             return doRemoteUpdate(deviceName, roomName, delay, connectionId);
         } else {
             return STATE.DONE;
@@ -71,19 +73,27 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
 
     private STATE doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName, int delay, Optional<String> connectionId) {
         LOG.info("doRemoteUpdate() - starting remote update");
-        boolean success;
         if (deviceName.isPresent()) {
-            success = roomListUpdateService.updateSingleDevice(deviceName.get(), delay, connectionId, this);
+            roomListUpdateService.updateSingleDevice(deviceName.get(), delay, connectionId, this, handleResult());
+        } else if (roomName.isPresent()) {
+            roomListUpdateService.updateRoom(roomName.get(), connectionId, this, handleResult());
+        } else {
+            roomListUpdateService.updateAllDevices(connectionId, this, handleResult());
         }
-        else if (roomName.isPresent()) {
-            success = roomListUpdateService.updateRoom(roomName.get(), connectionId, this);
-        }
-        else {
-            success = roomListUpdateService.updateAllDevices(connectionId, this);
-        }
-        LOG.info("doRemoteUpdate() - remote device list update finished");
-        startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(BundleExtraKeys.SUCCESS, success).setClass(this, RoomListIntentService.class));
         return STATE.DONE;
+    }
+
+    @NonNull
+    private RoomListUpdateService.RoomListUpdateListener handleResult() {
+        return new RoomListUpdateService.RoomListUpdateListener() {
+            @Override
+            public void onUpdateFinished(boolean result) {
+                LOG.info("doRemoteUpdate() - remote device list update finished");
+                startService(new Intent(REMOTE_UPDATE_FINISHED)
+                        .putExtra(SUCCESS, result)
+                        .setClass(RoomListUpdateIntentService.this, RoomListIntentService.class));
+            }
+        };
     }
 
     @Override

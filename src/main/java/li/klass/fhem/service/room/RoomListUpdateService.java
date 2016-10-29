@@ -25,6 +25,8 @@
 package li.klass.fhem.service.room;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.google.common.base.Optional;
 
@@ -34,11 +36,11 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.CommandExecutionService;
 
-import static com.google.common.base.Optional.absent;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 
 @Singleton
 public class RoomListUpdateService {
@@ -58,16 +60,16 @@ public class RoomListUpdateService {
     public RoomListUpdateService() {
     }
 
-    public boolean updateSingleDevice(String deviceName, int delay, Optional<String> connectionId, Context context) {
-        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate(deviceName, delay, connectionId, context);
-        LOG.info("updateSingleDevice({}) - remote device list update finished", deviceName);
-        return update(context, connectionId, result);
+    public void updateSingleDevice(String deviceName, int delay, Optional<String> connectionId, Context context, RoomListUpdateListener roomListUpdateListener) {
+        executeXmllistPartial(delay, connectionId, context, roomListUpdateListener, deviceName);
     }
 
-    public boolean updateRoom(String roomName, Optional<String> connectionId, Context context) {
-        Optional<RoomDeviceList> result = getPartialRemoteDeviceUpdate("room=" + roomName, 0, connectionId, context);
-        LOG.info("updateRoom({}) - remote device list update finished", roomName);
-        return update(context, connectionId, result);
+    public void updateRoom(String roomName, Optional<String> connectionId, Context context, RoomListUpdateListener roomListUpdateListener) {
+        executeXmllistPartial(0, connectionId, context, roomListUpdateListener, "room=" + roomName);
+    }
+
+    public void updateAllDevices(Optional<String> connectionId, Context context, RoomListUpdateListener roomListUpdateListener) {
+        executeXmllist(0, connectionId, context, roomListUpdateListener, "");
     }
 
     private boolean update(Context context, Optional<String> connectionId, Optional<RoomDeviceList> result) {
@@ -81,39 +83,36 @@ public class RoomListUpdateService {
         return success;
     }
 
-    public boolean updateAllDevices(Optional<String> connectionId, Context context) {
-        Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap(context, connectionId);
-        LOG.info("updateAllDevices() - remote device list update finished");
-        return update(context, connectionId, result);
+    private void executeXmllistPartial(int delay, Optional<String> connectionId, Context context, RoomListUpdateListener updateListener, String devSpec) {
+        LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec);
+        executeXmllist(delay, connectionId, context, updateListener, " " + devSpec);
     }
 
-    private Optional<RoomDeviceList> getPartialRemoteDeviceUpdate(String devSpec, int delay, Optional<String> connectionId, Context context) {
-        LOG.info("getPartialRemoteDeviceUpdate(devSpec={}) - fetching xmllist from remote", devSpec);
-        try {
-            String result = commandExecutionService.executeSafely("xmllist " + devSpec, delay, connectionId, context);
-            if (result == null) return absent();
-            Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
-            RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
-            if (parsed.isPresent()) {
-                cached.addAllDevicesOf(parsed.get(), context);
+    private void executeXmllist(final int delay, final Optional<String> connectionId, final Context context, final RoomListUpdateListener updateListener, String xmllistSuffix) {
+        commandExecutionService.executeSafely("xmllist" + xmllistSuffix, delay, connectionId, context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                Optional<RoomDeviceList> roomDeviceList = parseResult(connectionId, context, result);
+                boolean success = update(context, connectionId, roomDeviceList);
+                updateListener.onUpdateFinished(success);
+                if (delay > 0) {
+                    context.sendBroadcast(new Intent(Actions.DO_UPDATE).putExtra(DO_REFRESH, false));
+                }
             }
-            return Optional.of(cached);
-        } catch (CommandExecutionException e) {
-            LOG.info("getPartialRemoteDeviceUpdate - error during command execution", e);
-            return Optional.absent();
-        }
+        });
     }
 
-    private synchronized Optional<RoomDeviceList> getRemoteRoomDeviceListMap(Context context, Optional<String> connectionId) {
-        LOG.info("getRemoteRoomDeviceListMap - fetching device list from remote");
-
-        try {
-            String result = commandExecutionService.executeSafely("xmllist", connectionId, context);
-            if (result == null) return absent();
-            return Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
-        } catch (CommandExecutionException e) {
-            LOG.info("getRemoteRoomDeviceListMap - error during command execution", e);
-            return Optional.absent();
+    @NonNull
+    private Optional<RoomDeviceList> parseResult(Optional<String> connectionId, Context context, String result) {
+        Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
+        RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
+        if (parsed.isPresent()) {
+            cached.addAllDevicesOf(parsed.get(), context);
         }
+        return Optional.of(cached);
+    }
+
+    public interface RoomListUpdateListener {
+        void onUpdateFinished(boolean result);
     }
 }

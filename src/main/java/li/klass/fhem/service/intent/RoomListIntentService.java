@@ -39,7 +39,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -60,9 +59,11 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.LAST_UPDATE;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.SENDER;
+import static li.klass.fhem.constants.BundleExtraKeys.SUCCESS;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired;
@@ -130,7 +131,7 @@ public class RoomListIntentService extends ConvenientIntentService {
             Tasker.requestQuery(this);
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             LOG.trace("handleIntent() - remote update finished");
-            roomListService.remoteUpdateFinished(this, intent.getBooleanExtra(BundleExtraKeys.SUCCESS, true));
+            roomListService.remoteUpdateFinished(this, intent.getBooleanExtra(SUCCESS, true));
         } else if (UPDATE_IF_REQUIRED.equals(action)) {
             // If required, the device list will be updated by now. The resend intent will reach us
             // here. The only thing we have to do is notify the receiver that we have
@@ -158,7 +159,7 @@ public class RoomListIntentService extends ConvenientIntentService {
         if (receiver != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(bundleExtrasKey, value);
-            bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate(connectionId, this));
+            bundle.putLong(LAST_UPDATE, roomListService.getLastUpdate(connectionId, this));
             receiver.send(resultCode, bundle);
         }
     }

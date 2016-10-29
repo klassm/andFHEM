@@ -63,8 +63,13 @@ public class DeviceService {
      * @param context context
      */
     public void renameDevice(final FhemDevice device, final String newName, Context context) {
-        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, Optional.<String>absent(), context);
-        device.getXmlListDevice().setInternal("NAME", newName);
+        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.getXmlListDevice().setInternal("NAME", newName);
+            }
+        });
+
     }
 
     /**
@@ -72,12 +77,17 @@ public class DeviceService {
      *
      * @param device concerned device
      */
-    public void deleteDevice(final FhemDevice device, Context context) {
-        commandExecutionService.executeSafely("delete " + device.getName(), Optional.<String>absent(), context);
-        RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList(Optional.<String>absent(), context);
-        if (roomDeviceList != null) {
-            roomDeviceList.removeDevice(device, context);
-        }
+    public void deleteDevice(final FhemDevice device, final Context context) {
+        commandExecutionService.executeSafely("delete " + device.getName(), Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList(Optional.<String>absent(), context);
+                if (roomDeviceList != null) {
+                    roomDeviceList.removeDevice(device, context);
+                }
+            }
+        });
+
     }
 
     /**
@@ -88,12 +98,15 @@ public class DeviceService {
      * @param context context
      */
     public void setAlias(final FhemDevice device, final String alias, Context context) {
-        if (Strings.isNullOrEmpty(alias)) {
-            commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias", Optional.<String>absent(), context);
-        } else {
-            commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias, Optional.<String>absent(), context);
-        }
-        device.getXmlListDevice().setAttribute("alias", alias);
+        String command = Strings.isNullOrEmpty(alias)
+                ? "deleteattr " + device.getName() + " alias"
+                : "attr " + device.getName() + " alias " + alias;
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.getXmlListDevice().setAttribute("alias", alias);
+            }
+        });
     }
 
     /**
@@ -103,11 +116,13 @@ public class DeviceService {
      * @param newRoomConcatenated new room to move the concerned device to.
      * @param context             context
      */
-    public void moveDevice(final FhemDevice device, final String newRoomConcatenated, Context context) {
-        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated, Optional.<String>absent(), context);
-
-        device.setRoomConcatenated(newRoomConcatenated);
-
-        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+    public void moveDevice(final FhemDevice device, final String newRoomConcatenated, final Context context) {
+        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                device.setRoomConcatenated(newRoomConcatenated);
+                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+            }
+        });
     }
 }

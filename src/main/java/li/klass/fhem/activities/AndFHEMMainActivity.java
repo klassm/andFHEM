@@ -63,7 +63,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.core.AvailableConnectionDataAdapter;
 import li.klass.fhem.activities.core.UpdateTimerTask;
 import li.klass.fhem.billing.BillingService;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -79,10 +78,11 @@ import static li.klass.fhem.constants.Actions.BACK;
 import static li.klass.fhem.constants.Actions.CONNECTIONS_CHANGED;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
+import static li.klass.fhem.constants.Actions.IS_PREMIUM;
 import static li.klass.fhem.constants.Actions.REDRAW;
-import static li.klass.fhem.constants.Actions.RELOAD;
 import static li.klass.fhem.constants.Actions.SHOW_ALERT;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
+import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
@@ -104,15 +104,13 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
         private Receiver() {
             intentFilter = new IntentFilter();
-            intentFilter.addAction(Actions.SHOW_FRAGMENT);
-            intentFilter.addAction(Actions.DO_UPDATE);
+            intentFilter.addAction(SHOW_FRAGMENT);
+            intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(SHOW_EXECUTING_DIALOG);
             intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
             intentFilter.addAction(SHOW_TOAST);
             intentFilter.addAction(SHOW_ALERT);
-            intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(BACK);
-            intentFilter.addAction(RELOAD);
             intentFilter.addAction(CONNECTIONS_CHANGED);
             intentFilter.addAction(REDRAW);
         }
@@ -127,7 +125,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                             String action = intent.getAction();
                             if (action == null) return;
 
-                            if (Actions.SHOW_FRAGMENT.equals(action)) {
+                            if (SHOW_FRAGMENT.equals(action)) {
                                 Bundle bundle = intent.getExtras();
                                 if (bundle == null)
                                     throw new IllegalArgumentException("need a content fragment");
@@ -140,7 +138,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                                 }
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 switchToFragment(fragmentType, intent.getExtras());
-                            } else if (action.equals(Actions.DO_UPDATE)) {
+                            } else if (action.equals(DO_UPDATE)) {
                                 updateShowRefreshProgressIcon();
                                 refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false));
                             } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
@@ -354,7 +352,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         }
 
         if (fragmentType == FragmentType.TIMER_OVERVIEW && Build.VERSION.SDK_INT < 11) {
-            String text = String.format(getString(R.string.feature_requires_android_version), 3);
+            String text = String.format(getString(R.string.feature_requires_android_version), "3");
             DialogUtil.showAlertDialog(AndFHEMMainActivity.this, R.string.android_version, text);
         } else {
             switchToFragment(fragmentType, new Bundle());
@@ -427,7 +425,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     @Override
     public void onRefresh() {
         refreshLayout.setRefreshing(true);
-        Intent refreshIntent = new Intent(Actions.DO_UPDATE);
+        Intent refreshIntent = new Intent(DO_UPDATE);
         refreshIntent.putExtra(DO_REFRESH, true);
         sendBroadcast(refreshIntent);
     }
@@ -498,7 +496,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
-        startService(new Intent(Actions.IS_PREMIUM).setClass(this, LicenseIntentService.class));
+        startService(new Intent(IS_PREMIUM).setClass(this, LicenseIntentService.class));
     }
 
     @Override
@@ -673,7 +671,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
         if (fragmentType == null) {
-            sendBroadcast(new Intent(Actions.RELOAD));
+            sendBroadcast(new Intent(REDRAW));
             return null;
         }
         try {
@@ -768,7 +766,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.menu_refresh) {
-            sendBroadcast(new Intent(Actions.DO_UPDATE)
+            sendBroadcast(new Intent(DO_UPDATE)
                     .putExtra(DO_REFRESH, true));
             return true;
         }

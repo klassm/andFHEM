@@ -27,6 +27,7 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.ResultReceiver;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.base.Optional;
@@ -110,19 +111,21 @@ public class SendCommandIntentService extends ConvenientIntentService {
         storeRecentCommands(commands);
     }
 
-    private void executeCommand(Intent intent, ResultReceiver resultReceiver) {
-        String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
+    private void executeCommand(Intent intent, final ResultReceiver resultReceiver) {
+        final String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
-
-        String result = executeCommand(command, connectionId);
-        sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
+        commandExecutionService.executeSafely(command, connectionId, this, handleResult(resultReceiver, command));
     }
 
-    String executeCommand(String command, Optional<String> connectionId) {
-        String result = commandExecutionService.executeSafely(command, connectionId, this);
-        storeRecentCommand(command);
-
-        return result;
+    @NonNull
+    private CommandExecutionService.ResultListener handleResult(final ResultReceiver resultReceiver, final String command) {
+        return new CommandExecutionService.ResultListener() {
+            @Override
+            public void onResult(String result) {
+                storeRecentCommand(command);
+                sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
+            }
+        };
     }
 
     ArrayList<String> getRecentCommands() {

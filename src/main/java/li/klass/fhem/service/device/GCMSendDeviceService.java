@@ -86,7 +86,7 @@ public class GCMSendDeviceService extends AbstractService {
     private void setRegIdsAttributeFor(GCMSendDevice device, String[] newRegIds, Context context) {
         String regIdsAttribute = ArrayUtil.join(newRegIds, "|");
 
-        commandExecutionService.executeSafely(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute), Optional.<String>absent(), context);
+        commandExecutionService.executeSync(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute), Optional.<String>absent(), context);
         device.setRegIds(regIdsAttribute);
     }
 

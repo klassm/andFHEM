@@ -45,6 +45,9 @@ public class ToggleableService {
     DeviceHookProvider deviceHookProvider;
 
     @Inject
+    GenericDeviceService genericDeviceService;
+
+    @Inject
     OnOffBehavior onOffBehavior;
 
     @Inject
@@ -59,12 +62,9 @@ public class ToggleableService {
      * @param context      context
      */
     public <D extends ToggleableDevice> void toggleState(D device, Optional<String> connectionId, Context context) {
-        if (onOffBehavior.isOnByState(device)) {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOffStateName(device), connectionId, context);
-            device.setState(device.getOffStateName());
-        } else {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + deviceHookProvider.getOnStateName(device), connectionId, context);
-            device.setState(device.getOnStateName());
-        }
+        String targetState = onOffBehavior.isOnByState(device)
+                ? deviceHookProvider.getOffStateName(device)
+                : deviceHookProvider.getOnStateName(device);
+        genericDeviceService.setState(device, targetState, connectionId, context);
     }
 }
