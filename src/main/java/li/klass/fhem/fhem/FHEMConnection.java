@@ -46,14 +46,10 @@ public abstract class FHEMConnection {
     public FHEMConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
         this.serverSpec = fhemServerSpec;
-        onSetServerSpec();
     }
 
     public FHEMServerSpec getServer() {
         return serverSpec;
-    }
-
-    protected void onSetServerSpec() {
     }
 
     protected void setErrorInErrorHolderFor(Exception e, String host, String suffix) {

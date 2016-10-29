@@ -136,6 +136,7 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry) {
+        initSslContext();
         String url = null;
         HttpURLConnection connection;
         try {
@@ -220,8 +221,7 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
     }
 
-    @Override
-    protected void onSetServerSpec() {
+    protected void initSslContext() {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(AndFHEMApplication.getContext());
