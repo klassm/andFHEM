@@ -69,15 +69,6 @@ public class FavoritesService {
      */
     private SharedPreferences getPreferences(Context context) {
         String name = PREFERENCES_NAME + "_" + connectionService.getSelectedId(context);
-        SharedPreferences favoritesPreferences = sharedPreferencesService.getPreferences(name, context);
-        if (connectionService.listAll(context).size() == 1 && favoritesPreferences.getAll().isEmpty()) {
-            return copyOldPreferencesTo(name, context);
-        }
-        return favoritesPreferences;
-    }
-
-    private SharedPreferences copyOldPreferencesTo(String name, Context context) {
-        sharedPreferencesService.writeAllIn(name, sharedPreferencesService.listAllFrom(PREFERENCES_NAME, context), context);
         return sharedPreferencesService.getPreferences(name, context);
     }
 
