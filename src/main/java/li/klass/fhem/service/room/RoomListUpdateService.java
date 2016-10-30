@@ -105,11 +105,12 @@ public class RoomListUpdateService {
     @NonNull
     private Optional<RoomDeviceList> parseResult(Optional<String> connectionId, Context context, String result) {
         Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
-        RoomDeviceList cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
-        if (parsed.isPresent()) {
-            cached.addAllDevicesOf(parsed.get(), context);
+        Optional<RoomDeviceList> cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
+        if (parsed.isPresent() && cached.isPresent()) {
+            cached.get().addAllDevicesOf(parsed.get(), context);
+            return cached;
         }
-        return Optional.of(cached);
+        return parsed;
     }
 
     public interface RoomListUpdateListener {

@@ -166,8 +166,8 @@ public class RoomListService extends AbstractService {
      * @return {@link RoomDeviceList} containing all devices
      */
     public RoomDeviceList getAllRoomsDeviceList(Optional<String> connectionId, Context context) {
-        RoomDeviceList originalRoomDeviceList = getRoomDeviceList(connectionId, context);
-        return new RoomDeviceList(originalRoomDeviceList, context);
+        Optional<RoomDeviceList> originalRoomDeviceList = getRoomDeviceList(connectionId, context);
+        return new RoomDeviceList(originalRoomDeviceList.orNull(), context);
     }
 
     /**
@@ -180,7 +180,7 @@ public class RoomListService extends AbstractService {
      * @return Currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}.
      * @param context context
      */
-    public RoomDeviceList getRoomDeviceList(Optional<String> connectionId, Context context) {
+    public Optional<RoomDeviceList> getRoomDeviceList(Optional<String> connectionId, Context context) {
         return roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
     }
 
@@ -221,8 +221,8 @@ public class RoomListService extends AbstractService {
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
-        RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
-        boolean requiresUpdate = shouldUpdate(updatePeriod, connectionId, context) || deviceList == null;
+        Optional<RoomDeviceList> deviceList = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
+        boolean requiresUpdate = shouldUpdate(updatePeriod, connectionId, context) || !deviceList.isPresent();
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
@@ -358,11 +358,11 @@ public class RoomListService extends AbstractService {
      * @return list of all room names
      */
     public ArrayList<String> getRoomNameList(Optional<String> connectionId, Context context) {
-        RoomDeviceList roomDeviceList = getRoomDeviceList(connectionId, context);
-        if (roomDeviceList == null) return newArrayList();
+        Optional<RoomDeviceList> roomDeviceList = getRoomDeviceList(connectionId, context);
+        if (!roomDeviceList.isPresent()) return newArrayList();
 
         Set<String> roomNames = Sets.newHashSet();
-        for (FhemDevice device : roomDeviceList.getAllDevices()) {
+        for (FhemDevice device : roomDeviceList.get().getAllDevices()) {
             DeviceType type = getDeviceTypeFor(device);
             if (type == null) {
                 continue;
@@ -372,9 +372,9 @@ public class RoomListService extends AbstractService {
                 roomNames.addAll(device.getRooms());
             }
         }
-        roomNames.removeAll(roomDeviceList.getHiddenRooms());
+        roomNames.removeAll(roomDeviceList.get().getHiddenRooms());
 
-        FHEMWEBDevice fhemwebDevice = roomListHolderService.findFHEMWEBDevice(roomDeviceList, context);
+        FHEMWEBDevice fhemwebDevice = roomListHolderService.findFHEMWEBDevice(roomDeviceList.get(), context);
         return sortRooms(roomNames, fhemwebDevice);
     }
 
@@ -421,15 +421,15 @@ public class RoomListService extends AbstractService {
     public RoomDeviceList getDeviceListForRoom(String roomName, Optional<String> connectionId, Context context) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
-        RoomDeviceList allRoomDeviceList = getRoomDeviceList(connectionId, context);
-        if (allRoomDeviceList != null) {
-            for (FhemDevice device : allRoomDeviceList.getAllDevices()) {
+        Optional<RoomDeviceList> allRoomDeviceList = getRoomDeviceList(connectionId, context);
+        if (allRoomDeviceList.isPresent()) {
+            for (FhemDevice device : allRoomDeviceList.get().getAllDevices()) {
                 if (device.isInRoom(roomName)) {
                     roomDeviceList.addDevice(device, context);
                 }
             }
-            roomDeviceList.setHiddenGroups(allRoomDeviceList.getHiddenGroups());
-            roomDeviceList.setHiddenRooms(allRoomDeviceList.getHiddenRooms());
+            roomDeviceList.setHiddenGroups(allRoomDeviceList.get().getHiddenGroups());
+            roomDeviceList.setHiddenRooms(allRoomDeviceList.get().getHiddenRooms());
         }
 
         return roomDeviceList;

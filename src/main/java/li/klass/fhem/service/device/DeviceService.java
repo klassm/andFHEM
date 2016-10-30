@@ -81,9 +81,9 @@ public class DeviceService {
         commandExecutionService.executeSafely("delete " + device.getName(), Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
             @Override
             public void onResult(String result) {
-                RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList(Optional.<String>absent(), context);
-                if (roomDeviceList != null) {
-                    roomDeviceList.removeDevice(device, context);
+                Optional<RoomDeviceList> roomDeviceList = roomListService.getRoomDeviceList(Optional.<String>absent(), context);
+                if (roomDeviceList.isPresent()) {
+                    roomDeviceList.get().removeDevice(device, context);
                 }
             }
         });

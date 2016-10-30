@@ -26,6 +26,8 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,13 +120,13 @@ public class RoomListCache {
      * @return cached room device list map
      */
     @SuppressWarnings("unchecked")
-    public RoomDeviceList getCachedRoomDeviceListMap() {
+    public Optional<RoomDeviceList> getCachedRoomDeviceListMap() {
         if (cachedRoomList != null || fileStoreNotFilled) {
-            return cachedRoomList;
+            return Optional.fromNullable(cachedRoomList);
         }
         synchronized (this) {
             if (cachedRoomList != null || fileStoreNotFilled) {
-                return cachedRoomList;
+                return Optional.fromNullable(cachedRoomList);
             }
 
             ObjectInputStream objectInputStream = null;
@@ -143,13 +145,13 @@ public class RoomListCache {
             } catch (Exception e) {
                 LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
                 fileStoreNotFilled = true;
-                return null;
+                return Optional.absent();
             } finally {
                 CloseableUtil.close(objectInputStream);
             }
         }
 
-        return cachedRoomList;
+        return Optional.fromNullable(cachedRoomList);
     }
 
     public long getLastUpdate(Context context) {
