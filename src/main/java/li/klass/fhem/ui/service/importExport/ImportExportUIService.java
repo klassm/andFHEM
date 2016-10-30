@@ -24,6 +24,7 @@
 
 package li.klass.fhem.ui.service.importExport;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,6 +48,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.service.importexport.ImportExportService;
 import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.util.PermissionUtil;
 
 @Singleton
 public class ImportExportUIService {
@@ -66,6 +68,9 @@ public class ImportExportUIService {
     }
 
     public void handleImport(final Activity activity) {
+        if (!PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            return;
+        }
         new FileDialog(activity, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
             @Override
             public void fileSelected(File file) {
@@ -125,6 +130,9 @@ public class ImportExportUIService {
 
     public void handleExport(final Activity activity) {
 
+        if (!PermissionUtil.checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            return;
+        }
         selectPasswordWith(activity, new OnBackupPasswordSelected() {
             @Override
             public void backupPasswordSelected(String password) {
