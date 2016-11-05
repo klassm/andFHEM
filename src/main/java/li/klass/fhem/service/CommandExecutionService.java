@@ -45,7 +45,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.FHEMWEBConnection;
@@ -69,7 +68,7 @@ public class CommandExecutionService extends AbstractService {
     private static final int IMAGE_CACHE_SIZE = 20;
 
     private static final Logger LOG = LoggerFactory.getLogger(CommandExecutionService.class);
-    private static final ResultListener DO_NOTHING = new ResultListener() {
+    private static final ResultListener DO_NOTHING = new SuccessfulResultListener() {
         @Override
         public void onResult(String result) {
         }
@@ -128,9 +127,10 @@ public class CommandExecutionService extends AbstractService {
         RequestResult<String> result = execute(command, currentTry, connectionId, context, resultListener);
         if (result.handleErrors()) {
             lastFailedCommand = command;
-            throw new CommandExecutionException();
+            resultListener.onError();
+        } else {
+            resultListener.onResult(result.content);
         }
-        resultListener.onResult(result.content);
     }
 
     private void showExecutingDialog(Context context) {
@@ -252,7 +252,7 @@ public class CommandExecutionService extends AbstractService {
         return imageCache;
     }
 
-    private static class SyncResultListener implements ResultListener {
+    private static class SyncResultListener extends SuccessfulResultListener {
         private String result;
 
         @Override
@@ -299,5 +299,13 @@ public class CommandExecutionService extends AbstractService {
 
     public interface ResultListener {
         void onResult(String result);
+
+        void onError();
+    }
+
+    public static abstract class SuccessfulResultListener implements ResultListener {
+        @Override
+        public void onError() {
+        }
     }
 }

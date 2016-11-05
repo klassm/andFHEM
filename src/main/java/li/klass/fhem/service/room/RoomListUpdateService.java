@@ -99,6 +99,11 @@ public class RoomListUpdateService {
                     context.sendBroadcast(new Intent(Actions.DO_UPDATE).putExtra(DO_REFRESH, false));
                 }
             }
+
+            @Override
+            public void onError() {
+                updateListener.onUpdateFinished(false);
+            }
         });
     }
 

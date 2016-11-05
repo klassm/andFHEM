@@ -117,7 +117,7 @@ public class GenericDeviceService {
 
     @NonNull
     private CommandExecutionService.ResultListener invokePostCommandActions(final FhemDevice<?> device, final Context context, final boolean invokeUpdate, final String stateName, final String toSet) {
-        return new CommandExecutionService.ResultListener() {
+        return new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
 

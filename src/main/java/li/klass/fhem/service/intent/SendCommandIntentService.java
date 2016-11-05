@@ -119,7 +119,7 @@ public class SendCommandIntentService extends ConvenientIntentService {
 
     @NonNull
     private CommandExecutionService.ResultListener handleResult(final ResultReceiver resultReceiver, final String command) {
-        return new CommandExecutionService.ResultListener() {
+        return new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 storeRecentCommand(command);

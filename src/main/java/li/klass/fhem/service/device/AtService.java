@@ -64,7 +64,7 @@ public class AtService {
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
@@ -101,7 +101,7 @@ public class AtService {
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
 
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.ResultListener() {
+        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
