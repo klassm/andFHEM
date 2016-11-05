@@ -80,6 +80,9 @@ public class ImportExportService {
     FileSystemService fileSystemService;
 
     @Inject
+    FavoritesService favoritesService;
+
+    @Inject
     ApplicationProperties applicationProperties;
 
     @Inject
@@ -87,12 +90,14 @@ public class ImportExportService {
     }
 
     protected Map<String, String> getSharedPreferencesExportKeys(Context context) {
-        return ImmutableMap.<String, String>builder()
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.<String, String>builder()
                 .put("CONNECTIONS", ConnectionService.PREFERENCES_NAME)
-                .put("FAVORITES", FavoritesService.PREFERENCES_NAME)
                 .put("NOTIFICATIONS", NotificationService.PREFERENCES_NAME)
-                .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context))
-                .build();
+                .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context));
+        for (String preferenceName : favoritesService.getPreferenceNames(context)) {
+            builder.put("FAVORITE_" + preferenceName, preferenceName);
+        }
+        return builder.build();
     }
 
     public File exportSettings(String password, Context context) {

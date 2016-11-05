@@ -36,6 +36,7 @@ import org.mockito.Mock;
 
 import java.util.Map;
 
+import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -48,9 +49,10 @@ public class ImportExportServiceTest {
 
     @Mock
     ApplicationProperties applicationProperties;
-
     @Mock
     Context applicationContext;
+    @Mock
+    FavoritesService favoritesService;
 
     @InjectMocks
     ImportExportService importExportService;

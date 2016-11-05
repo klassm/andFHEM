@@ -26,7 +26,9 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
 import java.util.Set;
@@ -36,8 +38,11 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
+
+import static com.google.common.collect.FluentIterable.from;
 
 @Singleton
 public class FavoritesService {
@@ -68,8 +73,26 @@ public class FavoritesService {
      * @return the {@link android.content.SharedPreferences} object.
      */
     private SharedPreferences getPreferences(Context context) {
-        String name = PREFERENCES_NAME + "_" + connectionService.getSelectedId(context);
+        String name = preferenceNameFor(connectionService.getSelectedId(context));
+        return getPreferencesFor(context, name);
+    }
+
+    public SharedPreferences getPreferencesFor(Context context, String name) {
         return sharedPreferencesService.getPreferences(name, context);
+    }
+
+    public Set<String> getPreferenceNames(Context context) {
+        return from(connectionService.listAll(context)).transform(new Function<FHEMServerSpec, String>() {
+            @Override
+            public String apply(FHEMServerSpec input) {
+                return preferenceNameFor(input.getId());
+            }
+        }).toSet();
+    }
+
+    @NonNull
+    private String preferenceNameFor(String id) {
+        return PREFERENCES_NAME + "_" + id;
     }
 
     /**
