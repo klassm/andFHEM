@@ -22,8 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def appVersionCode = 425
-def appVersionName = "4.2.5"
+def appVersionCode = 426
+def appVersionName = "4.2.6"
 
 buildscript {
     repositories {
