@@ -67,14 +67,17 @@ public class AdvertisementService {
     public void addAd(final View view, final Activity activity) {
 
         activity.startService(new Intent(Actions.IS_PREMIUM)
-                        .setClass(activity, LicenseIntentService.class)
-                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-                            @Override
-                            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                boolean isPremium = resultCode == SUCCESS && resultData.getBoolean(IS_PREMIUM, false);
-                                showAdsBasedOnPremium(isPremium, view, activity);
-                            }
-                        })
+                .setClass(activity, LicenseIntentService.class)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (!resultData.containsKey(IS_PREMIUM)) {
+                            return;
+                        }
+                        boolean isPremium = resultCode == SUCCESS && resultData.getBoolean(IS_PREMIUM, false);
+                        showAdsBasedOnPremium(isPremium, view, activity);
+                    }
+                })
         );
     }
 
@@ -82,6 +85,7 @@ public class AdvertisementService {
         boolean showAds = true;
         final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
 
+        Log.i(TAG, "isPremium is " + isPremium);
         if (adContainer == null) {
             Log.i(TAG, "cannot find adContainer");
             return;
