@@ -57,6 +57,7 @@ import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSpec>
         implements Spinner.OnItemSelectedListener {
 
+    private final Runnable onConnectionChanged;
     private int currentlySelectedPosition = -1;
     private Spinner parent;
 
@@ -74,8 +75,9 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
 
     private static final ManagementPill MANAGEMENT_PILL = new ManagementPill();
 
-    public AvailableConnectionDataAdapter(Spinner parent) {
+    public AvailableConnectionDataAdapter(Spinner parent, Runnable onConnectionChanged) {
         super(parent.getContext(), R.layout.connection_spinner_item, new ArrayList<FHEMServerSpec>());
+        this.onConnectionChanged = onConnectionChanged;
         this.parent = parent;
     }
 
@@ -104,9 +106,9 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
 
     @SuppressWarnings("unchecked")
     public void doLoad() {
-        Intent intent = new Intent(Actions.CONNECTIONS_LIST);
-        intent.setClass(context, ConnectionsIntentService.class);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        context.startService(new Intent(Actions.CONNECTIONS_LIST)
+                .setClass(context, ConnectionsIntentService.class)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == SUCCESS && resultData != null &&
@@ -126,8 +128,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
                     }
                 }
             }
-        });
-        context.startService(intent);
+                }));
     }
 
     private void select(String id) {
@@ -160,6 +161,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
             intent.putExtra(BundleExtraKeys.CONNECTION_ID, data.get(pos).getId());
             context.startService(intent);
         }
+        onConnectionChanged.run();
     }
 
     @Override

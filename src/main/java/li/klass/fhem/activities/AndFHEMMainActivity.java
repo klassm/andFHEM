@@ -276,9 +276,9 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         switchToFragment(fragmentType, startupBundle);
     }
 
-    private void initConnectionSpinner(View spinner) {
+    private void initConnectionSpinner(View spinner, Runnable onConnectionChanged) {
         Spinner connectionSpinner = (Spinner) spinner;
-        availableConnectionDataAdapter = new AvailableConnectionDataAdapter(connectionSpinner);
+        availableConnectionDataAdapter = new AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged);
         connectionSpinner.setAdapter(availableConnectionDataAdapter);
         connectionSpinner.setOnItemSelectedListener(availableConnectionDataAdapter);
         availableConnectionDataAdapter.doLoad();
@@ -375,7 +375,16 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             navigationView.getMenu().removeItem(R.id.menu_premium);
         }
 
-        initConnectionSpinner(navigationView.getHeaderView(0).findViewById(R.id.connection_spinner));
+        initConnectionSpinner(navigationView.getHeaderView(0).findViewById(R.id.connection_spinner),
+                new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                        }
+                    }
+                });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
