@@ -48,6 +48,8 @@ public class AtService {
 
     @Inject
     RoomListService roomListService;
+    @Inject
+    GenericDeviceService genericDeviceService;
 
     private static final Logger LOG = LoggerFactory.getLogger(AtService.class);
 
@@ -69,9 +71,8 @@ public class AtService {
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
 
-                Intent intent = new Intent(Actions.DO_UPDATE);
-                intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-                context.sendBroadcast(intent);
+                context.sendBroadcast(new Intent(Actions.DO_UPDATE)
+                        .putExtra(BundleExtraKeys.DO_REFRESH, true));
             }
         });
     }
@@ -96,7 +97,7 @@ public class AtService {
             return;
         }
 
-        AtDevice device = deviceOptional.get();
+        final AtDevice device = deviceOptional.get();
         setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device);
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
@@ -105,6 +106,7 @@ public class AtService {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
+                genericDeviceService.update(device, context);
             }
         });
 

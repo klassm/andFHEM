@@ -151,7 +151,7 @@ public class GenericDeviceService {
         }
     }
 
-    private void update(FhemDevice<?> device, final Context context) {
+    public void update(FhemDevice<?> device, final Context context) {
         Integer delay = device.getDeviceConfiguration().transform(TO_DELAY_FOR_UPDATE_AFTER_COMMAND).or(0);
         context.startService(new Intent(DO_REMOTE_UPDATE)
                 .putExtra(DEVICE_NAME, device.getName())
