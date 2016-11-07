@@ -28,6 +28,7 @@ navbar-links:
   Changelog: "changelog"
   Contribute: "contribute"
   Data Privacy: "data-privacy"
+  Premium: "premium"
   App Manual:
     - Installation: "installation"
     - Hooks: "hooks"
