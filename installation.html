@@ -10,23 +10,21 @@ bigimg: /images/installation.jpg
 
     <h2 id="configuring_connections">Configuring Connections</h2>
 
-
     <p>When starting andFHEM the first time some dummy data is used for previewing what the application looks like and
-        what devices are supported. To use your own FHEM server click on the selector in the action bar. This selector
-        always contains the name of the connection that is currently used for pulling data from a FHEM server.</p>
+        what devices are supported. To use your own FHEM server open the navigation drawer and click into the drop down menu on the top. This selector
+        always shows the name of the connection that is currently used for fetching data from a FHEM server.</p>
 
     <a href="../images/installation/connectionType.png"><img src="../images/installation/connectionType.png"/></a>
 
     <p>After clicking the selector a submenu opens. This submenu contains all configured connections. When clicking a
-        connection name, the current connection used for pulling information from FHEM changes to that new one. When
+        connection name, the current connection changes to the newly selected one. When
         selecting the bottom item, which is called "Manage" or "Verwalten", you are directed to a view where you can
         manage your connections.</p>
 
     <a href="../images/installation/connectionList.png"><img src="../images/installation/connectionList.png"/></a>
 
     <p>All the configured connections are listed here. When clicking such a connection, you can edit all configured
-        connection items like URL, username or password. When clicking "Create a new connection" or "Neue Verbindung
-        erstellen", you can create a new one.</p>
+        connection items like URL, username or password. You can also create a new one by clicking on the plus sign on the top.</p>
 
     <p>Changing a configuration or adding a new one always looks the same, except that you cannot change the connection
         type when editing a connection.</p>
@@ -44,7 +42,6 @@ bigimg: /images/installation.jpg
         reentering the collection list selector, you can select your newly created connection.</p>
 
     <h2 id="fhemweb">FHEMWEB</h2>
-
 
     <p>FHEM supports some web interfaces delivered together with the server itself. One of these web interfaces is
         FHEMWEB, which is configured by adding a line like <span class="code">define fhemweb FHEMWEB 8083 global</span>
@@ -64,7 +61,6 @@ bigimg: /images/installation.jpg
 
     <h2 id="telnet">Telnet</h2>
 
-
     <p>FHEM supports a very basic command line interface to query the current state of devices. Before selecting this
         option, make sure that you can access the interface from another computer in your local network.</p>
 
@@ -81,8 +77,8 @@ bigimg: /images/installation.jpg
         fields. The IP field should contain something like 192.168.0.1. It is the address of the computer running the
         FHEM server. Port is the above mentioned FHEM command line interface port, such as 7072.</p>
 
-    <h2 id="gcm">Google Cloud Messaging</h2>
 
+    <h2 id="gcm">Google Cloud Messaging</h2>
 
     <p>Google Cloud Messaging (GCM) enables you to send push notifications to Android handsets. This enables you to send
         updates in nearly realtime to andFHEM (from 2.4.2 onwards).</p>
