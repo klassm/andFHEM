@@ -172,14 +172,14 @@ img {
     width: 100px;
     margin-top: -50px;
   }
-  
+
   .navbar-custom .avatar-container  .avatar-img-border {
     width: 100%;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
     -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
   }
-  
+
   .navbar-custom .avatar-container  .avatar-img {
     width: 100%;
   }
@@ -217,7 +217,7 @@ img {
 @media only screen and (min-width: 768px) {
   .navbar-custom .nav .navlinks-container {
     text-align: center;
-  }  
+  }
   .navbar-custom .nav .navlinks-container:hover {
     background: #eee;
   }
@@ -273,7 +273,7 @@ footer .theme-by {
     font-size: 16px;
   }
 }
- 
+
 /* --- Post preview --- */
 
 .post-preview {
@@ -450,11 +450,11 @@ footer .theme-by {
   }
   .intro-header.big-img {
     margin-top: 91px;  /* Full navbar is small navbar + 20px padding on each side when expanded */
-  }	
+  }
   .intro-header.big-img .page-heading,
   .intro-header.big-img .post-heading  {
     padding: 150px 0;
-  }  
+  }
   .intro-header .page-heading h1 {
     font-size: 80px;
   }
@@ -491,9 +491,9 @@ footer .theme-by {
   }
   .header-section.has-img .big-img {
     margin-bottom: 0;
-  }  
-} 
-@media only screen and (max-width: 325px) { 
+  }
+}
+@media only screen and (max-width: 325px) {
   .intro-header.big-img {
     height: 200px;
   }
@@ -625,4 +625,48 @@ td.gutter {
 
 #social-share-section {
   margin-bottom: 30px;
+}
+
+
+
+
+.back-to-top {
+  float: right;
+  padding-left: 20px;
+}
+@media (max-width: 991px) {
+  .navbar-header {
+    float: none;
+  }
+  .navbar-left,.navbar-right {
+    float: none !important;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+  .navbar-collapse {
+    border-top: 1px solid transparent;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+  }
+  .navbar-collapse.collapse {
+    display: none!important;
+  }
+  .navbar-nav {
+    float: none!important;
+    margin-top: 7.5px;
+  }
+  .navbar-nav>li {
+    float: none;
+  }
+  .navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .collapse.in{
+    display:block !important;
+  }
 }

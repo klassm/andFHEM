@@ -1,0 +1,131 @@
+---
+layout: page
+title: Hooks
+bigimg: /images/hooks.jpg
+---
+
+<div id="home">
+
+    <p>Hooks to change andFHEM behaviour from within the <i>fhem.cfg</i> file.</p>
+    <p>Each user attribute has to be added separately to the allowed user attributes in FHEM (i.e. <span class="code">attr global userattr onOffDevice</span>)
+    </p>
+
+    <table>
+        <thead>
+        <tr style="font-weight:bold">
+            <th>Name</th>
+            <th>User Attribute</th>
+            <th>Example</th>
+            <th>Minimum Version</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><b>OnOffButtons</b><br>Display on / off buttons instead of toggle buttons</td>
+            <td><span class="code">onOffDevice</span><br>the value has to be boolean (<span class="code">true</span> or
+                <span class="code">false</span>)
+            </td>
+            <td><span class="code">attr mat_halogen onOffDevice true<br>attr mat_halogen onOffDevice false</span></td>
+            <td>1.7.0</td>
+        </tr>
+
+        <tr>
+            <td><b>OnButton</b><br>Display only an on button</td>
+            <td><span class="code">onDevice</span><br>the value has to be boolean (<span class="code">true</span> or
+                <span class="code">false</span>)
+            </td>
+            <td><span class="code">attr mat_halogen onDevice true</span><br></td>
+            <td>1.9.4</td>
+        </tr>
+
+        <tr>
+            <td><b>OffButton</b><br>Display only an off button</td>
+            <td><span class="code">offDevice</span><br>the value has to be boolean (<span class="code">true</span> or
+                <span class="code">false</span>)
+            </td>
+            <td><span class="code">attr mat_halogen offDevice true</span></td>
+            <td>1.9.4</td>
+        </tr>
+
+        <tr>
+            <td><b>WebCmd</b><br>Display all webcmd buttons within the device overview list.</td>
+            <td><span class="code">webcmdDevice</span><br>the value has to be boolean (<span class="code">true</span> or
+                <span class="code">false</span>)
+            </td>
+            <td><span class="code">attr mat_halogen webcmdDevice true</span></td>
+            <td>2.5.7</td>
+        </tr>
+
+        <tr>
+            <td><b>ToggleButton</b><br>Display a toggle button&nbsp;</td>
+            <td><span class="code">toggleDevice</span><br>the value has to be boolean (<span class="code">true</span> or
+                <span class="code">false</span>)
+            </td>
+            <td><span class="code">attr mat_halogen toggleDevice true</span></td>
+            <td>1.9.5</td>
+        </tr>
+
+        <tr>
+            <td><b>InvertState</b><br>Display a toggle button</td>
+            <td><span class="code">invertState</span><br>the value has to be boolean (<span class="code">true</span> or
+                <span class="code">false</span>)
+            </td>
+            <td><span class="code">attr mat_halogen invertState true</span></td>
+            <td>1.9.9</td>
+        </tr>
+
+        <tr>
+            <td><b>OnStateName</b><br>Field to regard as "on". This is also used for reading the eventMap state name
+            </td>
+            <td><span class="code">OnStateName</span><br>the state name to regard as on</td>
+            <td><span class="code">attr mat_halogen onStateName toggle</span></td>
+            <td>2.0.5</td>
+        </tr>
+
+        <tr>
+            <td><b>OffStateName</b><br>Field to regard as "on". This is also used for reading the eventMap state name
+            </td>
+            <td><span class="code">OffStateName</span><br>the state name to regard as off</td>
+            <td><span class="code">attr mat_halogen offStateName toggle</span></td>
+            <td>2.0.5</td>
+        </tr>
+
+        <tr>
+            <td><b>WidgetName</b><br>Specify a name displayed within widgets. Space within app widgets is usually quite
+                thin, so you may want to specify a shortname instead of having the app cut your default name to the
+                available screen size.
+            </td>
+            <td><span class="code">widget_name</span><br>the name to display within widgets<br></td>
+            <td><span class="code">attr mat_halogen widget_name short</span></td>
+            <td>2.5.9</td>
+        </tr>
+
+        <tr>
+            <td><b>AlwaysHidden</b><br>Completely hide a device from andFHEM.</td>
+            <td><span class="code">always_hidden</span> <br>the value has to be boolean (<span class="code">true</span>
+                or <span class="code">false</span>)<br><br></td>
+            <td><span class="code">attr mat_halogen always_hidden true</span></td>
+            <td>2.6.2</td>
+        </tr>
+
+        <tr>
+            <td><b>Sum graph division factor</b><br>Configures a division factor for the sum graph (so that you can
+                define the proportion between current and sum values)
+            </td>
+            <td><span class="code">sum_graph_division_factor</span></td>
+            <td><span class="code">attr 00STROM sum_graph_division_factor 0.5</span><br/>Some decimal value (no comma,
+                only dots, allowed!)
+            </td>
+            <td>3.0.7</td>
+        </tr>
+
+        <tr>
+            <td><b>Voice command device pronunciation</b><br>Attribute defining a pronunciation for the device.</td>
+            <td><span class="code">pronunciation</span></td>
+            <td><span class="code">attr mat_halogen pronunciation halogen</span>
+            <td>3.3.2</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

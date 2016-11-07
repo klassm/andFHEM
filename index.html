@@ -1,62 +1,53 @@
 ---
 layout: page
-title: My website
-subtitle: This is where I will tell my friends way too much about me
+title: andFHEM
+subtitle: Control your home
+bigimg: /images/index.jpg
 ---
 
-<div class="posts-list">
-  {% for post in paginator.posts %}
-  <article class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-	  <h2 class="post-title">{{ post.title }}</h2>
+<p>AndFHEM is an Android frontend to control devices using a <a href="http://fhem.de/">FHEM</a> home automation server.</p>
+<p>The application can be found within the <a href="https://play.google.com/store/apps/details?id=li.klass.fhem">Google PlayStore</a>. The current APK can be downloaded <a target="_blank" href="https://sites.google.com/site/andfhem/google-release.apk?attredirects=0&d=1">here</a>.</p>
 
-	  {% if post.subtitle %}
-	  <h3 class="post-subtitle">
-	    {{ post.subtitle }}
-	  </h3>
-	  {% endif %}
-    </a>
+<h2>Main Features</h2>
 
-    <p class="post-meta">
-      Posted on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-
-    <div class="post-entry">
-      {{ post.excerpt | strip_html | xml_escape | truncatewords: site.excerpt_length }}
-      {% assign excerpt_word_count = post.excerpt | number_of_words %}
-      {% if post.content != post.excerpt or excerpt_word_count > site.excerpt_length %}
-        <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Read&nbsp;More]</a>
-      {% endif %}
-    </div>
-
-    {% if post.tags.size > 0 %}
-    <div class="blog-tags">
-      Tags:
-      {% if site.link-tags %}
-      {% for tag in post.tags %}
-      <a href="{{ site.baseurl }}/tag/{{ tag }}">{{ tag }}</a>
-      {% endfor %}
-      {% else %}
-        {{ post.tags | join: ", " }}
-      {% endif %}
-    </div>
-    {% endif %}
-
-   </article>
-  {% endfor %}
-</div>
-
-{% if paginator.total_pages > 1 %}
-<ul class="pager main-pager">
-  {% if paginator.previous_page %}
-  <li class="previous">
-    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-  </li>
-  {% endif %}
-  {% if paginator.next_page %}
-  <li class="next">
-    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-  </li>
-  {% endif %}
+<ul>
+  <li>Cache FHEM data on your device. No need to load all the data on every request.</li>
+  <li>Manage your devices in rooms. Create favorites to get a status summary.</li>
+  <li>View devices aggregated by functionality, not by device type.</li>
+  <li>Control and switch your devices, incl. heating, dimming, ...</li>
+  <li>View your FileLog data in zoomable plots.</li>
+  <li>Switch between an arbitrary amount of FHEM servers (Premium only)</li>
+  <li>View and switch directly from your home screen.</li>
+  <li>Create timers without having to write Perl code within the FHEM config.</li>
+  <li>Switch devices based on <a href="https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm">Tasker</a> / <a href="https://play.google.com/store/apps/details?id=com.twofortyfouram.locale">Locale</a> and/or <a href="https://play.google.com/store/apps/details?id=com.kebab.Llama">Llama</a> events. This is especially useful for location aware switching.</li>
+  <li>Receive push notifications using Google Cloud Messaging (GCM).</li>
 </ul>
-{% endif %}
+
+<h2>Contact</h2>
+
+<p>You have found a bug or a problem and cannot solve it using the <a href="/faq.html">FAQ</a> pages? Got an idea for a new cool feature? Missing a device type? Write a mail to <a href="mailto:andFHEM@klass.li">andFHEM@klass.li</a> (German or English).</p>
+
+<p>Join me on Google+ for the latest information about andFHEM!</p>
+
+<!-- Place this tag where you want the widget to render. -->
+<div class="g-page" data-href="//plus.google.com/112111802493777776424" data-theme="dark" data-layout="landscape" data-rel="publisher"></div>
+
+<!-- Place this tag after the last widget tag. -->
+<script type="text/javascript">
+    (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+</script>
+
+<h2>License</h2>
+
+The application is licensed using <a href="http://www.gnu.de/documents/gpl-2.0.de.html">GPLv2</a>.
+
+<h2>Links</h2>
+
+<ul>
+  <li><a href="http://a9s.de/fhem/Internetzugriff%20auf%20fhem.pdf">Control andFHEM via Internet</a> (German Tutorial)</li>
+</ul>
+

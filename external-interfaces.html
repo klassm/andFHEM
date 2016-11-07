@@ -1,0 +1,120 @@
+---
+layout: page
+title: External Interfaces
+bigimg: /images/external-interfaces.jpg
+---
+
+<div id="home">
+
+  <div class="toc"></div>
+
+  <h2>Llama / Tasker / Locale</h2>
+
+  <p>Apps like the ones mentioned above allow to execute actions based on external events. Those events may well be the
+    connection to a WLAN, the entering of some area. Those events are pretty useful if combined with an FHEM instance. This is why andFHEM provides an external interface to those apps.</p>
+ 
+  <h3>Sending commands</h3>
+  
+  <p>AndFHEM provides a UI for sending commands to FHEM. Just look for an andFHEM plugin in your favourite location aware switching app.(AndFHEM 2.1.4+)</p>
+
+  <div class="ui-accordion">
+    <h5>Example: Llama</h5>
+    <div>
+      <ol>
+        <li>
+          <div>Open up Llama, click the rules tab and click on the plus icon to create a new rule.</div>
+          <a href="../images/llama_command_switching/01.png"><img height="200px" src="../images/llama_command_switching/01.png" /></a>
+        </li>
+        <li>
+        <div>Add a new event by clicking on the respective button.</div>
+          <a href="../images/llama_command_switching/02.png"><img height="200px" src="../images/llama_command_switching/02.png" /></a>
+        </li>
+        <li>
+          <div>Select Locale-Plugin as event type.</div>
+          <a href="../images/llama_command_switching/03.png"><img height="200px" src="../images/llama_command_switching/03.png" /></a>
+        </li>
+        <li>
+          <div>Select andFHEM command.</div>
+          <a href="../images/llama_command_switching/04.png"><img height="200px" src="../images/llama_command_switching/04.png" /></a>
+        </li>
+        <li>
+          <div>Enter the command you want to send to FHEM.</div>
+          <a href="../images/llama_command_switching/05.png"><img height="200px" src="../images/llama_command_switching/05.png" /></a>
+        </li>
+        <li>Select the connection you want to use.</li>
+        <li>Click save and enter the rest of your rule, i.e. conditions, ...</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>Triggering actions based on device states</h3>
+
+  <p>You can trigger actions based on device states by adding the Device State Locale Plugin. You need to select a device and enter a desired device state. If the device state is found to match the desired state, the condition is met and an action is triggered. This plugin only works using Locale and Tasker.</p>
+  
+  <h3>Switching connections</h3>
+
+  <p>Using a Locale Plugin you can switch to another AndFHEM connection. This can be used to select a connection based on an available WLAN connection or a network cell. (AndFHEM 2.7.0+)</p>
+
+  <h3>Receiving device state change broadcasts</h3>
+
+  <p>Tasker allows to receive Intents from external applications and trigger events based on the contents (see <a href="http://tasker.dinglisch.net/userguide/en/intents.html" target="_blank">Tasker Documentation</a> for details, AndFHEM 2.7.0+).</p>
+
+  <p>Broadcasts are only sent if GCM is enabled. The broadcast intents contain the following information:
+    <table>
+      <tr>
+        <td>Broadcast-Aktion</td>
+        <td>li.klass.fhem.constants.Actions.EXT_DEVICE_STATE_NOTIFY</td>
+      </tr>
+      <tr>
+        <td>ACTION</td>
+        <td>deviceStateChange</td>
+      </tr>
+      <tr>
+        <td>DEVICENAME</td>
+        <td>The name of the changed device, i.e. "mat_halogen"</td>
+      </tr>
+      <tr>
+        <td>STATE_NAME</td>
+        <td>The name of the changed state. This is always uppercase and usually equals to "STATE".</td>
+      </tr>
+      <tr>
+        <td>STATE_VALUE</td>
+        <td>The actual value, i.e. "on".</td>
+      </tr>
+    </table>
+  </p>
+
+
+  <h2>Programmatic APIs</h2>
+
+  AndFHEM can be partially controlled using intents from external applications:
+
+  <h2>Start andFHEM via URL scheme</h2>
+
+  AndFHEM can be started from your local web browser when providing a link in a distinct format. Whenever a URL starts with fhem://, andFHEM will try to interprete the content:
+
+  <table>
+    <tr>
+        <td>fhem://room=bathroom</td><td>Opens a room called "bathroom"</td>
+    </tr>
+    <tr>
+        <td>fhem://device=light</td><td>Opens a device called "light"</td>
+    </tr>
+    <tr>
+      <td>fhem://all_devices</td><td>Shows the all devices list</td>
+    </tr>
+    <tr>
+      <td>fhem://room_list</td><td>Shows the list of all rooms</td>
+    </tr>
+    <tr>
+      <td>fhem://favorites</td><td>Shows all favorites</td>
+    </tr>
+    <tr>
+      <td>fhem://cmd=set%20mat_halogen%20on</td><td>Switches a device called mat_halogen to on (%20 is the escape sequence for space)</td>
+    </tr>
+    </tr>
+    <tr>
+      <td>fhem://set%20mat_halogen%20on</td><td>Deprecated: Old functionality to switch devices. Do not used that one</td></tr>
+    </tr>
+  </table>
+</div>

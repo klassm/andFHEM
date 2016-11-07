@@ -1,0 +1,177 @@
+---
+layout: page
+title: FAQ
+bigimg: /images/faq.jpg
+---
+
+<div id="faq">
+    <div class="toc"></div>
+
+
+    <h3 id="premium">I bought the Premium version. When trying to reinstall the application Google wants me to purchase
+        the app again.</h3>
+
+
+    <p>
+        There are two different kinds of the Premium version which are completely independent from each other. On the
+        one hand side, you can obtain the Premium version within the application (so called "in-app-purchase"). On the
+        other hand side, you can obtain the Premium version directly within the Play Store. When reinstalling the
+        application, you will have to install the "right" version to get back your Premium version. If you purchased
+        Premium from within the app, you will have to install the "free" version. Google will afterwards unlock the
+        Premium version again. If you purchased the Premium version "directly" from the Play Store, just install that
+        version again.
+    </p>
+
+
+    <h3 id="favorites">How can favorites be created?</h3>
+
+    <p>Long press on a device within the room view. Click on the start within the action menu on the top of the view. To
+        remove a favorite, repeat the same procedure.</p>
+
+    <a href="{{site.baseurl}} /images/faq/favorites_add_hint.png" target="_blank"><img
+            src="{{site.baseurl}}/images/faq/favorites_add_hint.png"/></a>
+
+
+    <h3 id="xmllisterror">The application tells me that it cannot read my xmllist (or only some devices).</h3>
+
+
+    <p>AndFHEM has to use some way to extract device data from FHEM. The interface, which is used, is called <span
+            class="code">xmllist</span>. All the device data is converted to xml and written out into some document.
+        When reading this document errors may happen. This is exactly what this error is about.</p>
+
+    <p>There are two flavors of this error. Either some device types or even only devices cannot be read. AndFHEM will
+        tell you this after finishing updating the data. If you encounter this error, send a bug report to <a
+                href="mailto:andfhem@klass.li">andfhem@klass.li</a> containing the xmllist of your device. You can
+        create a xmllist by typing <span class="code">xmllist</span> as command into FHEMWEB or your telnet command line
+        instance. For getting the list of only one device, just append the device name.</p>
+
+    <p>If the application tells you that it cannot read the complete xmllist, please send the complete (anonymized)
+        xmllist output to <a href="mailto:andfhem@klass.li">andfhem@klass.li</a>. The application tries to make some of
+        the information included within the xmllist more readable, which is where some errors may happen.</p>
+
+
+    <h3 id="connectionError">The connection cannot be established. What is this about?</h3>
+
+    <p>First of all, make sure that your device can connect to FHEM. When using the telnet connection, install <a
+            href="https://market.android.com/details?id=org.connectbot">ConnectBot</a> on your device. Start the
+        application, insert telnet as connection type, insert your port and hostname and try to connect. If a connection
+        can be established, contact me. When using FHEMWEB, try to connect to the FHEM instance using your browser on
+        your phone or tablet.</p>
+
+    <p>Here are some possible causes if the connection is not working (as verified above):
+
+    <ul>
+        <li>Check your network connection. Can you connect to the Internet? Can you connect to your local router?</li>
+        <li>The telnet port within the FHEM configuration has to be defined as global to allow other devices than the
+            running machine to connect to FHEM. The attribute should look like the following:
+            <div class="code">attr global port 7072 global</div>
+    </ul>
+    </p>
+
+    <p>If the connection from your phone/tablet to your FHEM server is working (as verified above) and you still cannot
+        connect via andFHEM, make sure that all of your entered connection information within the app is correct. If
+        still, no connection can be established, contact me.</p>
+
+
+    <h3 id="fht_delay">My FHT device does not react. What can I do?</h3>
+
+
+    <p>FHT devices are pretty lazy, as the FHEM documentation <a href="http://fhem.de/commandref.html#FHT">tells</a>.
+        Consequently, it takes some time until the device actually sets the new desired temperature. If you still have
+        the feeling that nothing happens, connect to FHEM via telnet and type inform on. Afterwards change the desired
+        temperature within andFHEM. By now, telnet should now show up a new entry telling that the desired-temp value
+        has been changed.
+
+
+    <h3 id="https">How can I enable HTTPS?</h3>
+
+
+    <p>Add an additional line to your FHEM configuration file (fhem.cfg):
+    <div class="code">attr fhemweb HTTPS</div>
+    However, this does not yet work on Fritz!Boxes, as the available Perl implementation does not provide the <span
+        class="code">IO::Socket:SSL</span> module.
+
+    <p>You can install the module manually by downloading it from the <a
+            href="http://search.cpan.org/~sullr/IO-Socket-SSL-1.957/lib/IO/Socket/SSL.pm">CPAN site</a> and
+        uncompressing it to <span class="code">fhem/lib/perl5/site_perl/5.12.2/</span></p>
+
+    <h3 id="unsupported_device">My device is not supported. Can it be added to andFHEM?</h3>
+
+
+    <p>The answer is yes. However, this will take some time - and effort from your side. To get the device type added,
+        there I need some information. Open an issue on the Github page or write a mail containing the following
+        information:
+    <ul>
+        <li>Excerpt of your xmllist command <br/> (connect via telnet and enter 'xmllist'
+            OR connect to your FHEMWEB instance and enter 'xmllist')
+        </li>
+        <li>Which attributes should be viewed on the overview page? (not more than 4)</li>
+        <li>Which attributes should be viewed on the detail page?</li>
+        <li>Are there any plots? If yes, attach an excerpt of your local FileLog file for an example device.</li>
+    </ul>
+    </p>
+
+
+    <h3 id="application_crash_no_devices">After an application crash, no devices are shown!</h3>
+
+
+    <p>First of all, make sure you have reported the error! This is the only way for me to resolve the problem (and for
+        you to make sure that someone cares about the problem). To resolve the behaviour, either ...
+    <ul>
+        <li>... restart your phone (this is daunting) _or_
+        <li>... go to the application properties (System preferences -> Apps -> andFHEM) and stop the the application.
+        </li>
+    </ul>
+    </p>
+
+    <h3 id="resend">The app tells me that it cannot send a command, but after a short time interval the device still
+        switches. Why?</h3>
+
+
+    <p>AndFHEM will try to resend commands 4 times after an error has been encountered. The error has to be a timeout or
+        a general connection error. The resend will be startet for "set" and "attr" commands.</p>
+
+    <p>As resend time intervals, powers of 3 for the current try are used: <br/>
+    <table>
+        <tr>
+            <td>Initial send</td>
+            <td>0 seconds delay (synchronous)</td>
+        </tr>
+        <tr>
+            <td>1rst retry</td>
+            <td>3^0 = 1 second delay</td>
+        </tr>
+        <tr>
+            <td>2nd retry</td>
+            <td>3^1 = 3 seconds delay</td>
+        </tr>
+        <tr>
+            <td>3rd retry</td>
+            <td>3^2 = 9 seconds delay</td>
+        </tr>
+        <tr>
+            <td>4th retry</td>
+            <td>3^3 = 27 seconds delay</td>
+        </tr>
+    </table>
+    </p>
+
+    <h3 id="unexpected_behaviour">Help, the app does strange this I did not expect!</h3>
+
+
+    <p>You have probably found a new bug. Now please help me to resolve it! If the application exits, Android asks you
+        whether
+        you want to notify the developer. Please, always click <b>yes</b>. This helps me resolving the issue without you
+        having to run all through your log file to find out the appropriate error message.
+        If the application does not exit and there is still some unexpected behavior, write a mail to <a
+                href="mailto:andfhem@klass.li">andfhem@klass.li</a>.</p>
+
+    <p>The mail should cover the following topics:
+    <ul>
+        <li>Description what happened.</li>
+        <li>(optional) excerpt of your system log in relations to <span class="code">li.klass.fhem</span></li>
+        <li>(optional) your anonymized xmllist.</li>
+    </ul>
+    </p>
+
+</div>

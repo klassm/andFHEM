@@ -1,0 +1,176 @@
+---
+layout: page
+title: Installation
+bigimg: /images/installation.jpg
+---
+
+<div id="installation">
+
+    <div class="toc"></div>
+
+    <h2 id="configuring_connections">Configuring Connections</h2>
+
+
+    <p>When starting andFHEM the first time some dummy data is used for previewing what the application looks like and
+        what devices are supported. To use your own FHEM server click on the selector in the action bar. This selector
+        always contains the name of the connection that is currently used for pulling data from a FHEM server.</p>
+
+    <a href="../images/installation/connectionType.png"><img src="../images/installation/connectionType.png"/></a>
+
+    <p>After clicking the selector a submenu opens. This submenu contains all configured connections. When clicking a
+        connection name, the current connection used for pulling information from FHEM changes to that new one. When
+        selecting the bottom item, which is called "Manage" or "Verwalten", you are directed to a view where you can
+        manage your connections.</p>
+
+    <a href="../images/installation/connectionList.png"><img src="../images/installation/connectionList.png"/></a>
+
+    <p>All the configured connections are listed here. When clicking such a connection, you can edit all configured
+        connection items like URL, username or password. When clicking "Create a new connection" or "Neue Verbindung
+        erstellen", you can create a new one.</p>
+
+    <p>Changing a configuration or adding a new one always looks the same, except that you cannot change the connection
+        type when editing a connection.</p>
+
+    <table>
+        <tr>
+            <td style="vertical-align: top"><a href="../images/installation/fhemweb.png"><img
+                    src="../images/installation/fhemweb.png"/></a></td>
+            <td style="vertical-align: top"><a href="../images/installation/telnet.png"><img
+                    src="../images/installation/telnet.png"/></a></td>
+        </tr>
+    </table>
+
+    <p>Enter your credentials and click "Save" or "Speichern". When leaving the configuration view with the back key and
+        reentering the collection list selector, you can select your newly created connection.</p>
+
+    <h2 id="fhemweb">FHEMWEB</h2>
+
+
+    <p>FHEM supports some web interfaces delivered together with the server itself. One of these web interfaces is
+        FHEMWEB, which is configured by adding a line like <span class="code">define fhemweb FHEMWEB 8083 global</span>
+        to your <i>fhem.cfg</i>. Before any data within andFHEM, make sure that you can access the web interface in a
+        browser, either on your smartphone or on another computer. You should see a web page like the following:</p>
+
+    <img src="../images/installation/fhemweb_view.png"/>
+
+    <p>The same address you just entered is expected by andFHEM in the URL field within the FHEMWEB preferences.
+        Trailing slashes do not matter. The username and password fields can be filled optionally. They are required if
+        you want to authenticate yourself using basic authentication. If you do not know what this means, stop reading
+        here and leave the fields empty. </p>
+
+    <p>If you want to use the authentication feature you have to make sure that your fhem.cfg contains a line like <span
+            class="code">attr fhemweb basicAuth aj38219cnake</span>. For information how to create the string after
+        basicAuth, continue reading here. Now just enter your username and password in andFHEM.</p>
+
+    <h2 id="telnet">Telnet</h2>
+
+
+    <p>FHEM supports a very basic command line interface to query the current state of devices. Before selecting this
+        option, make sure that you can access the interface from another computer in your local network.</p>
+
+    <p>When using Windows, download Putty and start the program. Select telnet as connection option, enter the address
+        of your FHEM server and add the specified port in your FHEM configuration. The port defaults to 7072. When
+        clicking hitting the button to open the connection, a black window opens up. Hit two times enter to see the FHEM
+        prompt showing up. If this works, andFHEM is also able to connect to FHEM.</p>
+
+    <p>If not, make sure that your fhem.cfg contains a line such as the following: attr global port 7072 global. 7072 is
+        the port used for opening up the command line interface. Global specifies that computers can connect to the
+        server without connecting from the computer running the FHEM server.</p>
+
+    <p>When the above connection is successful you can enter the configuration data in andFHEM in the appropriate
+        fields. The IP field should contain something like 192.168.0.1. It is the address of the computer running the
+        FHEM server. Port is the above mentioned FHEM command line interface port, such as 7072.</p>
+
+    <h2 id="gcm">Google Cloud Messaging</h2>
+
+
+    <p>Google Cloud Messaging (GCM) enables you to send push notifications to Android handsets. This enables you to send
+        updates in nearly realtime to andFHEM (from 2.4.2 onwards).</p>
+
+    <p><b>Installation Steps:</b>
+    <ul>
+        <li>Download and install the <a href="http://svn.code.sf.net/p/fhem/code/trunk/fhem/contrib/98_gcmsend.pm">98_gcmsend.pm</a>
+            module for FHEM (copy the file to the FHEM directory, make sure that your Perl installation meets all the
+            dependencies. FHEM will tell you if it can load the module, especially when issuing <span class="code">reload 98_gcmsend</span>.
+            You can also copy the file from the <span class="code">contrib</span> directory. If doing so, don't forget
+            to modify the file permissions of <span class="code">98_gcmsend.pm</span> (the user running FHEM has to be
+            able to read the file, so change the owner using <span class="code">chown fhem 98_gcmsend.pm</span> or give
+            all users the permission to read the file using <span class="code">chmod a+r 98_gcmsend.pm</span>) <br/>
+            The module depends on two perl modules, which have to be installed to
+            <i>fhem/lib/perl5/site_perl/5.12.2/</i> (on FritzBoxes, otherwise choose your perl directory)
+            <ul>
+                <li><span class="code">LWP::Protocol::https</span> (download from <a
+                        href="http://search.cpan.org/~gaas/LWP-Protocol-https-6.04/lib/LWP/Protocol/https.pm">here</a>)
+                </li>
+                <li><span class="code">Crypt::Cipher::AES</span> (download from <a
+                        href="http://search.cpan.org/~mik/CryptX-0.040/lib/Crypt/Cipher/AES.pm">here</a>)
+                </li>
+                <li><span class="code">Mozilla::CA</span> (download from <a
+                        href="http://search.cpan.org/~abh/Mozilla-CA-20130114/lib/Mozilla/CA.pm">here</a>) <br/>
+                    <a href="../images/installation/FritzBoxHttps.png"><img
+                            src="../images/installation/FritzBoxHttps.png"/></a>
+                </li>
+            </ul>
+        </li>
+
+        <li>Create a Google GCM Account.
+            <ul>
+                <li>Go to <a target="_blank" href="https://console.firebase.google.com">https://console.firebase.google.com</a>
+                    and create a new project. <br/>
+                    <a href="../images/installation/gcm/1.png"><img src="../images/installation/gcm/1.png"/></a>
+                </li>
+                <li>Enter the required project details. <br/>
+                    <a href="../images/installation/gcm/2.png"><img src="../images/installation/gcm/2.png"/></a>
+                </li>
+                <li>Hit the gear button and jump to project settings.<br/>
+                    <a href="../images/installation/gcm/3.png"><img src="../images/installation/gcm/3.png"/></a>
+                </li>
+                <li>Select cloud messaging. This page contains our required server key ("api key") and the required
+                    sender id ("project number") <br/>
+                    <a href="../images/installation/gcm/4.png"><img src="../images/installation/gcm/4.png"/></a>
+                </li>
+            </ul>
+        </li>
+
+        <li>Now we create a GCM device. Issue <span class="code">define &lt;gcm_device_name&gt; gcmsend</span> within
+            your FHEM instance.
+        </li>
+        <li>Afterwards we need to configure the device to talk to GCM. This is why we have to issue another FHEM
+            command: <br/>
+            <span class="code">attr &lt;gcm_device_name&gt; apiKey &lt;apiKey&gt;</span><br/>
+            whereas <span class="code">&lt;gcm_device_name&gt;</span> is the name of the device you created before and
+            <span class="code">&lt;apikey&gt;</span> is the key you just created within the Google console (number 2
+            within the image).
+        </li>
+
+        <li>Link andFHEM
+            <ul>
+                <li>Enter the andFHEM settings and enter the GCM project number (from the Google console page in section
+                    "Overview") within the field "GCM Project Number".
+                </li>
+                <li>Refresh your xmllist and look for your GCMSend device you just created. Open the detail page and
+                    click the button to register your device. Internally, andFHEM will add your device as regIds
+                    attribute of your gcm device. <br/>
+                    <a href="../images/installation/gcm/gcm_app.png"><img src="../images/installation/gcm/gcm_app.png"/></a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    </p>
+
+    <h2 id="client_side_certificates">Client Side Certificates</h2>
+
+
+    <p>You can enforce your webserver to ask for a certificate. Only if the clients has access to the correct
+        certificate, the webserver will allow access to the resource (<a
+                href="http://wiki.cacert.org/ApacheServerClientCertificateAuthentication">details</a>).</p>
+
+    <p>To configure andFHEM to use those certificates, you have to copy them to your Android device. Afterwards, startup
+        the configuration screen of your FHEMWEB connection and scroll down. You will find a checkbox to enable client
+        side certificates.</p>
+
+    <p>Below that checkbox, there are two selectors for the respective certificates. The client certificate is expected
+        to be in p12 format. The server certificate relates to the CA certificate and is expected to be in PEM format.
+        Please note that only those certificate formats are supported. All other formats will fail to work in
+        combination with andFHEM.</p>
+</div>
