@@ -637,6 +637,7 @@ td.gutter {
 
 table {
   overflow-x: auto;
+  display: block;
 }
 
 @media (max-width: 991px) {
