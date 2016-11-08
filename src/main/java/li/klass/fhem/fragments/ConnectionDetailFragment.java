@@ -189,16 +189,13 @@ public class ConnectionDetailFragment extends BaseFragment {
         CheckBox showPasswordCheckbox = (CheckBox) view.findViewById(R.id.showPasswordCheckbox);
         final EditText passwordView = (EditText) view.findViewById(R.id.password);
         if (showPasswordCheckbox != null && passwordView != null) {
-            showPasswordCheckbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CheckBox radio = (CheckBox) view;
-                    boolean checked = radio.isChecked();
-                    if (checked) {
-                        passwordView.setTransformationMethod(null);
-                    } else {
-                        passwordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    }
+            showPasswordCheckbox.setOnClickListener(view12 -> {
+                CheckBox radio = (CheckBox) view12;
+                boolean checked = radio.isChecked();
+                if (checked) {
+                    passwordView.setTransformationMethod(null);
+                } else {
+                    passwordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
             });
 
@@ -208,16 +205,13 @@ public class ConnectionDetailFragment extends BaseFragment {
         CheckBox showCertificatePasswordCheckbox = (CheckBox) view.findViewById(R.id.showCertificatePasswordCheckbox);
         final EditText passwordClientCertificateView = (EditText) view.findViewById(R.id.clientCertificatePassword);
         if (showCertificatePasswordCheckbox != null && passwordClientCertificateView != null) {
-            showCertificatePasswordCheckbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CheckBox radio = (CheckBox) view;
-                    boolean checked = radio.isChecked();
-                    if (checked) {
-                        passwordClientCertificateView.setTransformationMethod(null);
-                    } else {
-                        passwordClientCertificateView.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    }
+            showCertificatePasswordCheckbox.setOnClickListener(view1 -> {
+                CheckBox radio = (CheckBox) view1;
+                boolean checked = radio.isChecked();
+                if (checked) {
+                    passwordClientCertificateView.setTransformationMethod(null);
+                } else {
+                    passwordClientCertificateView.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
             });
 
@@ -284,23 +278,15 @@ public class ConnectionDetailFragment extends BaseFragment {
 
     private void handleFHEMWEBView(View view) {
         ImageButton setClientCertificate = (ImageButton) view.findViewById(R.id.setClientCertificatePath);
-        setClientCertificate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getView() == null) return;
+        setClientCertificate.setOnClickListener(view1 -> {
+            if (getView() == null) return;
 
-                final TextView clientCertificatePath = (TextView) getView().findViewById(R.id.clientCertificatePath);
-                File initialPath = new File(clientCertificatePath.getText().toString());
+            final TextView clientCertificatePath = (TextView) getView().findViewById(R.id.clientCertificatePath);
+            File initialPath = new File(clientCertificatePath.getText().toString());
 
-                FileDialog fileDialog = new FileDialog(view.getContext(), initialPath);
-                fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
-                    @Override
-                    public void fileSelected(File file) {
-                        clientCertificatePath.setText(file.getAbsolutePath());
-                    }
-                });
-                fileDialog.showDialog();
-            }
+            FileDialog fileDialog = new FileDialog(view1.getContext(), initialPath);
+            fileDialog.addFileListener(file -> clientCertificatePath.setText(file.getAbsolutePath()));
+            fileDialog.showDialog();
         });
     }
 
@@ -433,13 +419,10 @@ public class ConnectionDetailFragment extends BaseFragment {
             // when the new view has been attached to the root view.
             // Afterwards we can continue with filling the fields with the respective values
             // of the current connection!
-            detailChangedListener = new ConnectionTypeDetailChangedListener() {
-                @Override
-                public void onChanged() {
-                    detailChangedListener = null;
+            detailChangedListener = () -> {
+                detailChangedListener = null;
 
-                    fillDetail(connection);
-                }
+                fillDetail(connection);
             };
             Spinner connectionTypeSpinner = (Spinner) view.findViewById(R.id.connectionType);
             connectionTypeSpinner.setSelection(selectionIndexFor(connection.getServerType()), true);

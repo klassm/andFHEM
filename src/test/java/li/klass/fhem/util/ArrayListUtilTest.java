@@ -30,7 +30,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static li.klass.fhem.util.ArrayListUtil.*;
+import static li.klass.fhem.util.ArrayListUtil.moveDown;
+import static li.klass.fhem.util.ArrayListUtil.moveUp;
+import static li.klass.fhem.util.ArrayListUtil.swap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -40,7 +42,7 @@ public class ArrayListUtilTest {
 
     @Before
     public void setUp() {
-        values = new ArrayList<String>(Arrays.asList("a", "b", "c", "d"));
+        values = new ArrayList<>(Arrays.asList("a", "b", "c", "d"));
     }
 
     @Test
@@ -88,13 +90,8 @@ public class ArrayListUtilTest {
 
     @Test
     public void testFilter() {
-        ArrayList<String> result = ArrayListUtil.filter(values, new Filter<String>() {
-            @Override
-            public boolean doFilter(String object) {
-                return object.equals("a");
-            }
-        });
-        assertEquals(new ArrayList<String>(Arrays.asList("a")), result);
+        ArrayList<String> result = ArrayListUtil.filter(values, object -> object.equals("a"));
+        assertEquals(new ArrayList<>(Arrays.asList("a")), result);
         assertEquals(1, result.size());
     }
 }

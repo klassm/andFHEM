@@ -66,13 +66,10 @@ public class PremiumActivity extends AppCompatActivity implements BillingService
         findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
         findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
-        findViewById(R.id.shop_premium_buy).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID);
-                billingService.requestPurchase(PremiumActivity.this,
-                        AndFHEMApplication.INAPP_PREMIUM_ID, null, PremiumActivity.this);
-            }
+        findViewById(R.id.shop_premium_buy).setOnClickListener(view -> {
+            Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID);
+            billingService.requestPurchase(PremiumActivity.this,
+                    AndFHEMApplication.INAPP_PREMIUM_ID, null, PremiumActivity.this);
         });
 
         update();

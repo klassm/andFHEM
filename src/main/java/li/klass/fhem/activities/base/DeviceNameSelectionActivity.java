@@ -45,12 +45,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
 
     private void addDeviceSelectionFragment() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
-            @Override
-            public boolean isSelectable(FhemDevice<?> device) {
-                return DeviceNameSelectionActivity.this.isSelectable(device);
-            }
-        });
+        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, (DeviceNameSelectionFragment.DeviceFilter) DeviceNameSelectionActivity.this::isSelectable);
 
         bundle.putParcelable(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override

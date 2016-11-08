@@ -130,12 +130,9 @@ public class AdvertisementService {
 
     private static void addErrorView(final Activity activity, LinearLayout container) {
         ImageView selfAd = (ImageView) activity.getLayoutInflater().inflate(R.layout.selfad, container, false);
-        selfAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, PremiumActivity.class);
-                activity.startActivity(intent);
-            }
+        selfAd.setOnClickListener(view -> {
+            Intent intent = new Intent(activity, PremiumActivity.class);
+            activity.startActivity(intent);
         });
         container.addView(selfAd);
     }

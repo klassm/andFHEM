@@ -89,24 +89,9 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
     public static final int CURRENT_DAY_TIMESPAN = -1;
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
-    public static final Function<GraphEntry, String> TO_LABEL = new Function<GraphEntry, String>() {
-        @Override
-        public String apply(GraphEntry input) {
-            return input.getFormattedTime();
-        }
-    };
-    public static final Comparator<GraphEntry> GRAPH_ENTRY_DATE_COMPARATOR = new Comparator<GraphEntry>() {
-        @Override
-        public int compare(GraphEntry lhs, GraphEntry rhs) {
-            return lhs.compareTo(rhs);
-        }
-    };
-    public static final Function<List<GraphEntry>, Iterable<GraphEntry>> GRAPH_ENTRY_LIST_IDENTITY = new Function<List<GraphEntry>, Iterable<GraphEntry>>() {
-        @Override
-        public Iterable<GraphEntry> apply(List<GraphEntry> input) {
-            return input;
-        }
-    };
+    public static final Function<GraphEntry, String> TO_LABEL = GraphEntry::getFormattedTime;
+    public static final Comparator<GraphEntry> GRAPH_ENTRY_DATE_COMPARATOR = GraphEntry::compareTo;
+    public static final Function<List<GraphEntry>, Iterable<GraphEntry>> GRAPH_ENTRY_LIST_IDENTITY = input -> input;
 
     /**
      * Current device graphs are shown for.
@@ -315,12 +300,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         LineData lineData = new LineData(xAxisLabels);
         for (Map.Entry<GPlotSeries, List<GraphEntry>> entry : graphData.entrySet()) {
             GPlotSeries series = entry.getKey();
-            ImmutableList<Entry> yEntries = from(entry.getValue()).transform(new Function<GraphEntry, Entry>() {
-                @Override
-                public Entry apply(GraphEntry input) {
-                    return new Entry(input.getValue(), xAxisLabels.indexOf(input.getFormattedTime()));
-                }
-            }).toList();
+            ImmutableList<Entry> yEntries = from(entry.getValue()).transform(input -> new Entry(input.getValue(), xAxisLabels.indexOf(input.getFormattedTime()))).toList();
 
             LineDataSet lineDataSet = new LineDataSet(yEntries, series.getTitle());
             lineDataSet.setAxisDependency(series.getAxis() == GPlotSeries.Axis.LEFT ?

@@ -27,7 +27,6 @@ package li.klass.fhem.ui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Environment;
 import android.util.Log;
 
@@ -71,17 +70,14 @@ public class FileDialog {
     private void loadFileList(File path) {
         this.currentPath = path;
 
-        Predicate<File> predicate = new Predicate<File>() {
-            @Override
-            public boolean apply(File sel) {
-                if (!sel.canRead()) {
-                    return false;
-                } else if (selectDirectoryOption) {
-                    return sel.isDirectory();
-                } else {
-                    boolean endsWith = fileEndsWith == null || sel.getName().toLowerCase(Locale.getDefault()).endsWith(fileEndsWith);
-                    return endsWith || sel.isDirectory();
-                }
+        Predicate<File> predicate = sel -> {
+            if (!sel.canRead()) {
+                return false;
+            } else if (selectDirectoryOption) {
+                return sel.isDirectory();
+            } else {
+                boolean endsWith = fileEndsWith == null || sel.getName().toLowerCase(Locale.getDefault()).endsWith(fileEndsWith);
+                return endsWith || sel.isDirectory();
             }
         };
         if (fileFilter.isPresent()) {
@@ -92,11 +88,7 @@ public class FileDialog {
         if (path.exists()) {
             if (path.getParentFile() != null) result.add(PARENT_DIR);
             final Predicate<File> finalPredicate = predicate;
-            FilenameFilter filter = new FilenameFilter() {
-                public boolean accept(File dir, String filename) {
-                    return finalPredicate.apply(new File(dir, filename));
-                }
-            };
+            FilenameFilter filter = (dir, filename) -> finalPredicate.apply(new File(dir, filename));
             String[] files = path.list(filter);
 
             if (files != null) {
@@ -114,26 +106,22 @@ public class FileDialog {
 
         builder.setTitle(currentPath.getAbsolutePath());
         if (selectDirectoryOption) {
-            builder.setPositiveButton("Select directory", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Log.d(TAG, currentPath.getPath());
-                    fireDirectorySelectedEvent(currentPath);
-                }
+            builder.setPositiveButton("Select directory", (dialog12, which) -> {
+                Log.d(TAG, currentPath.getPath());
+                fireDirectorySelectedEvent(currentPath);
             });
         }
 
-        builder.setItems(fileList, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                String fileChosen = fileList[which];
-                File chosenFile = getChosenFile(fileChosen);
-                if (chosenFile.isDirectory()) {
-                    loadFileList(chosenFile);
-                    dialog.cancel();
-                    dialog.dismiss();
-                    showDialog();
-                } else {
-                    fireFileSelectedEvent(chosenFile);
-                }
+        builder.setItems(fileList, (dialog1, which) -> {
+            String fileChosen = fileList[which];
+            File chosenFile = getChosenFile(fileChosen);
+            if (chosenFile.isDirectory()) {
+                loadFileList(chosenFile);
+                dialog1.cancel();
+                dialog1.dismiss();
+                showDialog();
+            } else {
+                fireFileSelectedEvent(chosenFile);
             }
         });
 
@@ -179,19 +167,11 @@ public class FileDialog {
     }
 
     private void fireFileSelectedEvent(final File file) {
-        fileListenerList.fireEvent(new FireHandler<FileSelectedListener>() {
-            public void fireEvent(FileSelectedListener listener) {
-                listener.fileSelected(file);
-            }
-        });
+        fileListenerList.fireEvent(listener -> listener.fileSelected(file));
     }
 
     private void fireDirectorySelectedEvent(final File directory) {
-        dirListenerList.fireEvent(new FireHandler<DirectorySelectedListener>() {
-            public void fireEvent(DirectorySelectedListener listener) {
-                listener.directorySelected(directory);
-            }
-        });
+        dirListenerList.fireEvent(listener -> listener.directorySelected(directory));
     }
 
     private File getChosenFile(String fileChosen) {

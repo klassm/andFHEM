@@ -40,12 +40,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static org.apache.commons.lang3.StringUtils.join;
 
 public abstract class BaseGroupSetListEntry extends SetListItem {
-    public static final Predicate<String> EMPTY_STATES = new Predicate<String>() {
-        @Override
-        public boolean apply(String input) {
-            return StringUtils.trimToNull(input) != null;
-        }
-    };
+    public static final Predicate<String> EMPTY_STATES = input -> StringUtils.trimToNull(input) != null;
     protected final List<String> groupStates;
 
     protected BaseGroupSetListEntry(String key, SetListItemType type, String... groupStates) {

@@ -64,21 +64,16 @@ public class StateChangingColorPickerRow {
         description.setText("");
 
 
-        setButton.setOnClickListener(new View.OnClickListener() {
+        setButton.setOnClickListener(view1 -> new RGBColorPickerDialog(context, rgb, new RGBColorPickerDialog.Callback() {
             @Override
-            public void onClick(View view) {
-                new RGBColorPickerDialog(context, rgb, new RGBColorPickerDialog.Callback() {
-                    @Override
-                    public void onColorChanged(String newRGB, Dialog dialog) {
-                        stateUiService.setSubState(xmlListDevice, rgbSetListEntry.getKey(), newRGB, context);
-                    }
-
-                    @Override
-                    public void onColorUnchanged(Dialog dialog) {
-                    }
-                }).show();
+            public void onColorChanged(String newRGB, Dialog dialog) {
+                stateUiService.setSubState(xmlListDevice, rgbSetListEntry.getKey(), newRGB, context);
             }
-        });
+
+            @Override
+            public void onColorUnchanged(Dialog dialog) {
+            }
+        }).show());
 
         return (TableRow) view;
     }

@@ -29,12 +29,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
@@ -71,27 +69,12 @@ public class ImportExportUIService {
         if (!PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return;
         }
-        new FileDialog(activity, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
-            @Override
-            public void fileSelected(File file) {
-                onImportFileSelected(file, activity);
-            }
-        }).setFileFilter(new Predicate<File>() {
-            @Override
-            public boolean apply(File input) {
-                return importExportService.isValidZipFile(input);
-            }
-        }).showDialog();
+        new FileDialog(activity, importExportService.getExportDirectory()).addFileListener(file -> onImportFileSelected(file, activity)).setFileFilter(input -> importExportService.isValidZipFile(input)).showDialog();
     }
 
     private void onImportFileSelected(final File file, final Activity activity) {
         if (importExportService.isEncryptedFile(file)) {
-            selectPasswordWith(activity, new OnBackupPasswordSelected() {
-                @Override
-                public void backupPasswordSelected(String password) {
-                    importWith(activity, file, password, activity);
-                }
-            }, R.string.importPasswordDescription);
+            selectPasswordWith(activity, password -> importWith(activity, file, password, activity), R.string.importPasswordDescription);
         } else {
             importWith(activity, file, null, activity);
         }
@@ -110,13 +93,10 @@ public class ImportExportUIService {
         @SuppressLint("InflateParams") View layout = activity.getLayoutInflater().inflate(R.layout.import_success, null);
         new AlertDialog.Builder(activity)
                 .setView(layout).setCancelable(false)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        activity.finish();
-                        activity.startActivity(activity.getIntent());
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    activity.finish();
+                    activity.startActivity(activity.getIntent());
+                    dialog.dismiss();
                 }).show();
     }
 
@@ -133,17 +113,14 @@ public class ImportExportUIService {
         if (!PermissionUtil.checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
-        selectPasswordWith(activity, new OnBackupPasswordSelected() {
-            @Override
-            public void backupPasswordSelected(String password) {
-                File file = importExportService.exportSettings(password, activity);
+        selectPasswordWith(activity, password -> {
+            File file = importExportService.exportSettings(password, activity);
 
-                @SuppressLint("InflateParams") View layout = activity.getLayoutInflater().inflate(R.layout.export_success, null);
-                ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());
-                new AlertDialog.Builder(activity)
-                        .setView(layout).setCancelable(false)
-                        .setPositiveButton(R.string.okButton, DialogUtil.DISMISSING_LISTENER).show();
-            }
+            @SuppressLint("InflateParams") View layout = activity.getLayoutInflater().inflate(R.layout.export_success, null);
+            ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());
+            new AlertDialog.Builder(activity)
+                    .setView(layout).setCancelable(false)
+                    .setPositiveButton(R.string.okButton, DialogUtil.DISMISSING_LISTENER).show();
         }, R.string.exportPasswordDescription);
     }
 
@@ -153,13 +130,10 @@ public class ImportExportUIService {
 
         new AlertDialog.Builder(activity)
                 .setView(layout).setCancelable(true)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        EditText editText = (EditText) layout.findViewById(R.id.password);
-                        passwordSelectedListener.backupPasswordSelected(Strings.emptyToNull(editText.getText().toString()));
-                    }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    dialog.dismiss();
+                    EditText editText = (EditText) layout.findViewById(R.id.password);
+                    passwordSelectedListener.backupPasswordSelected(Strings.emptyToNull(editText.getText().toString()));
                 }).show();
     }
 }

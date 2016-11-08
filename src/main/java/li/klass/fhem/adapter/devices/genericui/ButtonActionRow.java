@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -58,12 +57,7 @@ public abstract class ButtonActionRow {
 
         Button button = (Button) row.findViewById(R.id.button);
         button.setText(buttonText);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonClick();
-            }
-        });
+        button.setOnClickListener(v -> onButtonClick());
 
         return row;
     }

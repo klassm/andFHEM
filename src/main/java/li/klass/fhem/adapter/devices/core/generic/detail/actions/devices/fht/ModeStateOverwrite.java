@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -48,7 +47,6 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
-import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DatePickerUtil;
 import li.klass.fhem.util.EnumUtils;
@@ -122,49 +120,40 @@ public class ModeStateOverwrite implements StateAttributeAction {
     private void handleHolidayMode(final XmlListDevice device, final SpinnerActionRow spinnerActionRow,
                                    final Intent intent, final Context context, final ViewGroup parent, final LayoutInflater inflater) {
 
-        showMessageIfColorStateBugIsEncountered(context, new AndroidBug.MessageBugHandler() {
-            @Override
-            public void defaultAction() {
-                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        showMessageIfColorStateBugIsEncountered(context, () -> {
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
 
-                TableLayout contentView = (TableLayout) inflater.inflate(R.layout.fht_holiday_dialog, parent, false);
+            TableLayout contentView = (TableLayout) inflater.inflate(R.layout.fht_holiday_dialog, parent, false);
 
-                final DatePicker datePicker = (DatePicker) contentView.findViewById(R.id.datePicker);
-                DatePickerUtil.hideYearField(datePicker);
+            final DatePicker datePicker = (DatePicker) contentView.findViewById(R.id.datePicker);
+            DatePickerUtil.hideYearField(datePicker);
 
-                TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateRow);
+            TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateRow);
 
-                final TemperatureChangeTableRow temperatureChangeTableRow =
-                        new TemperatureChangeTableRow(context, MINIMUM_TEMPERATURE, temperatureUpdateRow,
-                                MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties);
-                contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
+            final TemperatureChangeTableRow temperatureChangeTableRow =
+                    new TemperatureChangeTableRow(context, MINIMUM_TEMPERATURE, temperatureUpdateRow,
+                            MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties);
+            contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
 
-                dialogBuilder.setView(contentView);
+            dialogBuilder.setView(contentView);
 
-                dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        spinnerActionRow.revertSelection();
-                        dialogInterface.dismiss();
-                    }
-                });
+            dialogBuilder.setNegativeButton(R.string.cancelButton, (dialogInterface, i) -> {
+                spinnerActionRow.revertSelection();
+                dialogInterface.dismiss();
+            });
 
-                dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int item) {
-                        @SuppressWarnings("unchecked") List<StateToSet> states = (List<StateToSet>) intent.getSerializableExtra(BundleExtraKeys.STATES);
-                        states.add(new StateToSet("desired-temp", "" + temperatureChangeTableRow.getTemperature()));
-                        states.add(new StateToSet("holiday1", "" + datePicker.getDayOfMonth()));
-                        states.add(new StateToSet("holiday2", "" + (datePicker.getMonth() + 1)));
-                        context.startService(intent);
+            dialogBuilder.setPositiveButton(R.string.okButton, (dialogInterface, item) -> {
+                @SuppressWarnings("unchecked") List<StateToSet> states = (List<StateToSet>) intent.getSerializableExtra(BundleExtraKeys.STATES);
+                states.add(new StateToSet("desired-temp", "" + temperatureChangeTableRow.getTemperature()));
+                states.add(new StateToSet("holiday1", "" + datePicker.getDayOfMonth()));
+                states.add(new StateToSet("holiday2", "" + (datePicker.getMonth() + 1)));
+                context.startService(intent);
 
-                        spinnerActionRow.commitSelection();
-                        dialogInterface.dismiss();
-                    }
-                });
+                spinnerActionRow.commitSelection();
+                dialogInterface.dismiss();
+            });
 
-                dialogBuilder.show();
-            }
+            dialogBuilder.show();
         });
     }
 

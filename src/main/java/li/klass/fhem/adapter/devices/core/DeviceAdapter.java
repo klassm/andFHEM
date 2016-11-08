@@ -167,12 +167,7 @@ public abstract class DeviceAdapter {
         if (svgGraphDefinition == null) return;
 
         button.setText(svgGraphDefinition.getName());
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChartingActivity.showChart(context, device, svgGraphDefinition);
-            }
-        });
+        button.setOnClickListener(view -> ChartingActivity.showChart(context, device, svgGraphDefinition));
     }
 
     public void attach(Context context) {

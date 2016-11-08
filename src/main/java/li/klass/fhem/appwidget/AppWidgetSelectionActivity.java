@@ -25,7 +25,6 @@
 package li.klass.fhem.appwidget;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -88,12 +87,9 @@ public abstract class AppWidgetSelectionActivity extends AppCompatActivity imple
         }
 
         if (applicationProperties.getStringSharedPreference(PreferenceKeys.STARTUP_PASSWORD, null, this) != null) {
-            DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password, new DialogUtil.AlertOnClickListener() {
-                @Override
-                public void onClick() {
-                    finish();
-                    setResult(RESULT_CANCELED);
-                }
+            DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password, () -> {
+                finish();
+                setResult(RESULT_CANCELED);
             });
         } else {
             setContentView(R.layout.appwidget_selection);
@@ -119,33 +115,27 @@ public abstract class AppWidgetSelectionActivity extends AppCompatActivity imple
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.widget_type_selection)
-                .setItems(widgetNames, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int position) {
-                        dialogInterface.dismiss();
+                .setItems(widgetNames, (dialogInterface, position) -> {
+                    dialogInterface.dismiss();
 
-                        WidgetType type = widgetTypes.get(position);
-                        createWidget(type, payload);
-                    }
+                    WidgetType type = widgetTypes.get(position);
+                    createWidget(type, payload);
                 }).show();
     }
 
     private void createWidget(WidgetType type, String... payload) {
-        type.createWidgetConfiguration(this, widgetId, new WidgetConfigurationCreatedCallback() {
-            @Override
-            public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
-                appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration, AppWidgetSelectionActivity.this);
+        type.createWidgetConfiguration(this, widgetId, widgetConfiguration -> {
+            appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration, AppWidgetSelectionActivity.this);
 
-                Intent intent = new Intent(Actions.REDRAW_WIDGET);
-                intent.setClass(AppWidgetSelectionActivity.this, AppWidgetUpdateService.class);
-                intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
-                startService(intent);
+            Intent intent = new Intent(Actions.REDRAW_WIDGET);
+            intent.setClass(AppWidgetSelectionActivity.this, AppWidgetUpdateService.class);
+            intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+            startService(intent);
 
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
-                setResult(RESULT_OK, resultIntent);
-                finish();
-            }
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
+            setResult(RESULT_OK, resultIntent);
+            finish();
         }, payload);
     }
 

@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,20 +61,17 @@ public class DeviceViewItemSorter {
         }
 
         final Map<String, String> fieldNameMappingRecursive = handleRecursiveMappings(fieldNameMapping);
-        Collections.sort(result, new Comparator<DeviceViewItem>() {
-            @Override
-            public int compare(DeviceViewItem lhs, DeviceViewItem rhs) {
-                String lhsName = lhs.getSortKey().toLowerCase(Locale.getDefault());
-                String rhsName = rhs.getSortKey().toLowerCase(Locale.getDefault());
+        Collections.sort(result, (lhs, rhs) -> {
+            String lhsName = lhs.getSortKey().toLowerCase(Locale.getDefault());
+            String rhsName = rhs.getSortKey().toLowerCase(Locale.getDefault());
 
-                if (fieldNameMappingRecursive.containsKey(lhsName)) {
-                    lhsName = fieldNameMappingRecursive.get(lhsName);
-                }
-                if (fieldNameMappingRecursive.containsKey(rhsName)) {
-                    rhsName = fieldNameMappingRecursive.get(rhsName);
-                }
-                return lhsName.compareTo(rhsName);
+            if (fieldNameMappingRecursive.containsKey(lhsName)) {
+                lhsName = fieldNameMappingRecursive.get(lhsName);
             }
+            if (fieldNameMappingRecursive.containsKey(rhsName)) {
+                rhsName = fieldNameMappingRecursive.get(rhsName);
+            }
+            return lhsName.compareTo(rhsName);
         });
 
         return result;

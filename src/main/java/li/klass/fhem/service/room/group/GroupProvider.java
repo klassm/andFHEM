@@ -47,12 +47,7 @@ import static li.klass.fhem.behavior.dim.DimmableBehavior.isDimDisabled;
 
 @Singleton
 public class GroupProvider {
-    private static final Function<DeviceGroupProvider, String> TO_KEY = new Function<DeviceGroupProvider, String>() {
-        @Override
-        public String apply(DeviceGroupProvider input) {
-            return input.getDeviceType();
-        }
-    };
+    private static final Function<DeviceGroupProvider, String> TO_KEY = DeviceGroupProvider::getDeviceType;
     private Map<String, DeviceGroupProvider> providerMap;
 
     @Inject

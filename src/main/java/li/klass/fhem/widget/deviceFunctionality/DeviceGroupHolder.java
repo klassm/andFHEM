@@ -32,7 +32,6 @@ import org.apache.pig.impl.util.ObjectSerializer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -88,12 +87,7 @@ public class DeviceGroupHolder {
 
         ArrayList<DeviceFunctionality> functionalityList = new ArrayList<>(
                 Arrays.asList(DeviceFunctionality.values()));
-        Collections.sort(functionalityList, new Comparator<DeviceFunctionality>() {
-            @Override
-            public int compare(DeviceFunctionality me, DeviceFunctionality other) {
-                return me.getCaptionText(context).compareTo(other.getCaptionText(context));
-            }
-        });
+        Collections.sort(functionalityList, (me, other) -> me.getCaptionText(context).compareTo(other.getCaptionText(context)));
 
         return functionalityList;
     }
@@ -108,7 +102,7 @@ public class DeviceGroupHolder {
     private List<DeviceFunctionality> loadInvisibleDeviceTypes(Context context) {
         String persistedValue = applicationProperties
                 .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null, context);
-        return parsePersistedValue(persistedValue, new ArrayList<DeviceFunctionality>());
+        return parsePersistedValue(persistedValue, new ArrayList<>());
     }
 
     private List<DeviceFunctionality> parsePersistedValue(String persistedValue,

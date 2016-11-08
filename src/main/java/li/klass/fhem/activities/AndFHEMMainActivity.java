@@ -118,58 +118,55 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         @Override
         public void onReceive(Context context, final Intent intent) {
             if (!saveInstanceStateCalled) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            String action = intent.getAction();
-                            if (action == null) return;
+                runOnUiThread(() -> {
+                    try {
+                        String action = intent.getAction();
+                        if (action == null) return;
 
-                            if (SHOW_FRAGMENT.equals(action)) {
-                                Bundle bundle = intent.getExtras();
-                                if (bundle == null)
-                                    throw new IllegalArgumentException("need a content fragment");
-                                FragmentType fragmentType;
-                                if (bundle.containsKey(FRAGMENT)) {
-                                    fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
-                                } else {
-                                    String fragmentName = bundle.getString(FRAGMENT_NAME);
-                                    fragmentType = getFragmentFor(fragmentName);
-                                }
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                switchToFragment(fragmentType, intent.getExtras());
-                            } else if (action.equals(DO_UPDATE)) {
-                                updateShowRefreshProgressIcon();
-                                refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false));
-                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                                updateShowRefreshProgressIcon();
-                                refreshLayout.setRefreshing(true);
-                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                                updateShowRefreshProgressIcon();
-                                refreshLayout.setRefreshing(false);
-                            } else if (action.equals(SHOW_TOAST)) {
-                                String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
-                                if (content == null) {
-                                    content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
-                                }
-                                Toast.makeText(AndFHEMMainActivity.this, content, Toast.LENGTH_SHORT).show();
-                            } else if (action.equals(SHOW_ALERT)) {
-                                DialogUtil.showAlertDialog(AndFHEMMainActivity.this,
-                                        intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
-                                        intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
-                            } else if (action.equals(BACK)) {
-                                onBackPressed();
-                            } else if (CONNECTIONS_CHANGED.equals(action)) {
-                                if (availableConnectionDataAdapter != null) {
-                                    availableConnectionDataAdapter.doLoad();
-                                }
-                            } else if (REDRAW.equals(action)) {
-                                redrawContent();
+                        if (SHOW_FRAGMENT.equals(action)) {
+                            Bundle bundle = intent.getExtras();
+                            if (bundle == null)
+                                throw new IllegalArgumentException("need a content fragment");
+                            FragmentType fragmentType;
+                            if (bundle.containsKey(FRAGMENT)) {
+                                fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
+                            } else {
+                                String fragmentName = bundle.getString(FRAGMENT_NAME);
+                                fragmentType = getFragmentFor(fragmentName);
                             }
-                        } catch (Exception e) {
-                            Log.e(TAG, "exception occurred while receiving broadcast", e);
-                            Log.e(TAG, "exception occurred while receiving broadcast", e);
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                            switchToFragment(fragmentType, intent.getExtras());
+                        } else if (action.equals(DO_UPDATE)) {
+                            updateShowRefreshProgressIcon();
+                            refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false));
+                        } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                            updateShowRefreshProgressIcon();
+                            refreshLayout.setRefreshing(true);
+                        } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                            updateShowRefreshProgressIcon();
+                            refreshLayout.setRefreshing(false);
+                        } else if (action.equals(SHOW_TOAST)) {
+                            String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
+                            if (content == null) {
+                                content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
+                            }
+                            Toast.makeText(AndFHEMMainActivity.this, content, Toast.LENGTH_SHORT).show();
+                        } else if (action.equals(SHOW_ALERT)) {
+                            DialogUtil.showAlertDialog(AndFHEMMainActivity.this,
+                                    intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
+                                    intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
+                        } else if (action.equals(BACK)) {
+                            onBackPressed();
+                        } else if (CONNECTIONS_CHANGED.equals(action)) {
+                            if (availableConnectionDataAdapter != null) {
+                                availableConnectionDataAdapter.doLoad();
+                            }
+                        } else if (REDRAW.equals(action)) {
+                            redrawContent();
                         }
+                    } catch (Exception e) {
+                        Log.e(TAG, "exception occurred while receiving broadcast", e);
+                        Log.e(TAG, "exception occurred while receiving broadcast", e);
                     }
                 });
             }
@@ -376,13 +373,9 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         }
 
         initConnectionSpinner(navigationView.getHeaderView(0).findViewById(R.id.connection_spinner),
-                new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                            drawerLayout.closeDrawer(GravityCompat.START);
-                        }
+                () -> {
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(GravityCompat.START);
                     }
                 });
 
@@ -517,12 +510,9 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     private void handleOpenIntent() {
         final Optional<FragmentType> intentFragment = getFragmentTypeFromStartupIntent();
         if (intentFragment.isPresent()) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    switchToFragment(intentFragment.get(), getIntent().getExtras());
-                    setIntent(null);
-                }
+            new Handler().postDelayed(() -> {
+                switchToFragment(intentFragment.get(), getIntent().getExtras());
+                setIntent(null);
             }, 500);
         }
     }
@@ -556,20 +546,17 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     private void handleTimerUpdates() {
         // We post this delayed, as otherwise we will block the application startup (causing
         // ugly ANRs).
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY,
-                        "-1", AndFHEMMainActivity.this));
+        new Handler().post(() -> {
+            int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY,
+                    "-1", AndFHEMMainActivity.this));
 
-                if (timer == null && updateInterval != -1) {
-                    timer = new Timer();
-                }
+            if (timer == null && updateInterval != -1) {
+                timer = new Timer();
+            }
 
-                if (updateInterval != -1) {
-                    timer.scheduleAtFixedRate(new UpdateTimerTask(AndFHEMMainActivity.this), updateInterval, updateInterval);
-                    Log.i(TAG, "handleTimerUpdates() : scheduling update every " + (updateInterval / 1000 / 60) + "min");
-                }
+            if (updateInterval != -1) {
+                timer.scheduleAtFixedRate(new UpdateTimerTask(AndFHEMMainActivity.this), updateInterval, updateInterval);
+                Log.i(TAG, "handleTimerUpdates() : scheduling update every " + (updateInterval / 1000 / 60) + "min");
             }
         });
     }

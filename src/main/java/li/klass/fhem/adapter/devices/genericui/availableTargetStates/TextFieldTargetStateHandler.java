@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.EditText;
 
 import li.klass.fhem.R;
@@ -47,19 +46,13 @@ public class TextFieldTargetStateHandler<D extends FhemDevice<?>> implements Set
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
                 .setView(editText)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onNothingSelected(device);
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    callback.onNothingSelected(device);
+                    dialog.dismiss();
                 })
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onSubStateSelected(device, entry.getKey(), editText.getText().toString());
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    callback.onSubStateSelected(device, entry.getKey(), editText.getText().toString());
+                    dialog.dismiss();
                 })
                 .show();
     }

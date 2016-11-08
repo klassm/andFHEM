@@ -27,7 +27,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
@@ -59,21 +58,11 @@ public class GridViewWithSections extends GridView {
     }
 
     public void setOnLongClickListener(final OnClickListener listener) {
-        setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return performParentChildItemClick(view, position, listener);
-            }
-        });
+        setOnItemLongClickListener((parent, view, position, id) -> performParentChildItemClick(view, position, listener));
     }
 
     public void setOnClickListener(final OnClickListener listener) {
-        setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                performParentChildItemClick(view, position, listener);
-            }
-        });
+        setOnItemClickListener((parent, view, position, id) -> performParentChildItemClick(view, position, listener));
     }
 
     @Override

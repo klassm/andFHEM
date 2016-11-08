@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.TimePicker;
 
 import org.apache.commons.lang3.StringUtils;
@@ -54,20 +53,14 @@ public class TimeTargetStateHandler<D extends FhemDevice<?>> implements SetListT
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
                 .setView(timePicker)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onNothingSelected(device);
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    callback.onNothingSelected(device);
+                    dialog.dismiss();
                 })
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String hourOut = StringUtils.leftPad("" + timePicker.getCurrentHour(), 2, '0');
-                        String minuteOut = StringUtils.leftPad("" + timePicker.getCurrentMinute(), 2, '0');
-                        callback.onSubStateSelected(device, entry.getKey(), hourOut + ":" + minuteOut);
-                    }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    String hourOut = StringUtils.leftPad("" + timePicker.getCurrentHour(), 2, '0');
+                    String minuteOut = StringUtils.leftPad("" + timePicker.getCurrentMinute(), 2, '0');
+                    callback.onSubStateSelected(device, entry.getKey(), hourOut + ":" + minuteOut);
                 })
                 .show();
     }

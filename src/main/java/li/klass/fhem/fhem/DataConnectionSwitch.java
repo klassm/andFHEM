@@ -63,10 +63,10 @@ public class DataConnectionSwitch {
     }
 
     public FHEMConnection getProviderFor(Context context) {
-        return getProviderFor(context, Optional.<String>absent()).get();
+        return getProviderFor(context, Optional.absent()).get();
     }
 
     public boolean isDummyDataActive(Context context) {
-        return getSpecFor(context, Optional.<String>absent()) instanceof DummyServerSpec;
+        return getSpecFor(context, Optional.absent()) instanceof DummyServerSpec;
     }
 }

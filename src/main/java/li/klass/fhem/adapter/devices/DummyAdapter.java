@@ -28,7 +28,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -72,17 +71,14 @@ public class DummyAdapter extends DimmableAdapter {
                     @Override
                     protected void onButtonClick() {
                         Calendar now = Calendar.getInstance();
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                String hourOut = "" + hourOfDay;
-                                if (hourOfDay < 10) hourOut = "0" + hourOut;
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute) -> {
+                            String hourOut = "" + hourOfDay;
+                            if (hourOfDay < 10) hourOut = "0" + hourOut;
 
-                                String minuteOut = "" + minute;
-                                if (minute < 10) minuteOut = "0" + minuteOut;
+                            String minuteOut = "" + minute;
+                            if (minute < 10) minuteOut = "0" + minuteOut;
 
-                                stateUiService.setState(device, hourOut + ":" + minuteOut, context);
-                            }
+                            stateUiService.setState(device, hourOut + ":" + minuteOut, context);
                         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
                     }

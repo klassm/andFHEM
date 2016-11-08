@@ -38,7 +38,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 
@@ -170,32 +169,17 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     @NonNull
     private Function<ActionCardAction, View> toDetailActionView(final GenericDevice genericDevice, final LinearLayout linearLayout) {
-        return new Function<ActionCardAction, View>() {
-            @Override
-            public View apply(ActionCardAction input) {
-                return input.createView(genericDevice.getXmlListDevice(), getContext(), getInflater(), linearLayout);
-            }
-        };
+        return input -> input.createView(genericDevice.getXmlListDevice(), getContext(), getInflater(), linearLayout);
     }
 
     @NonNull
     private Function<GenericDetailActionProvider, Iterable<ActionCardAction>> actionProviderToActions() {
-        return new Function<GenericDetailActionProvider, Iterable<ActionCardAction>>() {
-            @Override
-            public Iterable<ActionCardAction> apply(GenericDetailActionProvider input) {
-                return input.actionsFor(getContext());
-            }
-        };
+        return input -> input.actionsFor(getContext());
     }
 
     @NonNull
     private Predicate<GenericDetailActionProvider> unsupportedDetailActions(final GenericDevice genericDevice) {
-        return new Predicate<GenericDetailActionProvider>() {
-            @Override
-            public boolean apply(GenericDetailActionProvider input) {
-                return input.supports(genericDevice.getXmlListDevice());
-            }
-        };
+        return input -> input.supports(genericDevice.getXmlListDevice());
     }
 
     private void fillPlotsCard(final GenericDevice device, LinearLayout linearLayout) {
@@ -209,12 +193,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         for (final SvgGraphDefinition svgGraphDefinition : device.getSvgGraphDefinitions()) {
             Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
             button.setText(svgGraphDefinition.getName());
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ChartingActivity.showChart(getContext(), device, svgGraphDefinition);
-                }
-            });
+            button.setOnClickListener(view -> ChartingActivity.showChart(getContext(), device, svgGraphDefinition));
             graphLayout.addView(button);
         }
     }
@@ -224,11 +203,11 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private void fillAttributesCard(final GenericDevice device, LinearLayout linearLayout) {
-        fillCard(device, linearLayout, R.id.attributesCard, R.string.detailAttributesSection, new AttributeItemProvider(), Collections.<GenericDetailActionProvider>emptyList());
+        fillCard(device, linearLayout, R.id.attributesCard, R.string.detailAttributesSection, new AttributeItemProvider(), Collections.emptyList());
     }
 
     private void fillInternalsCard(final GenericDevice device, LinearLayout linearLayout) {
-        fillCard(device, linearLayout, R.id.internalsCard, R.string.detailInternalsSection, new InternalsItemProvider(), Collections.<GenericDetailActionProvider>emptyList());
+        fillCard(device, linearLayout, R.id.internalsCard, R.string.detailInternalsSection, new InternalsItemProvider(), Collections.emptyList());
     }
 
     private void fillCard(final GenericDevice device, LinearLayout linearLayout, int cardId, int caption, final ItemProvider itemProvider, final List<GenericDetailActionProvider> providers) {
@@ -252,12 +231,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
         final Button button = (Button) card.findViewById(R.id.expandButton);
         button.setVisibility(showExpandButton ? View.VISIBLE : View.GONE);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fillTable(device, table, getSortedClassItems(device, itemProvider, true), providers);
-                button.setVisibility(View.GONE);
-            }
+        button.setOnClickListener(v -> {
+            fillTable(device, table, getSortedClassItems(device, itemProvider, true), providers);
+            button.setVisibility(View.GONE);
         });
 
         if (itemsToShow.isEmpty()) {
@@ -285,14 +261,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     private void addActionIfRequired(GenericDevice device, TableLayout table, final DeviceViewItem item, TableRow row, List<GenericDetailActionProvider> providers) {
         List<StateAttributeAction> attributeActions = from(providers)
-                .transform(new Function<GenericDetailActionProvider, Optional<StateAttributeAction>>() {
-                    @Override
-                    public Optional<StateAttributeAction> apply(GenericDetailActionProvider input) {
-                        return input.stateAttributeActionFor(item);
-                    }
-                })
+                .transform(input -> input.stateAttributeActionFor(item))
                 .filter(Optionals.PRESENT)
-                .transform(Optionals.<StateAttributeAction>get()).toList();
+                .transform(Optionals.get()).toList();
 
         if (!attributeActions.isEmpty()) {
             for (StateAttributeAction action : attributeActions) {

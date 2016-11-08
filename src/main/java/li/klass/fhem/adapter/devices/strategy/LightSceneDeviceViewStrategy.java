@@ -90,12 +90,7 @@ public class LightSceneDeviceViewStrategy extends ViewStrategy {
 
     private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button, final Context context) {
         button.setText(scene);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activateScene(device, scene, context);
-            }
-        });
+        button.setOnClickListener(view -> activateScene(device, scene, context));
     }
 
     private void activateScene(FhemDevice device, String scene, Context context) {

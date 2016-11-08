@@ -95,18 +95,15 @@ public class ConnectionService {
                        final String clientCertificatePath, final String clientCertificatePassword, final Context context) {
         if (exists(name, context)) return;
 
-        licenseIntentService.isPremium(new LicenseService.IsPremiumListener() {
-            @Override
-            public void isPremium(boolean isPremium) {
-                if (isPremium || getCountWithoutDummy(context) < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+        licenseIntentService.isPremium(isPremium -> {
+            if (isPremium || getCountWithoutDummy(context) < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-                    FHEMServerSpec server = new FHEMServerSpec(newUniqueId(context));
+                FHEMServerSpec server = new FHEMServerSpec(newUniqueId(context));
 
-                    fillServerWith(name, server, serverType, username, password, ip, port, url, alternateUrl,
-                            clientCertificatePath, clientCertificatePassword);
+                fillServerWith(name, server, serverType, username, password, ip, port, url, alternateUrl,
+                        clientCertificatePath, clientCertificatePassword);
 
-                    saveToPreferences(server, context);
-                }
+                saveToPreferences(server, context);
             }
         });
 
@@ -239,7 +236,7 @@ public class ConnectionService {
     }
 
     public FHEMServerSpec getCurrentServer(Context context) {
-        return getServerFor(context, Optional.<String>absent());
+        return getServerFor(context, Optional.absent());
     }
 
     public FHEMServerSpec getServerFor(Context context, Optional<String> id) {

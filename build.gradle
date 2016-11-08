@@ -35,11 +35,11 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
 
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'de.mobilej.unmock:UnMockPlugin:0.3.6'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1'
     }
 }
 
@@ -53,11 +53,11 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'co.riiid.gradle'
+apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '24.0.3'
     testBuildType 'debug'
 
@@ -68,24 +68,31 @@ android {
     }
 
     dexOptions {
-        incremental true
         javaMaxHeapSize "2048M"
     }
 
     defaultConfig {
-        targetSdkVersion 24
+        targetSdkVersion 25
         minSdkVersion 11
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         versionCode appVersionCode
         versionName appVersionName
+
+        jackOptions {
+            enabled true
+            additionalParameters("jack.dex.output.policy": "multidex")
+            additionalParameters("jack.preprocessor": "true")
+            additionalParameters("jack.preprocessor.file": "legacyMultidexInstallation.jpp")
+            additionalParameters("jack.dex.output.multidex.legacy": "true")
+        }
     }
 
     compileOptions {
         encoding 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -169,7 +176,7 @@ project.gradle.taskGraph.whenReady {
 }
 
 ext {
-    supportLibVersion = '24.2.1'
+    supportLibVersion = '25.0.0'
     buildProperties = getBuildProperties()
 }
 
@@ -209,7 +216,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.google.guava:guava:19.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    apt 'com.google.dagger:dagger-compiler:2.7'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.7'
     compile 'com.google.dagger:dagger:2.7'
     compile 'javax.annotation:javax.annotation-api:1.2'
 
@@ -309,7 +316,7 @@ android.applicationVariants.all { variant ->
         source = variant.javaCompile.source
         ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
         classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
-        options.links("http://docs.oracle.com/javase/7/docs/api/");
+        options.links("http://docs.oracle.com/javase/8/docs/api/");
         options.links("http://d.android.com/reference/");
         failOnError false
     }

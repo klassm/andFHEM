@@ -26,7 +26,6 @@ package li.klass.fhem.widget.notification;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -84,22 +83,14 @@ public class NotificationSettingView {
 
         new AlertDialog.Builder(context)
                 .setTitle(deviceName)
-                .setSingleChoiceItems(descriptions, selected, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        context.startService(new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE)
-                                .setClass(context, NotificationIntentService.class)
-                                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                                .putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, VALUES[which]));
-                        dialog.dismiss();
-                    }
+                .setSingleChoiceItems(descriptions, selected, (dialog, which) -> {
+                    context.startService(new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE)
+                            .setClass(context, NotificationIntentService.class)
+                            .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                            .putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, VALUES[which]));
+                    dialog.dismiss();
                 })
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancelButton, (dialog, whichButton) -> dialog.dismiss())
                 .show();
     }
 }

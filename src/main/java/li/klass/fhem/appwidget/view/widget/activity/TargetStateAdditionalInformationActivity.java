@@ -27,7 +27,6 @@ package li.klass.fhem.appwidget.view.widget.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,24 +70,16 @@ public class TargetStateAdditionalInformationActivity extends Activity {
 
 
         Button okButton = (Button) findViewById(R.id.okButton);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String content = additionalInfoView.getText().toString();
-                if (handleAdditionalInformationValue(content, additionalInformationType,
-                        targetState, deviceName)) {
-                    finish();
-                }
+        okButton.setOnClickListener(view -> {
+            String content = additionalInfoView.getText().toString();
+            if (handleAdditionalInformationValue(content, additionalInformationType,
+                    targetState, deviceName)) {
+                finish();
             }
         });
 
         Button cancelButton = (Button) findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        cancelButton.setOnClickListener(view -> finish());
     }
 
     private boolean handleAdditionalInformationValue(String additionalInformation,

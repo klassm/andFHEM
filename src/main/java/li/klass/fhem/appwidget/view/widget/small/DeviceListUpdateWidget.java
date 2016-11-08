@@ -45,7 +45,7 @@ import static li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE;
 public class DeviceListUpdateWidget extends OtherAppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId, WidgetConfigurationCreatedCallback callback, String... payload) {
-        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, Optional.<String>absent(), ImmutableList.copyOf(payload)));
+        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, Optional.absent(), ImmutableList.copyOf(payload)));
     }
 
     @Override

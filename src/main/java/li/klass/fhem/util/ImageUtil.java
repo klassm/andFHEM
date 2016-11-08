@@ -51,12 +51,7 @@ public class ImageUtil {
     private static long lastFail = 0;
 
     public static void setExternalImageIn(final ImageView imageView, final String imageURL) {
-        loadImageFrom(imageURL, new ImageLoadedListener() {
-            @Override
-            public void imageLoaded(Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
-            }
-        });
+        loadImageFrom(imageURL, imageView::setImageBitmap);
     }
 
     public static void loadImageFrom(final String imageURL, final ImageLoadedListener callback) {
@@ -74,12 +69,7 @@ public class ImageUtil {
                 // We cannot be sure which one is chosen, so we enforce the right UI thread by using an explicit
                 // handler.
                 // see http://stackoverflow.com/questions/10426120/android-got-calledfromwrongthreadexception-in-onpostexecute-how-could-it-be
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.imageLoaded(bitmap);
-                    }
-                });
+                handler.post(() -> callback.imageLoaded(bitmap));
             }
         }.execute(null, null);
     }

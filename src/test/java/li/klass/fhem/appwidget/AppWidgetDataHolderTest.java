@@ -130,7 +130,7 @@ public class AppWidgetDataHolderTest {
     @Test
     public void should_return_WidgetConfiguration() {
         // given
-        WidgetConfiguration widgetConfiguration = new WidgetConfiguration(1, WidgetType.UPDATE_WIDGET, Optional.<String>absent(), Collections.<String>emptyList());
+        WidgetConfiguration widgetConfiguration = new WidgetConfiguration(1, WidgetType.UPDATE_WIDGET, Optional.absent(), Collections.emptyList());
         given(sharedPreferences.getString("1", null)).willReturn(widgetConfiguration.toSaveString());
 
         // when
@@ -144,7 +144,7 @@ public class AppWidgetDataHolderTest {
     @Test
     public void should_save_WidgetConfiguration_to_preferences() {
         // given
-        WidgetConfiguration widgetConfiguration = new WidgetConfiguration(123, WidgetType.UPDATE_WIDGET, Optional.<String>absent(), Collections.<String>emptyList());
+        WidgetConfiguration widgetConfiguration = new WidgetConfiguration(123, WidgetType.UPDATE_WIDGET, Optional.absent(), Collections.emptyList());
 
         // when
         holder.saveWidgetConfigurationToPreferences(widgetConfiguration, context);

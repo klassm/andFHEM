@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 
 import java.util.Set;
@@ -38,7 +37,6 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
@@ -82,12 +80,7 @@ public class FavoritesService {
     }
 
     public Set<String> getPreferenceNames(Context context) {
-        return from(connectionService.listAll(context)).transform(new Function<FHEMServerSpec, String>() {
-            @Override
-            public String apply(FHEMServerSpec input) {
-                return preferenceNameFor(input.getId());
-            }
-        }).toSet();
+        return from(connectionService.listAll(context)).transform(input -> preferenceNameFor(input.getId())).toSet();
     }
 
     @NonNull
@@ -111,7 +104,7 @@ public class FavoritesService {
      * @return favorite {@link RoomDeviceList}
      */
     public RoomDeviceList getFavorites(Context context) {
-        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(Optional.<String>absent(), context);
+        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(Optional.absent(), context);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
         favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());

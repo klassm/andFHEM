@@ -26,8 +26,6 @@ package li.klass.fhem.appwidget.view;
 
 import android.content.Context;
 
-import com.google.common.base.Predicate;
-
 import java.util.List;
 
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
@@ -90,34 +88,19 @@ public enum WidgetType {
     }
 
     public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final FhemDevice<?> device) {
-        return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
-            @Override
-            public boolean apply(WidgetType widgetType) {
-                return widgetType.widgetSize == size &&
-                        widgetType.widgetView instanceof DeviceAppWidgetView &&
-                        ((DeviceAppWidgetView) widgetType.widgetView).supports(device);
-            }
-        }));
+        return newArrayList(filter(newArrayList(WidgetType.values()), widgetType -> widgetType.widgetSize == size &&
+                widgetType.widgetView instanceof DeviceAppWidgetView &&
+                ((DeviceAppWidgetView) widgetType.widgetView).supports(device)));
     }
 
     public static List<WidgetType> getSupportedRoomWidgetsFor(final WidgetSize size) {
-        return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
-            @Override
-            public boolean apply(WidgetType widgetType) {
-                return widgetType.widgetSize == size &&
-                        widgetType.widgetView instanceof RoomAppWidgetView;
-            }
-        }));
+        return newArrayList(filter(newArrayList(WidgetType.values()), widgetType -> widgetType.widgetSize == size &&
+                widgetType.widgetView instanceof RoomAppWidgetView));
     }
 
     public static List<WidgetType> getOtherWidgetsFor(final WidgetSize size) {
-        return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
-            @Override
-            public boolean apply(WidgetType widgetType) {
-                return widgetType.widgetSize == size &&
-                        widgetType.widgetView instanceof OtherAppWidgetView;
-            }
-        }));
+        return newArrayList(filter(newArrayList(WidgetType.values()), widgetType -> widgetType.widgetSize == size &&
+                widgetType.widgetView instanceof OtherAppWidgetView));
     }
 
     public void createWidgetConfiguration(Context context, int appWidgetId,

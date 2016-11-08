@@ -31,24 +31,9 @@ import li.klass.fhem.fhem.TelnetConnection;
 import li.klass.fhem.util.ApplicationProperties;
 
 public enum ServerType {
-    DUMMY(new ConnectionProvider() {
-        @Override
-        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-            return new DummyDataConnection(fhemServerSpec, applicationProperties);
-        }
-    }),
-    FHEMWEB(new ConnectionProvider() {
-        @Override
-        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-            return new FHEMWEBConnection(fhemServerSpec, applicationProperties);
-        }
-    }),
-    TELNET(new ConnectionProvider() {
-        @Override
-        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-            return new TelnetConnection(fhemServerSpec, applicationProperties);
-        }
-    });
+    DUMMY(DummyDataConnection::new),
+    FHEMWEB(FHEMWEBConnection::new),
+    TELNET(TelnetConnection::new);
 
     private final ConnectionProvider provider;
 

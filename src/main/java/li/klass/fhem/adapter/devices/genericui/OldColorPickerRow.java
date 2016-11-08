@@ -66,12 +66,7 @@ public class OldColorPickerRow implements ColorPickerListener {
         description.setText("");
 
 
-        setButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showColorPicker(inflater, context, colorValueView);
-            }
-        });
+        setButton.setOnClickListener(view1 -> showColorPicker(inflater, context, colorValueView));
 
         return (TableRow) view;
     }
@@ -85,26 +80,20 @@ public class OldColorPickerRow implements ColorPickerListener {
 
         final ColorPicker picker = (ColorPicker) contentView.findViewById(R.id.colorPicker);
         picker.setColor(value);
-        picker.setListener(new ColorPickerListener() {
-            @Override
-            public void onColorChange(int color) {
-                if (!sendEachChangeCheckbox.isChecked()) return;
+        picker.setListener(color -> {
+            if (!sendEachChangeCheckbox.isChecked()) return;
 
-                // remove alpha channel first!
-                OldColorPickerRow.this.onColorChange(color & 0x00FFFFFF);
-            }
+            // remove alpha channel first!
+            OldColorPickerRow.this.onColorChange(color & 0x00FFFFFF);
         });
 
         String title = context.getString(alertDialogTitle);
-        DialogUtil.showContentDialog(context, title, contentView, new DialogUtil.AlertOnClickListener() {
-            @Override
-            public void onClick() {
-                value = picker.getColor();
-                colorValueView.setBackgroundColor(value);
+        DialogUtil.showContentDialog(context, title, contentView, () -> {
+            value = picker.getColor();
+            colorValueView.setBackgroundColor(value);
 
-                if (originalValue != value) {
-                    onColorChange(value & 0x00FFFFFF);
-                }
+            if (originalValue != value) {
+                onColorChange(value & 0x00FFFFFF);
             }
         });
     }

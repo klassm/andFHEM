@@ -179,7 +179,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e) {
         setErrorInErrorHolderFor(e, url, urlSuffix);
-        return handleRetryIfRequired(isRetry, new RequestResult<InputStream>(HOST_CONNECTION_ERROR), urlSuffix);
+        return handleRetryIfRequired(isRetry, new RequestResult<>(HOST_CONNECTION_ERROR), urlSuffix);
     }
 
     private RequestResult<InputStream> handleRetryIfRequired(boolean isCurrentRequestRetry, RequestResult<InputStream> previousResult,

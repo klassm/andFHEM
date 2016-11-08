@@ -26,7 +26,6 @@ package li.klass.fhem.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,7 +38,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,33 +74,23 @@ public class SendCommandFragment extends BaseFragment {
 
         final View view = inflater.inflate(R.layout.command_execution, container, false);
         Button sendButton = (Button) view.findViewById(R.id.send);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View button) {
-                EditText editText = (EditText) view.findViewById(R.id.input);
-                String command = editText.getText().toString();
+        sendButton.setOnClickListener(button -> {
+            EditText editText = (EditText) view.findViewById(R.id.input);
+            String command = editText.getText().toString();
 
-                sendCommandIntent(command);
-            }
+            sendCommandIntent(command);
         });
 
         final ListView recentCommandsList = (ListView) view.findViewById(R.id.command_history);
         recentCommandsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         recentCommandsList.setAdapter(recentCommandsAdapter);
-        recentCommandsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String command = recentCommands.get(position);
-                sendCommandIntent(command);
-            }
+        recentCommandsList.setOnItemClickListener((adapterView, view12, position, id) -> {
+            String command = recentCommands.get(position);
+            sendCommandIntent(command);
         });
-        recentCommandsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showContextMenuFor(recentCommands.get(position));
-                return true;
-            }
+        recentCommandsList.setOnItemLongClickListener((parent, view1, position, id) -> {
+            showContextMenuFor(recentCommands.get(position));
+            return true;
         });
 
         return view;
@@ -132,12 +120,9 @@ public class SendCommandFragment extends BaseFragment {
                             new AlertDialog.Builder(context)
                                     .setTitle(R.string.command_execution_result)
                                     .setMessage(result)
-                                    .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.cancel();
-                                            update(false);
-                                        }
+                                    .setPositiveButton(R.string.okButton, (dialogInterface, i) -> {
+                                        dialogInterface.cancel();
+                                        update(false);
                                     }).show();
                         }
                     }
@@ -197,16 +182,11 @@ public class SendCommandFragment extends BaseFragment {
                                 .setClass(getContext(), SendCommandIntentService.class));
                         break;
                     case R.id.menu_edit:
-                        DialogUtil.showInputBox(getContext(), getString(R.string.context_edit), command, new DialogUtil.InputDialogListener() {
-                            @Override
-                            public void onClick(String text) {
-                                getContext().startService(new Intent(Actions.RECENT_COMMAND_EDIT)
-                                        .putExtra(BundleExtraKeys.COMMAND, command)
-                                        .putExtra(BundleExtraKeys.COMMAND_NEW_NAME, text)
-                                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()))
-                                        .setClass(getContext(), SendCommandIntentService.class));
-                            }
-                        });
+                        DialogUtil.showInputBox(getContext(), getString(R.string.context_edit), command, text -> getContext().startService(new Intent(Actions.RECENT_COMMAND_EDIT)
+                                .putExtra(BundleExtraKeys.COMMAND, command)
+                                .putExtra(BundleExtraKeys.COMMAND_NEW_NAME, text)
+                                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()))
+                                .setClass(getContext(), SendCommandIntentService.class)));
                 }
                 mode.finish();
                 return true;

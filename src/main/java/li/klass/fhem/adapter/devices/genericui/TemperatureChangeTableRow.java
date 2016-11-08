@@ -24,9 +24,7 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.widget.TableRow;
@@ -86,13 +84,7 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
         initialProgress = progress;
 
         String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
-        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                setValue(device, newTemperature);
-            }
-        }, confirmationMessage);
+        DeviceActionUtil.showConfirmation(context, (dialogInterface, i) -> setValue(device, newTemperature), confirmationMessage);
     }
 
     private String createConfirmationText(int attributeStringId, double newTemperature) {

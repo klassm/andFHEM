@@ -46,7 +46,7 @@ import li.klass.fhem.fragments.FragmentType;
 public class RoomDetailLinkWidget extends RoomAppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId, WidgetConfigurationCreatedCallback callback, String... payload) {
-        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, Optional.<String>absent(), ImmutableList.copyOf(payload)));
+        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, Optional.absent(), ImmutableList.copyOf(payload)));
     }
 
     @Override

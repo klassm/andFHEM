@@ -125,7 +125,7 @@ public class RoomDeviceList implements Serializable {
     @SuppressWarnings("unchecked")
     private <T extends FhemDevice> Set<T> getOrCreateDeviceList(String group) {
         if (!deviceMap.containsKey(group)) {
-            deviceMap.put(group, new HashSet<FhemDevice>());
+            deviceMap.put(group, new HashSet<>());
         }
         return (Set<T>) deviceMap.get(group);
     }

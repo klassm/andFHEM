@@ -58,6 +58,6 @@ public class DimmableDeviceService {
         if (!device.supportsDim()) return;
         String newState = device.getDimStateNameForDimStateValue(dimProgress).replace(".0", "");
 
-        genericDeviceService.setState(device, newState, Optional.<String>absent(), context);
+        genericDeviceService.setState(device, newState, Optional.absent(), context);
     }
 }

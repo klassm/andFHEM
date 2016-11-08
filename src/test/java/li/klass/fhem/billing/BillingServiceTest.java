@@ -37,8 +37,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import li.klass.fhem.testutil.MockitoRule;
 
@@ -125,13 +123,10 @@ public class BillingServiceTest {
     public void should_call_Listener_if_Setup_was_successful() {
         // given
         BillingService.SetupFinishedListener listener = mock(BillingService.SetupFinishedListener.class);
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                IabHelper.OnIabSetupFinishedListener listener = (IabHelper.OnIabSetupFinishedListener) invocationOnMock.getArguments()[0];
-                listener.onIabSetupFinished(new IabResult(IabHelper.BILLING_RESPONSE_RESULT_OK, "ok"));
-                return null;
-            }
+        doAnswer(invocationOnMock -> {
+            IabHelper.OnIabSetupFinishedListener listener1 = (IabHelper.OnIabSetupFinishedListener) invocationOnMock.getArguments()[0];
+            listener1.onIabSetupFinished(new IabResult(IabHelper.BILLING_RESPONSE_RESULT_OK, "ok"));
+            return null;
         }).when(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
 
         // when

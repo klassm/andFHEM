@@ -24,5 +24,5 @@
 package li.klass.fhem.util;
 
 public interface Filter<T> {
-    public boolean doFilter(T object);
+    boolean doFilter(T object);
 }

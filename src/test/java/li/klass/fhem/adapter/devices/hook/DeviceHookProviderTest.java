@@ -80,10 +80,10 @@ public class DeviceHookProviderTest {
         String value = isActive ? "true" : "false";
 
         XmlListDevice xmlListDevice = new XmlListDevice(GENERIC.getXmllistTag(),
-                Maps.<String, DeviceNode>newHashMap(),
-                Maps.<String, DeviceNode>newHashMap(),
-                Maps.<String, DeviceNode>newHashMap(),
-                Maps.<String, DeviceNode>newHashMap());
+                Maps.newHashMap(),
+                Maps.newHashMap(),
+                Maps.newHashMap(),
+                Maps.newHashMap());
         xmlListDevice.getAttributes().put(hookAttribute, new DeviceNode(ATTR, hookAttribute, value, (DateTime) null));
         xmlListDevice.setInternal("NAME", "name");
         GenericDevice device = new GenericDevice();

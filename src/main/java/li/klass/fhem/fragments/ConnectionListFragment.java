@@ -99,7 +99,7 @@ public class ConnectionListFragment extends BaseFragment {
         if (superView != null) return superView;
 
         ConnectionListAdapter adapter = new ConnectionListAdapter(getActivity(),
-                new ArrayList<FHEMServerSpec>());
+                new ArrayList<>());
         View layout = inflater.inflate(R.layout.connection_list, container, false);
         advertisementService.addAd(layout, getActivity());
 
@@ -110,13 +110,9 @@ public class ConnectionListFragment extends BaseFragment {
         Reject.ifNull(connectionList);
         connectionList.setAdapter(adapter);
 
-        connectionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String connectionId = (String) view.getTag();
-                onClick(connectionId);
-            }
+        connectionList.setOnItemClickListener((adapterView, view, i, l) -> {
+            String connectionId1 = (String) view.getTag();
+            onClick(connectionId1);
         });
         registerForContextMenu(connectionList);
 
@@ -251,7 +247,7 @@ public class ConnectionListFragment extends BaseFragment {
                             resultData.getSerializable(CONNECTION_LIST);
                     assert connectionList != null;
 
-                    for (FHEMServerSpec serverSpec : new ArrayList<FHEMServerSpec>(connectionList)) {
+                    for (FHEMServerSpec serverSpec : new ArrayList<>(connectionList)) {
                         if (serverSpec.getServerType() == ServerType.DUMMY) {
                             connectionList.remove(serverSpec);
                         }

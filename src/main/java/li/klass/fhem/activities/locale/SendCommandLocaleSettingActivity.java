@@ -85,7 +85,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
         }
 
         final Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
-        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<FHEMServerSpec>());
+        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<>());
         spinner.setAdapter(connectionListAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -109,35 +109,32 @@ public class SendCommandLocaleSettingActivity extends Activity {
         startService(connectionIntent);
 
         Button saveButton = (Button) findViewById(R.id.save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent resultIntent = new Intent();
+        saveButton.setOnClickListener(view -> {
+            Intent resultIntent = new Intent();
 
-                assert commandView != null;
-                String command = commandView.getText().toString();
+            assert commandView != null;
+            String command = commandView.getText().toString();
 
-                resultIntent.putExtra(EXTRA_STRING_BLURB, command);
+            resultIntent.putExtra(EXTRA_STRING_BLURB, command);
 
-                Bundle bundle = new Bundle();
-                bundle.putString(ACTION, EXECUTE_COMMAND);
-                bundle.putString(COMMAND, command);
+            Bundle bundle1 = new Bundle();
+            bundle1.putString(ACTION, EXECUTE_COMMAND);
+            bundle1.putString(COMMAND, command);
 
-                if (selectedId != null && !CURRENT_CONNECTION_ID.equals(selectedId)) {
-                    bundle.putString(CONNECTION_ID, selectedId);
-                }
-
-                resultIntent.putExtra(EXTRA_BUNDLE, bundle);
-
-                if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
-                    TaskerPlugin.Setting.setVariableReplaceKeys(bundle, new String[]{COMMAND});
-                }
-
-                LOG.info("onCreate() - result: command={}, action={}", bundle.getString(COMMAND), bundle.getString(ACTION));
-
-                setResult(RESULT_OK, resultIntent);
-                finish();
+            if (selectedId != null && !CURRENT_CONNECTION_ID.equals(selectedId)) {
+                bundle1.putString(CONNECTION_ID, selectedId);
             }
+
+            resultIntent.putExtra(EXTRA_BUNDLE, bundle1);
+
+            if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
+                TaskerPlugin.Setting.setVariableReplaceKeys(bundle1, new String[]{COMMAND});
+            }
+
+            LOG.info("onCreate() - result: command={}, action={}", bundle1.getString(COMMAND), bundle1.getString(ACTION));
+
+            setResult(RESULT_OK, resultIntent);
+            finish();
         });
     }
 

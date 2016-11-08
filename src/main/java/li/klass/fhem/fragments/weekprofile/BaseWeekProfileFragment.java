@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
@@ -55,10 +54,12 @@ import li.klass.fhem.widget.NestedListView;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.newArrayList;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.HEATING_CONFIGURATION;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 
 public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> extends BaseFragment {
 
@@ -90,43 +91,30 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
 
         Button saveButton = (Button) view.findViewById(R.id.save);
         update(false);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public void onClick(View view) {
-                ArrayList<StateToSet> commands = newArrayList(weekProfile.getStatesToSet(deviceName));
-                getActivity().startService(new Intent(Actions.DEVICE_SET_SUB_STATES)
-                        .setClass(getActivity(), DeviceIntentService.class)
-                        .putExtra(DEVICE_NAME, deviceName)
-                        .putExtra(BundleExtraKeys.STATES, commands)
-                        .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
-                            @Override
-                            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                if (resultCode != ResultCodes.SUCCESS) return;
-                                backToDevice();
-                                update(true);
-                            }
-                        }));
-            }
+        saveButton.setOnClickListener(view1 -> {
+            ArrayList<StateToSet> commands = newArrayList(weekProfile.getStatesToSet(deviceName));
+            getActivity().startService(new Intent(Actions.DEVICE_SET_SUB_STATES)
+                    .setClass(getActivity(), DeviceIntentService.class)
+                    .putExtra(DEVICE_NAME, deviceName)
+                    .putExtra(STATES, commands)
+                    .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                        @Override
+                        protected void onReceiveResult(int resultCode, Bundle resultData) {
+                            if (resultCode != ResultCodes.SUCCESS) return;
+                            backToDevice();
+                            update(true);
+                        }
+                    }));
         });
 
         Button resetButton = (Button) view.findViewById(R.id.reset);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                update(false);
-            }
-        });
+        resetButton.setOnClickListener(view12 -> update(false));
 
         NestedListView nestedListView = (NestedListView) view.findViewById(R.id.weekprofile);
         BaseWeekProfileAdapter adapter = getAdapter();
-        adapter.registerWeekProfileChangedListener(new BaseWeekProfileAdapter.WeekProfileChangedListener() {
-            @Override
-            public void onWeekProfileChanged(WeekProfile weekProfile) {
-                LOGGER.info("onWeekProfileChanged() - {}", weekProfile.toString());
-                updateChangeButtonsHolderVisibility(weekProfile);
-            }
+        adapter.registerWeekProfileChangedListener(weekProfile1 -> {
+            LOGGER.info("onWeekProfileChanged() - {}", weekProfile1.toString());
+            updateChangeButtonsHolderVisibility(weekProfile1);
         });
 
 
@@ -136,12 +124,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
     }
 
     private void backToDevice() {
-        DialogUtil.showAlertDialog(getActivity(), R.string.doneTitle, R.string.switchDelayNotification, new DialogUtil.AlertOnClickListener() {
-            @Override
-            public void onClick() {
-                back();
-            }
-        });
+        DialogUtil.showAlertDialog(getActivity(), R.string.doneTitle, R.string.switchDelayNotification, this::back);
     }
 
     @Override
@@ -155,7 +138,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                            FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                            FhemDevice device = (FhemDevice) resultData.getSerializable(DEVICE);
                             if (device == null) {
                                 return;
                             }

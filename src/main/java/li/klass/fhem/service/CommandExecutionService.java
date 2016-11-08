@@ -92,7 +92,7 @@ public class CommandExecutionService extends AbstractService {
         if (lastFailedCommand != null) {
             String command = lastFailedCommand;
             lastFailedCommand = null;
-            executeSafely(command, Optional.<String>absent(), context, DO_NOTHING);
+            executeSafely(command, Optional.absent(), context, DO_NOTHING);
         }
     }
 

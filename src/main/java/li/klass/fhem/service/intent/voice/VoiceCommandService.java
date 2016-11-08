@@ -123,12 +123,12 @@ public class VoiceCommandService {
         final String deviceName = Joiner.on(" ").join(parts.subList(1, parts.size() - 1));
         final String state = replace(Iterables.getLast(parts), STATE_REPLACE);
 
-        RoomDeviceList devices = roomListService.getAllRoomsDeviceList(Optional.<String>absent(), context);
+        RoomDeviceList devices = roomListService.getAllRoomsDeviceList(Optional.absent(), context);
         List<FhemDevice> deviceMatches = from(devices.getAllDevices()).filter(filterDevicePredicate(deviceName, state)).toList();
         if (deviceMatches.isEmpty()) {
-            return Optional.<VoiceResult>of(new VoiceResult.Error(VoiceResult.ErrorType.NO_DEVICE_MATCHED));
+            return Optional.of(new VoiceResult.Error(VoiceResult.ErrorType.NO_DEVICE_MATCHED));
         } else if (deviceMatches.size() > 1) {
-            return Optional.<VoiceResult>of(new VoiceResult.Error(VoiceResult.ErrorType.MORE_THAN_ONE_DEVICE_MATCHES));
+            return Optional.of(new VoiceResult.Error(VoiceResult.ErrorType.MORE_THAN_ONE_DEVICE_MATCHES));
         }
 
         FhemDevice device = deviceMatches.get(0);
@@ -136,7 +136,7 @@ public class VoiceCommandService {
         if (device instanceof LightSceneDevice) {
             targetState = "scene " + targetState;
         }
-        return Optional.<VoiceResult>of(new VoiceResult.Success(device.getName(), targetState));
+        return Optional.of(new VoiceResult.Success(device.getName(), targetState));
     }
 
     private String replaceArticles(String command) {
@@ -147,17 +147,14 @@ public class VoiceCommandService {
     }
 
     private Predicate<FhemDevice> filterDevicePredicate(final String deviceName, final String state) {
-        return new Predicate<FhemDevice>() {
-            @Override
-            public boolean apply(FhemDevice device) {
-                String stateToLookFor = device.getReverseEventMapStateFor(state);
-                String alias = device.getAlias();
-                return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
-                        || device.getName().equalsIgnoreCase(deviceName)
-                        || (device.getPronunciation() != null && device.getPronunciation().equalsIgnoreCase(deviceName)))
-                        && (device.getSetList().contains(stateToLookFor)
-                        || (device instanceof LightSceneDevice && ((LightSceneDevice) device).getScenes().contains(state)));
-            }
+        return device -> {
+            String stateToLookFor = device.getReverseEventMapStateFor(state);
+            String alias = device.getAlias();
+            return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
+                    || device.getName().equalsIgnoreCase(deviceName)
+                    || (device.getPronunciation() != null && device.getPronunciation().equalsIgnoreCase(deviceName)))
+                    && (device.getSetList().contains(stateToLookFor)
+                    || (device instanceof LightSceneDevice && ((LightSceneDevice) device).getScenes().contains(state)));
         };
     }
 

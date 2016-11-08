@@ -28,11 +28,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import com.google.common.base.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -45,7 +42,6 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 
-import static android.widget.AdapterView.OnItemClickListener;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
@@ -70,12 +66,9 @@ public class OtherWidgetsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.other_widgets_list, container, false);
 
         ListView listView = (ListView) view.findViewById(R.id.list);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                WidgetType widgetType = (WidgetType) view.getTag();
-                OtherWidgetsFragment.this.onClick(widgetType);
-            }
+        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            WidgetType widgetType = (WidgetType) view1.getTag();
+            OtherWidgetsFragment.this.onClick(widgetType);
         });
 
         OtherWidgetsAdapter adapter = new OtherWidgetsAdapter(getActivity());
@@ -103,12 +96,7 @@ public class OtherWidgetsFragment extends BaseFragment {
         OtherWidgetsAdapter adapter = (OtherWidgetsAdapter) listView.getAdapter();
 
         final List<WidgetType> widgets = WidgetType.getOtherWidgetsFor(widgetSize);
-        List<Pair<WidgetType, String>> values = newArrayList(transform(widgets, new Function<WidgetType, Pair<WidgetType, String>>() {
-            @Override
-            public Pair<WidgetType, String> apply(WidgetType widgetType) {
-                return Pair.of(widgetType, getActivity().getString(widgetType.widgetView.getWidgetName()));
-            }
-        }));
+        List<Pair<WidgetType, String>> values = newArrayList(transform(widgets, widgetType -> Pair.of(widgetType, getActivity().getString(widgetType.widgetView.getWidgetName()))));
 
         if (values.isEmpty()) {
             showEmptyView();

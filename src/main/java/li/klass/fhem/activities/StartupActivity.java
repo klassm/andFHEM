@@ -90,19 +90,16 @@ public class StartupActivity extends Activity {
         getLoginLayout().setVisibility(View.VISIBLE);
 
         Button loginButton = (Button) findViewById(R.id.login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText passwordInput = (EditText) findViewById(R.id.password);
-                String password = passwordInput.getText().toString();
-                if (password.equals(getPassword())) {
-                    handleLoginStatus();
-                } else {
-                    DialogUtil.showAlertDialog(StartupActivity.this, null,
-                            getString(R.string.wrongPassword));
-                }
-                passwordInput.setText("");
+        loginButton.setOnClickListener(v -> {
+            EditText passwordInput = (EditText) findViewById(R.id.password);
+            String password = passwordInput.getText().toString();
+            if (password.equals(getPassword())) {
+                handleLoginStatus();
+            } else {
+                DialogUtil.showAlertDialog(StartupActivity.this, null,
+                        getString(R.string.wrongPassword));
             }
+            passwordInput.setText("");
         });
     }
 

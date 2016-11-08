@@ -58,28 +58,22 @@ public class ConversionFragment extends BaseFragment {
         Button quatToHexButton = (Button) view.findViewById(R.id.quatToHex);
         resultField = (TextView) view.findViewById(R.id.result);
 
-        hexToQuatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    String input = getInputText();
-                    String result = NumberSystemUtil.hexToQuaternary(input, 0);
-                    setResult(result);
-                } catch (IllegalArgumentException e) {
-                    setResult(getActivity().getString(R.string.error));
-                }
+        hexToQuatButton.setOnClickListener(view12 -> {
+            try {
+                String input = getInputText();
+                String result = NumberSystemUtil.hexToQuaternary(input, 0);
+                setResult(result);
+            } catch (IllegalArgumentException e) {
+                setResult(getActivity().getString(R.string.error));
             }
         });
-        quatToHexButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    String input = getInputText();
-                    String result = NumberSystemUtil.quaternaryToHex(input);
-                    setResult(result);
-                } catch (IllegalArgumentException e) {
-                    setResult(getActivity().getString(R.string.error));
-                }
+        quatToHexButton.setOnClickListener(view1 -> {
+            try {
+                String input = getInputText();
+                String result = NumberSystemUtil.quaternaryToHex(input);
+                setResult(result);
+            } catch (IllegalArgumentException e) {
+                setResult(getActivity().getString(R.string.error));
             }
         });
         return view;

@@ -85,14 +85,11 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
 
     @NonNull
     private RoomListUpdateService.RoomListUpdateListener handleResult() {
-        return new RoomListUpdateService.RoomListUpdateListener() {
-            @Override
-            public void onUpdateFinished(boolean result) {
-                LOG.info("doRemoteUpdate() - remote device list update finished");
-                startService(new Intent(REMOTE_UPDATE_FINISHED)
-                        .putExtra(SUCCESS, result)
-                        .setClass(RoomListUpdateIntentService.this, RoomListIntentService.class));
-            }
+        return result -> {
+            LOG.info("doRemoteUpdate() - remote device list update finished");
+            startService(new Intent(REMOTE_UPDATE_FINISHED)
+                    .putExtra(SUCCESS, result)
+                    .setClass(RoomListUpdateIntentService.this, RoomListIntentService.class));
         };
     }
 

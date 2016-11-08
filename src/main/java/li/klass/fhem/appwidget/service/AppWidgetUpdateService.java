@@ -88,12 +88,7 @@ public class AppWidgetUpdateService extends IntentService {
             LOG.info("onHandleIntent() - updating all widgets (received REDRAW_ALL_WIDGETS)");
             appWidgetDataHolder.updateAllWidgets(this, allowRemoteUpdates);
         } else if (WIDGET_REQUEST_UPDATE.equals(action)) {
-            new Handler(getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(AppWidgetUpdateService.this, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show();
-                }
-            });
+            new Handler(getMainLooper()).post(() -> Toast.makeText(AppWidgetUpdateService.this, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show());
             Intent updateIntent = new Intent(Actions.DO_UPDATE);
             updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
             sendBroadcast(updateIntent);

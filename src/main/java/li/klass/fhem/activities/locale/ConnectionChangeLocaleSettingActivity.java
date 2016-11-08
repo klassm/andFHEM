@@ -70,7 +70,7 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
         }
 
         final Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
-        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<FHEMServerSpec>());
+        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<>());
         spinner.setAdapter(connectionListAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -94,27 +94,24 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
                 }));
 
         Button saveButton = (Button) findViewById(R.id.save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent resultIntent = new Intent();
+        saveButton.setOnClickListener(view -> {
+            Intent resultIntent = new Intent();
 
-                Bundle bundle = new Bundle();
-                bundle.putString(BundleExtraKeys.ACTION, Actions.CONNECTION_UPDATE);
-                resultIntent.putExtra(LocaleIntentConstants.EXTRA_BUNDLE, bundle);
+            Bundle bundle1 = new Bundle();
+            bundle1.putString(BundleExtraKeys.ACTION, Actions.CONNECTION_UPDATE);
+            resultIntent.putExtra(LocaleIntentConstants.EXTRA_BUNDLE, bundle1);
 
-                if (selectedId != null && !CURRENT_CONNECTION_ID.equals(selectedId)) {
-                    bundle.putString(CONNECTION_ID, selectedId);
-                }
-
-                if (selectedName == null) {
-                    selectedName = getResources().getString(R.string.connectionCurrent);
-                }
-                resultIntent.putExtra(LocaleIntentConstants.EXTRA_STRING_BLURB, selectedName);
-
-                setResult(RESULT_OK, resultIntent);
-                finish();
+            if (selectedId != null && !CURRENT_CONNECTION_ID.equals(selectedId)) {
+                bundle1.putString(CONNECTION_ID, selectedId);
             }
+
+            if (selectedName == null) {
+                selectedName = getResources().getString(R.string.connectionCurrent);
+            }
+            resultIntent.putExtra(LocaleIntentConstants.EXTRA_STRING_BLURB, selectedName);
+
+            setResult(RESULT_OK, resultIntent);
+            finish();
         });
     }
 

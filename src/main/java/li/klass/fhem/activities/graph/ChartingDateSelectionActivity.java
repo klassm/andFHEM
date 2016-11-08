@@ -32,9 +32,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
@@ -77,89 +75,58 @@ public class ChartingDateSelectionActivity extends Activity {
         updateOkButtonVisibility();
 
         final Button startDateButton = (Button) findViewById(R.id.startDateSet);
-        startDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        startDate = new DateTime(year, month + 1, dayOfMonth, startDate.getHourOfDay(),
-                                startDate.getMinuteOfHour());
-                        updateDateTextField(R.id.startDate, startDate);
-                        updateOkButtonVisibility();
-                    }
-                }, startDate.getYear(), startDate.getMonthOfYear() - 1, startDate.getDayOfMonth());
+        startDateButton.setOnClickListener(view -> {
+            DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, (datePicker, year, month, dayOfMonth) -> {
+                startDate = new DateTime(year, month + 1, dayOfMonth, startDate.getHourOfDay(),
+                        startDate.getMinuteOfHour());
+                updateDateTextField(R.id.startDate, startDate);
+                updateOkButtonVisibility();
+            }, startDate.getYear(), startDate.getMonthOfYear() - 1, startDate.getDayOfMonth());
 
-                dialog.show();
-            }
+            dialog.show();
         });
 
         Button startTimeButton = (Button) findViewById(R.id.startTimeSet);
-        startTimeButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog dialog = new TimePickerDialog(ChartingDateSelectionActivity.this, new TimePickerDialog.OnTimeSetListener() {
-
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(),
-                                startDate.getDayOfMonth(), hour, minute);
-                        updateTimeTextField(R.id.startTime, startDate);
-                        updateOkButtonVisibility();
-                    }
-                }, startDate.getHourOfDay(), startDate.getMinuteOfHour(), true);
-                dialog.show();
-            }
+        startTimeButton.setOnClickListener(view -> {
+            TimePickerDialog dialog = new TimePickerDialog(ChartingDateSelectionActivity.this, (timePicker, hour, minute) -> {
+                startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(),
+                        startDate.getDayOfMonth(), hour, minute);
+                updateTimeTextField(R.id.startTime, startDate);
+                updateOkButtonVisibility();
+            }, startDate.getHourOfDay(), startDate.getMinuteOfHour(), true);
+            dialog.show();
         });
 
         final Button endDateButton = (Button) findViewById(R.id.endDateSet);
-        endDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        endDate = new DateTime(year, month + 1, dayOfMonth, endDate.getHourOfDay(),
-                                endDate.getMinuteOfHour());
-                        updateDateTextField(R.id.endDate, endDate);
-                        updateOkButtonVisibility();
-                    }
-                }, endDate.getYear(), endDate.getMonthOfYear() - 1, endDate.getDayOfMonth());
+        endDateButton.setOnClickListener(view -> {
+            DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, (datePicker, year, month, dayOfMonth) -> {
+                endDate = new DateTime(year, month + 1, dayOfMonth, endDate.getHourOfDay(),
+                        endDate.getMinuteOfHour());
+                updateDateTextField(R.id.endDate, endDate);
+                updateOkButtonVisibility();
+            }, endDate.getYear(), endDate.getMonthOfYear() - 1, endDate.getDayOfMonth());
 
-                dialog.show();
-            }
+            dialog.show();
         });
 
         Button endTimeButton = (Button) findViewById(R.id.endTimeSet);
-        endTimeButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog dialog = new TimePickerDialog(ChartingDateSelectionActivity.this, new TimePickerDialog.OnTimeSetListener() {
-
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        endDate = new DateTime(endDate.getYear(), endDate.getMonthOfYear(),
-                                endDate.getDayOfMonth(), hour, minute);
-                        updateTimeTextField(R.id.endTime, endDate);
-                        updateOkButtonVisibility();
-                    }
-                }, endDate.getHourOfDay(), endDate.getMinuteOfHour(), true);
-                dialog.show();
-            }
+        endTimeButton.setOnClickListener(view -> {
+            TimePickerDialog dialog = new TimePickerDialog(ChartingDateSelectionActivity.this, (timePicker, hour, minute) -> {
+                endDate = new DateTime(endDate.getYear(), endDate.getMonthOfYear(),
+                        endDate.getDayOfMonth(), hour, minute);
+                updateTimeTextField(R.id.endTime, endDate);
+                updateOkButtonVisibility();
+            }, endDate.getHourOfDay(), endDate.getMinuteOfHour(), true);
+            dialog.show();
         });
 
         Button okButton = (Button) findViewById(R.id.okButton);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(RESULT_OK, getIntent());
-                getIntent().putExtra(BundleExtraKeys.START_DATE, startDate);
-                getIntent().putExtra(BundleExtraKeys.END_DATE, endDate);
+        okButton.setOnClickListener(view -> {
+            setResult(RESULT_OK, getIntent());
+            getIntent().putExtra(BundleExtraKeys.START_DATE, startDate);
+            getIntent().putExtra(BundleExtraKeys.END_DATE, endDate);
 
-                finish();
-            }
+            finish();
         });
     }
 

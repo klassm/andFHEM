@@ -107,12 +107,7 @@ public class AndFHEMApplication extends MultiDexApplication {
 
     private static void setDefaultUncaughtExceptionHandler() {
         try {
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread t, Throwable e) {
-                    Log.e(TAG, String.format("Uncaught Exception detected in thread %s", t.toString()), e);
-                }
-            });
+            Thread.setDefaultUncaughtExceptionHandler((t, e) -> Log.e(TAG, String.format("Uncaught Exception detected in thread %s", t.toString()), e));
         } catch (SecurityException e) {
             Log.e(TAG, "Could not set the Default Uncaught Exception Handler", e);
         }

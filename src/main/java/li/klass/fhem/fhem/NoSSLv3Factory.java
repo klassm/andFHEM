@@ -443,7 +443,7 @@ public class NoSSLv3Factory extends SSLSocketFactory {
             if (protocols != null && protocols.length == 1 && "SSLv3".equals(protocols[0])) {
                 // no way jose
                 // see issue https://code.google.com/p/android/issues/detail?id=78187
-                List<String> enabledProtocols = new ArrayList<String>(Arrays.asList(delegate.getEnabledProtocols()));
+                List<String> enabledProtocols = new ArrayList<>(Arrays.asList(delegate.getEnabledProtocols()));
                 if (enabledProtocols.size() > 1) {
                     enabledProtocols.remove("SSLv3");
                 }

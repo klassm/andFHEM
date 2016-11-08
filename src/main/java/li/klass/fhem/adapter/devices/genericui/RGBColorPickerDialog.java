@@ -34,7 +34,6 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import com.chiralcode.colorpicker.ColorPicker;
-import com.chiralcode.colorpicker.ColorPickerListener;
 
 import li.klass.fhem.R;
 import li.klass.fhem.util.ColorUtil;
@@ -60,15 +59,12 @@ public class RGBColorPickerDialog extends AlertDialog implements DialogInterface
 
         final ColorPicker picker = (ColorPicker) view.findViewById(R.id.colorPicker);
         picker.setColor(initialColor);
-        picker.setListener(new ColorPickerListener() {
-            @Override
-            public void onColorChange(int color) {
-                newColor = color & 0x00FFFFFF;
-                if (!sendEachChangeCheckbox.isChecked()) return;
+        picker.setListener(color -> {
+            newColor = color & 0x00FFFFFF;
+            if (!sendEachChangeCheckbox.isChecked()) return;
 
-                // remove alpha channel first!
-                RGBColorPickerDialog.this.onColorChange(newColor);
-            }
+            // remove alpha channel first!
+            RGBColorPickerDialog.this.onColorChange(newColor);
         });
 
         setButton(BUTTON_POSITIVE, context.getString(R.string.okButton), this);

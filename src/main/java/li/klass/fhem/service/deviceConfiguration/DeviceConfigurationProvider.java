@@ -91,7 +91,7 @@ public class DeviceConfigurationProvider {
     public Optional<JSONObject> plainConfigurationFor(String type) {
         JSONObject deviceConfig = options.optJSONObject(type);
 
-        return deviceConfig == null ? Optional.<JSONObject>absent() : Optional.of(deviceConfig);
+        return deviceConfig == null ? Optional.absent() : Optional.of(deviceConfig);
     }
 
 

@@ -38,78 +38,23 @@ import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
 
 public enum SetListItemType {
-    NO_ARG(new SupportsType("noArg", 1), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new NoArgSetListEntry(key);
-        }
-    }),
+    NO_ARG(new SupportsType("noArg", 1), (key, parts) -> new NoArgSetListEntry(key)),
     RGB(new SupportsType("colorpicker") {
         @Override
         public boolean supports(String[] parts) {
             return super.supports(parts) && parts[1].equalsIgnoreCase("RGB");
         }
-    }, new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new RGBSetListEntry(key);
-        }
-    }),
-    TIME(new SupportsType("time", 1), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new TimeSetListEntry(key);
-        }
-    }),
-    TEXT_FIELD(new SupportsType("textField", 1), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new TextFieldSetListEntry(key);
-        }
-    }),
-    TEXT_FIELD_LONG(new SupportsType("textField-long", 1), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new TextFieldLongSetListEntry(key);
-        }
-    }),
-    SLIDER(new SupportsType("slider", 4), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new SliderSetListEntry(key, parts);
-        }
-    }),
-    MULTIPLE(new SupportsType("multiple"), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new MultipleSetListEntry(key, parts);
-        }
-    }),
-    MULTIPLE_STRICT(new SupportsType("multiple-strict"), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new MultipleStrictSetListEntry(key, parts);
-        }
-    }),
-    KNOB(new SupportsType("knob"), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return null;
-        }
-    }),
+    }, (key, parts) -> new RGBSetListEntry(key)),
+    TIME(new SupportsType("time", 1), (key, parts) -> new TimeSetListEntry(key)),
+    TEXT_FIELD(new SupportsType("textField", 1), (key, parts) -> new TextFieldSetListEntry(key)),
+    TEXT_FIELD_LONG(new SupportsType("textField-long", 1), (key, parts) -> new TextFieldLongSetListEntry(key)),
+    SLIDER(new SupportsType("slider", 4), SliderSetListEntry::new),
+    MULTIPLE(new SupportsType("multiple"), MultipleSetListEntry::new),
+    MULTIPLE_STRICT(new SupportsType("multiple-strict"), MultipleStrictSetListEntry::new),
+    KNOB(new SupportsType("knob"), (key, parts) -> null),
     GROUP(new SupportsType("group_dummy_key") {
-    }, new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new GroupSetListEntry(key, parts);
-        }
-    }),
-    NOT_FOUND(new SupportsType("not_found"), new EntryProvider() {
-        @Override
-        public SetListItem entryFor(String key, String[] parts) {
-            return new NotFoundSetListEntry(key);
-        }
-    });
+    }, GroupSetListEntry::new),
+    NOT_FOUND(new SupportsType("not_found"), (key, parts) -> new NotFoundSetListEntry(key));
 
     private final EntryProvider entryProvider;
 

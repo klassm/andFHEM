@@ -92,20 +92,20 @@ public class XmlDeviceItemProvider {
     }
 
     private Set<DeviceViewItem> statesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
-        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getStates() : Collections.<ViewItemConfig>emptySet();
+        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getStates() : Collections.emptySet();
         Map<String, DeviceNode> deviceStates = device.getStates();
 
         return itemsFor(configs, deviceStates, showUnknown);
     }
 
     private Set<DeviceViewItem> attributesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
-        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getAttributes() : Collections.<ViewItemConfig>emptySet();
+        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getAttributes() : Collections.emptySet();
         return itemsFor(configs, device.getAttributes(), showUnknown);
     }
 
 
     private Set<DeviceViewItem> internalsFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
-        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getInternals() : Collections.<ViewItemConfig>emptySet();
+        Set<ViewItemConfig> configs = config.isPresent() ? config.get().getInternals() : Collections.emptySet();
         return itemsFor(configs, device.getInternals(), showUnknown);
     }
 

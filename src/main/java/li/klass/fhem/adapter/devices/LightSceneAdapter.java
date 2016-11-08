@@ -94,12 +94,7 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
 
     private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button) {
         button.setText(scene);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activateScene(device, scene);
-            }
-        });
+        button.setOnClickListener(view -> activateScene(device, scene));
     }
 
     private void activateScene(FhemDevice device, String scene) {

@@ -111,12 +111,7 @@ public class RemoteControlAdapter extends ToggleableAdapter {
         int itemSizeInPx = (int) dpToPx(50);
         ImageUtil.loadImageFromFHEMAndSetIn(getContext(), imageButton, entry.getIconPath(), itemSizeInPx, itemSizeInPx);
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stateUiService.setState(device, entry.command, getContext());
-            }
-        });
+        imageButton.setOnClickListener(view -> stateUiService.setState(device, entry.command, getContext()));
 
         return imageButton;
     }

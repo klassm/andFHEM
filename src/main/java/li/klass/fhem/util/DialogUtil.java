@@ -33,12 +33,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 
 public class DialogUtil {
-    public static final DialogInterface.OnClickListener DISMISSING_LISTENER = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-        }
-    };
+    public static final DialogInterface.OnClickListener DISMISSING_LISTENER = (dialog, which) -> dialog.dismiss();
 
     public interface InputDialogListener {
         void onClick(String text);
@@ -72,12 +67,9 @@ public class DialogUtil {
         if (title != null) alert.setTitle(title);
         alert.setCancelable(false);
         alert.setMessage(text);
-        alert.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                alert.dismiss();
-                if (onClickListener != null) onClickListener.onClick();
-            }
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), (dialogInterface, i) -> {
+            alert.dismiss();
+            if (onClickListener != null) onClickListener.onClick();
         });
         alert.show();
     }
@@ -89,12 +81,9 @@ public class DialogUtil {
         builder.setView(content);
 
         final AlertDialog alertDialog = builder.create();
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                alertDialog.dismiss();
-                if (onClickListener != null) onClickListener.onClick();
-            }
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), (dialogInterface, i) -> {
+            alertDialog.dismiss();
+            if (onClickListener != null) onClickListener.onClick();
         });
         alertDialog.show();
     }
@@ -103,12 +92,9 @@ public class DialogUtil {
         final EditText input = new EditText(context);
         input.setText(defaultText);
 
-        showConfirmBox(context, title, input, new AlertOnClickListener() {
-            @Override
-            public void onClick() {
-                String text = input.getText().toString();
-                positiveOnClickListener.onClick(text);
-            }
+        showConfirmBox(context, title, input, () -> {
+            String text = input.getText().toString();
+            positiveOnClickListener.onClick(text);
         });
     }
 
@@ -126,16 +112,11 @@ public class DialogUtil {
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setView(view)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        positiveOnClickListener.onClick();
-                        dialogInterface.dismiss();
-                    }
+                .setPositiveButton(R.string.okButton, (dialogInterface, i) -> {
+                    positiveOnClickListener.onClick();
+                    dialogInterface.dismiss();
                 })
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, whichButton) -> {
                 }).show();
     }
 }

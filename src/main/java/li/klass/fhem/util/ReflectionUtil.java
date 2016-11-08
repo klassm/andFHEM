@@ -159,7 +159,7 @@ public class ReflectionUtil {
     }
 
     public static List<Field> getAllDeclaredFields(Class<?> type) {
-        return getAllDeclaredFields(Lists.<Field>newArrayList(), type);
+        return getAllDeclaredFields(Lists.newArrayList(), type);
     }
 
     private static List<Field> getAllDeclaredFields(List<Field> fields, Class<?> type) {
@@ -174,7 +174,7 @@ public class ReflectionUtil {
 
 
     public static List<Method> getAllDeclaredMethods(Class<?> type) {
-        return getAllDeclaredMethods(Lists.<Method>newArrayList(), type);
+        return getAllDeclaredMethods(Lists.newArrayList(), type);
     }
 
     private static List<Method> getAllDeclaredMethods(List<Method> methods, Class<?> type) {

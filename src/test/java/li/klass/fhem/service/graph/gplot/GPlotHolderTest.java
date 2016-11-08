@@ -79,7 +79,7 @@ public class GPlotHolderTest {
     public void should_successfully_lookup_GPlot_file_if_current_map_does_not_yet_contain_corresponding_key() {
         // given
         GPlotDefinition definition = defaultGPlotDefinition();
-        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
+        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
@@ -94,8 +94,8 @@ public class GPlotHolderTest {
     @Test
     public void should_lookup_GPlot_file_without_success_if_current_map_does_not_yet_contain_corresponding_key() {
         // given
-        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
-        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
+        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.emptyMap());
+        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.absent());
 
         // when
         Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
@@ -110,7 +110,7 @@ public class GPlotHolderTest {
     public void should_lookup_GPlot_file_only_once_if_previous_request_was_successful() {
         // given
         GPlotDefinition definition = defaultGPlotDefinition();
-        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
+        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
@@ -127,9 +127,9 @@ public class GPlotHolderTest {
     public void should_lookup_GPlot_file_only_once_if_previous_request_was_not_successful() {
         // given
         GPlotDefinition definition = defaultGPlotDefinition();
-        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
+        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
+        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.absent());
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
         gPlotHolder.definitionFor("garden", false);
 
@@ -145,9 +145,9 @@ public class GPlotHolderTest {
     public void should_handle_config_db() throws Exception {
         // given
         GPlotDefinition definition = defaultGPlotDefinition();
-        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
+        given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeSync(eq("configdb fileshow ./www/gplot/garden.gplot"), eq(Optional.<String>absent()), any(Context.class))).willReturn(gplotRawDefinition);
+        given(commandExecutionService.executeSync(eq("configdb fileshow ./www/gplot/garden.gplot"), eq(Optional.absent()), any(Context.class))).willReturn(gplotRawDefinition);
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when

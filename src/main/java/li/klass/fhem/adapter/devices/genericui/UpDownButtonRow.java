@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -49,22 +48,10 @@ public abstract class UpDownButtonRow {
         ((TextView) row.findViewById(R.id.description)).setText(description);
 
         Button downButton = (Button) row.findViewById(R.id.dimDown);
-        downButton.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onDownButtonClick(context, device);
-            }
-        });
+        downButton.setOnClickListener(view -> onDownButtonClick(context, device));
 
         Button upButton = (Button) row.findViewById(R.id.dimUp);
-        upButton.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                onUpButtonClick(context, device);
-            }
-        });
+        upButton.setOnClickListener(view -> onUpButtonClick(context, device));
         return row;
     }
 

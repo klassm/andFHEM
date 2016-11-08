@@ -47,12 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(DataProviderRunner.class)
 public class FhemDeviceTest {
 
-    private static final Function<FhemDevice, String> TO_NAME = new Function<FhemDevice, String>() {
-        @Override
-        public String apply(FhemDevice input) {
-            return input == null ? null : input.getName();
-        }
-    };
+    private static final Function<FhemDevice, String> TO_NAME = input -> input == null ? null : input.getName();
 
     @DataProvider
     public static Object[][] sortDatapoint() {

@@ -48,7 +48,7 @@ public class WidgetConfigurationTest {
     public static Object[][] serializationProvider() {
         return $$(
                 $(new WidgetConfiguration(5, WidgetType.DIM, Optional.of("connectionId"), ImmutableList.of("abc"))),
-                $(new WidgetConfiguration(5, WidgetType.DIM, Optional.<String>absent(), ImmutableList.of("abc"))),
+                $(new WidgetConfiguration(5, WidgetType.DIM, Optional.absent(), ImmutableList.of("abc"))),
                 $(new WidgetConfiguration(50000, WidgetType.STATUS, Optional.of("connectionIdla"), ImmutableList.of("d#ef"))),
                 $(new WidgetConfiguration(50000, WidgetType.STATUS, Optional.of("connectionIdBlo"), ImmutableList.of("def", "hello")))
         );

@@ -31,11 +31,9 @@ import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 import java.io.Serializable;
@@ -93,7 +91,7 @@ public class RoomListFragment extends BaseFragment {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 
-        RoomListAdapter adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());
+        RoomListAdapter adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<>());
         View layout = inflater.inflate(R.layout.room_list, container, false);
         advertisementService.addAd(layout, getActivity());
 
@@ -106,13 +104,9 @@ public class RoomListFragment extends BaseFragment {
         Reject.ifNull(roomList);
         roomList.setAdapter(adapter);
 
-        roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String roomName = String.valueOf(view.getTag());
-                onClick(roomName);
-            }
+        roomList.setOnItemClickListener((adapterView, view, i, l) -> {
+            String roomName1 = String.valueOf(view.getTag());
+            onClick(roomName1);
         });
 
         return layout;
@@ -163,11 +157,8 @@ public class RoomListFragment extends BaseFragment {
 
                 if (resultCode == ResultCodes.SUCCESS) {
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);
-                    roomList = newArrayList(Iterables.filter(roomList, new Predicate<String>() {
-                        @Override
-                        public boolean apply(String input) {
-                            return isRoomSelectable(roomName);
-                        }
+                    roomList = newArrayList(Iterables.filter(roomList, input -> {
+                        return isRoomSelectable(roomName);
                     }));
 
                     assert roomList != null;

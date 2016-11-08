@@ -51,7 +51,7 @@ public final class ServerUtilities {
     static boolean register(final Context context, final String regId, String serverURL) {
         Log.i(TAG, "registering device (regId = " + regId + ")");
         String serverUrl = serverURL + "/register";
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("regId", regId);
         long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
         // Once GCM returns a registration id, we need to register it in the
@@ -93,7 +93,7 @@ public final class ServerUtilities {
     static void unregister(final Context context, final String regId, String serverURL) {
         Log.i(TAG, "unregistering device (regId = " + regId + ")");
         String serverUrl = serverURL + "/unregister";
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("regId", regId);
         try {
             post(serverUrl, params);

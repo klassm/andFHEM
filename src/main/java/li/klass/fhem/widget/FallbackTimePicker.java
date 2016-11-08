@@ -47,12 +47,7 @@ public class FallbackTimePicker extends LinearLayout {
 
     private OnValueChangedListener listener;
 
-    public static final Formatter TWO_DIGIT_FORMATTER = new Formatter() {
-        @Override
-        public String format(int i) {
-            return NumberUtil.toTwoDecimalDigits(i);
-        }
-    };
+    public static final Formatter TWO_DIGIT_FORMATTER = NumberUtil::toTwoDecimalDigits;
 
     @SuppressWarnings("unused")
     public FallbackTimePicker(Context context, AttributeSet attrs) {
@@ -74,12 +69,9 @@ public class FallbackTimePicker extends LinearLayout {
     }
 
     private void init(Context context) {
-        NumberPicker.OnValueChangeListener valueChangeListener = new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                if (listener != null) {
-                    listener.onValueChanged(getHours(), getMinutes());
-                }
+        NumberPicker.OnValueChangeListener valueChangeListener = (numberPicker, i, i1) -> {
+            if (listener != null) {
+                listener.onValueChanged(getHours(), getMinutes());
             }
         };
 

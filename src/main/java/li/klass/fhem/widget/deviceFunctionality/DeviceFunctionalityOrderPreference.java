@@ -48,10 +48,8 @@ import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayListUtil;
-import li.klass.fhem.util.Filter;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderAdapter.OrderAction;
 
 public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
@@ -93,18 +91,15 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
                 new DeviceFunctionalityOrderAdapter(getContext(), R.layout.device_type_list_item,
                         wrappedDevices);
 
-        adapter.setListener(new DeviceFunctionalityOrderAdapter.OrderActionListener() {
-            @Override
-            public void deviceTypeReordered(DeviceFunctionalityPreferenceWrapper wrapper, OrderAction action) {
-                int currentPosition = wrappedDevices.indexOf(wrapper);
+        adapter.setListener((wrapper, action) -> {
+            int currentPosition = wrappedDevices.indexOf(wrapper);
 
-                switch (action) {
-                    case VISIBILITY_CHANGE:
-                        wrappedDevices.get(currentPosition).invertVisibility();
-                        break;
-                }
-                callChangeListener(wrappedDevices);
+            switch (action) {
+                case VISIBILITY_CHANGE:
+                    wrappedDevices.get(currentPosition).invertVisibility();
+                    break;
             }
+            callChangeListener(wrappedDevices);
         });
         deviceTypeListView.setAdapter(adapter);
 
@@ -156,12 +151,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
     private void saveVisibleDevices() {
         ArrayList<DeviceFunctionalityPreferenceWrapper> visibleDevices =
-                ArrayListUtil.filter(wrappedDevices, new Filter<DeviceFunctionalityPreferenceWrapper>() {
-                    @Override
-                    public boolean doFilter(DeviceFunctionalityPreferenceWrapper object) {
-                        return object.isVisible();
-                    }
-                });
+                ArrayListUtil.filter(wrappedDevices, DeviceFunctionalityPreferenceWrapper::isVisible);
         DeviceFunctionality[] toPersist = unwrapDeviceTypes(visibleDevices);
         if (shouldPersist()) persistString(ObjectSerializer.serialize(toPersist));
 
@@ -169,12 +159,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
     private void saveInvisibleDevices() {
         ArrayList<DeviceFunctionalityPreferenceWrapper> invisibleDevices =
-                ArrayListUtil.filter(wrappedDevices, new Filter<DeviceFunctionalityPreferenceWrapper>() {
-                    @Override
-                    public boolean doFilter(DeviceFunctionalityPreferenceWrapper object) {
-                        return !object.isVisible();
-                    }
-                });
+                ArrayListUtil.filter(wrappedDevices, object -> !object.isVisible());
         DeviceFunctionality[] toPersist = unwrapDeviceTypes(invisibleDevices);
         if (shouldPersist()) {
             SharedPreferences sharedPreferences = getSharedPreferences();

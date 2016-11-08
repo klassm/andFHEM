@@ -81,15 +81,12 @@ public abstract class BaseFragment extends Fragment implements
 
         Button retryButton = (Button) view.findViewById(R.id.retry);
         if (retryButton != null) {
-            retryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideConnectionError();
+            retryButton.setOnClickListener(view1 -> {
+                hideConnectionError();
 
-                    Intent resendIntent = new Intent(RESEND_LAST_FAILED_COMMAND);
-                    resendIntent.setClass(getActivity(), DeviceIntentService.class);
-                    getActivity().startService(resendIntent);
-                }
+                Intent resendIntent = new Intent(RESEND_LAST_FAILED_COMMAND);
+                resendIntent.setClass(getActivity(), DeviceIntentService.class);
+                getActivity().startService(resendIntent);
             });
         }
     }
@@ -213,14 +210,11 @@ public abstract class BaseFragment extends Fragment implements
         View errorLayout = view.findViewById(R.id.errorLayout);
         if (errorLayout == null) return;
 
-        errorLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
+        errorLayout.setOnLongClickListener(view1 -> {
 
-                ErrorHolder.sendLastErrorAsMail(getActivity());
+            ErrorHolder.sendLastErrorAsMail(getActivity());
 
-                return true;
-            }
+            return true;
         });
 
         errorLayout.setVisibility(View.VISIBLE);
@@ -261,37 +255,34 @@ public abstract class BaseFragment extends Fragment implements
         @Override
         public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            activity.runOnUiThread(() -> {
 
-                    Log.v(UIBroadcastReceiver.class.getName(), "received action " + action);
+                Log.v(UIBroadcastReceiver.class.getName(), "received action " + action);
 
-                    if (action == null) return;
+                if (action == null) return;
 
-                    try {
-                        if (action.equals(TOP_LEVEL_BACK)) {
-                            if (!isVisible()) return;
-                            if (!backPressCalled) {
-                                backPressCalled = true;
-                                onBackPressResult();
-                            }
-                        } else if (action.equals(REDRAW_ALL_WIDGETS)) {
-                            updateInternal(false);
-                        } else if (action.equals(CONNECTION_ERROR)) {
-                            String content;
-                            if (intent.hasExtra(STRING_ID)) {
-                                content = context.getString(intent.getIntExtra(STRING_ID, -1));
-                            } else {
-                                content = intent.getStringExtra(STRING);
-                            }
-                            showConnectionError(content);
-                        } else if (action.equals(CONNECTION_ERROR_HIDE)) {
-                            hideConnectionError();
+                try {
+                    if (action.equals(TOP_LEVEL_BACK)) {
+                        if (!isVisible()) return;
+                        if (!backPressCalled) {
+                            backPressCalled = true;
+                            onBackPressResult();
                         }
-                    } catch (Exception e) {
-                        Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
+                    } else if (action.equals(REDRAW_ALL_WIDGETS)) {
+                        updateInternal(false);
+                    } else if (action.equals(CONNECTION_ERROR)) {
+                        String content;
+                        if (intent.hasExtra(STRING_ID)) {
+                            content = context.getString(intent.getIntExtra(STRING_ID, -1));
+                        } else {
+                            content = intent.getStringExtra(STRING);
+                        }
+                        showConnectionError(content);
+                    } else if (action.equals(CONNECTION_ERROR_HIDE)) {
+                        hideConnectionError();
                     }
+                } catch (Exception e) {
+                    Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
                 }
             });
         }

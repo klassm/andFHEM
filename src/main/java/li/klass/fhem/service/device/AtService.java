@@ -66,7 +66,7 @@ public class AtService {
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(command, Optional.absent(), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
@@ -90,7 +90,7 @@ public class AtService {
 
     public void modify(final String timerName, int hour, int minute, int second, String repetition, String type,
                        String targetDeviceName, String targetState, String targetStateAppendix, final boolean isActive, final Context context) {
-        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, Optional.<String>absent(), context);
+        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, Optional.absent(), context);
 
         if (!deviceOptional.isPresent()) {
             LOG.info("cannot find device for {}", timerName);
@@ -102,7 +102,7 @@ public class AtService {
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
 
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(command, Optional.absent(), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
@@ -113,6 +113,6 @@ public class AtService {
     }
 
     private String handleDisabled(String timerName, boolean isActive, Context context) {
-        return commandExecutionService.executeSync(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), Optional.<String>absent(), context);
+        return commandExecutionService.executeSync(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), Optional.absent(), context);
     }
 }

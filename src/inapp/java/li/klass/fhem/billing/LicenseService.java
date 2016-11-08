@@ -58,12 +58,9 @@ public class LicenseService {
     }
 
     public void isPremium(final IsPremiumListener listener) {
-        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
-            @Override
-            public void onInventoryLoadFinished(boolean success) {
-                boolean isPremium = isPremiumInternal(success);
-                listener.isPremium(isPremium);
-            }
+        billingService.loadInventory(success -> {
+            boolean isPremium = isPremiumInternal(success);
+            listener.isPremium(isPremium);
         }, applicationContext);
     }
 

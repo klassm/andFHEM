@@ -91,12 +91,7 @@ public class ErrorHolder {
 
     public static void sendLastErrorAsMail(final Context context) {
         DialogUtil.showConfirmBox(context, R.string.error_send,
-                R.string.error_send_content, new DialogUtil.AlertOnClickListener() {
-                    @Override
-                    public void onClick() {
-                        handleSendLastError(context);
-                    }
-                });
+                R.string.error_send_content, () -> handleSendLastError(context));
     }
 
     private static void handleSendLastError(Context context) {

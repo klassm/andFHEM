@@ -63,12 +63,7 @@ public class GenericDeviceService {
         }
 
         private String fhtConcat(List<StateToSet> input) {
-            return from(input).transform(new Function<StateToSet, String>() {
-                @Override
-                public String apply(StateToSet input) {
-                    return input.getKey() + " " + input.getValue();
-                }
-            }).join(Joiner.on(" "));
+            return from(input).transform(input1 -> input1.getKey() + " " + input1.getValue()).join(Joiner.on(" "));
         }
     };
 

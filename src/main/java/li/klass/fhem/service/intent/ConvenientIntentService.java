@@ -65,12 +65,7 @@ public abstract class ConvenientIntentService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
         try {
             if (executorService != null && !outOfMemoryOccurred) {
-                executorService.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        handleTaskInternal(intent);
-                    }
-                });
+                executorService.submit(() -> handleTaskInternal(intent));
             } else {
                 handleTaskInternal(intent);
             }

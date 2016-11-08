@@ -91,20 +91,12 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapter {
     private void registerActionHandlerFor(final Context context, View view, final FhemDevice device,
                                           int buttonId, final String state) {
         Button button = (Button) view.findViewById(buttonId);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stateUiService.setState(device, state, context);
-            }
-        });
+        button.setOnClickListener(view1 -> stateUiService.setState(device, state, context));
         if (NumberUtils.isNumber(state)) {
-            button.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    stateUiService.setState(device, "program_" + state, context);
-                    Toast.makeText(context, String.format(context.getString(R.string.programChannelSuccess), state), Toast.LENGTH_SHORT).show();
-                    return true;
-                }
+            button.setOnLongClickListener(v -> {
+                stateUiService.setState(device, "program_" + state, context);
+                Toast.makeText(context, String.format(context.getString(R.string.programChannelSuccess), state), Toast.LENGTH_SHORT).show();
+                return true;
             });
         }
     }

@@ -25,7 +25,6 @@
 package li.klass.fhem.testsuite.category;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 
@@ -144,22 +143,9 @@ public class CategorySuite extends Suite {
         final String basePath = getBasePath();
         File basePathFile = new File(basePath);
 
-        ImmutableList<Class<?>> classes = Files.fileTreeTraverser().breadthFirstTraversal(basePathFile).filter(new Predicate<File>() {
-            @Override
-            public boolean apply(File input) {
-                return input.getName().endsWith(".java");
-            }
-        }).transform(new Function<File, Class<?>>() {
-            @Override
-            public Class<?> apply(File input) {
-                return toClass(input, basePath);
-            }
-        }).filter(new Predicate<Class<?>>() {
-            @Override
-            public boolean apply(Class<?> input) {
-                return input != null && !Modifier.isAbstract(input.getModifiers());
-            }
-        }).toList();
+        ImmutableList<Class<?>> classes = Files.fileTreeTraverser().breadthFirstTraversal(basePathFile).filter(input -> {
+            return input.getName().endsWith(".java");
+        }).transform((Function<File, Class<?>>) input -> toClass(input, basePath)).filter(input -> input != null && !Modifier.isAbstract(input.getModifiers())).toList();
         return (classes.toArray(new Class[classes.size()]));
 
     }

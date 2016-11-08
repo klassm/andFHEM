@@ -30,7 +30,7 @@ import li.klass.fhem.resources.ResourceIdMapper;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ShowField {
-    public static final String FIRST = "__first__";
+    String FIRST = "__first__";
 
     ResourceIdMapper description();
 

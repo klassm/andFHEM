@@ -43,11 +43,6 @@ public class CommandIndicatorActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, 1000);
+        new Handler().postDelayed(this::finish, 1000);
     }
 }

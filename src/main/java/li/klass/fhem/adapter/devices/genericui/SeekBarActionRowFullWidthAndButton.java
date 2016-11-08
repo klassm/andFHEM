@@ -67,23 +67,17 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
     private void applySetButtonIfRequired(final XmlListDevice device, TableRow row) {
         Button button = (Button) row.findViewById(R.id.button);
         if (button == null) return;
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        button.setOnClickListener(view -> {
 
-                String title = context.getString(R.string.set_value);
+            String title = context.getString(R.string.set_value);
 
-                DialogUtil.showInputBox(context, title, "0", new DialogUtil.InputDialogListener() {
-                    @Override
-                    public void onClick(String text) {
-                        if (isDecimalNumber(text)) {
-                            onButtonSetValue(device, Integer.parseInt(text));
-                        } else {
-                            DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
-                        }
-                    }
-                });
-            }
+            DialogUtil.showInputBox(context, title, "0", text -> {
+                if (isDecimalNumber(text)) {
+                    onButtonSetValue(device, Integer.parseInt(text));
+                } else {
+                    DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
+                }
+            });
         });
         if (!showButton()) {
             button.setVisibility(View.GONE);

@@ -77,21 +77,18 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
             return STATE.DONE;
         }
 
-        licenseService.isPremium(new LicenseService.IsPremiumListener() {
-            @Override
-            public void isPremium(boolean isPremium) {
-                if (!isPremium) {
-                    LOG.info("I am not premium, so I cannot recognize voice commands.");
-                    return;
-                }
+        licenseService.isPremium(isPremium -> {
+            if (!isPremium) {
+                LOG.info("I am not premium, so I cannot recognize voice commands.");
+                return;
+            }
 
-                if (action.equalsIgnoreCase(Actions.RECOGNIZE_VOICE_COMMAND)) {
-                    String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
-                    if (handleCommand(command)) {
-                        sendNoResult(resultReceiver, ResultCodes.SUCCESS);
-                    } else {
-                        sendNoResult(resultReceiver, ResultCodes.ERROR);
-                    }
+            if (action.equalsIgnoreCase(Actions.RECOGNIZE_VOICE_COMMAND)) {
+                String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
+                if (handleCommand(command)) {
+                    sendNoResult(resultReceiver, ResultCodes.SUCCESS);
+                } else {
+                    sendNoResult(resultReceiver, ResultCodes.ERROR);
                 }
             }
         });

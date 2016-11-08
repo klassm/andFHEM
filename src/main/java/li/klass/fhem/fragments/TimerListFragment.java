@@ -90,7 +90,7 @@ public class TimerListFragment extends BaseFragment {
         }
         Context context = getActivity();
 
-        TimerListAdapter listAdapter = new TimerListAdapter(context, Lists.<AtDevice>newArrayList());
+        TimerListAdapter listAdapter = new TimerListAdapter(context, Lists.newArrayList());
 
         View layout = inflater.inflate(R.layout.timer_overview, container, false);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
@@ -99,15 +99,12 @@ public class TimerListFragment extends BaseFragment {
         listView.setEmptyView(emptyView);
         listView.setAdapter(listAdapter);
         registerForContextMenu(listView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AtDevice device = (AtDevice) view.getTag();
+        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            AtDevice device = (AtDevice) view1.getTag();
 
-                getActivity().sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
-                        .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
-                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
-            }
+            getActivity().sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
+                    .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
         });
 
         return layout;

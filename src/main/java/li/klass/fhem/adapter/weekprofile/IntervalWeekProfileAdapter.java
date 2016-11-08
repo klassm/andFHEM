@@ -84,34 +84,23 @@ public class IntervalWeekProfileAdapter
         setDetailTextView(view, R.id.temperature, appendTemperature(child.getChangedTemperature()),
                 appendTemperature(child.getTemperature()), isNew);
 
-        setTemperatureAndInterval(view, R.id.set, child, viewGroup, new OnIntervalTemperatureChangedListener() {
-            @Override
-            public void onIntervalTemperatureChanged(String time, double temperature) {
-                LOGGER.info("onIntervalTemperatureChanged(time={}, temperature={})", time, temperature);
-                child.setChangedTemperature(temperature);
+        setTemperatureAndInterval(view, R.id.set, child, viewGroup, (time, temperature) -> {
+            LOGGER.info("onIntervalTemperatureChanged(time={}, temperature={})", time, temperature);
+            child.setChangedTemperature(temperature);
 
-                if (!child.isTimeFixed()) {
-                    child.setChangedSwitchTime(time);
-                } else {
-                    LOGGER.info("onIntervalTemperatureChanged() - cannot change switch time, time is fixed!");
-                }
-                notifyWeekProfileChangedListener();
+            if (!child.isTimeFixed()) {
+                child.setChangedSwitchTime(time);
+            } else {
+                LOGGER.info("onIntervalTemperatureChanged() - cannot change switch time, time is fixed!");
             }
+            notifyWeekProfileChangedListener();
         });
 
         Button deleteButton = (Button) view.findViewById(R.id.delete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogUtil.showConfirmBox(context, R.string.areYouSure, R.string.deleteConfirmIntervalText, new DialogUtil.AlertOnClickListener() {
-                    @Override
-                    public void onClick() {
-                        parent.deleteHeatingIntervalAt(relativeChildPosition);
-                        notifyWeekProfileChangedListener();
-                    }
-                });
-            }
-        });
+        deleteButton.setOnClickListener(view1 -> DialogUtil.showConfirmBox(context, R.string.areYouSure, R.string.deleteConfirmIntervalText, () -> {
+            parent.deleteHeatingIntervalAt(relativeChildPosition);
+            notifyWeekProfileChangedListener();
+        }));
 
         if (child.isTimeFixed()) {
             deleteButton.setVisibility(View.INVISIBLE);
@@ -125,16 +114,13 @@ public class IntervalWeekProfileAdapter
 
         final FilledTemperatureInterval interval = new FilledTemperatureInterval();
 
-        setTemperatureAndInterval(view, R.id.addInterval, interval, viewGroup, new OnIntervalTemperatureChangedListener() {
-            @Override
-            public void onIntervalTemperatureChanged(String time, double temperature) {
-                interval.setChangedSwitchTime(time);
-                interval.setChangedTemperature(temperature);
-                interval.setNew(true);
+        setTemperatureAndInterval(view, R.id.addInterval, interval, viewGroup, (time, temperature) -> {
+            interval.setChangedSwitchTime(time);
+            interval.setChangedTemperature(temperature);
+            interval.setNew(true);
 
-                parent.addHeatingInterval(interval);
-                notifyWeekProfileChangedListener();
-            }
+            parent.addHeatingInterval(interval);
+            notifyWeekProfileChangedListener();
         });
 
         return view;
@@ -144,14 +130,7 @@ public class IntervalWeekProfileAdapter
                                            final ViewGroup viewGroup, final OnIntervalTemperatureChangedListener listener) {
 
         Button button = (Button) view.findViewById(buttonId);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            @SuppressWarnings("unchecked")
-            public void onClick(View view) {
-                new IntervalEditHolder(interval, listener).showDialog(context, viewGroup);
-            }
-        });
+        button.setOnClickListener(view1 -> new IntervalEditHolder(interval, listener).showDialog(context, viewGroup));
     }
 
     private class IntervalEditHolder {
@@ -182,12 +161,9 @@ public class IntervalWeekProfileAdapter
                     final FallbackTimePicker timePicker = (FallbackTimePicker) contentView.findViewById(R.id.timePicker);
                     timePicker.setHours(hours);
                     timePicker.setMinutes(minutes);
-                    timePicker.setOnValueChangedListener(new FallbackTimePicker.OnValueChangedListener() {
-                        @Override
-                        public void onValueChanged(int hours, int minutes) {
-                            IntervalEditHolder.this.hours = hours;
-                            IntervalEditHolder.this.minutes = minutes;
-                        }
+                    timePicker.setOnValueChangedListener((hours1, minutes1) -> {
+                        IntervalEditHolder.this.hours = hours1;
+                        IntervalEditHolder.this.minutes = minutes1;
                     });
                     timePicker.setEnabled(! interval.isTimeFixed());
                     return contentView;
@@ -202,12 +178,9 @@ public class IntervalWeekProfileAdapter
                     timePicker.setCurrentHour(hours);
                     timePicker.setCurrentMinute(minutes);
 
-                    timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                        @Override
-                        public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                            IntervalEditHolder.this.hours = hourOfDay;
-                            IntervalEditHolder.this.minutes = minute;
-                        }
+                    timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
+                        IntervalEditHolder.this.hours = hourOfDay;
+                        IntervalEditHolder.this.minutes = minute;
                     });
 
                     timePicker.setEnabled(! interval.isTimeFixed());
@@ -236,21 +209,18 @@ public class IntervalWeekProfileAdapter
             //noinspection unchecked
             layout.addView(temperatureChangeTableRow.createRow(layoutInflater, null, 8));
 
-            DialogUtil.showContentDialog(context, null, contentView, new DialogUtil.AlertOnClickListener() {
-                @Override
-                public void onClick() {
-                    double temperature = temperatureChangeTableRow.getTemperature();
+            DialogUtil.showContentDialog(context, null, contentView, () -> {
+                double temperature = temperatureChangeTableRow.getTemperature();
 
-                    String time = timeToTimeString(hours, minutes);
+                String time = timeToTimeString(hours, minutes);
 
-                    if (listener != null) {
-                        LOGGER.debug("showDialog() - notifying listener");
-                        listener.onIntervalTemperatureChanged(time, temperature);
-                    } else {
-                        LOGGER.error("showDialog() - no listener");
-                    }
-                    notifyWeekProfileChangedListener();
+                if (listener != null) {
+                    LOGGER.debug("showDialog() - notifying listener");
+                    listener.onIntervalTemperatureChanged(time, temperature);
+                } else {
+                    LOGGER.error("showDialog() - no listener");
                 }
+                notifyWeekProfileChangedListener();
             });
         }
     }

@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
 import com.google.common.collect.Iterables;
 
@@ -48,20 +47,14 @@ public class GroupSetListTargetStateHandler<D extends FhemDevice<?>> implements 
 
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + groupSetListEntry.getKey())
-                .setItems(Iterables.toArray(groupSetListEntry.getGroupStates(), CharSequence.class), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String subState = groupSetListEntry.getGroupStates().get(which);
-                        callback.onSubStateSelected(device, groupSetListEntry.getKey(), subState);
-                        dialog.dismiss();
-                    }
+                .setItems(Iterables.toArray(groupSetListEntry.getGroupStates(), CharSequence.class), (dialog, which) -> {
+                    String subState = groupSetListEntry.getGroupStates().get(which);
+                    callback.onSubStateSelected(device, groupSetListEntry.getKey(), subState);
+                    dialog.dismiss();
                 })
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onNothingSelected(device);
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    callback.onNothingSelected(device);
+                    dialog.dismiss();
                 })
                 .show();
     }

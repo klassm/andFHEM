@@ -26,8 +26,6 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -71,12 +69,7 @@ public abstract class ToggleActionRow {
     }
 
     private ToggleButton.OnClickListener createListener(final Context context, final FhemDevice device, final ToggleButton button) {
-        return new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonClick(context, device, button.isChecked());
-            }
-        };
+        return view -> onButtonClick(context, device, button.isChecked());
     }
 
     @SuppressWarnings("unchecked")

@@ -43,20 +43,12 @@ import static com.google.common.collect.FluentIterable.from;
 public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
 
     public static final Pattern DIM_STATE_PATTERN = Pattern.compile("dim[0-9]+[%]?");
-    private static final Predicate<String> DIMMABLE_STATE = new Predicate<String>() {
-        @Override
-        public boolean apply(String input) {
-            return DIM_STATE_PATTERN.matcher(input).matches();
-        }
-    };
-    public static final Comparator<String> COMPARE_BY_DIM_VALUE = new Comparator<String>() {
-        @Override
-        public int compare(String lhs, String rhs) {
-            lhs = lhs.replace("dim", "").replace("%", "");
-            rhs = rhs.replace("dim", "").replace("%", "");
+    private static final Predicate<String> DIMMABLE_STATE = input -> DIM_STATE_PATTERN.matcher(input).matches();
+    public static final Comparator<String> COMPARE_BY_DIM_VALUE = (lhs, rhs) -> {
+        lhs = lhs.replace("dim", "").replace("%", "");
+        rhs = rhs.replace("dim", "").replace("%", "");
 
-            return ((Integer) Integer.parseInt(lhs)).compareTo(Integer.parseInt(rhs));
-        }
+        return ((Integer) Integer.parseInt(lhs)).compareTo(Integer.parseInt(rhs));
     };
 
     private final ImmutableList<String> foundDimStates;
@@ -75,7 +67,7 @@ public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
         ImmutableList<String> foundDimStates = from(keys).filter(DIMMABLE_STATE).toSortedList(COMPARE_BY_DIM_VALUE);
 
         return foundDimStates.isEmpty() ?
-                Optional.<DiscreteDimmableBehavior>absent() :
+                Optional.absent() :
                 Optional.of(new DiscreteDimmableBehavior(foundDimStates));
     }
 

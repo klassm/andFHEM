@@ -30,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
@@ -61,22 +60,16 @@ public class FromToWeekProfileAdapter
         setDetailTextView(view, R.id.from, child.getChangedFromTime(), child.getFromTime(), false);
         setDetailTextView(view, R.id.to, child.getChangedToTime(), child.getToTime(), false);
 
-        setChangeTimeButton(view, R.id.fromSet, child.getChangedFromTime(), new OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(String newTime) {
-                newTime = weekProfile.formatTimeForCommand(newTime);
-                child.setChangedFromTime(newTime);
-                notifyWeekProfileChangedListener();
-            }
+        setChangeTimeButton(view, R.id.fromSet, child.getChangedFromTime(), newTime -> {
+            newTime = weekProfile.formatTimeForCommand(newTime);
+            child.setChangedFromTime(newTime);
+            notifyWeekProfileChangedListener();
         });
 
-        setChangeTimeButton(view, R.id.toSet, child.getChangedToTime(), new OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(String newTime) {
-                newTime = weekProfile.formatTimeForCommand(newTime);
-                child.setChangedToTime(newTime);
-                notifyWeekProfileChangedListener();
-            }
+        setChangeTimeButton(view, R.id.toSet, child.getChangedToTime(), newTime -> {
+            newTime = weekProfile.formatTimeForCommand(newTime);
+            child.setChangedToTime(newTime);
+            notifyWeekProfileChangedListener();
         });
 
         int position = relativeChildPosition + 1;
@@ -93,23 +86,17 @@ public class FromToWeekProfileAdapter
     private void setChangeTimeButton(View view, int buttonId, final String currentTime, final OnTimeChangedListener listener) {
 
         Button setTimeButton = (Button) view.findViewById(buttonId);
-        setTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View buttonView) {
-                int hours = Integer.valueOf(currentTime.substring(0, 2));
-                if (hours == 24) hours = 0;
-                int minutes = Integer.valueOf(currentTime.substring(3, 5));
+        setTimeButton.setOnClickListener(buttonView -> {
+            int hours = Integer.valueOf(currentTime.substring(0, 2));
+            if (hours == 24) hours = 0;
+            int minutes = Integer.valueOf(currentTime.substring(3, 5));
 
-                TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minuteOfDay) {
-                        String time = timeToTimeString(hourOfDay, minuteOfDay);
-                        listener.onTimeChanged(time);
-                    }
-                }, hours, minutes, true);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(context, (timePicker, hourOfDay, minuteOfDay) -> {
+                String time = timeToTimeString(hourOfDay, minuteOfDay);
+                listener.onTimeChanged(time);
+            }, hours, minutes, true);
 
-                timePickerDialog.show();
-            }
+            timePickerDialog.show();
         });
     }
 }

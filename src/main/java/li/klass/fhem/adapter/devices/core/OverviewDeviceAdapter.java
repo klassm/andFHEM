@@ -209,7 +209,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener listener) {
         fieldName = fieldName.toLowerCase(Locale.getDefault());
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
-            fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener>());
+            fieldNameAddedListeners.put(fieldName, new ArrayList<>());
         }
 
         fieldNameAddedListeners.get(fieldName).add(listener);

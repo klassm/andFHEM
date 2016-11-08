@@ -94,12 +94,7 @@ public class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
     private DeviceNameSelectionFragment devicesFragment() {
         Bundle bundle = new Bundle();
 
-        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
-            @Override
-            public boolean isSelectable(FhemDevice<?> device) {
-                return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device).isEmpty();
-            }
-        });
+        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, (DeviceNameSelectionFragment.DeviceFilter) device -> !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device).isEmpty());
 
         bundle.putParcelable(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
@@ -122,18 +117,8 @@ public class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
 
     private RoomListFragment roomsFragment() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ROOM_SELECTABLE_CALLBACK, new RoomListFragment.RoomSelectableCallback() {
-            @Override
-            public boolean isRoomSelectable(String roomName) {
-                return !WidgetType.getSupportedRoomWidgetsFor(widgetSize).isEmpty();
-            }
-        });
-        bundle.putSerializable(ON_CLICKED_CALLBACK, new RoomListFragment.RoomClickedCallback() {
-            @Override
-            public void onRoomClicked(String roomName) {
-                selectionCompletedCallback.onRoomSelect(roomName);
-            }
-        });
+        bundle.putSerializable(ROOM_SELECTABLE_CALLBACK, (RoomListFragment.RoomSelectableCallback) roomName -> !WidgetType.getSupportedRoomWidgetsFor(widgetSize).isEmpty());
+        bundle.putSerializable(ON_CLICKED_CALLBACK, (RoomListFragment.RoomClickedCallback) selectionCompletedCallback::onRoomSelect);
         bundle.putInt(EMPTY_TEXT_ID, R.string.widgetNoRooms);
 
         RoomListFragment fragment = new RoomListFragment();
@@ -145,12 +130,7 @@ public class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
     private OtherWidgetsFragment othersFragment() {
         Bundle arguments = new Bundle();
         arguments.putSerializable(APP_WIDGET_SIZE, widgetSize);
-        arguments.putSerializable(ON_CLICKED_CALLBACK, new OtherWidgetsFragment.OnWidgetClickedCallback() {
-            @Override
-            public void onWidgetClicked(WidgetType widgetType) {
-                selectionCompletedCallback.onOtherWidgetSelect(widgetType);
-            }
-        });
+        arguments.putSerializable(ON_CLICKED_CALLBACK, (OtherWidgetsFragment.OnWidgetClickedCallback) selectionCompletedCallback::onOtherWidgetSelect);
 
         OtherWidgetsFragment otherWidgetsFragment = new OtherWidgetsFragment();
         otherWidgetsFragment.setArguments(arguments);

@@ -78,12 +78,7 @@ public class PlayerDetailAction extends DeviceDetailViewAction {
             button.setVisibility(View.GONE);
             return;
         }
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stateUiService.setState(device, action.get(), context);
-            }
-        });
+        button.setOnClickListener(v -> stateUiService.setState(device, action.get(), context));
     }
 
     public static Builder builderFor(StateUiService stateUiService) {

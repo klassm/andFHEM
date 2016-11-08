@@ -76,7 +76,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
     private static final ManagementPill MANAGEMENT_PILL = new ManagementPill();
 
     public AvailableConnectionDataAdapter(Spinner parent, Runnable onConnectionChanged) {
-        super(parent.getContext(), R.layout.connection_spinner_item, new ArrayList<FHEMServerSpec>());
+        super(parent.getContext(), R.layout.connection_spinner_item, new ArrayList<>());
         this.onConnectionChanged = onConnectionChanged;
         this.parent = parent;
     }

@@ -27,7 +27,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -84,19 +83,13 @@ public class SliderSetListTargetStateHandler<D extends FhemDevice<?>> implements
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + sliderSetListEntry.getKey())
                 .setView(tableLayout)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onNothingSelected(device);
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    callback.onNothingSelected(device);
+                    dialog.dismiss();
                 })
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onSubStateSelected(device, sliderSetListEntry.getKey(), dimProgress + "");
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    callback.onSubStateSelected(device, sliderSetListEntry.getKey(), dimProgress + "");
+                    dialog.dismiss();
                 })
                 .show();
     }

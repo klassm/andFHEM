@@ -64,13 +64,10 @@ public class WebCmdActionRow extends HolderActionRow<String> {
         button.setTextOn(device.getEventMapStateFor(command));
         button.setTextOff(device.getEventMapStateFor(command));
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command), new StateChangingTargetStateSelectedCallback(context, new StateUiService()));
-                if (!result) {
-                    new StateUiService().setState(device, command, context);
-                }
+        button.setOnClickListener(view -> {
+            boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command), new StateChangingTargetStateSelectedCallback(context, new StateUiService()));
+            if (!result) {
+                new StateUiService().setState(device, command, context);
             }
         });
 

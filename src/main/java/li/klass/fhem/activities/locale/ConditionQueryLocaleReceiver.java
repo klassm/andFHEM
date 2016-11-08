@@ -61,7 +61,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         final String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
 
-        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, Optional.<String>absent(), context);
+        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, Optional.absent(), context);
         if (!device.isPresent()) {
             setResultCode(RESULT_CONDITION_UNSATISFIED);
             return;

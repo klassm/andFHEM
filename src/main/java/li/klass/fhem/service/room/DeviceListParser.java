@@ -203,50 +203,47 @@ public class DeviceListParser {
     @NonNull
     private Function<XmlListDevice, SvgGraphDefinition> deviceToGraphDefinition(final Map<String, FhemDevice> allDevices) {
         final boolean isConfigDb = isConfigDb(allDevices);
-        return new Function<XmlListDevice, SvgGraphDefinition>() {
-            @Override
-            public SvgGraphDefinition apply(XmlListDevice input) {
-                LOG.info("deviceToGraphDefinition - trying to load graph definition for {}", input.getName());
+        return input -> {
+            LOG.info("deviceToGraphDefinition - trying to load graph definition for {}", input.getName());
 
-                String gplotFileName = input.getInternals().get("GPLOTFILE").getValue();
-                Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName, isConfigDb);
-                if (!gPlotDefinitionOptional.isPresent()) {
-                    LOG.error("deviceToGraphDefinition - cannot find graph definition for {}", gplotFileName);
-                    return null;
-                }
-                String name = input.getInternals().get("NAME").getValue();
-
-                String logDeviceName = input.getInternals().get("LOGDEVICE").getValue();
-                if (!allDevices.containsKey(logDeviceName)) {
-                    LOG.error("deviceToGraphDefinition - cannnot find LOGDEVICE {}", name);
-                    return null;
-                }
-
-                // In rare cases we will find devices not being log devices, resulting in
-                // ClassCastExceptions. We just want to make sure we only handle LogDevices here.
-                FhemDevice logDeviceFhemDevice = allDevices.get(logDeviceName);
-                if (!(logDeviceFhemDevice instanceof LogDevice)) {
-                    LOG.error("deviceToGraphDefinition - cannot find log device with name {}", logDeviceName);
-                    return null;
-                }
-
-                LogDevice logDevice = (LogDevice) logDeviceFhemDevice;
-
-                List<String> labels = newArrayList();
-                DeviceNode labelsDef = input.getAttributes().get("label");
-                if (labelsDef != null) {
-                    labels = newArrayList(labelsDef.getValue().replaceAll("\"", "").split(","));
-                }
-
-                DeviceNode titleDef = input.getAttributes().get("title");
-                String title = titleDef == null ? "" : titleDef.getValue();
-
-                List<String> plotfunction = Arrays.asList(input.getAttribute("plotfunction").or("").trim().split(" "));
-
-                LOG.info("deviceToGraphDefinition - loaded graph definition is {}", gPlotDefinitionOptional.get());
-
-                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
+            String gplotFileName = input.getInternals().get("GPLOTFILE").getValue();
+            Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName, isConfigDb);
+            if (!gPlotDefinitionOptional.isPresent()) {
+                LOG.error("deviceToGraphDefinition - cannot find graph definition for {}", gplotFileName);
+                return null;
             }
+            String name = input.getInternals().get("NAME").getValue();
+
+            String logDeviceName = input.getInternals().get("LOGDEVICE").getValue();
+            if (!allDevices.containsKey(logDeviceName)) {
+                LOG.error("deviceToGraphDefinition - cannnot find LOGDEVICE {}", name);
+                return null;
+            }
+
+            // In rare cases we will find devices not being log devices, resulting in
+            // ClassCastExceptions. We just want to make sure we only handle LogDevices here.
+            FhemDevice logDeviceFhemDevice = allDevices.get(logDeviceName);
+            if (!(logDeviceFhemDevice instanceof LogDevice)) {
+                LOG.error("deviceToGraphDefinition - cannot find log device with name {}", logDeviceName);
+                return null;
+            }
+
+            LogDevice logDevice = (LogDevice) logDeviceFhemDevice;
+
+            List<String> labels = newArrayList();
+            DeviceNode labelsDef = input.getAttributes().get("label");
+            if (labelsDef != null) {
+                labels = newArrayList(labelsDef.getValue().replaceAll("\"", "").split(","));
+            }
+
+            DeviceNode titleDef = input.getAttributes().get("title");
+            String title = titleDef == null ? "" : titleDef.getValue();
+
+            List<String> plotfunction = Arrays.asList(input.getAttribute("plotfunction").or("").trim().split(" "));
+
+            LOG.info("deviceToGraphDefinition - loaded graph definition is {}", gPlotDefinitionOptional.get());
+
+            return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
         };
     }
 
@@ -460,7 +457,7 @@ public class DeviceListParser {
 
     private void addToCache(Map<String, Set<DeviceClassCacheEntry>> cache, DeviceClassCacheEntry entry) {
         if (!cache.containsKey(entry.getAttribute())) {
-            cache.put(entry.getAttribute(), Sets.<DeviceClassCacheEntry>newHashSet());
+            cache.put(entry.getAttribute(), Sets.newHashSet());
         }
         cache.get(entry.getAttribute()).add(entry);
     }

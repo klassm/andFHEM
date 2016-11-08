@@ -54,12 +54,7 @@ public abstract class DeviceDetailViewButtonAction extends DeviceDetailViewActio
     }
 
     private Button.OnClickListener createListener(final Context context, final FhemDevice device) {
-        return new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonClick(context, device);
-            }
-        };
+        return view -> onButtonClick(context, device);
     }
 
     public boolean isVisible(FhemDevice device) {

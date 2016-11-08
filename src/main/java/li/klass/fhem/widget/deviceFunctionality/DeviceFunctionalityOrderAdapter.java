@@ -76,13 +76,10 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
     private void setOnClickAction(final OrderAction action,
                                   final DeviceFunctionalityPreferenceWrapper item, final View convertView) {
         ImageButton button = (ImageButton) convertView.findViewById(R.id.change_visibility);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkNotNull(view);
-                listener.deviceTypeReordered(item, action);
-                notifyDataSetChanged();
-            }
+        button.setOnClickListener(view -> {
+            checkNotNull(view);
+            listener.deviceTypeReordered(item, action);
+            notifyDataSetChanged();
         });
     }
 

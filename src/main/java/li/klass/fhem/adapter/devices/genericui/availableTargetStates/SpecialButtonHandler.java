@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.EditText;
 
 import li.klass.fhem.R;
@@ -58,23 +57,17 @@ public class SpecialButtonHandler<D extends FhemDevice<?>> implements SetListTar
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
                 .setView(editText)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        callback.onNothingSelected(device);
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    dialog.dismiss();
+                    callback.onNothingSelected(device);
                 })
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String value = editText.getText().toString();
-                        if (!type.matches(value)) {
-                            DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
-                        } else {
-                            callback.onSubStateSelected(device, entry.getKey(), value);
-                            dialog.dismiss();
-                        }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    String value = editText.getText().toString();
+                    if (!type.matches(value)) {
+                        DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
+                    } else {
+                        callback.onSubStateSelected(device, entry.getKey(), value);
+                        dialog.dismiss();
                     }
                 })
                 .show();

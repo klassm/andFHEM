@@ -64,7 +64,7 @@ public class ArrayListUtil {
         Reject.ifNull(toFilter);
         Reject.ifNull(filter);
 
-        ArrayList<T> result = new ArrayList<T>();
+        ArrayList<T> result = new ArrayList<>();
         for (T element : toFilter) {
             if (filter.doFilter(element)) {
                 result.add(element);

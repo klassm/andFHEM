@@ -45,12 +45,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
-    public static final Comparator<String> CASE_INSENSITIVE_COMPARATOR = new Comparator<String>() {
-        @Override
-        public int compare(String lhs, String rhs) {
-            return lhs.toLowerCase(Locale.getDefault()).compareTo(rhs.toLowerCase(Locale.getDefault()));
-        }
-    };
+    public static final Comparator<String> CASE_INSENSITIVE_COMPARATOR = (lhs, rhs) -> lhs.toLowerCase(Locale.getDefault()).compareTo(rhs.toLowerCase(Locale.getDefault()));
     private String selectedRoom;
 
     private static final Logger LOG = LoggerFactory.getLogger(RoomListAdapter.class);

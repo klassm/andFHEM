@@ -63,12 +63,7 @@ public class LicenseIntentService extends ConvenientIntentService {
 
     private void handlePremiumRequest(final ResultReceiver resultReceiver) {
 
-        licenseService.isPremium(new LicenseService.IsPremiumListener() {
-            @Override
-            public void isPremium(boolean isPremium) {
-                sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium);
-            }
-        });
+        licenseService.isPremium(isPremium -> sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium));
     }
 
     @Override

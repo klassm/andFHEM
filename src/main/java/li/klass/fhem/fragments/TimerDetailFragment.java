@@ -91,12 +91,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class TimerDetailFragment extends BaseFragment {
 
-    private static final DeviceNameSelectionFragment.DeviceFilter DEVICE_FILTER = new DeviceNameSelectionFragment.DeviceFilter() {
-        @Override
-        public boolean isSelectable(FhemDevice<?> device) {
-            return device.getSetList().size() > 0;
-        }
-    };
+    private static final DeviceNameSelectionFragment.DeviceFilter DEVICE_FILTER = (DeviceNameSelectionFragment.DeviceFilter) device -> device.getSetList().size() > 0;
 
     private static final String TAG = TimerDetailFragment.class.getName();
     public AtDevice timerDevice;
@@ -180,48 +175,37 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void bindTargetStateButton(final View view) {
-        getTargetStateChangeButton(view).setOnClickListener(new View.OnClickListener() {
-            @SuppressWarnings("unchecked")
+        getTargetStateChangeButton(view).setOnClickListener(v -> showSwitchOptionsMenu(getActivity(), targetDevice, new OnTargetStateSelectedCallback() {
             @Override
-            public void onClick(View v) {
-                showSwitchOptionsMenu(getActivity(), targetDevice, new OnTargetStateSelectedCallback() {
-                    @Override
-                    public void onStateSelected(FhemDevice device, String targetState) {
-                        setTargetState(targetState, view);
-                    }
-
-                    @Override
-                    public void onSubStateSelected(FhemDevice device, String state, String subState) {
-                        onStateSelected(device, state + " " + subState);
-                    }
-
-                    @Override
-                    public void onNothingSelected(FhemDevice device) {
-                    }
-                });
+            public void onStateSelected(FhemDevice device, String targetState) {
+                setTargetState(targetState, view);
             }
-        });
+
+            @Override
+            public void onSubStateSelected(FhemDevice device, String state, String subState) {
+                onStateSelected(device, state + " " + subState);
+            }
+
+            @Override
+            public void onNothingSelected(FhemDevice device) {
+            }
+        }));
     }
 
     private void bindSelectDeviceButton(final View view) {
-        getTargetDeviceChangeButton(view).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View button) {
-                getActivity().sendBroadcast(new Intent(SHOW_FRAGMENT)
-                        .putExtra(FRAGMENT, DEVICE_SELECTION)
-                        .putExtra(BundleExtraKeys.DEVICE_FILTER, DEVICE_FILTER)
-                        .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
-                            @Override
-                            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                if (resultCode != ResultCodes.SUCCESS) return;
+        getTargetDeviceChangeButton(view).setOnClickListener(button -> getActivity().sendBroadcast(new Intent(SHOW_FRAGMENT)
+                .putExtra(FRAGMENT, DEVICE_SELECTION)
+                .putExtra(BundleExtraKeys.DEVICE_FILTER, DEVICE_FILTER)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS) return;
 
-                                if (!resultData.containsKey(CLICKED_DEVICE)) return;
+                        if (!resultData.containsKey(CLICKED_DEVICE)) return;
 
-                                updateTargetDevice((FhemDevice) resultData.get(CLICKED_DEVICE), view);
-                            }
-                        }));
-            }
-        });
+                        updateTargetDevice((FhemDevice) resultData.get(CLICKED_DEVICE), view);
+                    }
+                })));
     }
 
     private void bindIsActiveCheckbox(View view) {
@@ -234,17 +218,9 @@ public class TimerDetailFragment extends BaseFragment {
 
     private void bindSwitchTimeButton(final View view) {
         Button switchTimeChangeButton = (Button) view.findViewById(R.id.switchTimeSet);
-        switchTimeChangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View button) {
-                SwitchTime switchTime = getSwitchTime(view).or(new SwitchTime(0, 0, 0));
-                new TimePickerWithSecondsDialog(getActivity(), switchTime.hour, switchTime.minute, switchTime.second, new TimePickerWithSecondsDialog.TimePickerWithSecondsListener() {
-                    @Override
-                    public void onTimeChanged(boolean okClicked, int newHour, int newMinute, int newSecond, String formattedText) {
-                        setSwitchTime(newHour, newMinute, newSecond, view);
-                    }
-                }).show();
-            }
+        switchTimeChangeButton.setOnClickListener(button -> {
+            SwitchTime switchTime = getSwitchTime(view).or(new SwitchTime(0, 0, 0));
+            new TimePickerWithSecondsDialog(getActivity(), switchTime.hour, switchTime.minute, switchTime.second, (okClicked, newHour, newMinute, newSecond, formattedText) -> setSwitchTime(newHour, newMinute, newSecond, view)).show();
         });
     }
 

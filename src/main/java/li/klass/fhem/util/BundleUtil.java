@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class BundleUtil {
     public static Map<String, Serializable> bundleToMap(Bundle bundle) {
-        Map<String, Serializable> result = new HashMap<String, Serializable>();
+        Map<String, Serializable> result = new HashMap<>();
         if (bundle == null) return result;
 
         for (String key : bundle.keySet()) {

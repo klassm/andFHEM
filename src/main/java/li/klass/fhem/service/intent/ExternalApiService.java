@@ -113,7 +113,7 @@ public class ExternalApiService extends Service {
             final ExternalApiService externalApiService = externalApiServiceWeakReference.get();
             switch (msg.what) {
                 case ROOM_LIST:
-                    ArrayList<String> deviceNames = externalApiService.roomListService.getAvailableDeviceNames(Optional.<String>absent(), externalApiService);
+                    ArrayList<String> deviceNames = externalApiService.roomListService.getAvailableDeviceNames(Optional.absent(), externalApiService);
                     externalApiService.replyTo(msg, deviceNames);
 
                     break;
@@ -141,7 +141,7 @@ public class ExternalApiService extends Service {
 
                                 @Override
                                 protected String doInBackground(String... params) {
-                                    return externalApiService.commandExecutionService.executeSync(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), Optional.<String>absent(), externalApiService);
+                                    return externalApiService.commandExecutionService.executeSync(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), Optional.absent(), externalApiService);
                                 }
 
                                 @Override
@@ -150,13 +150,10 @@ public class ExternalApiService extends Service {
                                     // We cannot be sure which one is chosen, so we enforce the right UI thread by using an explicit
                                     // handler.
                                     // see http://stackoverflow.com/questions/10426120/android-got-calledfromwrongthreadexception-in-onpostexecute-how-could-it-be
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ArrayList<String> readingsVal = newArrayList();
-                                            readingsVal.add(result);
-                                            externalApiService.replyTo(readingsVal);
-                                        }
+                                    handler.post(() -> {
+                                        ArrayList<String> readingsVal = newArrayList();
+                                        readingsVal.add(result);
+                                        externalApiService.replyTo(readingsVal);
                                     });
                                 }
                             }.execute(deviceName, readingName, defaultVal);

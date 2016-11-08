@@ -34,7 +34,7 @@ class SupportsType {
     private Optional<Integer> expectedLength;
 
     public SupportsType(String type) {
-        this(type, Optional.<Integer>absent());
+        this(type, Optional.absent());
     }
 
     public SupportsType(String type, int length) {

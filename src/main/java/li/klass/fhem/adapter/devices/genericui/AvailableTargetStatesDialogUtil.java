@@ -82,15 +82,12 @@ public class AvailableTargetStatesDialogUtil {
         final List<String> setOptions = device.getSetList().getSortedKeys();
         final String[] eventMapOptions = device.getAvailableTargetStatesEventMapTexts();
 
-        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, int position) {
-                final String option = setOptions.get(position);
+        DialogInterface.OnClickListener clickListener = (dialog, position) -> {
+            final String option = setOptions.get(position);
 
-                handleSelectedOption(context, device, device.getSetList().get(option), callback);
+            handleSelectedOption(context, device, device.getSetList().get(option), callback);
 
-                dialog.dismiss();
-            }
+            dialog.dismiss();
         };
         ArrayAdapter<String> adapter = new SetListArrayAdapter<>(context, eventMapOptions, setOptions, device);
         contextMenu.setAdapter(adapter, clickListener);
@@ -146,12 +143,7 @@ public class AvailableTargetStatesDialogUtil {
 
         @NonNull
         private Predicate<SetListTargetStateHandler<FhemDevice<?>>> canHandle(final SetListEntry entry) {
-            return new Predicate<SetListTargetStateHandler<FhemDevice<?>>>() {
-                @Override
-                public boolean apply(SetListTargetStateHandler<FhemDevice<?>> input) {
-                    return input.canHandle(entry);
-                }
-            };
+            return input -> input.canHandle(entry);
         }
     }
 }

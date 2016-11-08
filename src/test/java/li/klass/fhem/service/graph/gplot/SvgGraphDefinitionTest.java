@@ -43,14 +43,14 @@ public class SvgGraphDefinitionTest {
     public static Object[][] datapoint() {
         return new Object[][]{
                 {
-                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.<String>emptyList()),
+                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.emptyList()),
                         "myText", "myText"
                 },
                 {
-                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.<String>emptyList()),
+                        new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.emptyList()),
                         "myText<L1>", "myTextbla"
                 }, {
-                new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.<String>emptyList()),
+                new SvgGraphDefinition("bla", defaultGPlotDefinition(), null, Arrays.asList("bla", "blub"), "title", Collections.emptyList()),
                 "myText<L3>", "myText"
         },
         };

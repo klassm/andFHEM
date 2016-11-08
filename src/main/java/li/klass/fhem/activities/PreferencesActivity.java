@@ -113,13 +113,10 @@ public class PreferencesActivity extends PreferenceActivity
         attachListSummaryListenerTo(PreferenceKeys.GRAPH_DEFAULT_TIMESPAN, R.array.graphDefaultTimespanValues, R.array.graphDefaultTimespanEntries, R.string.prefDefaultTimespanSummary);
         attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_WLAN, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeWLANSummary);
         attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_MOBILE, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeMobileSummary);
-        attachStringSummaryListenerTo(PreferenceKeys.GCM_PROJECT_ID, R.string.prefGCMProjectIdSummary, new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String projectId = (String) newValue;
-                gcmSendDeviceService.registerWithGCM(PreferencesActivity.this, projectId);
-                return true;
-            }
+        attachStringSummaryListenerTo(PreferenceKeys.GCM_PROJECT_ID, R.string.prefGCMProjectIdSummary, (preference, newValue) -> {
+            String projectId = (String) newValue;
+            gcmSendDeviceService.registerWithGCM(PreferencesActivity.this, projectId);
+            return true;
         });
         attachListSummaryListenerTo(PreferenceKeys.AUTO_UPDATE_TIME, R.array.updateRoomListTimeValues, R.array.updateRoomListTimeEntries, R.string.prefAutoUpdateSummary);
         attachIntSummaryListenerTo(PreferenceKeys.CONNECTION_TIMEOUT, R.string.prefConnectionTimeoutSummary);
@@ -131,60 +128,45 @@ public class PreferencesActivity extends PreferenceActivity
         deviceColumnWidthPreference.setDefaultValue(DEFAULT_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMaximumValue(DisplayUtil.getLargestDimensionInDP());
 
-        findPreference(SEND_LAST_ERROR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ErrorHolder.sendLastErrorAsMail(PreferencesActivity.this);
-                return true;
-            }
+        findPreference(SEND_LAST_ERROR).setOnPreferenceClickListener(preference -> {
+            ErrorHolder.sendLastErrorAsMail(PreferencesActivity.this);
+            return true;
         });
 
-        findPreference(SEND_APP_LOG).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ErrorHolder.sendApplicationLogAsMail(PreferencesActivity.this);
-                return true;
-            }
+        findPreference(SEND_APP_LOG).setOnPreferenceClickListener(preference -> {
+            ErrorHolder.sendApplicationLogAsMail(PreferencesActivity.this);
+            return true;
         });
 
-        findPreference(CLEAR_TRUSTED_CERTIFICATES).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                MemorizingTrustManager mtm = new MemorizingTrustManager(PreferencesActivity.this);
-                Enumeration<String> aliases = mtm.getCertificates();
-                while (aliases.hasMoreElements()) {
-                    String alias = aliases.nextElement();
-                    try {
-                        mtm.deleteCertificate(alias);
-                        LOGGER.log(Level.INFO, "Deleting certificate for {} ", alias);
-                    } catch (KeyStoreException e) {
-                        LOGGER.log(Level.SEVERE, "Could not delete certificate", e);
-                    }
+        findPreference(CLEAR_TRUSTED_CERTIFICATES).setOnPreferenceClickListener(preference -> {
+            MemorizingTrustManager mtm = new MemorizingTrustManager(PreferencesActivity.this);
+            Enumeration<String> aliases = mtm.getCertificates();
+            while (aliases.hasMoreElements()) {
+                String alias = aliases.nextElement();
+                try {
+                    mtm.deleteCertificate(alias);
+                    LOGGER.log(Level.INFO, "Deleting certificate for {} ", alias);
+                } catch (KeyStoreException e) {
+                    LOGGER.log(Level.SEVERE, "Could not delete certificate", e);
                 }
-                Toast.makeText(getApplicationContext(), getString(R.string.prefClearTrustedCertificatesFinished), Toast.LENGTH_SHORT).show();
-                return true;
             }
+            Toast.makeText(getApplicationContext(), getString(R.string.prefClearTrustedCertificatesFinished), Toast.LENGTH_SHORT).show();
+            return true;
         });
 
         Preference exportPreference = findPreference(EXPORT_SETTINGS);
-        exportPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                importExportUIService.handleExport(PreferencesActivity.this);
-                return true;
-            }
+        exportPreference.setOnPreferenceClickListener(preference -> {
+            importExportUIService.handleExport(PreferencesActivity.this);
+            return true;
         });
         if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.KITKAT) {
             getPreferenceScreen().removePreference(exportPreference);
         }
 
         Preference importPreference = findPreference(IMPORT_SETTINGS);
-        importPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                importExportUIService.handleImport(PreferencesActivity.this);
-                return true;
-            }
+        importPreference.setOnPreferenceClickListener(preference -> {
+            importExportUIService.handleImport(PreferencesActivity.this);
+            return true;
         });
         if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.KITKAT) {
             getPreferenceScreen().removePreference(importPreference);
@@ -198,13 +180,10 @@ public class PreferencesActivity extends PreferenceActivity
         commandExecutionRetriesPreference.setDefaultValue(DEFAULT_NUMBER_OF_RETRIES);
 
         Preference voiceCommands = findPreference(PreferenceKeys.VOICE_COMMANDS);
-        voiceCommands.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference arg0) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                startActivity(intent);
-                return true;
-            }
+        voiceCommands.setOnPreferenceClickListener(arg0 -> {
+            Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(intent);
+            return true;
         });
     }
 
@@ -295,12 +274,9 @@ public class PreferencesActivity extends PreferenceActivity
 
     private void attachIntSummaryListenerTo(String preferenceKey, final int summaryTemplate) {
         Preference preference = findPreference(preferenceKey);
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                preference.setSummary(String.format(getString(summaryTemplate), newValue));
-                return true;
-            }
+        preference.setOnPreferenceChangeListener((preference1, newValue) -> {
+            preference1.setSummary(String.format(getString(summaryTemplate), newValue));
+            return true;
         });
         preference.setSummary(String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0, this)));
     }
@@ -311,25 +287,19 @@ public class PreferencesActivity extends PreferenceActivity
 
     private void attachStringSummaryListenerTo(String preferenceKey, final int summaryTemplate, final Preference.OnPreferenceChangeListener listener) {
         Preference preference = findPreference(preferenceKey);
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                preference.setSummary(String.format(getString(summaryTemplate), newValue));
+        preference.setOnPreferenceChangeListener((preference1, newValue) -> {
+            preference1.setSummary(String.format(getString(summaryTemplate), newValue));
 
-                return listener == null || listener.onPreferenceChange(preference, newValue);
-            }
+            return listener == null || listener.onPreferenceChange(preference1, newValue);
         });
         preference.setSummary(String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null, this), "")));
     }
 
     private void attachListSummaryListenerTo(String preferenceKey, final int valuesArrayResource, final int textArrayResource, final int summaryTemplate) {
         Preference preference = findPreference(preferenceKey);
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                preference.setSummary(nameForArrayValueFormatted(valuesArrayResource, textArrayResource, newValue.toString(), summaryTemplate));
-                return true;
-            }
+        preference.setOnPreferenceChangeListener((preference1, newValue) -> {
+            preference1.setSummary(nameForArrayValueFormatted(valuesArrayResource, textArrayResource, newValue.toString(), summaryTemplate));
+            return true;
         });
         preference.setSummary(nameForArrayValueFormatted(valuesArrayResource, textArrayResource,
                 applicationProperties.getStringSharedPreference(preferenceKey, this), summaryTemplate));

@@ -52,7 +52,6 @@ import java.security.cert.X509Certificate;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -117,16 +116,13 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                     }
                     hostname = new URL(error.getUrl()).getHost();
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (trustManager.checkCertificate(x509Certificate, hostname)) {
-                                handler.proceed();
-                            } else {
-                                handler.cancel();
-                            }
-                            trustManager.unbindDisplayActivity(getActivity());
+                    new Thread(() -> {
+                        if (trustManager.checkCertificate(x509Certificate, hostname)) {
+                            handler.proceed();
+                        } else {
+                            handler.cancel();
                         }
+                        trustManager.unbindDisplayActivity(getActivity());
                     }).start();
 
 

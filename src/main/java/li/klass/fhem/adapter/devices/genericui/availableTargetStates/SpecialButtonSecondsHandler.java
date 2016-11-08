@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.TimePicker;
 
 import li.klass.fhem.R;
@@ -55,19 +54,13 @@ public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements Set
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
                 .setMessage(R.string.timeToSwitchAction)
                 .setView(timePicker)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onNothingSelected(device);
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    callback.onNothingSelected(device);
+                    dialog.dismiss();
                 })
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int seconds = 60 * (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute());
-                        callback.onSubStateSelected(device, entry.getKey(), String.valueOf(seconds));
-                    }
+                .setPositiveButton(R.string.okButton, (dialog, which) -> {
+                    int seconds = 60 * (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute());
+                    callback.onSubStateSelected(device, entry.getKey(), String.valueOf(seconds));
                 })
                 .show();
     }

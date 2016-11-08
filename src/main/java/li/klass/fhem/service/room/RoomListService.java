@@ -120,7 +120,7 @@ public class RoomListService extends AbstractService {
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification, Context context) {
 
-        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName, Optional.<String>absent(), context);
+        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName, Optional.absent(), context);
         if (!deviceOptional.isPresent()) {
             return;
         }
@@ -389,25 +389,22 @@ public class RoomListService extends AbstractService {
     }
 
     private Comparator<String> sortRoomsComparator(final List<String> sortRooms) {
-        return new Comparator<String>() {
-            @Override
-            public int compare(String lhs, String rhs) {
-                int lhsIndex = sortRooms.indexOf(lhs);
-                int rhsIndex = sortRooms.indexOf(rhs);
+        return (lhs, rhs) -> {
+            int lhsIndex = sortRooms.indexOf(lhs);
+            int rhsIndex = sortRooms.indexOf(rhs);
 
-                if (lhsIndex == rhsIndex && lhsIndex == -1) {
-                    // both not in sort list, compare based on names
-                    return lhs.compareTo(rhs);
-                } else if (lhsIndex != rhsIndex && lhsIndex != -1 && rhsIndex != -1) {
-                    // both in sort list, compare indexes
-                    return ((Integer) lhsIndex).compareTo(rhsIndex);
-                } else if (lhsIndex == -1) {
-                    // lhs not in sort list, rhs in sort list
-                    return 1;
-                } else {
-                    // rhs not in sort list, lhs in sort list
-                    return -1;
-                }
+            if (lhsIndex == rhsIndex && lhsIndex == -1) {
+                // both not in sort list, compare based on names
+                return lhs.compareTo(rhs);
+            } else if (lhsIndex != rhsIndex && lhsIndex != -1 && rhsIndex != -1) {
+                // both in sort list, compare indexes
+                return ((Integer) lhsIndex).compareTo(rhsIndex);
+            } else if (lhsIndex == -1) {
+                // lhs not in sort list, rhs in sort list
+                return 1;
+            } else {
+                // rhs not in sort list, lhs in sort list
+                return -1;
             }
         };
     }

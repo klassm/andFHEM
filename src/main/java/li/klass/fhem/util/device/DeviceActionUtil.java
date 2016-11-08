@@ -45,32 +45,24 @@ public class DeviceActionUtil {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.context_rename)
                 .setView(input)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String newName = input.getText().toString();
+                .setPositiveButton(R.string.okButton, (dialog, whichButton) -> {
+                    String newName = input.getText().toString();
 
-                        context.startService(new Intent(Actions.DEVICE_RENAME)
-                                .setClass(context, DeviceIntentService.class)
-                                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                .putExtra(BundleExtraKeys.DEVICE_NEW_NAME, newName)
-                                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
-                    }
-                }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
+                    context.startService(new Intent(Actions.DEVICE_RENAME)
+                            .setClass(context, DeviceIntentService.class)
+                            .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                            .putExtra(BundleExtraKeys.DEVICE_NEW_NAME, newName)
+                            .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+                }).setNegativeButton(R.string.cancelButton, (dialog, whichButton) -> {
         }).show();
     }
 
     public static void deleteDevice(final Context context, final FhemDevice device) {
         final String deviceName = device.getName();
-        showConfirmation(context, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                context.startService(new Intent(Actions.DEVICE_DELETE)
-                        .setClass(context, DeviceIntentService.class)
-                        .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
-            }
-        }, context.getString(R.string.deleteConfirmation));
+        showConfirmation(context, (dialog, whichButton) -> context.startService(new Intent(Actions.DEVICE_DELETE)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context))), context.getString(R.string.deleteConfirmation));
     }
 
     public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener, String text) {
@@ -78,11 +70,7 @@ public class DeviceActionUtil {
                 .setTitle(R.string.areYouSure)
                 .setMessage(text)
                 .setPositiveButton(R.string.okButton, positiveOnClickListener)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-                    }
-                }).show();
+                .setNegativeButton(R.string.cancelButton, (dialog, whichButton) -> context.sendBroadcast(new Intent(Actions.DO_UPDATE))).show();
     }
 
     public static void moveDevice(final Context context, final FhemDevice device) {
@@ -91,19 +79,15 @@ public class DeviceActionUtil {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.context_move)
                 .setView(input)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String newRoom = input.getText().toString();
+                .setPositiveButton(R.string.okButton, (dialog, whichButton) -> {
+                    String newRoom = input.getText().toString();
 
-                        context.startService(new Intent(Actions.DEVICE_MOVE_ROOM)
-                                .setClass(context, DeviceIntentService.class)
-                                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                .putExtra(BundleExtraKeys.DEVICE_NEW_ROOM, newRoom)
-                                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
-                    }
-                }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
+                    context.startService(new Intent(Actions.DEVICE_MOVE_ROOM)
+                            .setClass(context, DeviceIntentService.class)
+                            .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                            .putExtra(BundleExtraKeys.DEVICE_NEW_ROOM, newRoom)
+                            .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+                }).setNegativeButton(R.string.cancelButton, (dialog, whichButton) -> {
         }).show();
     }
 
@@ -113,19 +97,15 @@ public class DeviceActionUtil {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.context_alias)
                 .setView(input)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String newAlias = input.getText().toString();
+                .setPositiveButton(R.string.okButton, (dialog, whichButton) -> {
+                    String newAlias = input.getText().toString();
 
-                        context.startService(new Intent(Actions.DEVICE_SET_ALIAS)
-                                .setClass(context, DeviceIntentService.class)
-                                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                .putExtra(BundleExtraKeys.DEVICE_NEW_ALIAS, newAlias)
-                                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
-                    }
-                }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
+                    context.startService(new Intent(Actions.DEVICE_SET_ALIAS)
+                            .setClass(context, DeviceIntentService.class)
+                            .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                            .putExtra(BundleExtraKeys.DEVICE_NEW_ALIAS, newAlias)
+                            .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+                }).setNegativeButton(R.string.cancelButton, (dialog, whichButton) -> {
         }).show();
     }
 }

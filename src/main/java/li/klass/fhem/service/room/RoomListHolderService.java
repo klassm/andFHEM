@@ -71,7 +71,7 @@ public class RoomListHolderService {
     }
 
     private RoomListCache getCacheFor(Optional<String> connectionId, Context context) {
-        connectionId = connectionService.exists(connectionId, context) ? connectionId : Optional.<String>absent();
+        connectionId = connectionService.exists(connectionId, context) ? connectionId : Optional.absent();
         return getCacheForConnectionId(connectionId, context);
     }
 

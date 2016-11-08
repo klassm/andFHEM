@@ -29,19 +29,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 public class Optionals {
-    public static final Predicate<Optional<?>> PRESENT = new Predicate<Optional<?>>() {
-        @Override
-        public boolean apply(Optional<?> input) {
-            return input.isPresent();
-        }
-    };
+    public static final Predicate<Optional<?>> PRESENT = Optional::isPresent;
 
     public static <T> Function<Optional<T>, T> get() {
-        return new Function<Optional<T>, T>() {
-            @Override
-            public T apply(Optional<T> input) {
-                return input.get();
-            }
-        };
+        return Optional::get;
     }
 }

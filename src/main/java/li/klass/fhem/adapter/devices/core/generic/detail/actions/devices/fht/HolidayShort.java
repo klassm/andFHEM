@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,14 +80,11 @@ public class HolidayShort {
                 timePicker.setMinutes(0);
                 timePicker.setHours(now.getHourOfDay());
 
-                timePicker.setOnValueChangedListener(new FallbackTimePicker.OnValueChangedListener() {
-                    @Override
-                    public void onValueChanged(int hours, int minutes) {
-                        HolidayShort.this.hour = hours;
-                        HolidayShort.this.minute = minutes;
+                timePicker.setOnValueChangedListener((hours, minutes) -> {
+                    HolidayShort.this.hour = hours;
+                    HolidayShort.this.minute = minutes;
 
-                        updateHolidayShortEndTime(contentView);
-                    }
+                    updateHolidayShortEndTime(contentView);
                 });
 
                 return contentView;
@@ -104,14 +100,11 @@ public class HolidayShort {
                 timePicker.setCurrentHour(now.getHourOfDay());
 
 
-                timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                    @Override
-                    public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
-                        HolidayShort.this.hour = hourOfDay;
-                        HolidayShort.this.minute = minute;
+                timePicker.setOnTimeChangedListener((timePicker1, hourOfDay, minute1) -> {
+                    HolidayShort.this.hour = hourOfDay;
+                    HolidayShort.this.minute = minute1;
 
-                        updateHolidayShortEndTime(contentView);
-                    }
+                    updateHolidayShortEndTime(contentView);
                 });
 
                 return contentView;
@@ -128,28 +121,22 @@ public class HolidayShort {
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties);
         contentView.addView(temperatureChangeTableRow.createRow(layoutInflater, device));
 
-        dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                spinnerActionRow.revertSelection();
-                dialogInterface.dismiss();
-            }
+        dialogBuilder.setNegativeButton(R.string.cancelButton, (dialogInterface, i) -> {
+            spinnerActionRow.revertSelection();
+            dialogInterface.dismiss();
         });
 
-        dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int item) {
-                DateTime switchDate = holiday1SwitchTimeFor(hour, minute);
+        dialogBuilder.setPositiveButton(R.string.okButton, (dialogInterface, item) -> {
+            DateTime switchDate = holiday1SwitchTimeFor(hour, minute);
 
-                @SuppressWarnings("unchecked") List<StateToSet> states = (List<StateToSet>) switchIntent.getSerializableExtra(BundleExtraKeys.STATES);
-                states.add(new StateToSet("desired-temp", "" + temperatureChangeTableRow.getTemperature()));
-                states.add(new StateToSet("holiday1", "" + extractHolidayShortHoliday1ValueFrom(switchDate)));
-                states.add(new StateToSet("holiday2", "" + switchDate.getDayOfMonth()));
-                context.startService(switchIntent);
+            @SuppressWarnings("unchecked") List<StateToSet> states = (List<StateToSet>) switchIntent.getSerializableExtra(BundleExtraKeys.STATES);
+            states.add(new StateToSet("desired-temp", "" + temperatureChangeTableRow.getTemperature()));
+            states.add(new StateToSet("holiday1", "" + extractHolidayShortHoliday1ValueFrom(switchDate)));
+            states.add(new StateToSet("holiday2", "" + switchDate.getDayOfMonth()));
+            context.startService(switchIntent);
 
-                spinnerActionRow.commitSelection();
-                dialogInterface.dismiss();
-            }
+            spinnerActionRow.commitSelection();
+            dialogInterface.dismiss();
         });
         dialogBuilder.setView(contentView);
         dialogBuilder.show();

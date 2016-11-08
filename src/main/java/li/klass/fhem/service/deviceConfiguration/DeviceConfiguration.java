@@ -26,7 +26,6 @@ package li.klass.fhem.service.deviceConfiguration;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
@@ -46,12 +45,7 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Maps.newHashMap;
 
 public class DeviceConfiguration implements Serializable {
-    public static final Function<DeviceConfiguration, Integer> TO_DELAY_FOR_UPDATE_AFTER_COMMAND = new Function<DeviceConfiguration, Integer>() {
-        @Override
-        public Integer apply(DeviceConfiguration input) {
-            return input.getDelayForUpdateAfterCommand();
-        }
-    };
+    public static final Function<DeviceConfiguration, Integer> TO_DELAY_FOR_UPDATE_AFTER_COMMAND = DeviceConfiguration::getDelayForUpdateAfterCommand;
 
     private final DeviceFunctionality defaultGroup;
     private final boolean sensorDevice;
@@ -92,12 +86,7 @@ public class DeviceConfiguration implements Serializable {
     }
 
     public Optional<ViewItemConfig> stateConfigFor(final String key) {
-        return from(getStates()).firstMatch(new Predicate<ViewItemConfig>() {
-            @Override
-            public boolean apply(ViewItemConfig input) {
-                return input.getKey().equalsIgnoreCase(key);
-            }
-        });
+        return from(getStates()).firstMatch(input -> input.getKey().equalsIgnoreCase(key));
     }
 
     public Set<ViewItemConfig> getAttributes() {

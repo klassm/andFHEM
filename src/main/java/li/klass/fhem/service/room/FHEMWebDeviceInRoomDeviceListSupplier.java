@@ -64,7 +64,7 @@ public class FHEMWebDeviceInRoomDeviceListSupplier implements Supplier<FHEMWEBDe
     @Override
     public FHEMWEBDevice get() {
         List<FhemDevice> devicesOfType = roomDeviceList == null ?
-                Lists.<FhemDevice>newArrayList() : roomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
+                Lists.newArrayList() : roomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
         return get(devicesOfType);
     }
 
@@ -91,23 +91,15 @@ public class FHEMWebDeviceInRoomDeviceListSupplier implements Supplier<FHEMWEBDe
     }
 
     private Predicate<FhemDevice> predicateFHEMWEBDeviceForQualifier(final String qualifier) {
-        return new Predicate<FhemDevice>() {
-            @Override
-            public boolean apply(FhemDevice device) {
-                return device instanceof FHEMWEBDevice && device.getName() != null
-                        && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier);
-            }
-        };
+        return device -> device instanceof FHEMWEBDevice && device.getName() != null
+                && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier);
     }
 
     private Predicate<FhemDevice> predicateFHEMWEBDeviceForPort(final int port) {
-        return new Predicate<FhemDevice>() {
-            @Override
-            public boolean apply(FhemDevice device) {
-                if (!(device instanceof FHEMWEBDevice)) return false;
-                FHEMWEBDevice fhemwebDevice = (FHEMWEBDevice) device;
-                return fhemwebDevice.getPort().equals(port + "");
-            }
+        return device -> {
+            if (!(device instanceof FHEMWEBDevice)) return false;
+            FHEMWEBDevice fhemwebDevice = (FHEMWEBDevice) device;
+            return fhemwebDevice.getPort().equals(port + "");
         };
     }
 }

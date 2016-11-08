@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -55,23 +54,17 @@ public class MultipleSetListTargetStateHandler<D extends FhemDevice<?>> implemen
                 .build();
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + groupSetListEntry.getKey())
-                .setItems(Iterables.toArray(states, CharSequence.class), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            new TextFieldTargetStateHandler<D>().handle(entry, context, device, callback);
-                        } else {
-                            callback.onSubStateSelected(device, groupSetListEntry.getKey(), states.get(which));
-                        }
-                        dialog.dismiss();
+                .setItems(Iterables.toArray(states, CharSequence.class), (dialog, which) -> {
+                    if (which == 0) {
+                        new TextFieldTargetStateHandler<D>().handle(entry, context, device, callback);
+                    } else {
+                        callback.onSubStateSelected(device, groupSetListEntry.getKey(), states.get(which));
                     }
+                    dialog.dismiss();
                 })
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onNothingSelected(device);
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancelButton, (dialog, which) -> {
+                    callback.onNothingSelected(device);
+                    dialog.dismiss();
                 })
                 .show();
     }

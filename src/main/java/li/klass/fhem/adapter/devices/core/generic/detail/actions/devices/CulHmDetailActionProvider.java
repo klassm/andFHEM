@@ -77,7 +77,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
 
     @Override
     public List<ActionCardAction> actionsFor(Context context) {
-        return ImmutableList.<ActionCardAction>of(
+        return ImmutableList.of(
                 new ActionCardButton(R.string.timetable, context) {
                     @Override
                     protected void onClick(XmlListDevice device, Context context) {

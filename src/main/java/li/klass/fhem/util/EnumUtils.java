@@ -29,7 +29,7 @@ import java.util.List;
 
 public class EnumUtils {
     public static <T extends Enum<T>> List<String> toStringList(T[] values) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (T value : values) {
             result.add(value.name());
         }

@@ -43,12 +43,7 @@ import static com.google.common.collect.Maps.transformEntries;
 @Singleton
 public class GPlotHolder {
     public static final EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>> TO_OPTIONAL_DEFINITION =
-            new EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>>() {
-                @Override
-                public Optional<GPlotDefinition> transformEntry(String key, GPlotDefinition value) {
-                    return Optional.of(value);
-                }
-            };
+            (key, value) -> Optional.of(value);
 
     private final Map<String, Optional<GPlotDefinition>> definitions = newHashMap();
 
@@ -83,13 +78,13 @@ public class GPlotHolder {
 
         Context applicationContext = AndFHEMApplication.getContext();
         Optional<String> result = isConfigDb
-                ? Optional.fromNullable(commandExecutionService.executeSync("configdb fileshow ./www/gplot/" + name + ".gplot", Optional.<String>absent(), applicationContext))
+                ? Optional.fromNullable(commandExecutionService.executeSync("configdb fileshow ./www/gplot/" + name + ".gplot", Optional.absent(), applicationContext))
                 : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", applicationContext);
 
         if (result.isPresent()) {
             definitions.put(name, gPlotParser.parseSafe(result.get()));
         } else {
-            definitions.put(name, Optional.<GPlotDefinition>absent());
+            definitions.put(name, Optional.absent());
         }
 
         return definitions.get(name);

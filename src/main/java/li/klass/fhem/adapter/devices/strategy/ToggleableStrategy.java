@@ -98,7 +98,7 @@ public class ToggleableStrategy extends ViewStrategy {
             if (hook == WEBCMD_DEVICE) {
                 addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater);
             } else {
-                addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent());
+                addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.absent());
             }
         } else {
             addToggleDeviceActionRow(holder, device, LAYOUT_OVERVIEW, layoutInflater);

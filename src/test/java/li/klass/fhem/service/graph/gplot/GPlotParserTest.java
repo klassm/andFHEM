@@ -37,7 +37,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 
 import li.klass.fhem.testutil.MockitoRule;
@@ -356,12 +355,7 @@ public class GPlotParserTest {
     @DataProvider
     public static Object[][] allGplotFilesProvider() throws Exception {
         File resourceDirectory = new File(GPlotParser.class.getResource(".").toURI());
-        File[] files = resourceDirectory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return filename != null && filename.endsWith(".gplot");
-            }
-        });
+        File[] files = resourceDirectory.listFiles((dir, filename) -> filename != null && filename.endsWith(".gplot"));
 
         Object[][] out = new Object[files.length][];
         for (int i = 0; i < files.length; i++) {

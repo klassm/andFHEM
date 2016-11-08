@@ -42,7 +42,7 @@ import static com.google.common.collect.Maps.newHashMap;
 
 public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements ListAdapter {
 
-    protected Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<NestedListView.NestedListViewOnClickObserver>();
+    protected Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<>();
     protected LayoutInflater layoutInflater;
     private Map<Integer, P> parentPositions = newHashMap();
     private int totalItems = 0;
