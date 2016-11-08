@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.weekprofile;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,7 +33,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import li.klass.fhem.R;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 
@@ -107,7 +105,6 @@ public class FromToWeekProfileAdapter
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minuteOfDay) {
                         String time = timeToTimeString(hourOfDay, minuteOfDay);
                         listener.onTimeChanged(time);
-                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
                     }
                 }, hours, minutes, true);
 
