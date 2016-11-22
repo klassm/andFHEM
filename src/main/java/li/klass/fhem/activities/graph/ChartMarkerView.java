@@ -27,38 +27,32 @@ package li.klass.fhem.activities.graph;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.TextView;
-
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
-
-import java.util.List;
-
 import li.klass.fhem.R;
+
+import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT;
 
 @SuppressLint("ViewConstructor")
 public class ChartMarkerView extends MarkerView {
 
-    private final List<String> xAxisLabels;
-
-    public ChartMarkerView(Context context, List<String> xAxisLabels) {
+    public ChartMarkerView(Context context) {
         super(context, R.layout.chart_marker);
-        this.xAxisLabels = xAxisLabels;
+        setOffset(getXOffset(), getYOffset());
     }
 
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        ((TextView) findViewById(R.id.time)).setText(xAxisLabels.get(e.getXIndex()));
-        ((TextView) findViewById(R.id.value)).setText(String.valueOf(e.getVal()));
+        ((TextView) findViewById(R.id.time)).setText(ANDFHEM_DATE_FORMAT.print((long) e.getX()));
+        ((TextView) findViewById(R.id.value)).setText(String.valueOf(e.getY()));
     }
 
-    @Override
-    public int getXOffset(float xpos) {
+    private int getXOffset() {
         return -(getWidth() / 2);
     }
 
-    @Override
-    public int getYOffset(float ypos) {
+    private int getYOffset() {
         return -getHeight();
     }
 }

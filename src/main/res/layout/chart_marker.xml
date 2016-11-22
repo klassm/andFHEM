@@ -22,34 +22,33 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:background="@drawable/marker">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="60dp"
+              android:background="@drawable/marker"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
 
     <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="10:23:00"
-        android:textSize="10sp"
-        android:textColor="@android:color/white"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_width="200dp"
+            android:id="@+id/time"
+            android:layout_height="wrap_content"
+            android:text="10:23:00"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:ellipsize="none"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <TextView
-        android:id="@+id/value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="20"
-        android:textSize="10sp"
-        android:textColor="@android:color/white"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:layout_below="@id/time"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:id="@+id/value"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="20"
+            android:textColor="@android:color/white"
+            android:ellipsize="none"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-</RelativeLayout>
+</LinearLayout>

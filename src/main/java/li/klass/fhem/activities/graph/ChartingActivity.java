@@ -24,74 +24,48 @@
 
 package li.klass.fhem.activities.graph;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
+import android.app.*;
+import android.content.*;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.*;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-
+import android.view.*;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.google.common.base.Function;
+import com.github.mikephil.charting.components.*;
+import com.github.mikephil.charting.data.*;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Range;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
+import com.google.common.collect.*;
+import li.klass.fhem.*;
 import li.klass.fhem.activities.core.Updateable;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.constants.*;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.gplot.GPlotDefinition;
-import li.klass.fhem.service.graph.gplot.GPlotSeries;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
-import li.klass.fhem.service.intent.DeviceIntentService;
-import li.klass.fhem.service.intent.RoomListIntentService;
-import li.klass.fhem.util.DisplayUtil;
-import li.klass.fhem.util.FhemResultReceiver;
+import li.klass.fhem.service.graph.gplot.*;
+import li.klass.fhem.service.intent.*;
+import li.klass.fhem.util.*;
+import org.joda.time.DateTime;
+import org.joda.time.format.*;
+
+import java.util.*;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
-import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
-import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT;
 import static org.joda.time.Duration.standardHours;
 
 public class ChartingActivity extends AppCompatActivity implements Updateable {
 
-    public static final int REQUEST_TIME_CHANGE = 1;
-    public static final int DIALOG_EXECUTING = 2;
+    private static final int REQUEST_TIME_CHANGE = 1;
+    private static final int DIALOG_EXECUTING = 2;
 
-    public static final int CURRENT_DAY_TIMESPAN = -1;
+    private static final int CURRENT_DAY_TIMESPAN = -1;
 
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
-    public static final Function<GraphEntry, String> TO_LABEL = GraphEntry::getFormattedTime;
-    public static final Comparator<GraphEntry> GRAPH_ENTRY_DATE_COMPARATOR = GraphEntry::compareTo;
-    public static final Function<List<GraphEntry>, Iterable<GraphEntry>> GRAPH_ENTRY_LIST_IDENTITY = input -> input;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     /**
      * Current device graphs are shown for.
@@ -221,8 +195,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
     private void createChart(FhemDevice device, Map<GPlotSeries, List<GraphEntry>> graphData) {
 
         handleDiscreteValues(graphData);
-        List<String> xAxisLabels = createXAxisLabelsFrom(graphData);
-        LineData lineData = createLineDataFor(xAxisLabels, graphData);
+        LineData lineData = createLineDataFor(graphData);
 
         String title;
         if (DisplayUtil.getWidthInDP() < 500) {
@@ -240,24 +213,31 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         GPlotDefinition plotDefinition = svgGraphDefinition.getPlotDefinition();
         setRangeFor(plotDefinition.getLeftAxis().getRange(), lineChart.getAxisLeft());
         setRangeFor(plotDefinition.getRightAxis().getRange(), lineChart.getAxisRight());
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setValueFormatter((value, axis) -> ANDFHEM_DATE_FORMAT.print((long) value));
+        xAxis.setLabelRotationAngle(300);
+        int labelCount = DisplayUtil.getWidthInDP() / 150;
+        xAxis.setLabelCount(labelCount < 2 ? 2 : labelCount, true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        lineChart.setDescription("");
+        Description description = new Description();
+        description.setText("");
+        lineChart.setDescription(description);
         lineChart.setNoDataText(getString(R.string.noGraphEntries));
         lineChart.setData(lineData);
-        lineChart.setMarkerView(new ChartMarkerView(this, xAxisLabels));
+        lineChart.setMarkerView(new ChartMarkerView(this));
 
         lineChart.animateX(200);
     }
 
     private void setRangeFor(Optional<Range<Double>> axisRange, com.github.mikephil.charting.components.YAxis axis) {
-        axis.setStartAtZero(false);
         if (axisRange.isPresent()) {
             Range<Double> range = axisRange.get();
             if (range.hasLowerBound()) {
-                axis.setAxisMinValue(range.lowerEndpoint().floatValue());
+                axis.setAxisMinimum(range.lowerEndpoint().floatValue());
             }
             if (range.hasUpperBound()) {
-                axis.setAxisMaxValue(range.upperEndpoint().floatValue());
+                axis.setAxisMaximum(range.upperEndpoint().floatValue());
             }
         }
     }
@@ -296,55 +276,52 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         return lineType == GPlotSeries.LineType.STEPS || lineType == GPlotSeries.LineType.FSTEPS || lineType == GPlotSeries.LineType.HISTEPS;
     }
 
-    private LineData createLineDataFor(final List<String> xAxisLabels, Map<GPlotSeries, List<GraphEntry>> graphData) {
-        LineData lineData = new LineData(xAxisLabels);
-        for (Map.Entry<GPlotSeries, List<GraphEntry>> entry : graphData.entrySet()) {
-            GPlotSeries series = entry.getKey();
-            ImmutableList<Entry> yEntries = from(entry.getValue()).transform(input -> new Entry(input.getValue(), xAxisLabels.indexOf(input.getFormattedTime()))).toList();
+    private LineData createLineDataFor(Map<GPlotSeries, List<GraphEntry>> graphData) {
+        ImmutableList<ILineDataSet> lineDataItems = from(graphData.entrySet())
+                .transform(this::lineDataSetFrom)
+                .toList();
 
-            LineDataSet lineDataSet = new LineDataSet(yEntries, series.getTitle());
-            lineDataSet.setAxisDependency(series.getAxis() == GPlotSeries.Axis.LEFT ?
-                    com.github.mikephil.charting.components.YAxis.AxisDependency.LEFT :
-                    com.github.mikephil.charting.components.YAxis.AxisDependency.RIGHT);
-            lineDataSet.setColor(series.getColor().getHexColor());
-            lineDataSet.setCircleColor(series.getColor().getHexColor());
-            lineDataSet.setFillColor(series.getColor().getHexColor());
-            lineDataSet.setDrawCubic(false);
-            lineDataSet.setDrawCircles(false);
-            lineDataSet.setDrawValues(false);
-            lineDataSet.setLineWidth(series.getLineWidth());
-
-            switch (series.getSeriesType()) {
-                case FILL:
-                    lineDataSet.setDrawFilled(true);
-
-                    break;
-                case DOT:
-                    lineDataSet.enableDashedLine(3, 2, 1);
-                    break;
-            }
-
-            switch (series.getLineType()) {
-                case POINTS:
-                    lineDataSet.enableDashedLine(3, 2, 1);
-                    break;
-            }
-
-            if (isDiscreteSeries(series)) {
-                lineDataSet.setMode(LineDataSet.Mode.STEPPED);
-            }
-
-            lineData.addDataSet(lineDataSet);
-        }
-
-        return lineData;
+        return new LineData(lineDataItems);
     }
 
-    private List<String> createXAxisLabelsFrom(Map<GPlotSeries, List<GraphEntry>> graphData) {
-        ImmutableList<GraphEntry> sortedEntries = from(graphData.values()).transformAndConcat(GRAPH_ENTRY_LIST_IDENTITY)
-                .toSortedList(GRAPH_ENTRY_DATE_COMPARATOR);
+    private ILineDataSet lineDataSetFrom(Map.Entry<GPlotSeries, List<GraphEntry>> entry) {
+        GPlotSeries series = entry.getKey();
+        ImmutableList<Entry> yEntries = from(entry.getValue()).transform(input -> {
+            assert input != null;
+            return new Entry(input.getDate().getMillis(), input.getValue());
+        }).toList();
 
-        return from(sortedEntries).transform(TO_LABEL).toList();
+        LineDataSet lineDataSet = new LineDataSet(yEntries, series.getTitle());
+        lineDataSet.setAxisDependency(series.getAxis() == GPlotSeries.Axis.LEFT ?
+                YAxis.AxisDependency.LEFT :
+                YAxis.AxisDependency.RIGHT);
+        lineDataSet.setColor(series.getColor().getHexColor());
+        lineDataSet.setCircleColor(series.getColor().getHexColor());
+        lineDataSet.setFillColor(series.getColor().getHexColor());
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setLineWidth(series.getLineWidth());
+
+        switch (series.getSeriesType()) {
+            case FILL:
+                lineDataSet.setDrawFilled(true);
+
+                break;
+            case DOT:
+                lineDataSet.enableDashedLine(3, 2, 1);
+                break;
+        }
+
+        switch (series.getLineType()) {
+            case POINTS:
+                lineDataSet.enableDashedLine(3, 2, 1);
+                break;
+        }
+
+        if (isDiscreteSeries(series)) {
+            lineDataSet.setMode(LineDataSet.Mode.STEPPED);
+        }
+        return lineDataSet;
     }
 
     @Override
@@ -358,12 +335,9 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.menu_changeStartEndDate:
-                Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
-                intent.putExtras(new Bundle());
-                intent.putExtra(DEVICE_NAME, deviceName);
-                intent.putExtra(START_DATE, startDate);
-                intent.putExtra(END_DATE, endDate);
-                startActivityForResult(intent, REQUEST_TIME_CHANGE);
+                startActivityForResult(new Intent(this, ChartingDateSelectionActivity.class)
+                        .putExtra(DEVICE_NAME, deviceName).putExtra(START_DATE, startDate)
+                        .putExtra(END_DATE, endDate), REQUEST_TIME_CHANGE);
                 return true;
         }
 
@@ -380,8 +354,6 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
                 case REQUEST_TIME_CHANGE:
                     startDate = (DateTime) bundle.getSerializable(START_DATE);
                     endDate = (DateTime) bundle.getSerializable(END_DATE);
-
-
                     update(false);
             }
         }
