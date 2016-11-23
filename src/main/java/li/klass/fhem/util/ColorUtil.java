@@ -134,6 +134,9 @@ public class ColorUtil {
         if (!rgb.startsWith("0x")) {
             rgb = "0x" + rgb;
         }
+        if (!rgb.matches("0x[0-9a-fA-F]{1,8}")) {
+            return 0;
+        }
         return Integer.decode(rgb) & 0x00FFFFFF;
     }
 
