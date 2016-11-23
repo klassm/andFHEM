@@ -25,20 +25,18 @@
 package li.klass.fhem.adapter;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
-
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
+
+import java.util.*;
 
 public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
     private String selectedConnectionId;
 
-    public ConnectionListAdapter(Context context, List<FHEMServerSpec> data) {
-        super(context, R.layout.connection_list_entry, data);
+    public ConnectionListAdapter(Context context) {
+        super(context, R.layout.connection_list_entry, Collections.emptyList());
     }
 
     @Override
