@@ -24,43 +24,27 @@
 
 package li.klass.fhem.fragments;
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-
+import android.view.*;
+import android.widget.*;
 import com.google.common.collect.Iterables;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.constants.*;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.intent.RoomListIntentService;
-import li.klass.fhem.util.FhemResultReceiver;
-import li.klass.fhem.util.Reject;
+import li.klass.fhem.util.*;
+
+import javax.inject.Inject;
+import java.io.Serializable;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.constants.BundleExtraKeys.EMPTY_TEXT_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK;
-import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
-import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
-import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
-import static li.klass.fhem.constants.BundleExtraKeys.ROOM_SELECTABLE_CALLBACK;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public class RoomListFragment extends BaseFragment {
 
@@ -157,9 +141,7 @@ public class RoomListFragment extends BaseFragment {
 
                 if (resultCode == ResultCodes.SUCCESS) {
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);
-                    roomList = newArrayList(Iterables.filter(roomList, input -> {
-                        return isRoomSelectable(roomName);
-                    }));
+                    roomList = newArrayList(Iterables.filter(roomList, input -> isRoomSelectable(roomName)));
 
                     assert roomList != null;
                     if (roomList.size() == 0) {

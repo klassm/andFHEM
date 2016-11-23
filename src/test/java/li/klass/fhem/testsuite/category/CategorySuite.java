@@ -137,9 +137,7 @@ public class CategorySuite extends Suite {
         final String basePath = getBasePath();
         File basePathFile = new File(basePath);
 
-        ImmutableList<Class<?>> classes = Files.fileTreeTraverser().breadthFirstTraversal(basePathFile).filter(input -> {
-            return input.getName().endsWith(".java");
-        }).transform((Function<File, Class<?>>) input -> toClass(input, basePath)).filter(input -> input != null && !Modifier.isAbstract(input.getModifiers())).toList();
+        ImmutableList<Class<?>> classes = Files.fileTreeTraverser().breadthFirstTraversal(basePathFile).filter(input -> input.getName().endsWith(".java")).transform((Function<File, Class<?>>) input -> toClass(input, basePath)).filter(input -> input != null && !Modifier.isAbstract(input.getModifiers())).toList();
         return (classes.toArray(new Class[classes.size()]));
 
     }
