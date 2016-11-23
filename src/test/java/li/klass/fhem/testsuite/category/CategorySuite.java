@@ -27,21 +27,15 @@ package li.klass.fhem.testsuite.category;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
-
-import org.junit.experimental.categories.Categories;
-import org.junit.experimental.categories.Category;
+import org.junit.experimental.categories.*;
 import org.junit.runner.Description;
-import org.junit.runner.manipulation.Filter;
-import org.junit.runner.manipulation.NoTestsRemainException;
+import org.junit.runner.manipulation.*;
 import org.junit.runners.Suite;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.RunnerBuilder;
+import org.junit.runners.model.*;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -131,12 +125,12 @@ public class CategorySuite extends Suite {
 
     private Class<?> getIncludedCategory(Class<?> cls) {
         Categories.IncludeCategory annotation = cls.getAnnotation(Categories.IncludeCategory.class);
-        return annotation == null ? null : annotation.value();
+        return annotation == null ? null : annotation.value()[0];
     }
 
     private Class<?> getExcludedCategory(Class<?> cls) {
         Categories.ExcludeCategory annotation = cls.getAnnotation(Categories.ExcludeCategory.class);
-        return annotation == null ? null : annotation.value();
+        return annotation == null ? null : annotation.value()[0];
     }
 
     private static Class[] getSuiteClasses() {
