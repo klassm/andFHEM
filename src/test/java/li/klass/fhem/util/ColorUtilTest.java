@@ -24,18 +24,11 @@
 
 package li.klass.fhem.util;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
+import com.tngtech.java.junit.dataprovider.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static li.klass.fhem.util.ColorUtil.extractBlue;
-import static li.klass.fhem.util.ColorUtil.extractGreen;
-import static li.klass.fhem.util.ColorUtil.extractRed;
-import static li.klass.fhem.util.ColorUtil.rgbToXY;
-import static li.klass.fhem.util.ColorUtil.xyToRgb;
+import static li.klass.fhem.util.ColorUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
@@ -68,6 +61,7 @@ public class ColorUtilTest {
                 {"AbCEFf", 0xABCEFF},
                 {"0xAbCEFf", 0xABCEFF},
                 {"0x00AbCEFf", 0xABCEFF},
+                {"0x38fff8s", 0},
         };
     }
 
