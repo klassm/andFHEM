@@ -35,9 +35,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
 
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'de.mobilej.unmock:UnMockPlugin:0.3.6'
+        classpath 'de.mobilej.unmock:UnMockPlugin:0.5.1'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1'
     }
@@ -211,11 +209,11 @@ dependencies {
     //noinspection GradleDependency
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     //noinspection GradleDependency
-    compile 'com.google.android.gms:play-services:9.0.2'
-    compile 'commons-net:commons-net:3.3'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.google.guava:guava:19.0'
-    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'com.google.android.gms:play-services:10.0.0'
+    compile 'commons-net:commons-net:3.5'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.guava:guava:20.0'
+    compile 'org.apache.commons:commons-lang3:3.5'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.7'
     compile 'com.google.dagger:dagger:2.7'
     compile 'javax.annotation:javax.annotation-api:1.2'
