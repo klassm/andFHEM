@@ -24,34 +24,25 @@
 
 package li.klass.fhem.service.device;
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.support.annotation.NonNull;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
+import com.google.common.base.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.room.RoomListUpdateService;
-import li.klass.fhem.util.StateToSet;
-import li.klass.fhem.util.Tasker;
+import li.klass.fhem.util.*;
+
+import javax.inject.*;
+import java.util.*;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.partition;
 import static li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE;
-import static li.klass.fhem.constants.BundleExtraKeys.DELAY;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 import static li.klass.fhem.service.deviceConfiguration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND;
 
 @Singleton
@@ -89,7 +80,7 @@ public class GenericDeviceService {
     public void setState(final FhemDevice<?> device, String targetState, Optional<String> connectionId, final Context context, final boolean invokeUpdate) {
         final String toSet = device.formatTargetState(targetState);
 
-        commandExecutionService.executeSafely("set " + device.getName() + " " + toSet, connectionId, context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet));
+        commandExecutionService.executeSafely("set " + device.getName() + " " + toSet, connectionId, context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId));
     }
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Optional<String> connectionId, Context context, boolean invokeDeviceUpdate) {
@@ -107,22 +98,18 @@ public class GenericDeviceService {
             }
         }
 
-        if ("STATE".equalsIgnoreCase(subStateName)) {
-            setState(device, value, connectionId, context);
-            return;
-        }
         commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, connectionId, context,
-                invokePostCommandActions(device, context, invokeDeviceUpdate, subStateName, value));
+                invokePostCommandActions(device, context, invokeDeviceUpdate, subStateName, value, connectionId));
     }
 
     @NonNull
-    private CommandExecutionService.ResultListener invokePostCommandActions(final FhemDevice<?> device, final Context context, final boolean invokeUpdate, final String stateName, final String toSet) {
+    private CommandExecutionService.ResultListener invokePostCommandActions(final FhemDevice<?> device, final Context context, final boolean invokeUpdate, final String stateName, final String toSet, Optional<String> connectionId) {
         return new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
 
                 if (invokeUpdate) {
-                    update(device, context);
+                    update(device, context, connectionId);
                 }
 
                 Tasker.sendTaskerNotifyIntent(context, device.getName(), stateName, toSet);
@@ -140,7 +127,7 @@ public class GenericDeviceService {
                 setSubState(device, toSet.getKey(), toSet.getValue(), connectionId, context, false);
             }
         }
-        update(device, context);
+        update(device, context, connectionId);
     }
 
     private void setSubStatesForFHT(FhemDevice device, List<StateToSet> statesToSet, Optional<String> connectionId, Context context) {
@@ -151,11 +138,12 @@ public class GenericDeviceService {
         }
     }
 
-    public void update(FhemDevice<?> device, final Context context) {
+    public void update(FhemDevice<?> device, final Context context, Optional<String> connectionId) {
         Integer delay = device.getDeviceConfiguration().transform(TO_DELAY_FOR_UPDATE_AFTER_COMMAND).or(0);
         context.startService(new Intent(DO_REMOTE_UPDATE)
                 .putExtra(DEVICE_NAME, device.getName())
                 .putExtra(DELAY, delay)
+                .putExtra(CONNECTION_ID, connectionId.orNull())
                 .setClass(context, RoomListUpdateIntentService.class));
     }
 }

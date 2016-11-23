@@ -24,22 +24,15 @@
 
 package li.klass.fhem.service.device;
 
-import android.content.Context;
-import android.content.Intent;
-
+import android.content.*;
 import com.google.common.base.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.*;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
+import org.slf4j.*;
+
+import javax.inject.*;
 
 @Singleton
 public class AtService {
@@ -106,7 +99,7 @@ public class AtService {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
-                genericDeviceService.update(device, context);
+                genericDeviceService.update(device, context, Optional.absent());
             }
         });
 
