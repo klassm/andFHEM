@@ -24,46 +24,24 @@
 
 package li.klass.fhem.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
+import android.content.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
+import li.klass.fhem.*;
 import li.klass.fhem.adapter.ConnectionListAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.constants.*;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
-import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.fhem.connection.*;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.advertisement.AdvertisementService;
-import li.klass.fhem.service.intent.ConnectionsIntentService;
-import li.klass.fhem.service.intent.LicenseIntentService;
-import li.klass.fhem.util.FhemResultReceiver;
-import li.klass.fhem.util.Reject;
+import li.klass.fhem.service.intent.*;
+import li.klass.fhem.util.*;
 
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
+import javax.inject.Inject;
+import java.util.*;
+
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public class ConnectionListFragment extends BaseFragment {
 
@@ -98,8 +76,8 @@ public class ConnectionListFragment extends BaseFragment {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 
-        ConnectionListAdapter adapter = new ConnectionListAdapter(getActivity(),
-                new ArrayList<FHEMServerSpec>());
+        ConnectionListAdapter adapter = new ConnectionListAdapter(getActivity()
+        );
         View layout = inflater.inflate(R.layout.connection_list, container, false);
         advertisementService.addAd(layout, getActivity());
 

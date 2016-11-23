@@ -24,34 +24,28 @@
 
 package li.klass.fhem.activities.core;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
+import android.content.*;
+import android.os.*;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
+import android.view.*;
+import android.widget.*;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.billing.LicenseService;
+import li.klass.fhem.constants.*;
+import li.klass.fhem.fhem.connection.*;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
+import org.jetbrains.annotations.NotNull;
 
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
+import java.io.Serializable;
+import java.util.*;
+
+import static com.google.common.collect.FluentIterable.from;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSpec>
@@ -109,25 +103,25 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
         context.startService(new Intent(Actions.CONNECTIONS_LIST)
                 .setClass(context, ConnectionsIntentService.class)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == SUCCESS && resultData != null &&
-                        resultData.containsKey(CONNECTION_LIST)) {
-                    Serializable content = resultData.getSerializable(CONNECTION_LIST);
-                    if (!(content instanceof List)) {
-                        throw new IllegalArgumentException(CONNECTION_LIST + " always has to be a list!");
-                    }
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == SUCCESS && resultData != null &&
+                                resultData.containsKey(CONNECTION_LIST)) {
+                            Serializable content = resultData.getSerializable(CONNECTION_LIST);
+                            if (!(content instanceof List)) {
+                                throw new IllegalArgumentException(CONNECTION_LIST + " always has to be a list!");
+                            }
 
-                    updateData((List<FHEMServerSpec>) content);
+                            updateData((List<FHEMServerSpec>) content);
 
-                    if (resultData.containsKey(CONNECTION_ID)) {
-                        String selectedId = resultData.getString(CONNECTION_ID);
-                        select(selectedId);
-                    } else {
-                        select(ConnectionService.DUMMY_DATA_ID);
+                            if (resultData.containsKey(CONNECTION_ID)) {
+                                String selectedId = resultData.getString(CONNECTION_ID);
+                                select(selectedId);
+                            } else {
+                                select(ConnectionService.DUMMY_DATA_ID);
+                            }
+                        }
                     }
-                }
-            }
                 }));
     }
 
@@ -143,7 +137,20 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
     @Override
     public void updateData(List<FHEMServerSpec> newData) {
         newData.add(MANAGEMENT_PILL);
-        super.updateData(newData);
+        super.updateData(filter(newData, parent.getContext()));
+    }
+
+    private static List<FHEMServerSpec> filter(List<FHEMServerSpec> data, Context context) {
+        ImmutableList<FHEMServerSpec> nonDummies = from(data).filter(new Predicate<FHEMServerSpec>() {
+            @Override
+            public boolean apply(FHEMServerSpec input) {
+                return !(input instanceof DummyServerSpec);
+            }
+        }).toList();
+        if (!nonDummies.isEmpty() && !LicenseService.isDebug(context)) {
+            return nonDummies;
+        }
+        return data;
     }
 
     @Override

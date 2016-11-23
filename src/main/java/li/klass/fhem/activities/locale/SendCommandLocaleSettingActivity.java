@@ -28,35 +28,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ConnectionListAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
-import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.constants.*;
+import li.klass.fhem.fhem.connection.*;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
+import org.slf4j.*;
+
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE;
-import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_STRING_BLURB;
+import static li.klass.fhem.activities.locale.LocaleIntentConstants.*;
 import static li.klass.fhem.constants.Actions.EXECUTE_COMMAND;
-import static li.klass.fhem.constants.BundleExtraKeys.ACTION;
-import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public class SendCommandLocaleSettingActivity extends Activity {
 
@@ -85,7 +71,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
         }
 
         final Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
-        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<FHEMServerSpec>());
+        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this);
         spinner.setAdapter(connectionListAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

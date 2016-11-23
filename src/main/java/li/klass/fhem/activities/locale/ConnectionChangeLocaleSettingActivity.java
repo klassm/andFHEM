@@ -28,27 +28,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ConnectionListAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
-import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.constants.*;
+import li.klass.fhem.fhem.connection.*;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 
+import java.util.*;
+
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public class ConnectionChangeLocaleSettingActivity extends Activity {
     public static final String CURRENT_CONNECTION_ID = "current";
@@ -70,7 +61,7 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
         }
 
         final Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
-        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<FHEMServerSpec>());
+        final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this);
         spinner.setAdapter(connectionListAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
