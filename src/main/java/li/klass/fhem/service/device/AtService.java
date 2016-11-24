@@ -99,7 +99,7 @@ public class AtService {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
-                genericDeviceService.update(device, context, Optional.absent());
+                genericDeviceService.update(device, context, Optional.<String>absent());
             }
         });
 
