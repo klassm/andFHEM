@@ -25,37 +25,23 @@
 package li.klass.fhem.service.intent.voice;
 
 import android.content.Context;
-
-import com.google.common.base.Joiner;
+import com.google.common.base.*;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
+import com.google.common.collect.*;
 import li.klass.fhem.domain.LightSceneDevice;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.core.*;
 import li.klass.fhem.service.room.RoomListService;
+
+import javax.inject.*;
+import java.util.*;
 
 import static com.google.common.collect.FluentIterable.from;
 
 @Singleton
 public class VoiceCommandService {
 
-    public static final String COMMAND_START = "schal[kt]e|switch|set";
-    public static final String SET_COMMAND_START = "set";
+    private static final String COMMAND_START = "schal[kt]e|switch|set";
+    private static final String SET_COMMAND_START = "set";
     private Map<String, String> START_REPLACE = ImmutableMap.<String, String>builder()
             .put(COMMAND_START, "set").build();
 
@@ -76,11 +62,11 @@ public class VoiceCommandService {
 
     private Set<String> FILL_WORDS_TO_REPLACE = Sets.newHashSet("der", "die", "das", "den", "the", "doch", "bitte", "please");
 
-    @Inject
-    RoomListService roomListService;
+    private RoomListService roomListService;
 
     @Inject
-    public VoiceCommandService() {
+    public VoiceCommandService(RoomListService roomListService) {
+        this.roomListService = roomListService;
     }
 
     public Optional<VoiceResult> resultFor(String voiceCommand, Context context) {
@@ -146,16 +132,29 @@ public class VoiceCommandService {
         return command;
     }
 
-    private Predicate<FhemDevice> filterDevicePredicate(final String deviceName, final String state) {
+    private Predicate<FhemDevice> filterDevicePredicate(final String spokenDeviceName, final String state) {
         return device -> {
+            assert device != null;
+
+            String spokenName = sanitizeName(spokenDeviceName);
+
             String stateToLookFor = device.getReverseEventMapStateFor(state);
-            String alias = device.getAlias();
-            return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
-                    || device.getName().equalsIgnoreCase(deviceName)
-                    || (device.getPronunciation() != null && device.getPronunciation().equalsIgnoreCase(deviceName)))
+            String alias = sanitizeName(device.getAlias());
+            String pronunciation = sanitizeName(device.getPronunciation());
+            String name = sanitizeName(device.getName());
+
+            return (spokenName.equalsIgnoreCase(alias)
+                    || spokenName.equalsIgnoreCase(name)
+                    || (spokenName.equalsIgnoreCase(pronunciation)))
                     && (device.getSetList().contains(stateToLookFor)
                     || (device instanceof LightSceneDevice && ((LightSceneDevice) device).getScenes().contains(state)));
         };
+    }
+
+    private String sanitizeName(String name) {
+        return name == null
+                ? ""
+                : name.replaceAll("[_\\.!? ]", "");
     }
 
     private String replace(String in, Map<String, String> toReplace) {
