@@ -9,10 +9,6 @@ echo "ANDROID_HOME=$ANDROID_HOME"
 
 #if [ ! -e $DEPS ]; then
   echo y | android update sdk -u -a -t platform-tools &&
-  #echo y | android update sdk -u -a -t android-21 &&
-  #echo y | android update sdk -u -a -t android-22 &&
-  #echo y | android update sdk -u -a -t android-23 &&
-  #echo y | android update sdk -u -a -t android-24 &&
   echo y | android update sdk -u -a -t android-25 &&
   echo y | android update sdk -u -a -t tool &&
 
