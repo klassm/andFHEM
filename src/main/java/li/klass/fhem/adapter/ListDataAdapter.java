@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -59,13 +60,8 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     }
 
     public void updateData(List<T> newData) {
-        // do this ONLY if the references do NOT match!!
-        if (data != newData) {
-            data.clear();
-            data.addAll(newData);
-        }
+        this.data = new ArrayList<>(newData);
         sortData();
-
         notifyDataSetChanged();
     }
 
@@ -121,7 +117,6 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
             Collections.sort(data);
         }
     }
-
 
     @Override
     public boolean isEmpty() {
