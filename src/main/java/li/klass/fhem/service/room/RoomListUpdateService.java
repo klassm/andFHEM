@@ -69,7 +69,12 @@ public class RoomListUpdateService {
     }
 
     public void updateAllDevices(Optional<String> connectionId, Context context, RoomListUpdateListener roomListUpdateListener) {
-        executeXmllist(0, connectionId, context, roomListUpdateListener, "");
+        executeXmllist(0, connectionId, context, roomListUpdateListener, "", new UpdateHandler() {
+            @Override
+            public RoomDeviceList handle(RoomDeviceList cached, RoomDeviceList parsed) {
+                return parsed;
+            }
+        });
     }
 
     private boolean update(Context context, Optional<String> connectionId, Optional<RoomDeviceList> result) {
@@ -83,16 +88,22 @@ public class RoomListUpdateService {
         return success;
     }
 
-    private void executeXmllistPartial(int delay, Optional<String> connectionId, Context context, RoomListUpdateListener updateListener, String devSpec) {
+    private void executeXmllistPartial(int delay, Optional<String> connectionId, final Context context, RoomListUpdateListener updateListener, String devSpec) {
         LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec);
-        executeXmllist(delay, connectionId, context, updateListener, " " + devSpec);
+        executeXmllist(delay, connectionId, context, updateListener, " " + devSpec, new UpdateHandler() {
+            @Override
+            public RoomDeviceList handle(RoomDeviceList cached, RoomDeviceList parsed) {
+                cached.addAllDevicesOf(parsed, context);
+                return cached;
+            }
+        });
     }
 
-    private void executeXmllist(final int delay, final Optional<String> connectionId, final Context context, final RoomListUpdateListener updateListener, String xmllistSuffix) {
+    private void executeXmllist(final int delay, final Optional<String> connectionId, final Context context, final RoomListUpdateListener updateListener, String xmllistSuffix, final UpdateHandler updateHandler) {
         commandExecutionService.executeSafely("xmllist" + xmllistSuffix, delay, connectionId, context, new CommandExecutionService.ResultListener() {
             @Override
             public void onResult(String result) {
-                Optional<RoomDeviceList> roomDeviceList = parseResult(connectionId, context, result);
+                Optional<RoomDeviceList> roomDeviceList = parseResult(connectionId, context, result, updateHandler);
                 boolean success = update(context, connectionId, roomDeviceList);
                 updateListener.onUpdateFinished(success);
                 if (delay > 0) {
@@ -108,17 +119,22 @@ public class RoomListUpdateService {
     }
 
     @NonNull
-    private Optional<RoomDeviceList> parseResult(Optional<String> connectionId, Context context, String result) {
+    private Optional<RoomDeviceList> parseResult(Optional<String> connectionId, Context context, String result, UpdateHandler updateHandler) {
         Optional<RoomDeviceList> parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context));
         Optional<RoomDeviceList> cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
-        if (parsed.isPresent() && cached.isPresent()) {
-            cached.get().addAllDevicesOf(parsed.get(), context);
-            return cached;
+        if (parsed.isPresent()) {
+            RoomDeviceList newDeviceList = updateHandler.handle(cached.or(parsed.get()), parsed.get());
+            roomListHolderService.storeDeviceListMap(newDeviceList, connectionId, context);
+            return Optional.of(newDeviceList);
         }
-        return parsed;
+        return Optional.absent();
     }
 
     public interface RoomListUpdateListener {
         void onUpdateFinished(boolean result);
+    }
+
+    private interface UpdateHandler {
+        RoomDeviceList handle(RoomDeviceList cached, RoomDeviceList parsed);
     }
 }
