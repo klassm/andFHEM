@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain.heating.schedule.interval;
 
-public class FilledTemperatureInterval extends BaseHeatingInterval implements Comparable<BaseHeatingInterval> {
+public class FilledTemperatureInterval extends BaseHeatingInterval<FilledTemperatureInterval> implements Comparable<BaseHeatingInterval> {
     private boolean timeFixed;
 
     private double temperature = 6;
@@ -32,6 +32,17 @@ public class FilledTemperatureInterval extends BaseHeatingInterval implements Co
 
     private String switchTime;
     private String changedSwitchTime;
+
+    public FilledTemperatureInterval() {
+    }
+
+    public FilledTemperatureInterval(FilledTemperatureInterval toCopy) {
+        this.timeFixed = toCopy.isTimeFixed();
+        this.temperature = toCopy.getTemperature();
+        this.changedTemperature = toCopy.getChangedTemperature();
+        this.switchTime = toCopy.getSwitchTime();
+        this.changedSwitchTime = toCopy.getChangedSwitchTime();
+    }
 
     public double getTemperature() {
         return temperature;
@@ -115,5 +126,10 @@ public class FilledTemperatureInterval extends BaseHeatingInterval implements Co
                 ", switchTime='" + switchTime + '\'' +
                 ", changedSwitchTime='" + changedSwitchTime + '\'' +
                 '}';
+    }
+
+    @Override
+    public FilledTemperatureInterval copy() {
+        return new FilledTemperatureInterval(this);
     }
 }

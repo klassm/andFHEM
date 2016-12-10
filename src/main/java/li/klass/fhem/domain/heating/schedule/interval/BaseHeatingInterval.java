@@ -26,7 +26,7 @@ package li.klass.fhem.domain.heating.schedule.interval;
 
 import java.io.Serializable;
 
-public abstract class BaseHeatingInterval implements Serializable, Comparable<BaseHeatingInterval> {
+public abstract class BaseHeatingInterval<SELF extends BaseHeatingInterval<SELF>> implements Serializable, Comparable<BaseHeatingInterval> {
 
     private boolean isNew = false;
 
@@ -47,4 +47,6 @@ public abstract class BaseHeatingInterval implements Serializable, Comparable<Ba
     }
 
     public abstract void reset();
+
+    public abstract SELF copy();
 }

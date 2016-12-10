@@ -128,6 +128,7 @@
     <string name="unknown">unbekannt</string>
     <string name="type">Typ</string>
     <string name="about">Über andFHEM</string>
+    <string name="copyFrom">Kopiere aus …</string>
     <string name="commandAccepted">Kommando akzeptiert?</string>
     <string name="up">Hoch</string>
     <string name="down">Runter</string>

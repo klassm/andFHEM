@@ -24,22 +24,22 @@
 
 package li.klass.fhem.adapter.weekprofile;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.*;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import java.util.List;
-
+import android.view.*;
+import android.widget.*;
+import com.google.common.base.Function;
+import com.google.common.collect.*;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.heating.schedule.DayProfile;
-import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.*;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.widget.NestedListViewAdapter;
+
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -72,13 +72,50 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
     }
 
     @Override
-    protected View getParentView(DayProfile<H, ?, ?> parent, View view, ViewGroup viewGroup) {
+    protected View getParentView(final DayProfile<H, ?, ?> parent, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.weekprofile_parent, viewGroup, false);
 
         TextView parentTextView = (TextView) view.findViewById(R.id.parent);
-        parentTextView.setText(resources.getText(parent.getDay().getStringId()));
+        parentTextView.setText(getParentTextFor(parent));
+
+        Button button = (Button) view.findViewById(R.id.copy);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCopyContextMenuFor(parent);
+            }
+        });
 
         return view;
+    }
+
+    private String getParentTextFor(DayProfile<H, ?, ?> profile) {
+        return resources.getText(profile.getDay().getStringId()).toString();
+    }
+
+    private void showCopyContextMenuFor(final DayProfile<H, ?, ?> target) {
+        AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
+        contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
+        final List<DayProfile<H, ?, ?>> parents = getParents();
+        ImmutableList<String> selectOptions = FluentIterable.from(parents)
+                .transform(new Function<DayProfile<H, ?, ?>, String>() {
+                    @Override
+                    public String apply(DayProfile<H, ?, ?> input) {
+                        return getParentTextFor(input);
+                    }
+                }).toList();
+
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int position) {
+                final DayProfile<H, ?, ?> source = parents.get(position);
+                target.replaceHeatingIntervalsWith(source.getHeatingIntervals());
+                dialog.dismiss();
+                notifyWeekProfileChangedListener();
+            }
+        };
+        contextMenu.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, selectOptions), clickListener);
+        contextMenu.show();
     }
 
     @Override
@@ -94,14 +131,14 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         return parents;
     }
 
-    protected String timeToTimeString(int hourOfDay, int minuteOfDay) {
+    String timeToTimeString(int hourOfDay, int minuteOfDay) {
         int intervalMinutesMustBeDivisibleBy = weekProfile.getConfiguration().getIntervalMinutesMustBeDivisibleBy();
         int minutes = (minuteOfDay + intervalMinutesMustBeDivisibleBy - 1) / intervalMinutesMustBeDivisibleBy * intervalMinutesMustBeDivisibleBy;
         if (minutes == 60) minutes = 0;
 
         if (minutes == 0 && minuteOfDay != 0) hourOfDay += 1;
 
-        return String.format("%02d", hourOfDay) + ":" + String.format("%02d", minutes);
+        return String.format(Locale.getDefault(), "%02d", hourOfDay) + ":" + String.format(Locale.getDefault(), "%02d", minutes);
     }
 
     public void updateData(WeekProfile<H, ?, ? extends FhemDevice> weekProfile) {
@@ -110,8 +147,8 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         super.updateData();
     }
 
-    protected void setDetailTextView(View view, int layoutItemId, String currentText,
-                                     String originalText, boolean isNew) {
+    void setDetailTextView(View view, int layoutItemId, String currentText,
+                           String originalText, boolean isNew) {
         TextView layoutItem = (TextView) view.findViewById(layoutItemId);
         layoutItem.setText(weekProfile.formatTimeForDisplay(currentText));
 
@@ -124,7 +161,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         this.listener = listener;
     }
 
-    protected void notifyWeekProfileChangedListener() {
+    void notifyWeekProfileChangedListener() {
         notifyDataSetChanged();
         if (listener != null) {
             listener.onWeekProfileChanged(weekProfile);

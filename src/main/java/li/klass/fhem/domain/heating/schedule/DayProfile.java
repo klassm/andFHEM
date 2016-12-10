@@ -24,16 +24,16 @@
 
 package li.klass.fhem.domain.heating.schedule;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
+import com.google.common.base.Function;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.util.DayUtil;
+
+import java.io.Serializable;
+import java.util.*;
+
+import static com.google.common.collect.FluentIterable.from;
 
 public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>> implements Serializable {
     private DayUtil.Day day;
@@ -86,7 +86,20 @@ public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, 
         return Collections.unmodifiableList(heatingIntervals);
     }
 
-    public boolean canAddHeatingInterval() {
+    public void replaceHeatingIntervalsWith(List<H> newIntervals) {
+        heatingIntervals.clear();
+        heatingIntervals.addAll(from(newIntervals)
+                .transform(new Function<H, H>() {
+                               @SuppressWarnings("unchecked")
+                               @Override
+                               public H apply(H input) {
+                                   return (H) input.copy();
+                               }
+                           }
+                ).toList());
+    }
+
+    private boolean canAddHeatingInterval() {
         if (heatingConfiguration.numberOfIntervalsType == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
             return false;
         }

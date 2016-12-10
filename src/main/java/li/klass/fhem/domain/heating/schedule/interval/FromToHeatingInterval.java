@@ -26,7 +26,7 @@ package li.klass.fhem.domain.heating.schedule.interval;
 
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 
-public class FromToHeatingInterval extends BaseHeatingInterval {
+public class FromToHeatingInterval extends BaseHeatingInterval<FromToHeatingInterval> {
     private String fromTime;
     private String toTime;
 
@@ -39,6 +39,13 @@ public class FromToHeatingInterval extends BaseHeatingInterval {
 
         changedFromTime = configuration.offTime;
         changedToTime = configuration.offTime;
+    }
+
+    public FromToHeatingInterval(FromToHeatingInterval toCopy) {
+        this.fromTime = toCopy.getFromTime();
+        this.toTime = toCopy.getToTime();
+        this.changedFromTime = toCopy.getChangedFromTime();
+        this.changedToTime = toCopy.getChangedToTime();
     }
 
     public String getFromTime() {
@@ -91,6 +98,11 @@ public class FromToHeatingInterval extends BaseHeatingInterval {
     public void reset() {
         changedFromTime = fromTime;
         changedToTime = toTime;
+    }
+
+    @Override
+    public FromToHeatingInterval copy() {
+        return new FromToHeatingInterval(this);
     }
 
     @Override

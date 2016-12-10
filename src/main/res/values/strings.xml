@@ -128,6 +128,7 @@
     <string name="unknown">unknown</string>
     <string name="type">Type</string>
     <string name="about">About</string>
+    <string name="copyFrom">Copy from …</string>
     <string name="commandAccepted">Command accepted?</string>
     <string name="up">up</string>
     <string name="down">down</string>
