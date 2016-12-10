@@ -321,5 +321,4 @@ task wrapper(type: Wrapper) {
 
 apply from: 'build-includes/test-resources.gradle'
 apply from: 'build-includes/resource-id-mapper-generator.gradle'
-apply from: 'build-includes/google-sites-upload.gradle'
 apply from: 'build-includes/device-configuration-generator.gradle'
