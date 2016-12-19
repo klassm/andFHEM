@@ -25,35 +25,34 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TableRow;
-import android.widget.TextView;
-
+import android.view.*;
+import android.widget.*;
 import li.klass.fhem.R;
 
 public abstract class ButtonActionRow {
     public static final int LAYOUT_DETAIL = R.layout.device_detail_buttonrow;
+    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_buttonrow;
     private final String description;
     private String buttonText;
+    private int layout;
 
-    public ButtonActionRow(Context context, int buttonText) {
-        this("", context.getString(buttonText));
+    public ButtonActionRow(Context context, int buttonText, int layout) {
+        this(context.getString(buttonText), layout);
     }
 
-    public ButtonActionRow(String description, String buttonText) {
+    public ButtonActionRow(String description, String buttonText, int layout) {
         this.description = description;
         this.buttonText = buttonText;
+        this.layout = layout;
     }
 
-    public ButtonActionRow(String buttonText) {
-        this("", buttonText);
+    public ButtonActionRow(String buttonText, int layout) {
+        this("", buttonText, layout);
     }
 
     @SuppressWarnings("unchecked")
     public TableRow createRow(LayoutInflater inflater) {
-        TableRow row = (TableRow) inflater.inflate(LAYOUT_DETAIL, null);
+        TableRow row = (TableRow) inflater.inflate(layout, null);
         ((TextView) row.findViewById(R.id.description)).setText(description);
 
         Button button = (Button) row.findViewById(R.id.button);

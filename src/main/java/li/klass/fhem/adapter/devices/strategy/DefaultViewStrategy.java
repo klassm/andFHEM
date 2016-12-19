@@ -26,21 +26,9 @@ package li.klass.fhem.adapter.devices.strategy;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TableRow;
-import android.widget.TextView;
-
+import android.view.*;
+import android.widget.*;
 import com.google.common.base.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
@@ -48,8 +36,11 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.service.deviceConfiguration.*;
+import org.slf4j.*;
+
+import javax.inject.*;
+import java.util.List;
 
 @Singleton
 public class DefaultViewStrategy extends ViewStrategy {
@@ -93,7 +84,7 @@ public class DefaultViewStrategy extends ViewStrategy {
         return R.layout.device_overview_generic;
     }
 
-    private void fillDeviceOverviewView(View view, FhemDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder, List<DeviceViewItem> items, LayoutInflater layoutInflater) {
+    protected void fillDeviceOverviewView(View view, FhemDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder, List<DeviceViewItem> items, LayoutInflater layoutInflater) {
         Context context = layoutInflater.getContext();
 
         viewHolder.resetHolder();

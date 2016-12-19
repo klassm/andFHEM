@@ -26,24 +26,21 @@
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="fill_parent"
-          android:layout_height="fill_parent">
+          android:layout_height="wrap_content"
+          style="@style/deviceOverviewLayout">
 
     <TextView
             android:id="@+id/description"
-            style="@style/deviceDetailDescription"
-            android:text=""/>
+            style="@style/deviceOverviewLayoutDeviceName"
+            android:layout_width="match_parent"
+            android:layout_column="1"
+            android:layout_gravity="center_vertical"
+            android:text="@string/dummy_text"/>
 
-    <LinearLayout
+    <Button
+            android:id="@+id/button"
+            style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end">
-
-        <Button
-                android:id="@+id/button"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dummy_buttonText"/>
-    </LinearLayout>
-
+            android:text="@string/dummy_buttonText"/>
 </TableRow>

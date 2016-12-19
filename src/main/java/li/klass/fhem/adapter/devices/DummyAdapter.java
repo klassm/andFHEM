@@ -24,30 +24,26 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TimePicker;
-
-import java.util.Calendar;
-
-import javax.inject.Inject;
-
+import android.widget.*;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DimmableAdapter;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
-import li.klass.fhem.adapter.devices.genericui.OldColorPickerRow;
+import li.klass.fhem.adapter.devices.core.*;
+import li.klass.fhem.adapter.devices.genericui.*;
+import li.klass.fhem.adapter.devices.strategy.*;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
 
+import javax.inject.Inject;
+import java.util.List;
+
 public class DummyAdapter extends DimmableAdapter {
     @Inject
     StateUiService stateUiService;
+    @Inject
+    SetStateStrategy setStateStrategy;
 
     public DummyAdapter() {
         super();
@@ -67,33 +63,15 @@ public class DummyAdapter extends DimmableAdapter {
             public void onFieldNameAdded(final Context context, TableLayout tableLayout,
                                          String field, final FhemDevice device,
                                          TableRow fieldTableRow) {
-                tableLayout.addView(new ButtonActionRow(context, R.string.set) {
+                tableLayout.addView(new StateChangeButtonActionRow(context, device, ButtonActionRow.LAYOUT_DETAIL).createRow(getInflater()));
+            }
 
                     @Override
-                    protected void onButtonClick() {
-                        Calendar now = Calendar.getInstance();
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                String hourOut = "" + hourOfDay;
-                                if (hourOfDay < 10) hourOut = "0" + hourOut;
-
-                                String minuteOut = "" + minute;
-                                if (minute < 10) minuteOut = "0" + minuteOut;
-
-                                stateUiService.setState(device, hourOut + ":" + minuteOut, context);
-                            }
-                        }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
-                        timePickerDialog.show();
+                    public boolean supportsDevice(FhemDevice device) {
+                        return setStateStrategy.supports(device);
                     }
-                }.createRow(getInflater()));
-            }
-
-            @Override
-            public boolean supportsDevice(FhemDevice device) {
-                return ((DummyDevice) device).isTimerDevice();
-            }
-        });
+                }
+        );
 
         registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener() {
             @Override
@@ -117,5 +95,11 @@ public class DummyAdapter extends DimmableAdapter {
                 }.createRow(context, getInflater(), tableLayout));
             }
         });
+    }
+
+    @Override
+    protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
+        super.fillOverviewStrategies(overviewStrategies);
+        overviewStrategies.add(setStateStrategy);
     }
 }

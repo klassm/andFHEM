@@ -25,38 +25,21 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.content.*;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import android.view.*;
+import android.widget.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.*;
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.*;
 
 import java.util.List;
 
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.GroupSetListTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.MultipleSetListTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.NoArgSetListTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.RGBTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SetListTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SliderSetListTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonSecondsHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TextFieldTargetStateHandler;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TimeTargetStateHandler;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetList;
-import li.klass.fhem.domain.setlist.SetListEntry;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
+import static android.view.View.*;
 import static com.google.common.collect.FluentIterable.from;
 
 public class AvailableTargetStatesDialogUtil {
@@ -98,7 +81,12 @@ public class AvailableTargetStatesDialogUtil {
         contextMenu.show();
     }
 
-    public static <D extends FhemDevice<D>> boolean handleSelectedOption(Context context, D device, SetListEntry option, OnTargetStateSelectedCallback callback) {
+    public static <D extends FhemDevice<D>> void showSwitchOptionsMenuFor(final Context context, final D device, final OnTargetStateSelectedCallback callback, String key) {
+        SetListEntry entry = device.getSetList().get(key);
+        handleSelectedOption(context, device, entry, callback);
+    }
+
+    static <D extends FhemDevice<D>> boolean handleSelectedOption(Context context, D device, SetListEntry option, OnTargetStateSelectedCallback callback) {
         for (SetListTargetStateHandler<FhemDevice<?>> handler : HANDLERS) {
             if (handler.canHandle(option)) {
                 handler.handle(option, context, device, callback);
