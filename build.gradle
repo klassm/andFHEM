@@ -38,7 +38,7 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'de.mobilej.unmock:UnMockPlugin:0.3.6'
+        classpath 'de.mobilej.unmock:UnMockPlugin:0.6.0'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
     }
 }
@@ -57,7 +57,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'co.riiid.gradle'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '24.0.3'
     testBuildType 'debug'
 
@@ -73,7 +73,7 @@ android {
     }
 
     defaultConfig {
-        targetSdkVersion 24
+        targetSdkVersion 25
         minSdkVersion 14
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -169,7 +169,7 @@ project.gradle.taskGraph.whenReady {
 }
 
 ext {
-    supportLibVersion = '24.2.1'
+    supportLibVersion = '25.0.0'
     buildProperties = getBuildProperties()
 }
 
@@ -199,10 +199,6 @@ unMock {
 
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
-    //noinspection GradleDependency
-    compile "com.android.support:support-v4:${supportLibVersion}@aar"
-    //noinspection GradleDependency
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services:9.0.2'
     compile 'commons-net:commons-net:3.3'
