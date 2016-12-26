@@ -142,15 +142,12 @@ public class ConnectionListFragment extends BaseFragment {
                             boolean isPremium = resultCode == ResultCodes.SUCCESS && resultData.getBoolean(BundleExtraKeys.IS_PREMIUM, false);
 
                             if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                                Intent intent = new Intent(Actions.SHOW_ALERT);
-                                intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
-                                intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
-                                getActivity().sendBroadcast(intent);
+                                getActivity().sendBroadcast(new Intent(Actions.SHOW_ALERT)
+                                        .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
+                                        .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium));
                             } else {
-                                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
-
-                                getActivity().sendBroadcast(intent);
+                                getActivity().sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
+                                        .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL));
                             }
                         }
                     }));
