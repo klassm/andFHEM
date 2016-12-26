@@ -47,7 +47,7 @@ public enum SetListItemType {
     RGB(new SupportsType("colorpicker") {
         @Override
         public boolean supports(String[] parts) {
-            return super.supports(parts) && parts[1].equalsIgnoreCase("RGB");
+            return super.supports(parts) && parts.length >= 1 && parts[1].equalsIgnoreCase("RGB");
         }
     }, new EntryProvider() {
         @Override
