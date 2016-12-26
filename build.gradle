@@ -169,7 +169,7 @@ project.gradle.taskGraph.whenReady {
 }
 
 ext {
-    supportLibVersion = '25.0.0'
+    supportLibVersion = '25.1.0'
     buildProperties = getBuildProperties()
 }
 
