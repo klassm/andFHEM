@@ -73,11 +73,11 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
 
                 String title = context.getString(R.string.set_value);
 
-                DialogUtil.showInputBox(context, title, "0", new DialogUtil.InputDialogListener() {
+                DialogUtil.showInputBox(context, title, initialProgress + "", new DialogUtil.InputDialogListener() {
                     @Override
                     public void onClick(String text) {
                         if (isDecimalNumber(text)) {
-                            onButtonSetValue(device, Integer.parseInt(text));
+                            onButtonSetValue(device, Float.parseFloat(text));
                         } else {
                             DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
                         }
@@ -90,7 +90,7 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
         }
     }
 
-    public abstract void onButtonSetValue(XmlListDevice device, int value);
+    public abstract void onButtonSetValue(XmlListDevice device, float value);
 
     protected boolean showButton() {
         return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false, context);

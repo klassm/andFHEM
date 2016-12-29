@@ -51,7 +51,7 @@ public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndB
     }
 
     @Override
-    public void onButtonSetValue(XmlListDevice device, int value) {
+    public void onButtonSetValue(XmlListDevice device, float value) {
         onStopTrackingTouch(context, device, value);
     }
 

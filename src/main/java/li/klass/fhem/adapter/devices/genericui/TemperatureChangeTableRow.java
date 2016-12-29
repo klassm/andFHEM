@@ -110,18 +110,14 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
                 .putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
-        onIntentCreation(intent);
 
         context.startService(intent);
 
         updateView.setText(appendTemperature(newValue));
     }
 
-    protected void onIntentCreation(Intent intent) {
-    }
-
     @Override
-    public void onButtonSetValue(XmlListDevice device, int value) {
+    public void onButtonSetValue(XmlListDevice device, float value) {
         setValue(device, value);
     }
 

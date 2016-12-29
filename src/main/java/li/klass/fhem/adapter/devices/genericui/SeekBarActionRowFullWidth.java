@@ -97,6 +97,7 @@ public abstract class SeekBarActionRowFullWidth {
                 this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step);
                 if (updateView != null && fromUser) {
                     SeekBarActionRowFullWidth.this.onProgressChanged(updateView, seekBar.getContext(), device, this.progress);
+                    initialProgress = progress;
                 }
             }
 
