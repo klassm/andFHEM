@@ -46,6 +46,7 @@ public class FromToHeatingInterval extends BaseHeatingInterval<FromToHeatingInte
         this.toTime = toCopy.getToTime();
         this.changedFromTime = toCopy.getChangedFromTime();
         this.changedToTime = toCopy.getChangedToTime();
+        setNew(true);
     }
 
     public String getFromTime() {

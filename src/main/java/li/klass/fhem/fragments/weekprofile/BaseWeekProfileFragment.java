@@ -95,7 +95,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
             @SuppressWarnings("unchecked")
             @Override
             public void onClick(View view) {
-                ArrayList<StateToSet> commands = newArrayList(weekProfile.getStatesToSet(deviceName));
+                ArrayList<StateToSet> commands = newArrayList(weekProfile.getStatesToSet());
                 getActivity().startService(new Intent(Actions.DEVICE_SET_SUB_STATES)
                         .setClass(getActivity(), DeviceIntentService.class)
                         .putExtra(DEVICE_NAME, deviceName)

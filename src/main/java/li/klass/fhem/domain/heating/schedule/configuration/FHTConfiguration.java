@@ -82,10 +82,10 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
             if (heatingInterval.isModified()) {
 
-                if (!heatingInterval.getFromTime().equals(heatingInterval.getChangedFromTime())) {
+                if (heatingInterval.isNew() || !heatingInterval.getFromTime().equals(heatingInterval.getChangedFromTime())) {
                     result.add(new StateToSet(shortDayName + "-from" + (i + 1), heatingInterval.getChangedFromTime()));
                 }
-                if (!heatingInterval.getToTime().equals(heatingInterval.getChangedToTime())) {
+                if (heatingInterval.isNew() || !heatingInterval.getToTime().equals(heatingInterval.getChangedToTime())) {
                     result.add(new StateToSet(shortDayName + "-to" + (i + 1), heatingInterval.getChangedToTime()));
                 }
             }

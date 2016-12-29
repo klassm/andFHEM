@@ -96,6 +96,7 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         for (StateToSet state : statesToSet) {
             result.add("set " + deviceName + " " + state.getKey() + " " + state.getValue());
         }
+        LOG.info("generateScheduleCommands - resultingCommands: {}", result);
         return result;
     }
 

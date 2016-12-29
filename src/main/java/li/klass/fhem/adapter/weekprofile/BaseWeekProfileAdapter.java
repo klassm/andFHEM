@@ -25,21 +25,30 @@
 package li.klass.fhem.adapter.weekprofile;
 
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.view.*;
-import android.widget.*;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.google.common.base.Function;
-import com.google.common.collect.*;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+
+import java.util.List;
+import java.util.Locale;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.heating.schedule.*;
+import li.klass.fhem.domain.heating.schedule.DayProfile;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.widget.NestedListViewAdapter;
-
-import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -109,7 +118,15 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
             @Override
             public void onClick(final DialogInterface dialog, int position) {
                 final DayProfile<H, ?, ?> source = parents.get(position);
-                target.replaceHeatingIntervalsWith(source.getHeatingIntervals());
+                if (source.getDay() == target.getDay()) {
+                    return;
+                }
+
+                List<H> heatingIntervals = source.getHeatingIntervals();
+                if (heatingIntervals.isEmpty()) {
+                    return;
+                }
+                target.replaceHeatingIntervalsWith(heatingIntervals);
                 dialog.dismiss();
                 notifyWeekProfileChangedListener();
             }

@@ -42,6 +42,7 @@ public class FilledTemperatureInterval extends BaseHeatingInterval<FilledTempera
         this.changedTemperature = toCopy.getChangedTemperature();
         this.switchTime = toCopy.getSwitchTime();
         this.changedSwitchTime = toCopy.getChangedSwitchTime();
+        setNew(true);
     }
 
     public double getTemperature() {

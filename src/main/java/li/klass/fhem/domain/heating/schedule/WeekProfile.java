@@ -91,7 +91,7 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return configuration.generateScheduleCommands(deviceName, this);
     }
 
-    public List<StateToSet> getStatesToSet(String deviceName) {
+    public List<StateToSet> getStatesToSet() {
         return configuration.generatedStatesToSet(this);
     }
 
