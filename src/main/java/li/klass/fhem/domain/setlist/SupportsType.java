@@ -51,7 +51,7 @@ class SupportsType {
         if (parts.length == 0 || !type.toLowerCase(Locale.getDefault()).equals(parts[0].toLowerCase(Locale.getDefault()))) {
             return false;
         }
-        return !(expectedLength.isPresent() && parts.length != expectedLength.get());
+        return !expectedLength.isPresent() || parts.length >= expectedLength.get();
     }
 
     public String getType() {

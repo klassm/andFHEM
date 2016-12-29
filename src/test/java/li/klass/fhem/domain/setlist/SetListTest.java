@@ -86,6 +86,11 @@ public class SetListTest {
                                 .thenExpect(entry("state", new SliderSetListEntry("state", 1, 2, 3)), entry("dim", new SliderSetListEntry("dim", 0, 5, 100)))
                 },
                 {
+                        new TestCase("slider desiredTemperature")
+                                .withSetList("desiredTemperature:slider,4.5,0.5,29.5,1")
+                                .thenExpect(entry("desiredTemperature", new SliderSetListEntry("desiredTemperature", 4.5f, 0.5f, 29.5f)))
+                },
+                {
                         new TestCase("group")
                                 .withSetList("level:1,2,3 state:on,off")
                                 .thenExpect(entry("level", new GroupSetListEntry("level", "1", "2", "3")), entry("state", new GroupSetListEntry("state", "on", "off")))
