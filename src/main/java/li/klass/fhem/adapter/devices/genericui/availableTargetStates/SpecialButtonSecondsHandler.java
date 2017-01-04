@@ -27,7 +27,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.widget.TimePicker;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
@@ -35,6 +34,7 @@ import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.widget.TimePickerWithSeconds;
 
 public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
     @Override
@@ -46,10 +46,10 @@ public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements Set
 
     @Override
     public void handle(final SetListEntry entry, final Context context, final D device, final OnTargetStateSelectedCallback<D> callback) {
-        final TimePicker timePicker = new TimePicker(context);
-        timePicker.setCurrentHour(0);
-        timePicker.setCurrentMinute(0);
-        timePicker.setIs24HourView(true);
+        final TimePickerWithSeconds timePicker = new TimePickerWithSeconds(context);
+        timePicker.setHours(0);
+        timePicker.setMinutes(0);
+        timePicker.setSeconds(0);
 
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
@@ -65,7 +65,7 @@ public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements Set
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int seconds = 60 * (timePicker.getCurrentHour() * 60 + timePicker.getCurrentMinute());
+                        int seconds = 60 * (timePicker.getHours() * 60 + timePicker.getMinutes()) + timePicker.getSeconds();
                         callback.onSubStateSelected(device, entry.getKey(), String.valueOf(seconds));
                     }
                 })

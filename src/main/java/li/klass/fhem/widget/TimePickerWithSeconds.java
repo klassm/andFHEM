@@ -24,7 +24,6 @@
 
 package li.klass.fhem.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -37,7 +36,6 @@ import li.klass.fhem.util.NumberUtil;
 
 import static android.widget.NumberPicker.Formatter;
 
-@SuppressLint("NewApi")
 public class TimePickerWithSeconds extends LinearLayout {
     public interface OnValueChangedListener {
         void onValueChanged(int hours, int minutes, int seconds);
@@ -62,7 +60,6 @@ public class TimePickerWithSeconds extends LinearLayout {
         init(context);
     }
 
-    @SuppressLint("NewApi")
     @SuppressWarnings("unused")
     public TimePickerWithSeconds(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
