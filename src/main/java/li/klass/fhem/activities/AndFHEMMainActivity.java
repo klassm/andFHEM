@@ -230,11 +230,6 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         AndFHEMApplication application = (AndFHEMApplication) getApplication();
         application.getDaggerComponent().inject(this);
 
-        if (application.isAndFHEMAlreadyInstalled()) {
-            startActivity(new Intent(this, DuplicateInstallActivity.class));
-            return;
-        }
-
         saveInstanceStateCalled = false;
 
         setContentView(R.layout.main_view);

@@ -65,6 +65,13 @@ public class StartupActivity extends Activity {
             finish();
             return;
         }
+        AndFHEMApplication application = (AndFHEMApplication) getApplication();
+        if (application.isAndFHEMAlreadyInstalled()) {
+            Log.e(TAG, "onCreate() - andFHEM is already installed");
+            startActivity(new Intent(this, DuplicateInstallActivity.class));
+            finish();
+            return;
+        }
 
         ((AndFHEMApplication) getApplication()).getDaggerComponent().inject(this);
 
