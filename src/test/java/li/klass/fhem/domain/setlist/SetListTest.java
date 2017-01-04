@@ -129,6 +129,11 @@ public class SetListTest {
                         new TestCase("colorPicker with group")
                                 .withSetList("ct:colorpicker,CT,154,1,500")
                                 .thenExpect(entry("ct", new NoArgSetListEntry("ct")))
+                },
+                {
+                        new TestCase("colorPicker without argument")
+                                .withSetList("ct:colorpicker")
+                                .thenExpect(entry("ct", new NoArgSetListEntry("ct")))
                 }
         };
     }
