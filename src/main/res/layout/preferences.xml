@@ -30,7 +30,10 @@
     android:layout_height="fill_parent"
     android:key="first_preferencescreen">
 
-    <PreferenceCategory android:title="@string/prefAppearancePreferencesCategory">
+    <PreferenceCategory
+        android:title="@string/prefAppearancePreferencesCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ListPreference
             android:id="@+id/prefStartupView"
@@ -38,7 +41,9 @@
             android:entries="@array/startupViews"
             android:entryValues="@array/startupViewsValues"
             android:key="STARTUP_VIEW"
-            android:title="@string/prefStartupView"/>
+            android:title="@string/prefStartupView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -46,7 +51,8 @@
             android:title="@string/prefShowSetValueButtons"
             android:summaryOn="@string/prefShowSetValueButtonsSummaryOn"
             android:summaryOff="@string/prefShowSetValueButtonsSummaryOff"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -54,7 +60,8 @@
             android:title="@string/prefShowHiddenDevices"
             android:summaryOn="@string/prefShowHiddenDevicesSummaryOn"
             android:summaryOff="@string/prefShowHiddenDevicesSummaryOff"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <li.klass.fhem.widget.preference.SeekBarPreference
             android:layout_width="wrap_content"
@@ -148,6 +155,13 @@
             android:title="@string/prefUpdateOnApplicationStart"
             android:summaryOn="@string/prefUpdateOnApplicationStartSummaryOn"
             android:summaryOff="@string/prefUpdateOnApplicationStartSummaryOff"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="UPDATE_ON_ROOM_OPEN"
+            android:title="@string/prefUpdateRoomOnOpen"
+            android:summaryOn="@string/prefUpdateRoomOnOpenSummaryOn"
+            android:summaryOff="@string/prefUpdateRoomOnOpenSummaryOff" />
 
         <EditTextPreference
             android:defaultValue=""

@@ -150,38 +150,10 @@ public class RoomListFragment extends BaseFragment {
         hideEmptyView();
         if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
-        Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
-        intent.setClass(getActivity(), RoomListIntentService.class);
-        intent.putExtras(new Bundle());
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (getView() == null) return;
-
-                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
-
-                if (resultCode == ResultCodes.SUCCESS) {
-                    List<String> roomList = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);
-                    roomList = newArrayList(Iterables.filter(roomList, new Predicate<String>() {
-                        @Override
-                        public boolean apply(String input) {
-                            return isRoomSelectable(roomName);
-                        }
-                    }));
-
-                    assert roomList != null;
-                    if (roomList.size() == 0) {
-                        showEmptyView();
-                        getAdapter().updateData(roomList);
-                    } else {
-                        getAdapter().updateData(roomList, roomName);
-                        scrollToSelectedRoom(roomName, getAdapter().getData());
-                    }
-                }
-            }
-        });
-        getActivity().startService(intent);
+        getActivity().startService(new Intent(Actions.GET_ROOM_NAME_LIST)
+                .setClass(getActivity(), RoomListIntentService.class)
+                .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
+                .putExtra(RESULT_RECEIVER, new RoomListUpdateResultReceiver()));
     }
 
     @Override
@@ -224,5 +196,35 @@ public class RoomListFragment extends BaseFragment {
 
     public interface RoomClickedCallback extends Serializable {
         void onRoomClicked(String roomName);
+    }
+
+    private class RoomListUpdateResultReceiver extends FhemResultReceiver {
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            if (getView() == null) return;
+
+            getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+
+            if (resultCode == ResultCodes.SUCCESS) {
+                List<String> roomList1 = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);
+                assert roomList1 != null;
+                roomList1 = newArrayList(Iterables.filter(roomList1, new Predicate<String>() {
+                    @Override
+                    public boolean apply(String input) {
+                        return isRoomSelectable(roomName);
+                    }
+                }));
+
+                RoomListAdapter adapter = getAdapter();
+                assert adapter != null;
+                if (roomList1.size() == 0) {
+                    showEmptyView();
+                    adapter.updateData(roomList1);
+                } else {
+                    adapter.updateData(roomList1, roomName);
+                    scrollToSelectedRoom(roomName, adapter.getData());
+                }
+            }
+        }
     }
 }

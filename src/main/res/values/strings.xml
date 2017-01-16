@@ -344,6 +344,9 @@
     <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
     <string name="prefUpdateOnApplicationStartSummaryOn">Update device list upon application start</string>
     <string name="prefUpdateOnApplicationStartSummaryOff">Don\'t update device list upon application start</string>
+    <string name="prefUpdateRoomOnOpen">Update room on open</string>
+    <string name="prefUpdateRoomOnOpenSummaryOn">Update all devices in a room when opening it</string>
+    <string name="prefUpdateRoomOnOpenSummaryOff">Don\'t update devices in a room when opening it</string>
     <string name="prefShowSetValueButtons">\'Set\' button for sliders</string>
     <string name="prefShowSetValueButtonsSummaryOn">Sliders get an additional \'Set\' button</string>
     <string name="prefShowSetValueButtonsSummaryOff">Sliders get no \'Set\' button</string>

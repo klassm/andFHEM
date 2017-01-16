@@ -91,7 +91,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     DataConnectionSwitch dataConnectionSwitch;
 
     @Inject
-    ApplicationProperties applicationProperties;
+    protected ApplicationProperties applicationProperties;
 
     @Inject
     AdvertisementService advertisementService;
@@ -283,42 +283,17 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         if (doUpdate) {
             getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
-            view.invalidate();
         }
+        View view1 = getView();
+        if (view1 == null) return;
+        view1.invalidate();
 
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
 
         Intent intent = new Intent(getUpdateAction())
                 .setClass(getActivity(), getUpdateActionIntentTargetClass())
                 .putExtra(DO_REFRESH, doUpdate)
-                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        View view = getView();
-                        if (view == null) return;
-
-                        if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
-                            getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
-
-                            RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
-                            long lastUpdate = resultData.getLong(LAST_UPDATE);
-
-                            getAdapter().updateData(deviceList, lastUpdate);
-
-                            if (deviceList != null && deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-                                showEmptyView();
-                            } else {
-                                hideEmptyView();
-                            }
-                        }
-
-                        View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                        if (!dataConnectionSwitch.isDummyDataActive(getActivity())) {
-                            dummyConnectionNotification.setVisibility(View.GONE);
-                        } else {
-                            dummyConnectionNotification.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
+                .putExtra(RESULT_RECEIVER, new DeviceListUpdateReceiver());
         fillIntent(intent);
 
         FragmentActivity activity = getActivity();
@@ -375,5 +350,34 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         getDeviceList().updateNumberOfColumns();
         getAdapter().notifyDataSetInvalidated();
+    }
+
+    private class DeviceListUpdateReceiver extends FhemResultReceiver {
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            View view = getView();
+            if (view == null) return;
+
+            if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+
+                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
+                long lastUpdate = resultData.getLong(LAST_UPDATE);
+
+                getAdapter().updateData(deviceList, lastUpdate);
+
+                if (deviceList != null && deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                    showEmptyView();
+                } else {
+                    hideEmptyView();
+                }
+            }
+
+            View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
+            if (!dataConnectionSwitch.isDummyDataActive(getActivity())) {
+                dummyConnectionNotification.setVisibility(View.GONE);
+            } else {
+                dummyConnectionNotification.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

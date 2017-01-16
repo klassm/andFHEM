@@ -340,8 +340,11 @@
     <string name="prefDeviceFunctionalityOrder">Gerätefunktions-Reihenfolge</string>
     <string name="prefDeviceFunctionalityOrderSummary">Angezeigte Gerätefunktioneren und deren Reihenfolge konfigurieren</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Start</string>
-    <string name="prefUpdateOnApplicationStartSummaryOn">Beim Start der App die Geräteliste aktualisieren</string>
-    <string name="prefUpdateOnApplicationStartSummaryOff">Beim Start der App die Geräteliste nicht aktualisieren</string>
+    <string name="prefUpdateOnApplicationStartSummaryOn">Aktuell: Beim Start der App die Geräteliste aktualisieren</string>
+    <string name="prefUpdateOnApplicationStartSummaryOff">Aktuell: Beim Start der App die Geräteliste nicht aktualisieren</string>
+    <string name="prefUpdateRoomOnOpen">Raum beim Öffnen aktualisieren</string>
+    <string name="prefUpdateRoomOnOpenSummaryOn">Aktuell: Beim Öffnen eines Raums alle enthaltenen Geräte aktualisieren</string>
+    <string name="prefUpdateRoomOnOpenSummaryOff">Aktuell: Beim Öffnen eines Raums alle enthaltenen Geräte nicht aktualisieren</string>
     <string name="prefShowSetValueButtons">\'Ändern\'-Knöpfe für Schieber</string>
     <string name="prefShowSetValueButtonsSummaryOn">Für Schieberegler zusätzlich einen \'Ändern\'-Knopf anzeigen</string>
     <string name="prefShowSetValueButtonsSummaryOff">Für Schieberegler keinen \'Ändern\'-Knopf anzeigen</string>
