@@ -25,21 +25,38 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.view.*;
-import android.widget.*;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.*;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.*;
 
 import java.util.List;
 
-import static android.view.View.*;
+import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.GroupSetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.MultipleSetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.NoArgSetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.RGBTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SliderSetListTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.SpecialButtonSecondsHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TextFieldTargetStateHandler;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.TimeTargetStateHandler;
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.domain.setlist.SetListEntry;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.common.collect.FluentIterable.from;
 
 public class AvailableTargetStatesDialogUtil {
@@ -101,15 +118,16 @@ public class AvailableTargetStatesDialogUtil {
         private final List<String> setOptions;
         private final D device;
 
-        public SetListArrayAdapter(Context context, String[] eventMapOptions, List<String> setOptions, D device) {
+        SetListArrayAdapter(Context context, String[] eventMapOptions, List<String> setOptions, D device) {
             super(context, R.layout.list_item_with_arrow, eventMapOptions);
             this.context = context;
             this.setOptions = setOptions;
             this.device = device;
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
             }

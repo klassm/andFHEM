@@ -1,0 +1,15 @@
+{
+  "showStateInOverview": false,
+  "showMeasuredInOverview": true,
+  "defaultGroup": "REMOTE_CONTROL",
+  "states": [
+    {
+      "key": "input",
+      "desc": "input"
+    },
+    {
+      "key": "mute",
+      "desc": "musicMute"
+    }
+  ]
+}

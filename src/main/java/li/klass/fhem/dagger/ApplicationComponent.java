@@ -44,7 +44,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
-import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
@@ -196,8 +195,6 @@ public interface ApplicationComponent {
     void inject(WebLinkAdapter object);
 
     void inject(WifiLightDeviceAdapter object);
-
-    void inject(OnkyoAvrDeviceAdapter object);
 
     void inject(EnigmaDeviceAdapter object);
 

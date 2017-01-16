@@ -37,7 +37,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
-import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
@@ -78,7 +77,6 @@ import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MiLightDevice;
-import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PCA9532Device;
@@ -139,7 +137,6 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
-    ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
