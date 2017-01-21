@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.strategy;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableRow;
@@ -33,7 +32,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public abstract class ViewStrategy {
@@ -71,6 +69,4 @@ public abstract class ViewStrategy {
     }
 
     public abstract boolean supports(FhemDevice fhemDevice);
-
-    abstract TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context);
 }

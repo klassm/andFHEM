@@ -27,9 +27,7 @@ package li.klass.fhem.adapter.devices.strategy;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TableRow;
-
-import com.google.common.base.Optional;
+import android.widget.TableLayout;
 
 import java.util.List;
 
@@ -39,71 +37,52 @@ import javax.inject.Singleton;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
-import li.klass.fhem.adapter.devices.genericui.DimActionRow;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
-import li.klass.fhem.adapter.devices.hook.ButtonHook;
+import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
+import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.domain.core.ToggleableDevice;
 
-import static li.klass.fhem.behavior.dim.DimmableBehavior.isDimDisabled;
+import static li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE;
 
 @Singleton
-public class DimmableStrategy extends ViewStrategy {
+public class WebcmdStrategy extends ViewStrategy {
     @Inject
-    DeviceHookProvider deviceHookProvider;
+    DeviceHookProvider hookProvider;
 
     @Inject
-    StateUiService stateUiService;
-
-    @Inject
-    ApplicationProperties applicationProperties;
-
-    @Inject
-    public DimmableStrategy() {
+    public WebcmdStrategy() {
     }
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
-        DimmableDevice<?> device = (DimmableDevice<?>) rawDevice;
+        ToggleableDevice device = (ToggleableDevice) rawDevice;
 
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
             GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);
             convertView.setTag(holder);
         }
-
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
-        DimActionRow row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY);
-        if (row == null) {
-            row = new DimActionRow(layoutInflater, stateUiService, layoutInflater.getContext());
-            holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, row);
-        }
-        row.fillWith(device, null);
-        holder.getTableLayout().addView(row.getView());
+        addOverviewSwitchActionRow(holder, device, layoutInflater);
         return convertView;
     }
 
     @Override
     public boolean supports(FhemDevice fhemDevice) {
-        if (isDimDisabled(fhemDevice)) {
-            return false;
-        }
-        ButtonHook hook = deviceHookProvider.buttonHookFor(fhemDevice);
-        return hook == ButtonHook.NORMAL
-                && DimmableBehavior.behaviorFor(fhemDevice).isPresent();
+        return hookProvider.buttonHookFor(fhemDevice) == WEBCMD_DEVICE;
     }
 
-    public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        Optional<DimmableBehavior> dimmableBehaviorOpt = DimmableBehavior.behaviorFor(device);
-        DimmableBehavior behavior = dimmableBehaviorOpt.get();
-        return new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, behavior, row)
-                .createRow(inflater, device);
+    private <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
+        TableLayout layout = holder.getTableLayout();
+        addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater);
+    }
+
+    private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
+                                                                            TableLayout tableLayout, LayoutInflater layoutInflater) {
+        tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
+                .createRow(context, layoutInflater, tableLayout, device));
     }
 }

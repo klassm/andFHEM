@@ -27,7 +27,6 @@ package li.klass.fhem.adapter.devices.strategy;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.google.common.base.Optional;
@@ -40,9 +39,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
-import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
-import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleables;
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
@@ -88,27 +85,16 @@ public class ToggleableStrategy extends ViewStrategy {
 
     @Override
     public boolean supports(FhemDevice fhemDevice) {
-        return OnOffBehavior.supports(fhemDevice);
+        return hookProvider.buttonHookFor(fhemDevice) != WEBCMD_DEVICE && OnOffBehavior.supports(fhemDevice);
     }
 
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
-        TableLayout layout = holder.getTableLayout();
         ButtonHook hook = hookProvider.buttonHookFor(device);
         if (hook != NORMAL && hook != TOGGLE_DEVICE) {
-            if (hook == WEBCMD_DEVICE) {
-                addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater);
-            } else {
-                addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent());
-            }
+            addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent());
         } else {
             addToggleDeviceActionRow(holder, device, LAYOUT_OVERVIEW, layoutInflater);
         }
-    }
-
-    private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
-                                                                            TableLayout tableLayout, LayoutInflater layoutInflater) {
-        tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
-                .createRow(context, layoutInflater, tableLayout, device));
     }
 
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
@@ -133,7 +119,6 @@ public class ToggleableStrategy extends ViewStrategy {
                 .createRow(layoutInflater, device, holder.getTableLayout().getContext()));
     }
 
-    @Override
     public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
         return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank))
                 .createRow(inflater, device, context);

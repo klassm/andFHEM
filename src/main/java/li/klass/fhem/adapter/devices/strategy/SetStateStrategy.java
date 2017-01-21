@@ -24,20 +24,21 @@
 
 package li.klass.fhem.adapter.devices.strategy;
 
-import android.content.Context;
-import android.view.*;
-import android.widget.TableRow;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.adapter.devices.StateChangeButtonActionRow;
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
-
-import javax.inject.*;
-import java.util.List;
 
 @Singleton
 public class SetStateStrategy extends DefaultViewStrategy {
@@ -71,8 +72,4 @@ public class SetStateStrategy extends DefaultViewStrategy {
                 && fhemDevice.getSetList().contains("state");
     }
 
-    @Override
-    public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        return row;
-    }
 }

@@ -30,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import java.util.List;
 
@@ -41,7 +40,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 
@@ -81,11 +79,6 @@ public class LightSceneDeviceViewStrategy extends ViewStrategy {
     @Override
     public boolean supports(FhemDevice fhemDevice) {
         return fhemDevice instanceof LightSceneDevice;
-    }
-
-    @Override
-    TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        return null;
     }
 
     private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button, final Context context) {

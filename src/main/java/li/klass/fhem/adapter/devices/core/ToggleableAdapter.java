@@ -40,6 +40,7 @@ import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -51,6 +52,8 @@ import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYO
 public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
     ToggleableStrategy toggleableOverviewStrategy;
+    @Inject
+    WebcmdStrategy webcmdStrategy;
 
     @Inject
     DeviceHookProvider deviceHookProvider;
@@ -112,5 +115,6 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(toggleableOverviewStrategy);
+        overviewStrategies.add(webcmdStrategy);
     }
 }

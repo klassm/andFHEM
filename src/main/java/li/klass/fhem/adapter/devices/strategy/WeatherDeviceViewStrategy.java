@@ -24,12 +24,10 @@
 
 package li.klass.fhem.adapter.devices.strategy;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TableRow;
 
 import java.util.List;
 
@@ -38,7 +36,6 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ImageUtil;
@@ -59,11 +56,6 @@ public class WeatherDeviceViewStrategy extends ViewStrategy {
     @Override
     public boolean supports(FhemDevice fhemDevice) {
         return fhemDevice instanceof WeatherDevice;
-    }
-
-    @Override
-    TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        return null;
     }
 
 

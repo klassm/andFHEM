@@ -64,6 +64,7 @@ import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWit
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
+import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
 import li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService;
@@ -347,6 +348,8 @@ public interface ApplicationComponent {
     void inject(OnOffBehavior object);
 
     void inject(ToggleableStrategy object);
+
+    void inject(WebcmdStrategy object);
 
 
     XmlListParser getXmlListParser();
