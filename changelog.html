@@ -5,33 +5,58 @@ bigimg: /images/changelog.jpg
 ---
 
 <div id="home">
+    <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.6">4.3.6</a> (21.01.2017)</h3>
+    <div>
+        <ul>
+            <li>Enable webview hook also for non toggleable devices</li>
+            <li>Repair l4 color in gplots</li>
+        </ul>
+    </div>
+
+   <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.5">4.3.5</a> (16.01.2017)</h3>
+    <div>
+        <ul>
+            <li>Migrate ONKYO_AVR as generic device, fixing some bugs</li>
+            <li>Add preference option to enable remote update of a room when opening it</li>
+        </ul>
+    </div>
+
     <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.4">4.3.4</a> (06.01.2017)</h3>
     <div>
         <ul>
             <li>On-for-timer time can now also be seconds (not only minutes and hours)</li>
-            <li>Repair duplicate install error dialog - andFHEM Premium and andFHEM may not be installed both at the same time on the same device, as those two versions will conflict.</li>
+            <li>Repair duplicate install error dialog - andFHEM Premium and andFHEM may not be
+                installed both at the same time on the same device, as those two versions will
+                conflict.
+            </li>
             <li>Repair parse KNX device list error</li>
         </ul>
     </div>
 
-   <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.3">4.3.3</a> (31.12.2016)</h3>
+    <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.3">4.3.3</a> (31.12.2016)</h3>
     <div>
         <ul>
             <li>Bugfix: Copied day profiles cannot be saved</li>
-            <li>Bugfix: Change slider value via "set" button (can be enabled in preferences) does not work for floating point values</li>
-            <li>Bugfix: SetList slider type accepts four values (whereas the fourth one is always a one). AndFHEM will accept the parameter, but ignore it</li>
+            <li>Bugfix: Change slider value via "set" button (can be enabled in preferences) does
+                not work for floating point values
+            </li>
+            <li>Bugfix: SetList slider type accepts four values (whereas the fourth one is always a
+                one). AndFHEM will accept the parameter, but ignore it
+            </li>
         </ul>
     </div>
 
-   <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.2">4.3.2</a> (26.12.2016)</h3>
+    <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.2">4.3.2</a> (26.12.2016)</h3>
     <div>
         <ul>
             <li>Repair problem with device list loading when setList attribute has no value</li>
-            <li>Repair connection list opening (when not having configured a connection the management view cannot be opened)</li>
+            <li>Repair connection list opening (when not having configured a connection the
+                management view cannot be opened)
+            </li>
         </ul>
     </div>
 
-   <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.1">4.3.1</a> (10.12.2016)</h3>
+    <h3><a href="https://github.com/klassm/andFHEM/milestones/4.3.1">4.3.1</a> (10.12.2016)</h3>
     <div>
         <ul>
             <li>Copy weekprofile heating data from other days (for FHT, MAX, CUL_HM)</li>
@@ -57,8 +82,12 @@ bigimg: /images/changelog.jpg
     <div>
         <ul>
             <li>Don't crash when encountering invalid hex strings in RGB attributes</li>
-            <li>Ignore special characters (space, !, ?, _) for spoken commands (to match more devices</li>
-            <li>When switching from widgets update device data from the respective connection. (This is only important if you have multiple servers configured)</li>
+            <li>Ignore special characters (space, !, ?, _) for spoken commands (to match more
+                devices
+            </li>
+            <li>When switching from widgets update device data from the respective connection. (This
+                is only important if you have multiple servers configured)
+            </li>
             <li>Repair FHT timetable editing</li>
             <li>Hide dummy connections when at least one real connection has been configured</li>
         </ul>
@@ -76,7 +105,9 @@ bigimg: /images/changelog.jpg
     <div>
         <ul>
             <li>Bugfix: Fix endless device list loading when encountering a connection error</li>
-            <li>Bugfix: Also consider favorites from different connections when exporting and importing backups</li>
+            <li>Bugfix: Also consider favorites from different connections when exporting and
+                importing backups
+            </li>
         </ul>
     </div>
 
@@ -92,7 +123,8 @@ bigimg: /images/changelog.jpg
     <div>
         <ul>
             <li>Repair delayed room (and device update)</li>
-            <li>Set client certificate and https settings directly before switching (those settings are global,
+            <li>Set client certificate and https settings directly before switching (those settings
+                are global,
                 interleaved commands would overwrite those settings)
             </li>
         </ul>
