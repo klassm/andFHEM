@@ -147,10 +147,10 @@ public class GPlotSeries implements Serializable {
         GREEN(0xFF004700),
         BLUE(Color.BLUE),
         MAGENTA(Color.MAGENTA),
-        BROWN(0xA52A2A),
+        BROWN(0xFFA52A2A),
         WHITE(Color.BLACK),
-        OLIVE(0x808000),
-        GRAY(0x5A5A5A),
+        OLIVE(0xFF808000),
+        GRAY(0xFF5A5A5A),
         YELLOW(Color.YELLOW),;
 
         private final int color;
