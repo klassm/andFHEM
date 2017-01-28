@@ -51,8 +51,8 @@ public class FloorplanAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
-        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        return intent;
+        return intent
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
     }
 }
