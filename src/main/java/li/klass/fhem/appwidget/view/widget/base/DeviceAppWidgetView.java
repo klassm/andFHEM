@@ -129,7 +129,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         return views;
     }
 
-    private String deviceNameFrom(WidgetConfiguration widgetConfiguration) {
+    public String deviceNameFrom(WidgetConfiguration widgetConfiguration) {
         return widgetConfiguration.payload.get(0);
     }
 

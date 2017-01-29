@@ -43,8 +43,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -53,6 +53,13 @@ import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
 import static li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE;
+import static li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES;
+import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.SENDER;
+import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
 import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
@@ -80,7 +87,7 @@ public class AppWidgetUpdateService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String action = intent.getAction();
-        boolean allowRemoteUpdates = intent.getBooleanExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false);
+        boolean allowRemoteUpdates = intent.getBooleanExtra(ALLOW_REMOTE_UPDATES, false);
 
         if (REDRAW_WIDGET.equals(action)) {
             handleRedrawWidget(intent, allowRemoteUpdates);
@@ -95,19 +102,19 @@ public class AppWidgetUpdateService extends IntentService {
                 }
             });
             Intent updateIntent = new Intent(Actions.DO_UPDATE);
-            updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+            updateIntent.putExtra(DO_REFRESH, true);
             sendBroadcast(updateIntent);
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
-            updateWidgetAfterDeviceListReload(intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1));
+            updateWidgetAfterDeviceListReload(intent.getIntExtra(APP_WIDGET_ID, -1));
         }
     }
 
     private void handleRedrawWidget(Intent intent, boolean allowRemoteUpdates) {
-        if (!intent.hasExtra(BundleExtraKeys.APP_WIDGET_ID)) {
+        if (!intent.hasExtra(APP_WIDGET_ID)) {
             return;
         }
 
-        int widgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
+        int widgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         LOG.debug("handleRedrawWidget() - updating widget-id {}, remote update is {}", widgetId, allowRemoteUpdates);
 
         updateWidget(this, widgetId, allowRemoteUpdates);
@@ -119,6 +126,7 @@ public class AppWidgetUpdateService extends IntentService {
 
         if (!widgetConfigurationOptional.isPresent()) {
             appWidgetDataHolder.deleteWidget(intentService, appWidgetId);
+            LOG.info("updateWidget - widget with widget-id {} has been deleted", appWidgetId);
             return;
         }
 
@@ -131,11 +139,19 @@ public class AppWidgetUpdateService extends IntentService {
 
         appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, updateInterval);
 
-        startService(new Intent(Actions.UPDATE_IF_REQUIRED)
-                .putExtra(BundleExtraKeys.UPDATE_PERIOD, viewCreateUpdateInterval)
-                .putExtra(BundleExtraKeys.SENDER, AppWidgetUpdateService.class)
+        LOG.info("updateWidget - request widget update for widget-id {}, interval is {}, update interval is {}ms", appWidgetId, viewCreateUpdateInterval, updateInterval);
+
+        Intent intent = new Intent(Actions.UPDATE_IF_REQUIRED)
+                .putExtra(UPDATE_PERIOD, viewCreateUpdateInterval)
+                .putExtra(SENDER, AppWidgetUpdateService.class)
                 .setClass(this, RoomListIntentService.class)
-                .putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId));
+                .putExtra(CONNECTION_ID, configuration.connectionId.orNull())
+                .putExtra(APP_WIDGET_ID, appWidgetId);
+        if (configuration.widgetType.widgetView instanceof DeviceAppWidgetView) {
+            String deviceName = ((DeviceAppWidgetView) configuration.widgetType.widgetView).deviceNameFrom(configuration);
+            intent.putExtra(DEVICE_NAME, deviceName);
+        }
+        startService(intent);
     }
 
     private void updateWidgetAfterDeviceListReload(int appWidgetId) {

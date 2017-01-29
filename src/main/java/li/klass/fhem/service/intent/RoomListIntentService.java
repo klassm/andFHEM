@@ -94,7 +94,7 @@ public class RoomListIntentService extends ConvenientIntentService {
 
         if (!REMOTE_UPDATE_FINISHED.equals(action) &&
                 roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == RemoteUpdateRequired.REQUIRED) {
-            LOG.trace("handleIntent() - need to update room device list, intent is pending, so stopped here");
+            LOG.trace("handleIntent() - need to update room device list, intent is pending, so stop here");
             return STATE.DONE;
         }
 

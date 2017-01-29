@@ -34,6 +34,9 @@ import android.util.Log;
 
 import com.google.common.base.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -54,11 +57,10 @@ public class AppWidgetDataHolder {
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     static final String SAVE_PREFERENCE_NAME = AppWidgetDataHolder.class.getName();
-    private static final String TAG = AppWidgetDataHolder.class.getName();
+    public static final Logger LOG = LoggerFactory.getLogger(AppWidgetDataHolder.class);
 
     @Inject
     ApplicationProperties applicationProperties;
-
     @Inject
     SharedPreferencesService sharedPreferencesService;
 
@@ -126,7 +128,7 @@ public class AppWidgetDataHolder {
     public void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration,
                                      boolean updateImmediately, long widgetUpdateInterval) {
         if (widgetUpdateInterval > 0) {
-            Log.d(TAG, String.format("scheduling widget update %s => %s ", widgetConfiguration.toString(), (widgetUpdateInterval / 1000) + "s"));
+            LOG.debug(String.format("scheduling widget update %s => %s ", widgetConfiguration.toString(), (widgetUpdateInterval / 1000) + "s"));
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             PendingIntent pendingIntent = updatePendingIndentForWidgetId(context, widgetConfiguration.widgetId);
@@ -149,10 +151,13 @@ public class AppWidgetDataHolder {
         long updateInterval;
 
         if (!NetworkState.isConnected(context)) {
+            LOG.debug("getConnectionDependentUpdateInterval - no network connection");
             updateInterval = NEVER_UPDATE_PERIOD;
         } else if (NetworkState.isConnectedMobile(context)) {
+            LOG.debug("getConnectionDependentUpdateInterval - mobile connection");
             updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE, context);
         } else {
+            LOG.debug("getConnectionDependentUpdateInterval - wlan connection");
             updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN, context);
         }
 

@@ -70,6 +70,7 @@ import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
@@ -221,15 +222,17 @@ public class RoomListService extends AbstractService {
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
-        Optional<RoomDeviceList> deviceList = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context);
-        boolean requiresUpdate = shouldUpdate(updatePeriod, connectionId, context) || !deviceList.isPresent();
+        boolean connectionExists = connectionService.exists(connectionId, context);
+        boolean hasDevice = intent.hasExtra(BundleExtraKeys.DEVICE_NAME);
+        boolean requiresUpdate = connectionExists && shouldUpdate(updatePeriod, connectionId, context, hasDevice);
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
-            if (remoteUpdateInProgress.compareAndSet(false, true)) {
+            if (hasDevice || remoteUpdateInProgress.compareAndSet(false, true)) {
                 context.startService(new Intent(DO_REMOTE_UPDATE)
                         .putExtra(DEVICE_NAME, intent.getStringExtra(DEVICE_NAME))
                         .putExtra(ROOM_NAME, intent.getStringExtra(ROOM_NAME))
+                        .putExtra(CONNECTION_ID, connectionId.orNull())
                         .setClass(context, RoomListUpdateIntentService.class));
             }
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");
@@ -311,7 +314,7 @@ public class RoomListService extends AbstractService {
         return resendIntent;
     }
 
-    private boolean shouldUpdate(long updatePeriod, Optional<String> connectionId, Context context) {
+    private boolean shouldUpdate(long updatePeriod, Optional<String> connectionId, Context context, boolean hasDevice) {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
             LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE");
             return true;
@@ -319,6 +322,9 @@ public class RoomListService extends AbstractService {
         if (updatePeriod == NEVER_UPDATE_PERIOD) {
             LOG.debug("shouldUpdate() : recommend no update, as updatePeriod is set to NEVER_UPDATE");
             return false;
+        } else if (hasDevice) {
+            LOG.debug("shouldUpdate() : has explicit device => update always");
+            return true;
         }
 
         long lastUpdate = getLastUpdate(connectionId, context);

@@ -25,6 +25,7 @@
 package li.klass.fhem.service.room;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.common.base.Optional;
 
@@ -57,6 +58,7 @@ public class RoomListCache {
 
     ApplicationProperties applicationProperties;
     ConnectionService connectionService;
+    private String lastUpdateProperty = LAST_UPDATE_PROPERTY + "_" + connectionId;
 
     public RoomListCache(String connectionId, ApplicationProperties applicationProperties, ConnectionService connectionService, SharedPreferencesService sharedPreferencesService) {
         this.connectionId = connectionId;
@@ -71,6 +73,7 @@ public class RoomListCache {
             return false;
         }
         storeDeviceListMapInternal(roomDeviceList, context);
+        setLastUpdate(context);
         return true;
     }
 
@@ -155,6 +158,14 @@ public class RoomListCache {
     }
 
     public long getLastUpdate(Context context) {
-        return sharedPreferencesService.getPreferences(PREFERENCES_NAME, context).getLong(LAST_UPDATE_PROPERTY + "_" + connectionId, 0L);
+        return getPreferences(context).getLong(lastUpdateProperty, 0L);
+    }
+
+    private void setLastUpdate(Context context) {
+        getPreferences(context).edit().putLong(lastUpdateProperty, System.currentTimeMillis()).apply();
+    }
+
+    private SharedPreferences getPreferences(Context context) {
+        return sharedPreferencesService.getPreferences(PREFERENCES_NAME, context);
     }
 }
