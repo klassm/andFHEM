@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.strategy;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableRow;
@@ -134,13 +133,6 @@ public class DefaultViewStrategy extends ViewStrategy {
                 }
             }
 
-
-            if (isOverviewError(device, lastUpdate, context)) {
-                Resources resources = context.getResources();
-                int color = resources.getColor(R.color.errorBackground);
-                view.setBackgroundColor(color);
-            }
-
         } catch (Exception e) {
             LOGGER.error("exception occurred while setting device overview values", e);
         }
@@ -155,30 +147,6 @@ public class DefaultViewStrategy extends ViewStrategy {
         holder.value = (TextView) tableRow.findViewById(R.id.value);
         return holder;
     }
-
-    protected boolean isOverviewError(FhemDevice device, long lastUpdate, Context context) {
-        // It does not make sense to show measure errors for data stemming out of a prestored
-        // XML file.
-        boolean sensorDevice = isSensorDevice(device);
-        return !(dataConnectionSwitch.isDummyDataActive(context)) &&
-                lastUpdate != -1 &&
-                sensorDevice &&
-                isOutdatedData(device, lastUpdate);
-
-    }
-
-
-    protected boolean isSensorDevice(FhemDevice device) {
-        return device.isSensorDevice() ||
-                (device.getDeviceConfiguration().isPresent() && device.getDeviceConfiguration().get().isSensorDevice());
-    }
-
-    protected boolean isOutdatedData(FhemDevice device, long lastUpdateTime) {
-        return device.getLastMeasureTime() != -1
-                && lastUpdateTime - device.getLastMeasureTime() > FhemDevice.OUTDATED_DATA_MS_DEFAULT;
-
-    }
-
 
     protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
         String value = item.getValueFor(device);

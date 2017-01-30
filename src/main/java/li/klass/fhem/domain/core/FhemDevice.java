@@ -57,7 +57,7 @@ import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
-    public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
+    public static final long OUTDATED_DATA_MS_DEFAULT = 7 * 60 * 60 * 1000;
 
     protected List<String> webCmd = newArrayList();
 

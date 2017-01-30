@@ -88,13 +88,6 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         View view = getInflater().inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
-        if (isSensorDevice(device) && isOutdatedData(device, lastUpdate)) {
-            View measureErrorView = view.findViewById(R.id.measure_error_notification);
-            if (measureErrorView != null) {
-                measureErrorView.setVisibility(View.VISIBLE);
-            }
-        }
-
         return view;
     }
 

@@ -58,13 +58,14 @@ public class RoomListCache {
 
     ApplicationProperties applicationProperties;
     ConnectionService connectionService;
-    private String lastUpdateProperty = LAST_UPDATE_PROPERTY + "_" + connectionId;
+    private String lastUpdateProperty;
 
     public RoomListCache(String connectionId, ApplicationProperties applicationProperties, ConnectionService connectionService, SharedPreferencesService sharedPreferencesService) {
         this.connectionId = connectionId;
         this.applicationProperties = applicationProperties;
         this.connectionService = connectionService;
         this.sharedPreferencesService = sharedPreferencesService;
+        this.lastUpdateProperty = LAST_UPDATE_PROPERTY + "_" + this.connectionId;
     }
 
     public synchronized boolean storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {

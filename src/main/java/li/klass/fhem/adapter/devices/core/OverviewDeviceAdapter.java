@@ -144,12 +144,6 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
                 (device.getDeviceConfiguration().isPresent() && device.getDeviceConfiguration().get().isSensorDevice());
     }
 
-    protected boolean isOutdatedData(FhemDevice device, long lastUpdateTime) {
-        return device.getLastMeasureTime() != -1
-                && lastUpdateTime - device.getLastMeasureTime() > FhemDevice.OUTDATED_DATA_MS_DEFAULT;
-
-    }
-
     protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
         String value = item.getValueFor(device);
         String description = item.getName(deviceDescMapping);
