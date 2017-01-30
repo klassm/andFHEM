@@ -8,7 +8,10 @@
     {
       "key": "humidity",
       "desc": "humidity",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ]
     },
     {
       "key": "temperature",
