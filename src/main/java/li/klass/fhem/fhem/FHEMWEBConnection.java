@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
 
@@ -104,7 +105,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                 return new RequestResult<>(response.error);
             }
 
-            reader = new InputStreamReader(response.content);
+            reader = new InputStreamReader(response.content, Charsets.UTF_8);
             String content = CharStreams.toString(reader);
             if (content.contains("<title>") || content.contains("<div id=")) {
                 LOG.error("found strange content: " + content);
