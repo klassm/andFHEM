@@ -25,6 +25,7 @@
 package li.klass.fhem.ui;
 
 import android.content.Context;
+import android.view.InflateException;
 import android.view.View;
 
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class AndroidBug {
     public static View handleColorStateBug(BugHandler bugHandler) {
         try {
             return bugHandler.defaultAction();
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException | InflateException e) {
             LOG.error("color state bug encountered", e);
             return bugHandler.bugEncountered();
         }
