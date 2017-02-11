@@ -33,14 +33,12 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
 
-import org.apache.http.conn.ConnectTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -169,11 +167,8 @@ public class FHEMWEBConnection extends FHEMConnection {
             }
 
             return new RequestResult<>((InputStream) new BufferedInputStream(connection.getInputStream()));
-        } catch (ConnectTimeoutException e) {
-            LOG.info("connection timed out", e);
-            return handleError(urlSuffix, isRetry, url, e);
-        } catch (IOException e) {
-            LOG.info("cannot connect to host", e);
+        } catch (Exception e) {
+            LOG.info("error while loading data", e);
             return handleError(urlSuffix, isRetry, url, e);
         }
     }
@@ -200,7 +195,7 @@ public class FHEMWEBConnection extends FHEMConnection {
         return serverSpec.getPassword();
     }
 
-    static RequestResult<InputStream> handleHttpStatusCode(int statusCode) {
+    private static RequestResult<InputStream> handleHttpStatusCode(int statusCode) {
 
         RequestResultError error = STATUS_CODE_MAP.get(statusCode);
         if (error == null) return null;
@@ -222,7 +217,7 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
     }
 
-    protected void initSslContext() {
+    private void initSslContext() {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(AndFHEMApplication.getContext());
