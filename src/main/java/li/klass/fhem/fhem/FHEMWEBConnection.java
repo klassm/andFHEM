@@ -27,8 +27,11 @@ package li.klass.fhem.fhem;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpHeaders;
+import com.google.api.client.http.HttpResponse;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
@@ -42,8 +45,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.Map;
@@ -135,38 +136,33 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry) {
+
         initSslContext();
         String url = null;
-        HttpURLConnection connection;
         try {
-            url = serverUrl + urlSuffix;
-            URL requestUrl = new URL(url);
-
             LOG.info("accessing URL {}", url);
-            connection = (HttpURLConnection) requestUrl.openConnection();
-            connection.setConnectTimeout(SOCKET_TIMEOUT);
-            connection.setReadTimeout(SOCKET_TIMEOUT);
-            connection.setDoOutput(false);
+            url = serverUrl + urlSuffix;
+            HttpResponse response = AndroidHttp.newCompatibleTransport()
+                    .createRequestFactory().buildGetRequest(new GenericUrl(url))
+                    .setConnectTimeout(SOCKET_TIMEOUT)
+                    .setReadTimeout(SOCKET_TIMEOUT)
+                    .setLoggingEnabled(false)
+                    .setHeaders(new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword()))
+                    .execute();
 
-            String authString = (serverSpec.getUsername() + ":" + serverSpec.getPassword());
-            connection.addRequestProperty("Authorization", "Basic " +
-                    Base64.encodeToString(authString.getBytes(), Base64.NO_WRAP));
-            int statusCode = connection.getResponseCode();
-            LOG.debug("response status code is " + statusCode);
+            LOG.debug("response status code is " + response.getStatusCode());
 
-            RequestResult<InputStream> errorResult = handleHttpStatusCode(statusCode);
+
+            RequestResult<InputStream> errorResult = handleHttpStatusCode(response.getStatusCode());
             if (errorResult != null) {
                 String msg = "found error " + errorResult.error.getDeclaringClass().getSimpleName() + " for " +
-                        "status code " + statusCode;
+                        "status code " + response.getStatusCode();
                 LOG.debug(msg);
                 ErrorHolder.setError(null, msg);
-
-                close(connection);
-
                 return errorResult;
             }
 
-            return new RequestResult<>((InputStream) new BufferedInputStream(connection.getInputStream()));
+            return new RequestResult<>((InputStream) new BufferedInputStream(response.getContent()));
         } catch (Exception e) {
             LOG.info("error while loading data", e);
             return handleError(urlSuffix, isRetry, url, e);

@@ -22,8 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def appVersionCode = 440
-def appVersionName = "4.4.0"
+def appVersionCode = 441
+def appVersionName = "4.4.1"
 
 buildscript {
     repositories {
@@ -200,12 +200,17 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services:9.0.2'
     compile 'commons-net:commons-net:3.3'
+    compile 'commons-codec:commons-codec:1.10'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.google.guava:guava:19.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     apt 'com.google.dagger:dagger-compiler:2.7'
     compile 'com.google.dagger:dagger:2.7'
     compile 'javax.annotation:javax.annotation-api:1.2'
+    compile('com.google.http-client:google-http-client-android:1.22.0') {
+        exclude group: 'com.google.code.findbugs'
+        exclude group: 'org.apache.httpcomponents'
+    }
 
     compile 'joda-time:joda-time:2.4'
     //noinspection GradleDependency
