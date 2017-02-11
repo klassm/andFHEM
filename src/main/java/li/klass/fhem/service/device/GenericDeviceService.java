@@ -24,25 +24,35 @@
 
 package li.klass.fhem.service.device;
 
-import android.content.*;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import com.google.common.base.*;
+
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.room.RoomListUpdateService;
-import li.klass.fhem.util.*;
-
-import javax.inject.*;
-import java.util.*;
+import li.klass.fhem.util.StateToSet;
+import li.klass.fhem.util.Tasker;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.partition;
 import static li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DELAY;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.service.deviceConfiguration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND;
 
 @Singleton
@@ -81,6 +91,9 @@ public class GenericDeviceService {
         final String toSet = device.formatTargetState(targetState);
 
         commandExecutionService.executeSafely("set " + device.getName() + " " + toSet, connectionId, context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId));
+
+        device.getXmlListDevice().setState("STATE", targetState);
+        device.getXmlListDevice().setInternal("STATE", targetState);
     }
 
     public void setSubState(FhemDevice<?> device, String subStateName, String value, Optional<String> connectionId, Context context, boolean invokeDeviceUpdate) {
@@ -96,6 +109,8 @@ public class GenericDeviceService {
             if (subStateReplaceForSubState.isPresent()) {
                 subStateName = subStateReplaceForSubState.get();
             }
+
+            device.getXmlListDevice().setState(subStateName, value);
         }
 
         commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, connectionId, context,
