@@ -152,7 +152,7 @@ public class ErrorHolder {
             outputFile.deleteOnExit();
 
             Process process = Runtime.getRuntime().exec("logcat -d");
-            reader = new InputStreamReader(process.getInputStream());
+            reader = new InputStreamReader(process.getInputStream(), Charsets.UTF_8);
 
             List<String> logLines = CharStreams.readLines(reader);
             String log = Joiner.on("\r\n").join(logLines);
