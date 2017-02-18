@@ -1,10 +1,16 @@
 {
   "defaultGroup": "WEATHER",
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
   "states": [
     {
       "key": "voc",
       "desc": "VOC",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1"
+      ]
     }
   ],
   "sanitise": {
