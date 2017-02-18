@@ -66,6 +66,7 @@ import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -89,6 +90,9 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     @Inject
     DimmableStrategy dimmableStrategy;
+
+    @Inject
+    WebcmdStrategy webcmdStrategy;
 
     @Inject
     OnOffBehavior onOffBehavior;
@@ -352,7 +356,6 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         return R.layout.device_detail_generic;
     }
 
-
     private List<DeviceViewItem> getSortedClassItems(FhemDevice device, ItemProvider itemProvider, boolean showUnknown) {
         Set<DeviceViewItem> xmlViewItems = itemProvider.itemsFor(xmlDeviceItemProvider, device, showUnknown);
         return deviceViewItemSorter.sortedViewItemsFrom(xmlViewItems);
@@ -385,5 +388,6 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(toggleableStrategy);
         overviewStrategies.add(dimmableStrategy);
+        overviewStrategies.add(webcmdStrategy);
     }
 }
