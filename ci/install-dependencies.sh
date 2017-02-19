@@ -16,7 +16,7 @@ echo "ANDROID_HOME=$ANDROID_HOME"
   echo y | android update sdk -u -a -t android-25 &&
   echo y | android update sdk -u -a -t tool &&
 
-  echo y | android update sdk -u -a -t build-tools-24.0.3 &&
+  echo y | android update sdk -u -a -t build-tools-25.0.2 &&
 
   echo y | android update sdk -u -a -t extra-android-support &&
   echo y | android update sdk -u -a -t extra-google-google_play_services &&
