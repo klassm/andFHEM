@@ -28,12 +28,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpResponse;
 import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.io.CharStreams;
 
 import org.slf4j.Logger;
@@ -42,11 +43,13 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.KeyStore;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -61,6 +64,7 @@ import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static li.klass.fhem.fhem.RequestResultError.AUTHENTICATION_ERROR;
 import static li.klass.fhem.fhem.RequestResultError.BAD_REQUEST;
@@ -138,11 +142,16 @@ public class FHEMWEBConnection extends FHEMConnection {
     private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry) {
 
         initSslContext();
+        if (urlSuffix.contains("cmd=")) {
+            String csrfToken = findCsrfToken(serverUrl).or("");
+            urlSuffix += "&fwcsrf=" + csrfToken;
+        }
+
         String url = null;
         try {
-            LOG.info("accessing URL {}", url);
             url = serverUrl + urlSuffix;
-            HttpResponse response = AndroidHttp.newCompatibleTransport()
+            LOG.info("accessing URL {}", url);
+            HttpResponse response = newCompatibleTransport()
                     .createRequestFactory().buildGetRequest(new GenericUrl(url))
                     .setConnectTimeout(SOCKET_TIMEOUT)
                     .setReadTimeout(SOCKET_TIMEOUT)
@@ -166,6 +175,26 @@ public class FHEMWEBConnection extends FHEMConnection {
         } catch (Exception e) {
             LOG.info("error while loading data", e);
             return handleError(urlSuffix, isRetry, url, e);
+        }
+    }
+
+    private Optional<String> findCsrfToken(String serverUrl) {
+        try {
+            HttpResponse response = newCompatibleTransport()
+                    .createRequestFactory().buildGetRequest(new GenericUrl(serverUrl + "?room=notExistingJustToLoadCsrfToken"))
+                    .setConnectTimeout(SOCKET_TIMEOUT)
+                    .setReadTimeout(SOCKET_TIMEOUT)
+                    .setLoggingEnabled(false)
+                    .setHeaders(new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword()))
+                    .execute();
+
+            @SuppressWarnings("unchecked") List<Object> value = (List<Object>) response.getHeaders().get("X-FHEM-csrfToken");
+
+            response.getContent().close();
+            return Optional.fromNullable(value == null ? null : String.valueOf(Iterables.getOnlyElement(value)));
+        } catch (IOException e) {
+            LOG.info("cannot load csrf token", e);
+            return Optional.absent();
         }
     }
 
