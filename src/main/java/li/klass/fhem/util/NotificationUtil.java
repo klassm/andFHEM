@@ -51,6 +51,7 @@ public class NotificationUtil {
                 .setLargeIcon(
                         BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher)
                 )
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
