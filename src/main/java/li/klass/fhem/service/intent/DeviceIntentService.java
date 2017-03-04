@@ -40,7 +40,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -254,17 +253,12 @@ public class DeviceIntentService extends ConvenientIntentService {
 
             String lastFailedCommand = commandExecutionService.getLastFailedCommand();
             if ("xmllist".equalsIgnoreCase(lastFailedCommand)) {
-                Intent updateIntent = new Intent(Actions.DO_UPDATE);
-                updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-                sendBroadcast(updateIntent);
+                sendBroadcast(new Intent(Actions.DO_UPDATE)
+                        .putExtra(BundleExtraKeys.DO_REFRESH, true));
             } else {
                 commandExecutionService.resendLastFailedCommand(this);
             }
         }
-
-        Intent redrawWidgetsIntent = new Intent(Actions.REDRAW_ALL_WIDGETS);
-        redrawWidgetsIntent.setClass(this, AppWidgetUpdateService.class);
-        startService(redrawWidgetsIntent);
 
         return result;
     }

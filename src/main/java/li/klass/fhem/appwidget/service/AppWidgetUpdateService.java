@@ -101,9 +101,8 @@ public class AppWidgetUpdateService extends IntentService {
                     Toast.makeText(AppWidgetUpdateService.this, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show();
                 }
             });
-            Intent updateIntent = new Intent(Actions.DO_UPDATE);
-            updateIntent.putExtra(DO_REFRESH, true);
-            sendBroadcast(updateIntent);
+            sendBroadcast(new Intent(Actions.DO_UPDATE)
+                    .putExtra(DO_REFRESH, true));
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             updateWidgetAfterDeviceListReload(intent.getIntExtra(APP_WIDGET_ID, -1));
         }
