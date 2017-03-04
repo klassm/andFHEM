@@ -33,8 +33,8 @@ import li.klass.fhem.behavior.util.vol.VolumeUtilBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class MuteActionRow extends StateChangingYesNoTwoButtonActionRow {
-    public MuteActionRow(StateUiService stateUiService) {
-        super(stateUiService, R.string.musicMute);
+    public MuteActionRow(StateUiService stateUiService, String connectionId) {
+        super(stateUiService, R.string.musicMute, connectionId);
     }
 
     @Override

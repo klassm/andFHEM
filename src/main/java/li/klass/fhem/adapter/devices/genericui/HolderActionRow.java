@@ -50,7 +50,7 @@ public abstract class HolderActionRow<I> {
         this.layout = layout;
     }
 
-    public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final FhemDevice device) {
+    public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final FhemDevice device, String connectionId) {
         TableRow row = (TableRow) inflater.inflate(layout, viewGroup, false);
 
         FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);
@@ -61,7 +61,7 @@ public abstract class HolderActionRow<I> {
         }
 
         for (I item : getItems(device)) {
-            View view = viewFor(item, device, inflater, context, holder);
+            View view = viewFor(item, device, inflater, context, holder, connectionId);
             if (view != null) {
                 holder.addView(view);
             }
@@ -72,5 +72,5 @@ public abstract class HolderActionRow<I> {
 
     public abstract List<I> getItems(FhemDevice device);
 
-    public abstract View viewFor(I item, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup);
+    public abstract View viewFor(I item, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup, final String connectionId);
 }

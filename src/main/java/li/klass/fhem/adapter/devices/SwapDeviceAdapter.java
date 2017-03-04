@@ -66,7 +66,7 @@ public class SwapDeviceAdapter extends ToggleableAdapter {
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final FhemDevice device, TableRow fieldTableRow) {
+                                         final FhemDevice device, final String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new OldColorPickerRow(((SWAPDevice) device).getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
@@ -75,7 +75,7 @@ public class SwapDeviceAdapter extends ToggleableAdapter {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString, context);
+                        stateUiService.setSubState(device, connectionId, "rgb", targetHexString, context);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

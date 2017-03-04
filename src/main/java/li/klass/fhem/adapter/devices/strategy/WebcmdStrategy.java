@@ -55,7 +55,7 @@ public class WebcmdStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
 
         if (convertView == null || convertView.getTag() == null) {
@@ -66,7 +66,7 @@ public class WebcmdStrategy extends ViewStrategy {
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
-        addOverviewSwitchActionRow(holder, device, layoutInflater);
+        addOverviewSwitchActionRow(holder, device, layoutInflater, connectionId);
         return convertView;
     }
 
@@ -75,14 +75,14 @@ public class WebcmdStrategy extends ViewStrategy {
         return hookProvider.buttonHookFor(fhemDevice) == WEBCMD_DEVICE;
     }
 
-    private <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
+    private <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater, String connectionId) {
         TableLayout layout = holder.getTableLayout();
-        addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater);
+        addWebCmdOverviewActionRow(layout.getContext(), device, layout, layoutInflater, connectionId);
     }
 
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
-                                                                            TableLayout tableLayout, LayoutInflater layoutInflater) {
+                                                                            TableLayout tableLayout, LayoutInflater layoutInflater, String connectionId) {
         tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
-                .createRow(context, layoutInflater, tableLayout, device));
+                .createRow(context, layoutInflater, tableLayout, device, connectionId));
     }
 }

@@ -46,15 +46,16 @@ public abstract class AbstractOnOffActionRow {
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_onoffbuttonrow;
     protected final int layoutId;
     protected final Optional<Integer> description;
+    protected String connectionId;
 
-    public AbstractOnOffActionRow(int layoutId, Optional<Integer> description) {
+    public AbstractOnOffActionRow(int layoutId, Optional<Integer> description, String connectionId) {
         this.layoutId = layoutId;
         this.description = description;
+        this.connectionId = connectionId;
     }
 
-    public AbstractOnOffActionRow(int layoutId, int description) {
-        this.layoutId = layoutId;
-        this.description = Optional.of(description);
+    public AbstractOnOffActionRow(int layoutId, int description, String connectionId) {
+        this(layoutId, Optional.of(description), connectionId);
     }
 
     @SuppressWarnings("unchecked")
@@ -129,10 +130,10 @@ public abstract class AbstractOnOffActionRow {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onButtonClick(context, device, targetState);
+                onButtonClick(context, device, connectionId, targetState);
             }
         };
     }
 
-    public abstract void onButtonClick(final Context context, FhemDevice device, String targetState);
+    public abstract void onButtonClick(final Context context, FhemDevice device, String connectionId, String targetState);
 }

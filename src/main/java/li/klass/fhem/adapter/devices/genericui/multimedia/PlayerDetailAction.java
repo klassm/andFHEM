@@ -59,20 +59,20 @@ public class PlayerDetailAction extends DeviceDetailViewAction {
     }
 
     @Override
-    public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent) {
+    public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent, String connectionId) {
         View view = inflater.inflate(R.layout.player_action, parent, false);
 
-        fillImageButtonWithAction(context, view, device, R.id.rewind, previousCommand);
-        fillImageButtonWithAction(context, view, device, R.id.pause, pauseCommand);
-        fillImageButtonWithAction(context, view, device, R.id.stop, stopCommand);
-        fillImageButtonWithAction(context, view, device, R.id.play, playCommand);
-        fillImageButtonWithAction(context, view, device, R.id.forward, nextCommand);
+        fillImageButtonWithAction(context, view, device, R.id.rewind, previousCommand, connectionId);
+        fillImageButtonWithAction(context, view, device, R.id.pause, pauseCommand, connectionId);
+        fillImageButtonWithAction(context, view, device, R.id.stop, stopCommand, connectionId);
+        fillImageButtonWithAction(context, view, device, R.id.play, playCommand, connectionId);
+        fillImageButtonWithAction(context, view, device, R.id.forward, nextCommand, connectionId);
 
         return view;
     }
 
     private void fillImageButtonWithAction(final Context context, View view, final FhemDevice device,
-                                           int id, final Optional<String> action) {
+                                           int id, final Optional<String> action, final String connectionId) {
         ImageButton button = (ImageButton) view.findViewById(id);
         if (!action.isPresent()) {
             button.setVisibility(View.GONE);
@@ -81,7 +81,7 @@ public class PlayerDetailAction extends DeviceDetailViewAction {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stateUiService.setState(device, action.get(), context);
+                stateUiService.setState(device, action.get(), context, connectionId);
             }
         });
     }

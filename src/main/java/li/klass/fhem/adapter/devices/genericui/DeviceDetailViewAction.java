@@ -33,7 +33,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 
 public abstract class DeviceDetailViewAction {
 
-    public abstract View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent);
+    public abstract View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent, String connectionId);
 
     public boolean isVisible(FhemDevice device) {
         return true;

@@ -76,7 +76,7 @@ public abstract class SpinnerActionRow {
         this.context = context;
     }
 
-    public TableRow createRow(final XmlListDevice device, ViewGroup viewGroup) {
+    public TableRow createRow(final XmlListDevice device, final String connectionId, ViewGroup viewGroup) {
         ignoreItemSelection = true;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -100,7 +100,7 @@ public abstract class SpinnerActionRow {
                 }
                 temporarySelectedPosition = position;
 
-                SpinnerActionRow.this.onItemSelected(context, device, spinnerValues.get(position));
+                SpinnerActionRow.this.onItemSelected(context, device, connectionId, spinnerValues.get(position));
             }
 
             @Override
@@ -122,5 +122,5 @@ public abstract class SpinnerActionRow {
         selectedPosition = temporarySelectedPosition;
     }
 
-    public abstract void onItemSelected(final Context context, XmlListDevice device, String item);
+    public abstract void onItemSelected(final Context context, XmlListDevice device, String connectionId, String item);
 }

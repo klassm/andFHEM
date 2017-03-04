@@ -55,8 +55,8 @@ public class MAXDetailActionProvider extends DeviceDetailActionProvider {
         return ImmutableList.<ActionCardAction>of(
                 new ActionCardButton(R.string.timetable, context) {
                     @Override
-                    protected void onClick(XmlListDevice device, Context context) {
-                        fragmentUiService.showIntervalWeekProfileFor(device, context, new MAXConfiguration());
+                    protected void onClick(XmlListDevice device, String connectionId, Context context) {
+                        fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context, new MAXConfiguration());
                     }
                 }
         );

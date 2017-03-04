@@ -54,7 +54,7 @@ public class WebCmdActionRow extends HolderActionRow<String> {
 
     @Override
     public View viewFor(final String command, final FhemDevice device, LayoutInflater inflater,
-                        final Context context, ViewGroup viewGroup) {
+                        final Context context, ViewGroup viewGroup, final String connectionId) {
 
         View container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false);
         ToggleButton button = (ToggleButton) container.findViewById(R.id.toggleButton);
@@ -67,9 +67,9 @@ public class WebCmdActionRow extends HolderActionRow<String> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command), new StateChangingTargetStateSelectedCallback(context, new StateUiService()));
+                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command), new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
                 if (!result) {
-                    new StateUiService().setState(device, command, context);
+                    new StateUiService().setState(device, command, context, connectionId);
                 }
             }
         });

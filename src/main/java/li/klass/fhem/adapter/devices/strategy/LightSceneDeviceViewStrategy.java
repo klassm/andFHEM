@@ -53,7 +53,7 @@ public class LightSceneDeviceViewStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
         TableLayout layout = (TableLayout) layoutInflater.inflate(R.layout.device_overview_generic, null);
         layout.removeAllViews();
 
@@ -67,12 +67,12 @@ public class LightSceneDeviceViewStrategy extends ViewStrategy {
             }
 
             @Override
-            public View viewFor(String scene, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
+            public View viewFor(String scene, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup, final String connectionId) {
                 Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
                 setSceneButtonProperties(device, scene, button, context);
                 return button;
             }
-        }.createRow(layout.getContext(), layoutInflater, layout, device));
+        }.createRow(layout.getContext(), layoutInflater, layout, device, connectionId));
         return layout;
     }
 
@@ -92,6 +92,6 @@ public class LightSceneDeviceViewStrategy extends ViewStrategy {
     }
 
     private void activateScene(FhemDevice device, String scene, Context context) {
-        stateUiService.setSubState(device, "scene", scene, context);
+        stateUiService.setSubState(device, null, "scene", scene, context);
     }
 }

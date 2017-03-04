@@ -25,19 +25,25 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.widget.*;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.*;
-import li.klass.fhem.adapter.devices.genericui.*;
-import li.klass.fhem.adapter.devices.strategy.*;
+import li.klass.fhem.adapter.devices.core.DimmableAdapter;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
+import li.klass.fhem.adapter.devices.genericui.OldColorPickerRow;
+import li.klass.fhem.adapter.devices.strategy.SetStateStrategy;
+import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.StringUtil;
-
-import javax.inject.Inject;
-import java.util.List;
 
 public class DummyAdapter extends DimmableAdapter {
     @Inject
@@ -62,8 +68,8 @@ public class DummyAdapter extends DimmableAdapter {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout,
                                          String field, final FhemDevice device,
-                                         TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangeButtonActionRow(context, device, ButtonActionRow.LAYOUT_DETAIL).createRow(getInflater()));
+                                         String connectionId, TableRow fieldTableRow) {
+                tableLayout.addView(new StateChangeButtonActionRow(context, device, ButtonActionRow.LAYOUT_DETAIL, connectionId).createRow(getInflater()));
             }
 
                     @Override
@@ -81,7 +87,7 @@ public class DummyAdapter extends DimmableAdapter {
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final FhemDevice device, TableRow fieldTableRow) {
+                                         final FhemDevice device, final String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new OldColorPickerRow(((DummyDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
@@ -90,7 +96,7 @@ public class DummyAdapter extends DimmableAdapter {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString, context);
+                        stateUiService.setSubState(device, connectionId, "rgb", targetHexString, context);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

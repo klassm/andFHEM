@@ -69,16 +69,16 @@ public class PCF8574DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 List<String> ports = Lists.newArrayList(((PCF8574Device) device).getPortsIsOnMap().keySet());
                 sort(ports);
 
                 for (String port : ports) {
-                    createPortRow(context, tableLayout, port, device);
+                    createPortRow(context, tableLayout, port, device, connectionId);
                 }
             }
 
-            private void createPortRow(Context context, TableLayout tableLayout, final String port, FhemDevice device) {
+            private void createPortRow(Context context, TableLayout tableLayout, final String port, FhemDevice device, final String connectionId) {
                 tableLayout.addView(new ToggleActionRow(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
 
                     @Override
@@ -88,7 +88,7 @@ public class PCF8574DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
                     @Override
                     protected void onButtonClick(final Context context, final FhemDevice device, final boolean isChecked) {
-                        stateUiService.setSubState(device, port, isChecked ? "on" : "off", context);
+                        stateUiService.setSubState(device, connectionId, port, isChecked ? "on" : "off", context);
                     }
                 }.createRow(context, device, port));
             }

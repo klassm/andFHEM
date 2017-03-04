@@ -61,7 +61,7 @@ public class ReadingsProxyDeviceAdapter extends DimmableAdapter {
         registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final FhemDevice device, TableRow fieldTableRow) {
+                                         final FhemDevice device, final String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new OldColorPickerRow(((ReadingsProxyDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
@@ -70,7 +70,7 @@ public class ReadingsProxyDeviceAdapter extends DimmableAdapter {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString, context);
+                        stateUiService.setSubState(device, connectionId, "rgb", targetHexString, context);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

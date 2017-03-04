@@ -68,7 +68,7 @@ public class ToggleableStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
 
         if (convertView == null || convertView.getTag() == null) {
@@ -79,7 +79,7 @@ public class ToggleableStrategy extends ViewStrategy {
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
-        addOverviewSwitchActionRow(holder, device, layoutInflater);
+        addOverviewSwitchActionRow(holder, device, layoutInflater, null);
         return convertView;
     }
 
@@ -88,10 +88,10 @@ public class ToggleableStrategy extends ViewStrategy {
         return hookProvider.buttonHookFor(fhemDevice) != WEBCMD_DEVICE && OnOffBehavior.supports(fhemDevice);
     }
 
-    protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater) {
+    protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater, String connectionId) {
         ButtonHook hook = hookProvider.buttonHookFor(device);
         if (hook != NORMAL && hook != TOGGLE_DEVICE) {
-            addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent());
+            addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent(), connectionId);
         } else {
             addToggleDeviceActionRow(holder, device, LAYOUT_OVERVIEW, layoutInflater);
         }
@@ -109,18 +109,18 @@ public class ToggleableStrategy extends ViewStrategy {
         holder.getTableLayout().addView(actionRow.getView());
     }
 
-    private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater, Optional<Integer> text) {
+    private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater, Optional<Integer> text, String connectionId) {
         OnOffActionRowForToggleables onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRowForToggleables.HOLDER_KEY);
         if (onOffActionRow == null) {
-            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior, text);
+            onOffActionRow = new OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior, text, connectionId);
             holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow);
         }
         holder.getTableLayout().addView(onOffActionRow
                 .createRow(layoutInflater, device, holder.getTableLayout().getContext()));
     }
 
-    public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context) {
-        return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank))
+    public TableRow createDetailView(GenericDevice device, LayoutInflater inflater, Context context, String connectionId) {
+        return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
                 .createRow(inflater, device, context);
     }
 }

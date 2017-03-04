@@ -61,8 +61,8 @@ public class SonosPlayerAdapter extends ExplicitOverviewDetailDeviceAdapterWithS
         registerFieldListener("volume", new FieldNameAddedToDetailListener() {
 
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow(context, stateUiService, applicationProperties, device, fieldTableRow)
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, stateUiService, applicationProperties, device, fieldTableRow, connectionId)
                         .createRow(getInflater(), device));
             }
         });

@@ -63,23 +63,23 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapter {
 
         detailActions.add(new DeviceDetailViewAction() {
             @Override
-            public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent) {
+            public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent, String connectionId) {
                 View view = inflater.inflate(R.layout.fs20_zdr_actions, parent, false);
 
-                registerActionHandlerFor(context, view, device, R.id.vol_up, "volume_up");
-                registerActionHandlerFor(context, view, device, R.id.vol_down, "volume_down");
-                registerActionHandlerFor(context, view, device, R.id.left, "left");
-                registerActionHandlerFor(context, view, device, R.id.right, "right");
-                registerActionHandlerFor(context, view, device, R.id.slp, "sleep");
-                registerActionHandlerFor(context, view, device, R.id.ms, "ms");
-                registerActionHandlerFor(context, view, device, R.id.prog_1, "1");
-                registerActionHandlerFor(context, view, device, R.id.prog_2, "2");
-                registerActionHandlerFor(context, view, device, R.id.prog_3, "3");
-                registerActionHandlerFor(context, view, device, R.id.prog_4, "4");
-                registerActionHandlerFor(context, view, device, R.id.prog_5, "5");
-                registerActionHandlerFor(context, view, device, R.id.prog_6, "6");
-                registerActionHandlerFor(context, view, device, R.id.prog_7, "7");
-                registerActionHandlerFor(context, view, device, R.id.prog_8, "8");
+                registerActionHandlerFor(context, view, device, R.id.vol_up, "volume_up", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.vol_down, "volume_down", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.left, "left", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.right, "right", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.slp, "sleep", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.ms, "ms", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_1, "1", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_2, "2", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_3, "3", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_4, "4", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_5, "5", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_6, "6", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_7, "7", connectionId);
+                registerActionHandlerFor(context, view, device, R.id.prog_8, "8", connectionId);
 
                 return view;
             }
@@ -89,19 +89,19 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapter {
     }
 
     private void registerActionHandlerFor(final Context context, View view, final FhemDevice device,
-                                          int buttonId, final String state) {
+                                          int buttonId, final String state, final String connectionId) {
         Button button = (Button) view.findViewById(buttonId);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stateUiService.setState(device, state, context);
+                stateUiService.setState(device, state, context, connectionId);
             }
         });
         if (NumberUtils.isNumber(state)) {
             button.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    stateUiService.setState(device, "program_" + state, context);
+                    stateUiService.setState(device, "program_" + state, context, connectionId);
                     Toast.makeText(context, String.format(context.getString(R.string.programChannelSuccess), state), Toast.LENGTH_SHORT).show();
                     return true;
                 }

@@ -62,7 +62,7 @@ public class ThresholdAdapter extends ExplicitOverviewDetailDeviceAdapter {
     protected void afterPropertiesSet() {
         registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow(context, ((ThresholdDevice) device).getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)

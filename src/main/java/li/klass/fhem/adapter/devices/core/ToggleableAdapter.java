@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import com.google.common.base.Optional;
 
@@ -78,8 +79,8 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
                 .createRow(context, device, device.getAliasOrName()));
     }
 
-    private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior, Optional.of(R.string.blank))
+    private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId, String connectionId) {
+        tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
                 .createRow(getInflater(), device, context));
     }
 
@@ -88,19 +89,19 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         super.afterPropertiesSet();
         registerFieldListener("state", new FieldNameAddedToDetailListener(TOGGLEABLE_AND_NOT_DIMMABLE) {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, android.widget.TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 if (!(device instanceof ToggleableDevice) || !((ToggleableDevice) device).supportsToggle()) {
                     return;
                 }
-                addDetailSwitchActionRow(context, (ToggleableDevice) device, tableLayout);
+                addDetailSwitchActionRow(context, (ToggleableDevice) device, tableLayout, connectionId);
             }
         });
     }
 
-    protected void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout) {
+    protected void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout, String connectionId) {
         ButtonHook hook = deviceHookProvider.buttonHookFor(device);
         if (hook != ButtonHook.NORMAL && hook != ButtonHook.TOGGLE_DEVICE) {
-            addOnOffActionRow(context, device, layout, OnOffActionRowForToggleables.LAYOUT_DETAIL);
+            addOnOffActionRow(context, device, layout, OnOffActionRowForToggleables.LAYOUT_DETAIL, connectionId);
         } else {
             addToggleDeviceActionRow(context, device, layout, LAYOUT_DETAIL);
         }

@@ -62,7 +62,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapter {
 
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final FhemDevice device, TableRow fieldTableRow) {
+                                         final FhemDevice device, final String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new OldColorPickerRow(((WifiLightDevice) device).getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
@@ -71,7 +71,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapter {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "RGB", targetHexString, context);
+                        stateUiService.setSubState(device, connectionId, "RGB", targetHexString, context);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

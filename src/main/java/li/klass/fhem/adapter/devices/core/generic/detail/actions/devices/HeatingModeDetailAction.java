@@ -39,11 +39,11 @@ import static li.klass.fhem.util.EnumUtils.toStringList;
 public abstract class HeatingModeDetailAction<M extends Enum<M>> implements StateAttributeAction {
 
     @Override
-    public TableRow createRow(XmlListDevice device, String key, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent) {
+    public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent) {
         M mode = getCurrentModeFor(device);
         final M[] available = getAvailableModes();
 
-        return new StateChangingSpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(available), mode.name(), key).createRow(device, parent);
+        return new StateChangingSpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(available), mode.name(), key).createRow(device, connectionId, parent);
     }
 
     @Override

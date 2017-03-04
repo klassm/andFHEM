@@ -64,7 +64,7 @@ public class DimmableAdapter extends ToggleableAdapter {
 
         registerFieldListener("state", new FieldNameAddedToDetailListener(DIMMER) {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new DimmableDeviceDimActionRowFullWidth(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
                         .createRow(getInflater(), device));
                 tableLayout.addView(new DimUpDownRow(stateUiService)

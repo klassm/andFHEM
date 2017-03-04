@@ -64,7 +64,7 @@ public class DmxAdapter extends DimmableAdapter {
 
             @Override
             public void onFieldNameAdded(final Context context, final TableLayout tableLayout, String field,
-                                         final FhemDevice device, TableRow fieldTableRow) {
+                                         final FhemDevice device, final String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new OldColorPickerRow(((DMXDevice) device).getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
@@ -73,7 +73,7 @@ public class DmxAdapter extends DimmableAdapter {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString, context);
+                        stateUiService.setSubState(device, connectionId, "rgb", targetHexString, context);
                     }
 
                 }.createRow(context, getInflater(), tableLayout));

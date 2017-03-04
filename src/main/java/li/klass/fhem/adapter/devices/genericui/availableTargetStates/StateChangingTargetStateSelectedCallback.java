@@ -33,20 +33,22 @@ public class StateChangingTargetStateSelectedCallback<D extends FhemDevice<?>> i
 
     private final StateUiService stateUiService;
     private final Context context;
+    private final String connectionId;
 
-    public StateChangingTargetStateSelectedCallback(Context context, StateUiService stateUiService) {
+    public StateChangingTargetStateSelectedCallback(Context context, StateUiService stateUiService, String connectionId) {
         this.stateUiService = stateUiService;
         this.context = context;
+        this.connectionId = connectionId;
     }
 
     @Override
     public void onStateSelected(D device, String targetState) {
-        stateUiService.setState(device, targetState, context);
+        stateUiService.setState(device, targetState, context, connectionId);
     }
 
     @Override
     public void onSubStateSelected(D device, String state, String subState) {
-        stateUiService.setSubState(device, state, subState, context);
+        stateUiService.setSubState(device, connectionId, state, subState, context);
     }
 
     @Override

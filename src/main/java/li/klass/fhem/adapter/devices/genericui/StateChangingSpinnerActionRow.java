@@ -49,8 +49,8 @@ public class StateChangingSpinnerActionRow extends SpinnerActionRow {
     }
 
     @Override
-    public void onItemSelected(Context context, XmlListDevice device, String item) {
+    public void onItemSelected(Context context, XmlListDevice device, String connectionId, String item) {
 
-        new StateUiService().setSubState(device, commandAttribute, item, context);
+        new StateUiService().setSubState(device, commandAttribute, item, connectionId, context);
     }
 }

@@ -64,16 +64,16 @@ public class STVDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final FhemDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow(stateUiService)
+                                         final FhemDevice device, String connectionId, TableRow fieldTableRow) {
+                tableLayout.addView(new MuteActionRow(stateUiService, connectionId)
                         .createRow(getInflater(), device, context));
             }
         });
 
         registerFieldListener("volume", new FieldNameAddedToDetailListener() {
             @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new VolumeActionRow(context, stateUiService, applicationProperties, device, fieldTableRow)
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
+                tableLayout.addView(new VolumeActionRow(context, stateUiService, applicationProperties, device, fieldTableRow, connectionId)
                         .createRow(getInflater(), device));
             }
         });

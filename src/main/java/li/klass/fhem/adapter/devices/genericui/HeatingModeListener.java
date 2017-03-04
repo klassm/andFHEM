@@ -46,8 +46,8 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
-        if (!doAddField(device)) return;
+    public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
+        if (!doAddField()) return;
 
         final D heatingDevice = (D) device;
         M mode = heatingDevice.getHeatingMode();
@@ -56,7 +56,7 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
         tableLayout.addView(new SpinnerActionRow(context, R.string.mode, R.string.setMode, toStringList(heatingDevice.getHeatingModes()), selected) {
 
             @Override
-            public void onItemSelected(final Context context, XmlListDevice device, String item) {
+            public void onItemSelected(final Context context, XmlListDevice device, String connectionId, String item) {
                 M mode = EnumUtils.valueOf(heatingDevice.getHeatingModes(), item);
 
                 if (mode == getUnknownMode() || mode == null) {
@@ -66,10 +66,10 @@ public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?
 
                 changeMode(mode, device, context);
             }
-        }.createRow(device.getXmlListDevice(), tableLayout));
+        }.createRow(device.getXmlListDevice(), connectionId, tableLayout));
     }
 
-    protected boolean doAddField(FhemDevice device) {
+    protected boolean doAddField() {
         return true;
     }
 

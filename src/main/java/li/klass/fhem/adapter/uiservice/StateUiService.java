@@ -31,12 +31,21 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
+
+import static li.klass.fhem.constants.Actions.DEVICE_DIM;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
 
 @Singleton
 public class StateUiService {
@@ -46,41 +55,43 @@ public class StateUiService {
 
 
     public void setSubState(FhemDevice<?> device,
-                            String stateName, String value, Context context) {
-        setSubState(device.getXmlListDevice(), stateName, value, context);
+                            String connectionId, String stateName, String value, Context context) {
+        setSubState(device.getXmlListDevice(), stateName, value, connectionId, context);
     }
 
     public void setSubState(XmlListDevice device,
-                            String stateName, String value, Context context) {
+                            String stateName, String value, String connectionId, Context context) {
         if ("state".equalsIgnoreCase(stateName)) {
-            setState(device, value, context);
+            setState(device, value, context, connectionId);
         } else {
-            context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
+            context.startService(new Intent(DEVICE_SET_SUB_STATE)
                     .setClass(context, DeviceIntentService.class)
-                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                    .putExtra(BundleExtraKeys.STATE_NAME, stateName)
-                    .putExtra(BundleExtraKeys.STATE_VALUE, value)
-                    .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+                    .putExtra(CONNECTION_ID, connectionId)
+                    .putExtra(DEVICE_NAME, device.getName())
+                    .putExtra(STATE_NAME, stateName)
+                    .putExtra(STATE_VALUE, value)
+                    .putExtra(RESULT_RECEIVER, new UpdatingResultReceiver(context)));
         }
     }
 
-    public void setState(FhemDevice<?> device, String value, Context context) {
-        setState(device.getXmlListDevice(), value, context);
+    public void setState(FhemDevice<?> device, String value, Context context, String connectionId) {
+        setState(device.getXmlListDevice(), value, context, connectionId);
     }
 
-    public void setState(XmlListDevice device, String value, Context context) {
-        context.startService(new Intent(Actions.DEVICE_SET_STATE)
+    public void setState(XmlListDevice device, String value, Context context, String connectionId) {
+        context.startService(new Intent(DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, value)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+                .putExtra(CONNECTION_ID, connectionId)
+                .putExtra(DEVICE_TARGET_STATE, value)
+                .putExtra(DEVICE_NAME, device.getName())
+                .putExtra(RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 
     public void setDim(DimmableDevice<?> device, float progress, Context context) {
-        context.startService(new Intent(Actions.DEVICE_DIM)
+        context.startService(new Intent(DEVICE_DIM)
                 .setClass(context, DeviceIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
+                .putExtra(DEVICE_DIM_PROGRESS, progress)
+                .putExtra(DEVICE_NAME, device.getName())
+                .putExtra(RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 }

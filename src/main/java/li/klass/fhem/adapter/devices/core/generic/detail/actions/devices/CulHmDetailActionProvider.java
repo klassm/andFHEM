@@ -80,8 +80,8 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
         return ImmutableList.<ActionCardAction>of(
                 new ActionCardButton(R.string.timetable, context) {
                     @Override
-                    protected void onClick(XmlListDevice device, Context context) {
-                        fragmentUiService.showIntervalWeekProfileFor(device, context, new CULHMConfiguration());
+                    protected void onClick(XmlListDevice device, String connectionId, Context context) {
+                        fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context, new CULHMConfiguration());
                     }
 
                     @Override
@@ -118,7 +118,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
     private static class KFM100ContentView implements StateAttributeAction {
 
         @Override
-        public TableRow createRow(XmlListDevice device, String key, String stateValue, final Context context, LayoutInflater inflater, ViewGroup parent) {
+        public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, final Context context, LayoutInflater inflater, ViewGroup parent) {
             String model = device.getAttribute("model").get();
             final double fillContentPercentage = determineContentPercentage(device, model);
 

@@ -34,7 +34,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class VolumeActionRow extends StateChangingSeekBarFullWidth {
-    public VolumeActionRow(Context context, StateUiService stateUiService, ApplicationProperties applicationProperties, FhemDevice device, TableRow updateRow) {
-        super(context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "volume").get(), updateRow);
+    public VolumeActionRow(Context context, StateUiService stateUiService, ApplicationProperties applicationProperties, FhemDevice device, TableRow updateRow, String connectionId) {
+        super(context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "volume", connectionId).get(), updateRow);
     }
 }

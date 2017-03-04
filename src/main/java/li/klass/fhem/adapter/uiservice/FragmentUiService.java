@@ -31,10 +31,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
+
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.HEATING_CONFIGURATION;
 
 @Singleton
 public class FragmentUiService {
@@ -43,10 +47,11 @@ public class FragmentUiService {
     public FragmentUiService() {
     }
 
-    public void showIntervalWeekProfileFor(XmlListDevice device, Context context, HeatingConfiguration heatingConfiguration) {
+    public void showIntervalWeekProfileFor(XmlListDevice device, String connectionId, Context context, HeatingConfiguration heatingConfiguration) {
         context.sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.HEATING_CONFIGURATION, heatingConfiguration));
+                .putExtra(FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
+                .putExtra(CONNECTION_ID, connectionId)
+                .putExtra(DEVICE_NAME, device.getName())
+                .putExtra(HEATING_CONFIGURATION, heatingConfiguration));
     }
 }

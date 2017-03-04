@@ -69,8 +69,8 @@ public class RemoteControlAdapter extends ToggleableAdapter {
         detailActions.add(new DeviceDetailViewAction() {
             @Override
             public View createView(Context context, LayoutInflater inflater,
-                                   FhemDevice device, LinearLayout parent) {
-                return createRemoteControlTable(context, device, inflater, parent);
+                                   FhemDevice device, LinearLayout parent, String connectionId) {
+                return createRemoteControlTable(context, device, inflater, parent, connectionId);
             }
         });
 
@@ -78,13 +78,13 @@ public class RemoteControlAdapter extends ToggleableAdapter {
     }
 
     private TableLayout createRemoteControlTable(Context context, FhemDevice device,
-                                                 LayoutInflater layoutInflater, LinearLayout parent) {
+                                                 LayoutInflater layoutInflater, LinearLayout parent, String connectionId) {
         TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, parent, false);
         assert tableLayout != null;
 
         RemoteControlDevice remoteControlDevice = (RemoteControlDevice) device;
         for (RemoteControlDevice.Row row : remoteControlDevice.getRows()) {
-            tableLayout.addView(createTableRowForRemoteControlRow(row, context, remoteControlDevice, layoutInflater));
+            tableLayout.addView(createTableRowForRemoteControlRow(row, context, remoteControlDevice, layoutInflater, connectionId));
         }
 
         return tableLayout;
@@ -92,19 +92,19 @@ public class RemoteControlAdapter extends ToggleableAdapter {
 
     private TableRow createTableRowForRemoteControlRow(RemoteControlDevice.Row row,
                                                        Context context, RemoteControlDevice device,
-                                                       LayoutInflater layoutInflater) {
+                                                       LayoutInflater layoutInflater, String connectionId) {
 
         TableRow tableRow = new TableRow(context);
 
         for (RemoteControlDevice.Entry entry : row.entries) {
-            tableRow.addView(createImageViewFor(entry, device, layoutInflater, tableRow));
+            tableRow.addView(createImageViewFor(entry, device, layoutInflater, tableRow, connectionId));
         }
 
         return tableRow;
     }
 
     private View createImageViewFor(final RemoteControlDevice.Entry entry,
-                                    final RemoteControlDevice device, LayoutInflater layoutInflater, TableRow tableRow) {
+                                    final RemoteControlDevice device, LayoutInflater layoutInflater, TableRow tableRow, final String connectionId) {
         ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, tableRow, false);
         assert imageButton != null;
 
@@ -114,7 +114,7 @@ public class RemoteControlAdapter extends ToggleableAdapter {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stateUiService.setState(device, entry.command, getContext());
+                stateUiService.setState(device, entry.command, getContext(), connectionId);
             }
         });
 

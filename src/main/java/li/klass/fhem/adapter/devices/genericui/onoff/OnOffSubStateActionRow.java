@@ -36,8 +36,8 @@ public class OnOffSubStateActionRow extends AbstractOnOffActionRow {
 
     private final String subState;
 
-    public OnOffSubStateActionRow(int layoutId, String subState) {
-        super(layoutId, Optional.of(R.string.blank));
+    public OnOffSubStateActionRow(int layoutId, String subState, String connectionId) {
+        super(layoutId, Optional.of(R.string.blank), connectionId);
         this.subState = subState;
     }
 
@@ -47,7 +47,7 @@ public class OnOffSubStateActionRow extends AbstractOnOffActionRow {
     }
 
     @Override
-    public void onButtonClick(Context context, FhemDevice device, String targetState) {
-        new StateUiService().setSubState(device, subState, targetState, context);
+    public void onButtonClick(Context context, FhemDevice device, String connectionId, String targetState) {
+        new StateUiService().setSubState(device, connectionId, subState, targetState, context);
     }
 }

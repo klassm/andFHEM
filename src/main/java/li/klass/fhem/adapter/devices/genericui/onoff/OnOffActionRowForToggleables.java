@@ -42,8 +42,8 @@ public class OnOffActionRowForToggleables extends OnOffStateActionRow {
     private final DeviceHookProvider hookProvider;
     private final OnOffBehavior onOffBehavior;
 
-    public OnOffActionRowForToggleables(int layoutId, DeviceHookProvider hookProvider, OnOffBehavior onOffBehavior, Optional<Integer> text) {
-        super(layoutId, text);
+    public OnOffActionRowForToggleables(int layoutId, DeviceHookProvider hookProvider, OnOffBehavior onOffBehavior, Optional<Integer> text, String connectionId) {
+        super(layoutId, text, connectionId);
         this.hookProvider = hookProvider;
         this.onOffBehavior = onOffBehavior;
     }

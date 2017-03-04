@@ -33,15 +33,15 @@ import li.klass.fhem.domain.core.FhemDevice;
 
 public class OnOffStateActionRow extends AbstractOnOffActionRow {
 
-    public OnOffStateActionRow(int layoutId, int description) {
-        super(layoutId, description);
+    public OnOffStateActionRow(int layoutId, int description, String connectionId) {
+        super(layoutId, description, connectionId);
     }
 
-    public OnOffStateActionRow(int layoutId, Optional<Integer> description) {
-        super(layoutId, description);
+    public OnOffStateActionRow(int layoutId, Optional<Integer> description, String connectionId) {
+        super(layoutId, description, connectionId);
     }
 
-    public void onButtonClick(final Context context, FhemDevice device, String targetState) {
-        new StateUiService().setState(device, targetState, context);
+    public void onButtonClick(final Context context, FhemDevice device, String connectionId, String targetState) {
+        new StateUiService().setState(device, targetState, context, connectionId);
     }
 }

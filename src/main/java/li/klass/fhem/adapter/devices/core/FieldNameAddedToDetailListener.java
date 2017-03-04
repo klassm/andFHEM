@@ -55,7 +55,7 @@ public abstract class FieldNameAddedToDetailListener {
         this.notificationDeviceType = notificationDeviceType;
     }
 
-    protected abstract void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow);
+    protected abstract void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow);
 
     public boolean supportsDevice(FhemDevice device) {
         switch (notificationDeviceType) {

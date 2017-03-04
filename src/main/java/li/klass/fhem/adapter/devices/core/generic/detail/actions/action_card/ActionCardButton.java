@@ -38,29 +38,25 @@ public abstract class ActionCardButton implements ActionCardAction {
 
     private final String buttonText;
 
-    public ActionCardButton(String buttonText) {
-        this.buttonText = buttonText;
-    }
-
     public ActionCardButton(int buttonText, Context context) {
         this.buttonText = context.getString(buttonText);
     }
 
     @Override
-    public View createView(final XmlListDevice device, final Context context, LayoutInflater inflater, ViewGroup parent) {
+    public View createView(final XmlListDevice device, final String connectionId, final Context context, LayoutInflater inflater, ViewGroup parent) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
         button.setText(buttonText);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActionCardButton.this.onClick(device, context);
+                ActionCardButton.this.onClick(device, connectionId, context);
             }
         });
 
         return button;
     }
 
-    protected abstract void onClick(XmlListDevice device, Context context);
+    protected abstract void onClick(XmlListDevice device, String connectionId, Context context);
 
     @Override
     public boolean supports(GenericDevice genericDevice) {

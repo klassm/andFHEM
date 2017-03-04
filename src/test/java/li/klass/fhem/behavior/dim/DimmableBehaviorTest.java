@@ -50,7 +50,7 @@ public class DimmableBehaviorTest {
         GenericDevice device = new GenericDevice();
         device.setSetList("dim10% dim20%");
 
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device).get();
+        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, DimmableBehavior.connectionId).get();
 
         assertThat(behavior.getBehavior()).isInstanceOf(DiscreteDimmableBehavior.class);
         assertThat(behavior.getFhemDevice()).isSameAs(device);
@@ -61,7 +61,7 @@ public class DimmableBehaviorTest {
         GenericDevice device = new GenericDevice();
         device.setSetList("state:slider,0,1,100");
 
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device).get();
+        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, DimmableBehavior.connectionId).get();
 
         assertThat(behavior.getBehavior()).isInstanceOf(ContinuousDimmableBehavior.class);
         assertThat(behavior.getFhemDevice()).isSameAs(device);
@@ -72,7 +72,7 @@ public class DimmableBehaviorTest {
         GenericDevice device = new GenericDevice();
         device.setSetList("on off");
 
-        Optional<DimmableBehavior> result = DimmableBehavior.behaviorFor(device);
+        Optional<DimmableBehavior> result = DimmableBehavior.behaviorFor(device, DimmableBehavior.connectionId);
 
         assertThat(result).isEqualTo(Optional.absent());
     }
@@ -95,7 +95,7 @@ public class DimmableBehaviorTest {
         device.setXmlListDevice(xmlListDevice);
         device.setSetList("state:slider,0,1,100");
 
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device).get();
+        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, DimmableBehavior.connectionId).get();
 
         assertThat(behavior.getDimUpPosition()).isEqualTo(expectedDimUpPosition);
         assertThat(behavior.getDimDownPosition()).isEqualTo(expectedDimDownPosition);

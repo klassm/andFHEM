@@ -43,11 +43,13 @@ public class StateChangingColorPickerRow {
     private final XmlListDevice xmlListDevice;
     private final StateUiService stateUiService;
     private final RGBSetListEntry rgbSetListEntry;
+    private final String connectionId;
 
-    public StateChangingColorPickerRow(StateUiService stateUiService, XmlListDevice xmlListDevice, RGBSetListEntry rgbSetListEntry) {
+    public StateChangingColorPickerRow(StateUiService stateUiService, XmlListDevice xmlListDevice, String connectionId, RGBSetListEntry rgbSetListEntry) {
         this.xmlListDevice = xmlListDevice;
         this.stateUiService = stateUiService;
         this.rgbSetListEntry = rgbSetListEntry;
+        this.connectionId = connectionId;
     }
 
     public TableRow createRow(final Context context, final LayoutInflater inflater, ViewGroup viewGroup) {
@@ -70,7 +72,7 @@ public class StateChangingColorPickerRow {
                 new RGBColorPickerDialog(context, rgb, new RGBColorPickerDialog.Callback() {
                     @Override
                     public void onColorChanged(String newRGB, Dialog dialog) {
-                        stateUiService.setSubState(xmlListDevice, rgbSetListEntry.getKey(), newRGB, context);
+                        stateUiService.setSubState(xmlListDevice, rgbSetListEntry.getKey(), newRGB, connectionId, context);
                     }
 
                     @Override

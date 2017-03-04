@@ -60,8 +60,8 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
-                                            FhemDevice device, TableRow fieldTableRow) {
-                createWebCmdTableRowIfRequired(getInflater(), tableLayout, device);
+                                            FhemDevice device, String connectionId, TableRow fieldTableRow) {
+                createWebCmdTableRowIfRequired(getInflater(), tableLayout, device, connectionId);
             }
         });
     }
@@ -70,12 +70,12 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     }
 
     private void createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
-                                                final FhemDevice device) {
+                                                final FhemDevice device, String connectionId) {
         if (device.getWebCmd().isEmpty()) return;
         final Context context = inflater.getContext();
 
         layout.addView(new WebCmdActionRow(HolderActionRow.LAYOUT_DETAIL, context)
-                .createRow(context, inflater, layout, device));
+                .createRow(context, inflater, layout, device, connectionId));
     }
 
     @Override
@@ -84,9 +84,9 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     }
 
     @Override
-    protected final View getDeviceDetailView(Context context, FhemDevice device, long lastUpdate) {
+    protected final View getDeviceDetailView(Context context, FhemDevice device, String connectionId, long lastUpdate) {
         View view = getInflater().inflate(getDetailViewLayout(), null);
-        fillDeviceDetailView(context, view, device);
+        fillDeviceDetailView(context, view, device, connectionId);
 
         return view;
     }
@@ -95,7 +95,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         return R.layout.device_detail_explicit;
     }
 
-    protected void fillDeviceDetailView(Context context, View view, FhemDevice device) {
+    private void fillDeviceDetailView(Context context, View view, FhemDevice device, String connectionId) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         TableLayout layout = (TableLayout) view.findViewById(R.id.generic);
@@ -121,16 +121,16 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
                     GenericDeviceTableRowHolder holder = createTableRow(inflater, R.layout.device_detail_generic_table_row);
                     fillTableRow(holder, item, device);
                     layout.addView(holder.row);
-                    notifyFieldListeners(context, device, layout, name, holder.row);
+                    notifyFieldListeners(context, device, connectionId, layout, name, holder.row);
                 }
             }
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
 
-        addDetailGraphButtons(context, view, device, inflater);
+        addDetailGraphButtons(context, view, device, connectionId, inflater);
 
-        addDetailActionButtons(context, view, device, inflater);
+        addDetailActionButtons(context, view, device, inflater, connectionId);
 
         LinearLayout otherStuffView = (LinearLayout) view.findViewById(R.id.otherStuff);
         fillOtherStuffDetailLayout(context, otherStuffView, device, inflater);
@@ -138,7 +138,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         updateGeneralDetailsNotificationText(context, view, device);
     }
 
-    private void notifyFieldListeners(Context context, FhemDevice device, TableLayout layout, String fieldName, TableRow fieldTableRow) {
+    private void notifyFieldListeners(Context context, FhemDevice device, String connectionId, TableLayout layout, String fieldName, TableRow fieldTableRow) {
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
             return;
         }
@@ -146,13 +146,13 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         List<FieldNameAddedToDetailListener> listeners = fieldNameAddedListeners.get(fieldName);
         for (FieldNameAddedToDetailListener listener : listeners) {
             if (listener.supportsDevice(device)) {
-                listener.onFieldNameAdded(context, layout, fieldName, device, fieldTableRow);
+                listener.onFieldNameAdded(context, layout, fieldName, device, connectionId, fieldTableRow);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void addDetailGraphButtons(Context context, View view, FhemDevice device, LayoutInflater inflater) {
+    private void addDetailGraphButtons(Context context, View view, FhemDevice device, String connectionId, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
         Set<SvgGraphDefinition> svgGraphDefinitions = device.getSvgGraphDefinitions();
         if (svgGraphDefinitions.isEmpty()) {
@@ -160,11 +160,11 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
             return;
         }
         for (SvgGraphDefinition svgGraphDefinition : svgGraphDefinitions) {
-            addGraphButton(context, graphLayout, inflater, device, svgGraphDefinition);
+            addGraphButton(context, graphLayout, inflater, device, connectionId, svgGraphDefinition);
         }
     }
 
-    private void addDetailActionButtons(Context context, View view, FhemDevice device, LayoutInflater inflater) {
+    private void addDetailActionButtons(Context context, View view, FhemDevice device, LayoutInflater inflater, String connectionId) {
         LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
         List<DeviceDetailViewAction> actions = provideDetailActions();
         if (!hasVisibleDetailActions(actions, device)) {
@@ -173,7 +173,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         for (DeviceDetailViewAction action : actions) {
             if (!action.isVisible(device)) continue;
 
-            View actionView = action.createView(context, inflater, device, actionLayout);
+            View actionView = action.createView(context, inflater, device, actionLayout, connectionId);
             actionLayout.addView(actionView);
         }
     }
@@ -195,11 +195,11 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     }
 
     private void addGraphButton(final Context context, LinearLayout graphLayout,
-                                LayoutInflater inflater, final FhemDevice device, final SvgGraphDefinition svgGraphDefinition) {
+                                LayoutInflater inflater, final FhemDevice device, String connectionId, final SvgGraphDefinition svgGraphDefinition) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
         assert button != null;
 
-        fillGraphButton(context, device, svgGraphDefinition, button);
+        fillGraphButton(context, device, connectionId, svgGraphDefinition, button);
         graphLayout.addView(button);
     }
 

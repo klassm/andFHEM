@@ -33,7 +33,7 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public interface ActionCardAction {
-    View createView(XmlListDevice device, Context context, LayoutInflater inflater, ViewGroup parent);
+    View createView(XmlListDevice device, String connectionId, Context context, LayoutInflater inflater, ViewGroup parent);
 
     boolean supports(GenericDevice genericDevice);
 }

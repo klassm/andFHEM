@@ -72,6 +72,7 @@ import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.CLICKED_DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
@@ -103,6 +104,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     private transient FhemDevice targetDevice;
     private String savedTimerDeviceName;
+    private String connectionId;
 
     @Override
     protected void inject(ApplicationComponent applicationComponent) {
@@ -114,6 +116,7 @@ public class TimerDetailFragment extends BaseFragment {
         if (args.containsKey(DEVICE_NAME)) {
             savedTimerDeviceName = args.getString(DEVICE_NAME);
         }
+        connectionId = args.getString(CONNECTION_ID);
     }
 
     @Override

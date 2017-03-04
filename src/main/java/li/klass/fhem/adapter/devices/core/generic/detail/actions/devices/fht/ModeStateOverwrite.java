@@ -71,16 +71,16 @@ public class ModeStateOverwrite implements StateAttributeAction {
     }
 
     @Override
-    public TableRow createRow(XmlListDevice device, String key, String stateValue, Context context, final LayoutInflater inflater, final ViewGroup parent) {
+    public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, final LayoutInflater inflater, final ViewGroup parent) {
         int selected = EnumUtils.positionOf(FHTMode.values(), modeFor(stateValue));
         return new SpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(FHTMode.values()), selected) {
 
             @Override
-            public void onItemSelected(Context context, XmlListDevice device, String item) {
+            public void onItemSelected(Context context, XmlListDevice device, String connectionId, String item) {
                 FHTMode mode = modeFor(item);
                 setMode(device, mode, this, parent, context, inflater);
             }
-        }.createRow(device, parent);
+        }.createRow(device, connectionId, parent);
     }
 
     @Override

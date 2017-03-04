@@ -44,5 +44,5 @@ interface DimmableTypeBehavior {
 
     String getStateName();
 
-    void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state);
+    void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, String connectionId, float state);
 }

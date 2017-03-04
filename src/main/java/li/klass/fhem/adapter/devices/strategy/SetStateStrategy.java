@@ -62,7 +62,7 @@ public class SetStateStrategy extends DefaultViewStrategy {
     protected void fillDeviceOverviewView(View view, FhemDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder, List<DeviceViewItem> items, LayoutInflater layoutInflater) {
         super.fillDeviceOverviewView(view, device, lastUpdate, viewHolder, items, layoutInflater);
 
-        StateChangeButtonActionRow row = new StateChangeButtonActionRow(layoutInflater.getContext(), device, ButtonActionRow.LAYOUT_OVERVIEW);
+        StateChangeButtonActionRow row = new StateChangeButtonActionRow(layoutInflater.getContext(), device, ButtonActionRow.LAYOUT_OVERVIEW, null);
         viewHolder.getTableLayout().addView(row.createRow(layoutInflater));
     }
 

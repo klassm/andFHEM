@@ -140,7 +140,7 @@ public class DeviceDetailFragment extends BaseFragment {
                             ScrollView scrollView = findScrollView();
                             if (scrollView != null) {
                                 scrollView.removeAllViews();
-                                scrollView.addView(adapter.createDetailView(activity, device, lastUpdate));
+                                scrollView.addView(adapter.createDetailView(activity, device, connectionId, lastUpdate));
                             }
                         }
                     }

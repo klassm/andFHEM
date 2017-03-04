@@ -67,7 +67,7 @@ public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
 
         detailActions.add(new DeviceDetailViewButtonAction(R.string.gcmRegisterThis) {
             @Override
-            public void onButtonClick(Context context, FhemDevice device) {
+            public void onButtonClick(Context context, FhemDevice device, String connectionId) {
                 context.startService(new Intent(Actions.GCM_ADD_SELF)
                         .setClass(context, DeviceIntentService.class)
                         .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));

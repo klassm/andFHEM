@@ -128,7 +128,7 @@ public class DiscreteDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state) {
-        stateUiService.setState(fhemDevice, getDimStateForPosition(fhemDevice, state), context);
+    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, String connectionId, float state) {
+        stateUiService.setState(fhemDevice, getDimStateForPosition(fhemDevice, state), context, connectionId);
     }
 }

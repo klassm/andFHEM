@@ -40,13 +40,18 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.ModeStateOverwrite;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
+
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.HEATING_CONFIGURATION;
 
 @Singleton
 public class FHTDetailActionProvider extends DeviceDetailActionProvider {
@@ -63,23 +68,25 @@ public class FHTDetailActionProvider extends DeviceDetailActionProvider {
         return ImmutableList.<ActionCardAction>of(
                 new ActionCardButton(R.string.timetable, context) {
                     @Override
-                    protected void onClick(XmlListDevice device, Context context) {
+                    protected void onClick(XmlListDevice device, String connectionId, Context context) {
                         context.sendBroadcast(
                                 new Intent(Actions.SHOW_FRAGMENT)
-                                        .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FROM_TO_WEEK_PROFILE)
-                                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                        .putExtra(BundleExtraKeys.HEATING_CONFIGURATION, new FHTConfiguration())
+                                        .putExtra(FRAGMENT, FragmentType.FROM_TO_WEEK_PROFILE)
+                                        .putExtra(CONNECTION_ID, connectionId)
+                                        .putExtra(DEVICE_NAME, device.getName())
+                                        .putExtra(HEATING_CONFIGURATION, new FHTConfiguration())
                         );
                     }
                 },
                 new ActionCardButton(R.string.requestRefresh, context) {
                     @Override
-                    protected void onClick(XmlListDevice device, Context context) {
+                    protected void onClick(XmlListDevice device, String connectionId, Context context) {
                         context.startService(
                                 new Intent(Actions.DEVICE_SET_STATE)
                                         .setClass(context, DeviceIntentService.class)
-                                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                        .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "refreshvalues")
+                                        .putExtra(CONNECTION_ID, connectionId)
+                                        .putExtra(DEVICE_NAME, device.getName())
+                                        .putExtra(DEVICE_TARGET_STATE, "refreshvalues")
                         );
                     }
                 }

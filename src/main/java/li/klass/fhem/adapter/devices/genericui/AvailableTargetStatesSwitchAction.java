@@ -37,12 +37,12 @@ public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAct
     }
 
     @Override
-    public void onButtonClick(Context context, FhemDevice device) {
-        showSwitchOptionsMenu(context, device);
+    public void onButtonClick(Context context, FhemDevice device, String connectionId) {
+        showSwitchOptionsMenu(context, device, connectionId);
     }
 
-    private void showSwitchOptionsMenu(final Context context, final FhemDevice device) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, new StateChangingTargetStateSelectedCallback(context, new StateUiService()));
+    private void showSwitchOptionsMenu(final Context context, final FhemDevice device, String connectionId) {
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
     }
 
     @Override

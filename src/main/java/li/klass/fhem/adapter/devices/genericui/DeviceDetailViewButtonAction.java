@@ -41,23 +41,23 @@ public abstract class DeviceDetailViewButtonAction extends DeviceDetailViewActio
     }
 
     @Override
-    public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent) {
-        return createButton(context, inflater, device, parent);
+    public View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent, String connectionId) {
+        return createButton(context, inflater, device, parent, connectionId);
     }
 
-    public Button createButton(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent) {
+    public Button createButton(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent, String connectionId) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
-        button.setOnClickListener(createListener(context, device));
+        button.setOnClickListener(createListener(context, device, connectionId));
         button.setText(buttonText);
 
         return button;
     }
 
-    private Button.OnClickListener createListener(final Context context, final FhemDevice device) {
+    private Button.OnClickListener createListener(final Context context, final FhemDevice device, final String connectionId) {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onButtonClick(context, device);
+                onButtonClick(context, device, connectionId);
             }
         };
     }
@@ -66,5 +66,5 @@ public abstract class DeviceDetailViewButtonAction extends DeviceDetailViewActio
         return true;
     }
 
-    public abstract void onButtonClick(Context context, FhemDevice device);
+    public abstract void onButtonClick(Context context, FhemDevice device, String connectionId);
 }

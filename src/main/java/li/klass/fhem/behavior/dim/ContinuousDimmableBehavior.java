@@ -123,8 +123,8 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     }
 
     @Override
-    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, float state) {
-        stateUiService.setSubState(fhemDevice, setListAttribute, getDimStateForPosition(fhemDevice, state), context);
+    public void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, String connectionId, float state) {
+        stateUiService.setSubState(fhemDevice, connectionId, setListAttribute, getDimStateForPosition(fhemDevice, state), context);
 
         Optional<DeviceConfiguration> deviceConfiguration = fhemDevice.getDeviceConfiguration();
         if (deviceConfiguration.isPresent()) {

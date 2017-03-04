@@ -62,8 +62,8 @@ public class DimActionRow {
         return tableRow;
     }
 
-    public void fillWith(final FhemDevice device, TableRow updateRow) {
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device).get();
+    public void fillWith(final FhemDevice device, TableRow updateRow, String connectionId) {
+        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, connectionId).get();
 
         DimmableDevice dimmableDevice = (DimmableDevice) device;
         seekBar.setOnSeekBarChangeListener(createListener(behavior));

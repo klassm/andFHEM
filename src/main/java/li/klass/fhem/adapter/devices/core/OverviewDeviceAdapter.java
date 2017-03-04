@@ -126,7 +126,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         if (viewStrategy == null) {
             throw new NullPointerException("was null for device " + rawDevice.toString() + " and adapter " + getClass().getSimpleName());
         }
-        return viewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice));
+        return viewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice), null);
     }
 
     protected GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
@@ -137,11 +137,6 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         holder.description = (TextView) tableRow.findViewById(R.id.description);
         holder.value = (TextView) tableRow.findViewById(R.id.value);
         return holder;
-    }
-
-    protected boolean isSensorDevice(FhemDevice device) {
-        return device.isSensorDevice() ||
-                (device.getDeviceConfiguration().isPresent() && device.getDeviceConfiguration().get().isSensorDevice());
     }
 
     protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
@@ -184,16 +179,16 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         if (device.getSetList().contains(key)) {
             registerFieldListener(key, new FieldNameAddedToDetailListener() {
                 @Override
-                protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+                protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                     SetListEntry setListEntry = device.getSetList().get(key);
                     if (setListEntry instanceof SliderSetListEntry) {
                         tableLayout.addView(
-                                new StateChangingSeekBarFullWidth(getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key).get(), fieldTableRow)
+                                new StateChangingSeekBarFullWidth(getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key, connectionId).get(), fieldTableRow)
                                         .createRow(getInflater(), device));
                     } else if (setListEntry instanceof GroupSetListEntry) {
                         GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;
                         tableLayout.addView(new StateChangingSpinnerActionRow(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
-                                .createRow(device.getXmlListDevice(), tableLayout));
+                                .createRow(device.getXmlListDevice(), connectionId, tableLayout));
                     }
                 }
             });

@@ -89,20 +89,20 @@ public abstract class DeviceAdapter {
      *
      * @param context    context used for inflating the layout.
      * @param device     device used for filling.
-     * @param lastUpdate time when the data was last loaded from the FHEM server.
-     * @return filled view.
+     * @param connectionId
+     *@param lastUpdate time when the data was last loaded from the FHEM server.  @return filled view.
      */
     @SuppressWarnings("unchecked")
-    public View createDetailView(Context context, FhemDevice device, long lastUpdate) {
+    public View createDetailView(Context context, FhemDevice device, String connectionId, long lastUpdate) {
         if (supportsDetailView(device)) {
-            return getDeviceDetailView(context, device, lastUpdate);
+            return getDeviceDetailView(context, device, connectionId, lastUpdate);
         }
         return null;
     }
 
     public abstract boolean supportsDetailView(FhemDevice device);
 
-    protected abstract View getDeviceDetailView(Context context, FhemDevice device, long lastUpdate);
+    protected abstract View getDeviceDetailView(Context context, FhemDevice device, String connectionId, long lastUpdate);
 
     public void gotoDetailView(Context context, FhemDevice device) {
         if (!supportsDetailView(device)) {
@@ -163,14 +163,14 @@ public abstract class DeviceAdapter {
         setTextView(view, textFieldLayoutId, context.getString(value));
     }
 
-    protected void fillGraphButton(final Context context, final FhemDevice device, final SvgGraphDefinition svgGraphDefinition, Button button) {
+    protected void fillGraphButton(final Context context, final FhemDevice device, final String connectionId, final SvgGraphDefinition svgGraphDefinition, Button button) {
         if (svgGraphDefinition == null) return;
 
         button.setText(svgGraphDefinition.getName());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChartingActivity.showChart(context, device, svgGraphDefinition);
+                ChartingActivity.showChart(context, device, connectionId, svgGraphDefinition);
             }
         });
     }

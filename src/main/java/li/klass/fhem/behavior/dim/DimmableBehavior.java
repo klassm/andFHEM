@@ -37,9 +37,11 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 public class DimmableBehavior {
 
     private final FhemDevice fhemDevice;
+    private final String connectionId;
     private DimmableTypeBehavior behavior;
 
-    public DimmableBehavior(FhemDevice fhemDevice, DimmableTypeBehavior dimmableTypeBehavior) {
+    public DimmableBehavior(FhemDevice fhemDevice, String connectionId, DimmableTypeBehavior dimmableTypeBehavior) {
+        this.connectionId = connectionId;
         this.behavior = dimmableTypeBehavior;
         this.fhemDevice = fhemDevice;
     }
@@ -86,7 +88,7 @@ public class DimmableBehavior {
     }
 
     public void switchTo(StateUiService stateUiService, Context context, float state) {
-        behavior.switchTo(stateUiService, context, fhemDevice, state);
+        behavior.switchTo(stateUiService, context, fhemDevice, connectionId, state);
     }
 
     public FhemDevice getFhemDevice() {
@@ -97,29 +99,29 @@ public class DimmableBehavior {
         return behavior;
     }
 
-    public static Optional<DimmableBehavior> behaviorFor(FhemDevice fhemDevice) {
+    public static Optional<DimmableBehavior> behaviorFor(FhemDevice fhemDevice, String connectionId) {
         SetList setList = fhemDevice.getSetList();
 
         Optional<DiscreteDimmableBehavior> discrete = DiscreteDimmableBehavior.behaviorFor(setList);
         if (discrete.isPresent()) {
-            return Optional.of(new DimmableBehavior(fhemDevice, discrete.get()));
+            return Optional.of(new DimmableBehavior(fhemDevice, connectionId, discrete.get()));
         }
 
         Optional<ContinuousDimmableBehavior> continuous = ContinuousDimmableBehavior.behaviorFor(setList);
         if (continuous.isPresent()) {
             DimmableTypeBehavior behavior = continuous.get();
-            return Optional.of(new DimmableBehavior(fhemDevice, behavior));
+            return Optional.of(new DimmableBehavior(fhemDevice, connectionId, behavior));
         }
 
         return Optional.absent();
     }
 
-    public static Optional<DimmableBehavior> continuousBehaviorFor(FhemDevice device, String attribute) {
+    public static Optional<DimmableBehavior> continuousBehaviorFor(FhemDevice device, String attribute, String connectionId) {
         if (!device.getSetList().contains(attribute)) {
             return Optional.absent();
         }
         SliderSetListEntry setListSliderValue = (SliderSetListEntry) device.getSetList().get(attribute);
-        return Optional.of(new DimmableBehavior(device, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
+        return Optional.of(new DimmableBehavior(device, connectionId, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
     }
 
 

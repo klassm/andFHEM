@@ -74,16 +74,16 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 List<String> ports = newArrayList(((PCA9532Device) device).getPortsIsOnMap().keySet());
                 sort(ports);
 
                 for (String port : ports) {
-                    createPortRow(context, tableLayout, port, ((PCA9532Device) device));
+                    createPortRow(context, tableLayout, port, ((PCA9532Device) device), connectionId);
                 }
             }
 
-            private void createPortRow(Context context, TableLayout tableLayout, final String port, PCA9532Device device) {
+            private void createPortRow(Context context, TableLayout tableLayout, final String port, PCA9532Device device, final String connectionId) {
                 tableLayout.addView(new ToggleActionRow(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
 
                     @Override
@@ -93,7 +93,7 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
                     @Override
                     protected void onButtonClick(final Context context, final FhemDevice device, final boolean isChecked) {
-                        stateUiService.setSubState(device, port, isChecked ? "on" : "off", context);
+                        stateUiService.setSubState(device, connectionId, port, isChecked ? "on" : "off", context);
                     }
                 }.createRow(context, device, port));
             }
@@ -101,18 +101,18 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
 
         registerFieldListener("pwm0", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBarFullWidth(
-                        context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM0").get(), fieldTableRow)
+                        context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM0", connectionId).get(), fieldTableRow)
                         .createRow(getInflater(), device));
             }
         });
 
         registerFieldListener("pwm1", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBarFullWidth(
-                        context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM1").get(), fieldTableRow)
+                        context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM1", connectionId).get(), fieldTableRow)
                         .createRow(getInflater(), device));
             }
         });

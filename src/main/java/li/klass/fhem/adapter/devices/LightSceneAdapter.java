@@ -73,7 +73,7 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         super.afterPropertiesSet();
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, final String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new HolderActionRow<String>(context.getString(R.string.scene), HolderActionRow.LAYOUT_DETAIL) {
 
                     @Override
@@ -82,28 +82,28 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
                     }
 
                     @Override
-                    public View viewFor(String scene, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
+                    public View viewFor(String scene, FhemDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup, final String connectionId) {
                         Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
-                        setSceneButtonProperties(device, scene, button);
+                        setSceneButtonProperties(device, connectionId, scene, button);
                         return button;
                     }
-                }.createRow(context, getInflater(), tableLayout, device));
+                }.createRow(context, getInflater(), tableLayout, device, connectionId));
             }
         });
     }
 
-    private void setSceneButtonProperties(final FhemDevice device, final String scene, Button button) {
+    private void setSceneButtonProperties(final FhemDevice device, final String connectionId, final String scene, Button button) {
         button.setText(scene);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activateScene(device, scene);
+                activateScene(device, connectionId, scene);
             }
         });
     }
 
-    private void activateScene(FhemDevice device, String scene) {
-        stateUiService.setSubState(device, "scene", scene, getContext());
+    private void activateScene(FhemDevice device, String connectionId, String scene) {
+        stateUiService.setSubState(device, connectionId, "scene", scene, getContext());
     }
 
     @Override

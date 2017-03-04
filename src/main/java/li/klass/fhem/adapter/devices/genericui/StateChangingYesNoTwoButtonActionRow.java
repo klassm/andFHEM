@@ -36,8 +36,8 @@ public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffStateAct
 
     private final StateUiService stateUiService;
 
-    public StateChangingYesNoTwoButtonActionRow(StateUiService stateUiService, int description) {
-        super(AbstractOnOffActionRow.LAYOUT_DETAIL, description);
+    public StateChangingYesNoTwoButtonActionRow(StateUiService stateUiService, int description, String connectionId) {
+        super(AbstractOnOffActionRow.LAYOUT_DETAIL, description, connectionId);
         this.stateUiService = stateUiService;
     }
 
@@ -52,8 +52,8 @@ public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffStateAct
     }
 
     @Override
-    public void onButtonClick(Context context, FhemDevice device, String targetState) {
-        stateUiService.setState(device, targetState, context);
+    public void onButtonClick(Context context, FhemDevice device, String connectionId, String targetState) {
+        stateUiService.setState(device, targetState, context, connectionId);
     }
 
     @Override

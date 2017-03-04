@@ -24,39 +24,67 @@
 
 package li.klass.fhem.activities.graph;
 
-import android.app.*;
-import android.content.*;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.*;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.*;
-import com.github.mikephil.charting.data.*;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.common.base.*;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.*;
-import li.klass.fhem.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Range;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.List;
+import java.util.Map;
+
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
-import li.klass.fhem.constants.*;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.gplot.*;
-import li.klass.fhem.service.intent.*;
-import li.klass.fhem.util.*;
-import org.joda.time.DateTime;
-import org.joda.time.format.*;
-
-import java.util.*;
+import li.klass.fhem.service.graph.gplot.GPlotDefinition;
+import li.klass.fhem.service.graph.gplot.GPlotSeries;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.util.DisplayUtil;
+import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT;
 import static org.joda.time.Duration.standardHours;
 
@@ -85,19 +113,21 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
      * End date for the current graph
      */
     private DateTime endDate = new DateTime();
+    private String connectionId;
 
     /**
      * Jumps to the charting activity.
-     *
-     * @param context         calling intent
+     *  @param context         calling intent
      * @param device          concerned device
+     * @param connectionId
      * @param graphDefinition series descriptions each representing one series in the resulting chart
      */
     @SuppressWarnings("unchecked")
-    public static void showChart(Context context, FhemDevice device, SvgGraphDefinition graphDefinition) {
+    public static void showChart(Context context, FhemDevice device, String connectionId, SvgGraphDefinition graphDefinition) {
 
         context.startActivity(new Intent(context, ChartingActivity.class)
                 .putExtra(DEVICE_NAME, device.getName())
+                .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DEVICE_GRAPH_DEFINITION, graphDefinition));
     }
 
@@ -125,6 +155,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
 
         Bundle extras = getIntent().getExtras();
         deviceName = extras.getString(DEVICE_NAME);
+        connectionId = extras.getString(CONNECTION_ID);
 
         svgGraphDefinition = (SvgGraphDefinition) extras.getSerializable(DEVICE_GRAPH_DEFINITION);
 
@@ -144,6 +175,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
                 .setClass(this, RoomListIntentService.class)
                 .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DO_REFRESH, doUpdate)
                 .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
@@ -170,6 +202,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
                 .putExtra(DEVICE_NAME, deviceName)
                 .putExtra(START_DATE, startDate)
                 .putExtra(END_DATE, endDate)
+                .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DEVICE_GRAPH_DEFINITION, svgGraphDefinition)
                 .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
