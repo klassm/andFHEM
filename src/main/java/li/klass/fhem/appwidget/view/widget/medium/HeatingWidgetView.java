@@ -28,6 +28,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.google.common.base.Optional;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -41,8 +43,8 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class HeatingWidgetView extends DeviceAppWidgetView {
 
-    public static final List<String> TEMPERATURE_STATES = Arrays.asList("temperature", "measured-temp");
-    public static final List<String> DESIRED_TEMPERATURE_STATES = Arrays.asList("desired-temp", "desiredTemperature");
+    private static final List<String> TEMPERATURE_STATES = Arrays.asList("temperature", "measured-temp");
+    private static final List<String> DESIRED_TEMPERATURE_STATES = Arrays.asList("desired-temp", "desiredTemperature");
 
     @Override
     public int getWidgetName() {
@@ -59,8 +61,8 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
 
         String warnings = xmlListDevice.getState("warnings").orNull();
-        String temperature = xmlListDevice.getFirstStateOf(TEMPERATURE_STATES).get();
-        String desiredTemp = xmlListDevice.getFirstStateOf(DESIRED_TEMPERATURE_STATES).get();
+        Optional<String> temperature = xmlListDevice.getFirstStateOf(TEMPERATURE_STATES);
+        Optional<String> desiredTemp = xmlListDevice.getFirstStateOf(DESIRED_TEMPERATURE_STATES);
 
         if (warnings != null && warnings.toLowerCase(Locale.getDefault()).contains("open")) {
             view.setViewVisibility(R.id.windowOpen, View.VISIBLE);
@@ -69,10 +71,10 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
         }
 
         String target = context.getString(R.string.target);
-        setTextViewOrHide(view, R.id.temperature, temperature);
+        setTextViewOrHide(view, R.id.temperature, temperature.or("??"));
 
-        if (temperature != null && desiredTemp != null) {
-            String text = target + ": " + desiredTemp;
+        if (desiredTemp.isPresent()) {
+            String text = target + ": " + desiredTemp.or("??");
             setTextViewOrHide(view, R.id.additional, text);
         } else {
             view.setViewVisibility(R.id.additional, View.GONE);

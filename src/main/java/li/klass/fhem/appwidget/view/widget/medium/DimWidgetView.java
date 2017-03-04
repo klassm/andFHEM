@@ -98,14 +98,12 @@ public class DimWidgetView extends DeviceAppWidgetView {
 
     private Intent sendTargetDimState(Context context, DimmableDevice device, String targetState, Optional<String> connectionId, ResultReceiver resultReceiver) {
 
-        Intent intent = new Intent(Actions.DEVICE_SET_STATE)
+        return new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, resultReceiver)
                 .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId.orNull());
-
-        return intent;
     }
 
     @Override

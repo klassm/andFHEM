@@ -54,8 +54,8 @@ import static java.lang.Integer.parseInt;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public class AppWidgetDataHolder {
-    public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
-    public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
+    private static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
+    private static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     static final String SAVE_PREFERENCE_NAME = AppWidgetDataHolder.class.getName();
     public static final Logger LOG = LoggerFactory.getLogger(AppWidgetDataHolder.class);
 
@@ -91,7 +91,7 @@ public class AppWidgetDataHolder {
                 .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
     }
 
-    SharedPreferences getSavedPreferences(Context context) {
+    private SharedPreferences getSavedPreferences(Context context) {
         return sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, context);
     }
 
@@ -175,7 +175,7 @@ public class AppWidgetDataHolder {
         }
     }
 
-    public void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration, Context context) {
+    void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration, Context context) {
         SharedPreferences.Editor edit = sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME, context);
         String value = widgetConfiguration.toSaveString();
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);

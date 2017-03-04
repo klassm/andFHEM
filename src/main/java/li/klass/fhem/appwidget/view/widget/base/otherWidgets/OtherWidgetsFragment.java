@@ -95,7 +95,7 @@ public class OtherWidgetsFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
-        checkNotNull(widgetSize);
+        widgetSize = checkNotNull(widgetSize);
 
         if (getView() == null) return;
 

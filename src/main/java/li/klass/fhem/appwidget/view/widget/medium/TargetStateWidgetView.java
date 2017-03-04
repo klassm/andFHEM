@@ -96,6 +96,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
                                                    final int appWidgetId, FhemDevice device,
                                                    final WidgetConfigurationCreatedCallback callback) {
+        //noinspection unchecked
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback, context));
     }
 

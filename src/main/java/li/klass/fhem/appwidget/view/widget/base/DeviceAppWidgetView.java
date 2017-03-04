@@ -49,7 +49,6 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -58,6 +57,9 @@ import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.deviceConfiguration.ViewItemConfig;
 import li.klass.fhem.service.room.RoomListService;
 
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
 
 public abstract class DeviceAppWidgetView extends AppWidgetView {
@@ -142,26 +144,23 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration, Context context) {
-        openDeviceDetailPageWhenClicking(viewId, view, device, widgetConfiguration.widgetId, context);
-    }
-
-    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, int widgetId, Context context) {
-        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetId, context);
+        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration, context);
 
         view.setOnClickPendingIntent(viewId, pendingIntent);
     }
 
-    protected PendingIntent createOpenDeviceDetailPagePendingIntent(FhemDevice device, int widgetId, Context context) {
-        Intent openIntent = createOpenDeviceDetailPageIntent(device, context);
-        return PendingIntent.getActivity(context, widgetId, openIntent,
+    protected PendingIntent createOpenDeviceDetailPagePendingIntent(FhemDevice device, WidgetConfiguration widgetConfiguration, Context context) {
+        Intent openIntent = createOpenDeviceDetailPageIntent(device, widgetConfiguration, context);
+        return PendingIntent.getActivity(context, widgetConfiguration.widgetId, openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    protected Intent createOpenDeviceDetailPageIntent(FhemDevice device, Context context) {
+    protected Intent createOpenDeviceDetailPageIntent(FhemDevice device, WidgetConfiguration widgetConfiguration, Context context) {
         return new Intent(context, AndFHEMMainActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
+                .putExtra(DEVICE_NAME, device.getName())
+                .putExtra(CONNECTION_ID, widgetConfiguration.connectionId.orNull())
                 .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
     }
 

@@ -25,7 +25,6 @@
 package li.klass.fhem.activities;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,9 +32,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -52,6 +51,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.common.base.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Timer;
 
@@ -98,6 +100,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         FragmentManager.OnBackStackChangedListener,
         SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AndFHEMMainActivity.class);
     private class Receiver extends BroadcastReceiver {
 
         private final IntentFilter intentFilter;
@@ -306,7 +309,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         drawerLayout.closeDrawer(GravityCompat.START);
 
         switch (menuItem.getItemId()) {
@@ -346,12 +349,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             return false;
         }
 
-        if (fragmentType == FragmentType.TIMER_OVERVIEW && Build.VERSION.SDK_INT < 11) {
-            String text = String.format(getString(R.string.feature_requires_android_version), "3");
-            DialogUtil.showAlertDialog(AndFHEMMainActivity.this, R.string.android_version, text);
-        } else {
-            switchToFragment(fragmentType, new Bundle());
-        }
+        switchToFragment(fragmentType, new Bundle());
 
         return true;
     }
@@ -456,6 +454,10 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         if (contentFragment == null) return false;
 
         FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
+        if (fragmentType == null) {
+            LOGGER.error("hasNavigation - cannot find fragment type for {}", contentFragment.getClass().getName());
+            return false;
+        }
 
         boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
         View navigationView = findViewById(R.id.navigation);
@@ -471,6 +473,10 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     private boolean hasNavigation(BaseFragment navigationFragment, BaseFragment contentFragment) {
         FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
+        if (fragmentType == null) {
+            LOGGER.error("hasNavigation - cannot find fragment type for {}", contentFragment.getClass().getName());
+            return false;
+        }
         View navigationView = findViewById(R.id.navigation);
         return navigationView != null && !(navigationFragment == null || fragmentType.getNavigationClass() == null);
     }
@@ -595,14 +601,10 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         updateShowRefreshProgressIcon();
     }
 
-    @SuppressWarnings("NewApi")
-    @TargetApi(11)
     private void updateShowRefreshProgressIcon() {
         if (optionsMenu == null) return;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            this.invalidateOptionsMenu();
-        }
+        this.invalidateOptionsMenu();
     }
 
     @Override
@@ -789,12 +791,10 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
         MenuItem refreshItem = optionsMenu.findItem(R.id.menu_refresh);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (refreshLayout.isRefreshing()) {
-                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
-            } else {
-                refreshItem.setActionView(null);
-            }
+        if (refreshLayout.isRefreshing()) {
+            refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+        } else {
+            refreshItem.setActionView(null);
         }
 
         return super.onCreateOptionsMenu(menu);

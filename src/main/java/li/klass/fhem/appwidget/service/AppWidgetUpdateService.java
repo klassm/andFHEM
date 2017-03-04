@@ -48,7 +48,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
@@ -156,7 +155,10 @@ public class AppWidgetUpdateService extends IntentService {
     private void updateWidgetAfterDeviceListReload(int appWidgetId) {
 
         Optional<WidgetConfiguration> optional = appWidgetDataHolder.getWidgetConfiguration(appWidgetId, this);
-        checkArgument(optional.isPresent());
+        if (!optional.isPresent()) {
+            LOG.error("cannot find configuration for widget id {}", appWidgetId);
+            return;
+        }
 
         final WidgetConfiguration configuration = optional.get();
 
@@ -171,5 +173,4 @@ public class AppWidgetUpdateService extends IntentService {
             LOG.error("updateWidgetAfterDeviceListReload() - something strange happened during appwidget update", e);
         }
     }
-
 }

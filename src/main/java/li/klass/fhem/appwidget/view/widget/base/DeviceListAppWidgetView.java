@@ -24,24 +24,21 @@
 
 package li.klass.fhem.appwidget.view.widget.base;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import li.klass.fhem.domain.core.FhemDevice;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
 
-    public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+    private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private final FhemDevice<?> device;
         private final Context context;
         private final int widgetId;
 
-        public ListRemoteViewsFactory(Context context, FhemDevice<?> device, int widgetId) {
+        ListRemoteViewsFactory(Context context, FhemDevice<?> device, int widgetId) {
             this.context = context;
             this.device = device;
             this.widgetId = widgetId;

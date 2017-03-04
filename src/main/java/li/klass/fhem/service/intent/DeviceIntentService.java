@@ -41,7 +41,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.GCMSendDevice;
@@ -94,10 +93,33 @@ import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_MODE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ROOM;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TEMPERATURE;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
+import static li.klass.fhem.constants.BundleExtraKeys.GCM_REGISTRATION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_HOUR;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_IS_ACTIVE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_MINUTE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_REPETITION;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_SECOND;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TYPE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.DONE;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.SUCCESS;
@@ -143,7 +165,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             return DONE;
         }
 
-        String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
+        String deviceName = intent.getStringExtra(DEVICE_NAME);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
 
         Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName, connectionId, this);
@@ -166,7 +188,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             result = dimIntent(intent, device);
         } else if (DEVICE_SET_MODE.equals(action)) {
             if (device instanceof HeatingDevice) {
-                Enum mode = (Enum) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
+                Enum mode = (Enum) intent.getSerializableExtra(DEVICE_MODE);
                 HeatingDevice heatingDevice = (HeatingDevice) device;
 
                 heatingService.setMode(heatingDevice, mode, this);
@@ -179,23 +201,23 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_SET_WINDOW_OPEN_TEMPERATURE.equals(action)) {
             if (!(device instanceof WindowOpenTempDevice)) return SUCCESS;
 
-            double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
+            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
             heatingService.setWindowOpenTemp((WindowOpenTempDevice) device, temperature, this);
 
         } else if (DEVICE_SET_DESIRED_TEMPERATURE.equals(action)) {
-            double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
+            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
                 heatingService.setDesiredTemperature((DesiredTempDevice) device, temperature, this);
             }
 
         } else if (DEVICE_SET_COMFORT_TEMPERATURE.equals(action)) {
-            double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
+            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
                 heatingService.setComfortTemperature((ComfortTempDevice) device, temperature, this);
             }
 
         } else if (DEVICE_SET_ECO_TEMPERATURE.equals(action)) {
-            double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
+            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
                 heatingService.setEcoTemperature((EcoTempDevice) device, temperature, this);
             }
@@ -204,7 +226,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             if (!(device instanceof HeatingDevice)) return ERROR;
             heatingService.resetWeekProfile((HeatingDevice) device);
         } else if (DEVICE_RENAME.equals(action)) {
-            String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
+            String newName = intent.getStringExtra(DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName, this);
             notificationService.rename(deviceName, newName, this);
             favoritesService.removeFavorite(getBaseContext(), deviceName);
@@ -214,11 +236,11 @@ public class DeviceIntentService extends ConvenientIntentService {
             deviceService.deleteDevice(device, this);
 
         } else if (DEVICE_MOVE_ROOM.equals(action)) {
-            String newRoom = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ROOM);
+            String newRoom = intent.getStringExtra(DEVICE_NEW_ROOM);
             deviceService.moveDevice(device, newRoom, this);
 
         } else if (DEVICE_SET_ALIAS.equals(action)) {
-            String newAlias = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ALIAS);
+            String newAlias = intent.getStringExtra(DEVICE_NEW_ALIAS);
             deviceService.setAlias(device, newAlias, this);
 
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
@@ -246,7 +268,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             gcmSendDeviceService.addSelf((GCMSendDevice) device, this);
 
         } else if (GCM_REMOVE_ID.equals(action)) {
-            String registrationId = intent.getStringExtra(BundleExtraKeys.GCM_REGISTRATION_ID);
+            String registrationId = intent.getStringExtra(GCM_REGISTRATION_ID);
             gcmSendDeviceService.removeRegistrationId((GCMSendDevice) device, registrationId, this);
 
         } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
@@ -254,7 +276,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             String lastFailedCommand = commandExecutionService.getLastFailedCommand();
             if ("xmllist".equalsIgnoreCase(lastFailedCommand)) {
                 sendBroadcast(new Intent(Actions.DO_UPDATE)
-                        .putExtra(BundleExtraKeys.DO_REFRESH, true));
+                        .putExtra(DO_REFRESH, true));
             } else {
                 commandExecutionService.resendLastFailedCommand(this);
             }
@@ -272,9 +294,9 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private STATE graphIntent(Intent intent, FhemDevice device, ResultReceiver resultReceiver) {
-        SvgGraphDefinition graphDefinition = (SvgGraphDefinition) intent.getSerializableExtra(BundleExtraKeys.DEVICE_GRAPH_DEFINITION);
-        DateTime startDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
-        DateTime endDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
+        SvgGraphDefinition graphDefinition = (SvgGraphDefinition) intent.getSerializableExtra(DEVICE_GRAPH_DEFINITION);
+        DateTime startDate = (DateTime) intent.getSerializableExtra(START_DATE);
+        DateTime endDate = (DateTime) intent.getSerializableExtra(END_DATE);
 
         HashMap<GPlotSeries, List<GraphEntry>> graphData = graphService.getGraphData(device, graphDefinition, startDate, endDate, this);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
@@ -306,8 +328,8 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success ?
      */
     private STATE setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {
-        String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
-        int timesToSend = intent.getIntExtra(BundleExtraKeys.TIMES_TO_SEND, 1);
+        String targetState = intent.getStringExtra(DEVICE_TARGET_STATE);
+        int timesToSend = intent.getIntExtra(TIMES_TO_SEND, 1);
 
         for (int i = 0; i < timesToSend; i++) {
             genericDeviceService.setState(device, targetState, connectionId, this);
@@ -324,7 +346,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private STATE dimIntent(Intent intent, FhemDevice device) {
-        float dimProgress = intent.getFloatExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
+        float dimProgress = intent.getFloatExtra(DEVICE_DIM_PROGRESS, -1);
         if (device instanceof DimmableDevice) {
             dimmableDeviceService.dim((DimmableDevice) device, dimProgress, this);
             return STATE.SUCCESS;
@@ -338,16 +360,16 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         assert extras != null;
 
-        String targetDeviceName = extras.getString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME);
-        String targetState = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE);
-        int hour = extras.getInt(BundleExtraKeys.TIMER_HOUR, 0);
-        int minute = extras.getInt(BundleExtraKeys.TIMER_MINUTE, 0);
-        int second = extras.getInt(BundleExtraKeys.TIMER_SECOND, 0);
-        String repetition = extras.getString(BundleExtraKeys.TIMER_REPETITION);
-        String type = extras.getString(BundleExtraKeys.TIMER_TYPE);
-        String stateAppendix = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX);
-        String timerName = extras.getString(BundleExtraKeys.DEVICE_NAME);
-        boolean isActive = extras.getBoolean(BundleExtraKeys.TIMER_IS_ACTIVE);
+        String targetDeviceName = extras.getString(TIMER_TARGET_DEVICE_NAME);
+        String targetState = extras.getString(TIMER_TARGET_STATE);
+        int hour = extras.getInt(TIMER_HOUR, 0);
+        int minute = extras.getInt(TIMER_MINUTE, 0);
+        int second = extras.getInt(TIMER_SECOND, 0);
+        String repetition = extras.getString(TIMER_REPETITION);
+        String type = extras.getString(TIMER_TYPE);
+        String stateAppendix = extras.getString(TIMER_TARGET_STATE_APPENDIX);
+        String timerName = extras.getString(DEVICE_NAME);
+        boolean isActive = extras.getBoolean(TIMER_IS_ACTIVE);
 
         if (isModify) {
             atService.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive, this);

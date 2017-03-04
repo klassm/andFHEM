@@ -87,14 +87,14 @@ public class RoomListService extends AbstractService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RoomListService.class);
 
-    public static final String PREFERENCES_NAME = RoomListService.class.getName();
+    static final String PREFERENCES_NAME = RoomListService.class.getName();
 
-    public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
+    static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
 
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
 
-    public static final String SORT_ROOMS_DELIMITER = " ";
+    private static final String SORT_ROOMS_DELIMITER = " ";
 
     private final AtomicBoolean remoteUpdateInProgress = new AtomicBoolean(false);
 
@@ -380,7 +380,7 @@ public class RoomListService extends AbstractService {
         return sortRooms(roomNames, fhemwebDevice);
     }
 
-    ArrayList<String> sortRooms(Set<String> roomNames, FHEMWEBDevice fhemwebDevice) {
+    private ArrayList<String> sortRooms(Set<String> roomNames, FHEMWEBDevice fhemwebDevice) {
         final List<String> sortRooms = newArrayList();
         if (fhemwebDevice != null && fhemwebDevice.getSortRooms() != null) {
             sortRooms.addAll(Arrays.asList(fhemwebDevice.getSortRooms().split(SORT_ROOMS_DELIMITER)));

@@ -45,7 +45,6 @@ import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCod
 
 public class WidgetConfiguration implements Serializable {
     private static final String SAVE_SEPARATOR = "#";
-    private static final String PAYLOAD_SEPARATOR = "+";
     private static final String ESCAPED_HASH_REPLACEMENT = "\\\\@";
     private static final String JSON_WIDGET_ID = "widgetId";
     private static final String JSON_WIDGET_TYPE = "widgetType";
@@ -66,7 +65,7 @@ public class WidgetConfiguration implements Serializable {
         this.connectionId = connectionId;
     }
 
-    public static WidgetConfiguration fromSaveString(String value) {
+    static WidgetConfiguration fromSaveString(String value) {
         if (value == null) return null;
 
         return handleJsonWidgetConfiguration(value);
@@ -119,7 +118,7 @@ public class WidgetConfiguration implements Serializable {
         return value.replaceAll(ESCAPED_HASH_REPLACEMENT, SAVE_SEPARATOR);
     }
 
-    public String toSaveString() {
+    String toSaveString() {
         JSONObject jsonObject = new JSONObject();
         try {
             return jsonObject

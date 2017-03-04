@@ -44,7 +44,6 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DeviceType;
@@ -58,6 +57,13 @@ import li.klass.fhem.widget.notification.NotificationSettingView;
 
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.Actions.FAVORITE_REMOVE;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DISPLAY_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.LAST_UPDATE;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public class DeviceDetailFragment extends BaseFragment {
     @Inject
@@ -67,6 +73,7 @@ public class DeviceDetailFragment extends BaseFragment {
     AdvertisementService advertisementService;
     private String deviceName;
     private FhemDevice device;
+    private String connectionId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +84,8 @@ public class DeviceDetailFragment extends BaseFragment {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
-        deviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
+        deviceName = args.getString(DEVICE_NAME);
+        connectionId = args.getString(CONNECTION_ID);
     }
 
     @Override
@@ -104,9 +112,10 @@ public class DeviceDetailFragment extends BaseFragment {
 
         getActivity().startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
                 .setClass(getActivity(), RoomListIntentService.class)
-                .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                .putExtra(CONNECTION_ID, connectionId)
+                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         super.onReceiveResult(resultCode, resultData);
@@ -117,8 +126,8 @@ public class DeviceDetailFragment extends BaseFragment {
                         activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                         if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                            device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                            long lastUpdate = resultData.getLong(BundleExtraKeys.LAST_UPDATE);
+                            device = (FhemDevice) resultData.getSerializable(DEVICE);
+                            long lastUpdate = resultData.getLong(LAST_UPDATE);
 
                             if (device == null) return;
 
@@ -144,9 +153,9 @@ public class DeviceDetailFragment extends BaseFragment {
 
     @Override
     public CharSequence getTitle(Context context) {
-        String name = getArguments().getString(BundleExtraKeys.DEVICE_DISPLAY_NAME);
+        String name = getArguments().getString(DEVICE_DISPLAY_NAME);
         if (name == null) {
-            name = getArguments().getString(BundleExtraKeys.DEVICE_NAME);
+            name = getArguments().getString(DEVICE_NAME);
         }
         return name;
     }
@@ -174,8 +183,8 @@ public class DeviceDetailFragment extends BaseFragment {
                 final boolean isAdd = item.getItemId() == R.id.menu_favorites_add;
                 getActivity().startService(new Intent(isAdd ? FAVORITE_ADD : FAVORITE_REMOVE)
                         .setClass(getActivity(), FavoritesIntentService.class)
-                        .putExtra(BundleExtraKeys.DEVICE, device)
-                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                        .putExtra(DEVICE, device)
+                        .putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                             @Override
                             protected void onReceiveResult(int resultCode, Bundle resultData) {
                                 if (resultCode != ResultCodes.SUCCESS) return;

@@ -46,13 +46,13 @@ import static li.klass.fhem.constants.BundleExtraKeys.EMPTY_TEXT_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_SELECTABLE_CALLBACK;
 
-public class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
+class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
 
     private final WidgetSize widgetSize;
     private final Context context;
     private final SelectionCompletedCallback selectionCompletedCallback;
 
-    public AppWidgetSelectionFragmentAdapter(FragmentManager fm, Context context, WidgetSize widgetSize, SelectionCompletedCallback selectionCompletedCallback) {
+    AppWidgetSelectionFragmentAdapter(FragmentManager fm, Context context, WidgetSize widgetSize, SelectionCompletedCallback selectionCompletedCallback) {
         super(fm);
         this.widgetSize = widgetSize;
         this.context = context;

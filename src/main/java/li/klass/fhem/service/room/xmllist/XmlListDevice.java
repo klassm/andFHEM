@@ -26,6 +26,7 @@ package li.klass.fhem.service.room.xmllist;
 
 import com.google.common.base.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -104,7 +105,7 @@ public class XmlListDevice implements Serializable {
 
     public Optional<String> getState(String state) {
         if (containsState(state)) {
-            return Optional.of(states.get(state).getValue());
+            return Optional.fromNullable(StringUtils.trimToNull(states.get(state).getValue()));
         }
         return Optional.absent();
     }
