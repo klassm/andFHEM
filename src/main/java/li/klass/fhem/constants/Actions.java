@@ -90,8 +90,6 @@ public class Actions {
     public static final String WIDGET_REQUEST_UPDATE = prefix + "WIDGET_REQUEST_UPDATE";
     public static final String REDRAW_ALL_WIDGETS = prefix + "REDRAW_ALL_WIDGETS";
 
-    public static final String RELOAD = prefix + "RELOAD";
-
     public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
 
     public static final String GCM_REGISTERED = prefix + "GCM_REGISTERED";

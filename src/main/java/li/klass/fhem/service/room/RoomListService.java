@@ -48,7 +48,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHEMWEBDevice;
@@ -57,7 +56,6 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -143,9 +141,6 @@ public class RoomListService extends AbstractService {
         boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false, context);
         if (updateWidgets) {
             sendBroadcastWithAction(REDRAW_ALL_WIDGETS, context);
-
-            context.startService(new Intent(REDRAW_ALL_WIDGETS)
-                    .setClass(context, DeviceIntentService.class));
         }
     }
 
@@ -221,9 +216,9 @@ public class RoomListService extends AbstractService {
      * {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#NOT_REQUIRED}
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
-        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
+        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
         boolean connectionExists = connectionService.exists(connectionId, context);
-        boolean hasDevice = intent.hasExtra(BundleExtraKeys.DEVICE_NAME);
+        boolean hasDevice = intent.hasExtra(DEVICE_NAME);
         boolean requiresUpdate = connectionExists && shouldUpdate(updatePeriod, connectionId, context, hasDevice);
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
@@ -262,7 +257,8 @@ public class RoomListService extends AbstractService {
                     resend(resendIntent, context);
                 }
 
-                context.sendBroadcast(new Intent(REDRAW_ALL_WIDGETS));
+                context.sendBroadcast(new Intent(DO_UPDATE)
+                        .putExtra(DO_REFRESH, false));
                 context.startService(new Intent(REDRAW_ALL_WIDGETS)
                         .setClass(context, AppWidgetUpdateService.class)
                         .putExtra(ALLOW_REMOTE_UPDATES, false));

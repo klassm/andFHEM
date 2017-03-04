@@ -53,7 +53,6 @@ import li.klass.fhem.widget.SwipeRefreshLayout;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
-import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
 import static li.klass.fhem.constants.BundleExtraKeys.STRING;
@@ -255,7 +254,6 @@ public abstract class BaseFragment extends Fragment implements
             intentFilter.addAction(TOP_LEVEL_BACK);
             intentFilter.addAction(CONNECTION_ERROR);
             intentFilter.addAction(CONNECTION_ERROR_HIDE);
-            intentFilter.addAction(REDRAW_ALL_WIDGETS);
         }
 
         @Override
@@ -276,8 +274,6 @@ public abstract class BaseFragment extends Fragment implements
                                 backPressCalled = true;
                                 onBackPressResult();
                             }
-                        } else if (action.equals(REDRAW_ALL_WIDGETS)) {
-                            updateInternal(false);
                         } else if (action.equals(CONNECTION_ERROR)) {
                             String content;
                             if (intent.hasExtra(STRING_ID)) {
