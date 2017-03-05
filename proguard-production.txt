@@ -64,3 +64,15 @@
   @com.google.api.client.util.Key <fields>;
 }
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
+
+# Basic ProGuard rules for Firebase Android SDK 2.0.0+
+-keep class com.firebase.** { *; }
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.** { *; }
+-keep class com.google.errorprone.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.apache.**
+-dontwarn org.w3c.dom.**
