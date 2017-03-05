@@ -33,9 +33,11 @@ import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
+
+import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
+import static li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES;
+import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 
 public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
 
@@ -55,9 +57,9 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
-            context.startService(new Intent(Actions.REDRAW_WIDGET).setClass(context, AppWidgetUpdateService.class)
-                    .putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId)
-                    .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, true));
+            context.startService(new Intent(REDRAW_WIDGET).setClass(context, AppWidgetUpdateService.class)
+                    .putExtra(APP_WIDGET_ID, appWidgetId)
+                    .putExtra(ALLOW_REMOTE_UPDATES, true));
         }
     }
 

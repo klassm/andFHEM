@@ -48,6 +48,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHEMWEBDevice;
@@ -140,7 +141,8 @@ public class RoomListService extends AbstractService {
 
         boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false, context);
         if (updateWidgets) {
-            sendBroadcastWithAction(REDRAW_ALL_WIDGETS, context);
+            context.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
+                    .setClass(context, AppWidgetUpdateService.class));
         }
     }
 

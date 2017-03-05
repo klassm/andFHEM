@@ -63,7 +63,6 @@ import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
@@ -341,7 +340,9 @@ public class PreferencesActivity extends PreferenceActivity
 
     private String nameForArrayValue(int valuesArrayResource, int textArrayResource, String value) {
         int index = ArrayUtils.indexOf(getResources().getStringArray(valuesArrayResource), value);
-        checkArgument(index >= 0);
+        if (index == -1) {
+            return null;
+        }
 
         return getResources().getStringArray(textArrayResource)[index];
     }

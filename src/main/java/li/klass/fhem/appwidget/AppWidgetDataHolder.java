@@ -45,12 +45,13 @@ import javax.inject.Inject;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static java.lang.Integer.parseInt;
+import static li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES;
+import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public class AppWidgetDataHolder {
@@ -87,8 +88,8 @@ public class AppWidgetDataHolder {
     private Intent getRedrawWidgetIntent(Context context, int appWidgetId, boolean allowRemoteUpdate) {
         return new Intent(Actions.REDRAW_WIDGET)
                 .setClass(context, AppWidgetUpdateService.class)
-                .putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId)
-                .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
+                .putExtra(APP_WIDGET_ID, appWidgetId)
+                .putExtra(ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
     }
 
     private SharedPreferences getSavedPreferences(Context context) {
