@@ -198,7 +198,8 @@ unMock {
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
     //noinspection GradleDependency
-    compile 'com.google.android.gms:play-services:10.2.0'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
+    compile 'com.google.firebase:firebase-ads:10.2.0'
     compile 'commons-net:commons-net:3.3'
     compile 'commons-codec:commons-codec:1.10'
     compile 'com.google.code.gson:gson:2.7'
