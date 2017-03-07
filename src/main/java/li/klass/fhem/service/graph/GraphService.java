@@ -45,6 +45,7 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.log.LogDevice;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
@@ -131,7 +132,7 @@ public class GraphService {
             command = command.replaceAll("<SPEC" + (i + 1) + ">", plotfunction.get(i));
         }
 
-        String data = commandExecutionService.executeSync(command, connectionId, context);
+        String data = commandExecutionService.executeSync(new Command(command, connectionId), context);
         if (data != null) {
             result.append("\n\r").append(data.replaceAll("#[^\\\\]*\\\\[rn]", ""));
         }

@@ -38,6 +38,7 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
@@ -100,7 +101,8 @@ public class RoomListUpdateService {
     }
 
     private void executeXmllist(final int delay, final Optional<String> connectionId, final Context context, final RoomListUpdateListener updateListener, String xmllistSuffix, final UpdateHandler updateHandler) {
-        commandExecutionService.executeSafely("xmllist" + xmllistSuffix, delay, connectionId, context, new CommandExecutionService.ResultListener() {
+        Command command = new Command("xmllist" + xmllistSuffix, connectionId);
+        commandExecutionService.executeSafely(command, delay, context, new CommandExecutionService.ResultListener() {
             @Override
             public void onResult(String result) {
                 Optional<RoomDeviceList> roomDeviceList = parseResult(connectionId, context, result, updateHandler);

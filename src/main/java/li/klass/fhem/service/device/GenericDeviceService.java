@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
@@ -90,7 +91,7 @@ public class GenericDeviceService {
     public void setState(final FhemDevice<?> device, String targetState, Optional<String> connectionId, final Context context, final boolean invokeUpdate) {
         final String toSet = device.formatTargetState(targetState);
 
-        commandExecutionService.executeSafely("set " + device.getName() + " " + toSet, connectionId, context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId));
+        commandExecutionService.executeSafely(new Command("set " + device.getName() + " " + toSet, connectionId), context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId));
 
         device.getXmlListDevice().setState("STATE", targetState);
         device.getXmlListDevice().setInternal("STATE", targetState);
@@ -113,7 +114,8 @@ public class GenericDeviceService {
             device.getXmlListDevice().setState(subStateName, value);
         }
 
-        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, connectionId, context,
+        Command command = new Command("set " + device.getName() + " " + subStateName + " " + value, connectionId);
+        commandExecutionService.executeSafely(command, context,
                 invokePostCommandActions(device, context, invokeDeviceUpdate, subStateName, value, connectionId));
     }
 

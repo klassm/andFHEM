@@ -27,8 +27,6 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.common.base.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +42,7 @@ import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
 
@@ -72,7 +71,7 @@ public class HeatingService {
     public void setDesiredTemperature(final DesiredTempDevice device, final double desiredTemperatureToSet, Context context) {
         String command = String.format(SET_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+            commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
                 @Override
                 public void onResult(String result) {
                     device.setDesiredTemp(desiredTemperatureToSet);
@@ -109,7 +108,7 @@ public class HeatingService {
         String command = String.format(SET_COMMAND, device.getName(),
                 device.getHeatingModeCommandField(),
                 mode.name().toLowerCase(Locale.getDefault()));
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.setHeatingMode(mode);
@@ -134,7 +133,7 @@ public class HeatingService {
 
         Log.e(TAG, "set window open temp of device " + device.getName() + " to " + windowOpenTemp);
         String command = String.format(SET_COMMAND, device.getName(), device.getWindowOpenTempCommandFieldName(), windowOpenTemp);
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.setWindowOpenTemp(windowOpenTemp);
@@ -150,7 +149,7 @@ public class HeatingService {
 
         Log.e(TAG, "set comfort temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getComfortTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.setComfortTemp(temperature);
@@ -166,7 +165,7 @@ public class HeatingService {
 
         Log.i(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.setEcoTemp(temperature);
@@ -182,7 +181,7 @@ public class HeatingService {
         LOGGER.info("setWeekProfileFor - generated {}", commands);
 
         for (String command : commands) {
-            commandExecutionService.executeSync(command, Optional.<String>absent(), context);
+            commandExecutionService.executeSync(new Command(command), context);
         }
 
         weekProfile.acceptChanges();

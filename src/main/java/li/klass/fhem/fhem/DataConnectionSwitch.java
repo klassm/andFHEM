@@ -50,8 +50,8 @@ public class DataConnectionSwitch {
     }
 
     public Optional<FHEMConnection> getProviderFor(Context context, Optional<String> connectionId) {
-        if (!connectionService.exists(connectionId, context)) {
-            return Optional.absent();
+        if (connectionId.isPresent() && !connectionService.exists(connectionId, context)) {
+            return getProviderFor(context, connectionId);
         }
         FHEMServerSpec serverSpec = getSpecFor(context, connectionId);
         FHEMConnection currentConnection = serverSpec.getServerType().getConnectionFor(serverSpec, applicationProperties);

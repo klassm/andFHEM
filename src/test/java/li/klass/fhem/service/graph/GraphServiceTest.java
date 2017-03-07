@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import li.klass.fhem.domain.log.LogDevice;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.testutil.MockitoRule;
@@ -120,7 +121,7 @@ public class GraphServiceTest {
         given(logDevice.getGraphCommandFor(DATE_TIME_FORMATTER.print(from), DATE_TIME_FORMATTER.print(to), series))
                 .willReturn(command);
         String response = VALUE_PROVIDER.lowercaseString(20);
-        given(commandExecutionService.executeSync(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent(), context)).willReturn(response);
+        given(commandExecutionService.executeSync(new Command(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent()), context)).willReturn(response);
 
         // when
         String result = graphService.loadLogData(logDevice, Optional.<String>absent(), from, to, series, context, plotfunction);

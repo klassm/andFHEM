@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 
@@ -141,7 +142,8 @@ public class ExternalApiService extends Service {
 
                                 @Override
                                 protected String doInBackground(String... params) {
-                                    return externalApiService.commandExecutionService.executeSync(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), Optional.<String>absent(), externalApiService);
+                                    Command command = new Command(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
+                                    return externalApiService.commandExecutionService.executeSync(command, externalApiService);
                                 }
 
                                 @Override

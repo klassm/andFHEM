@@ -34,13 +34,9 @@ import javax.inject.Singleton;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.service.CommandExecutionService;
 
 @Singleton
 public class ToggleableService {
-    @Inject
-    CommandExecutionService commandExecutionService;
-
     @Inject
     DeviceHookProvider deviceHookProvider;
 

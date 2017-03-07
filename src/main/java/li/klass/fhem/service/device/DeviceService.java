@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 
@@ -63,7 +64,7 @@ public class DeviceService {
      * @param context context
      */
     public void renameDevice(final FhemDevice device, final String newName, Context context) {
-        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command("rename " + device.getName() + " " + newName), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.getXmlListDevice().setInternal("NAME", newName);
@@ -78,7 +79,7 @@ public class DeviceService {
      * @param device concerned device
      */
     public void deleteDevice(final FhemDevice device, final Context context) {
-        commandExecutionService.executeSafely("delete " + device.getName(), Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command("delete " + device.getName()), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 Optional<RoomDeviceList> roomDeviceList = roomListService.getRoomDeviceList(Optional.<String>absent(), context);
@@ -101,7 +102,7 @@ public class DeviceService {
         String command = Strings.isNullOrEmpty(alias)
                 ? "deleteattr " + device.getName() + " alias"
                 : "attr " + device.getName() + " alias " + alias;
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.getXmlListDevice().setAttribute("alias", alias);
@@ -117,7 +118,7 @@ public class DeviceService {
      * @param context             context
      */
     public void moveDevice(final FhemDevice device, final String newRoomConcatenated, final Context context) {
-        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command("attr " + device.getName() + " room " + newRoomConcatenated), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 device.setRoomConcatenated(newRoomConcatenated);

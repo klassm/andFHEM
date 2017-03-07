@@ -53,6 +53,7 @@ import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.service.device.AtService;
@@ -274,8 +275,8 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
 
-            String lastFailedCommand = commandExecutionService.getLastFailedCommand();
-            if ("xmllist".equalsIgnoreCase(lastFailedCommand)) {
+            Command lastFailedCommand = commandExecutionService.getLastFailedCommand();
+            if (lastFailedCommand != null && "xmllist".equalsIgnoreCase(lastFailedCommand.getCommand())) {
                 sendBroadcast(new Intent(Actions.DO_UPDATE)
                         .putExtra(DO_REFRESH, true));
             } else {

@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 
 import static com.google.common.collect.Maps.EntryTransformer;
@@ -42,7 +43,7 @@ import static com.google.common.collect.Maps.transformEntries;
 
 @Singleton
 public class GPlotHolder {
-    public static final EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>> TO_OPTIONAL_DEFINITION =
+    private static final EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>> TO_OPTIONAL_DEFINITION =
             new EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>>() {
                 @Override
                 public Optional<GPlotDefinition> transformEntry(String key, GPlotDefinition value) {
@@ -83,7 +84,7 @@ public class GPlotHolder {
 
         Context applicationContext = AndFHEMApplication.getContext();
         Optional<String> result = isConfigDb
-                ? Optional.fromNullable(commandExecutionService.executeSync("configdb fileshow ./www/gplot/" + name + ".gplot", Optional.<String>absent(), applicationContext))
+                ? Optional.fromNullable(commandExecutionService.executeSync(new Command("configdb fileshow ./www/gplot/" + name + ".gplot"), applicationContext))
                 : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", applicationContext);
 
         if (result.isPresent()) {

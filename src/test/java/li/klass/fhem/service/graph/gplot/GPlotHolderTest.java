@@ -36,6 +36,7 @@ import org.mockito.Mock;
 
 import java.util.Collections;
 
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.testutil.MockitoRule;
 
@@ -147,7 +148,7 @@ public class GPlotHolderTest {
         GPlotDefinition definition = defaultGPlotDefinition();
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeSync(eq("configdb fileshow ./www/gplot/garden.gplot"), eq(Optional.<String>absent()), any(Context.class))).willReturn(gplotRawDefinition);
+        given(commandExecutionService.executeSync(eq(new Command("configdb fileshow ./www/gplot/garden.gplot")), any(Context.class))).willReturn(gplotRawDefinition);
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when

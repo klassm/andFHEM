@@ -24,15 +24,23 @@
 
 package li.klass.fhem.service.device;
 
-import android.content.*;
+import android.content.Context;
+import android.content.Intent;
+
 import com.google.common.base.Optional;
-import li.klass.fhem.constants.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.AtDevice;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
-import org.slf4j.*;
-
-import javax.inject.*;
 
 @Singleton
 public class AtService {
@@ -59,7 +67,7 @@ public class AtService {
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
@@ -95,7 +103,7 @@ public class AtService {
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
 
-        commandExecutionService.executeSafely(command, Optional.<String>absent(), context, new CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(new Command(command), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
                 handleDisabled(timerName, isActive, context);
@@ -106,6 +114,6 @@ public class AtService {
     }
 
     private String handleDisabled(String timerName, boolean isActive, Context context) {
-        return commandExecutionService.executeSync(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1"), Optional.<String>absent(), context);
+        return commandExecutionService.executeSync(new Command(String.format("attr %s %s %s", timerName, "disable", isActive ? "0" : "1")), context);
     }
 }

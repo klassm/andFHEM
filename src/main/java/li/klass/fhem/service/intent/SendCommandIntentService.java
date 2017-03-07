@@ -46,6 +46,7 @@ import javax.inject.Inject;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
+import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
@@ -114,7 +115,7 @@ public class SendCommandIntentService extends ConvenientIntentService {
     private void executeCommand(Intent intent, final ResultReceiver resultReceiver) {
         final String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
-        commandExecutionService.executeSafely(command, connectionId, this, handleResult(resultReceiver, command));
+        commandExecutionService.executeSafely(new Command(command, connectionId), this, handleResult(resultReceiver, command));
     }
 
     @NonNull
