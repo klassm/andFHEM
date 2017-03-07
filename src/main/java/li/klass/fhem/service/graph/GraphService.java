@@ -60,11 +60,11 @@ public class GraphService {
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphService.class);
 
-    @Inject
-    CommandExecutionService commandExecutionService;
+    private CommandExecutionService commandExecutionService;
 
     @Inject
-    public GraphService() {
+    public GraphService(CommandExecutionService commandExecutionService) {
+        this.commandExecutionService = commandExecutionService;
     }
 
     /**
@@ -72,14 +72,14 @@ public class GraphService {
      * be notified.
      *
      * @param device             concerned device
+     * @param connectionId       id of the server or absent (absent will use the currently selected server
      * @param svgGraphDefinition svg graph definition
      * @param startDate          read FileLog entries from the given date
      * @param endDate            read FileLog entries up to the given date
-     * @param context            context
-     * @return read graph data or null (if the device does not have a FileLog device)
+     * @param context            context     @return read graph data or null (if the device does not have a FileLog device)
      */
     @SuppressWarnings("unchecked")
-    public HashMap<GPlotSeries, List<GraphEntry>> getGraphData(FhemDevice device, SvgGraphDefinition svgGraphDefinition,
+    public HashMap<GPlotSeries, List<GraphEntry>> getGraphData(FhemDevice device, Optional<String> connectionId, SvgGraphDefinition svgGraphDefinition,
                                                                final DateTime startDate, final DateTime endDate, Context context) {
         HashMap<GPlotSeries, List<GraphEntry>> data = newHashMap();
 
@@ -90,7 +90,7 @@ public class GraphService {
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.getName(), series.size());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
+            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), connectionId, plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
         }
 
         return data;
@@ -100,24 +100,24 @@ public class GraphService {
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
      *
-     * @param logDevice   logDevice to load graph entries from.
-     * @param gPlotSeries chart description
-     * @param startDate   read FileLog entries from the given date
-     * @param endDate     read FileLog entries up to the given date
-     * @param context     context
-     * @param plotfunction SPEC parameters to replace
-     * @return read logDevices entries converted to {@link GraphEntry} objects.
+     * @param logDevice    logDevice to load graph entries from.
+     * @param connectionId id of the server or absent (absent will use the currently selected server)
+     * @param gPlotSeries  chart description
+     * @param startDate    read FileLog entries from the given date
+     * @param endDate      read FileLog entries up to the given date
+     * @param context      context
+     * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(LogDevice logDevice,
-                                                       GPlotSeries gPlotSeries,
+                                                       Optional<String> connectionId, GPlotSeries gPlotSeries,
                                                        DateTime startDate, DateTime endDate, Context context, List<String> plotfunction) {
-        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, startDate, endDate, gPlotSeries, context, plotfunction));
+        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, startDate, endDate, gPlotSeries, context, plotfunction));
         LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size(), logDevice.getName());
         return graphEntries;
     }
 
-    public String loadLogData(LogDevice logDevice, DateTime fromDate, DateTime toDate,
-                              GPlotSeries plotSeries, Context context, List<String> plotfunction) {
+    String loadLogData(LogDevice logDevice, Optional<String> connectionId, DateTime fromDate, DateTime toDate,
+                       GPlotSeries plotSeries, Context context, List<String> plotfunction) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
         String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
 
@@ -131,7 +131,7 @@ public class GraphService {
             command = command.replaceAll("<SPEC" + (i + 1) + ">", plotfunction.get(i));
         }
 
-        String data = commandExecutionService.executeSync(command, Optional.<String>absent(), context);
+        String data = commandExecutionService.executeSync(command, connectionId, context);
         if (data != null) {
             result.append("\n\r").append(data.replaceAll("#[^\\\\]*\\\\[rn]", ""));
         }

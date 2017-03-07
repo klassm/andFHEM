@@ -62,7 +62,7 @@ public class GraphServiceTest {
     private CommandExecutionService commandExecutionService;
 
     @InjectMocks
-    private GraphService graphService = new GraphService();
+    private GraphService graphService;
 
     private static final ValueProvider VALUE_PROVIDER = new ValueProvider();
 
@@ -123,7 +123,7 @@ public class GraphServiceTest {
         given(commandExecutionService.executeSync(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent(), context)).willReturn(response);
 
         // when
-        String result = graphService.loadLogData(logDevice, from, to, series, context, plotfunction);
+        String result = graphService.loadLogData(logDevice, Optional.<String>absent(), from, to, series, context, plotfunction);
 
         // then
         assertThat(result).isEqualToIgnoringCase("\n\r" + response);

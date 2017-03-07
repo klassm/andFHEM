@@ -41,6 +41,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.GCMSendDevice;
@@ -297,8 +298,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         SvgGraphDefinition graphDefinition = (SvgGraphDefinition) intent.getSerializableExtra(DEVICE_GRAPH_DEFINITION);
         DateTime startDate = (DateTime) intent.getSerializableExtra(START_DATE);
         DateTime endDate = (DateTime) intent.getSerializableExtra(END_DATE);
+        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
 
-        HashMap<GPlotSeries, List<GraphEntry>> graphData = graphService.getGraphData(device, graphDefinition, startDate, endDate, this);
+        HashMap<GPlotSeries, List<GraphEntry>> graphData = graphService.getGraphData(device, connectionId, graphDefinition, startDate, endDate, this);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
         return STATE.DONE;
     }
