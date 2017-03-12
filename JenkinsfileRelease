@@ -3,7 +3,9 @@ node {
     checkout scm
 
     stage 'Prepare'
-    sh 'ci/install-dependencies.sh'
+    lock('dependencies') {
+        sh 'ci/install-dependencies.sh'
+    }
 
     stage 'Build'
     sh './gradlew clean assembleRelease'
