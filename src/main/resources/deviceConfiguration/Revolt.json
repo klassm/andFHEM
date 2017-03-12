@@ -3,12 +3,12 @@
   "states": [
     {
       "key": "power",
-      "desc": "power",
+      "desc": "energy_power",
       "showInOverview": true
     },
     {
       "key": "energy",
-      "desc": "energy_power",
+      "desc": "energy_consumption",
       "showInOverview": true
     },
     {
