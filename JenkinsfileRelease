@@ -1,0 +1,44 @@
+node {
+    stage 'Checkout'
+    checkout scm
+
+    stage 'Prepare'
+    sh 'ci/install-dependencies.sh'
+
+    stage 'Build'
+    sh './gradlew clean assembleRelease'
+
+    stage 'Archive Artifacts'
+    stash includes: '*', name: 'workspace'
+    step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])
+}
+
+parallel (
+    'inapp': {
+        node {
+            stage 'Release Inapp'
+            unstash 'workspace'
+            androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-inapp-release.apk', trackName: 'production'
+
+            stage 'Release GitHub'
+            unstash 'workspace'
+            sh './gradlew githubRelease'
+        }
+    },
+
+    'premium': {
+        node {
+            stage 'Release Premium'
+            unstash 'workspace'
+            androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-premium-release.apk', trackName: 'production'
+        }
+    },
+
+    'JavaDoc': {
+        node {
+            stage 'JavaDoc'
+            unstash 'workspace'
+            sh './gradlew javadocinappDebug'
+        }
+    }
+)
