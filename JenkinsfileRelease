@@ -11,36 +11,17 @@ node {
     sh './gradlew clean assembleRelease'
 
     stage 'Archive Artifacts'
-    stash includes: '*', name: 'workspace'
     step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])
+
+    stage 'Release Inapp'
+    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-inapp-release.apk', trackName: 'production'
+
+    stage 'Release Premium'
+    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-premium-release.apk', trackName: 'production'
+
+    stage 'Upload GitHub'
+    sh './gradlew githubRelease'
+
+    stage 'Generate JavaDoc'
+    sh './gradlew javadocinappDebug'
 }
-
-parallel (
-    'inapp': {
-        node {
-            stage 'Release Inapp'
-            unstash 'workspace'
-            androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-inapp-release.apk', trackName: 'production'
-
-            stage 'Release GitHub'
-            unstash 'workspace'
-            sh './gradlew githubRelease'
-        }
-    },
-
-    'premium': {
-        node {
-            stage 'Release Premium'
-            unstash 'workspace'
-            androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-premium-release.apk', trackName: 'production'
-        }
-    },
-
-    'JavaDoc': {
-        node {
-            stage 'JavaDoc'
-            unstash 'workspace'
-            sh './gradlew javadocinappDebug'
-        }
-    }
-)
