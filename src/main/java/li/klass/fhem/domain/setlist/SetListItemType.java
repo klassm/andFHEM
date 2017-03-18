@@ -26,6 +26,8 @@ package li.klass.fhem.domain.setlist;
 
 import com.google.common.base.Optional;
 
+import java.util.Arrays;
+
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry;
@@ -77,6 +79,17 @@ public enum SetListItemType {
         @Override
         public SetListItem entryFor(String key, String[] parts) {
             return new SliderSetListEntry(key, parts);
+        }
+    }),
+    COLORPICKER_SLIDER(new SupportsType("colorpicker", 5) {
+        @Override
+        public boolean supports(String[] parts) {
+            return super.supports(parts) && !RGB.supports(parts);
+        }
+    }, new EntryProvider() {
+        @Override
+        public SetListItem entryFor(String key, String[] parts) {
+            return new SliderSetListEntry(key, Arrays.copyOfRange(parts, 1, parts.length));
         }
     }),
     MULTIPLE(new SupportsType("multiple"), new EntryProvider() {
