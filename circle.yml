@@ -4,6 +4,7 @@ general:
 machine:
   environment:
       ANDROID_HOME: /usr/local/android-sdk-linux
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
   java:
     version: openjdk8
 dependencies:
@@ -12,6 +13,6 @@ dependencies:
     - ci/install-dependencies.sh
 test:
   override:
-    - ./gradlew test
+    - ./gradlew clean test
 
 
