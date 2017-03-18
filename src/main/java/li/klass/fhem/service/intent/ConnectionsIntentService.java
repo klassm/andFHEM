@@ -67,7 +67,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
         if (Actions.CONNECTIONS_LIST.equals(action)) {
@@ -105,7 +105,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             sendChangedBroadcast();
 
-            return STATE.SUCCESS;
+            return State.SUCCESS;
         } else if (Actions.CONNECTION_GET.equals(action)) {
             String id = intent.getStringExtra(CONNECTION_ID);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, CONNECTION,
@@ -115,12 +115,12 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             connectionService.delete(id, this);
 
             sendChangedBroadcast();
-            return STATE.SUCCESS;
+            return State.SUCCESS;
         } else if (Actions.CONNECTION_SET_SELECTED.equals(action)) {
             String currentlySelected = connectionService.getSelectedId(this);
             String id = intent.getStringExtra(CONNECTION_ID);
 
-            if (currentlySelected.equals(id)) return STATE.SUCCESS;
+            if (currentlySelected.equals(id)) return State.SUCCESS;
 
             startService(new Intent(Actions.CLEAR_DEVICE_LIST).setClass(this, RoomListIntentService.class));
 
@@ -130,7 +130,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
             sendBroadcast(updateIntent);
 
-            return STATE.SUCCESS;
+            return State.SUCCESS;
         } else if (Actions.CONNECTION_GET_SELECTED.equals(action)) {
             Bundle bundle = new Bundle();
             String selectedId = connectionService.getSelectedId(this);
@@ -139,7 +139,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             sendResult(resultReceiver, SUCCESS, bundle);
         }
-        return STATE.DONE;
+        return State.DONE;
     }
 
     private void sendChangedBroadcast() {

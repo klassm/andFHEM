@@ -46,20 +46,20 @@ public class ImageIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
         if (action.equals(Actions.LOAD_IMAGE)) {
             String relativePath = intent.getStringExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH);
             Bitmap bitmap = commandExecutionService.getBitmap(relativePath, this);
             if (bitmap == null) {
-                return STATE.ERROR;
+                return State.ERROR;
             } else {
                 sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.IMAGE, bitmap);
-                return STATE.DONE;
+                return State.DONE;
             }
         }
-        return STATE.ERROR;
+        return State.ERROR;
     }
 
     @Override

@@ -41,7 +41,6 @@ import org.mockito.Mock;
 import java.util.Arrays;
 import java.util.List;
 
-import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
@@ -65,7 +64,7 @@ public class GraphServiceTest {
     @InjectMocks
     private GraphService graphService;
 
-    private static final ValueProvider VALUE_PROVIDER = new ValueProvider();
+    private final ValueProvider valueProvider = new ValueProvider();
 
     @Test
     public void testFindGraphEntries() {
@@ -107,24 +106,24 @@ public class GraphServiceTest {
     @Test
     public void should_load_graph_entries() {
         // given
-        LogDevice logDevice = mock(LogDevice.class);
+        String logDeviceName = valueProvider.lowercaseString(10);
         GPlotSeries series = mock(GPlotSeries.class);
         Context context = mock(Context.class);
-        String spec1 = VALUE_PROVIDER.lowercaseString(10);
-        String spec2 = VALUE_PROVIDER.lowercaseString(10);
+        String spec1 = valueProvider.lowercaseString(10);
+        String spec2 = valueProvider.lowercaseString(10);
         List<String> plotfunction = Arrays.asList(spec1, spec2);
 
-        DateTime from = VALUE_PROVIDER.dateTime();
-        DateTime to = from.plusDays(VALUE_PROVIDER.intValue(10));
+        DateTime from = valueProvider.dateTime();
+        DateTime to = from.plusDays(valueProvider.intValue(10));
+        String fromDateFormatted = DATE_TIME_FORMATTER.print(from);
+        String toDateFormatted = DATE_TIME_FORMATTER.print(to);
 
-        String command = VALUE_PROVIDER.lowercaseString(10) + " <SPEC1> " + VALUE_PROVIDER.lowercaseString(10) + " <SPEC2> " + VALUE_PROVIDER.lowercaseString(20);
-        given(logDevice.getGraphCommandFor(DATE_TIME_FORMATTER.print(from), DATE_TIME_FORMATTER.print(to), series))
-                .willReturn(command);
-        String response = VALUE_PROVIDER.lowercaseString(20);
+        String command = String.format(GraphService.COMMAND_TEMPLATE, logDeviceName, fromDateFormatted, toDateFormatted, series.getLogDef());
+        String response = valueProvider.lowercaseString(20);
         given(commandExecutionService.executeSync(new Command(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent()), context)).willReturn(response);
 
         // when
-        String result = graphService.loadLogData(logDevice, Optional.<String>absent(), from, to, series, context, plotfunction);
+        String result = graphService.loadLogData(logDeviceName, Optional.<String>absent(), from, to, series, context, plotfunction);
 
         // then
         assertThat(result).isEqualToIgnoringCase("\n\r" + response);

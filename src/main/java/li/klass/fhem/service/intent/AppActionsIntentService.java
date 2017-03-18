@@ -72,11 +72,11 @@ public class AppActionsIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
         if (Actions.LOAD_PROPERTIES.equals(action)) {
             applicationProperties.load();
-            return STATE.SUCCESS;
+            return State.SUCCESS;
         } else if (Actions.UPDATE_NEXT_ALARM_CLOCK.equals(action) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Optional<FhemDevice> nextAlarmClockReceiver = roomListService.getDeviceForName("nextAlarmClock", Optional.<String>absent(), this);
             if (nextAlarmClockReceiver.isPresent()) {
@@ -98,7 +98,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 0, ALARM_CLOCK_UPDATE_INTERVAL, pendingIntent);
         }
 
-        return STATE.DONE;
+        return State.DONE;
     }
 
     @Override

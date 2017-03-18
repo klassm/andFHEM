@@ -24,27 +24,36 @@
 
 package li.klass.fhem.service.graph.gplot;
 
+import com.google.common.collect.ComparisonChain;
+
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import li.klass.fhem.domain.log.LogDevice;
-
 public class SvgGraphDefinition implements Serializable {
-    private final String name;
-    private final GPlotDefinition gPlotDefinition;
-    private final LogDevice logDevice;
-    private final List<String> labels;
-    private final String title;
 
     private static final Pattern LABEL_PATTERN = Pattern.compile("<L([0-9]+)>");
+    public static final Comparator<SvgGraphDefinition> BY_NAME = new Comparator<SvgGraphDefinition>() {
+        @Override
+        public int compare(SvgGraphDefinition o1, SvgGraphDefinition o2) {
+            return ComparisonChain.start().compare(o1.getName(), o2.getName()).result();
+        }
+    };
+
+    private final String name;
+    private final GPlotDefinition gPlotDefinition;
+    private final String logDeviceName;
+    private final List<String> labels;
+
+    private final String title;
     private final List<String> plotfunction;
 
-    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, LogDevice logDevice, List<String> labels, String title, List<String> plotfunction) {
+    public SvgGraphDefinition(String name, GPlotDefinition gPlotDefinition, String logDeviceName, List<String> labels, String title, List<String> plotfunction) {
         this.name = name;
         this.gPlotDefinition = gPlotDefinition;
-        this.logDevice = logDevice;
+        this.logDeviceName = logDeviceName;
         this.labels = labels;
         this.title = title;
         this.plotfunction = plotfunction;
@@ -58,8 +67,8 @@ public class SvgGraphDefinition implements Serializable {
         return gPlotDefinition;
     }
 
-    public LogDevice getLogDevice() {
-        return logDevice;
+    public String getLogDeviceName() {
+        return logDeviceName;
     }
 
     public String getTitle() {
@@ -79,7 +88,7 @@ public class SvgGraphDefinition implements Serializable {
 
         return !(name != null ? !name.equals(that.name) : that.name != null)
                 && !(gPlotDefinition != null ? !gPlotDefinition.equals(that.gPlotDefinition) : that.gPlotDefinition != null)
-                && !(logDevice != null ? !logDevice.equals(that.logDevice) : that.logDevice != null)
+                && !(logDeviceName != null ? !logDeviceName.equals(that.logDeviceName) : that.logDeviceName != null)
                 && !(labels != null ? !labels.equals(that.labels) : that.labels != null)
                 && !(title != null ? !title.equals(that.title) : that.title != null);
     }
@@ -88,7 +97,7 @@ public class SvgGraphDefinition implements Serializable {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (gPlotDefinition != null ? gPlotDefinition.hashCode() : 0);
-        result = 31 * result + (logDevice != null ? logDevice.hashCode() : 0);
+        result = 31 * result + (logDeviceName != null ? logDeviceName.hashCode() : 0);
         result = 31 * result + (labels != null ? labels.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
@@ -99,7 +108,7 @@ public class SvgGraphDefinition implements Serializable {
         return "SvgGraphDefinition{" +
                 "name='" + name + '\'' +
                 ", gPlotDefinition=" + gPlotDefinition +
-                ", logDevice=" + logDevice +
+                ", logDeviceName=" + logDeviceName +
                 ", labels=" + labels +
                 ", title='" + title + '\'' +
                 ", plotfunction='" + plotfunction + '\'' +

@@ -41,6 +41,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,6 +81,7 @@ import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.util.Optionals;
 
 import static com.google.common.collect.FluentIterable.from;
+import static li.klass.fhem.service.graph.gplot.SvgGraphDefinition.BY_NAME;
 
 public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
@@ -125,7 +127,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     @Override
-    protected View getDeviceDetailView(Context context, final FhemDevice device, String connectionId, long lastUpdate) {
+    protected View getDeviceDetailView(Context context, final FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, long lastUpdate) {
         GenericDevice genericDevice = (GenericDevice) device;
 
         List<GenericDetailActionProvider> providers = from(detailActionProviders)
@@ -136,7 +138,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         fillStatesCard(genericDevice, linearLayout, providers, connectionId);
         fillAttributesCard(genericDevice, connectionId, linearLayout);
         fillInternalsCard(genericDevice, connectionId, linearLayout);
-        fillPlotsCard(genericDevice, connectionId, linearLayout);
+        fillPlotsCard(genericDevice, graphDefinitions, connectionId, linearLayout);
         fillActionsCard(genericDevice, linearLayout, providers, connectionId);
 
         return linearLayout;
@@ -202,15 +204,16 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         };
     }
 
-    private void fillPlotsCard(final GenericDevice device, final String connectionId, LinearLayout linearLayout) {
+    private void fillPlotsCard(final GenericDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout) {
         CardView plotsCard = (CardView) linearLayout.findViewById(R.id.plotsCard);
-        if (device.getSvgGraphDefinitions().isEmpty()) {
+        ImmutableList<SvgGraphDefinition> definitions = from(graphDefinitions).toSortedList(BY_NAME);
+        if (graphDefinitions.isEmpty()) {
             plotsCard.setVisibility(View.GONE);
             return;
         }
 
         LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
-        for (final SvgGraphDefinition svgGraphDefinition : device.getSvgGraphDefinitions()) {
+        for (final SvgGraphDefinition svgGraphDefinition : definitions) {
             Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
             button.setText(svgGraphDefinition.getName());
             button.setOnClickListener(new View.OnClickListener() {

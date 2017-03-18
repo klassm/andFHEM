@@ -50,14 +50,14 @@ public class LicenseIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
         if (Actions.IS_PREMIUM.equals(action)) {
             handlePremiumRequest(resultReceiver);
-            return STATE.DONE;
+            return State.DONE;
         } else {
-            return STATE.DONE;
+            return State.DONE;
         }
     }
 

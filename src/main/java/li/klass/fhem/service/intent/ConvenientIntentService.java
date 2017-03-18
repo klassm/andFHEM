@@ -91,10 +91,10 @@ public abstract class ConvenientIntentService extends IntentService {
         }
 
         try {
-            STATE state = handleIntent(intent, updatePeriod, resultReceiver);
-            if (state == STATE.SUCCESS) {
+            State state = handleIntent(intent, updatePeriod, resultReceiver);
+            if (state == State.SUCCESS) {
                 sendNoResult(resultReceiver, ResultCodes.SUCCESS);
-            } else if (state == STATE.ERROR) {
+            } else if (state == State.ERROR) {
                 sendNoResult(resultReceiver, ResultCodes.ERROR);
             }
         } catch (Exception e) {
@@ -131,9 +131,9 @@ public abstract class ConvenientIntentService extends IntentService {
         }
     }
 
-    protected abstract STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver);
+    protected abstract State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver);
 
-    protected enum STATE {
+    protected enum State {
         SUCCESS, ERROR, DONE
     }
 }

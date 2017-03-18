@@ -24,7 +24,10 @@
 
 package li.klass.fhem.service.room.xmllist;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -59,6 +62,26 @@ public class XmlListDevice implements Serializable {
         this.states = states;
         this.internals = internals;
         this.header = header;
+    }
+
+    @NonNull
+    public static Predicate<XmlListDevice> hasType(final String type) {
+        return new Predicate<XmlListDevice>() {
+            @Override
+            public boolean apply(XmlListDevice input) {
+                return input.getType().equals(type);
+            }
+        };
+    }
+
+    @NonNull
+    public static Predicate<XmlListDevice> hasName(final String deviceName) {
+        return new Predicate<XmlListDevice>() {
+            @Override
+            public boolean apply(XmlListDevice input) {
+                return input != null && input.getName().equals(deviceName);
+            }
+        };
     }
 
     public String getType() {

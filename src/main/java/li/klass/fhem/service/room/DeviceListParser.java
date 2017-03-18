@@ -26,12 +26,9 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import org.joda.time.DateTime;
@@ -41,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -58,16 +54,13 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
-import li.klass.fhem.service.graph.gplot.GPlotDefinition;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.group.GroupProvider;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.Sanitiser;
@@ -77,8 +70,6 @@ import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Predicates.notNull;
-import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -118,7 +109,7 @@ public class DeviceListParser {
 
     private Map<Class<?>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();
 
-    public RoomDeviceList parseAndWrapExceptions(String xmlList, Context context) {
+    RoomDeviceList parseAndWrapExceptions(String xmlList, Context context) {
         try {
             return parseXMLListUnsafe(xmlList, context);
         } catch (Exception e) {
@@ -171,9 +162,6 @@ public class DeviceListParser {
             }
         }
 
-        ImmutableSet<SvgGraphDefinition> svgGraphDefinitions = createSvgGraphDefinitions(parsedDevices.get("SVG"), allDevices);
-        attachSvgGraphsToDevices(svgGraphDefinitions, allDevices);
-
         performAfterReadOperations(allDevices, errorHolder);
         RoomDeviceList roomDeviceList = buildRoomDeviceList(allDevices, context);
 
@@ -182,77 +170,6 @@ public class DeviceListParser {
         LOG.info("loaded {} devices!", allDevices.size());
 
         return roomDeviceList;
-    }
-
-    private void attachSvgGraphsToDevices(ImmutableSet<SvgGraphDefinition> svgGraphDefinitions, Map<String, FhemDevice> allDevices) {
-        for (Map.Entry<String, FhemDevice> entry : allDevices.entrySet()) {
-            for (SvgGraphDefinition svgGraphDefinition : svgGraphDefinitions) {
-                if (svgGraphDefinition.getLogDevice().concernsDevice(entry.getKey()) ||
-                        svgGraphDefinition.getName().equalsIgnoreCase(entry.getKey())) {
-                    entry.getValue().addSvgGraphDefinition(svgGraphDefinition);
-                }
-            }
-        }
-    }
-
-    private ImmutableSet<SvgGraphDefinition> createSvgGraphDefinitions(List<XmlListDevice> svgDevices, final Map<String, FhemDevice> allDevices) {
-        if (svgDevices == null) return ImmutableSet.of();
-        return from(svgDevices).transform(deviceToGraphDefinition(allDevices)).filter(notNull()).toSet();
-    }
-
-    @NonNull
-    private Function<XmlListDevice, SvgGraphDefinition> deviceToGraphDefinition(final Map<String, FhemDevice> allDevices) {
-        final boolean isConfigDb = isConfigDb(allDevices);
-        return new Function<XmlListDevice, SvgGraphDefinition>() {
-            @Override
-            public SvgGraphDefinition apply(XmlListDevice input) {
-                LOG.info("deviceToGraphDefinition - trying to load graph definition for {}", input.getName());
-
-                String gplotFileName = input.getInternals().get("GPLOTFILE").getValue();
-                Optional<GPlotDefinition> gPlotDefinitionOptional = gPlotHolder.definitionFor(gplotFileName, isConfigDb);
-                if (!gPlotDefinitionOptional.isPresent()) {
-                    LOG.error("deviceToGraphDefinition - cannot find graph definition for {}", gplotFileName);
-                    return null;
-                }
-                String name = input.getInternals().get("NAME").getValue();
-
-                String logDeviceName = input.getInternals().get("LOGDEVICE").getValue();
-                if (!allDevices.containsKey(logDeviceName)) {
-                    LOG.error("deviceToGraphDefinition - cannnot find LOGDEVICE {}", name);
-                    return null;
-                }
-
-                // In rare cases we will find devices not being log devices, resulting in
-                // ClassCastExceptions. We just want to make sure we only handle LogDevices here.
-                FhemDevice logDeviceFhemDevice = allDevices.get(logDeviceName);
-                if (!(logDeviceFhemDevice instanceof LogDevice)) {
-                    LOG.error("deviceToGraphDefinition - cannot find log device with name {}", logDeviceName);
-                    return null;
-                }
-
-                LogDevice logDevice = (LogDevice) logDeviceFhemDevice;
-
-                List<String> labels = newArrayList();
-                DeviceNode labelsDef = input.getAttributes().get("label");
-                if (labelsDef != null) {
-                    labels = newArrayList(labelsDef.getValue().replaceAll("\"", "").split(","));
-                }
-
-                DeviceNode titleDef = input.getAttributes().get("title");
-                String title = titleDef == null ? "" : titleDef.getValue();
-
-                List<String> plotfunction = Arrays.asList(input.getAttribute("plotfunction").or("").trim().split(" "));
-
-                LOG.info("deviceToGraphDefinition - loaded graph definition is {}", gPlotDefinitionOptional.get());
-
-                return new SvgGraphDefinition(name, gPlotDefinitionOptional.get(), logDevice, labels, title, plotfunction);
-            }
-        };
-    }
-
-    private boolean isConfigDb(Map<String, FhemDevice> allDevices) {
-        FhemDevice globalDevice = allDevices.get("global");
-        return globalDevice != null && "configDB".equals(globalDevice.getXmlListDevice().getAttribute("configfile").orNull());
     }
 
     private int devicesFromDocument(Class<? extends FhemDevice> deviceClass, List<XmlListDevice> xmlListDevices,
@@ -316,14 +233,8 @@ public class DeviceListParser {
     private RoomDeviceList buildRoomDeviceList(Map<String, FhemDevice> allDevices, Context context) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
         for (FhemDevice device : allDevices.values()) {
-            // We don't want to show log devices in any kind of view. Log devices
-            // are already associated with their respective devices during after read
-            // operations.
-            if (!(device instanceof LogDevice)) {
-                roomDeviceList.addDevice(device, context);
-            }
+            roomDeviceList.addDevice(device, context);
         }
-
         return roomDeviceList;
     }
 
@@ -380,7 +291,7 @@ public class DeviceListParser {
         for (DeviceNode child : newArrayList(children)) {
             if (child.getKey() == null) continue;
 
-            String sanitisedKey = child.getKey().trim().replaceAll("[-\\.]", "_");
+            String sanitisedKey = child.getKey().trim().replaceAll("[-.]", "_");
             if (!device.acceptXmlKey(sanitisedKey)) {
                 continue;
             }
@@ -465,7 +376,7 @@ public class DeviceListParser {
         cache.get(entry.getAttribute()).add(entry);
     }
 
-    public void fillDeviceWith(FhemDevice device, Map<String, String> updates, Context context) {
+    void fillDeviceWith(FhemDevice device, Map<String, String> updates, Context context) {
         Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(device.getClass());
         if (cache == null) return;
 
@@ -498,7 +409,7 @@ public class DeviceListParser {
     private class ReadErrorHolder {
         private Map<DeviceType, Integer> deviceTypeErrorCount = newHashMap();
 
-        public int getErrorCount() {
+        int getErrorCount() {
             int errors = 0;
             for (Integer deviceTypeErrors : deviceTypeErrorCount.values()) {
                 errors += deviceTypeErrors;
@@ -506,17 +417,17 @@ public class DeviceListParser {
             return errors;
         }
 
-        public boolean hasErrors() {
+        boolean hasErrors() {
             return deviceTypeErrorCount.size() != 0;
         }
 
-        public void addError(DeviceType deviceType) {
+        void addError(DeviceType deviceType) {
             if (deviceType != null) {
                 addErrors(deviceType, 1);
             }
         }
 
-        public void addErrors(DeviceType deviceType, int errorCount) {
+        void addErrors(DeviceType deviceType, int errorCount) {
             int count = 0;
             if (deviceTypeErrorCount.containsKey(deviceType)) {
                 count = deviceTypeErrorCount.get(deviceType);
@@ -524,7 +435,7 @@ public class DeviceListParser {
             deviceTypeErrorCount.put(deviceType, count + errorCount);
         }
 
-        public List<String> getErrorDeviceTypeNames() {
+        List<String> getErrorDeviceTypeNames() {
             if (deviceTypeErrorCount.size() == 0) return Collections.emptyList();
 
             List<String> errorDeviceTypeNames = newArrayList();
@@ -539,7 +450,7 @@ public class DeviceListParser {
     private abstract class DeviceClassCacheEntry implements Serializable {
         private final String attribute;
 
-        public DeviceClassCacheEntry(String attribute) {
+        DeviceClassCacheEntry(String attribute) {
             this.attribute = attribute;
         }
 
@@ -554,7 +465,7 @@ public class DeviceListParser {
 
         private final Method method;
 
-        public DeviceClassMethodEntry(Method method, String attribute) {
+        DeviceClassMethodEntry(Method method, String attribute) {
             super(attribute);
             this.method = method;
             method.setAccessible(true);
@@ -590,7 +501,7 @@ public class DeviceListParser {
     private class DeviceClassFieldEntry extends DeviceClassCacheEntry {
         private final Field field;
 
-        public DeviceClassFieldEntry(Field field, String attribute) {
+        DeviceClassFieldEntry(Field field, String attribute) {
             super(attribute);
             this.field = field;
             field.setAccessible(true);
@@ -609,4 +520,5 @@ public class DeviceListParser {
             }
         }
     }
+
 }

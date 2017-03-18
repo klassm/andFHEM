@@ -80,7 +80,7 @@ public class SendCommandIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         Log.d(SendCommandIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
@@ -94,7 +94,7 @@ public class SendCommandIntentService extends ConvenientIntentService {
             editCommand(intent.getStringExtra(BundleExtraKeys.COMMAND), intent.getStringExtra(BundleExtraKeys.COMMAND_NEW_NAME));
         }
 
-        return STATE.SUCCESS;
+        return State.SUCCESS;
     }
 
     private void editCommand(String oldCommand, String newCommand) {

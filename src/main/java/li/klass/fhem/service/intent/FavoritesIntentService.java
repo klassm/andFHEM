@@ -59,14 +59,14 @@ public class FavoritesIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
         if (action == null) {
-            return STATE.ERROR;
+            return State.ERROR;
         }
 
         if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == RoomListService.RemoteUpdateRequired.REQUIRED) {
-            return STATE.DONE;
+            return State.DONE;
         }
 
         if (FAVORITE_ROOM_LIST.equals(action)) {
@@ -88,7 +88,7 @@ public class FavoritesIntentService extends ConvenientIntentService {
             sendSingleExtraResult(resultReceiver, SUCCESS, IS_FAVORITE, isFavorite);
         }
 
-        return STATE.DONE;
+        return State.DONE;
     }
 
     @Override

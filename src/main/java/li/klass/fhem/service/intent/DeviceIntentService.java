@@ -30,6 +30,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -61,6 +62,7 @@ import li.klass.fhem.service.device.DeviceService;
 import li.klass.fhem.service.device.DimmableDeviceService;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.device.GenericDeviceService;
+import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
 import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
 import li.klass.fhem.service.graph.GraphEntry;
@@ -122,9 +124,9 @@ import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TYPE;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
-import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.DONE;
-import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.ERROR;
-import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.SUCCESS;
+import static li.klass.fhem.service.intent.ConvenientIntentService.State.DONE;
+import static li.klass.fhem.service.intent.ConvenientIntentService.State.ERROR;
+import static li.klass.fhem.service.intent.ConvenientIntentService.State.SUCCESS;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class DeviceIntentService extends ConvenientIntentService {
@@ -153,6 +155,8 @@ public class DeviceIntentService extends ConvenientIntentService {
     GraphService graphService;
     @Inject
     NotificationService notificationService;
+    @Inject
+    GraphDefinitionsForDeviceService graphDefinitionsForDeviceService;
 
     private static final Logger LOG = LoggerFactory.getLogger(DeviceIntentService.class);
 
@@ -161,7 +165,7 @@ public class DeviceIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
 
         if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == REQUIRED) {
             return DONE;
@@ -179,7 +183,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
-        STATE result = STATE.SUCCESS;
+        State result = State.SUCCESS;
         if (DEVICE_GRAPH.equals(action)) {
             result = graphIntent(intent, device, resultReceiver);
         } else if (DEVICE_TOGGLE_STATE.equals(action)) {
@@ -282,6 +286,11 @@ public class DeviceIntentService extends ConvenientIntentService {
             } else {
                 commandExecutionService.resendLastFailedCommand(this);
             }
+        } else if (DEVICE_GRAPH_DEFINITION.equals(action) && device != null) {
+            ImmutableSet<SvgGraphDefinition> definitions = graphDefinitionsForDeviceService.graphDefinitionsFor(this, device.getXmlListDevice(), connectionId);
+
+            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_DEFINITION, definitions);
+            return State.DONE;
         }
 
         return result;
@@ -295,7 +304,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param resultReceiver receiver to notify on result
      * @return success?
      */
-    private STATE graphIntent(Intent intent, FhemDevice device, ResultReceiver resultReceiver) {
+    private State graphIntent(Intent intent, FhemDevice device, ResultReceiver resultReceiver) {
         SvgGraphDefinition graphDefinition = (SvgGraphDefinition) intent.getSerializableExtra(DEVICE_GRAPH_DEFINITION);
         DateTime startDate = (DateTime) intent.getSerializableExtra(START_DATE);
         DateTime endDate = (DateTime) intent.getSerializableExtra(END_DATE);
@@ -303,17 +312,17 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         HashMap<GPlotSeries, List<GraphEntry>> graphData = graphService.getGraphData(device, connectionId, graphDefinition, startDate, endDate, this);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
-        return STATE.DONE;
+        return State.DONE;
     }
 
     /**
      * Toggle a device and notify the result receiver
      *
-     * @param device device to toggle
+     * @param device       device to toggle
      * @param connectionId
      * @return success?
      */
-    private STATE toggleIntent(FhemDevice device, Optional<String> connectionId) {
+    private State toggleIntent(FhemDevice device, Optional<String> connectionId) {
         if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
             toggleableService.toggleState((ToggleableDevice) device, connectionId, this);
             return SUCCESS;
@@ -330,7 +339,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param connectionId
      * @return success ?
      */
-    private STATE setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {
+    private State setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {
         String targetState = intent.getStringExtra(DEVICE_TARGET_STATE);
         int timesToSend = intent.getIntExtra(TIMES_TO_SEND, 1);
 
@@ -338,7 +347,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             genericDeviceService.setState(device, targetState, connectionId, this);
         }
 
-        return STATE.SUCCESS;
+        return State.SUCCESS;
     }
 
     /**
@@ -348,17 +357,17 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param device device to dim
      * @return success?
      */
-    private STATE dimIntent(Intent intent, FhemDevice device) {
+    private State dimIntent(Intent intent, FhemDevice device) {
         float dimProgress = intent.getFloatExtra(DEVICE_DIM_PROGRESS, -1);
         if (device instanceof DimmableDevice) {
             dimmableDeviceService.dim((DimmableDevice) device, dimProgress, this);
-            return STATE.SUCCESS;
+            return State.SUCCESS;
         }
-        return STATE.ERROR;
+        return State.ERROR;
     }
 
     @SuppressWarnings("ConstantConditions")
-    private STATE processTimerIntent(Intent intent, boolean isModify) {
+    private State processTimerIntent(Intent intent, boolean isModify) {
         Bundle extras = intent.getExtras();
 
         assert extras != null;

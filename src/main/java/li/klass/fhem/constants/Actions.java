@@ -51,6 +51,7 @@ public class Actions {
     public static final String FAVORITES_IS_FAVORITES = prefix + "FAVORITES_IS_FAVORITE";
 
     public static final String DEVICE_GRAPH = prefix + "DEVICE_GRAPH";
+    public static final String DEVICE_GRAPH_DEFINITIONS = prefix + "DEVICE_GRAPH_DEFINITIONS";
     public static final String DEVICE_TOGGLE_STATE = prefix + "TOGGLE_STATE";
     public static final String DEVICE_SET_STATE = prefix + "SET_STATE";
     public static final String DEVICE_DIM = prefix + "DEVICE_DIM";

@@ -70,11 +70,11 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(final Intent intent, long updatePeriod, final ResultReceiver resultReceiver) {
+    protected State handleIntent(final Intent intent, long updatePeriod, final ResultReceiver resultReceiver) {
         final String action = intent.getAction();
 
         if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == REQUIRED) {
-            return STATE.DONE;
+            return State.DONE;
         }
 
         licenseService.isPremium(new LicenseService.IsPremiumListener() {
@@ -96,7 +96,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
             }
         });
 
-        return STATE.DONE;
+        return State.DONE;
     }
 
     private boolean handleCommand(String command) {

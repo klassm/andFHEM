@@ -57,7 +57,7 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
         if (action.equals(Actions.DO_REMOTE_UPDATE)) {
@@ -67,11 +67,11 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
             int delay = intent.getIntExtra(DELAY, 0);
             return doRemoteUpdate(deviceName, roomName, delay, connectionId);
         } else {
-            return STATE.DONE;
+            return State.DONE;
         }
     }
 
-    private STATE doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName, int delay, Optional<String> connectionId) {
+    private State doRemoteUpdate(Optional<String> deviceName, Optional<String> roomName, int delay, Optional<String> connectionId) {
         LOG.info("doRemoteUpdate() - starting remote update");
         if (deviceName.isPresent()) {
             roomListUpdateService.updateSingleDevice(deviceName.get(), delay, connectionId, this, handleResult());
@@ -80,7 +80,7 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         } else {
             roomListUpdateService.updateAllDevices(connectionId, this, handleResult());
         }
-        return STATE.DONE;
+        return State.DONE;
     }
 
     @NonNull

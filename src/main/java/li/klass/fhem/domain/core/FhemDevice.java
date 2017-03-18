@@ -26,8 +26,9 @@ package li.klass.fhem.domain.core;
 
 import android.content.Context;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
@@ -35,14 +36,12 @@ import org.joda.time.DateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DateFormatUtil;
@@ -51,14 +50,20 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
 
+    public static final Function<FhemDevice, XmlListDevice> TO_XMLLIST_DEVICE = new Function<FhemDevice, XmlListDevice>() {
+        @Override
+        public XmlListDevice apply(FhemDevice input) {
+            return input == null ? null : input.getXmlListDevice();
+        }
+    };
     protected List<String> webCmd = newArrayList();
+
 
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
@@ -68,7 +73,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
     private long lastMeasureTime = -1;
-    private Set<SvgGraphDefinition> svgGraphDefinitions = newHashSet();
 
     private DeviceFunctionality deviceFunctionality;
 
@@ -231,7 +235,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     /**
      * Called for each device node in the <i>xmllist</i>.
      *
-     * @param type  contains the current tag name (i.e. STATE, ATTR or INT)
+     * @param type  contains the current tag name (i.e. State, ATTR or INT)
      * @param key   name of the key (i.e. ROOM)
      * @param value value of the tag
      * @param node  additional tag node
@@ -281,11 +285,9 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     public String getState() {
-        DeviceNode state = getXmlListDevice().getInternals().get("STATE");
-        if (state == null) {
-            state = getXmlListDevice().getStates().get("state");
-        }
-        return state.getValue();
+        XmlListDevice xmlListDevice = getXmlListDevice();
+        Optional<String> state = xmlListDevice.getInternal("STATE");
+        return state.or(xmlListDevice.getState("state")).or("");
     }
 
     public void setState(String state) {
@@ -388,18 +390,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     protected boolean useTimeAndWeekAttributesForMeasureTime() {
         return true;
-    }
-
-    public void addSvgGraphDefinition(SvgGraphDefinition svgGraphDefinition) {
-        svgGraphDefinitions.add(svgGraphDefinition);
-    }
-
-    public Set<SvgGraphDefinition> getSvgGraphDefinitions() {
-        return svgGraphDefinitions;
-    }
-
-    public void setSvgGraphDefinitions(Set<SvgGraphDefinition> svgGraphDefinitions) {
-        this.svgGraphDefinitions = ImmutableSet.copyOf(svgGraphDefinitions);
     }
 
     @Override

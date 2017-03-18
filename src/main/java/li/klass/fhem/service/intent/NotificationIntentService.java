@@ -52,7 +52,7 @@ public class NotificationIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
 
         if (intent.getAction().equals(Actions.NOTIFICATION_SET_FOR_DEVICE)) {
@@ -73,7 +73,7 @@ public class NotificationIntentService extends ConvenientIntentService {
 
             resultReceiver.send(ResultCodes.SUCCESS, result);
         }
-        return STATE.SUCCESS;
+        return State.SUCCESS;
     }
 
     @Override

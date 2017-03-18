@@ -44,7 +44,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.gplot.GPlotSeries;
@@ -58,6 +57,7 @@ public class GraphService {
     private static final String ENTRY_FORMAT = "yyyy-MM-dd_HH:mm:ss";
     private static final DateTimeFormatter GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern(ENTRY_FORMAT);
     static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
+    static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     private static final Logger LOG = LoggerFactory.getLogger(GraphService.class);
 
@@ -91,7 +91,7 @@ public class GraphService {
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.getName(), series.size());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDevice(), connectionId, plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
+            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDeviceName(), connectionId, plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
         }
 
         return data;
@@ -100,7 +100,6 @@ public class GraphService {
     /**
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
-     *
      * @param logDevice    logDevice to load graph entries from.
      * @param connectionId id of the server or absent (absent will use the currently selected server)
      * @param gPlotSeries  chart description
@@ -109,25 +108,22 @@ public class GraphService {
      * @param context      context
      * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to {@link GraphEntry} objects.
      */
-    private List<GraphEntry> getCurrentGraphEntriesFor(LogDevice logDevice,
+    private List<GraphEntry> getCurrentGraphEntriesFor(String logDevice,
                                                        Optional<String> connectionId, GPlotSeries gPlotSeries,
                                                        DateTime startDate, DateTime endDate, Context context, List<String> plotfunction) {
         List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, startDate, endDate, gPlotSeries, context, plotfunction));
-        LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size(), logDevice.getName());
+        LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size(), logDevice);
         return graphEntries;
     }
 
-    String loadLogData(LogDevice logDevice, Optional<String> connectionId, DateTime fromDate, DateTime toDate,
+    String loadLogData(String logDevice, Optional<String> connectionId, DateTime fromDate, DateTime toDate,
                        GPlotSeries plotSeries, Context context, List<String> plotfunction) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
         String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
 
         StringBuilder result = new StringBuilder();
 
-        @SuppressWarnings("unchecked")
-        String command = logDevice.getGraphCommandFor(fromDateFormatted,
-                toDateFormatted, plotSeries);
-
+        String command = String.format(COMMAND_TEMPLATE, logDevice, fromDateFormatted, toDateFormatted, plotSeries.getLogDef());
         for (int i = 0; i < plotfunction.size(); i++) {
             command = command.replaceAll("<SPEC" + (i + 1) + ">", plotfunction.get(i));
         }

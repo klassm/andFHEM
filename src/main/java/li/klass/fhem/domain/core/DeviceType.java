@@ -96,7 +96,6 @@ import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
-import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -106,8 +105,6 @@ public enum DeviceType {
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
-    FILE_LOG("FileLog", LogDevice.class),
-    DB_LOG("DbLog", LogDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),

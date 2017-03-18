@@ -27,6 +27,8 @@ package li.klass.fhem.domain.core;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,7 +37,9 @@ import java.util.Map;
 import java.util.Set;
 
 import li.klass.fhem.domain.AtDevice;
+import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
@@ -157,6 +161,10 @@ public class RoomDeviceList implements Serializable {
         return Collections.unmodifiableSet(devices);
     }
 
+    public ImmutableSet<XmlListDevice> getAllDevicesAsXmllistDevice() {
+        return from(getAllDevices()).transform(FhemDevice.TO_XMLLIST_DEVICE).toSet();
+    }
+
     @SuppressWarnings("unchecked")
     public <T extends FhemDevice> void removeDevice(T device, Context context) {
         List<String> groups = device.getInternalDeviceGroupOrGroupAttributes(context);
@@ -227,11 +235,7 @@ public class RoomDeviceList implements Serializable {
     public RoomDeviceList addAllDevicesOf(RoomDeviceList roomDeviceList, Context context) {
         Set<FhemDevice> allDevices = roomDeviceList.getAllDevices();
         for (FhemDevice device : allDevices) {
-            FhemDevice foundDevice = getDeviceFor(device.getName());
             addDevice(device, context);
-            if (foundDevice != null && device.getSvgGraphDefinitions().isEmpty()) {
-                device.setSvgGraphDefinitions(foundDevice.getSvgGraphDefinitions());
-            }
         }
         return this;
     }

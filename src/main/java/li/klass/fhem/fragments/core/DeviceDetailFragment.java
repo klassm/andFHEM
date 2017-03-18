@@ -39,6 +39,8 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.google.common.collect.ImmutableSet;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
@@ -49,12 +51,14 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.notification.NotificationSettingView;
 
+import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.Actions.FAVORITE_REMOVE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
@@ -127,6 +131,7 @@ public class DeviceDetailFragment extends BaseFragment {
 
                         if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                             device = (FhemDevice) resultData.getSerializable(DEVICE);
+                            ImmutableSet<SvgGraphDefinition> grapDefinitions = (ImmutableSet<SvgGraphDefinition>) resultData.getSerializable(DEVICE_GRAPH_DEFINITIONS);
                             long lastUpdate = resultData.getLong(LAST_UPDATE);
 
                             if (device == null) return;
@@ -140,7 +145,7 @@ public class DeviceDetailFragment extends BaseFragment {
                             ScrollView scrollView = findScrollView();
                             if (scrollView != null) {
                                 scrollView.removeAllViews();
-                                scrollView.addView(adapter.createDetailView(activity, device, connectionId, lastUpdate));
+                                scrollView.addView(adapter.createDetailView(activity, device, grapDefinitions, connectionId, lastUpdate));
                             }
                         }
                     }
@@ -214,6 +219,6 @@ public class DeviceDetailFragment extends BaseFragment {
 
     @Override
     public boolean canChildScrollUp() {
-        return super.canChildScrollUp() ||  findScrollView().getScrollY() > 0;
+        return super.canChildScrollUp() || findScrollView().getScrollY() > 0;
     }
 }

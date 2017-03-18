@@ -29,6 +29,8 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +45,13 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
+import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.Tasker;
 
 import static li.klass.fhem.constants.Actions.CLEAR_DEVICE_LIST;
+import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
 import static li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
@@ -73,6 +78,9 @@ public class RoomListIntentService extends ConvenientIntentService {
     @Inject
     RoomListService roomListService;
 
+    @Inject
+    GraphDefinitionsForDeviceService graphDefinitionsForDeviceService;
+
     private static final Logger LOG = LoggerFactory.getLogger(RoomListIntentService.class);
 
     public RoomListIntentService() {
@@ -80,7 +88,7 @@ public class RoomListIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
         LOG.info("handleIntent() - receiving intent with action {}", action);
@@ -89,13 +97,13 @@ public class RoomListIntentService extends ConvenientIntentService {
         if (REMOTE_UPDATE_RESET.equals(action)) {
             LOG.trace("handleIntent() - resetting update progress");
             roomListService.resetUpdateProgress(this);
-            return STATE.SUCCESS;
+            return State.SUCCESS;
         }
 
         if (!REMOTE_UPDATE_FINISHED.equals(action) &&
                 roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == RemoteUpdateRequired.REQUIRED) {
             LOG.trace("handleIntent() - need to update room device list, intent is pending, so stop here");
-            return STATE.DONE;
+            return State.DONE;
         }
 
         if (GET_ALL_ROOMS_DEVICE_LIST.equals(action)) {
@@ -117,9 +125,11 @@ public class RoomListIntentService extends ConvenientIntentService {
             Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, connectionId, this);
             if (!device.isPresent()) {
                 LOG.info("cannot find device for {}", deviceName);
-                return STATE.ERROR;
+                return State.ERROR;
             }
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device.get(), connectionId);
+            ImmutableSet<SvgGraphDefinition> svgGraphDefinitions = graphDefinitionsForDeviceService.graphDefinitionsFor(this, device.get().getXmlListDevice(), connectionId);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS,
+                    ImmutableMap.of(DEVICE, device.get(), DEVICE_GRAPH_DEFINITIONS, svgGraphDefinitions), connectionId);
         } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             LOG.trace("handleIntent() - updating device with update map, device={}", deviceName);
@@ -151,14 +161,21 @@ public class RoomListIntentService extends ConvenientIntentService {
             roomListService.clearDeviceList(connectionId, this);
         }
 
-        return STATE.DONE;
+        return State.DONE;
     }
 
     private void sendResultWithLastUpdate(ResultReceiver receiver, int resultCode,
                                           String bundleExtrasKey, Serializable value, Optional<String> connectionId) {
+        sendResultWithLastUpdate(receiver, resultCode, ImmutableMap.of(bundleExtrasKey, value), connectionId);
+    }
+
+    private void sendResultWithLastUpdate(ResultReceiver receiver, int resultCode,
+                                          Map<String, Serializable> values, Optional<String> connectionId) {
         if (receiver != null) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(bundleExtrasKey, value);
+            for (Map.Entry<String, Serializable> entry : values.entrySet()) {
+                bundle.putSerializable(entry.getKey(), entry.getValue());
+            }
             bundle.putLong(LAST_UPDATE, roomListService.getLastUpdate(connectionId, this));
             receiver.send(resultCode, bundle);
         }

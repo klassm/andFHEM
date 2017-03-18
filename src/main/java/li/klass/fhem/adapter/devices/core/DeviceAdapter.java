@@ -32,6 +32,8 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.common.collect.ImmutableSet;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
@@ -86,23 +88,23 @@ public abstract class DeviceAdapter {
 
     /**
      * Creates a filled detail view for a given device.
-     *
-     * @param context    context used for inflating the layout.
+     *  @param context    context used for inflating the layout.
      * @param device     device used for filling.
+     * @param grapDefinitions
      * @param connectionId
-     *@param lastUpdate time when the data was last loaded from the FHEM server.  @return filled view.
+     * @param lastUpdate time when the data was last loaded from the FHEM server.  @return filled view.
      */
     @SuppressWarnings("unchecked")
-    public View createDetailView(Context context, FhemDevice device, String connectionId, long lastUpdate) {
+    public View createDetailView(Context context, FhemDevice device, ImmutableSet<SvgGraphDefinition> grapDefinitions, String connectionId, long lastUpdate) {
         if (supportsDetailView(device)) {
-            return getDeviceDetailView(context, device, connectionId, lastUpdate);
+            return getDeviceDetailView(context, device, grapDefinitions, connectionId, lastUpdate);
         }
         return null;
     }
 
     public abstract boolean supportsDetailView(FhemDevice device);
 
-    protected abstract View getDeviceDetailView(Context context, FhemDevice device, String connectionId, long lastUpdate);
+    protected abstract View getDeviceDetailView(Context context, FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, long lastUpdate);
 
     public void gotoDetailView(Context context, FhemDevice device) {
         if (!supportsDetailView(device)) {
