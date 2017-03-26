@@ -30,7 +30,6 @@ import android.os.ResultReceiver;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +45,10 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.Tasker;
 
 import static li.klass.fhem.constants.Actions.CLEAR_DEVICE_LIST;
-import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
 import static li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
@@ -127,9 +124,7 @@ public class RoomListIntentService extends ConvenientIntentService {
                 LOG.info("cannot find device for {}", deviceName);
                 return State.ERROR;
             }
-            ImmutableSet<SvgGraphDefinition> svgGraphDefinitions = graphDefinitionsForDeviceService.graphDefinitionsFor(this, device.get().getXmlListDevice(), connectionId);
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS,
-                    ImmutableMap.of(DEVICE, device.get(), DEVICE_GRAPH_DEFINITIONS, svgGraphDefinitions), connectionId);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device.get(), connectionId);
         } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             LOG.trace("handleIntent() - updating device with update map, device={}", deviceName);

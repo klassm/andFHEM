@@ -195,4 +195,7 @@ public abstract class DeviceAdapter {
     public Class getOverviewViewHolderClass() {
         return null;
     }
+
+    public abstract void attachGraphs(Context context, View detailView, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device);
+
 }

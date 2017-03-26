@@ -76,6 +76,7 @@ import li.klass.fhem.util.StateToSet;
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
+import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
@@ -286,7 +287,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             } else {
                 commandExecutionService.resendLastFailedCommand(this);
             }
-        } else if (DEVICE_GRAPH_DEFINITION.equals(action) && device != null) {
+        } else if (DEVICE_GRAPH_DEFINITIONS.equals(action) && device != null) {
             ImmutableSet<SvgGraphDefinition> definitions = graphDefinitionsForDeviceService.graphDefinitionsFor(this, device.getXmlListDevice(), connectionId);
 
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_DEFINITION, definitions);

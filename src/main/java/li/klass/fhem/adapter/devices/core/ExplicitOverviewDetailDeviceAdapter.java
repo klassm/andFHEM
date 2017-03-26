@@ -40,7 +40,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
@@ -89,7 +91,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     @Override
     protected final View getDeviceDetailView(Context context, FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, long lastUpdate) {
         View view = getInflater().inflate(getDetailViewLayout(), null);
-        fillDeviceDetailView(context, view, device, graphDefinitions, connectionId);
+        fillDeviceDetailView(context, view, device, connectionId);
 
         return view;
     }
@@ -98,7 +100,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         return R.layout.device_detail_explicit;
     }
 
-    private void fillDeviceDetailView(Context context, View view, FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId) {
+    private void fillDeviceDetailView(Context context, View view, FhemDevice device, String connectionId) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         TableLayout layout = (TableLayout) view.findViewById(R.id.generic);
@@ -131,7 +133,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
 
-        addDetailGraphButtons(context, view, device, graphDefinitions, connectionId, inflater);
+        addDetailGraphButtons(context, view, device, Collections.<SvgGraphDefinition>emptySet(), connectionId, inflater);
 
         addDetailActionButtons(context, view, device, inflater, connectionId);
 
@@ -155,13 +157,15 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     }
 
     @SuppressWarnings("unchecked")
-    private void addDetailGraphButtons(Context context, View view, FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, LayoutInflater inflater) {
+    private void addDetailGraphButtons(Context context, View view, FhemDevice device, Set<SvgGraphDefinition> graphDefinitions, String connectionId, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
         ImmutableList<SvgGraphDefinition> definitions = from(graphDefinitions).toSortedList(BY_NAME);
         if (definitions.isEmpty()) {
             graphLayout.setVisibility(View.GONE);
             return;
         }
+        graphLayout.setVisibility(View.VISIBLE);
+        graphLayout.removeAllViews();
         for (SvgGraphDefinition svgGraphDefinition : definitions) {
             addGraphButton(context, graphLayout, inflater, device, connectionId, svgGraphDefinition);
         }
@@ -228,5 +232,10 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
 
     protected List<DeviceDetailViewAction> provideDetailActions() {
         return Lists.newArrayList();
+    }
+
+    @Override
+    public void attachGraphs(Context context, View detailView, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device) {
+        addDetailGraphButtons(context, detailView, device, graphDefinitions, connectionId, LayoutInflater.from(context));
     }
 }

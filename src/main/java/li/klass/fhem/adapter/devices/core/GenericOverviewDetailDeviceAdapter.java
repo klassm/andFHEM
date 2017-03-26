@@ -138,10 +138,15 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         fillStatesCard(genericDevice, linearLayout, providers, connectionId);
         fillAttributesCard(genericDevice, connectionId, linearLayout);
         fillInternalsCard(genericDevice, connectionId, linearLayout);
-        fillPlotsCard(genericDevice, graphDefinitions, connectionId, linearLayout);
+        fillPlotsCard(genericDevice, Collections.<SvgGraphDefinition>emptySet(), connectionId, linearLayout);
         fillActionsCard(genericDevice, linearLayout, providers, connectionId);
 
         return linearLayout;
+    }
+
+    @Override
+    public void attachGraphs(Context context, View detailView, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device) {
+        fillPlotsCard((GenericDevice) device, graphDefinitions, connectionId, (LinearLayout) detailView);
     }
 
     private void fillActionsCard(final GenericDevice genericDevice, final LinearLayout linearLayout, List<GenericDetailActionProvider> detailActionProviders, String connectionId) {
@@ -204,15 +209,17 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         };
     }
 
-    private void fillPlotsCard(final GenericDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout) {
+    private void fillPlotsCard(final GenericDevice device, Set<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout) {
         CardView plotsCard = (CardView) linearLayout.findViewById(R.id.plotsCard);
         ImmutableList<SvgGraphDefinition> definitions = from(graphDefinitions).toSortedList(BY_NAME);
         if (graphDefinitions.isEmpty()) {
             plotsCard.setVisibility(View.GONE);
             return;
         }
+        plotsCard.setVisibility(View.VISIBLE);
 
         LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
+        graphLayout.removeAllViews();
         for (final SvgGraphDefinition svgGraphDefinition : definitions) {
             Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
             button.setText(svgGraphDefinition.getName());

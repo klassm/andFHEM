@@ -45,29 +45,34 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.room.FavoritesService;
+import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.notification.NotificationSettingView;
 
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
+import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.Actions.FAVORITE_REMOVE;
+import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
+import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DISPLAY_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.LAST_UPDATE;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class DeviceDetailFragment extends BaseFragment {
     @Inject
@@ -112,9 +117,9 @@ public class DeviceDetailFragment extends BaseFragment {
     public void update(boolean doUpdate) {
         hideEmptyView();
 
-        if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
+        if (doUpdate) getActivity().sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
 
-        getActivity().startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
+        getActivity().startService(new Intent(GET_DEVICE_FOR_NAME)
                 .setClass(getActivity(), RoomListIntentService.class)
                 .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DO_REFRESH, doUpdate)
@@ -127,9 +132,9 @@ public class DeviceDetailFragment extends BaseFragment {
                         FragmentActivity activity = getActivity();
                         if (activity == null) return;
 
-                        activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                        activity.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
 
-                        if (resultCode == ResultCodes.SUCCESS && getView() != null) {
+                        if (resultCode == SUCCESS && getView() != null) {
                             device = (FhemDevice) resultData.getSerializable(DEVICE);
                             ImmutableSet<SvgGraphDefinition> grapDefinitions = (ImmutableSet<SvgGraphDefinition>) resultData.getSerializable(DEVICE_GRAPH_DEFINITIONS);
                             long lastUpdate = resultData.getLong(LAST_UPDATE);
@@ -140,6 +145,7 @@ public class DeviceDetailFragment extends BaseFragment {
                             if (adapter == null) {
                                 return;
                             }
+                            loadGraphs();
                             activity.supportInvalidateOptionsMenu();
                             adapter.attach(DeviceDetailFragment.this.getActivity());
                             ScrollView scrollView = findScrollView();
@@ -148,6 +154,33 @@ public class DeviceDetailFragment extends BaseFragment {
                                 scrollView.addView(adapter.createDetailView(activity, device, grapDefinitions, connectionId, lastUpdate));
                             }
                         }
+                    }
+                }));
+    }
+
+    private void loadGraphs() {
+
+        getActivity().startService(new Intent(DEVICE_GRAPH_DEFINITIONS)
+                .setClass(getActivity(), DeviceIntentService.class)
+                .putExtra(CONNECTION_ID, connectionId)
+                .putExtra(DEVICE_NAME, deviceName)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != SUCCESS
+                                || getView() == null
+                                || resultData == null
+                                || !resultData.containsKey(DEVICE_GRAPH_DEFINITION)) {
+                            return;
+                        }
+                        View detailView = findScrollView().getChildAt(0);
+                        DeviceAdapter adapter = DeviceType.getAdapterFor(device);
+                        if (adapter == null) {
+                            return;
+                        }
+                        ImmutableSet<SvgGraphDefinition> graphs = (ImmutableSet<SvgGraphDefinition>) resultData.get(DEVICE_GRAPH_DEFINITION);
+                        adapter.attachGraphs(getActivity(), detailView, graphs, connectionId, device);
+                        detailView.invalidate();
                     }
                 }));
     }
@@ -192,7 +225,7 @@ public class DeviceDetailFragment extends BaseFragment {
                         .putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                             @Override
                             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                if (resultCode != ResultCodes.SUCCESS) return;
+                                if (resultCode != SUCCESS) return;
 
                                 Toast.makeText(getActivity(),
                                         isAdd ? R.string.context_favoriteadded : R.string.context_favoriteremoved,
