@@ -45,7 +45,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 public class DummyDataConnection extends FHEMConnection {
     private static final Logger LOG = LoggerFactory.getLogger(DummyDataConnection.class);
-    public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     public DummyDataConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
         super(fhemServerSpec, applicationProperties);
@@ -55,7 +55,7 @@ public class DummyDataConnection extends FHEMConnection {
     public RequestResult<String> executeCommand(String command, Context context) {
         LOG.error("executeCommand() - execute command {}", command);
 
-        if (command.equalsIgnoreCase("xmllist")) return xmllist();
+        if (command.startsWith("xmllist")) return xmllist();
         if (command.startsWith("get")) return fileLogData(command);
 
         return new RequestResult<>("I am a dummy. Do you expect me to answer you?");

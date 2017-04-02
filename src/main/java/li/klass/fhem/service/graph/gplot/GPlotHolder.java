@@ -28,6 +28,9 @@ import android.content.Context;
 
 import com.google.common.base.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -57,9 +60,10 @@ public class GPlotHolder {
 
     @Inject
     CommandExecutionService commandExecutionService;
-
     @Inject
     GPlotParser gPlotParser;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GPlotHolder.class);
 
     @Inject
     public GPlotHolder() {
@@ -78,9 +82,13 @@ public class GPlotHolder {
     public Optional<GPlotDefinition> definitionFor(String name, boolean isConfigDb) {
         loadDefaultGPlotFiles();
 
+        LOGGER.info("definitionFor(name={}, isConfigDb={})", name, isConfigDb);
         if (definitions.containsKey(name)) {
+            LOGGER.info("definitionFor(name={}, isConfigDb={}) - definition found in cache", name, isConfigDb);
             return definitions.get(name);
         }
+
+        LOGGER.info("definitionFor(name={}, isConfigDb={}) - loading definition from remote", name, isConfigDb);
 
         Context applicationContext = AndFHEMApplication.getContext();
         Optional<String> result = isConfigDb
@@ -88,12 +96,14 @@ public class GPlotHolder {
                 : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", applicationContext);
 
         if (result.isPresent()) {
-            definitions.put(name, gPlotParser.parseSafe(result.get()));
+            LOGGER.info("definitionFor(name={}, isConfigDb={}) - done loading, putting to cache", name, isConfigDb);
+            Optional<GPlotDefinition> gplot = gPlotParser.parseSafe(result.get());
+            definitions.put(name, gplot);
+            return gplot;
         } else {
-            definitions.put(name, Optional.<GPlotDefinition>absent());
+            LOGGER.info("definitionFor(name={}, isConfigDb={}) - could not execute request, putting nothing to cache", name, isConfigDb);
+            return Optional.absent();
         }
-
-        return definitions.get(name);
     }
 
     public void reset() {

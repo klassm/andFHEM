@@ -132,10 +132,9 @@ public class GPlotHolderTest {
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
-        gPlotHolder.definitionFor("garden", false);
 
         // when
-        gPlotHolder.definitionFor("garden", false);
+        assertThat(gPlotHolder.definitionFor("garden", false).isPresent()).isFalse();
 
         // then
         verify(commandExecutionService, times(1)).executeRequest(anyString(), any(Context.class));

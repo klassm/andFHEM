@@ -8,6 +8,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class GraphDefinitionsForDeviceService {
     private final RoomListService roomListService;
     private final GPlotHolder gPlotHolder;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GraphDefinitionsForDeviceService.class);
+
     @Inject
     GraphDefinitionsForDeviceService(RoomListService roomListService, GPlotHolder gPlotHolder) {
         this.roomListService = roomListService;
@@ -38,11 +43,16 @@ public class GraphDefinitionsForDeviceService {
         final ImmutableSet<XmlListDevice> allDevices = roomListService.getAllRoomsDeviceList(connectionId, context)
                 .getAllDevicesAsXmllistDevice();
 
-        return from(allDevices)
+        LOGGER.info("graphDefinitionsFor(name={},connection={})", device.getName(), connectionId.or("--"));
+        ImmutableSet<SvgGraphDefinition> devices = from(allDevices)
                 .filter(XmlListDevice.hasType("SVG"))
                 .filter(hasConcerningLogDevice(allDevices, device))
                 .filter(gplotDefinitionExists(allDevices))
                 .transform(toGraphDefinition(allDevices)).toSet();
+        for (SvgGraphDefinition svgGraphDefinition : devices) {
+            LOGGER.info("graphDefinitionsFor(name={},connection={}) - found SVG with name {}", device.getName(), connectionId.or("--"), svgGraphDefinition.getName());
+        }
+        return devices;
     }
 
     @NonNull
