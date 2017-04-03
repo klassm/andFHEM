@@ -2,14 +2,16 @@ package li.klass.fhem.domain.log;
 
 import com.google.api.client.repackaged.com.google.common.base.Predicate;
 
+import java.util.regex.Pattern;
+
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public class ConcernsDevicePredicate implements Predicate<XmlListDevice> {
 
-    private final String concerningDeviceRegexp;
+    private final Pattern concerningDeviceRegexp;
 
     private ConcernsDevicePredicate(String concerningDeviceRegexp) {
-        this.concerningDeviceRegexp = concerningDeviceRegexp;
+        this.concerningDeviceRegexp = Pattern.compile(concerningDeviceRegexp);
     }
 
     @Override
@@ -21,7 +23,7 @@ public class ConcernsDevicePredicate implements Predicate<XmlListDevice> {
         if (".".equals(name)) {
             name = ".*";
         }
-        return concerningDeviceRegexp.matches(name);
+        return concerningDeviceRegexp.matcher(name).matches();
     }
 
     public static ConcernsDevicePredicate forPattern(String regexpAttributeFromLogDevice) {
