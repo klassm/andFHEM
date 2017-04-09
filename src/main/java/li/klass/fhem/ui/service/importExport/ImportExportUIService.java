@@ -34,7 +34,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.common.base.Predicate;
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
@@ -46,7 +49,6 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.R;
 import li.klass.fhem.service.importexport.ImportExportService;
-import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.PermissionUtil;
 
@@ -71,17 +73,23 @@ public class ImportExportUIService {
         if (!PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return;
         }
-        new FileDialog(activity, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
+
+        DialogProperties properties = new DialogProperties();
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = importExportService.getExportDirectory();
+
+        FilePickerDialog dialog = new FilePickerDialog(activity, properties);
+        dialog.setTitle(R.string.selectFile);
+        dialog.setDialogSelectionListener(new DialogSelectionListener() {
             @Override
-            public void fileSelected(File file) {
-                onImportFileSelected(file, activity);
+            public void onSelectedFilePaths(String[] files) {
+                if (files.length > 0) {
+                    onImportFileSelected(new File(files[0]), activity);
+                }
             }
-        }).setFileFilter(new Predicate<File>() {
-            @Override
-            public boolean apply(File input) {
-                return importExportService.isValidZipFile(input);
-            }
-        }).showDialog();
+        });
+        dialog.show();
     }
 
     private void onImportFileSelected(final File file, final Activity activity) {

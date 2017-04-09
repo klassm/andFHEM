@@ -24,9 +24,11 @@
 
 package li.klass.fhem.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -47,6 +49,11 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -61,8 +68,8 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
-import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.FhemResultReceiver;
+import li.klass.fhem.util.PermissionUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -289,17 +296,28 @@ public class ConnectionDetailFragment extends BaseFragment {
             public void onClick(View view) {
                 if (getView() == null) return;
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    PermissionUtil.checkPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
                 final TextView clientCertificatePath = (TextView) getView().findViewById(R.id.clientCertificatePath);
                 File initialPath = new File(clientCertificatePath.getText().toString());
 
-                FileDialog fileDialog = new FileDialog(view.getContext(), initialPath);
-                fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                DialogProperties properties = new DialogProperties();
+                properties.selection_mode = DialogConfigs.SINGLE_MODE;
+                properties.selection_type = DialogConfigs.FILE_SELECT;
+                properties.root = initialPath;
+
+                FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+                dialog.setTitle(R.string.selectFile);
+                dialog.setDialogSelectionListener(new DialogSelectionListener() {
                     @Override
-                    public void fileSelected(File file) {
-                        clientCertificatePath.setText(file.getAbsolutePath());
+                    public void onSelectedFilePaths(String[] files) {
+                        if (files.length > 0) {
+                            clientCertificatePath.setText(files[0]);
+                        }
                     }
                 });
-                fileDialog.showDialog();
+                dialog.show();
             }
         });
     }
@@ -396,25 +414,25 @@ public class ConnectionDetailFragment extends BaseFragment {
                 .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
 
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != SUCCESS || !resultData.containsKey(CONNECTION)) {
-                    return;
-                }
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != SUCCESS || !resultData.containsKey(CONNECTION)) {
+                            return;
+                        }
 
-                Serializable serializable = resultData.getSerializable(CONNECTION);
-                if (!(serializable instanceof FHEMServerSpec)) {
-                    Log.e(TAG, "expected an FHEMServerSpec, but got " + serializable);
-                    return;
-                }
+                        Serializable serializable = resultData.getSerializable(CONNECTION);
+                        if (!(serializable instanceof FHEMServerSpec)) {
+                            Log.e(TAG, "expected an FHEMServerSpec, but got " + serializable);
+                            return;
+                        }
 
-                setValuesForCurrentConnection((FHEMServerSpec) serializable);
+                        setValuesForCurrentConnection((FHEMServerSpec) serializable);
 
-                FragmentActivity activity = getActivity();
-                if (activity != null)
-                    activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
-            }
-        });
+                        FragmentActivity activity = getActivity();
+                        if (activity != null)
+                            activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                    }
+                });
         getActivity().startService(intent);
     }
 

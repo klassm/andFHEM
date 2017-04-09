@@ -646,6 +646,7 @@
     <string name="importErrorWrongPassword">Wrong password</string>
     <string name="importErrorInvalidFile">The file does not seem to be contain a valid andFHEM backup.</string>
 
+    <string name="selectFile">Select file</string>
 
     <string name="detailCardExpand">More …</string>
     <string name="detailStatesSection">States</string>

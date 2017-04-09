@@ -607,6 +607,8 @@
     <string name="importErrorWrongPassword">Falsches Passwort</string>
     <string name="importErrorInvalidFile">Diese Datei sieht nicht wie eine gültige andFHEM Backup-Datei aus.</string>
 
+    <string name="selectFile">Datei auswählen</string>
+
     <string name="detailCardExpand">Mehr …</string>
     <string name="detailStatesSection">Zustände</string>
     <string name="detailAttributesSection">Attribute</string>

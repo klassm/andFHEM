@@ -22,8 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def appVersionCode = 450
-def appVersionName = "4.5.0"
+def appVersionCode = 451
+def appVersionName = "4.5.1"
 
 buildscript {
     repositories {
@@ -212,6 +212,7 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
         exclude group: 'org.apache.httpcomponents'
     }
+    compile 'com.github.angads25:filepicker:1.1.0'
 
     compile 'joda-time:joda-time:2.4'
     //noinspection GradleDependency
