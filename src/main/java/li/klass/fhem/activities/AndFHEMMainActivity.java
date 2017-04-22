@@ -66,6 +66,7 @@ import li.klass.fhem.activities.core.AvailableConnectionDataAdapter;
 import li.klass.fhem.activities.core.UpdateTimerTask;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.device.GCMSendDeviceService;
@@ -89,7 +90,6 @@ import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
-import static li.klass.fhem.constants.PreferenceKeys.AUTO_UPDATE_TIME_IN_ACTIVITY;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
 import static li.klass.fhem.fragments.FragmentType.ALL_DEVICES;
 import static li.klass.fhem.fragments.FragmentType.FAVORITES;
@@ -560,7 +560,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY,
+                int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(PreferenceKeys.AUTO_UPDATE_TIME,
                         "-1", AndFHEMMainActivity.this));
 
                 if (timer == null && updateInterval != -1) {
@@ -569,7 +569,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
                 if (updateInterval != -1) {
                     timer.scheduleAtFixedRate(new UpdateTimerTask(AndFHEMMainActivity.this), updateInterval, updateInterval);
-                    Log.i(TAG, "handleTimerUpdates() : scheduling update every " + (updateInterval / 1000 / 60) + "min");
+                    LOGGER.info("handleTimerUpdates() - scheduling update every {} minutes", (updateInterval / 1000 / 60));
                 }
             }
         });

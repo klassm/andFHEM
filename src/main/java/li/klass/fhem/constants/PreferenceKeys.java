@@ -42,7 +42,6 @@ public class PreferenceKeys {
     public static final String FHEMWEB_DEVICE_NAME = "DEVICE_NAME";
     public static final String STARTUP_PASSWORD = "PASSWORD";
     public static final String SEND_APP_LOG = "SEND_APP_LOG";
-    public static final String AUTO_UPDATE_TIME_IN_ACTIVITY = "AUTO_UPDATE_TIME";
     public static final String ALLOW_REMOTE_UPDATE = "prefWidgetRemoteUpdate";
     public static final String VOICE_COMMANDS = "VOICE_COMMANDS";
     public static final String CLEAR_TRUSTED_CERTIFICATES = "CLEAR_TRUSTED_CERTIFICATES";

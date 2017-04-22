@@ -252,7 +252,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        super.onStart();
+        LOGGER.info("onResume - fragment {} resumes", getClass().getName());
         if (nestedListView.getChildCount() == 0) {
             LOGGER.info("onResume - with child count 0, starting update(false)");
             update(false);
