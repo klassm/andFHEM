@@ -60,7 +60,6 @@ public class ChartingDateSelectionActivity extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-
         startDate = (DateTime) extras.getSerializable(BundleExtraKeys.START_DATE);
         endDate = (DateTime) extras.getSerializable(BundleExtraKeys.END_DATE);
 

@@ -32,6 +32,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -123,7 +124,7 @@ public class GraphServiceTest {
         given(commandExecutionService.executeSync(new Command(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent()), context)).willReturn(response);
 
         // when
-        String result = graphService.loadLogData(logDeviceName, Optional.<String>absent(), from, to, series, context, plotfunction);
+        String result = graphService.loadLogData(logDeviceName, Optional.<String>absent(), new Interval(from, to), series, context, plotfunction);
 
         // then
         assertThat(result).isEqualToIgnoringCase("\n\r" + response);

@@ -29,7 +29,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -86,40 +85,26 @@ import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT;
-import static org.joda.time.Duration.standardHours;
 
 public class ChartingActivity extends AppCompatActivity implements Updateable {
 
     private static final int REQUEST_TIME_CHANGE = 1;
     private static final int DIALOG_EXECUTING = 2;
 
-    private static final int CURRENT_DAY_TIMESPAN = -1;
-
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-    /**
-     * Current device graphs are shown for.
-     */
     private String deviceName;
-
     private SvgGraphDefinition svgGraphDefinition;
-
-    /**
-     * Start date for the current graph.
-     */
-    private DateTime startDate = new DateTime();
-
-    /**
-     * End date for the current graph
-     */
-    private DateTime endDate = new DateTime();
+    private DateTime startDate;
+    private DateTime endDate;
     private String connectionId;
 
     /**
      * Jumps to the charting activity.
-     *  @param context         calling intent
+     *
+     * @param context         calling intent
      * @param device          concerned device
-     * @param connectionId
+     * @param connectionId    connection ID
      * @param graphDefinition series descriptions each representing one series in the resulting chart
      */
     @SuppressWarnings("unchecked")
@@ -140,15 +125,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
 
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
             startDate = (DateTime) savedInstanceState.getSerializable(START_DATE);
-        } else {
-            int defaultTimespan = getChartingDefaultTimespan();
-            if (defaultTimespan == CURRENT_DAY_TIMESPAN) {
-                startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0, 0);
-            } else {
-                startDate = startDate.minus(standardHours(defaultTimespan));
-            }
         }
-
         if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
             endDate = (DateTime) savedInstanceState.getSerializable(END_DATE);
         }
@@ -163,11 +140,6 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
         update(false);
-    }
-
-    private int getChartingDefaultTimespan() {
-        String timeSpan = PreferenceManager.getDefaultSharedPreferences(this).getString("GRAPH_DEFAULT_TIMESPAN", "24");
-        return Integer.valueOf(timeSpan.trim());
     }
 
     @Override
@@ -208,6 +180,8 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode == ResultCodes.SUCCESS) {
+                            startDate = (DateTime) resultData.get(START_DATE);
+                            endDate = (DateTime) resultData.get(END_DATE);
                             createChart(device, (Map<GPlotSeries, List<GraphEntry>>) resultData.get(DEVICE_GRAPH_ENTRY_MAP));
                         }
 

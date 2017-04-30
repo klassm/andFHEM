@@ -31,6 +31,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -62,10 +63,12 @@ public class GraphService {
     private static final Logger LOG = LoggerFactory.getLogger(GraphService.class);
 
     private CommandExecutionService commandExecutionService;
+    private GraphIntervalProvider graphIntervalProvider;
 
     @Inject
-    public GraphService(CommandExecutionService commandExecutionService) {
+    GraphService(CommandExecutionService commandExecutionService, GraphIntervalProvider graphIntervalProvider) {
         this.commandExecutionService = commandExecutionService;
+        this.graphIntervalProvider = graphIntervalProvider;
     }
 
     /**
@@ -80,8 +83,10 @@ public class GraphService {
      * @param context            context     @return read graph data or null (if the device does not have a FileLog device)
      */
     @SuppressWarnings("unchecked")
-    public HashMap<GPlotSeries, List<GraphEntry>> getGraphData(FhemDevice device, Optional<String> connectionId, SvgGraphDefinition svgGraphDefinition,
-                                                               final DateTime startDate, final DateTime endDate, Context context) {
+    public GraphData getGraphData(FhemDevice device, Optional<String> connectionId, SvgGraphDefinition svgGraphDefinition,
+                                  final DateTime startDate, final DateTime endDate, Context context) {
+        Interval interval = getIntervalFor(startDate, endDate, context);
+
         HashMap<GPlotSeries, List<GraphEntry>> data = newHashMap();
 
         Set<GPlotSeries> series = Sets.newHashSet();
@@ -91,35 +96,40 @@ public class GraphService {
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.getName(), series.size());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDeviceName(), connectionId, plotSeries, startDate, endDate, context, svgGraphDefinition.getPlotfunction()));
+            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDeviceName(), connectionId, plotSeries, interval, context, svgGraphDefinition.getPlotfunction()));
         }
 
-        return data;
+        return new GraphData(data, interval);
+    }
+
+
+    private Interval getIntervalFor(DateTime startDate, DateTime endDate, Context context) {
+        return graphIntervalProvider.getIntervalFor(startDate, endDate, context);
     }
 
     /**
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
+     *
      * @param logDevice    logDevice to load graph entries from.
      * @param connectionId id of the server or absent (absent will use the currently selected server)
      * @param gPlotSeries  chart description
-     * @param startDate    read FileLog entries from the given date
-     * @param endDate      read FileLog entries up to the given date
+     * @param interval     Interval containing start and end date
      * @param context      context
      * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(String logDevice,
                                                        Optional<String> connectionId, GPlotSeries gPlotSeries,
-                                                       DateTime startDate, DateTime endDate, Context context, List<String> plotfunction) {
-        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, startDate, endDate, gPlotSeries, context, plotfunction));
+                                                       Interval interval, Context context, List<String> plotfunction) {
+        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, interval, gPlotSeries, context, plotfunction));
         LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size(), logDevice);
         return graphEntries;
     }
 
-    String loadLogData(String logDevice, Optional<String> connectionId, DateTime fromDate, DateTime toDate,
+    String loadLogData(String logDevice, Optional<String> connectionId, Interval interval,
                        GPlotSeries plotSeries, Context context, List<String> plotfunction) {
-        String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
-        String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
+        String fromDateFormatted = DATE_TIME_FORMATTER.print(interval.getStart());
+        String toDateFormatted = DATE_TIME_FORMATTER.print(interval.getEnd());
 
         StringBuilder result = new StringBuilder();
 

@@ -260,7 +260,7 @@ public class CommandExecutionService extends AbstractService {
         }
 
         public String getResult() {
-            return result;
+            return result != null ? result.trim() : null;
         }
     }
 

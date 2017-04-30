@@ -30,13 +30,13 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -65,12 +65,12 @@ import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
 import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
-import li.klass.fhem.service.graph.GraphEntry;
+import li.klass.fhem.service.graph.GraphData;
 import li.klass.fhem.service.graph.GraphService;
-import li.klass.fhem.service.graph.gplot.GPlotSeries;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.BundleUtil;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
@@ -311,8 +311,12 @@ public class DeviceIntentService extends ConvenientIntentService {
         DateTime endDate = (DateTime) intent.getSerializableExtra(END_DATE);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
 
-        HashMap<GPlotSeries, List<GraphEntry>> graphData = graphService.getGraphData(device, connectionId, graphDefinition, startDate, endDate, this);
-        sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
+        GraphData graphData = graphService.getGraphData(device, connectionId, graphDefinition, startDate, endDate, this);
+        sendResult(resultReceiver, ResultCodes.SUCCESS, BundleUtil.mapToBundle(
+                ImmutableMap.of(DEVICE_GRAPH_ENTRY_MAP, graphData.getData(),
+                        START_DATE, graphData.getInterval().getStart(),
+                        END_DATE, graphData.getInterval().getEnd())
+        ));
         return State.DONE;
     }
 
@@ -320,7 +324,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * Toggle a device and notify the result receiver
      *
      * @param device       device to toggle
-     * @param connectionId
+     * @param connectionId connection ID
      * @return success?
      */
     private State toggleIntent(FhemDevice device, Optional<String> connectionId) {
