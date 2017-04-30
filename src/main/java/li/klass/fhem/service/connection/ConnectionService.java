@@ -29,10 +29,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -50,8 +52,10 @@ import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
+import static li.klass.fhem.AndFHEMApplication.getContext;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 import static li.klass.fhem.fhem.connection.ServerType.FHEMWEB;
 
@@ -117,8 +121,16 @@ public class ConnectionService {
     }
 
     public boolean exists(String id, Context context) {
-        return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
+        return mayShowDummyConnections(getAll(context)) && (DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id))
                 || getPreferences(context).contains(id);
+    }
+
+    private boolean mayShowDummyConnections(List<FHEMServerSpec> all) {
+        Context context = getContext();
+        ImmutableList<FHEMServerSpec> nonDummies = from(all)
+                .filter(FHEMServerSpec.notInstanceOf(DummyServerSpec.class))
+                .toList();
+        return nonDummies.isEmpty() || LicenseService.isDebug(context);
     }
 
     private int getCountWithoutDummy(Context context) {
@@ -202,7 +214,12 @@ public class ConnectionService {
         return true;
     }
 
-    public ArrayList<FHEMServerSpec> listAll(Context context) {
+
+    public ArrayList<FHEMServerSpec> listAll(final Context context) {
+        return new ArrayList<>(getAllIncludingDummies(context));
+    }
+
+    private List<FHEMServerSpec> getAll(Context context) {
         ArrayList<FHEMServerSpec> servers = newArrayList();
 
         SharedPreferences preferences = getPreferences(context);
@@ -219,11 +236,19 @@ public class ConnectionService {
             servers.add(server);
         }
 
-        servers.add(getDummyData());
-        FHEMServerSpec testData = getTestData(context);
-        if (testData != null) servers.add(testData);
-
         return servers;
+    }
+
+    private List<FHEMServerSpec> getAllIncludingDummies(Context context) {
+        List<FHEMServerSpec> all = getAll(context);
+        ImmutableList.Builder<FHEMServerSpec> builder = ImmutableList.<FHEMServerSpec>builder()
+                .addAll(all);
+        if (mayShowDummyConnections(all)) {
+            builder = builder.add(getDummyData());
+            FHEMServerSpec testData = getTestData(context);
+            if (testData != null) builder = builder.add(testData);
+        }
+        return builder.build();
     }
 
     public boolean mayShowInCurrentConnectionType(DeviceType deviceType, Context context) {
@@ -248,7 +273,12 @@ public class ConnectionService {
 
     public String getSelectedId(Context context) {
         String id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID, context);
-        if (!exists(id, context)) id = DUMMY_DATA_ID;
+
+        if (!exists(id, context)) {
+            List<FHEMServerSpec> all = getAllIncludingDummies(context);
+            FHEMServerSpec connection = all.get(0);
+            return connection.getId();
+        }
 
         return id;
     }

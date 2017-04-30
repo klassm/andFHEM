@@ -24,6 +24,10 @@
 
 package li.klass.fhem.fhem.connection;
 
+import android.support.annotation.NonNull;
+
+import com.google.common.base.Predicate;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -45,6 +49,16 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     public FHEMServerSpec(String id) {
         this.id = id;
+    }
+
+    @NonNull
+    public static Predicate<FHEMServerSpec> notInstanceOf(final Class<? extends FHEMServerSpec> clazz) {
+        return new Predicate<FHEMServerSpec>() {
+            @Override
+            public boolean apply(FHEMServerSpec input) {
+                return input != null && !(clazz.isAssignableFrom(input.getClass()));
+            }
+        };
     }
 
     public String getName() {
