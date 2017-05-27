@@ -33,7 +33,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.3.2'
 
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
@@ -167,7 +167,7 @@ project.gradle.taskGraph.whenReady {
 }
 
 ext {
-    supportLibVersion = '25.3.0'
+    supportLibVersion = '25.3.1'
     buildProperties = getBuildProperties()
 }
 

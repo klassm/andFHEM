@@ -21,7 +21,7 @@ class GraphIntervalProvider {
         this.commandExecutionService = commandExecutionService;
     }
 
-    public Interval getIntervalFor(DateTime startDate, DateTime endDate, Context context) {
+    Interval getIntervalFor(DateTime startDate, DateTime endDate, Context context) {
         if (startDate == null || endDate == null) {
             return getDefaultInterval(context);
         }
