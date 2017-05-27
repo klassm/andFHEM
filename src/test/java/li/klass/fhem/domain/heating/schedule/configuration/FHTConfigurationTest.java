@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FHTConfigurationTest {
 
     private FHTConfiguration configuration = new FHTConfiguration();
-    private WeekProfile<FromToHeatingInterval, FHTConfiguration, GenericDevice> weekProfile;
+    private WeekProfile<FromToHeatingInterval, FHTConfiguration> weekProfile;
 
     @Before
     public void before() {
@@ -68,7 +68,7 @@ public class FHTConfigurationTest {
         xmlListDevice.setInternal("NAME", "name");
         device.setXmlListDevice(xmlListDevice);
 
-        WeekProfile<FromToHeatingInterval, FHTConfiguration, GenericDevice> weekProfile = new WeekProfile<>(configuration);
+        WeekProfile<FromToHeatingInterval, FHTConfiguration> weekProfile = new WeekProfile<>(configuration);
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedFromTime("03:25");
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(1).setChangedFromTime("06:25");
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedToTime("04:25");

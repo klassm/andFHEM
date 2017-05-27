@@ -43,45 +43,44 @@ import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
-import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.widget.NestedListViewAdapter;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
-        extends NestedListViewAdapter<DayProfile<H, ?, ?>, H> {
+public abstract class BaseWeekProfileAdapter<INTERVAL extends BaseHeatingInterval<INTERVAL>>
+        extends NestedListViewAdapter<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>, INTERVAL> {
 
-    protected WeekProfile<H, ?, ? extends FhemDevice> weekProfile;
+    protected WeekProfile<INTERVAL, ?> weekProfile;
 
 
     protected final Resources resources;
     protected final Context context;
     private WeekProfileChangedListener listener;
 
-    public BaseWeekProfileAdapter(Context context) {
+    BaseWeekProfileAdapter(Context context) {
         super(context);
         this.context = context;
         resources = context.getResources();
     }
 
     @Override
-    protected int getChildrenCountForParent(DayProfile<H, ?, ?> parent) {
+    protected int getChildrenCountForParent(DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> parent) {
         return parent.getNumberOfHeatingIntervals() + getNumberOfAdditionalChildrenForParent();
     }
 
     protected abstract int getNumberOfAdditionalChildrenForParent();
 
     @Override
-    protected H getChildForParentAndChildPosition(DayProfile<H, ?, ?> parent, int childPosition) {
+    protected INTERVAL getChildForParentAndChildPosition(DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> parent, int childPosition) {
         return parent.getHeatingIntervalAt(childPosition);
     }
 
     @Override
-    protected View getParentView(final DayProfile<H, ?, ?> parent, View view, ViewGroup viewGroup) {
+    protected View getParentView(final DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> parent, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.weekprofile_parent, viewGroup, false);
 
         TextView parentTextView = (TextView) view.findViewById(R.id.parent);
@@ -98,18 +97,18 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         return view;
     }
 
-    private String getParentTextFor(DayProfile<H, ?, ?> profile) {
+    private String getParentTextFor(DayProfile<INTERVAL, ?> profile) {
         return resources.getText(profile.getDay().getStringId()).toString();
     }
 
-    private void showCopyContextMenuFor(final DayProfile<H, ?, ?> target) {
+    private void showCopyContextMenuFor(final DayProfile<INTERVAL, ?> target) {
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
-        final List<DayProfile<H, ?, ?>> parents = getParents();
+        final List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> parents = getParents();
         ImmutableList<String> selectOptions = FluentIterable.from(parents)
-                .transform(new Function<DayProfile<H, ?, ?>, String>() {
+                .transform(new Function<DayProfile<INTERVAL, ?>, String>() {
                     @Override
-                    public String apply(DayProfile<H, ?, ?> input) {
+                    public String apply(DayProfile<INTERVAL, ?> input) {
                         return getParentTextFor(input);
                     }
                 }).toList();
@@ -117,12 +116,12 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int position) {
-                final DayProfile<H, ?, ?> source = parents.get(position);
+                final DayProfile<INTERVAL, ?> source = parents.get(position);
                 if (source.getDay() == target.getDay()) {
                     return;
                 }
 
-                List<H> heatingIntervals = source.getHeatingIntervals();
+                List<INTERVAL> heatingIntervals = source.getHeatingIntervals();
                 if (heatingIntervals.isEmpty()) {
                     return;
                 }
@@ -136,13 +135,13 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
     }
 
     @Override
-    protected List<DayProfile<H, ?, ?>> getParents() {
-        List<DayProfile<H, ?, ?>> parents = newArrayList();
+    protected List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> getParents() {
+        List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> parents = newArrayList();
         if (weekProfile == null) return parents;
 
         List<? extends DayProfile> sortedDayProfiles = weekProfile.getSortedDayProfiles();
 
-        for (DayProfile<H, ?, ? extends HeatingConfiguration> sortedDayProfile : sortedDayProfiles) {
+        for (DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> sortedDayProfile : sortedDayProfiles) {
             parents.add(sortedDayProfile);
         }
         return parents;
@@ -158,7 +157,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         return String.format(Locale.getDefault(), "%02d", hourOfDay) + ":" + String.format(Locale.getDefault(), "%02d", minutes);
     }
 
-    public void updateData(WeekProfile<H, ?, ? extends FhemDevice> weekProfile) {
+    public void updateData(WeekProfile<INTERVAL, ?> weekProfile) {
         if (weekProfile == null) return;
         this.weekProfile = weekProfile;
         super.updateData();
@@ -185,7 +184,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         }
     }
 
-    public interface WeekProfileChangedListener {
+    interface WeekProfileChangedListener {
         void onWeekProfileChanged(WeekProfile weekProfile);
     }
 }

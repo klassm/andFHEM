@@ -27,6 +27,7 @@ package li.klass.fhem.dagger;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.multibindings.IntoSet;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.CulHmDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider;
@@ -37,17 +38,20 @@ import li.klass.fhem.util.ApplicationProperties;
 
 @Module
 public class DetailActionsModule {
-    @Provides(type = Provides.Type.SET)
+    @Provides
+    @IntoSet
     GenericDetailActionProvider provideFHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
         return new FHTDetailActionProvider(applicationProperties, dateService);
     }
 
-    @Provides(type = Provides.Type.SET)
+    @Provides
+    @IntoSet
     GenericDetailActionProvider provideMAXDetailActionProvider(FragmentUiService fragmentUiService) {
         return new MAXDetailActionProvider(fragmentUiService);
     }
 
-    @Provides(type = Provides.Type.SET)
+    @Provides
+    @IntoSet
     GenericDetailActionProvider provideCulHmDetailActionProvider(FragmentUiService fragmentUiService) {
         return new CulHmDetailActionProvider(fragmentUiService);
     }

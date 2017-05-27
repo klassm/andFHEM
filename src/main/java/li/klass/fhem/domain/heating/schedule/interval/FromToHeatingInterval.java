@@ -33,7 +33,7 @@ public class FromToHeatingInterval extends BaseHeatingInterval<FromToHeatingInte
     private String changedFromTime;
     private String changedToTime;
 
-    public FromToHeatingInterval(HeatingConfiguration<?, ?, ?> configuration) {
+    public FromToHeatingInterval(HeatingConfiguration<?, ?> configuration) {
         fromTime = configuration.offTime;
         toTime = configuration.offTime;
 

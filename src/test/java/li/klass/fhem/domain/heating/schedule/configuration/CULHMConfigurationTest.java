@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CULHMConfigurationTest {
     private CULHMConfiguration configuration = new CULHMConfiguration();
-    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, GenericDevice> weekProfile;
+    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration> weekProfile;
 
     @Before
     public void before() {
@@ -63,7 +63,7 @@ public class CULHMConfigurationTest {
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> dayProfile = weekProfile.getDayProfileFor(saturday);
         Reject.ifNull(dayProfile);
 
         FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);

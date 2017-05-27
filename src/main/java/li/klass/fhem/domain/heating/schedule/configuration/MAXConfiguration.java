@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
@@ -41,7 +40,7 @@ import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
-public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInterval, GenericDevice, MAXConfiguration> {
+public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInterval, MAXConfiguration> {
 
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 13;
     public static final Pattern WEEKPROFILE_KEY_PATTERN = Pattern.compile("weekprofile_[0-9]+_([^_]+)_(time|temp)");
@@ -52,7 +51,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     }
 
     @Override
-    public void readNode(WeekProfile<FilledTemperatureInterval, MAXConfiguration, GenericDevice> weekProfile, String key, String value) {
+    public void readNode(WeekProfile<FilledTemperatureInterval, MAXConfiguration> weekProfile, String key, String value) {
         if (!key.startsWith("weekprofile") || (!key.endsWith("temp") && !key.endsWith("time"))) {
             return;
         }
@@ -79,7 +78,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         }
     }
 
-    private void parseTemp(DayUtil.Day day, String value, WeekProfile<FilledTemperatureInterval, MAXConfiguration, GenericDevice> weekProfile) {
+    private void parseTemp(DayUtil.Day day, String value, WeekProfile<FilledTemperatureInterval, MAXConfiguration> weekProfile) {
         String[] temperatures = value.split("/");
         for (int i = 0; i < temperatures.length; i++) {
             String temperatureValue = temperatures[i].trim();
@@ -89,7 +88,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         }
     }
 
-    private void parseTime(DayUtil.Day day, String value, WeekProfile<FilledTemperatureInterval, MAXConfiguration, GenericDevice> weekProfile) {
+    private void parseTime(DayUtil.Day day, String value, WeekProfile<FilledTemperatureInterval, MAXConfiguration> weekProfile) {
         String[] timeIntervals = value.split("/");
         for (int i = 0; i < timeIntervals.length; i++) {
             String switchTime = extractSwitchTime(timeIntervals[i]);
@@ -113,12 +112,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     }
 
     @Override
-    public DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration> createDayProfileFor(DayUtil.Day day, MAXConfiguration configuration) {
-        return new DayProfile<>(day, configuration);
-    }
-
-    @Override
-    protected List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration> dayProfile) {
+    protected List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> dayProfile) {
         StringBuilder builder = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = new ArrayList<>(dayProfile.getHeatingIntervals());
@@ -144,18 +138,18 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     }
 
     @Override
-    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, MAXConfiguration, GenericDevice> weekProfile) {
+    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, MAXConfiguration> weekProfile) {
         super.afterXMLRead(weekProfile);
 
-        List<DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration>>
+        List<DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>>
                 profiles = weekProfile.getSortedDayProfiles();
 
-        for (DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration> profile : profiles) {
+        for (DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> profile : profiles) {
             addMidnightIntervalIfNotAvailable(profile);
         }
     }
 
-    private <D extends DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration>> void
+    private <D extends DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>> void
     addMidnightIntervalIfNotAvailable(D profile) {
 
         boolean foundMidnightInterval = false;

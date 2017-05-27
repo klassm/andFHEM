@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MAXConfigurationTest {
     private MAXConfiguration configuration = new MAXConfiguration();
-    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, GenericDevice> weekProfile;
+    private WeekProfile<FilledTemperatureInterval, MAXConfiguration> weekProfile;
 
     @Before
     public void before() {
@@ -93,7 +93,7 @@ public class MAXConfigurationTest {
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, GenericDevice, MAXConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> dayProfile = weekProfile.getDayProfileFor(saturday);
         assert dayProfile != null;
 
         return dayProfile.getHeatingIntervalAt(position);

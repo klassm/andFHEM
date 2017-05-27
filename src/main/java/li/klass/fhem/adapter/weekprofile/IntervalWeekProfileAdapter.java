@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
@@ -64,7 +65,7 @@ public class IntervalWeekProfileAdapter
     }
 
     @Override
-    protected View getChildView(final DayProfile<FilledTemperatureInterval, ?, ?> parent, int parentPosition,
+    protected View getChildView(final DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> parent, int parentPosition,
                                 final FilledTemperatureInterval child, View v, ViewGroup viewGroup, final int relativeChildPosition) {
 
         if (child == null) {
@@ -120,7 +121,7 @@ public class IntervalWeekProfileAdapter
         return view;
     }
 
-    private View addView(final DayProfile<FilledTemperatureInterval, ?, ?> parent, ViewGroup viewGroup) {
+    private View addView(final DayProfile<FilledTemperatureInterval, ?> parent, ViewGroup viewGroup) {
         View view = layoutInflater.inflate(R.layout.weekprofile_interval_add, viewGroup, false);
 
         final FilledTemperatureInterval interval = new FilledTemperatureInterval();
@@ -189,7 +190,7 @@ public class IntervalWeekProfileAdapter
                             IntervalEditHolder.this.minutes = minutes;
                         }
                     });
-                    timePicker.setEnabled(! interval.isTimeFixed());
+                    timePicker.setEnabled(!interval.isTimeFixed());
                     return contentView;
                 }
 
@@ -210,7 +211,7 @@ public class IntervalWeekProfileAdapter
                         }
                     });
 
-                    timePicker.setEnabled(! interval.isTimeFixed());
+                    timePicker.setEnabled(!interval.isTimeFixed());
 
                     return contentView;
                 }

@@ -27,7 +27,6 @@ package li.klass.fhem.fragments.weekprofile;
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
 import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 
@@ -36,7 +35,7 @@ public class FromToWeekProfileFragment extends BaseWeekProfileFragment<FromToHea
     private FromToWeekProfileAdapter adapter;
 
     @Override
-    protected void updateAdapterWith(WeekProfile<FromToHeatingInterval, ?, ? extends FhemDevice> weekProfile) {
+    protected void updateAdapterWith(WeekProfile<FromToHeatingInterval, ?> weekProfile) {
         adapter.updateData(weekProfile);
     }
 

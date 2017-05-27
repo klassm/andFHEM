@@ -25,28 +25,32 @@
 package li.klass.fhem.domain.heating.schedule;
 
 import com.google.common.base.Function;
-import li.klass.fhem.domain.core.FhemDevice;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.util.DayUtil;
 
-import java.io.Serializable;
-import java.util.*;
-
 import static com.google.common.collect.FluentIterable.from;
 
-public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>> implements Serializable {
+public class DayProfile<H extends BaseHeatingInterval<H>, INTERVAL_CONFIG extends HeatingIntervalConfiguration<H>> implements Serializable {
     private DayUtil.Day day;
     private List<H> heatingIntervals = new ArrayList<>();
     private List<H> deletedIntervals = new ArrayList<>();
 
-    private final C heatingConfiguration;
+    private final HeatingIntervalConfiguration heatingConfiguration;
 
-    public DayProfile(DayUtil.Day day, C configuration) {
+    public DayProfile(DayUtil.Day day, INTERVAL_CONFIG configuration) {
         this.day = day;
         this.heatingConfiguration = configuration;
 
-        if (heatingConfiguration.numberOfIntervalsType == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
+        if (heatingConfiguration.getNumberOfIntervalsType() == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
             for (int i = 0; i < getMaximumNumberOfHeatingIntervals(); i++) {
                 heatingIntervals.add(configuration.createHeatingInterval());
             }
@@ -100,7 +104,7 @@ public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, 
     }
 
     private boolean canAddHeatingInterval() {
-        if (heatingConfiguration.numberOfIntervalsType == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
+        if (heatingConfiguration.getNumberOfIntervalsType() == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
             return false;
         }
 
@@ -119,7 +123,7 @@ public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, 
     }
 
     public int getMaximumNumberOfHeatingIntervals() {
-        return heatingConfiguration.maximumNumberOfHeatingIntervals;
+        return heatingConfiguration.getMaximumNumberOfHeatingIntervals();
     }
 
     public void acceptChanges() {

@@ -31,7 +31,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
@@ -41,10 +40,9 @@ import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.StateToSet;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.util.DayUtil.Day;
 
-public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>>
-        implements Serializable {
+public abstract class HeatingConfiguration<H extends BaseHeatingInterval<H>, C extends HeatingConfiguration<H, C>>
+        implements Serializable, HeatingIntervalConfiguration<H> {
 
 
     private final int intervalMinutesMustBeDivisibleBy;
@@ -66,7 +64,7 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         this.intervalMinutesMustBeDivisibleBy = intervalMinutesMustBeDivisibleBy;
     }
 
-    protected H getOrCreateInterval(WeekProfile<H, C, D> weekProfile, DayUtil.Day day, int index) {
+    protected H getOrCreateInterval(WeekProfile<H, C> weekProfile, DayUtil.Day day, int index) {
         H interval = weekProfile.getDayProfileFor(day).getHeatingIntervalAt(index);
         if (interval == null) {
             interval = createHeatingInterval();
@@ -76,21 +74,19 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         return interval;
     }
 
-    public void fillWith(WeekProfile<H, C, D> weekProfile, XmlListDevice xmlListDevice) {
+    public WeekProfile<H, C> fillWith(XmlListDevice xmlListDevice) {
+        WeekProfile<H, C> weekProfile = new WeekProfile<>((C) this);
         Map<String, DeviceNode> states = xmlListDevice.getStates();
         for (DeviceNode node : states.values()) {
             readNode(weekProfile, node.getKey(), node.getValue());
         }
         afterXMLRead(weekProfile);
+        return weekProfile;
     }
 
-    public abstract void readNode(WeekProfile<H, C, D> weekProfile, String key, String value);
+    public abstract void readNode(WeekProfile<H, C> weekProfile, String key, String value);
 
-    public abstract H createHeatingInterval();
-
-    public abstract DayProfile<H, D, C> createDayProfileFor(Day day, C configuration);
-
-    public List<String> generateScheduleCommands(String deviceName, WeekProfile<H, C, D> weekProfile) {
+    public List<String> generateScheduleCommands(String deviceName, WeekProfile<H, C> weekProfile) {
         List<StateToSet> statesToSet = generatedStatesToSet(weekProfile);
         List<String> result = newArrayList();
         for (StateToSet state : statesToSet) {
@@ -100,17 +96,17 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         return result;
     }
 
-    public List<StateToSet> generatedStatesToSet(WeekProfile<H, C, D> weekProfile) {
+    public List<StateToSet> generatedStatesToSet(WeekProfile<H, C> weekProfile) {
         List<StateToSet> result = newArrayList();
-        List<DayProfile<H, D, C>> changedDayProfiles = weekProfile.getChangedDayProfiles();
+        List<DayProfile<H, HeatingIntervalConfiguration<H>>> changedDayProfiles = weekProfile.getChangedDayProfiles();
         LOG.info("generateScheduleCommands - {} day(s) contain changes", changedDayProfiles.size());
-        for (DayProfile<H, D, C> dayProfile : changedDayProfiles) {
+        for (DayProfile<H, HeatingIntervalConfiguration<H>> dayProfile : changedDayProfiles) {
             result.addAll(generateStateToSetFor(dayProfile));
         }
         return result;
     }
 
-    protected abstract List<StateToSet> generateStateToSetFor(DayProfile<H, D, C> dayProfile);
+    protected abstract List<StateToSet> generateStateToSetFor(DayProfile<H, HeatingIntervalConfiguration<H>> dayProfile);
 
     public String formatTimeForDisplay(String time) {
         return time;
@@ -120,7 +116,7 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
         return time;
     }
 
-    public void afterXMLRead(WeekProfile<H, C, D> weekProfile) {
+    public void afterXMLRead(WeekProfile<H, C> weekProfile) {
     }
 
     public int getIntervalMinutesMustBeDivisibleBy() {
@@ -129,5 +125,15 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
 
     public IntervalType getIntervalType() {
         return null;
+    }
+
+    @Override
+    public int getMaximumNumberOfHeatingIntervals() {
+        return maximumNumberOfHeatingIntervals;
+    }
+
+    @Override
+    public NumberOfIntervalsType getNumberOfIntervalsType() {
+        return numberOfIntervalsType;
     }
 }

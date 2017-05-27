@@ -189,10 +189,6 @@ public class AndFHEMApplication extends MultiDexApplication {
         return false;
     }
 
-    public void getGraph() {
-
-    }
-
     public boolean isUpdate() {
         return isUpdate;
     }

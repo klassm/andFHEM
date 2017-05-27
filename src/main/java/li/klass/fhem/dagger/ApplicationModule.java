@@ -24,6 +24,8 @@
 
 package li.klass.fhem.dagger;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import li.klass.fhem.AndFHEMApplication;
@@ -38,6 +40,7 @@ public class ApplicationModule {
     }
 
     @Provides
+    @Singleton
     AndFHEMApplication getApplication() {
         return application;
     }

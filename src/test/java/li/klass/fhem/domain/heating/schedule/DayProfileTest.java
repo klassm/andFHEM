@@ -26,7 +26,6 @@ package li.klass.fhem.domain.heating.schedule;
 
 import org.junit.Test;
 
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.util.DayUtil;
@@ -37,7 +36,7 @@ public class DayProfileTest {
 
     @Test
     public void testIsModified() {
-        DayProfile<FromToHeatingInterval, GenericDevice, FHTConfiguration> dayProfile = new DayProfile<>(DayUtil.Day.MONDAY, new FHTConfiguration());
+        DayProfile<FromToHeatingInterval, FHTConfiguration> dayProfile = new DayProfile<>(DayUtil.Day.MONDAY, new FHTConfiguration());
 
         dayProfile.getHeatingIntervalAt(0).setFromTime("03:04");
         dayProfile.getHeatingIntervalAt(0).setToTime("05:23");

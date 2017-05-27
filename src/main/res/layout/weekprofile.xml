@@ -25,13 +25,14 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <TableLayout
-        android:id="@+id/changeValueButtonHolder"
+        android:id="@+id/change_value_button_holder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -39,22 +40,20 @@
         <TableRow tools:ignore="UselessParent">
 
             <Button
-                android:id="@+id/save"
+                android:id="@+id/save_weekprofile_button"
                 style="@style/button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="@string/save"
-                />
+                android:text="@string/save" />
 
             <Button
-                android:id="@+id/reset"
+                android:id="@+id/reset_weekprofile_button"
                 style="@style/button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/reset"
-                />
+                android:text="@string/reset" />
         </TableRow>
 
 
@@ -66,6 +65,5 @@
         android:layout_height="fill_parent"
         android:divider="@drawable/empty"
         android:dividerHeight="0dp"
-        android:padding="5dp"
-        />
+        android:padding="5dp" />
 </LinearLayout>

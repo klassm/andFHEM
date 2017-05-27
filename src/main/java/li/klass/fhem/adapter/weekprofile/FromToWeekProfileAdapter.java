@@ -34,6 +34,7 @@ import android.widget.TimePicker;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 
 public class FromToWeekProfileAdapter
@@ -54,7 +55,7 @@ public class FromToWeekProfileAdapter
     }
 
     @Override
-    protected View getChildView(DayProfile<FromToHeatingInterval, ?, ?> parent, int parentPosition,
+    protected View getChildView(DayProfile<FromToHeatingInterval, HeatingIntervalConfiguration<FromToHeatingInterval>> parent, int parentPosition,
                                 final FromToHeatingInterval child, View v, ViewGroup viewGroup, int relativeChildPosition) {
         final View view = layoutInflater.inflate(R.layout.weekprofile_from_to_item, viewGroup, false);
 

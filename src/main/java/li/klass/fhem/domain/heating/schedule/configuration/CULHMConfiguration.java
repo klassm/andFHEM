@@ -29,7 +29,6 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
@@ -39,7 +38,7 @@ import li.klass.fhem.util.StateToSet;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.CulHmDetailActionProvider.MINIMUM_TEMPERATURE;
 
-public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> {
+public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureInterval, CULHMConfiguration> {
 
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 24;
 
@@ -48,7 +47,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     }
 
     @Override
-    public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, GenericDevice> weekProfile, String key, String value) {
+    public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration> weekProfile, String key, String value) {
         if (!key.matches("(R_(P1_)?[0-9]_)?tempList([a-zA-Z]{3})")) return;
 
         String shortName = key.replaceAll("(R_(P1_)?[0-9]_)?tempList", "");
@@ -72,14 +71,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         }
     }
 
-    @Override
-    public DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration>
-    createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
-
-        return new DayProfile<>(day, configuration);
-    }
-
-    public List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> dayProfile) {
+    public List<StateToSet> generateStateToSetFor(DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> dayProfile) {
         StringBuilder command = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = newArrayList(dayProfile.getHeatingIntervals());
@@ -101,13 +93,13 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     }
 
     @Override
-    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, GenericDevice> weekProfile) {
+    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, CULHMConfiguration> weekProfile) {
         super.afterXMLRead(weekProfile);
 
-        List<DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration>>
+        List<DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>>
                 profiles = weekProfile.getSortedDayProfiles();
 
-        for (DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> profile : profiles) {
+        for (DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> profile : profiles) {
             addFixedMidnightIntervalIfRequired(profile);
         }
     }
@@ -120,7 +112,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
      * @param dayProfile day profile to add the midnight to.
      */
     private void addFixedMidnightIntervalIfRequired(
-            DayProfile<FilledTemperatureInterval, GenericDevice, CULHMConfiguration> dayProfile) {
+            DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>> dayProfile) {
 
         List<FilledTemperatureInterval> intervals = dayProfile.getHeatingIntervals();
 

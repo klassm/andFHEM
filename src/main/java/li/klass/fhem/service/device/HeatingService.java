@@ -90,7 +90,7 @@ public class HeatingService {
      * @param context context
      */
     @SuppressWarnings("unchecked")
-    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?, ?>> void setMode(final D device, final MODE mode, Context context) {
+    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?>> void setMode(final D device, final MODE mode, Context context) {
         if (mode == device.getHeatingMode()) {
             Log.e(TAG, "won't change heating mode, as it is already set!");
             return;

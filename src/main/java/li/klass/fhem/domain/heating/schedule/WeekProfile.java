@@ -30,33 +30,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration;
 import li.klass.fhem.domain.heating.schedule.configuration.IntervalType;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.util.DayUtil.Day;
 
-public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfiguration<H, D, C>, D extends FhemDevice<D>>
+public class WeekProfile<INTERVAL extends BaseHeatingInterval<INTERVAL>, C extends HeatingConfiguration<INTERVAL, C>>
         implements Serializable {
 
     private final C configuration;
-    private Map<Day, DayProfile<H, D, C>> dayProfiles = new HashMap<>();
+    private Map<Day, DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> dayProfiles = new HashMap<>();
 
     public WeekProfile(C configuration) {
-        for (Day day : Day.values()) {
-            dayProfiles.put(day, configuration.createDayProfileFor(day, configuration));
-        }
-
         this.configuration = configuration;
+        for (Day day : Day.values()) {
+            dayProfiles.put(day, createDayProfileFor(day));
+        }
     }
 
-    public List<DayProfile<H, D, C>> getChangedDayProfiles() {
-        List<DayProfile<H, D, C>> changedDayProfiles = new ArrayList<>();
+    private DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> createDayProfileFor(Day day) {
+        return new DayProfile<>(day, (HeatingIntervalConfiguration<INTERVAL>) configuration);
+    }
 
-        for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
+    public List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> getChangedDayProfiles() {
+        List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> changedDayProfiles = new ArrayList<>();
+
+        for (DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> dayProfile : dayProfiles.values()) {
             if (dayProfile.isModified()) {
                 changedDayProfiles.add(dayProfile);
             }
@@ -65,8 +67,8 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return changedDayProfiles;
     }
 
-    public List<DayProfile<H, D, C>> getSortedDayProfiles() {
-        List<DayProfile<H, D, C>> result = new ArrayList<>();
+    public List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> getSortedDayProfiles() {
+        List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> result = new ArrayList<>();
 
         for (Day day : Day.values()) {
             result.add(dayProfiles.get(day));
@@ -75,16 +77,8 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return result;
     }
 
-    public DayProfile<H, D, C> getDayProfileFor(Day day) {
+    public DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> getDayProfileFor(Day day) {
         return dayProfiles.get(day);
-    }
-
-    public void fillWith(XmlListDevice xmlListDevice) {
-        configuration.fillWith(this, xmlListDevice);
-    }
-
-    public void readNode(String key, String value) {
-        configuration.readNode(this, key, value);
     }
 
     public List<String> getSubmitCommands(String deviceName) {
@@ -96,13 +90,13 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
     }
 
     public void acceptChanges() {
-        for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
+        for (DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> dayProfile : dayProfiles.values()) {
             dayProfile.acceptChanges();
         }
     }
 
     public void reset() {
-        for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
+        for (DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>> dayProfile : dayProfiles.values()) {
             dayProfile.reset();
         }
     }

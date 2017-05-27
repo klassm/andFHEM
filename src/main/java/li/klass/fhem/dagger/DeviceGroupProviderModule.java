@@ -26,12 +26,14 @@ package li.klass.fhem.dagger;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.multibindings.IntoSet;
 import li.klass.fhem.service.room.group.device.CulHmDeviceGroupProvider;
 import li.klass.fhem.service.room.group.device.DeviceGroupProvider;
 
 @Module
 public class DeviceGroupProviderModule {
-    @Provides(type = Provides.Type.SET)
+    @Provides
+    @IntoSet
     public DeviceGroupProvider provideCUL_HMGroupProvider() {
         return new CulHmDeviceGroupProvider();
     }
