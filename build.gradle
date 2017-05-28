@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def appVersionCode = 453
+def appVersionCode = 454
 def appVersionName = "4.5.4"
 
 ext {
