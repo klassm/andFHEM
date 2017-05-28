@@ -58,7 +58,6 @@ import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWit
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.DMXDevice;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
@@ -104,7 +103,6 @@ public enum DeviceType {
 
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),

@@ -32,9 +32,7 @@ public class ValueDescriptionUtil {
     public static final String PERCENT = "%";
     public static final String M_S = "m/s";
     public static final String L = "l";
-    public static final String KWH = "kWh";
     public static final String LUX = "lux";
-    public static final String PPM = "ppm";
 
     public static String appendPercent(Object text) {
         return append(text, PERCENT);
@@ -42,30 +40,6 @@ public class ValueDescriptionUtil {
 
     public static String append(Object text, String appendix) {
         return text + " (" + appendix + ")";
-    }
-
-    public static String appendL(Object text) {
-        return append(text, L);
-    }
-
-    public static String appendKWh(Object text) {
-        return append(text, KWH);
-    }
-
-    public static String appendPpm(Object text) {
-        return append(text, PPM);
-    }
-
-    public static String appendV(String voltage) {
-        return append(voltage, "V");
-    }
-
-    public static String appendW(String power) {
-        return append(power, "W");
-    }
-
-    public static String appendHz(String frequency) {
-        return append(frequency, "Hz");
     }
 
     public static String desiredTemperatureToString(double temperature, double minTemp, double maxTemp) {

@@ -1,0 +1,12 @@
+{
+  "sensorDevice": true,
+  "showStateInOverview": true,
+  "defaultGroup": "WINDOW",
+  "states": [
+    {
+      "key": "previous",
+      "desc": "lastState",
+      "showInOverview": true
+    }
+  ]
+}
