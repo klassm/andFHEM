@@ -31,14 +31,14 @@ public class DimConversionUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(DimConversionUtil.class);
 
     public static int toSeekbarProgress(float progress, float lowerBound, float step) {
-        if (step == 0) {
-            LOGGER.error("dim step is 0!");
-            step = 1;
-        }
-
         int progressAsInt = (int) (progress * 10);
         int lowerBoundAsInt = (int) (lowerBound * 10);
         int stepAsInt = (int) (step * 10);
+        if (stepAsInt == 0) {
+            LOGGER.error("dim step is 0!");
+            stepAsInt = 1;
+        }
+
         return (progressAsInt - lowerBoundAsInt) / stepAsInt;
     }
 
