@@ -128,11 +128,7 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
             return "closes";
         }
 
-        if (eventMapReverse.containsKey("off")) {
-            return eventMapReverse.get("off");
-        }
-
-        return super.getOffStateName();
+        return eventMap.getKeyOr("off", super.getOffStateName());
     }
 
     @Override
@@ -141,11 +137,7 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
             return "opens";
         }
 
-        if (eventMapReverse.containsKey("on")) {
-            return eventMapReverse.get("on");
-        }
-
-        return super.getOnStateName();
+        return eventMap.getKeyOr("on", super.getOnStateName());
     }
 
 

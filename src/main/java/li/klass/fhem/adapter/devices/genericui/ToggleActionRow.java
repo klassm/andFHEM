@@ -37,6 +37,7 @@ import com.google.common.base.Optional;
 import java.util.Map;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.EventMap;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public abstract class ToggleActionRow {
@@ -81,8 +82,7 @@ public abstract class ToggleActionRow {
 
     @SuppressWarnings("unchecked")
     protected void setToogleButtonText(FhemDevice device, ToggleButton toggleButton, Context context) {
-        Map<String, String> eventMap = device.getEventMap();
-        if (eventMap == null) return;
+        EventMap eventMap = device.getEventMap();
 
         Optional<String> onStateText = getOnStateText(eventMap);
         if (onStateText.isPresent()) {
@@ -99,12 +99,12 @@ public abstract class ToggleActionRow {
         }
     }
 
-    protected Optional<String> getOnStateText(Map<String, String> eventMap) {
-        return Optional.fromNullable(eventMap.get("on"));
+    protected Optional<String> getOnStateText(EventMap eventMap) {
+        return Optional.fromNullable(eventMap.getValueFor("on"));
     }
 
-    protected Optional<String> getOffStateText(Map<String, String> eventMap) {
-        return Optional.fromNullable(eventMap.get("off"));
+    protected Optional<String> getOffStateText(EventMap eventMap) {
+        return Optional.fromNullable(eventMap.getValueFor("off"));
     }
 
     protected abstract boolean isOn(FhemDevice device);

@@ -34,9 +34,12 @@ import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import li.klass.fhem.domain.EventMap;
+import li.klass.fhem.domain.EventMapParser;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -67,8 +70,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
-    protected Map<String, String> eventMapReverse = newHashMap();
-    protected Map<String, String> eventMap = newHashMap();
+    protected EventMap eventMap = new EventMap(Collections.<String, String>emptyMap());
     protected SetList setList = new SetList();
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
@@ -127,41 +129,11 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     private void parseEventMap(String content) {
-        eventMap = newHashMap();
-        eventMapReverse = newHashMap();
-
-        if (content.startsWith("/")) {
-            parseSlashesEventMap(content);
-        } else {
-            parseSpacesEventMap(content);
-        }
-    }
-
-    private void parseSpacesEventMap(String content) {
-        String[] events = content.split(" ");
-        for (String event : events) {
-            String[] eventParts = event.split(":");
-            if (eventParts.length < 2) continue;
-            putEventToEventMap(eventParts[0], eventParts[1]);
-        }
-    }
-
-    private void parseSlashesEventMap(String content) {
-        String[] events = content.split("/");
-        for (int i = 1; i < events.length; i++) {
-            String event = events[i];
-            String[] eventParts = event.split(":");
-
-            String key = eventParts[0];
-            String value = eventParts.length > 1 ? eventParts[1] : eventParts[0];
-
-            putEventToEventMap(key, value);
-        }
+        eventMap = EventMapParser.INSTANCE.parseEventMap(content);
     }
 
     protected void putEventToEventMap(String key, String value) {
-        eventMap.put(key, value);
-        eventMapReverse.put(value, key);
+        eventMap = eventMap.put(key, value);
     }
 
     @ShowField(description = ResourceIdMapper.deviceName, showAfter = ShowField.FIRST)
@@ -291,8 +263,9 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public void setState(String state) {
-        if (eventMap.containsKey(state)) {
-            state = eventMap.get(state);
+        String value = eventMap.getValueFor(state);
+        if (value != null){
+            state = value;
         }
 
         XmlListDevice device = getXmlListDevice();
@@ -307,8 +280,9 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public String getInternalState() {
         String state = getState();
-        if (eventMapReverse == null || !eventMapReverse.containsKey(state)) return state;
-        return eventMapReverse.get(state);
+        String value = eventMap.getKeyFor(state);
+        if (value == null) return state;
+        return value;
     }
 
     public String getAlias() {
@@ -320,18 +294,14 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public String getEventMapStateFor(String state) {
-        if (eventMap.containsKey(state)) {
-            return eventMap.get(state);
-        }
-
-        return state;
+        return eventMap.getOr(state, state);
     }
 
     public String getReverseEventMapStateFor(String state) {
-        return eventMapReverse.containsKey(state) ? eventMapReverse.get(state) : state;
+        return eventMap.getKeyOr(state, state);
     }
 
-    public Map<String, String> getEventMap() {
+    public EventMap getEventMap() {
         return eventMap;
     }
 
@@ -350,16 +320,13 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         List<String> sortedKeys = setList.getSortedKeys();
         List<String> eventMapKeys = newArrayList();
         for (String key : sortedKeys) {
-            String eventMapKey = eventMapReverse.containsKey(key) ? eventMapReverse.get(key) : key;
+            String eventMapKey = eventMap.getKeyOr(key, key);
             eventMapKeys.add(eventMapKey);
         }
         return eventMapKeys.toArray(new String[eventMapKeys.size()]);
     }
 
     public String formatTargetState(String targetState) {
-        if (eventMapReverse != null && eventMapReverse.containsKey(targetState)) {
-            return eventMapReverse.get(targetState);
-        }
         return targetState;
     }
 
@@ -401,7 +368,6 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
                 ", alias='" + alias + '\'' +
                 ", measured='" + measured + '\'' +
                 ", definition='" + definition + '\'' +
-                ", eventMapReverse=" + eventMapReverse +
                 ", eventMap=" + eventMap +
                 ", setList=" + setList.toString() +
                 '}';

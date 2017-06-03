@@ -60,7 +60,7 @@
             <INT key="STATE" value="ein"/>
             <INT key="TYPE" value="OWDevice"/>
             <INT key="IODev" value="OWSERVER"/>
-            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="eventMap" value="/PIO 1:ein/PIO 0:aus/"/>
             <ATTR key="model" value="DS2405"/>
             <ATTR key="webCmd" value="PIO 1:PIO 0"/>
             <STATE key="PIO" value="1" measured="2013-02-21 21:20:09"/>
@@ -74,7 +74,7 @@
             <INT key="STATE" value="aus"/>
             <INT key="TYPE" value="OWDevice"/>
             <INT key="IODev" value="OWSERVER"/>
-            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="eventMap" value="/PIO 1:ein/PIO 0:aus/"/>
             <ATTR key="model" value="DS2405"/>
             <ATTR key="webCmd" value="PIO 1:PIO 0"/>
             <STATE key="PIO" value="0" measured="2013-02-06 18:42:06"/>
@@ -88,7 +88,7 @@
             <INT key="STATE" value="aus"/>
             <INT key="TYPE" value="OWDevice"/>
             <INT key="IODev" value="OWSERVER"/>
-            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="eventMap" value="/PIO 1:ein/PIO 0:aus/"/>
             <ATTR key="model" value="DS2405"/>
             <ATTR key="webCmd" value="PIO 1:PIO 0"/>
             <STATE key="PIO" value="0" measured="2013-02-06 18:42:25"/>
@@ -102,7 +102,7 @@
             <INT key="STATE" value="???"/>
             <INT key="TYPE" value="OWDevice"/>
             <INT key="IODev" value="OWSERVER"/>
-            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="eventMap" value="/PIO 1:ein/PIO 0:aus/"/>
             <ATTR key="model" value="DS2405"/>
             <ATTR key="webCmd" value="PIO 1:PIO 0"/>
             <ATTR key="room" value="room"/>
@@ -115,7 +115,7 @@
             <INT key="STATE" value="aus"/>
             <INT key="TYPE" value="OWDevice"/>
             <INT key="IODev" value="OWSERVER"/>
-            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="eventMap" value="/PIO 1:ein/PIO 0:aus/"/>
             <ATTR key="model" value="DS2405"/>
             <ATTR key="webCmd" value="PIO 1:PIO 0"/>
             <STATE key="PIO" value="0" measured="2013-02-06 18:42:31"/>

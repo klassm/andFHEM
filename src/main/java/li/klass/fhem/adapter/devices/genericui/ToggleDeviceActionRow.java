@@ -53,11 +53,9 @@ public class ToggleDeviceActionRow extends ToggleActionRow {
 
     @Override
     protected void onButtonClick(final Context context, FhemDevice device, boolean isChecked) {
-        Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-        context.startService(intent);
+        context.startService(new Intent(Actions.DEVICE_TOGGLE_STATE)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 }

@@ -35,7 +35,7 @@ public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevi
     public boolean supportsToggle() {
         return getSetList().contains("on", "off") ||
                 getWebCmd().containsAll(newHashSet("on", "off")) ||
-                (eventMap.containsKey("on") && eventMap.containsKey("off"));
+                (eventMap.contains("on") && eventMap.contains("off"));
     }
 
     @XmllistAttribute("onStateName")

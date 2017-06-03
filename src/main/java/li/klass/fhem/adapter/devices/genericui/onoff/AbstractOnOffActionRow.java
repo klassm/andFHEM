@@ -37,6 +37,7 @@ import com.google.common.base.Optional;
 import java.util.Map;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.EventMap;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.widget.CheckableButton;
 
@@ -108,18 +109,18 @@ public abstract class AbstractOnOffActionRow {
 
     protected String getOnStateText(FhemDevice device, Context context) {
         @SuppressWarnings("unchecked")
-        Map<String, String> eventMap = device.getEventMap();
+        EventMap eventMap = device.getEventMap();
 
         String onStateName = getOnStateName(device, context);
-        return eventMap.containsKey(onStateName) ? eventMap.get(onStateName) : context.getString(R.string.on);
+        return eventMap.getOr(onStateName, context.getString(R.string.on));
     }
 
     protected String getOffStateText(FhemDevice device, Context context) {
         @SuppressWarnings("unchecked")
-        Map<String, String> eventMap = device.getEventMap();
+        EventMap eventMap = device.getEventMap();
 
         String offStateName = getOffStateName(device, context);
-        return eventMap.containsKey(offStateName) ? eventMap.get(offStateName) : context.getString(R.string.off);
+        return eventMap.getOr(offStateName, context.getString(R.string.off));
     }
 
     protected boolean isOn(FhemDevice device, Context context) {
