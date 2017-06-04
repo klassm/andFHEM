@@ -91,8 +91,6 @@ public abstract class DeviceXMLParsingBase {
 
     @Before
     public void before() throws Exception {
-        AndFHEMApplication.setContext(context);
-
         ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(new AndFHEMApplication())).build();
 
@@ -127,7 +125,7 @@ public abstract class DeviceXMLParsingBase {
         }
     }
 
-    protected void mockStrings() {
+    private void mockStrings() {
         try {
             String content = Resources.toString(new File("src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
             Pattern pattern = Pattern.compile("<string name=\"([^\"]+)\">([^<]+)</string>");

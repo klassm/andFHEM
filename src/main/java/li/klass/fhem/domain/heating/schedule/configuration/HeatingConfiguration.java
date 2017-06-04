@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import android.content.Context;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,7 +110,7 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval<H>, C e
 
     protected abstract List<StateToSet> generateStateToSetFor(DayProfile<H, HeatingIntervalConfiguration<H>> dayProfile);
 
-    public String formatTimeForDisplay(String time) {
+    public String formatTimeForDisplay(String time, Context context) {
         return time;
     }
 

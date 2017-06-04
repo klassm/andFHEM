@@ -59,7 +59,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
 import de.duenndns.ssl.MemorizingTrustManager;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.util.ApplicationProperties;
@@ -103,7 +102,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
         InputStreamReader reader = null;
         try {
-            RequestResult<InputStream> response = executeRequest(urlSuffix);
+            RequestResult<InputStream> response = executeRequest(urlSuffix, context);
             if (response.error != null) {
                 return new RequestResult<>(response.error);
             }
@@ -135,13 +134,13 @@ public class FHEMWEBConnection extends FHEMConnection {
         return urlSuffix;
     }
 
-    public RequestResult<InputStream> executeRequest(String urlSuffix) {
-        return executeRequest(serverSpec.getUrl(), urlSuffix, false);
+    public RequestResult<InputStream> executeRequest(String urlSuffix, Context context) {
+        return executeRequest(serverSpec.getUrl(), urlSuffix, false, context);
     }
 
-    private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry) {
+    private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry, Context context) {
 
-        initSslContext();
+        initSslContext(context);
         if (urlSuffix.contains("cmd=")) {
             String csrfToken = findCsrfToken(serverUrl).or("");
             urlSuffix += "&fwcsrf=" + csrfToken;
@@ -174,7 +173,7 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<>((InputStream) new BufferedInputStream(response.getContent()));
         } catch (Exception e) {
             LOG.info("error while loading data", e);
-            return handleError(urlSuffix, isRetry, url, e);
+            return handleError(urlSuffix, isRetry, url, e, context);
         }
     }
 
@@ -198,22 +197,22 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
     }
 
-    private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e) {
+    private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e, Context context) {
         setErrorInErrorHolderFor(e, url, urlSuffix);
-        return handleRetryIfRequired(isRetry, new RequestResult<InputStream>(HOST_CONNECTION_ERROR), urlSuffix);
+        return handleRetryIfRequired(isRetry, new RequestResult<InputStream>(HOST_CONNECTION_ERROR), urlSuffix, context);
     }
 
     private RequestResult<InputStream> handleRetryIfRequired(boolean isCurrentRequestRetry, RequestResult<InputStream> previousResult,
-                                                             String urlSuffix) {
+                                                             String urlSuffix, Context context) {
         if (!serverSpec.canRetry() || isCurrentRequestRetry) {
             return previousResult;
         }
-        return retryRequest(urlSuffix);
+        return retryRequest(urlSuffix, context);
     }
 
-    private RequestResult<InputStream> retryRequest(String urlSuffix) {
+    private RequestResult<InputStream> retryRequest(String urlSuffix, Context context) {
         LOG.info("retrying request for alternate URL");
-        return executeRequest(serverSpec.getAlternateUrl(), urlSuffix, true);
+        return executeRequest(serverSpec.getAlternateUrl(), urlSuffix, true, context);
     }
 
     public String getPassword() {
@@ -230,8 +229,8 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     @Override
-    public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        RequestResult<InputStream> response = executeRequest(relativePath);
+    public RequestResult<Bitmap> requestBitmap(String relativePath, Context context) {
+        RequestResult<InputStream> response = executeRequest(relativePath, context);
         if (response.error != null) {
             return new RequestResult<>(response.error);
         }
@@ -242,10 +241,10 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
     }
 
-    private void initSslContext() {
+    private void initSslContext(Context context) {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(AndFHEMApplication.getContext());
+            MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
             KeyManager[] clientKeys = null;
             if (serverSpec.getClientCertificatePath() != null) {
                 File clientCertificate = new File(serverSpec.getClientCertificatePath());

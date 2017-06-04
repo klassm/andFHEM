@@ -207,7 +207,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
         LineData lineData = createLineDataFor(graphData);
 
         String title;
-        if (DisplayUtil.getWidthInDP() < 500) {
+        if (DisplayUtil.getWidthInDP(getApplicationContext()) < 500) {
             title = device.getAliasOrName() + "\n\r" +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate);
         } else {
@@ -230,7 +230,7 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
             }
         });
         xAxis.setLabelRotationAngle(300);
-        int labelCount = DisplayUtil.getWidthInDP() / 150;
+        int labelCount = DisplayUtil.getWidthInDP(getApplicationContext()) / 150;
         xAxis.setLabelCount(labelCount < 2 ? 2 : labelCount, true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 

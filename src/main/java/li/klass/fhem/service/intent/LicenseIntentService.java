@@ -68,7 +68,7 @@ public class LicenseIntentService extends ConvenientIntentService {
             public void isPremium(boolean isPremium) {
                 sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium);
             }
-        });
+        }, getApplicationContext());
     }
 
     @Override

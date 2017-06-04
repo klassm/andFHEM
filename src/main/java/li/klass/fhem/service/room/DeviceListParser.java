@@ -118,7 +118,7 @@ public class DeviceListParser {
                     .replaceAll("<ATTR key=\"globalpassword\" value=\"[^\"]+\"/>", "")
                     .replaceAll("<ATTR key=\"basicAuth\" value=\"[^\"]+\"/>", ""));
 
-            new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors();
+            new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors(context);
             return null;
         }
     }
@@ -255,7 +255,7 @@ public class DeviceListParser {
             FhemDevice> allDevices, Context context, Optional<DeviceConfiguration> deviceConfiguration) {
 
         try {
-            T device = createAndFillDevice(deviceClass, xmlListDevice, deviceConfiguration);
+            T device = createAndFillDevice(deviceClass, xmlListDevice, deviceConfiguration, context);
             if (device == null) {
                 return false;
             }
@@ -279,7 +279,7 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice xmlListDevice, Optional<DeviceConfiguration> deviceConfiguration) throws Exception {
+    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, XmlListDevice xmlListDevice, Optional<DeviceConfiguration> deviceConfiguration, Context context) throws Exception {
         T device = deviceClass.newInstance();
         device.setXmlListDevice(xmlListDevice);
         device.setDeviceConfiguration(deviceConfiguration);
@@ -302,7 +302,7 @@ public class DeviceListParser {
                 continue;
             }
 
-            invokeDeviceAttributeMethod(cache, device, sanitisedKey, nodeContent, child, child.getType());
+            invokeDeviceAttributeMethod(cache, device, sanitisedKey, nodeContent, child, child.getType(), context);
         }
 
         if (device.getName() == null) {
@@ -323,18 +323,18 @@ public class DeviceListParser {
     }
 
     private <T extends FhemDevice> void invokeDeviceAttributeMethod(Map<String, Set<DeviceClassCacheEntry>> cache, T device, String key,
-                                                                    String value, DeviceNode deviceNode, DeviceNode.DeviceNodeType tagName) throws Exception {
+                                                                    String value, DeviceNode deviceNode, DeviceNode.DeviceNodeType tagName, Context context) throws Exception {
 
         device.onChildItemRead(tagName, key, value, deviceNode);
-        handleCacheEntryFor(cache, device, key, value, deviceNode);
+        handleCacheEntryFor(cache, device, key, value, deviceNode, context);
     }
 
     private <T extends FhemDevice> void handleCacheEntryFor(Map<String, Set<DeviceClassCacheEntry>> cache, T device,
-                                                            String key, String value, DeviceNode deviceNode) throws Exception {
+                                                            String key, String value, DeviceNode deviceNode, Context context) throws Exception {
         key = key.toLowerCase(Locale.getDefault());
         if (cache.containsKey(key)) {
             for (DeviceClassCacheEntry entry : cache.get(key)) {
-                entry.invoke(device, deviceNode, value);
+                entry.invoke(device, deviceNode, value, context);
             }
         }
     }
@@ -383,7 +383,7 @@ public class DeviceListParser {
         for (Map.Entry<String, String> entry : updates.entrySet()) {
             try {
                 handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue(),
-                        new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), DateTime.now()));
+                        new DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.getKey(), entry.getValue(), DateTime.now()), context);
 
                 device.getXmlListDevice().getStates().put(entry.getKey(),
                         sanitiser.sanitise(device.getXmlListDevice().getType(),
@@ -458,7 +458,7 @@ public class DeviceListParser {
             return attribute;
         }
 
-        public abstract void invoke(Object object, DeviceNode node, String value) throws Exception;
+        public abstract void invoke(Object object, DeviceNode node, String value, Context context) throws Exception;
     }
 
     private class DeviceClassMethodEntry extends DeviceClassCacheEntry {
@@ -472,7 +472,7 @@ public class DeviceListParser {
         }
 
         @Override
-        public void invoke(Object object, DeviceNode node, String value) throws Exception {
+        public void invoke(Object object, DeviceNode node, String value, Context context) throws Exception {
             Class<?>[] parameterTypes = method.getParameterTypes();
 
             if (parameterTypes.length == 1) {
@@ -494,6 +494,10 @@ public class DeviceListParser {
                     && parameterTypes[1].equals(DeviceNode.class)
                     && node != null) {
                 method.invoke(object, value, node);
+            } else if (parameterTypes.length == 2
+                    && parameterTypes[0].equals(String.class)
+                    && parameterTypes[1].equals(Context.class)) {
+                method.invoke(object, value, context);
             }
         }
     }
@@ -508,7 +512,7 @@ public class DeviceListParser {
         }
 
         @Override
-        public void invoke(Object object, DeviceNode node, String value) throws Exception {
+        public void invoke(Object object, DeviceNode node, String value, Context context) throws Exception {
             LOG.debug("setting {} to {}", field.getName(), value);
 
             if (field.getType().isAssignableFrom(Double.class) || field.getType().isAssignableFrom(double.class)) {

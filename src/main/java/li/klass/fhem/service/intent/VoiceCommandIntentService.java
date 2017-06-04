@@ -94,7 +94,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
                     }
                 }
             }
-        });
+        }, getApplicationContext());
 
         return State.DONE;
     }

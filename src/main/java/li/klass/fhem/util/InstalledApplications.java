@@ -24,14 +24,13 @@
 
 package li.klass.fhem.util;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.google.common.collect.Lists;
 
 import java.util.List;
-
-import li.klass.fhem.AndFHEMApplication;
 
 public class InstalledApplications {
 
@@ -57,13 +56,13 @@ public class InstalledApplications {
         }
     }
 
-    public static List<InstalledApplication> getInstalledApps() {
-        return getInstalledApps(false);
+    public static List<InstalledApplication> getInstalledApps(Context context) {
+        return getInstalledApps(false, context);
     }
 
-    public static List<InstalledApplication> getInstalledApps(boolean getSysPackages) {
+    private static List<InstalledApplication> getInstalledApps(boolean getSysPackages, Context context) {
         List<InstalledApplication> result = Lists.newArrayList();
-        PackageManager packageManager = AndFHEMApplication.getContext().getPackageManager();
+        PackageManager packageManager = context.getPackageManager();
         if (packageManager == null) return result;
 
         List<PackageInfo> packages = packageManager.getInstalledPackages(0);

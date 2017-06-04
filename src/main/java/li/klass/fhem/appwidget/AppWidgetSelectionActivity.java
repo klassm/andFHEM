@@ -159,7 +159,7 @@ public abstract class AppWidgetSelectionActivity extends AppCompatActivity imple
     @Override
     public void onDeviceSelect(FhemDevice<?> clickedDevice) {
 
-        List<WidgetType> widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, clickedDevice);
+        List<WidgetType> widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, clickedDevice, getApplicationContext());
         openWidgetTypeSelection(widgetTypes, clickedDevice.getName());
     }
 

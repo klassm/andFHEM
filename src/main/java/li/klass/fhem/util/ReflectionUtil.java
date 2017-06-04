@@ -35,8 +35,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import li.klass.fhem.AndFHEMApplication;
-
 import static com.google.common.collect.Lists.newArrayList;
 
 public class ReflectionUtil {
@@ -62,9 +60,7 @@ public class ReflectionUtil {
         return getFieldValueAsString(object, fields.get(0));
     }
 
-    public static <T extends Annotation> String getValueAndDescriptionForAnnotation(Object object, Class<T> annotationCls) {
-        Context context = AndFHEMApplication.getContext();
-
+    public static <T extends Annotation> String getValueAndDescriptionForAnnotation(Object object, Class<T> annotationCls, Context context) {
         List<Field> fields = getFieldsWithAnnotation(object.getClass(), annotationCls);
         if (fields.size() == 0) return null;
 

@@ -41,9 +41,9 @@ import static li.klass.fhem.util.DisplayUtil.dpToPx;
 
 public class LitreContentView extends View {
 
-    private static final Paint WHITE_PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private static final Paint BORDER_PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private static final Paint TEXT_PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public static final int DARK_BLUE = 0xFF0808ff;
     public static final int LIGHT_BLUE = 0XFFC3E6FF;
@@ -55,20 +55,19 @@ public class LitreContentView extends View {
 
     public static final int FONT_SIZE_DP = 15;
 
-    static {
-        WHITE_PAINT.setColor(Color.WHITE);
-
-        TEXT_PAINT.setColor(Color.RED);
-        TEXT_PAINT.setTextSize(dpToPx(FONT_SIZE_DP));
-        TEXT_PAINT.setTextAlign(Paint.Align.CENTER);
-
-        BORDER_PAINT.setStyle(Paint.Style.STROKE);
-        BORDER_PAINT.setColor(Color.GRAY);
-        BORDER_PAINT.setStrokeWidth(BORDER_WIDTH);
-    }
-
     public LitreContentView(Context context, double fillPercentage) {
         super(context);
+
+        whitePaint.setColor(Color.WHITE);
+
+        textPaint.setColor(Color.RED);
+        textPaint.setTextSize(dpToPx(FONT_SIZE_DP, context));
+        textPaint.setTextAlign(Paint.Align.CENTER);
+
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(Color.GRAY);
+        borderPaint.setStrokeWidth(BORDER_WIDTH);
+
         this.fillPercentage = fillPercentage;
         init();
     }
@@ -84,7 +83,7 @@ public class LitreContentView extends View {
     }
 
     private void init() {
-        size = DisplayUtil.getSmallestDimensionInPx() / 3;
+        size = DisplayUtil.getSmallestDimensionInPx(getContext()) / 3;
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
         params.rightMargin = 0;
@@ -110,19 +109,19 @@ public class LitreContentView extends View {
     private void drawText(Canvas canvas, int innerCircleYCenter, int innerCircleXCenter) {
         float fillstate = (int) (fillPercentage * 100);
         String fillstateText = ValueDescriptionUtil.appendPercent(fillstate);
-        canvas.drawText(fillstateText, innerCircleXCenter, innerCircleYCenter, TEXT_PAINT);
+        canvas.drawText(fillstateText, innerCircleXCenter, innerCircleYCenter, textPaint);
     }
 
     private void drawTop(Canvas canvas, int innerCircleYCenter, int innerCircleXCenter, int innerCircleRadius, int topDimension) {
-        canvas.drawCircle(innerCircleXCenter, innerCircleYCenter, innerCircleRadius, BORDER_PAINT);
+        canvas.drawCircle(innerCircleXCenter, innerCircleYCenter, innerCircleRadius, borderPaint);
         canvas.drawRect(innerCircleXCenter - topDimension, innerCircleYCenter - innerCircleRadius - topDimension,
-                innerCircleXCenter + topDimension, innerCircleYCenter - innerCircleRadius, BORDER_PAINT);
+                innerCircleXCenter + topDimension, innerCircleYCenter - innerCircleRadius, borderPaint);
         canvas.drawRect(innerCircleXCenter - topDimension + 1, innerCircleYCenter - innerCircleRadius - topDimension + 1,
-                innerCircleXCenter + topDimension - 1, innerCircleYCenter - innerCircleRadius + BORDER_WIDTH, WHITE_PAINT);
+                innerCircleXCenter + topDimension - 1, innerCircleYCenter - innerCircleRadius + BORDER_WIDTH, whitePaint);
     }
 
     private void drawFillstateCircle(Canvas canvas, int innerCircleRadius, int innerCircleYCenter, int innerCircleXCenter, int xStart) {
-        canvas.drawCircle(innerCircleXCenter, innerCircleYCenter, innerCircleRadius, WHITE_PAINT);
+        canvas.drawCircle(innerCircleXCenter, innerCircleYCenter, innerCircleRadius, whitePaint);
 
         canvas.save();
 

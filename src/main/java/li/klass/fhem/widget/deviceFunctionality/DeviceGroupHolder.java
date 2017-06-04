@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
@@ -62,7 +61,7 @@ public class DeviceGroupHolder {
     public List<DeviceFunctionality> getVisible(Context context) {
         if (!isLoaded) load(context);
 
-        List<DeviceFunctionality> all = getAvailable();
+        List<DeviceFunctionality> all = getAvailable(context);
         all.removeAll(invisible);
         all.removeAll(visible);
 
@@ -75,7 +74,7 @@ public class DeviceGroupHolder {
     private synchronized void load(Context context) {
         if (isLoaded) return;
 
-        available = getAvailable();
+        available = getAvailable(context);
 
         visible = loadVisibleDeviceTypes(context);
         invisible = loadInvisibleDeviceTypes(context);
@@ -83,9 +82,7 @@ public class DeviceGroupHolder {
         isLoaded = true;
     }
 
-    private ArrayList<DeviceFunctionality> getAvailable() {
-        final Context context = AndFHEMApplication.getContext();
-
+    private ArrayList<DeviceFunctionality> getAvailable(final Context context) {
         ArrayList<DeviceFunctionality> functionalityList = new ArrayList<>(
                 Arrays.asList(DeviceFunctionality.values()));
         Collections.sort(functionalityList, new Comparator<DeviceFunctionality>() {

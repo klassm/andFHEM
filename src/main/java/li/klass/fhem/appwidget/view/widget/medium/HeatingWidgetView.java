@@ -84,7 +84,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device) {
+    public boolean supports(FhemDevice<?> device, Context context) {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
         return xmlListDevice.containsAnyOfStates(TEMPERATURE_STATES)
                 && xmlListDevice.containsAnyOfStates(DESIRED_TEMPERATURE_STATES);

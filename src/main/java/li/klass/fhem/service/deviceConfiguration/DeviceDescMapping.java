@@ -34,7 +34,6 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @Singleton
@@ -50,13 +49,13 @@ public class DeviceDescMapping {
         }
     }
 
-    public String descFor(String key) {
+    public String descFor(String key, Context context) {
         String value = mapping.optString(key, key);
-        return resourceFor(value, AndFHEMApplication.getContext());
+        return resourceFor(value, context);
     }
 
-    public String descFor(ResourceIdMapper resourceId) {
-        return AndFHEMApplication.getContext().getString(resourceId.getId());
+    public String descFor(ResourceIdMapper resourceId, Context context) {
+        return context.getString(resourceId.getId());
     }
 
     private String resourceFor(String value, Context context) {

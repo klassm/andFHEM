@@ -47,8 +47,8 @@ public class GraphDefinitionsForDeviceService {
         ImmutableSet<SvgGraphDefinition> devices = from(allDevices)
                 .filter(XmlListDevice.hasType("SVG"))
                 .filter(hasConcerningLogDevice(allDevices, device))
-                .filter(gplotDefinitionExists(allDevices))
-                .transform(toGraphDefinition(allDevices)).toSet();
+                .filter(gplotDefinitionExists(allDevices, context))
+                .transform(toGraphDefinition(allDevices, context)).toSet();
         for (SvgGraphDefinition svgGraphDefinition : devices) {
             LOGGER.info("graphDefinitionsFor(name={},connection={}) - found SVG with name {}", device.getName(), connectionId.or("--"), svgGraphDefinition.getName());
         }
@@ -56,13 +56,13 @@ public class GraphDefinitionsForDeviceService {
     }
 
     @NonNull
-    private Function<XmlListDevice, SvgGraphDefinition> toGraphDefinition(final ImmutableSet<XmlListDevice> allDevices) {
+    private Function<XmlListDevice, SvgGraphDefinition> toGraphDefinition(final ImmutableSet<XmlListDevice> allDevices, final Context context) {
         return new Function<XmlListDevice, SvgGraphDefinition>() {
             @Override
             public SvgGraphDefinition apply(XmlListDevice svgDevice) {
                 String logDeviceName = svgDevice.getInternal("LOGDEVICE").get();
                 String gplotFileName = svgDevice.getInternal("GPLOTFILE").get();
-                GPlotDefinition gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)).get();
+                GPlotDefinition gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices), context).get();
 
                 List<String> labels = Arrays.asList(svgDevice.getAttribute("label")
                         .or("").replaceAll("\"", "").split(","));
@@ -75,7 +75,7 @@ public class GraphDefinitionsForDeviceService {
     }
 
     @NonNull
-    private Predicate<XmlListDevice> gplotDefinitionExists(final ImmutableSet<XmlListDevice> allDevices) {
+    private Predicate<XmlListDevice> gplotDefinitionExists(final ImmutableSet<XmlListDevice> allDevices, final Context context) {
         return new Predicate<XmlListDevice>() {
             @Override
             public boolean apply(XmlListDevice input) {
@@ -84,7 +84,7 @@ public class GraphDefinitionsForDeviceService {
                 }
                 Optional<String> gplotFileName = input.getInternal("GPLOTFILE");
                 return gplotFileName.isPresent()
-                        && gPlotHolder.definitionFor(gplotFileName.get(), isConfigDb(allDevices)).isPresent();
+                        && gPlotHolder.definitionFor(gplotFileName.get(), isConfigDb(allDevices), context).isPresent();
             }
         };
     }

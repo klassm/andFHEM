@@ -36,7 +36,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 
@@ -79,7 +78,7 @@ public class GPlotHolder {
         definitions.putAll(defaultFiles);
     }
 
-    public Optional<GPlotDefinition> definitionFor(String name, boolean isConfigDb) {
+    public Optional<GPlotDefinition> definitionFor(String name, boolean isConfigDb, Context context) {
         loadDefaultGPlotFiles();
 
         LOGGER.info("definitionFor(name={}, isConfigDb={})", name, isConfigDb);
@@ -90,10 +89,9 @@ public class GPlotHolder {
 
         LOGGER.info("definitionFor(name={}, isConfigDb={}) - loading definition from remote", name, isConfigDb);
 
-        Context applicationContext = AndFHEMApplication.getContext();
         Optional<String> result = isConfigDb
-                ? Optional.fromNullable(commandExecutionService.executeSync(new Command("configdb fileshow ./www/gplot/" + name + ".gplot"), applicationContext))
-                : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", applicationContext);
+                ? Optional.fromNullable(commandExecutionService.executeSync(new Command("configdb fileshow ./www/gplot/" + name + ".gplot"), context))
+                : commandExecutionService.executeRequest("/gplot/" + name + ".gplot", context);
 
         if (result.isPresent()) {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - done loading, putting to cache", name, isConfigDb);

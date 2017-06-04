@@ -29,31 +29,28 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
-import li.klass.fhem.AndFHEMApplication;
-
 public class DisplayUtil {
-    public static int getLargestDimensionInDP() {
-        return (int) dpToPx(getLargestDimensionInPx());
+    public static int getLargestDimensionInDP(Context context) {
+        return (int) dpToPx(getLargestDimensionInPx(context), context);
     }
 
-    public static int getLargestDimensionInPx() {
-        DisplayMetrics metrics = getDisplayMetrics();
+    public static int getLargestDimensionInPx(Context context) {
+        DisplayMetrics metrics = getDisplayMetrics(context);
 
         return metrics.heightPixels > metrics.widthPixels ? metrics.heightPixels : metrics.widthPixels;
     }
 
-    public static int getSmallestDimensionInPx() {
-        DisplayMetrics metrics = getDisplayMetrics();
+    public static int getSmallestDimensionInPx(Context context) {
+        DisplayMetrics metrics = getDisplayMetrics(context);
 
         return metrics.heightPixels < metrics.widthPixels ? metrics.heightPixels : metrics.widthPixels;
     }
 
-    public static int getWidthInDP() {
-        return getDisplayMetrics().widthPixels;
+    public static int getWidthInDP(Context context) {
+        return getDisplayMetrics(context).widthPixels;
     }
 
-    private static DisplayMetrics getDisplayMetrics() {
-        Context context = AndFHEMApplication.getContext();
+    private static DisplayMetrics getDisplayMetrics(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
@@ -61,8 +58,8 @@ public class DisplayUtil {
         return metrics;
     }
 
-    public static float dpToPx(int dp) {
-        Resources resources = AndFHEMApplication.getContext().getResources();
+    public static float dpToPx(int dp, Context context) {
+        Resources resources = context.getResources();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
     }
 }

@@ -128,7 +128,7 @@ public class DefaultViewStrategy extends ViewStrategy {
                         rowHolder = createTableRow(layoutInflater, R.layout.device_overview_generic_table_row);
                         viewHolder.addTableRow(rowHolder);
                     }
-                    fillTableRow(rowHolder, item, device);
+                    fillTableRow(rowHolder, item, device, context);
                     viewHolder.getTableLayout().addView(rowHolder.row);
                 }
             }
@@ -148,9 +148,9 @@ public class DefaultViewStrategy extends ViewStrategy {
         return holder;
     }
 
-    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
+    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
         String value = item.getValueFor(device);
-        String description = item.getName(deviceDescMapping);
+        String description = item.getName(deviceDescMapping, context);
         setTextView(holder.description, description);
         setTextView(holder.value, String.valueOf(value));
         if (value == null || value.equals("")) {

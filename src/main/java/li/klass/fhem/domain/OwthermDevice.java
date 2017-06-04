@@ -26,7 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -49,9 +48,9 @@ public class OwthermDevice extends FhemDevice<OwthermDevice> {
     private String present;
 
     @XmllistAttribute("present")
-    public void setPresent(String value) {
+    public void setPresent(String value, Context context) {
         int stringId = value.equals("1") ? R.string.yes : R.string.no;
-        present = AndFHEMApplication.getContext().getString(stringId);
+        present = context.getString(stringId);
     }
 
     public String getTemperature() {

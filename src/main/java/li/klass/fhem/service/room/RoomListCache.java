@@ -37,7 +37,6 @@ import java.io.BufferedOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -122,9 +121,10 @@ public class RoomListCache {
      * Loads the currently cached room device list map data from the file storage.
      *
      * @return cached room device list map
+     * @param context
      */
     @SuppressWarnings("unchecked")
-    public Optional<RoomDeviceList> getCachedRoomDeviceListMap() {
+    public Optional<RoomDeviceList> getCachedRoomDeviceListMap(Context context) {
         if (cachedRoomList != null || fileStoreNotFilled) {
             return Optional.fromNullable(cachedRoomList);
         }
@@ -138,7 +138,7 @@ public class RoomListCache {
                 LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");
                 long startLoad = System.currentTimeMillis();
 
-                objectInputStream = new ObjectInputStream(new BufferedInputStream(AndFHEMApplication.getContext().openFileInput(getFileName())));
+                objectInputStream = new ObjectInputStream(new BufferedInputStream(context.openFileInput(getFileName())));
                 cachedRoomList = (RoomDeviceList) objectInputStream.readObject();
                 LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
                         (System.currentTimeMillis() - startLoad));

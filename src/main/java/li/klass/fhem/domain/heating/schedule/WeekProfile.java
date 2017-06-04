@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.heating.schedule;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,10 +107,11 @@ public class WeekProfile<INTERVAL extends BaseHeatingInterval<INTERVAL>, C exten
      * Format the given text. If null or time equals 24:00, return off
      *
      * @param time time to check
+     * @param context
      * @return formatted time
      */
-    public String formatTimeForDisplay(String time) {
-        return configuration.formatTimeForDisplay(time);
+    public String formatTimeForDisplay(String time, Context context) {
+        return configuration.formatTimeForDisplay(time, context);
     }
 
     public String formatTimeForCommand(String time) {

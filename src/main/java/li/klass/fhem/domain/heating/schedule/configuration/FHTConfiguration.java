@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import android.content.Context;
+
 import java.util.List;
 import java.util.Locale;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
@@ -98,8 +99,8 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     @Override
-    public String formatTimeForDisplay(String time) {
-        String off = AndFHEMApplication.getContext().getResources().getString(R.string.off);
+    public String formatTimeForDisplay(String time, Context context) {
+        String off = context.getResources().getString(R.string.off);
         return time.replaceAll("24:00", off);
     }
 

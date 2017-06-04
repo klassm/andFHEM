@@ -61,7 +61,6 @@ public class AndFHEMApplication extends MultiDexApplication {
     public static final String PREMIUM_PACKAGE = "li.klass.fhempremium";
     public static final int PREMIUM_ALLOWED_FREE_CONNECTIONS = 1;
 
-    private static Context context;
     private static AndFHEMApplication application;
 
     @Inject
@@ -70,14 +69,6 @@ public class AndFHEMApplication extends MultiDexApplication {
     private boolean isUpdate = false;
     private String currentApplicationVersion;
     private ApplicationComponent daggerComponent;
-
-    public static Context getContext() {
-        return context;
-    }
-
-    public static void setContext(Context newContext) {
-        context = newContext;
-    }
 
     public static AndFHEMApplication getApplication() {
         return application;
@@ -94,7 +85,6 @@ public class AndFHEMApplication extends MultiDexApplication {
         setDefaultUncaughtExceptionHandler();
         setStrictMode();
 
-        context = getApplicationContext();
         application = this;
 
         daggerComponent = createDaggerComponent();
@@ -153,6 +143,7 @@ public class AndFHEMApplication extends MultiDexApplication {
     }
 
     private void setApplicationInformation() {
+        Context context = getApplicationContext();
         String savedVersion = applicationProperties.getStringSharedPreference(APPLICATION_VERSION, null, context);
         currentApplicationVersion = findOutPackageApplicationVersion();
 
@@ -177,7 +168,7 @@ public class AndFHEMApplication extends MultiDexApplication {
     }
 
     public boolean isAndFHEMAlreadyInstalled() {
-        List<InstalledApplications.InstalledApplication> installedApps = InstalledApplications.getInstalledApps();
+        List<InstalledApplications.InstalledApplication> installedApps = InstalledApplications.getInstalledApps(getApplicationContext());
         for (InstalledApplications.InstalledApplication installedApp : installedApps) {
             if (installedApp.getPackageName().startsWith("li.klass.fhem")
                     && !installedApp.getPackageName().equals(getPackageName())) {

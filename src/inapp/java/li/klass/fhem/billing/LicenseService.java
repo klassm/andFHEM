@@ -51,23 +51,21 @@ public class LicenseService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LicenseService.class);
 
-    private Context applicationContext = AndFHEMApplication.getContext();
-
     @Inject
     public LicenseService() {
     }
 
-    public void isPremium(final IsPremiumListener listener) {
+    public void isPremium(final IsPremiumListener listener, final Context context) {
         billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
             @Override
             public void onInventoryLoadFinished(boolean success) {
-                boolean isPremium = isPremiumInternal(success);
+                boolean isPremium = isPremiumInternal(success, context);
                 listener.isPremium(isPremium);
             }
-        }, applicationContext);
+        }, context);
     }
 
-    private boolean isPremiumInternal(boolean loadSuccessful) {
+    private boolean isPremiumInternal(boolean loadSuccessful, Context context) {
         boolean isPremium = false;
 
         // careful: We need an application context here, as LicenseIntentService (this?!) is null
@@ -75,10 +73,10 @@ public class LicenseService {
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
             LOGGER.info("found IS_PREMIUM application property to be true => premium");
             isPremium = true;
-        } else if (applicationContext.getPackageName().equals(PREMIUM_PACKAGE)) {
+        } else if (context.getPackageName().equals(PREMIUM_PACKAGE)) {
             LOGGER.info("found package name to be " + PREMIUM_PACKAGE + " => premium");
             isPremium = true;
-        } else if (isDebug(applicationContext)) {
+        } else if (isDebug(context)) {
             LOGGER.info("running in debug => premium");
             isPremium = true;
         } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||

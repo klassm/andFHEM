@@ -49,8 +49,8 @@ public class TemperatureWidgetView extends DeviceAppWidgetView {
     @Override
     public void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         if (device != null) {
-            String temperature = valueForAnnotation(device, WidgetTemperatureField.class);
-            String additionalFieldValue = valueForAnnotation(device, WidgetTemperatureAdditionalField.class);
+            String temperature = valueForAnnotation(device, WidgetTemperatureField.class, context);
+            String additionalFieldValue = valueForAnnotation(device, WidgetTemperatureAdditionalField.class, context);
             setTextViewOrHide(view, R.id.additional, additionalFieldValue);
 
             view.setTextViewText(R.id.temperature, temperature);
@@ -65,7 +65,7 @@ public class TemperatureWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device) {
-        return super.supports(device) && valueForAnnotation(device, WidgetTemperatureField.class) != null;
+    public boolean supports(FhemDevice<?> device, Context context) {
+        return super.supports(device, context) && valueForAnnotation(device, WidgetTemperatureField.class, context) != null;
     }
 }

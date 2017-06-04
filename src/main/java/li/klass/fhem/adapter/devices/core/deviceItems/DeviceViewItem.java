@@ -24,12 +24,14 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import android.content.Context;
+
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
 
 public interface DeviceViewItem {
     String FIRST = "__first__";
 
-    String getName(DeviceDescMapping deviceDescMapping);
+    String getName(DeviceDescMapping deviceDescMapping, Context context);
 
     String getValueFor(Object object);
 

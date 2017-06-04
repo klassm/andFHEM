@@ -122,7 +122,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device) {
+    public boolean supports(FhemDevice<?> device, Context context) {
         return !device.getSetList().getEntries().isEmpty();
     }
 

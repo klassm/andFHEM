@@ -27,7 +27,6 @@ package li.klass.fhem.fhem;
 import android.content.Context;
 import android.content.Intent;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
@@ -48,10 +47,8 @@ public class RequestResult<CONTENT> {
         this.error = error;
     }
 
-    public boolean handleErrors() {
+    public boolean handleErrors(Context context) {
         if (error == null) return false;
-
-        Context context = AndFHEMApplication.getContext();
 
         Intent intent = new Intent(Actions.CONNECTION_ERROR);
         intent.putExtra(BundleExtraKeys.STRING_ID, error.errorStringId);

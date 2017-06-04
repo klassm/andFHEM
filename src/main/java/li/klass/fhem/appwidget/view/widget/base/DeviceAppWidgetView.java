@@ -77,7 +77,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     public static final Logger LOG = LoggerFactory.getLogger(DeviceAppWidgetView.class);
 
-    public boolean supports(FhemDevice<?> device) {
+    public boolean supports(FhemDevice<?> device, Context context) {
         boolean supportsFromJson = supportsFromJsonConfiguration(device);
         boolean supportsFromAnnotation = supportsFromAnnotation(device);
 
@@ -175,7 +175,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         }
     }
 
-    protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls) {
+    protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls, Context context) {
         Optional<DeviceConfiguration> configuration = deviceConfigurationProvider.configurationFor(device);
         if (configuration.isPresent()) {
             Set<ViewItemConfig> states = configuration.get().getStates();
@@ -185,7 +185,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
                 }
             }
         }
-        return getValueAndDescriptionForAnnotation(device, annotationCls);
+        return getValueAndDescriptionForAnnotation(device, annotationCls, context);
     }
 
     protected void createDeviceWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,

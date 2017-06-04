@@ -95,7 +95,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device) {
+    public boolean supports(FhemDevice<?> device, Context context) {
         return device instanceof ToggleableDevice;
     }
 

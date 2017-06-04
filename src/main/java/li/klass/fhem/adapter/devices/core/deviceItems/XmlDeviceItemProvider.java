@@ -24,6 +24,8 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +62,7 @@ public class XmlDeviceItemProvider {
     public XmlDeviceItemProvider() {
     }
 
-    public Set<DeviceViewItem> getDeviceClassItems(FhemDevice fhemDevice) {
+    public Set<DeviceViewItem> getDeviceClassItems(FhemDevice fhemDevice, Context context) {
         Set<DeviceViewItem> items = newHashSet();
         XmlListDevice xmlListDevice = fhemDevice.getXmlListDevice();
 
@@ -70,54 +72,54 @@ public class XmlDeviceItemProvider {
         Optional<DeviceConfiguration> configuration = fhemDevice.getDeviceConfiguration();
 
         boolean showAll = !configuration.isPresent() && deviceType == DeviceType.GENERIC;
-        items.addAll(statesFor(xmlListDevice, configuration, showAll));
-        items.addAll(attributesFor(xmlListDevice, configuration, showAll));
+        items.addAll(statesFor(xmlListDevice, configuration, showAll, context));
+        items.addAll(attributesFor(xmlListDevice, configuration, showAll, context));
 
         return items;
     }
 
-    public Set<DeviceViewItem> getStatesFor(FhemDevice device, boolean showUnknown) {
+    public Set<DeviceViewItem> getStatesFor(FhemDevice device, boolean showUnknown, Context context) {
         Optional<DeviceConfiguration> configuration = device.getDeviceConfiguration();
-        return statesFor(device.getXmlListDevice(), configuration, showUnknown);
+        return statesFor(device.getXmlListDevice(), configuration, showUnknown, context);
     }
 
-    public Set<DeviceViewItem> getAttributesFor(FhemDevice device, boolean showUnknown) {
+    public Set<DeviceViewItem> getAttributesFor(FhemDevice device, boolean showUnknown, Context context) {
         Optional<DeviceConfiguration> configuration = device.getDeviceConfiguration();
-        return attributesFor(device.getXmlListDevice(), configuration, showUnknown);
+        return attributesFor(device.getXmlListDevice(), configuration, showUnknown, context);
     }
 
-    public Set<DeviceViewItem> getInternalsFor(FhemDevice device, boolean showUnknown) {
+    public Set<DeviceViewItem> getInternalsFor(FhemDevice device, boolean showUnknown, Context context) {
         Optional<DeviceConfiguration> configuration = device.getDeviceConfiguration();
-        return internalsFor(device.getXmlListDevice(), configuration, showUnknown);
+        return internalsFor(device.getXmlListDevice(), configuration, showUnknown, context);
     }
 
-    private Set<DeviceViewItem> statesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
+    private Set<DeviceViewItem> statesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown, Context context) {
         Set<ViewItemConfig> configs = config.isPresent() ? config.get().getStates() : Collections.<ViewItemConfig>emptySet();
         Map<String, DeviceNode> deviceStates = device.getStates();
 
-        return itemsFor(configs, deviceStates, showUnknown);
+        return itemsFor(configs, deviceStates, showUnknown, context);
     }
 
-    private Set<DeviceViewItem> attributesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
+    private Set<DeviceViewItem> attributesFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown, Context context) {
         Set<ViewItemConfig> configs = config.isPresent() ? config.get().getAttributes() : Collections.<ViewItemConfig>emptySet();
-        return itemsFor(configs, device.getAttributes(), showUnknown);
+        return itemsFor(configs, device.getAttributes(), showUnknown, context);
     }
 
 
-    private Set<DeviceViewItem> internalsFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown) {
+    private Set<DeviceViewItem> internalsFor(XmlListDevice device, Optional<DeviceConfiguration> config, boolean showUnknown, Context context) {
         Set<ViewItemConfig> configs = config.isPresent() ? config.get().getInternals() : Collections.<ViewItemConfig>emptySet();
-        return itemsFor(configs, device.getInternals(), showUnknown);
+        return itemsFor(configs, device.getInternals(), showUnknown, context);
     }
 
-    private Set<DeviceViewItem> itemsFor(Set<ViewItemConfig> configs, Map<String, DeviceNode> nodes, boolean showUnknown) {
+    private Set<DeviceViewItem> itemsFor(Set<ViewItemConfig> configs, Map<String, DeviceNode> nodes, boolean showUnknown, Context context) {
         Set<DeviceViewItem> items = newHashSet();
 
         for (Map.Entry<String, DeviceNode> entry : nodes.entrySet()) {
             Optional<ViewItemConfig> config = configFor(configs, entry.getKey());
             if (config.isPresent()) {
-                items.add(itemFor(config.get(), entry.getValue()));
+                items.add(itemFor(config.get(), entry.getValue(), context));
             } else if (showUnknown) {
-                items.add(genericItemFor(entry.getValue()));
+                items.add(genericItemFor(entry.getValue(), context));
             }
         }
 
@@ -133,17 +135,17 @@ public class XmlDeviceItemProvider {
         return Optional.absent();
     }
 
-    private DeviceViewItem genericItemFor(DeviceNode deviceNode) {
-        String desc = deviceDescMapping.descFor(deviceNode.getKey());
+    private DeviceViewItem genericItemFor(DeviceNode deviceNode, Context context) {
+        String desc = deviceDescMapping.descFor(deviceNode.getKey(), context);
 
         return new XmlDeviceViewItem(deviceNode.getKey(), desc,
                 deviceNode.getValue(), null, true, false);
     }
 
-    private XmlDeviceViewItem itemFor(ViewItemConfig config, DeviceNode deviceNode) {
+    private XmlDeviceViewItem itemFor(ViewItemConfig config, DeviceNode deviceNode, Context context) {
         String jsonDesc = StringUtils.trimToNull(config.getDesc());
         Optional<ResourceIdMapper> resource = getResourceIdFor(jsonDesc);
-        String desc = resource.isPresent() ? deviceDescMapping.descFor(resource.get()) : deviceDescMapping.descFor(deviceNode.getKey());
+        String desc = resource.isPresent() ? deviceDescMapping.descFor(resource.get(), context) : deviceDescMapping.descFor(deviceNode.getKey(), context);
 
         String showAfter = config.getShowAfter() != null ? config.getShowAfter() : DeviceViewItem.FIRST;
         return new XmlDeviceViewItem(config.getKey(), desc,

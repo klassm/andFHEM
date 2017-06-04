@@ -59,6 +59,8 @@ public class GPlotHolderTest {
 
     @Mock
     GPlotParser gPlotParser;
+    @Mock
+    Context context;
 
     @Mock
     CommandExecutionService commandExecutionService;
@@ -70,7 +72,7 @@ public class GPlotHolderTest {
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(ImmutableMap.of("abc", definition));
 
         // when
-        Optional<GPlotDefinition> foundDefinition = gPlotHolder.definitionFor("abc", false);
+        Optional<GPlotDefinition> foundDefinition = gPlotHolder.definitionFor("abc", false, context);
 
         // then
         assertThat(foundDefinition).isEqualTo(Optional.of(definition));
@@ -86,7 +88,7 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false, context);
 
         // then
         assertThat(garden).isEqualTo(Optional.of(definition));
@@ -99,7 +101,7 @@ public class GPlotHolderTest {
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false, context);
 
         // then
         assertThat(garden).isEqualTo(Optional.absent());
@@ -115,10 +117,10 @@ public class GPlotHolderTest {
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
-        gPlotHolder.definitionFor("garden", false);
+        gPlotHolder.definitionFor("garden", false, context);
 
         // when
-        gPlotHolder.definitionFor("garden", false);
+        gPlotHolder.definitionFor("garden", false, context);
 
         // then
         verify(gPlotParser, times(1)).parseSafe(anyString());
@@ -134,7 +136,7 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        assertThat(gPlotHolder.definitionFor("garden", false).isPresent()).isFalse();
+        assertThat(gPlotHolder.definitionFor("garden", false, context).isPresent()).isFalse();
 
         // then
         verify(commandExecutionService, times(1)).executeRequest(anyString(), any(Context.class));
@@ -151,7 +153,7 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", true);
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", true, context);
 
         // then
         assertThat(garden).isEqualTo(Optional.of(definition));

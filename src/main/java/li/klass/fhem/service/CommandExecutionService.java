@@ -124,7 +124,7 @@ public class CommandExecutionService extends AbstractService {
         showExecutingDialog(context);
 
         RequestResult<String> result = execute(command, currentTry, context, resultListener);
-        if (result.handleErrors()) {
+        if (result.handleErrors(context)) {
             lastFailedCommand = command;
             resultListener.onError();
         } else {
@@ -211,9 +211,9 @@ public class CommandExecutionService extends AbstractService {
                 showExecutingDialog(context);
 
                 FHEMConnection provider = dataConnectionSwitch.getProviderFor(context);
-                RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
+                RequestResult<Bitmap> result = provider.requestBitmap(relativePath, context);
 
-                if (result.handleErrors()) return null;
+                if (result.handleErrors(context)) return null;
                 Bitmap bitmap = result.content;
                 cache.put(relativePath, bitmap);
                 return bitmap;
@@ -229,8 +229,8 @@ public class CommandExecutionService extends AbstractService {
             return Optional.absent();
         }
 
-        RequestResult<InputStream> result = ((FHEMWEBConnection) provider).executeRequest(relativPath);
-        if (result.handleErrors()) {
+        RequestResult<InputStream> result = ((FHEMWEBConnection) provider).executeRequest(relativPath, context);
+        if (result.handleErrors(context)) {
             return Optional.absent();
         }
         try {

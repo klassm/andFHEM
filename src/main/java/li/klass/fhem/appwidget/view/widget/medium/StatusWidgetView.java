@@ -51,7 +51,7 @@ public class StatusWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device) {
+    public boolean supports(FhemDevice<?> device, Context context) {
         return true;
     }
 

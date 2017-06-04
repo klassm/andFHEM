@@ -128,7 +128,7 @@ public class PreferencesActivity extends PreferenceActivity
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMinimumValue(200);
         deviceColumnWidthPreference.setDefaultValue(DEFAULT_COLUMN_WIDTH);
-        deviceColumnWidthPreference.setMaximumValue(DisplayUtil.getLargestDimensionInDP());
+        deviceColumnWidthPreference.setMaximumValue(DisplayUtil.getLargestDimensionInDP(getApplicationContext()));
 
         findPreference(SEND_LAST_ERROR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

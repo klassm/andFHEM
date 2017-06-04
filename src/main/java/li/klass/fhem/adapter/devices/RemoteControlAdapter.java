@@ -108,7 +108,7 @@ public class RemoteControlAdapter extends ToggleableAdapter {
         ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, tableRow, false);
         assert imageButton != null;
 
-        int itemSizeInPx = (int) dpToPx(50);
+        int itemSizeInPx = (int) dpToPx(50, getContext());
         ImageUtil.loadImageFromFHEMAndSetIn(getContext(), imageButton, entry.getIconPath(), itemSizeInPx, itemSizeInPx);
 
         imageButton.setOnClickListener(new View.OnClickListener() {

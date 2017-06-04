@@ -107,7 +107,7 @@ public class DummyDataConnection extends FHEMConnection {
     }
 
     @Override
-    public RequestResult<Bitmap> requestBitmap(String relativePath) {
+    public RequestResult<Bitmap> requestBitmap(String relativePath, Context context) {
         LOG.error("requestBitmap() - get image from {}", relativePath);
         return new RequestResult<>(null, null);
     }

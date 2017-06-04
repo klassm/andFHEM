@@ -49,9 +49,9 @@ public class MediumInformationWidgetView extends DeviceAppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
-        String line1 = valueForAnnotation(device, WidgetMediumLine1.class);
-        String line2 = valueForAnnotation(device, WidgetMediumLine2.class);
-        String line3 = valueForAnnotation(device, WidgetMediumLine3.class);
+        String line1 = valueForAnnotation(device, WidgetMediumLine1.class, context);
+        String line2 = valueForAnnotation(device, WidgetMediumLine2.class, context);
+        String line3 = valueForAnnotation(device, WidgetMediumLine3.class, context);
 
         setTextViewOrHide(view, R.id.line1, line1);
         setTextViewOrHide(view, R.id.line2, line2);

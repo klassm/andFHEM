@@ -348,7 +348,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                 addRow(table, new OnOffSubStateActionRow(AbstractOnOffActionRow.LAYOUT_DETAIL, groupValue.getKey(), connectionId)
                         .createRow(getInflater(), device, getContext()));
             } else {
-                addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping), groupStates, item.getValueFor(device), item.getKey())
+                addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping, getContext()), groupStates, item.getValueFor(device), item.getKey())
                         .createRow(device.getXmlListDevice(), connectionId, table));
             }
         } else if (setListEntry instanceof RGBSetListEntry) {
@@ -367,29 +367,29 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private List<DeviceViewItem> getSortedClassItems(FhemDevice device, ItemProvider itemProvider, boolean showUnknown) {
-        Set<DeviceViewItem> xmlViewItems = itemProvider.itemsFor(xmlDeviceItemProvider, device, showUnknown);
+        Set<DeviceViewItem> xmlViewItems = itemProvider.itemsFor(xmlDeviceItemProvider, device, showUnknown, getContext());
         return deviceViewItemSorter.sortedViewItemsFrom(xmlViewItems);
     }
 
     private interface ItemProvider {
-        Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown);
+        Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown, Context context);
     }
 
     private static class StateItemProvider implements ItemProvider {
-        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
-            return provider.getStatesFor(device, showUnknown);
+        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown, Context context) {
+            return provider.getStatesFor(device, showUnknown, context);
         }
     }
 
     private static class AttributeItemProvider implements ItemProvider {
-        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
-            return provider.getAttributesFor(device, showUnknown);
+        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown, Context context) {
+            return provider.getAttributesFor(device, showUnknown, context);
         }
     }
 
     private static class InternalsItemProvider implements ItemProvider {
-        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown) {
-            return provider.getInternalsFor(device, showUnknown);
+        public Set<DeviceViewItem> itemsFor(XmlDeviceItemProvider provider, FhemDevice device, boolean showUnknown, Context context) {
+            return provider.getInternalsFor(device, showUnknown, context);
         }
     }
 

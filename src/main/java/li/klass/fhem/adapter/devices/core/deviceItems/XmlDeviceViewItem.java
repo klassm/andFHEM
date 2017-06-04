@@ -24,6 +24,8 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems;
 
+import android.content.Context;
+
 import java.util.Locale;
 
 import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
@@ -47,7 +49,7 @@ public class XmlDeviceViewItem implements DeviceViewItem {
     }
 
     @Override
-    public String getName(DeviceDescMapping deviceDescMapping) {
+    public String getName(DeviceDescMapping deviceDescMapping, Context context) {
         return desc;
     }
 

@@ -89,13 +89,13 @@ public enum WidgetType {
         this.widgetSize = widgetSize;
     }
 
-    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final FhemDevice<?> device) {
+    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final FhemDevice<?> device, final Context context) {
         return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
             @Override
             public boolean apply(WidgetType widgetType) {
                 return widgetType.widgetSize == size &&
                         widgetType.widgetView instanceof DeviceAppWidgetView &&
-                        ((DeviceAppWidgetView) widgetType.widgetView).supports(device);
+                        ((DeviceAppWidgetView) widgetType.widgetView).supports(device, context);
             }
         }));
     }

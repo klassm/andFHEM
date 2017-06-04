@@ -141,7 +141,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
     protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
         String value = item.getValueFor(device);
-        String description = item.getName(deviceDescMapping);
+        String description = item.getName(deviceDescMapping, getContext());
         setTextView(holder.description, description);
         setTextView(holder.value, String.valueOf(value));
         if (value == null || value.equals("")) {
@@ -155,7 +155,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         if (annotatedClassItems == null) {
             annotatedClassItems = annotatedMethodsAndFieldsProvider.generateAnnotatedClassItemsList(device.getClass());
         }
-        Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device);
+        Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device, getContext());
         registerListenersFor(device, xmlViewItems);
 
         return deviceViewItemSorter.sortedViewItemsFrom(mergeSets(annotatedClassItems, xmlViewItems));

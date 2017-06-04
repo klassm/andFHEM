@@ -41,7 +41,7 @@ public abstract class FHEMConnection {
 
     public abstract RequestResult<String> executeCommand(String command, Context context);
 
-    public abstract RequestResult<Bitmap> requestBitmap(String relativePath);
+    public abstract RequestResult<Bitmap> requestBitmap(String relativePath, Context context);
 
     public FHEMConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;

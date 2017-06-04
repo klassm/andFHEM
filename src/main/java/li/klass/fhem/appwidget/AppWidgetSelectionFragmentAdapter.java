@@ -97,7 +97,7 @@ class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
             public boolean isSelectable(FhemDevice<?> device) {
-                return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device).isEmpty();
+                return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device, context).isEmpty();
             }
         });
 

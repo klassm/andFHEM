@@ -55,7 +55,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
-import static li.klass.fhem.AndFHEMApplication.getContext;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 import static li.klass.fhem.fhem.connection.ServerType.FHEMWEB;
 
@@ -112,7 +111,7 @@ public class ConnectionService {
                     saveToPreferences(server, context);
                 }
             }
-        });
+        }, context);
 
     }
 
@@ -121,12 +120,11 @@ public class ConnectionService {
     }
 
     public boolean exists(String id, Context context) {
-        return mayShowDummyConnections(getAll(context)) && (DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id))
+        return mayShowDummyConnections(context, getAll(context)) && (DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id))
                 || getPreferences(context).contains(id);
     }
 
-    private boolean mayShowDummyConnections(List<FHEMServerSpec> all) {
-        Context context = getContext();
+    private boolean mayShowDummyConnections(Context context, List<FHEMServerSpec> all) {
         ImmutableList<FHEMServerSpec> nonDummies = from(all)
                 .filter(FHEMServerSpec.notInstanceOf(DummyServerSpec.class))
                 .toList();
@@ -243,7 +241,7 @@ public class ConnectionService {
         List<FHEMServerSpec> all = getAll(context);
         ImmutableList.Builder<FHEMServerSpec> builder = ImmutableList.<FHEMServerSpec>builder()
                 .addAll(all);
-        if (mayShowDummyConnections(all)) {
+        if (mayShowDummyConnections(context, all)) {
             builder = builder.add(getDummyData());
             FHEMServerSpec testData = getTestData(context);
             if (testData != null) builder = builder.add(testData);

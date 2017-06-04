@@ -166,7 +166,7 @@ public abstract class BaseWeekProfileAdapter<INTERVAL extends BaseHeatingInterva
     void setDetailTextView(View view, int layoutItemId, String currentText,
                            String originalText, boolean isNew) {
         TextView layoutItem = (TextView) view.findViewById(layoutItemId);
-        layoutItem.setText(weekProfile.formatTimeForDisplay(currentText));
+        layoutItem.setText(weekProfile.formatTimeForDisplay(currentText, context));
 
         if (isNew || originalText == null || currentText == null || !originalText.equals(currentText)) {
             layoutItem.setTextColor(Color.BLUE);

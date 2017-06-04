@@ -50,11 +50,11 @@ public class LicenseService {
     public LicenseService() {
     }
 
-    public void isPremium(final IsPremiumListener listener) {
+    public void isPremium(final IsPremiumListener listener, Context context) {
         listener.isPremium(true);
     }
 
-    private boolean isPremiumInternal(boolean loadSuccessful) {
+    private boolean isPremiumInternal(boolean loadSuccessful, Context context) {
         return true;
     }
 
