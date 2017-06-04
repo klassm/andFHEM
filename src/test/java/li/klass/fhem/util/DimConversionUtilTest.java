@@ -31,8 +31,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static li.klass.fhem.util.DimConversionUtil.toDimState;
-import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
+import static com.tngtech.java.junit.dataprovider.DataProviders.testForEach;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 
@@ -40,41 +39,44 @@ import static org.assertj.core.api.Assertions.offset;
 public class DimConversionUtilTest {
     @DataProvider
     public static Object[][] conversionProvider() {
-        return new Object[][]{
+        return testForEach(
                 // defaults (zero lower bound, step 1)
-                {new TestCase().withLowerBound(0f).withStep(1f).withProgress(50f).withSeekbarProgress(50)},
-                {new TestCase().withLowerBound(0f).withStep(1f).withProgress(100f).withSeekbarProgress(100)},
-                {new TestCase().withLowerBound(0f).withStep(1f).withProgress(0f).withSeekbarProgress(0)},
-                {new TestCase().withLowerBound(5f).withStep(1f).withProgress(5f).withSeekbarProgress(0)},
-                {new TestCase().withLowerBound(5f).withStep(1f).withProgress(24f).withSeekbarProgress(19)},
+                new TestCase().withLowerBound(0f).withStep(1f).withProgress(50f).withSeekbarProgress(50),
+                new TestCase().withLowerBound(0f).withStep(1f).withProgress(100f).withSeekbarProgress(100),
+                new TestCase().withLowerBound(0f).withStep(1f).withProgress(0f).withSeekbarProgress(0),
+                new TestCase().withLowerBound(5f).withStep(1f).withProgress(5f).withSeekbarProgress(0),
+                new TestCase().withLowerBound(5f).withStep(1f).withProgress(24f).withSeekbarProgress(19),
 
                 // shifted lower bound
-                {new TestCase().withLowerBound(20f).withStep(1f).withProgress(50f).withSeekbarProgress(30)},
+                new TestCase().withLowerBound(20f).withStep(1f).withProgress(50f).withSeekbarProgress(30),
 
                 // step different from 1
-                {new TestCase().withLowerBound(0f).withStep(2f).withProgress(20f).withSeekbarProgress(10)},
-                {new TestCase().withLowerBound(0f).withStep(3f).withProgress(21f).withSeekbarProgress(7)},
+                new TestCase().withLowerBound(0f).withStep(2f).withProgress(20f).withSeekbarProgress(10),
+                new TestCase().withLowerBound(0f).withStep(3f).withProgress(21f).withSeekbarProgress(7),
 
                 // shifted lower bound and step different from 1
-                {new TestCase().withLowerBound(10f).withStep(2f).withProgress(20f).withSeekbarProgress(5)},
+                new TestCase().withLowerBound(10f).withStep(2f).withProgress(20f).withSeekbarProgress(5),
 
                 // floating point states
-                {new TestCase().withLowerBound(0f).withStep(0.5f).withProgress(0f).withSeekbarProgress(0)},
-                {new TestCase().withLowerBound(0f).withStep(0.5f).withProgress(1f).withSeekbarProgress(2)},
-                {new TestCase().withLowerBound(0f).withStep(0.5f).withProgress(4f).withSeekbarProgress(8)},
-        };
+                new TestCase().withLowerBound(0f).withStep(0.5f).withProgress(0f).withSeekbarProgress(0),
+                new TestCase().withLowerBound(0f).withStep(0.5f).withProgress(1f).withSeekbarProgress(2),
+                new TestCase().withLowerBound(0f).withStep(0.5f).withProgress(4f).withSeekbarProgress(8),
+                new TestCase().withLowerBound(1.01f).withStep(0.01f).withProgress(1.09f).withSeekbarProgress(8),
+                new TestCase().withLowerBound(1.01f).withStep(0.01f).withProgress(24.01f).withSeekbarProgress(2300),
+                new TestCase().withLowerBound(1.01f).withStep(0.01f).withProgress(24.02f).withSeekbarProgress(2301)
+        );
     }
 
     @Test
     @UseDataProvider("conversionProvider")
     public void should_convert_to_seekbar_progress(TestCase testCase) {
-        assertThat(toSeekbarProgress(testCase.progress, testCase.lowerBound, testCase.step)).isEqualTo(testCase.seekbarProgress);
+        assertThat(DimConversionUtil.INSTANCE.toSeekbarProgress(testCase.progress, testCase.lowerBound, testCase.step)).isEqualTo(testCase.seekbarProgress);
     }
 
     @Test
     @UseDataProvider("conversionProvider")
     public void should_convert_from_seekbar_progress(TestCase testCase) {
-        assertThat(toDimState(testCase.seekbarProgress, testCase.lowerBound, testCase.step)).isCloseTo(testCase.progress, offset(0.001f));
+        assertThat(DimConversionUtil.INSTANCE.toDimState(testCase.seekbarProgress, testCase.lowerBound, testCase.step)).isCloseTo(testCase.progress, offset(0.001f));
     }
 
     static class TestCase {

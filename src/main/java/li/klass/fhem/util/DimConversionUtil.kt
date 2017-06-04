@@ -22,35 +22,40 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.util;
+package li.klass.fhem.util
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
 
-public class DimConversionUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DimConversionUtil.class);
+object DimConversionUtil {
+    private val LOGGER = LoggerFactory.getLogger(DimConversionUtil::class.java)
+    private val BASE = 100
 
-    public static int toSeekbarProgress(float progress, float lowerBound, float step) {
-        int progressAsInt = (int) (progress * 10);
-        int lowerBoundAsInt = (int) (lowerBound * 10);
-        int stepAsInt = (int) (step * 10);
-        if (stepAsInt == 0) {
-            LOGGER.error("dim step is 0!");
-            stepAsInt = 1;
+    fun toSeekbarProgress(progress: Float, lowerBound: Float, step: Float): Int {
+        val progressAsInt = (progress * BASE).toInt()
+        val lowerBoundAsInt = (lowerBound * BASE).toInt()
+        val stepAsInt = (step * BASE).toInt()
+        val stepZeroSafe = when {
+            stepAsInt == 0 -> {
+                LOGGER.error("dim step is 0!")
+                1
+            }
+            else -> stepAsInt
         }
 
-        return (progressAsInt - lowerBoundAsInt) / stepAsInt;
+        return (progressAsInt - lowerBoundAsInt) / stepZeroSafe
     }
 
-    public static float toDimState(int progress, float lowerBound, float step) {
-        if (step == 0) {
-            LOGGER.error("dim step is 0!");
-            step = 1;
+    fun toDimState(progress: Int, lowerBound: Float, step: Float): Float {
+        val safeStep = when {
+            step == 0f -> {
+                LOGGER.error("dim step is 0!")
+                1f;
+            }
+            else -> step;
         }
+        val lowerBoundAsInt = (lowerBound * BASE).toInt()
+        val stepAsInt = (safeStep * BASE).toInt()
 
-        int lowerBoundAsInt = (int) (lowerBound * 10);
-        int stepAsInt = (int) (step * 10);
-
-        return (progress * stepAsInt + lowerBoundAsInt) / 10f;
+        return (progress * stepAsInt + lowerBoundAsInt) / BASE.toFloat()
     }
 }

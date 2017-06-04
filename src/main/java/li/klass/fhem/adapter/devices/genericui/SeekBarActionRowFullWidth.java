@@ -30,12 +30,13 @@ import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.DimConversionUtil;
-
-import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
 
 public abstract class SeekBarActionRowFullWidth {
     protected float initialProgress;
@@ -44,6 +45,8 @@ public abstract class SeekBarActionRowFullWidth {
     protected float minimumProgress;
     protected TextView updateView;
     private float step;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SeekBarActionRowFullWidth.class);
 
     public SeekBarActionRowFullWidth(float initialProgress, float minimumProgress, float step, float maximumProgress, int layoutId,
                                      TableRow updateRow) {
@@ -72,11 +75,14 @@ public abstract class SeekBarActionRowFullWidth {
     }
 
     public TableRow createRow(LayoutInflater inflater, XmlListDevice device, int layoutSpan) {
+        int seekbarMax = DimConversionUtil.INSTANCE.toSeekbarProgress(maximumProgress, minimumProgress, step);
+        int seekbarProgress = DimConversionUtil.INSTANCE.toSeekbarProgress(initialProgress, minimumProgress, step);
+
         TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setMax(toSeekbarProgress(maximumProgress, minimumProgress, step));
-        seekBar.setProgress(toSeekbarProgress(initialProgress, minimumProgress, step));
+        seekBar.setMax(seekbarMax);
+        seekBar.setProgress(seekbarProgress);
 
         if (layoutSpan != 1) {
             TableRow.LayoutParams layoutParams = (TableRow.LayoutParams) seekBar.getLayoutParams();
@@ -90,11 +96,12 @@ public abstract class SeekBarActionRowFullWidth {
     private SeekBar.OnSeekBarChangeListener createListener(final XmlListDevice device) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public float progress = initialProgress;
+            float progress = initialProgress;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-                this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step);
+                this.progress = DimConversionUtil.INSTANCE.toDimState(progress, minimumProgress, step);
+                LOGGER.info("onStopTrackingTouch - progress={}, converted={}", progress, this.progress);
                 if (updateView != null && fromUser) {
                     SeekBarActionRowFullWidth.this.onProgressChanged(updateView, seekBar.getContext(), device, this.progress);
                     initialProgress = progress;
@@ -108,6 +115,7 @@ public abstract class SeekBarActionRowFullWidth {
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {
                 SeekBarActionRowFullWidth.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
+                toUpdateText(device, progress);
             }
         };
     }

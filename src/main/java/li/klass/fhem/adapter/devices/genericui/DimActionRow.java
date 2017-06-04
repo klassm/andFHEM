@@ -37,8 +37,6 @@ import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.DimConversionUtil;
 
-import static li.klass.fhem.util.DimConversionUtil.toSeekbarProgress;
-
 public class DimActionRow {
     private final StateUiService stateUiService;
     private final Context context;
@@ -67,8 +65,8 @@ public class DimActionRow {
 
         DimmableDevice dimmableDevice = (DimmableDevice) device;
         seekBar.setOnSeekBarChangeListener(createListener(behavior));
-        seekBar.setMax(toSeekbarProgress(behavior.getDimUpperBound(), behavior.getDimLowerBound(), behavior.getDimStep()));
-        seekBar.setProgress(toSeekbarProgress(behavior.getCurrentDimPosition(), behavior.getDimLowerBound(), behavior.getDimStep()));
+        seekBar.setMax(DimConversionUtil.INSTANCE.toSeekbarProgress(behavior.getDimUpperBound(), behavior.getDimLowerBound(), behavior.getDimStep()));
+        seekBar.setProgress(DimConversionUtil.INSTANCE.toSeekbarProgress(behavior.getCurrentDimPosition(), behavior.getDimLowerBound(), behavior.getDimStep()));
         description.setText(dimmableDevice.getAliasOrName());
         if (updateRow != null) {
             updateView = (TextView) updateRow.findViewById(R.id.value);
@@ -82,7 +80,7 @@ public class DimActionRow {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-                this.progress = DimConversionUtil.toDimState(progress, behavior.getDimLowerBound(), behavior.getDimStep());
+                this.progress = DimConversionUtil.INSTANCE.toDimState(progress, behavior.getDimLowerBound(), behavior.getDimStep());
 
                 if (updateView != null) {
                     updateView.setText(behavior.getDimStateForPosition(this.progress));

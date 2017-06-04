@@ -122,28 +122,26 @@ public class AndFHEMApplication extends MultiDexApplication {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setStrictMode() {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                        .detectAll()
-                        .setClassInstanceLimit(ChartingActivity.class, 3)
-                        .setClassInstanceLimit(StartupActivity.class, 3)
-                        .setClassInstanceLimit(AndFHEMMainActivity.class, 3)
-                        .setClassInstanceLimit(DeviceNameSelectionActivity.class, 3)
-                        .penaltyLog()
-                        .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .setClassInstanceLimit(ChartingActivity.class, 3)
+                    .setClassInstanceLimit(StartupActivity.class, 3)
+                    .setClassInstanceLimit(AndFHEMMainActivity.class, 3)
+                    .setClassInstanceLimit(DeviceNameSelectionActivity.class, 3)
+                    .penaltyLog()
+                    .build());
 
-                StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder();
+            StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder();
 
-                StrictMode.setThreadPolicy(builder
-                        .detectDiskReads()
-                        .detectDiskWrites()
-                        .permitDiskReads()
-                        .permitDiskWrites()
-                        .detectCustomSlowCalls()
-                        .detectNetwork()
-                        .penaltyLog()
-                        .build());
-            }
+            StrictMode.setThreadPolicy(builder
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .permitDiskReads()
+                    .permitDiskWrites()
+                    .detectCustomSlowCalls()
+                    .detectNetwork()
+                    .penaltyLog()
+                    .build());
         } catch (Exception e) {
             Log.v(TAG, "cannot enable strict mode", e);
             // ignore

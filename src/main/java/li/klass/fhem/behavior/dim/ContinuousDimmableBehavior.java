@@ -96,7 +96,12 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
                 return "on";
             }
         }
-        return (position + "").replace(".0", "");
+        String positionAsText = position + "";
+        if (positionAsText.endsWith(".0")) {
+            return positionAsText.replace(".0", "");
+        }
+        return positionAsText;
+
     }
 
     @Override
