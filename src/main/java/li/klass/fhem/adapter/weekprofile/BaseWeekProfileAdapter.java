@@ -184,7 +184,7 @@ public abstract class BaseWeekProfileAdapter<INTERVAL extends BaseHeatingInterva
         }
     }
 
-    interface WeekProfileChangedListener {
+    public interface WeekProfileChangedListener {
         void onWeekProfileChanged(WeekProfile weekProfile);
     }
 }
