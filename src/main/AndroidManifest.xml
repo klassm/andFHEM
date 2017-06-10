@@ -346,6 +346,16 @@
         </service>
 
         <service
+            android:name=".appindex.AppIndexIntentService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.APPINDEXING">
+            <intent-filter>
+                <action android:name="com.google.firebase.appindexing.UPDATE_INDEX" />
+            </intent-filter>
+        </service>
+
+
+        <service
             android:name="li.klass.fhem.service.intent.RoomListIntentService"
             android:exported="false">
             <intent-filter>

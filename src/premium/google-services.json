@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "215435066238",
+    "firebase_url": "https://andfhem-cd82a.firebaseio.com",
+    "project_id": "andfhem-cd82a",
+    "storage_bucket": "andfhem-cd82a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215435066238:android:56c7dd039ef7a089",
+        "android_client_info": {
+          "package_name": "li.klass.fhem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215435066238-d1abdcp6n11mlc6t9o0m7n53rh97kict.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsON9tHe8IgSPIh06RcLvY05sMDD6vCfo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215435066238:android:0fa4eddb06d54fb8",
+        "android_client_info": {
+          "package_name": "li.klass.fhempremium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215435066238-d1abdcp6n11mlc6t9o0m7n53rh97kict.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsON9tHe8IgSPIh06RcLvY05sMDD6vCfo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

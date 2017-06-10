@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.appindex.AppIndexIntentService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.room.RoomListUpdateService;
@@ -92,6 +93,8 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
                 startService(new Intent(REMOTE_UPDATE_FINISHED)
                         .putExtra(SUCCESS, result)
                         .setClass(RoomListUpdateIntentService.this, RoomListIntentService.class));
+                startService(new Intent("com.google.firebase.appindexing.UPDATE_INDEX")
+                        .setClass(RoomListUpdateIntentService.this, AppIndexIntentService.class));
             }
         };
     }

@@ -27,6 +27,7 @@ def appVersionName = "4.5.7"
 
 ext {
     supportLibVersion = '25.3.1'
+    firebaseVersion = '10.2.6'
     buildProperties = getBuildProperties()
 }
 
@@ -46,6 +47,7 @@ buildscript {
         classpath 'de.mobilej.unmock:UnMockPlugin:0.6.0'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:3.0.0'
     }
 }
 
@@ -62,6 +64,7 @@ apply plugin: 'de.mobilej.unmock'
 apply plugin: 'co.riiid.gradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 25
@@ -200,8 +203,9 @@ unMock {
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
     //noinspection GradleDependency
-    compile 'com.google.firebase:firebase-messaging:10.2.0'
-    compile 'com.google.firebase:firebase-ads:10.2.0'
+    compile "com.google.firebase:firebase-appindexing:${firebaseVersion}"
+    compile "com.google.firebase:firebase-messaging:${firebaseVersion}"
+    compile "com.google.firebase:firebase-ads:${firebaseVersion}"
     compile 'commons-net:commons-net:3.3'
     compile 'commons-codec:commons-codec:1.10'
     compile 'com.google.code.gson:gson:2.7'

@@ -67,6 +67,7 @@
     <string name="uvValue">UV Value</string>
     <string name="uvRisk">UV Risk</string>
     <string name="rooms">Room</string>
+    <string name="room">Room</string>
     <string name="counterA">Counter A</string>
     <string name="counterB">Counter B</string>
     <string name="inputA">Input A</string>

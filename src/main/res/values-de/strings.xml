@@ -67,6 +67,7 @@
     <string name="uvValue">UV-Wert</string>
     <string name="uvRisk">UV-Risiko</string>
     <string name="rooms">Räume</string>
+    <string name="room">Raum</string>
     <string name="counterA">Zähler A</string>
     <string name="counterB">Zähler B</string>
     <string name="inputA">Eingang A</string>

@@ -66,6 +66,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.appindex.AppIndexIntentService;
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
 import li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
@@ -309,6 +310,8 @@ public interface ApplicationComponent {
 
     void inject(RoomListUpdateService object);
 
+
+    void inject(AppIndexIntentService object);
 
     void inject(GCMIntentService object);
 

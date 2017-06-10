@@ -33,6 +33,8 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -83,7 +85,10 @@ public class AndFHEMApplication extends MultiDexApplication {
         super.onCreate();
         setDefaultUncaughtExceptionHandler();
         setStrictMode();
-
+        FirebaseApp firebaseApp = FirebaseApp.initializeApp(this);
+        if (firebaseApp != null) {
+            firebaseApp.setAutomaticResourceManagementEnabled(true);
+        }
         application = this;
 
         daggerComponent = createDaggerComponent();
