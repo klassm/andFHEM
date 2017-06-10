@@ -41,7 +41,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
     init {
         this.heatingConfiguration = configuration
 
-        if (heatingConfiguration.getNumberOfIntervalsType() == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
+        if (heatingConfiguration.numberOfIntervalsType == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
             for (i in 0..maximumNumberOfHeatingIntervals - 1) {
                 heatingIntervals.add(configuration.createHeatingInterval())
             }
@@ -60,7 +60,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
         val interval = heatingIntervals[position]
         deletedIntervals.add(interval)
 
-        return heatingIntervals.removeAt(position) != null
+        return true
     }
 
     fun getHeatingIntervalAt(position: Int): H? {
@@ -93,13 +93,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
 
     val isModified: Boolean
         get() {
-            for (heatingInterval in heatingIntervals) {
-                if (heatingInterval.isModified) {
-                    return true
-                }
-            }
-
-            return !deletedIntervals.isEmpty()
+            return if (heatingIntervals.any { it.isModified }) true else !deletedIntervals.isEmpty()
         }
 
     val maximumNumberOfHeatingIntervals: Int
@@ -124,11 +118,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
             }
         }
 
-        for (deletedInterval in deletedIntervals) {
-            if (!deletedInterval.isNew) {
-                heatingIntervals.add(deletedInterval)
-            }
-        }
+        deletedIntervals.filterNotTo(heatingIntervals) { it.isNew }
         deletedIntervals.clear()
 
         Collections.sort(heatingIntervals)

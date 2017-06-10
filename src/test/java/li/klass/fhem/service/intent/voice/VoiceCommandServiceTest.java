@@ -25,21 +25,31 @@
 package li.klass.fhem.service.intent.voice;
 
 import android.content.Context;
+
 import com.google.common.base.Optional;
-import com.google.common.collect.*;
-import com.tngtech.java.junit.dataprovider.*;
-import li.klass.fhem.domain.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import java.util.List;
+
+import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.mockito.*;
 
-import java.util.List;
-
-import static com.tngtech.java.junit.dataprovider.DataProviders.*;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static org.assertj.guava.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
@@ -81,7 +91,7 @@ public class VoiceCommandServiceTest {
     public void should_find_out_correct_voice_result(CommandTestCase testCase) {
         // given
         TestDummy device = new TestDummy(testCase.deviceName);
-        device.getSetList().parse("on off");
+        device.setSetList("on off");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
 
@@ -96,7 +106,7 @@ public class VoiceCommandServiceTest {
     public void should_handle_event_maps() {
         // given
         TestDummy device = new TestDummy("lampe");
-        device.getSetList().parse("on off");
+        device.setSetList("on off");
         device.setEventmap("on:hallo");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
@@ -112,7 +122,7 @@ public class VoiceCommandServiceTest {
     public void should_ignore_devices_not_containing_the_target_state_in_the_setlist() {
         // given
         TestDummy device = new TestDummy("lampe");
-        device.getSetList().parse("off");
+        device.setSetList("off");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
 
@@ -127,7 +137,7 @@ public class VoiceCommandServiceTest {
     public void should_return_error_if_no_device_matches_a_command() {
         // given
         TestDummy device = new TestDummy("lampe1");
-        device.getSetList().parse("on off");
+        device.setSetList("on off");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
 
@@ -143,8 +153,8 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe1", "lampe");
         TestDummy device1 = new TestDummy("lampe2", "lampe");
-        device.getSetList().parse("on off");
-        device1.getSetList().parse("on off");
+        device.setSetList("on off");
+        device1.setSetList("on off");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context).addDevice(device1, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
 
@@ -176,7 +186,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy(commandTestCase.deviceName);
         device.setPronunciation("garten leuchte");
-        device.getSetList().parse("on off");
+        device.setSetList("on off");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
 
@@ -201,7 +211,7 @@ public class VoiceCommandServiceTest {
     public void should_treat_voice_pronunciation_attribute(String pronunciation) {
         // given
         TestDummy device = new TestDummy("lampe");
-        device.getSetList().parse("on off");
+        device.setSetList("on off");
         device.setPronunciation(pronunciation);
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
@@ -224,7 +234,7 @@ public class VoiceCommandServiceTest {
         };
         lightSceneDevice.setXmlListDevice(new XmlListDevice("dummy"));
         lightSceneDevice.getXmlListDevice().setInternal("NAME", "device");
-        lightSceneDevice.getSetList().parse("scene:off,on");
+        lightSceneDevice.setSetList("scene:off,on");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice, context);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(Optional.<String>absent(), context);
 

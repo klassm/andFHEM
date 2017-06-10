@@ -89,7 +89,7 @@ class FromToWeekProfileAdapter(context: Context) : BaseWeekProfileAdapter<FromTo
             if (hours == 24) hours = 0
             val minutes = Integer.valueOf(currentTime.substring(3, 5))!!
 
-            val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minuteOfDay ->
+            val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfDay ->
                 val time = timeToTimeString(hourOfDay, minuteOfDay)
                 listener.onTimeChanged(time)
             }, hours, minutes, true)

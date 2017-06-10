@@ -158,7 +158,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
                     timePicker.currentHour = hours
                     timePicker.currentMinute = minutes
 
-                    timePicker.setOnTimeChangedListener { view, hourOfDay, minute ->
+                    timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
                         this@IntervalEditHolder.hours = hourOfDay
                         this@IntervalEditHolder.minutes = minute
                     }

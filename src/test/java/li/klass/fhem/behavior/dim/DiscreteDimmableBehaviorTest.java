@@ -45,9 +45,9 @@ public class DiscreteDimmableBehaviorTest {
     @DataProvider
     public static Object[][] discreteBehaviorProvider() {
         return new Object[][]{
-                {new SetList().parse("dim10% dim20% dim30%"), ImmutableList.of("dim10%", "dim20%", "dim30%")},
-                {new SetList().parse("dim1 dim20 dim30"), ImmutableList.of("dim1", "dim20", "dim30")},
-                {new SetList().parse("dim30 dim10 dim80"), ImmutableList.of("dim10", "dim30", "dim80")},
+                {SetList.Companion.parse("dim10% dim20% dim30%"), ImmutableList.of("dim10%", "dim20%", "dim30%")},
+                {SetList.Companion.parse("dim1 dim20 dim30"), ImmutableList.of("dim1", "dim20", "dim30")},
+                {SetList.Companion.parse("dim30 dim10 dim80"), ImmutableList.of("dim10", "dim30", "dim80")},
         };
     }
 
@@ -64,9 +64,9 @@ public class DiscreteDimmableBehaviorTest {
     @DataProvider
     public static Object[][] nonDiscreteBehaviorProvider() {
         return new Object[][]{
-                {new SetList().parse("dim10% dim_all")},
-                {new SetList().parse("dim_all")},
-                {new SetList().parse("dim:0,1,100")},
+                {SetList.Companion.parse("dim10% dim_all")},
+                {SetList.Companion.parse("dim_all")},
+                {SetList.Companion.parse("dim:0,1,100")},
         };
     }
 
@@ -78,9 +78,9 @@ public class DiscreteDimmableBehaviorTest {
     @DataProvider
     public static Object[][] upperBoundProvider() {
         return new Object[][]{
-                {new SetList().parse("dim10% dim20% dim30%"), 3},
-                {new SetList().parse("dim10% dim20% dim30% dim40%"), 4},
-                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), 5}
+                {SetList.Companion.parse("dim10% dim20% dim30%"), 3},
+                {SetList.Companion.parse("dim10% dim20% dim30% dim40%"), 4},
+                {SetList.Companion.parse("dim10% dim20% dim30% dim40% dim50%"), 5}
         };
     }
 
@@ -95,11 +95,11 @@ public class DiscreteDimmableBehaviorTest {
     @DataProvider
     public static Object[][] positionProvider() {
         return new Object[][]{
-                {new SetList().parse("dim10% dim20% dim30%"), "dim20%", 2},
-                {new SetList().parse("dim10% dim20% dim30% dim40%"), "dim30%", 3},
-                {new SetList().parse("dim10% dim20% dim30% dim40% dim50%"), "on", 5},
-                {new SetList().parse("dim20% dim10%"), "dim10%", 1},
-                {new SetList().parse("dim20% dim10%"), "on", 2}
+                {SetList.Companion.parse("dim10% dim20% dim30%"), "dim20%", 2},
+                {SetList.Companion.parse("dim10% dim20% dim30% dim40%"), "dim30%", 3},
+                {SetList.Companion.parse("dim10% dim20% dim30% dim40% dim50%"), "on", 5},
+                {SetList.Companion.parse("dim20% dim10%"), "dim10%", 1},
+                {SetList.Companion.parse("dim20% dim10%"), "on", 2}
         };
     }
 

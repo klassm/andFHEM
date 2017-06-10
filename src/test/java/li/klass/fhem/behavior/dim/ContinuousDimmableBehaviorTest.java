@@ -48,17 +48,17 @@ public class ContinuousDimmableBehaviorTest {
     @DataProvider
     public static Object[][] continuousProvider() {
         return new Object[][]{
-                {new SetList().parse("dim:slider,0,5,100"), new SliderSetListEntry("dim", 0, 5, 100)},
-                {new SetList().parse("state:slider,0,5,100"), new SliderSetListEntry("state", 0, 5, 100)},
-                {new SetList().parse("pct:slider,0,5,100"), new SliderSetListEntry("pct", 0, 5, 100)},
-                {new SetList().parse("value:slider,0,5,100"), new SliderSetListEntry("value", 0, 5, 100)},
-                {new SetList().parse("position:slider,0,5,100"), new SliderSetListEntry("position", 0, 5, 100)},
-                {new SetList().parse("level:slider,0,5,100"), new SliderSetListEntry("level", 0, 5, 100)},
-                {new SetList().parse("state:slider,0,5,100 dim:slider,1,2,100"), new SliderSetListEntry("state", 0, 5, 100)},
-                {new SetList().parse("dim:slider,0,5,100 level:slider,1,2,100"), new SliderSetListEntry("dim", 0, 5, 100)},
-                {new SetList().parse("level:slider,0,5,100 pct:slider,1,2,100"), new SliderSetListEntry("level", 0, 5, 100)},
-                {new SetList().parse("pct:slider,0,5,100 position:slider,1,2,100"), new SliderSetListEntry("pct", 0, 5, 100)},
-                {new SetList().parse("position:slider,0,5,100 value:slider,1,2,100"), new SliderSetListEntry("position", 0, 5, 100)},
+                {SetList.Companion.parse("dim:slider,0,5,100"), new SliderSetListEntry("dim", 0, 5, 100)},
+                {SetList.Companion.parse("state:slider,0,5,100"), new SliderSetListEntry("state", 0, 5, 100)},
+                {SetList.Companion.parse("pct:slider,0,5,100"), new SliderSetListEntry("pct", 0, 5, 100)},
+                {SetList.Companion.parse("value:slider,0,5,100"), new SliderSetListEntry("value", 0, 5, 100)},
+                {SetList.Companion.parse("position:slider,0,5,100"), new SliderSetListEntry("position", 0, 5, 100)},
+                {SetList.Companion.parse("level:slider,0,5,100"), new SliderSetListEntry("level", 0, 5, 100)},
+                {SetList.Companion.parse("state:slider,0,5,100 dim:slider,1,2,100"), new SliderSetListEntry("state", 0, 5, 100)},
+                {SetList.Companion.parse("dim:slider,0,5,100 level:slider,1,2,100"), new SliderSetListEntry("dim", 0, 5, 100)},
+                {SetList.Companion.parse("level:slider,0,5,100 pct:slider,1,2,100"), new SliderSetListEntry("level", 0, 5, 100)},
+                {SetList.Companion.parse("pct:slider,0,5,100 position:slider,1,2,100"), new SliderSetListEntry("pct", 0, 5, 100)},
+                {SetList.Companion.parse("position:slider,0,5,100 value:slider,1,2,100"), new SliderSetListEntry("position", 0, 5, 100)},
         };
     }
 
@@ -87,7 +87,7 @@ public class ContinuousDimmableBehaviorTest {
     @Test
     @UseDataProvider("stateProvider")
     public void should_calculate_dim_state_for_position_and_position_for_dim_state(int position, String text, String state) {
-        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(new SetList().parse("position:slider,0,5,100")).get();
+        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
 
         assertThat(behavior.getPositionForDimState(text)).isEqualTo(position);
         assertThat(behavior.getDimStateForPosition(mock(FhemDevice.class), position)).isEqualTo(state);
@@ -105,7 +105,7 @@ public class ContinuousDimmableBehaviorTest {
     @Test
     @UseDataProvider("prefixDimProvider")
     public void should_handle_states_with_prefix(String state, float expectedPosition) {
-        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(new SetList().parse("position:slider,0,5,100")).get();
+        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
         FhemDevice device = mock(FhemDevice.class);
         XmlListDevice xmlListDevice = new XmlListDevice("BLA");
         xmlListDevice.setState("state", state);

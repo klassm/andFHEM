@@ -36,7 +36,6 @@ import org.joda.time.DateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import li.klass.fhem.domain.EventMap;
 import li.klass.fhem.domain.EventMapParser;
@@ -44,6 +43,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
@@ -52,14 +52,13 @@ import li.klass.fhem.util.DateFormatUtil;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
 
-    public static final Function<FhemDevice, XmlListDevice> TO_XMLLIST_DEVICE = new Function<FhemDevice, XmlListDevice>() {
+    static final Function<FhemDevice, XmlListDevice> TO_XMLLIST_DEVICE = new Function<FhemDevice, XmlListDevice>() {
         @Override
         public XmlListDevice apply(FhemDevice input) {
             return input == null ? null : input.getXmlListDevice();
@@ -71,7 +70,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
     protected EventMap eventMap = new EventMap(Collections.<String, String>emptyMap());
-    protected SetList setList = new SetList();
+    protected SetList setList = new SetList(Collections.<String, SetListEntry>emptyMap());
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
     private long lastMeasureTime = -1;
@@ -227,7 +226,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         String setsText = value.replaceAll("\\*", "");
         if (isNullOrEmpty(setsText)) return;
 
-        setList.parse(setsText);
+        setList = SetList.Companion.parse(setsText);
     }
 
     @Override
@@ -264,7 +263,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     public void setState(String state) {
         String value = eventMap.getValueFor(state);
-        if (value != null){
+        if (value != null) {
             state = value;
         }
 
