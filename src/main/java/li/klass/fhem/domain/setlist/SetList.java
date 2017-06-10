@@ -65,12 +65,12 @@ public class SetList implements Serializable {
             return;
         }
 
-        String[] keyValue = part.split(":");
-        if (keyValue.length == 0) return;
+        String[] keyValue = part.split(":", 2);
 
         String key = StringUtils.trimToNull(keyValue[0]);
         key = key == null ? "state" : key;
         String value = keyValue.length == 2 ? keyValue[1] : "";
+        if (StringUtils.isEmpty(value)) return;
 
         Optional<SetListItem> setListEntry = handle(key, value);
         if (setListEntry.isPresent()) {

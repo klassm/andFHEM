@@ -53,7 +53,6 @@ public class SetListTest {
     @DataProvider
     public static Object[][] setListProvider() {
         return DataProviders.testForEach(
-
                 new TestCase("only colon")
                         .withSetList(" : ")
                         .thenExpectEmptySetList(),
@@ -71,7 +70,7 @@ public class SetListTest {
                         .thenExpect(entry("on", new NoArgSetListEntry("on")), entry("off", new NoArgSetListEntry("off"))),
                 new TestCase("colon without values leads to group")
                         .withSetList("state:")
-                        .thenExpect(entry("state", new GroupSetListEntry("state"))),
+                        .thenExpectEmptySetList(),
                 new TestCase("slider")
                         .withSetList("state:slider,1,2,3 dim:slider,0,5,100")
                         .thenExpect(entry("state", new SliderSetListEntry("state", 1, 2, 3)), entry("dim", new SliderSetListEntry("dim", 0, 5, 100))),
@@ -107,7 +106,10 @@ public class SetListTest {
                         .thenExpect(entry("ct", new NoArgSetListEntry("ct"))),
                 new TestCase("colorPicker non RGB")
                         .withSetList("pct:colorpicker,BRI,0,1,100")
-                        .thenExpect(entry("pct", new SliderSetListEntry("pct", 0, 1, 100)))
+                        .thenExpect(entry("pct", new SliderSetListEntry("pct", 0, 1, 100))),
+                new TestCase("state is group")
+                        .withSetList("state:Manuell,Sonnenaufgang_real,Sonnenaufgang_zivil,05:00,06:00,07:00,08:00")
+                        .thenExpect(entry("state", new GroupSetListEntry("state", "Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00")))
 
         );
     }
