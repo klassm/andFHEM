@@ -1,0 +1,12 @@
+{
+  "sensorDevice": true,
+  "showStateInOverview": true,
+  "delayForUpdateAfterCommand": 2,
+  "states": [
+    {
+      "key": "presence",
+      "desc": "present",
+      "showInOverview": false
+    }
+  ]
+}
