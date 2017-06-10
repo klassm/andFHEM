@@ -22,35 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments.weekprofile;
+package li.klass.fhem.fragments.weekprofile
 
-import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
-import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.heating.schedule.WeekProfile;
-import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
+import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
+import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter
+import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.domain.heating.schedule.WeekProfile
+import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval
 
-public class FromToWeekProfileFragment extends BaseWeekProfileFragment<FromToHeatingInterval> {
+class FromToWeekProfileFragment : BaseWeekProfileFragment<FromToHeatingInterval>() {
 
-    private FromToWeekProfileAdapter adapter;
+    private var myAdapter: FromToWeekProfileAdapter? = null
 
-    @Override
-    protected void updateAdapterWith(WeekProfile<FromToHeatingInterval, ?> weekProfile) {
-        adapter.updateData(weekProfile);
+    override fun updateAdapterWith(weekProfile: WeekProfile<FromToHeatingInterval, *>) {
+        myAdapter!!.updateData(weekProfile)
     }
 
-    @Override
-    protected void beforeCreateView() {
-        adapter = new FromToWeekProfileAdapter(getActivity());
+    override fun beforeCreateView() {
+        myAdapter = FromToWeekProfileAdapter(activity)
     }
 
-    @Override
-    protected BaseWeekProfileAdapter getAdapter() {
-        return adapter;
+    override fun getAdapter(): BaseWeekProfileAdapter<*> {
+        return myAdapter!!
     }
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
+    override fun inject(applicationComponent: ApplicationComponent) {
+        applicationComponent.inject(this)
     }
 }

@@ -78,7 +78,6 @@ public class AndFHEMApplication extends MultiDexApplication {
         return daggerComponent;
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();

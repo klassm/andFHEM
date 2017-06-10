@@ -80,14 +80,16 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
         update(false)
 
-        adapter.registerWeekProfileChangedListener { weekProfile ->
-            LOGGER.info("onWeekProfileChanged() - {}", weekProfile.toString())
-            updateChangeButtonsHolderVisibility(weekProfile!! as WeekProfile<INTERVAL, *>)
-        }
+        getAdapter().registerWeekProfileChangedListener(object : BaseWeekProfileAdapter.WeekProfileChangedListener {
+            override fun onWeekProfileChanged(weekProfile: WeekProfile<*, *>) {
+                LOGGER.info("onWeekProfileChanged() - {}", weekProfile.toString())
+                updateChangeButtonsHolderVisibility(weekProfile!! as WeekProfile<INTERVAL, *>)
+            }
+        })
 
         change_value_button_holder.save_weekprofile_button.setOnClickListener { onSave() }
         change_value_button_holder.reset_weekprofile_button.setOnClickListener { onReset() }
-        weekprofile.adapter = adapter;
+        weekprofile.adapter = getAdapter();
     }
 
     fun onSave() {
@@ -143,7 +145,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     protected abstract fun updateAdapterWith(weekProfile: WeekProfile<INTERVAL, *>)
 
-    protected abstract val adapter: BaseWeekProfileAdapter<*>
+    protected abstract fun getAdapter(): BaseWeekProfileAdapter<*>
 
     protected open fun beforeCreateView() {}
 
