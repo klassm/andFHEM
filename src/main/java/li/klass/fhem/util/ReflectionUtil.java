@@ -94,7 +94,6 @@ public class ReflectionUtil {
         return fieldValue;
     }
 
-
     public static Object getFieldValue(Object object, Field field) {
         try {
             field.setAccessible(true);
@@ -103,6 +102,10 @@ public class ReflectionUtil {
             Log.e(TAG, "cannot read field " + field.getName(), e);
             return null;
         }
+    }
+
+    public static Object getFieldValue(Object object, String field) {
+        return getFieldValue(object, findField(object.getClass(), field));
     }
 
     public static void setFieldValue(Object object, Field field, Object value) {

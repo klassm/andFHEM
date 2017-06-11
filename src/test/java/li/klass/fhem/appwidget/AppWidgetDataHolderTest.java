@@ -26,7 +26,6 @@ package li.klass.fhem.appwidget;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -57,7 +56,6 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
 import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -166,7 +164,6 @@ public class AppWidgetDataHolderTest {
         // then
         verify(sharedPreferencesEditor).remove("123");
         verify(appWidgetHost).deleteAppWidgetId(123);
-        verify(alarmManager).cancel(any(PendingIntent.class));
     }
 
     @Test
@@ -182,6 +179,5 @@ public class AppWidgetDataHolderTest {
         // then
         verifyNoMoreInteractions(sharedPreferencesEditor);
         verifyNoMoreInteractions(appWidgetHost);
-        verify(alarmManager).cancel(any(PendingIntent.class));
     }
 }

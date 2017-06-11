@@ -24,7 +24,6 @@
 
 package li.klass.fhem.service.intent;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.collect.ImmutableList;
@@ -54,8 +53,6 @@ import static li.klass.fhem.service.intent.SendCommandIntentService.COMMANDS_PRO
 import static li.klass.fhem.service.intent.SendCommandIntentService.PREFERENCES_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(DataProviderRunner.class)
@@ -78,7 +75,6 @@ public class SendCommandIntentServiceTest {
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
 
-
     @DataProvider
     public static Object[][] recentCommandsProvider() {
         return $$(
@@ -91,7 +87,7 @@ public class SendCommandIntentServiceTest {
     @Test
     @UseDataProvider("recentCommandsProvider")
     public void should_get_recent_commands(String jsonInput, List<String> expectedCommands) {
-        given(sharedPreferencesService.getPreferences(eq(PREFERENCES_NAME), any(Context.class)))
+        given(sharedPreferencesService.getPreferences(PREFERENCES_NAME, null))
                 .willReturn(sharedPreferences);
         given(sharedPreferences.getString(COMMANDS_PROPERTY, null)).willReturn(jsonInput);
 
