@@ -53,7 +53,7 @@ public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements Set
 
         new AlertDialog.Builder(context)
                 .setTitle(device.getAliasOrName() + " " + entry.getKey())
-                .setMessage(R.string.timeToSwitchAction)
+                .setMessage(R.string.blank)
                 .setView(timePicker)
                 .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
                     @Override
