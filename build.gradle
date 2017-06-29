@@ -177,10 +177,6 @@ project.gradle.taskGraph.whenReady {
 }
 
 unMock {
-    // URI to download the android-all.jar from. e.g. https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/
-    allAndroid =
-            'https://oss.sonatype.org/content/groups/public/org/robolectric/android-all/7.0.0_r1-robolectric-0/android-all-7.0.0_r1-robolectric-0.jar'
-
     // classes to keep
     // matched by "startsWith" - you also need to include the dependencies manually
     // if you start with an "-" the class will match by "equals" (and it will additionally  match
@@ -203,6 +199,8 @@ unMock {
 }
 
 dependencies {
+    unmock 'org.robolectric:android-all:7.0.0_r1-robolectric-0'
+
     compile fileTree(dir: './libs', include: '*.jar')
     //noinspection GradleDependency
     compile "com.google.firebase:firebase-appindexing:${firebaseVersion}"

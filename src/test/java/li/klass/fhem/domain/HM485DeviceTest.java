@@ -36,7 +36,7 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDim() {
-        HM485Device device = getDeviceFor("dim", HM485Device.class);
+        GenericDevice device = getDeviceFor("dim", GenericDevice.class);
         assertThat(device.getDimPosition()).isEqualTo(5);
         assertThat(device.supportsDim()).isTrue();
         assertThat(device.getDeviceGroup()).isEqualTo(DIMMER);
@@ -44,10 +44,16 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSwitch() {
-        HM485Device device = getDeviceFor("switch", HM485Device.class);
+        GenericDevice device = getDeviceFor("switch", GenericDevice.class);
         assertThat(device.supportsDim()).isFalse();
         assertThat(device.supportsToggle()).isTrue();
         assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
+    }
+
+    @Test
+    public void testDeviceWithState() throws Exception {
+        GenericDevice device = getDeviceFor("WZ.Terrassentuer_links", GenericDevice.class);
+        assertThat(device.getState()).isEqualTo("closed");
     }
 
     @Override

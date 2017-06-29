@@ -1,0 +1,11 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "SWITCH",
+  "stateSliderKey": "level",
+  "sanitise": {
+    "STATE": {
+      "replace": "level_([0-9]+)",
+      "replaceBy": "$1"
+    }
+  }
+}

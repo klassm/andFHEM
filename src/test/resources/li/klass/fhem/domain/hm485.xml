@@ -61,5 +61,28 @@
             <ATTR key="subType" value="switch"/>
             <STATE key="state" value="off" measured="2014-02-22 23:22:08"/>
         </HM485>
+
+        <HM485 name="WZ.Terrassentuer_links"
+            attrs="alias comment:textField-long eventMap group room suppressReading userReadings:textField-long verbose:0,1,2,3,4,5 autoReadConfig:atstartup,always,never configReadRetries subType do_not_notify:0,1 ignore:1,0 dummy:1,0 showtime:1,0 stateFormat setList event-min-interval event-aggregator IODev event-on-change-reading event-on-update-reading cmdIcon devStateIcon devStateStyle icon sortby webCmd widgetOverride Fenstergruppe Fenstergruppe_map structexclude userattr"
+            sets="closed:noArg open:noArg  config " state="closed">
+            <INT key="DEF" value="000147CE_01" />
+            <INT key="NAME" value="WZ.Terrassentuer_links" />
+            <INT key="NR" value="387" />
+            <INT key="STATE" value="closed" />
+            <INT key="TYPE" value="HM485" />
+            <INT key="chanNo" value="01" />
+            <INT key="device" value="HMW_Kontakte1" />
+            <INT key="peerRole" value="none" />
+            <ATTR key="Fenstergruppe" value="WZ.Fenstergruppe" />
+            <ATTR key="devStateIcon"
+                value="open:fts_door_right_open@red closed:fts_door_right@green" />
+            <ATTR key="eventMap" value="sensor_closed:closed sensor_open:open" />
+            <ATTR key="room" value="HM485,Wohnzimmer" />
+            <ATTR key="subType" value="sensor" />
+            <ATTR key="userattr" value="Fenstergruppe Fenstergruppe_map structexclude" />
+            <STATE key="R-input_locked" measured="2017-06-25 11:11:55" value="no" />
+            <STATE key="sensor" measured="2017-06-25 18:57:44" value="closed" />
+            <STATE key="state" measured="2017-06-25 18:57:44" value="sensor_closed" />
+        </HM485>
     </HM485_LIST>
 </FHZINFO>

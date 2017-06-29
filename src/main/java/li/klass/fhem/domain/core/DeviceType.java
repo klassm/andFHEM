@@ -71,7 +71,6 @@ import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
-import li.klass.fhem.domain.HM485Device;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LightSceneDevice;
@@ -122,7 +121,6 @@ public enum DeviceType {
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    HM485("HM485", HM485Device.class, new DimmableAdapter()),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
     PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),

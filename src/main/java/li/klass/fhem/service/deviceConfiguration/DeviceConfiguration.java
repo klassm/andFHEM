@@ -64,6 +64,7 @@ public class DeviceConfiguration implements Serializable {
     private final Map<String, Map<String, String>> stateCommandReplace;
     private final Map<String, String> subStateReplace;
     private final int delayForUpdateAfterCommand;
+    private final String stateSliderKey;
 
     private DeviceConfiguration(Builder builder) {
         defaultGroup = checkNotNull(builder.defaultGroup);
@@ -77,6 +78,7 @@ public class DeviceConfiguration implements Serializable {
         stateCommandReplace = ImmutableMap.copyOf(builder.stateCommandReplace);
         subStateReplace = builder.subStateReplace;
         delayForUpdateAfterCommand = builder.delayForUpdateAfterCommand;
+        stateSliderKey = builder.stateSliderKey;
     }
 
     public DeviceFunctionality getDefaultGroup() {
@@ -124,6 +126,10 @@ public class DeviceConfiguration implements Serializable {
         return delayForUpdateAfterCommand;
     }
 
+    public String getStateSliderKey() {
+        return stateSliderKey;
+    }
+
     public Optional<String> getSubStateReplaceFor(String key) {
         return Optional.fromNullable(StringUtils.trimToNull(subStateReplace.get(key)));
     }
@@ -148,6 +154,7 @@ public class DeviceConfiguration implements Serializable {
         private Map<String, Map<String, String>> stateCommandReplace = newHashMap();
         private Map<String, String> subStateReplace = new HashMap<>();
         private int delayForUpdateAfterCommand = 0;
+        private String stateSliderKey;
 
         public Builder() {
         }
@@ -207,6 +214,11 @@ public class DeviceConfiguration implements Serializable {
 
         public Builder withDelayForUpdateAfterCommand(int delay) {
             this.delayForUpdateAfterCommand = delay;
+            return this;
+        }
+
+        public Builder withStateSliderKey(String stateSliderKey) {
+            this.stateSliderKey = stateSliderKey;
             return this;
         }
 
