@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -85,8 +86,6 @@ import static li.klass.fhem.service.graph.gplot.SvgGraphDefinition.BY_NAME;
 
 public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
-    private Animation animation;
-
     @Inject
     ToggleableStrategy toggleableStrategy;
 
@@ -111,12 +110,6 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     @Override
-    public void attach(Context context) {
-        super.attach(context);
-        animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
-    }
-
-    @Override
     public Class<? extends FhemDevice> getSupportedDeviceClass() {
         return GenericDevice.class;
     }
@@ -134,22 +127,22 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                 .filter(unsupportedDetailActions(genericDevice))
                 .toList();
 
-        LinearLayout linearLayout = (LinearLayout) getInflater().inflate(getDetailViewLayout(), null);
-        fillStatesCard(genericDevice, linearLayout, providers, connectionId);
-        fillAttributesCard(genericDevice, connectionId, linearLayout);
-        fillInternalsCard(genericDevice, connectionId, linearLayout);
-        fillPlotsCard(genericDevice, Collections.<SvgGraphDefinition>emptySet(), connectionId, linearLayout);
-        fillActionsCard(genericDevice, linearLayout, providers, connectionId);
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(getDetailViewLayout(), null);
+        fillStatesCard(genericDevice, linearLayout, providers, connectionId, context);
+        fillAttributesCard(genericDevice, connectionId, linearLayout, context);
+        fillInternalsCard(genericDevice, connectionId, linearLayout, context);
+        fillPlotsCard(genericDevice, Collections.<SvgGraphDefinition>emptySet(), connectionId, linearLayout, context);
+        fillActionsCard(genericDevice, linearLayout, providers, connectionId, context);
 
         return linearLayout;
     }
 
     @Override
     public void attachGraphs(Context context, View detailView, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device) {
-        fillPlotsCard((GenericDevice) device, graphDefinitions, connectionId, (LinearLayout) detailView);
+        fillPlotsCard((GenericDevice) device, graphDefinitions, connectionId, (LinearLayout) detailView, context);
     }
 
-    private void fillActionsCard(final GenericDevice genericDevice, final LinearLayout linearLayout, List<GenericDetailActionProvider> detailActionProviders, String connectionId) {
+    private void fillActionsCard(final GenericDevice genericDevice, final LinearLayout linearLayout, List<GenericDetailActionProvider> detailActionProviders, String connectionId, Context context) {
         CardView actionsCard = (CardView) linearLayout.findViewById(R.id.actionsCard);
         if (genericDevice.getSetList().size() == 0) {
             actionsCard.setVisibility(View.GONE);
@@ -157,12 +150,12 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         }
 
         LinearLayout layout = (LinearLayout) actionsCard.findViewById(R.id.actionsList);
-        layout.addView(new AvailableTargetStatesSwitchAction().createView(getContext(), getInflater(), genericDevice, linearLayout, connectionId));
+        layout.addView(new AvailableTargetStatesSwitchAction().createView(context, LayoutInflater.from(context), genericDevice, linearLayout, connectionId));
 
         ImmutableList<View> views = from(detailActionProviders)
-                .transformAndConcat(actionProviderToActions())
+                .transformAndConcat(actionProviderToActions(context))
                 .filter(supportsAction(genericDevice))
-                .transform(toDetailActionView(genericDevice, linearLayout, connectionId))
+                .transform(toDetailActionView(genericDevice, linearLayout, connectionId, context))
                 .toList();
 
         for (View view : views) {
@@ -180,21 +173,21 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     @NonNull
-    private Function<ActionCardAction, View> toDetailActionView(final GenericDevice genericDevice, final LinearLayout linearLayout, final String connectionId) {
+    private Function<ActionCardAction, View> toDetailActionView(final GenericDevice genericDevice, final LinearLayout linearLayout, final String connectionId, final Context context) {
         return new Function<ActionCardAction, View>() {
             @Override
             public View apply(ActionCardAction input) {
-                return input.createView(genericDevice.getXmlListDevice(), connectionId, getContext(), getInflater(), linearLayout);
+                return input.createView(genericDevice.getXmlListDevice(), connectionId, context, LayoutInflater.from(context), linearLayout);
             }
         };
     }
 
     @NonNull
-    private Function<GenericDetailActionProvider, Iterable<ActionCardAction>> actionProviderToActions() {
+    private Function<GenericDetailActionProvider, Iterable<ActionCardAction>> actionProviderToActions(final Context context) {
         return new Function<GenericDetailActionProvider, Iterable<ActionCardAction>>() {
             @Override
             public Iterable<ActionCardAction> apply(GenericDetailActionProvider input) {
-                return input.actionsFor(getContext());
+                return input.actionsFor(context);
             }
         };
     }
@@ -209,7 +202,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         };
     }
 
-    private void fillPlotsCard(final GenericDevice device, Set<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout) {
+    private void fillPlotsCard(final GenericDevice device, Set<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout, final Context context) {
         CardView plotsCard = (CardView) linearLayout.findViewById(R.id.plotsCard);
         ImmutableList<SvgGraphDefinition> definitions = from(graphDefinitions).toSortedList(BY_NAME);
         if (graphDefinitions.isEmpty()) {
@@ -221,31 +214,31 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
         graphLayout.removeAllViews();
         for (final SvgGraphDefinition svgGraphDefinition : definitions) {
-            Button button = (Button) getInflater().inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
+            Button button = (Button) LayoutInflater.from(context).inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
             button.setText(svgGraphDefinition.getName());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChartingActivity.showChart(getContext(), device, connectionId, svgGraphDefinition);
+                    ChartingActivity.showChart(context, device, connectionId, svgGraphDefinition);
                 }
             });
             graphLayout.addView(button);
         }
     }
 
-    private void fillStatesCard(final GenericDevice device, LinearLayout linearLayout, List<GenericDetailActionProvider> providers, String connectionId) {
-        fillCard(device, connectionId, linearLayout, R.id.statesCard, R.string.detailStatesSection, new StateItemProvider(), providers);
+    private void fillStatesCard(final GenericDevice device, LinearLayout linearLayout, List<GenericDetailActionProvider> providers, String connectionId, Context context) {
+        fillCard(device, connectionId, linearLayout, R.id.statesCard, R.string.detailStatesSection, new StateItemProvider(), providers, context);
     }
 
-    private void fillAttributesCard(final GenericDevice device, String connectionId, LinearLayout linearLayout) {
-        fillCard(device, connectionId, linearLayout, R.id.attributesCard, R.string.detailAttributesSection, new AttributeItemProvider(), Collections.<GenericDetailActionProvider>emptyList());
+    private void fillAttributesCard(final GenericDevice device, String connectionId, LinearLayout linearLayout, Context context) {
+        fillCard(device, connectionId, linearLayout, R.id.attributesCard, R.string.detailAttributesSection, new AttributeItemProvider(), Collections.<GenericDetailActionProvider>emptyList(), context);
     }
 
-    private void fillInternalsCard(final GenericDevice device, String connectionId, LinearLayout linearLayout) {
-        fillCard(device, connectionId, linearLayout, R.id.internalsCard, R.string.detailInternalsSection, new InternalsItemProvider(), Collections.<GenericDetailActionProvider>emptyList());
+    private void fillInternalsCard(final GenericDevice device, String connectionId, LinearLayout linearLayout, Context context) {
+        fillCard(device, connectionId, linearLayout, R.id.internalsCard, R.string.detailInternalsSection, new InternalsItemProvider(), Collections.<GenericDetailActionProvider>emptyList(), context);
     }
 
-    private void fillCard(final GenericDevice device, final String connectionId, LinearLayout linearLayout, int cardId, int caption, final ItemProvider itemProvider, final List<GenericDetailActionProvider> providers) {
+    private void fillCard(final GenericDevice device, final String connectionId, LinearLayout linearLayout, int cardId, int caption, final ItemProvider itemProvider, final List<GenericDetailActionProvider> providers, final Context context) {
         CardView card = (CardView) linearLayout.findViewById(cardId);
 
         boolean hasConfiguration = device.getDeviceConfiguration().isPresent();
@@ -256,20 +249,20 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         final TableLayout table = (TableLayout) card.findViewById(R.id.table);
 
         boolean showExpandButton = hasConfiguration;
-        List<DeviceViewItem> itemsToShow = getSortedClassItems(device, itemProvider, false);
-        List<DeviceViewItem> allItems = getSortedClassItems(device, itemProvider, true);
+        List<DeviceViewItem> itemsToShow = getSortedClassItems(device, itemProvider, false, context);
+        List<DeviceViewItem> allItems = getSortedClassItems(device, itemProvider, true, context);
         if (itemsToShow.isEmpty() || itemsToShow.size() == allItems.size()) {
             itemsToShow = allItems;
             showExpandButton = false;
         }
-        fillTable(device, connectionId, table, itemsToShow, providers);
+        fillTable(device, connectionId, table, itemsToShow, providers, context);
 
         final Button button = (Button) card.findViewById(R.id.expandButton);
         button.setVisibility(showExpandButton ? View.VISIBLE : View.GONE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                fillTable(device, connectionId, table, getSortedClassItems(device, itemProvider, true), providers);
+            public void onClick(View view) {
+                fillTable(device, connectionId, table, getSortedClassItems(device, itemProvider, true, context), providers, context);
                 button.setVisibility(View.GONE);
             }
         });
@@ -279,25 +272,25 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         }
     }
 
-    private void fillTable(GenericDevice device, String connectionId, TableLayout table, List<DeviceViewItem> items, List<GenericDetailActionProvider> providers) {
+    private void fillTable(GenericDevice device, String connectionId, TableLayout table, List<DeviceViewItem> items, List<GenericDetailActionProvider> providers, Context context) {
         table.removeAllViews();
 
         for (DeviceViewItem item : items) {
-            GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = createTableRow(getInflater(), R.layout.device_detail_generic_table_row);
-            fillTableRow(holder, item, device);
+            GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = createTableRow(LayoutInflater.from(context), R.layout.device_detail_generic_table_row);
+            fillTableRow(holder, item, device, context);
             addRow(table, holder.row);
-            addActionIfRequired(device, connectionId, table, item, holder.row, providers);
+            addActionIfRequired(device, connectionId, table, item, holder.row, providers, context);
         }
 
         table.setVisibility(items.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     private void addRow(TableLayout table, TableRow row) {
-        row.setAnimation(animation);
+        row.setAnimation(AnimationUtils.loadAnimation(table.getContext(), android.R.anim.fade_in));
         table.addView(row);
     }
 
-    private void addActionIfRequired(GenericDevice device, String connectionId, TableLayout table, final DeviceViewItem item, TableRow row, List<GenericDetailActionProvider> providers) {
+    private void addActionIfRequired(GenericDevice device, String connectionId, TableLayout table, final DeviceViewItem item, TableRow row, List<GenericDetailActionProvider> providers, Context context) {
         List<StateAttributeAction> attributeActions = from(providers)
                 .transform(new Function<GenericDetailActionProvider, Optional<StateAttributeAction>>() {
                     @Override
@@ -311,7 +304,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         if (!attributeActions.isEmpty()) {
             for (StateAttributeAction action : attributeActions) {
                 if (action.supports(device.getXmlListDevice())) {
-                    addRow(table, action.createRow(device.getXmlListDevice(), connectionId, item.getKey(), item.getValueFor(device), getContext(), getInflater(), table));
+                    addRow(table, action.createRow(device.getXmlListDevice(), connectionId, item.getKey(), item.getValueFor(device), context, table));
                     return;
                 }
             }
@@ -319,25 +312,22 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
         if (item.getSortKey().equalsIgnoreCase("state")) {
             if (dimmableStrategy.supports(device)) {
-                addRow(table, dimmableStrategy.createDetailView(device, row, getInflater(), getContext(), connectionId));
+                addRow(table, dimmableStrategy.createDetailView(device, row, context, connectionId));
             } else if (toggleableStrategy.supports(device)) {
-                addRow(table, toggleableStrategy.createDetailView(device, getInflater(), getContext(), connectionId));
+                addRow(table, toggleableStrategy.createDetailView(device, context, connectionId));
             }
             if (!device.getWebCmd().isEmpty()) {
-                addRow(table, new WebCmdActionRow(WebCmdActionRow.LAYOUT_DETAIL, getContext()).createRow(getContext(), getInflater(), table, device, connectionId));
+                addRow(table, new WebCmdActionRow(WebCmdActionRow.LAYOUT_DETAIL, context).createRow(context, table, device, connectionId));
             }
             return;
         }
 
         SetListEntry setListEntry = device.getSetList().get(item.getKey());
-        if (setListEntry == null) {
-            return;
-        }
 
         if (setListEntry instanceof SliderSetListEntry) {
             addRow(table, new StateChangingSeekBarFullWidth(
-                    getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getKey(), connectionId).get(), row)
-                    .createRow(getInflater(), device));
+                    context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.getKey(), connectionId).get(), row)
+                    .createRow(LayoutInflater.from(context), device));
         } else if (setListEntry instanceof GroupSetListEntry) {
             GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;
             List<String> groupStates = groupValue.getGroupStates();
@@ -346,14 +336,14 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             if ((groupStates.contains("on") && groupStates.contains("off") || groupStates.contains("ON") && groupStates.contains("OFF"))
                     && groupStates.size() < 5) {
                 addRow(table, new OnOffSubStateActionRow(AbstractOnOffActionRow.LAYOUT_DETAIL, groupValue.getKey(), connectionId)
-                        .createRow(getInflater(), device, getContext()));
+                        .createRow(device, context));
             } else {
-                addRow(table, new StateChangingSpinnerActionRow(getContext(), null, item.getName(deviceDescMapping, getContext()), groupStates, item.getValueFor(device), item.getKey())
+                addRow(table, new StateChangingSpinnerActionRow(context, null, item.getName(deviceDescMapping, context), groupStates, item.getValueFor(device), item.getKey())
                         .createRow(device.getXmlListDevice(), connectionId, table));
             }
         } else if (setListEntry instanceof RGBSetListEntry) {
             addRow(table, new StateChangingColorPickerRow(stateUiService, device.getXmlListDevice(), connectionId, (RGBSetListEntry) setListEntry)
-                    .createRow(getContext(), getInflater(), table));
+                    .createRow(context, LayoutInflater.from(context), table));
         }
     }
 
@@ -366,8 +356,8 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         return R.layout.device_detail_generic;
     }
 
-    private List<DeviceViewItem> getSortedClassItems(FhemDevice device, ItemProvider itemProvider, boolean showUnknown) {
-        Set<DeviceViewItem> xmlViewItems = itemProvider.itemsFor(xmlDeviceItemProvider, device, showUnknown, getContext());
+    private List<DeviceViewItem> getSortedClassItems(FhemDevice device, ItemProvider itemProvider, boolean showUnknown, Context context) {
+        Set<DeviceViewItem> xmlViewItems = itemProvider.itemsFor(xmlDeviceItemProvider, device, showUnknown, context);
         return deviceViewItemSorter.sortedViewItemsFrom(xmlViewItems);
     }
 

@@ -47,7 +47,7 @@ public class WeatherDeviceViewStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
         RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather, null);
         fillDeviceOverviewView(layout, (WeatherDevice) rawDevice);
         return layout;

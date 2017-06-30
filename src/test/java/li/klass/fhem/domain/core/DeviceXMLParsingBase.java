@@ -156,12 +156,12 @@ public abstract class DeviceXMLParsingBase {
 
     protected abstract String getFileName();
 
-    protected <T extends FhemDevice<T>> T getDefaultDevice(Class<T> clazz) {
+    protected <T extends FhemDevice> T getDefaultDevice(Class<T> clazz) {
         return getDeviceFor(DEFAULT_TEST_DEVICE_NAME, clazz);
     }
 
     // Careful: The Java-Compiler needs some class instance of <T> here to infer the type correctly!
-    protected <T extends FhemDevice<T>> T getDeviceFor(String deviceName, @SuppressWarnings("unused") Class<T> clazz) {
+    protected <T extends FhemDevice> T getDeviceFor(String deviceName, @SuppressWarnings("unused") Class<T> clazz) {
         return roomDeviceList.getDeviceFor(deviceName);
     }
 

@@ -97,9 +97,9 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
         DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(),
                 new RoomDeviceList(""), columnWidth, applicationProperties);
-        deviceList.setOnClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice<?>>() {
+        deviceList.setOnClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice>() {
             @Override
-            public boolean onItemClick(View view, String parent, FhemDevice<?> child, int parentPosition, int childPosition) {
+            public boolean onItemClick(View view, String parent, FhemDevice child, int parentPosition, int childPosition) {
                 onDeviceNameClick(parent, child);
                 return true;
             }
@@ -121,7 +121,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         return super.canChildScrollUp();
     }
 
-    protected abstract void onDeviceNameClick(String parent, FhemDevice<?> child);
+    protected abstract void onDeviceNameClick(String parent, FhemDevice child);
 
     protected int getEmptyTextId() {
         return emptyText;
@@ -162,7 +162,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         RoomDeviceList filteredList = filterDevices(roomDeviceList);
 
         if (!filteredList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-            adapter.updateData(filteredList, deviceName, lastUpdate);
+            adapter.updateData(filteredList, deviceName);
 
             int selectedDevicePosition = adapter.getSelectedDevicePosition();
             getGridView().setSelection(selectedDevicePosition);
@@ -184,7 +184,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     private RoomDeviceList filterDevices(RoomDeviceList roomDeviceList) {
         RoomDeviceList filteredList = new RoomDeviceList(roomDeviceList.getRoomName());
 
-        for (FhemDevice<?> device : roomDeviceList.getAllDevices()) {
+        for (FhemDevice device : roomDeviceList.getAllDevices()) {
             if (deviceFilter == null || deviceFilter.isSelectable(device)) {
                 filteredList.addDevice(device, getActivity());
             }
@@ -201,6 +201,6 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     public interface DeviceFilter extends Serializable {
-        boolean isSelectable(FhemDevice<?> device);
+        boolean isSelectable(FhemDevice device);
     }
 }

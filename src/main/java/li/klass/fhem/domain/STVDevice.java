@@ -33,7 +33,7 @@ import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class STVDevice extends FhemDevice<STVDevice> implements VolumeDevice {
+public class STVDevice extends FhemDevice implements VolumeDevice {
     @XmllistAttribute("VOLUME")
     @ShowField(description = ResourceIdMapper.musicVolume)
     private String volume = "0";

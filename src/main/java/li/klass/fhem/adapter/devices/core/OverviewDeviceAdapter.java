@@ -121,12 +121,12 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         throw new IllegalStateException("no overview strategy found, default should always be present");
     }
 
-    public final View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
+    public final View createOverviewView(View convertView, FhemDevice rawDevice, Context context) {
         ViewStrategy viewStrategy = getMostSpecificOverviewStrategy(rawDevice);
         if (viewStrategy == null) {
             throw new NullPointerException("was null for device " + rawDevice.toString() + " and adapter " + getClass().getSimpleName());
         }
-        return viewStrategy.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate, getSortedAnnotatedClassItems(rawDevice), null);
+        return viewStrategy.createOverviewView(LayoutInflater.from(context), convertView, rawDevice, getSortedAnnotatedClassItems(rawDevice, context), null);
     }
 
     protected GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
@@ -139,9 +139,9 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         return holder;
     }
 
-    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device) {
+    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
         String value = item.getValueFor(device);
-        String description = item.getName(deviceDescMapping, getContext());
+        String description = item.getName(deviceDescMapping, context);
         setTextView(holder.description, description);
         setTextView(holder.value, String.valueOf(value));
         if (value == null || value.equals("")) {
@@ -151,11 +151,11 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         }
     }
 
-    protected List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device) {
+    protected List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device, Context context) {
         if (annotatedClassItems == null) {
             annotatedClassItems = annotatedMethodsAndFieldsProvider.generateAnnotatedClassItemsList(device.getClass());
         }
-        Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device, getContext());
+        Set<DeviceViewItem> xmlViewItems = xmlDeviceItemProvider.getDeviceClassItems(device, context);
         registerListenersFor(device, xmlViewItems);
 
         return deviceViewItemSorter.sortedViewItemsFrom(mergeSets(annotatedClassItems, xmlViewItems));
@@ -183,11 +183,11 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
                     SetListEntry setListEntry = device.getSetList().get(key);
                     if (setListEntry instanceof SliderSetListEntry) {
                         tableLayout.addView(
-                                new StateChangingSeekBarFullWidth(getContext(), stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key, connectionId).get(), fieldTableRow)
-                                        .createRow(getInflater(), device));
+                                new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key, connectionId).get(), fieldTableRow)
+                                        .createRow(LayoutInflater.from(context), device));
                     } else if (setListEntry instanceof GroupSetListEntry) {
                         GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;
-                        tableLayout.addView(new StateChangingSpinnerActionRow(getContext(), key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
+                        tableLayout.addView(new StateChangingSpinnerActionRow(context, key, key, groupValue.getGroupStates(), xmlViewItem.getValueFor(device), key)
                                 .createRow(device.getXmlListDevice(), connectionId, tableLayout));
                     }
                 }

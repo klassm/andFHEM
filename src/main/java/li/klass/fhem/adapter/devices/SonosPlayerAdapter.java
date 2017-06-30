@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -63,7 +64,7 @@ public class SonosPlayerAdapter extends ExplicitOverviewDetailDeviceAdapterWithS
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new VolumeActionRow(context, stateUiService, applicationProperties, device, fieldTableRow, connectionId)
-                        .createRow(getInflater(), device));
+                        .createRow(LayoutInflater.from(context), device));
             }
         });
     }

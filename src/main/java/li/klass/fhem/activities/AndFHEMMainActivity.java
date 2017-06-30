@@ -422,6 +422,10 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
         updateNavigationVisibility();
+        getContentFragment().invalidate();
+        if (getNavigationFragment() != null) {
+            getNavigationFragment().invalidate();
+        }
     }
 
     @Override

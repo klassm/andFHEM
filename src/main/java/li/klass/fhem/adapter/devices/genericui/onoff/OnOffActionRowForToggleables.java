@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.genericui.onoff;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
@@ -48,8 +47,8 @@ public class OnOffActionRowForToggleables extends OnOffStateActionRow {
         this.onOffBehavior = onOffBehavior;
     }
 
-    public TableRow createRow(LayoutInflater inflater, final FhemDevice device, Context context) {
-        TableRow tableRow = super.createRow(inflater, device, context);
+    public TableRow createRow(final FhemDevice device, Context context) {
+        TableRow tableRow = super.createRow(device, context);
 
         Button onButton = findOnButton(tableRow);
         Button offButton = findOffButton(tableRow);

@@ -47,9 +47,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class DeviceAdapter {
 
-    private Context context;
-    private LayoutInflater inflater;
-
     protected DeviceAdapter() {
         AndFHEMApplication application = AndFHEMApplication.getApplication();
         if (application != null) {
@@ -78,13 +75,11 @@ public abstract class DeviceAdapter {
     /**
      * Creates an overview view for the given device. The device has to match the adapter device type, otherwise
      * a cast exception occurs.
-     *
-     * @param layoutInflater layoutInflater to create the view
-     * @param convertView    the view that can be reused
+     *  @param convertView    the view that can be reused
      * @param rawDevice      device used for filling the view  @return overview view
-     */
+     * @param context*/
     @SuppressWarnings("unchecked")
-    public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate);
+    public abstract View createOverviewView(View convertView, FhemDevice rawDevice, Context context);
 
     /**
      * Creates a filled detail view for a given device.
@@ -175,21 +170,6 @@ public abstract class DeviceAdapter {
                 ChartingActivity.showChart(context, device, connectionId, svgGraphDefinition);
             }
         });
-    }
-
-    public void attach(Context context) {
-        checkNotNull(context);
-
-        this.context = context;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public LayoutInflater getInflater() {
-        return inflater;
     }
 
     public Class getOverviewViewHolderClass() {

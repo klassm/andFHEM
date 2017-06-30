@@ -34,7 +34,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
-public class ThresholdDevice extends FhemDevice<ThresholdDevice> implements DesiredTempDevice {
+public class ThresholdDevice extends FhemDevice implements DesiredTempDevice {
     @ShowField(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp;
 

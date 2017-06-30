@@ -54,7 +54,7 @@ public class StateUiService {
     }
 
 
-    public void setSubState(FhemDevice<?> device,
+    public void setSubState(FhemDevice device,
                             String connectionId, String stateName, String value, Context context) {
         setSubState(device.getXmlListDevice(), stateName, value, connectionId, context);
     }
@@ -74,7 +74,7 @@ public class StateUiService {
         }
     }
 
-    public void setState(FhemDevice<?> device, String value, Context context, String connectionId) {
+    public void setState(FhemDevice device, String value, Context context, String connectionId) {
         setState(device.getXmlListDevice(), value, context, connectionId);
     }
 

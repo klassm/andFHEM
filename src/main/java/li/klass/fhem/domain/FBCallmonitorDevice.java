@@ -41,7 +41,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.secondsToTimeString;
 
 @OverviewViewSettings(showState = false, showMeasured = true)
 @SuppressWarnings("unused")
-public class FBCallmonitorDevice extends FhemDevice<FBCallmonitorDevice> {
+public class FBCallmonitorDevice extends FhemDevice {
 
     private enum Event {
         CALL(R.string.callMonEventCall),

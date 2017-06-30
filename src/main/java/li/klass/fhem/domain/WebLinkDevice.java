@@ -28,7 +28,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 
-public class WebLinkDevice extends FhemDevice<WebLinkDevice> {
+public class WebLinkDevice extends FhemDevice {
 
     @XmllistAttribute("link")
     private String link;

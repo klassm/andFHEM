@@ -29,7 +29,7 @@ import android.content.Context;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 
-public interface SetListTargetStateHandler<D extends FhemDevice<?>> {
+public interface SetListTargetStateHandler<D extends FhemDevice> {
     boolean canHandle(SetListEntry entry);
 
     void handle(SetListEntry entry, Context context, D device, OnTargetStateSelectedCallback<D> callback);

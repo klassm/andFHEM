@@ -68,7 +68,7 @@ public class DimmableStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
         DimmableDevice<?> device = (DimmableDevice<?>) rawDevice;
 
         if (convertView == null || convertView.getTag() == null) {
@@ -100,10 +100,10 @@ public class DimmableStrategy extends ViewStrategy {
                 && DimmableBehavior.behaviorFor(fhemDevice, null).isPresent();
     }
 
-    public TableRow createDetailView(GenericDevice device, TableRow row, LayoutInflater inflater, Context context, String connectionId) {
+    public TableRow createDetailView(GenericDevice device, TableRow row, Context context, String connectionId) {
         Optional<DimmableBehavior> dimmableBehaviorOpt = DimmableBehavior.behaviorFor(device, connectionId);
         DimmableBehavior behavior = dimmableBehaviorOpt.get();
         return new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, behavior, row)
-                .createRow(inflater, device);
+                .createRow(LayoutInflater.from(context), device);
     }
 }

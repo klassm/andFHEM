@@ -36,7 +36,7 @@ import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.FHEM;
 
-public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
+public class FHEMWEBDevice extends FhemDevice {
 
     @ShowField(description = ResourceIdMapper.hiddenRooms)
     @XmllistAttribute("HIDDENROOM")

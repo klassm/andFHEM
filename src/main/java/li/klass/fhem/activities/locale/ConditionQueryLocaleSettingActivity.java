@@ -95,7 +95,7 @@ public class ConditionQueryLocaleSettingActivity extends Activity {
 
         if (resultCode != RESULT_OK || !data.hasExtra(DEVICE)) return;
 
-        FhemDevice<?> device = (FhemDevice<?>) data.getSerializableExtra(DEVICE);
+        FhemDevice device = (FhemDevice) data.getSerializableExtra(DEVICE);
         setDeviceName(device.getName());
     }
 

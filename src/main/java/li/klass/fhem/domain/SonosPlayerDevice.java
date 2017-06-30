@@ -33,7 +33,7 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
-public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> implements VolumeDevice {
+public class SonosPlayerDevice extends FhemDevice implements VolumeDevice {
 
     @ShowField(description = ResourceIdMapper.musicMute)
     private String mute;

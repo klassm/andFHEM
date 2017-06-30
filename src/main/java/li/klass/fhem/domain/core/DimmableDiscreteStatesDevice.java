@@ -26,7 +26,7 @@ package li.klass.fhem.domain.core;
 
 import java.util.List;
 
-public abstract class DimmableDiscreteStatesDevice<D extends FhemDevice<D>> extends DimmableDevice<D> {
+public abstract class DimmableDiscreteStatesDevice<D extends FhemDevice> extends DimmableDevice<D> {
 
     @Override
     public float getDimUpperBound() {

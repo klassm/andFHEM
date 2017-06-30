@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -65,10 +66,11 @@ public class DimmableAdapter extends ToggleableAdapter {
         registerFieldListener("state", new FieldNameAddedToDetailListener(DIMMER) {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
+                LayoutInflater inflater = LayoutInflater.from(context);
                 tableLayout.addView(new DimmableDeviceDimActionRowFullWidth(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
-                        .createRow(getInflater(), device));
+                        .createRow(inflater, device));
                 tableLayout.addView(new DimUpDownRow(stateUiService)
-                        .createRow(context, getInflater(), device));
+                        .createRow(context, inflater, device));
             }
 
             @Override

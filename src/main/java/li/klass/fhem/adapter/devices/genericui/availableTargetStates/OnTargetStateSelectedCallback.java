@@ -26,7 +26,7 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
 
 import li.klass.fhem.domain.core.FhemDevice;
 
-public interface OnTargetStateSelectedCallback<D extends FhemDevice<?>> {
+public interface OnTargetStateSelectedCallback<D extends FhemDevice> {
 
     void onStateSelected(D device, String targetState);
 

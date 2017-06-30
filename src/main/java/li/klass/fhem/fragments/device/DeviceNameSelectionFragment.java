@@ -35,7 +35,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     @Override
-    protected void onDeviceNameClick(String parent, FhemDevice<?> child) {
+    protected void onDeviceNameClick(String parent, FhemDevice child) {
         if (child == null) return;
 
         if (resultReceiver != null) {

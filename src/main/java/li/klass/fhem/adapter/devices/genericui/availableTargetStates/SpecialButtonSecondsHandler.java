@@ -36,7 +36,7 @@ import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
 import li.klass.fhem.widget.TimePickerWithSeconds;
 
-public class SpecialButtonSecondsHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class SpecialButtonSecondsHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
         DeviceStateRequiringAdditionalInformation additionalInformation = DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.getKey());

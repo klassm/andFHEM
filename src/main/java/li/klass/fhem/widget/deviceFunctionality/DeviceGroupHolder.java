@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
@@ -53,6 +55,7 @@ public class DeviceGroupHolder {
     private List<DeviceFunctionality> visible;
     private ArrayList<DeviceFunctionality> available;
 
+    @Inject
     public DeviceGroupHolder(ApplicationProperties applicationProperties) {
         checkNotNull(applicationProperties);
         this.applicationProperties = applicationProperties;

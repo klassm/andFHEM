@@ -48,7 +48,7 @@ public abstract class ActionCardButton implements ActionCardAction {
         button.setText(buttonText);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 ActionCardButton.this.onClick(device, connectionId, context);
             }
         });

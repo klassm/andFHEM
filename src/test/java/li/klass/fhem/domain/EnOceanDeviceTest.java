@@ -57,7 +57,6 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         assertThat(device2.getOnStateName()).isEqualTo(("B0"));
 
         device.setSubtype("");
-        assertThat(device.compareTo(device1)).isEqualTo((-1));
     }
 
     @Test

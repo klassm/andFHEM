@@ -73,7 +73,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapter {
 
                         stateUiService.setSubState(device, connectionId, "RGB", targetHexString, context);
                     }
-                }.createRow(context, getInflater(), tableLayout));
+                }.createRow(context, tableLayout));
             }
         });
     }

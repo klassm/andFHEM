@@ -43,7 +43,7 @@ import static java.util.Collections.sort;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
-public class HCSDevice extends FhemDevice<HCSDevice> {
+public class HCSDevice extends FhemDevice {
 
     @ShowField(description = ResourceIdMapper.ecoThresholdOn)
     @XmllistAttribute("thermostatThresholdOn")

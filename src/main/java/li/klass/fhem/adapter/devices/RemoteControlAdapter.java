@@ -79,7 +79,7 @@ public class RemoteControlAdapter extends ToggleableAdapter {
 
     private TableLayout createRemoteControlTable(Context context, FhemDevice device,
                                                  LayoutInflater layoutInflater, LinearLayout parent, String connectionId) {
-        TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, parent, false);
+        TableLayout tableLayout = (TableLayout) LayoutInflater.from(context).inflate(R.layout.remote_control_layout, parent, false);
         assert tableLayout != null;
 
         RemoteControlDevice remoteControlDevice = (RemoteControlDevice) device;
@@ -97,24 +97,24 @@ public class RemoteControlAdapter extends ToggleableAdapter {
         TableRow tableRow = new TableRow(context);
 
         for (RemoteControlDevice.Entry entry : row.entries) {
-            tableRow.addView(createImageViewFor(entry, device, layoutInflater, tableRow, connectionId));
+            tableRow.addView(createImageViewFor(entry, device, layoutInflater, tableRow, connectionId, context));
         }
 
         return tableRow;
     }
 
     private View createImageViewFor(final RemoteControlDevice.Entry entry,
-                                    final RemoteControlDevice device, LayoutInflater layoutInflater, TableRow tableRow, final String connectionId) {
+                                    final RemoteControlDevice device, LayoutInflater layoutInflater, TableRow tableRow, final String connectionId, final Context context) {
         ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, tableRow, false);
         assert imageButton != null;
 
-        int itemSizeInPx = (int) dpToPx(50, getContext());
-        ImageUtil.loadImageFromFHEMAndSetIn(getContext(), imageButton, entry.getIconPath(), itemSizeInPx, itemSizeInPx);
+        int itemSizeInPx = (int) dpToPx(50, context);
+        ImageUtil.loadImageFromFHEMAndSetIn(context, imageButton, entry.getIconPath(), itemSizeInPx, itemSizeInPx);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stateUiService.setState(device, entry.command, getContext(), connectionId);
+                stateUiService.setState(device, entry.command, context, connectionId);
             }
         });
 

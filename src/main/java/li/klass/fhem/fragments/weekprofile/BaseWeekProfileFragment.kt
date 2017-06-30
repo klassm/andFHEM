@@ -124,7 +124,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
                 .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
                         if (resultCode == ResultCodes.SUCCESS && view != null) {
-                            val device = resultData.getSerializable(BundleExtraKeys.DEVICE) as FhemDevice<*>
+                            val device = resultData.getSerializable(BundleExtraKeys.DEVICE) as FhemDevice
 
                             weekProfile = heatingConfiguration.fillWith(device.getXmlListDevice())
 

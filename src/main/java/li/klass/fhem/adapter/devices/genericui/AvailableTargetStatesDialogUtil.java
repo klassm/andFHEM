@@ -61,7 +61,7 @@ import static com.google.common.collect.FluentIterable.from;
 
 public class AvailableTargetStatesDialogUtil {
 
-    private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
+    private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
             new RGBTargetStateHandler<>(),
             new GroupSetListTargetStateHandler<>(),
             new SliderSetListTargetStateHandler<>(),
@@ -71,12 +71,12 @@ public class AvailableTargetStatesDialogUtil {
             new SpecialButtonSecondsHandler<>(),
             new SpecialButtonHandler<>()
     );
-    private static final List<SetListTargetStateHandler<FhemDevice<?>>> HANDLERS = ImmutableList.<SetListTargetStateHandler<FhemDevice<?>>>builder()
+    private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS = ImmutableList.<SetListTargetStateHandler<FhemDevice>>builder()
             .addAll(HANDLERS_WITHOUT_NO_ARG)
             .add(new NoArgSetListTargetStateHandler<>()) // must be last entry!
             .build();
 
-    public static <D extends FhemDevice<D>> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
+    public static <D extends FhemDevice> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
         final List<String> setOptions = device.getSetList().getSortedKeys();
@@ -98,13 +98,13 @@ public class AvailableTargetStatesDialogUtil {
         contextMenu.show();
     }
 
-    public static <D extends FhemDevice<D>> void showSwitchOptionsMenuFor(final Context context, final D device, final OnTargetStateSelectedCallback callback, String key) {
+    public static <D extends FhemDevice> void showSwitchOptionsMenuFor(final Context context, final D device, final OnTargetStateSelectedCallback callback, String key) {
         SetListEntry entry = device.getSetList().get(key);
         handleSelectedOption(context, device, entry, callback);
     }
 
-    static <D extends FhemDevice<D>> boolean handleSelectedOption(Context context, D device, SetListEntry option, OnTargetStateSelectedCallback callback) {
-        for (SetListTargetStateHandler<FhemDevice<?>> handler : HANDLERS) {
+    static <D extends FhemDevice> boolean handleSelectedOption(Context context, D device, SetListEntry option, OnTargetStateSelectedCallback callback) {
+        for (SetListTargetStateHandler<FhemDevice> handler : HANDLERS) {
             if (handler.canHandle(option)) {
                 handler.handle(option, context, device, callback);
                 return true;
@@ -113,7 +113,7 @@ public class AvailableTargetStatesDialogUtil {
         return false;
     }
 
-    private static class SetListArrayAdapter<D extends FhemDevice<?>> extends ArrayAdapter<String> {
+    private static class SetListArrayAdapter<D extends FhemDevice> extends ArrayAdapter<String> {
         private final Context context;
         private final List<String> setOptions;
         private final D device;
@@ -151,10 +151,10 @@ public class AvailableTargetStatesDialogUtil {
         }
 
         @NonNull
-        private Predicate<SetListTargetStateHandler<FhemDevice<?>>> canHandle(final SetListEntry entry) {
-            return new Predicate<SetListTargetStateHandler<FhemDevice<?>>>() {
+        private Predicate<SetListTargetStateHandler<FhemDevice>> canHandle(final SetListEntry entry) {
+            return new Predicate<SetListTargetStateHandler<FhemDevice>>() {
                 @Override
-                public boolean apply(SetListTargetStateHandler<FhemDevice<?>> input) {
+                public boolean apply(SetListTargetStateHandler<FhemDevice> input) {
                     return input.canHandle(entry);
                 }
             };

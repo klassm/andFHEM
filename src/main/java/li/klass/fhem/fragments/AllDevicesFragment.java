@@ -26,6 +26,8 @@ package li.klass.fhem.fragments;
 
 import android.content.Context;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -33,6 +35,10 @@ import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.service.intent.RoomListIntentService;
 
 public class AllDevicesFragment extends DeviceListFragment {
+    @Inject
+    public AllDevicesFragment() {
+    }
+
     @Override
     protected Class<?> getUpdateActionIntentTargetClass() {
         return RoomListIntentService.class;

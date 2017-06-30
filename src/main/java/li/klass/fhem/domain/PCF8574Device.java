@@ -32,7 +32,7 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-public class PCF8574Device extends FhemDevice<PCF8574Device> {
+public class PCF8574Device extends FhemDevice {
 
     private Map<String, Boolean> portsIsOnMap = newHashMap();
 

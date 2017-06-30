@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -66,7 +67,7 @@ public class STVDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new MuteActionRow(stateUiService, connectionId)
-                        .createRow(getInflater(), device, context));
+                        .createRow(device, context));
             }
         });
 
@@ -74,7 +75,7 @@ public class STVDeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new VolumeActionRow(context, stateUiService, applicationProperties, device, fieldTableRow, connectionId)
-                        .createRow(getInflater(), device));
+                        .createRow(LayoutInflater.from(context), device));
             }
         });
     }

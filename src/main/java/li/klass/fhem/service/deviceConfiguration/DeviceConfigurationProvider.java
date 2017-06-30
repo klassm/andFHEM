@@ -96,7 +96,7 @@ public class DeviceConfigurationProvider {
     }
 
 
-    public Optional<DeviceConfiguration> configurationFor(FhemDevice<?> device) {
+    public Optional<DeviceConfiguration> configurationFor(FhemDevice device) {
         return configurationFor(device.getXmlListDevice());
     }
 

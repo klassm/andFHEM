@@ -28,6 +28,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -41,10 +43,14 @@ public class RoomDetailFragment extends DeviceListFragment {
 
     private String roomName;
 
+    @Inject
+    public RoomDetailFragment() {
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        boolean updateOnRoomOpen = applicationProperties.getBooleanSharedPreference(UPDATE_ON_ROOM_OPEN, false, getActivity());
+        boolean updateOnRoomOpen = getApplicationProperties().getBooleanSharedPreference(UPDATE_ON_ROOM_OPEN, false, getActivity());
         if (updateOnRoomOpen) {
             update(true);
         }

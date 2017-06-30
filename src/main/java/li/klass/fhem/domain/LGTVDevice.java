@@ -30,7 +30,7 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
-public class LGTVDevice extends FhemDevice<LGTVDevice> {
+public class LGTVDevice extends FhemDevice {
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     @XmllistAttribute("power")
     private String power;

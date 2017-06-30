@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.base.Strings;
@@ -40,10 +41,11 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
-public class AtDevice extends FhemDevice<AtDevice> {
+public class AtDevice extends FhemDevice implements Comparable<AtDevice> {
 
     private static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,\\\\.]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
     private static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
@@ -298,6 +300,14 @@ public class AtDevice extends FhemDevice<AtDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
+    }
+
+    @Override
+    public int compareTo(@NonNull AtDevice other) {
+        String comparableAttribute = firstNonNull(sortBy, getAliasOrName());
+        String otherComparableAttribute = firstNonNull(other.sortBy, other.getAliasOrName());
+
+        return comparableAttribute.compareTo(otherComparableAttribute);
     }
 
     public enum AtRepetition {

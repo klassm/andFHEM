@@ -46,7 +46,7 @@ public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAct
     }
 
     @Override
-    public boolean isVisible(FhemDevice device) {
+    public boolean isVisible(FhemDevice device, Context context) {
         return device.getSetList().size() > 0;
     }
 }

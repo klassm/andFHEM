@@ -41,7 +41,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SupportsWidget(TemperatureWidgetView.class)
-public class PIDDevice extends FhemDevice<PIDDevice> implements DesiredTempDevice {
+public class PIDDevice extends FhemDevice implements DesiredTempDevice {
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField

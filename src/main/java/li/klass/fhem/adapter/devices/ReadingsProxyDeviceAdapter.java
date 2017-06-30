@@ -72,7 +72,7 @@ public class ReadingsProxyDeviceAdapter extends DimmableAdapter {
 
                         stateUiService.setSubState(device, connectionId, "rgb", targetHexString, context);
                     }
-                }.createRow(context, getInflater(), tableLayout));
+                }.createRow(context, tableLayout));
             }
 
             @Override

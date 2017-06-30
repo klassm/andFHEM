@@ -45,13 +45,13 @@ public class StatusWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         setTextViewOrHide(view, R.id.status, device.getState());
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device, Context context) {
+    public boolean supports(FhemDevice device, Context context) {
         return true;
     }
 

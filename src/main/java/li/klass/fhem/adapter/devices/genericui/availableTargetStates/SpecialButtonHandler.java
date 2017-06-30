@@ -38,7 +38,7 @@ import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
 import li.klass.fhem.util.DialogUtil;
 
-public class SpecialButtonHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class SpecialButtonHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
         return entry instanceof NoArgSetListEntry

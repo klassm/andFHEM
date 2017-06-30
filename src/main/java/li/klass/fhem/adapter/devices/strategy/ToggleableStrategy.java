@@ -68,7 +68,7 @@ public class ToggleableStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
 
         if (convertView == null || convertView.getTag() == null) {
@@ -116,11 +116,11 @@ public class ToggleableStrategy extends ViewStrategy {
             holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow);
         }
         holder.getTableLayout().addView(onOffActionRow
-                .createRow(layoutInflater, device, holder.getTableLayout().getContext()));
+                .createRow(device, holder.getTableLayout().getContext()));
     }
 
-    public TableRow createDetailView(GenericDevice device, LayoutInflater inflater, Context context, String connectionId) {
+    public TableRow createDetailView(GenericDevice device, Context context, String connectionId) {
         return new OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
-                .createRow(inflater, device, context);
+                .createRow(device, context);
     }
 }

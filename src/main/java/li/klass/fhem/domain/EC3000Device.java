@@ -43,7 +43,7 @@ import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
 @OverviewViewSettings(showState = false)
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
-public class EC3000Device extends FhemDevice<EC3000Device> {
+public class EC3000Device extends FhemDevice {
     @ShowField(description = ResourceIdMapper.energy_consumption, showInOverview = true)
     @XmllistAttribute("consumption")
     private String consumption;

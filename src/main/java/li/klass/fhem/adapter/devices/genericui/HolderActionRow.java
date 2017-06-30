@@ -50,7 +50,8 @@ public abstract class HolderActionRow<I> {
         this.layout = layout;
     }
 
-    public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final FhemDevice device, String connectionId) {
+    public TableRow createRow(final Context context, ViewGroup viewGroup, final FhemDevice device, String connectionId) {
+        LayoutInflater inflater = LayoutInflater.from(context);
         TableRow row = (TableRow) inflater.inflate(layout, viewGroup, false);
 
         FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);

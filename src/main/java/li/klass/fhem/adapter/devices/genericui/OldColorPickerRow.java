@@ -52,7 +52,8 @@ public class OldColorPickerRow implements ColorPickerListener {
         this.alertDialogTitle = alertDialogTitle;
     }
 
-    public TableRow createRow(final Context context, final LayoutInflater inflater, ViewGroup viewGroup) {
+    public TableRow createRow(final Context context, ViewGroup viewGroup) {
+        final LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.device_detail_colorpicker_row, viewGroup, false);
         assert view != null;
 

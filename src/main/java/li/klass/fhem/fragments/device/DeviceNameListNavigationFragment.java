@@ -49,7 +49,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
     }
 
     @Override
-    protected void onDeviceNameClick(String parent, FhemDevice<?> child) {
+    protected void onDeviceNameClick(String parent, FhemDevice child) {
         if (child == null) return;
 
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);

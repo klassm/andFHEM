@@ -89,7 +89,7 @@ public enum WidgetType {
         this.widgetSize = widgetSize;
     }
 
-    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final FhemDevice<?> device, final Context context) {
+    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final FhemDevice device, final Context context) {
         return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
             @Override
             public boolean apply(WidgetType widgetType) {

@@ -33,7 +33,7 @@ import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
 @SuppressWarnings("unused")
 @DetailViewSettings(showMeasured = true, showState = true)
-public class LightSceneDevice extends FhemDevice<LightSceneDevice> {
+public class LightSceneDevice extends FhemDevice {
 
     private String scene;
 

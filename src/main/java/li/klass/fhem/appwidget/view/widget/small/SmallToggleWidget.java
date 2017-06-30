@@ -35,7 +35,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 
 public class SmallToggleWidget extends ToggleWidgetView {
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         super.fillWidgetView(context, view, device, widgetConfiguration);
 
         view.setTextViewText(R.id.toggleOff, device.getWidgetName());

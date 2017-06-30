@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -75,13 +76,13 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(Context context, T device,
                                                                           TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new ToggleDeviceActionRow(getInflater(), layoutId, onOffBehavior)
+        tableLayout.addView(new ToggleDeviceActionRow(LayoutInflater.from(context), layoutId, onOffBehavior)
                 .createRow(context, device, device.getAliasOrName()));
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId, String connectionId) {
         tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
-                .createRow(getInflater(), device, context));
+                .createRow(device, context));
     }
 
     @Override

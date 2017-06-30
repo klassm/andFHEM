@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -66,7 +67,7 @@ public class PIDDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwi
                 tableLayout.addView(new TemperatureChangeTableRow(context, ((PIDDevice) device).getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
-                        .createRow(getInflater(), device));
+                        .createRow(LayoutInflater.from(context), device));
             }
         });
     }

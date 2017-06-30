@@ -34,8 +34,6 @@ import android.widget.ToggleButton;
 
 import com.google.common.base.Optional;
 
-import java.util.Map;
-
 import li.klass.fhem.R;
 import li.klass.fhem.domain.EventMap;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -60,7 +58,8 @@ public abstract class AbstractOnOffActionRow {
     }
 
     @SuppressWarnings("unchecked")
-    public TableRow createRow(LayoutInflater inflater, final FhemDevice device, Context context) {
+    public TableRow createRow(final FhemDevice device, Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
         TableRow tableRow = (TableRow) inflater.inflate(layoutId, null);
         TextView descriptionView = ((TextView) tableRow.findViewById(R.id.description));
         CheckableButton onButton = (CheckableButton) findOnButton(tableRow);

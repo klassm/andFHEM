@@ -38,7 +38,7 @@ import li.klass.fhem.resources.ResourceIdMapper;
 
 @SuppressWarnings("unused")
 @SupportsWidget(TemperatureWidgetView.class)
-public class OwthermDevice extends FhemDevice<OwthermDevice> {
+public class OwthermDevice extends FhemDevice {
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField

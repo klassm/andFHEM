@@ -47,7 +47,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
-            public boolean isSelectable(FhemDevice<?> device) {
+            public boolean isSelectable(FhemDevice device) {
                 return DeviceNameSelectionActivity.this.isSelectable(device);
             }
         });
@@ -58,7 +58,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
                 if (resultCode != ResultCodes.SUCCESS ||
                         !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
 
-                FhemDevice<?> clickedDevice = (FhemDevice<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
+                FhemDevice clickedDevice = (FhemDevice) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
                 deviceClicked(clickedDevice);
             }
         });
@@ -77,11 +77,11 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         }
     }
 
-    protected boolean isSelectable(FhemDevice<?> device) {
+    protected boolean isSelectable(FhemDevice device) {
         return true;
     }
 
-    protected void deviceClicked(final FhemDevice<?> device) {
+    protected void deviceClicked(final FhemDevice device) {
         Intent result = new Intent();
         result.putExtra(BundleExtraKeys.DEVICE, device);
         setResult(RESULT_OK, result);

@@ -80,7 +80,7 @@ public class NotificationService {
         getPreferences(context).edit().putInt(deviceName, updateType).commit();
     }
 
-    public void deviceNotification(String deviceName, Map<String, String> updateMap, FhemDevice<?> device, boolean vibrate, Context context) {
+    public void deviceNotification(String deviceName, Map<String, String> updateMap, FhemDevice device, boolean vibrate, Context context) {
         int value = getPreferences(context).getInt(deviceName, 0);
         if (device.triggerStateNotificationOnAttributeChange()) {
             updateMap.clear();

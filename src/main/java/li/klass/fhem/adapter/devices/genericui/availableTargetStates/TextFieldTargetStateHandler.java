@@ -35,7 +35,7 @@ import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldLongSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry;
 
-public class TextFieldTargetStateHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class TextFieldTargetStateHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
         return entry instanceof TextFieldSetListEntry || entry instanceof TextFieldLongSetListEntry;

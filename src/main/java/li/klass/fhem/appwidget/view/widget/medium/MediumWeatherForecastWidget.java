@@ -48,7 +48,7 @@ public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         WeatherDevice weatherDevice = (WeatherDevice) device;
         List<WeatherDevice.WeatherDeviceForecast> forecasts = weatherDevice.getForecasts();
         WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(0);
@@ -63,7 +63,7 @@ public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device, Context context) {
+    public boolean supports(FhemDevice device, Context context) {
         return device instanceof WeatherDevice;
     }
 

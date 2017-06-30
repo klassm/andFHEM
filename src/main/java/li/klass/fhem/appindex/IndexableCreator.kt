@@ -14,7 +14,7 @@ class IndexableCreator {
         return indexableFor(content, content, "fhem://room=" + roomName)
     }
 
-    fun indexableFor(context: Context, device: FhemDevice<*>): Indexable {
+    fun indexableFor(context: Context, device: FhemDevice): Indexable {
         val roomsTranslated = context.resources.getString(R.string.rooms)
         val name = Joiner.on(" ").skipNulls().join(
                 device.getAliasOrName(),

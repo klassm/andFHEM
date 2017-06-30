@@ -87,23 +87,23 @@ public class LightSceneAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
                         setSceneButtonProperties(device, connectionId, scene, button);
                         return button;
                     }
-                }.createRow(context, getInflater(), tableLayout, device, connectionId));
+                }.createRow(context, tableLayout, device, connectionId));
             }
         });
     }
 
-    private void setSceneButtonProperties(final FhemDevice device, final String connectionId, final String scene, Button button) {
+    private void setSceneButtonProperties(final FhemDevice device, final String connectionId, final String scene, final Button button) {
         button.setText(scene);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activateScene(device, connectionId, scene);
+                activateScene(device, connectionId, scene, button.getContext());
             }
         });
     }
 
-    private void activateScene(FhemDevice device, String connectionId, String scene) {
-        stateUiService.setSubState(device, connectionId, "scene", scene, getContext());
+    private void activateScene(FhemDevice device, String connectionId, String scene, Context context) {
+        stateUiService.setSubState(device, connectionId, "scene", scene, context);
     }
 
     @Override

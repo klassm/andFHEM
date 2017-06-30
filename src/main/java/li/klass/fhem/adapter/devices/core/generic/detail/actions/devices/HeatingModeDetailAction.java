@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
@@ -39,7 +38,7 @@ import static li.klass.fhem.util.EnumUtils.toStringList;
 public abstract class HeatingModeDetailAction<M extends Enum<M>> implements StateAttributeAction {
 
     @Override
-    public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent) {
+    public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, ViewGroup parent) {
         M mode = getCurrentModeFor(device);
         final M[] available = getAvailableModes();
 

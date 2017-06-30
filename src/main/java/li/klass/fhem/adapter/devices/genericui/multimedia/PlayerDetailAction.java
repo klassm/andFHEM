@@ -80,7 +80,7 @@ public class PlayerDetailAction extends DeviceDetailViewAction {
         }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 stateUiService.setState(device, action.get(), context, connectionId);
             }
         });

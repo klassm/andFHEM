@@ -94,7 +94,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     private static final DeviceNameSelectionFragment.DeviceFilter DEVICE_FILTER = new DeviceNameSelectionFragment.DeviceFilter() {
         @Override
-        public boolean isSelectable(FhemDevice<?> device) {
+        public boolean isSelectable(FhemDevice device) {
             return device.getSetList().size() > 0;
         }
     };
@@ -186,7 +186,7 @@ public class TimerDetailFragment extends BaseFragment {
         getTargetStateChangeButton(view).setOnClickListener(new View.OnClickListener() {
             @SuppressWarnings("unchecked")
             @Override
-            public void onClick(View v) {
+            public void onClick(final View view) {
                 showSwitchOptionsMenu(getActivity(), targetDevice, new OnTargetStateSelectedCallback() {
                     @Override
                     public void onStateSelected(FhemDevice device, String targetState) {

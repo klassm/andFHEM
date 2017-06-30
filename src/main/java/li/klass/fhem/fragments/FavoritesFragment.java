@@ -29,6 +29,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;

@@ -102,9 +102,10 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
         registerFieldListener("pwm0", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
+                LayoutInflater inflater = LayoutInflater.from(context);
                 tableLayout.addView(new StateChangingSeekBarFullWidth(
                         context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM0", connectionId).get(), fieldTableRow)
-                        .createRow(getInflater(), device));
+                        .createRow(inflater, device));
             }
         });
 
@@ -113,7 +114,7 @@ public class PCA9532DeviceAdapter extends ExplicitOverviewDetailDeviceAdapter {
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBarFullWidth(
                         context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, "PWM1", connectionId).get(), fieldTableRow)
-                        .createRow(getInflater(), device));
+                        .createRow(LayoutInflater.from(context), device));
             }
         });
     }

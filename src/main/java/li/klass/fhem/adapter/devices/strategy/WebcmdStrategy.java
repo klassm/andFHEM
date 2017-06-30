@@ -55,7 +55,7 @@ public class WebcmdStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
 
         if (convertView == null || convertView.getTag() == null) {
@@ -83,6 +83,6 @@ public class WebcmdStrategy extends ViewStrategy {
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
                                                                             TableLayout tableLayout, LayoutInflater layoutInflater, String connectionId) {
         tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
-                .createRow(context, layoutInflater, tableLayout, device, connectionId));
+                .createRow(context, tableLayout, device, connectionId));
     }
 }

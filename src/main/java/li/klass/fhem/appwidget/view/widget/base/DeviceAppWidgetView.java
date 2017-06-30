@@ -77,14 +77,14 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     public static final Logger LOG = LoggerFactory.getLogger(DeviceAppWidgetView.class);
 
-    public boolean supports(FhemDevice<?> device, Context context) {
+    public boolean supports(FhemDevice device, Context context) {
         boolean supportsFromJson = supportsFromJsonConfiguration(device);
         boolean supportsFromAnnotation = supportsFromAnnotation(device);
 
         return supportsFromJson || supportsFromAnnotation;
     }
 
-    private boolean supportsFromAnnotation(FhemDevice<?> device) {
+    private boolean supportsFromAnnotation(FhemDevice device) {
         if (!device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
 
         if (!device.supportsWidget(this.getClass())) {
@@ -101,7 +101,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         return false;
     }
 
-    private boolean supportsFromJsonConfiguration(FhemDevice<?> device) {
+    private boolean supportsFromJsonConfiguration(FhemDevice device) {
         Optional<DeviceConfiguration> deviceConfiguration = device.getDeviceConfiguration();
         if (deviceConfiguration.isPresent()) {
             Set<String> supportedWidgets = deviceConfiguration.get().getSupportedWidgets();
@@ -175,7 +175,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         }
     }
 
-    protected String valueForAnnotation(FhemDevice<?> device, Class<? extends Annotation> annotationCls, Context context) {
+    protected String valueForAnnotation(FhemDevice device, Class<? extends Annotation> annotationCls, Context context) {
         Optional<DeviceConfiguration> configuration = deviceConfigurationProvider.configurationFor(device);
         if (configuration.isPresent()) {
             Set<ViewItemConfig> states = configuration.get().getStates();
@@ -201,7 +201,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     protected void fillWidgetView(Context context, RemoteViews view,
                                   WidgetConfiguration widgetConfiguration) {
-        FhemDevice<?> device = getDeviceFor(deviceNameFrom(widgetConfiguration), widgetConfiguration.connectionId, context);
+        FhemDevice device = getDeviceFor(deviceNameFrom(widgetConfiguration), widgetConfiguration.connectionId, context);
         if (device != null) {
             view.setTextViewText(R.id.deviceName, device.getWidgetName());
             fillWidgetView(context, view, device, widgetConfiguration);
@@ -210,6 +210,6 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         }
     }
 
-    protected abstract void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device,
+    protected abstract void fillWidgetView(Context context, RemoteViews view, FhemDevice device,
                                            WidgetConfiguration widgetConfiguration);
 }

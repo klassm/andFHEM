@@ -32,7 +32,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @OverviewViewSettings(showState = true)
-public class GCMSendDevice extends FhemDevice<GCMSendDevice> {
+public class GCMSendDevice extends FhemDevice {
 
     @ShowField(description = ResourceIdMapper.apiKey)
     @XmllistAttribute("apiKey")

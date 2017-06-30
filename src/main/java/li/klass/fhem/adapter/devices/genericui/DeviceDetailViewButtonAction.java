@@ -62,7 +62,7 @@ public abstract class DeviceDetailViewButtonAction extends DeviceDetailViewActio
         };
     }
 
-    public boolean isVisible(FhemDevice device) {
+    public boolean isVisible(FhemDevice device, Context context) {
         return true;
     }
 

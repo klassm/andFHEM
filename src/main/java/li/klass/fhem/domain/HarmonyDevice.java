@@ -33,7 +33,7 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.REMOTE_CONTROL;
 
-public class HarmonyDevice extends FhemDevice<HarmonyDevice> {
+public class HarmonyDevice extends FhemDevice {
     @ShowField(description = ResourceIdMapper.activity, showInOverview = true, showInDetail = false)
     private String activity;
 

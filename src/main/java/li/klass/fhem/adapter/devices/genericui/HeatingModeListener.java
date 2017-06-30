@@ -42,7 +42,7 @@ import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener {
+public class HeatingModeListener<D extends FhemDevice & HeatingDevice<M, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener {
 
     @SuppressWarnings("unchecked")
     @Override

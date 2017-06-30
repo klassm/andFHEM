@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -69,7 +70,8 @@ public class DummyAdapter extends DimmableAdapter {
             public void onFieldNameAdded(final Context context, TableLayout tableLayout,
                                          String field, final FhemDevice device,
                                          String connectionId, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangeButtonActionRow(context, device, ButtonActionRow.LAYOUT_DETAIL, connectionId).createRow(getInflater()));
+                LayoutInflater inflater = LayoutInflater.from(context);
+                tableLayout.addView(new StateChangeButtonActionRow(context, device, ButtonActionRow.LAYOUT_DETAIL, connectionId).createRow(inflater));
             }
 
                     @Override
@@ -98,7 +100,7 @@ public class DummyAdapter extends DimmableAdapter {
 
                         stateUiService.setSubState(device, connectionId, "rgb", targetHexString, context);
                     }
-                }.createRow(context, getInflater(), tableLayout));
+                }.createRow(context, tableLayout));
             }
         });
     }

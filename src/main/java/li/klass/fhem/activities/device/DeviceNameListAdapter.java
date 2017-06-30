@@ -38,7 +38,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static android.view.ViewGroup.LayoutParams;
 
-public class DeviceNameListAdapter<DEVICE extends FhemDevice<DEVICE>> extends DeviceGridAdapter<DEVICE> {
+public class DeviceNameListAdapter<DEVICE extends FhemDevice> extends DeviceGridAdapter<DEVICE> {
     public static final int DEFAULT_REQUIRED_COLUMN_WIDTH = 250;
     private int requiredColumnWidth = DEFAULT_REQUIRED_COLUMN_WIDTH;
     private String selectedDeviceName;
@@ -71,9 +71,9 @@ public class DeviceNameListAdapter<DEVICE extends FhemDevice<DEVICE>> extends De
         return view;
     }
 
-    public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName, long lastUpdate) {
+    public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName) {
         this.selectedDeviceName = selectedDeviceName;
-        super.updateData(roomDeviceList, lastUpdate);
+        super.updateData(roomDeviceList);
     }
 
     public int getSelectedDevicePosition() {

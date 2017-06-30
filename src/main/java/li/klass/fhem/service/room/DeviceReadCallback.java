@@ -4,7 +4,7 @@ import java.util.Map;
 
 import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class DeviceReadCallback<D extends FhemDevice<D>> extends AllDevicesReadCallback {
+public abstract class DeviceReadCallback<D extends FhemDevice> extends AllDevicesReadCallback {
     private String deviceName;
 
     public DeviceReadCallback(String callbackDevice) {

@@ -84,11 +84,11 @@ public class GenericDeviceService {
     public GenericDeviceService() {
     }
 
-    public void setState(FhemDevice<?> device, String targetState, Optional<String> connectionId, Context context) {
+    public void setState(FhemDevice device, String targetState, Optional<String> connectionId, Context context) {
         setState(device, targetState, connectionId, context, true);
     }
 
-    public void setState(final FhemDevice<?> device, String targetState, Optional<String> connectionId, final Context context, final boolean invokeUpdate) {
+    public void setState(final FhemDevice device, String targetState, Optional<String> connectionId, final Context context, final boolean invokeUpdate) {
         final String toSet = device.formatTargetState(targetState);
 
         commandExecutionService.executeSafely(new Command("set " + device.getName() + " " + toSet, connectionId), context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId));
@@ -97,7 +97,7 @@ public class GenericDeviceService {
         device.getXmlListDevice().setInternal("STATE", targetState);
     }
 
-    public void setSubState(FhemDevice<?> device, String subStateName, String value, Optional<String> connectionId, Context context, boolean invokeDeviceUpdate) {
+    public void setSubState(FhemDevice device, String subStateName, String value, Optional<String> connectionId, Context context, boolean invokeDeviceUpdate) {
         if (device.getDeviceConfiguration().isPresent()) {
             DeviceConfiguration configuration = device.getDeviceConfiguration().get();
             Map<String, String> toReplace = configuration.getCommandReplaceFor(subStateName);
@@ -120,7 +120,7 @@ public class GenericDeviceService {
     }
 
     @NonNull
-    private CommandExecutionService.ResultListener invokePostCommandActions(final FhemDevice<?> device, final Context context, final boolean invokeUpdate, final String stateName, final String toSet, final Optional<String> connectionId) {
+    private CommandExecutionService.ResultListener invokePostCommandActions(final FhemDevice device, final Context context, final boolean invokeUpdate, final String stateName, final String toSet, final Optional<String> connectionId) {
         return new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
@@ -155,7 +155,7 @@ public class GenericDeviceService {
         }
     }
 
-    public void update(FhemDevice<?> device, final Context context, Optional<String> connectionId) {
+    public void update(FhemDevice device, final Context context, Optional<String> connectionId) {
         Integer delay = device.getDeviceConfiguration().transform(TO_DELAY_FOR_UPDATE_AFTER_COMMAND).or(0);
         context.startService(new Intent(DO_REMOTE_UPDATE)
                 .putExtra(DEVICE_NAME, device.getName())

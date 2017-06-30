@@ -36,7 +36,7 @@ import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry;
 
-public class GroupSetListTargetStateHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class GroupSetListTargetStateHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
         return entry instanceof GroupSetListEntry || entry instanceof MultipleStrictSetListEntry;

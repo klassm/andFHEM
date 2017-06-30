@@ -30,7 +30,7 @@ import li.klass.fhem.util.FloatUtils
 import li.klass.fhem.util.NumberUtil.isDecimalNumber
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat
 
-abstract class DimmableContinuousStatesDevice<D : FhemDevice<D>> : DimmableDevice<D>() {
+abstract class DimmableContinuousStatesDevice<D : FhemDevice> : DimmableDevice<D>() {
     override fun getDimStateNameForDimStateValue(value: Float): String {
         if (supportsOnOffDimMapping()) {
             if (FloatUtils.isEqual(value, dimUpperBound)) return getEventMapStateFor("on")

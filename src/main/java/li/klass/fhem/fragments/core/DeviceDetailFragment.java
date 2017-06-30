@@ -147,7 +147,6 @@ public class DeviceDetailFragment extends BaseFragment {
                             }
                             loadGraphs();
                             activity.supportInvalidateOptionsMenu();
-                            adapter.attach(DeviceDetailFragment.this.getActivity());
                             ScrollView scrollView = findScrollView();
                             if (scrollView != null) {
                                 scrollView.removeAllViews();

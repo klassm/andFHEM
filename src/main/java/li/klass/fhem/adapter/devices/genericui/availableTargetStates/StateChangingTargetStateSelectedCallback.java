@@ -29,7 +29,7 @@ import android.content.Context;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
-public class StateChangingTargetStateSelectedCallback<D extends FhemDevice<?>> implements OnTargetStateSelectedCallback<D> {
+public class StateChangingTargetStateSelectedCallback<D extends FhemDevice> implements OnTargetStateSelectedCallback<D> {
 
     private final StateUiService stateUiService;
     private final Context context;

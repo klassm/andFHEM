@@ -57,7 +57,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
 
         String warnings = xmlListDevice.getState("warnings").orNull();
@@ -84,7 +84,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device, Context context) {
+    public boolean supports(FhemDevice device, Context context) {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
         return xmlListDevice.containsAnyOfStates(TEMPERATURE_STATES)
                 && xmlListDevice.containsAnyOfStates(DESIRED_TEMPERATURE_STATES);

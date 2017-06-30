@@ -27,7 +27,7 @@ package li.klass.fhem.domain.core;
 import static com.google.common.collect.Sets.newHashSet;
 
 @SuppressWarnings("unused")
-public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevice<T> {
+public abstract class ToggleableDevice<T extends FhemDevice> extends FhemDevice {
 
     private String onStateName = "on";
     private String offStateName = "off";

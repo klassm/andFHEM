@@ -25,14 +25,13 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.state;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 public interface StateAttributeAction {
-    TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, LayoutInflater inflater, ViewGroup parent);
+    TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, ViewGroup parent);
 
     boolean supports(XmlListDevice xmlListDevice);
 }

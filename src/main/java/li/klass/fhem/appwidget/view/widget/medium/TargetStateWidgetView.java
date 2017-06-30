@@ -61,7 +61,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         String payload = widgetConfiguration.payload.get(1);
         String state = device.getEventMapStateFor(payload);
 
@@ -122,7 +122,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device, Context context) {
+    public boolean supports(FhemDevice device, Context context) {
         return !device.getSetList().getEntries().isEmpty();
     }
 

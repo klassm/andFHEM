@@ -54,7 +54,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
-public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSectionsAdapter<String, T> {
+public class DeviceGridAdapter<T extends FhemDevice> extends GridViewWithSectionsAdapter<String, T> {
     public static final int DEFAULT_COLUMN_WIDTH = 1000;
 
     private final ApplicationProperties applicationProperties;
@@ -65,7 +65,6 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
     private Set<String> hiddenParents = newHashSet();
     private Map<String, List<T>> parentChildMap = newHashMap();
     private Map<Class, Integer> viewTypeMap = newHashMap();
-    private long lastUpdate;
 
     private static final Logger LOG = LoggerFactory.getLogger(DeviceGridAdapter.class);
     private GroupComparator groupComparator;
@@ -84,7 +83,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
         this.applicationProperties = applicationProperties;
         restoreParents();
         if (roomDeviceList != null) {
-            updateData(roomDeviceList, -1);
+            updateData(roomDeviceList);
         }
     }
 
@@ -109,11 +108,9 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
     }
 
     @SuppressWarnings("unchecked")
-    public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
+    public void updateData(RoomDeviceList roomDeviceList) {
         if (roomDeviceList == null) return;
 
-        LOG.info(TAG, "updateData(lastUpdate={})", lastUpdate);
-        this.lastUpdate = lastUpdate;
         parents.clear();
         parents.addAll(deviceGroupParents);
 
@@ -245,9 +242,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
             throw new IllegalArgumentException(text);
         }
 
-        deviceAdapter.attach(context);
-
-        view = deviceAdapter.createOverviewView(layoutInflater, view, child, lastUpdate);
+        view = deviceAdapter.createOverviewView(view, child, context);
         view.setLayoutParams(new AbsListView.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         );

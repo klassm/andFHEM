@@ -96,7 +96,7 @@ class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
 
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
-            public boolean isSelectable(FhemDevice<?> device) {
+            public boolean isSelectable(FhemDevice device) {
                 return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device, context).isEmpty();
             }
         });
@@ -107,7 +107,7 @@ class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
                 if (resultCode != ResultCodes.SUCCESS ||
                         !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
 
-                FhemDevice<?> clickedDevice = (FhemDevice<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
+                FhemDevice clickedDevice = (FhemDevice) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
                 selectionCompletedCallback.onDeviceSelect(clickedDevice);
             }
         });

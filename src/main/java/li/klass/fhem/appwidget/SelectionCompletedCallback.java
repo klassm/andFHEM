@@ -30,7 +30,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 public interface SelectionCompletedCallback {
     void onRoomSelect(String roomName);
 
-    void onDeviceSelect(FhemDevice<?> clickedDevice);
+    void onDeviceSelect(FhemDevice clickedDevice);
 
     void onOtherWidgetSelect(WidgetType widgetType);
 }

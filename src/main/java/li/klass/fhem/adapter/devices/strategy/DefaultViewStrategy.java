@@ -64,7 +64,7 @@ public class DefaultViewStrategy extends ViewStrategy {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate, List<DeviceViewItem> deviceItems, String connectionId) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(getOverviewLayout(), null);
             GenericDeviceOverviewViewHolder viewHolder = new GenericDeviceOverviewViewHolder(convertView);
@@ -73,7 +73,7 @@ public class DefaultViewStrategy extends ViewStrategy {
             LOGGER.info("Reusing generic device overview view");
         }
         GenericDeviceOverviewViewHolder viewHolder = (GenericDeviceOverviewViewHolder) convertView.getTag();
-        fillDeviceOverviewView(convertView, rawDevice, lastUpdate, viewHolder, deviceItems, layoutInflater);
+        fillDeviceOverviewView(convertView, rawDevice, viewHolder, deviceItems, layoutInflater);
         return convertView;
     }
 
@@ -86,7 +86,7 @@ public class DefaultViewStrategy extends ViewStrategy {
         return R.layout.device_overview_generic;
     }
 
-    protected void fillDeviceOverviewView(View view, FhemDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder, List<DeviceViewItem> items, LayoutInflater layoutInflater) {
+    protected void fillDeviceOverviewView(View view, FhemDevice device, GenericDeviceOverviewViewHolder viewHolder, List<DeviceViewItem> items, LayoutInflater layoutInflater) {
         Context context = layoutInflater.getContext();
 
         viewHolder.resetHolder();

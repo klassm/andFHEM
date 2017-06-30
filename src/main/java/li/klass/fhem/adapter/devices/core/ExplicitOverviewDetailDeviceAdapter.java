@@ -66,7 +66,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
                                             FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                createWebCmdTableRowIfRequired(getInflater(), tableLayout, device, connectionId);
+                createWebCmdTableRowIfRequired(LayoutInflater.from(context), tableLayout, device, connectionId);
             }
         });
     }
@@ -80,7 +80,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         final Context context = inflater.getContext();
 
         layout.addView(new WebCmdActionRow(HolderActionRow.LAYOUT_DETAIL, context)
-                .createRow(context, inflater, layout, device, connectionId));
+                .createRow(context, layout, device, connectionId));
     }
 
     @Override
@@ -90,7 +90,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
 
     @Override
     protected final View getDeviceDetailView(Context context, FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, long lastUpdate) {
-        View view = getInflater().inflate(getDetailViewLayout(), null);
+        View view = LayoutInflater.from(context).inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device, connectionId);
 
         return view;
@@ -107,7 +107,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
 
         try {
             DetailViewSettings annotation = device.getClass().getAnnotation(DetailViewSettings.class);
-            List<DeviceViewItem> items = getSortedAnnotatedClassItems(device);
+            List<DeviceViewItem> items = getSortedAnnotatedClassItems(device, context);
 
             for (DeviceViewItem item : items) {
                 String name = item.getSortKey();
@@ -124,7 +124,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
 
                 if (item.isShowInDetail()) {
                     GenericDeviceTableRowHolder holder = createTableRow(inflater, R.layout.device_detail_generic_table_row);
-                    fillTableRow(holder, item, device);
+                    fillTableRow(holder, item, device, context);
                     layout.addView(holder.row);
                     notifyFieldListeners(context, device, connectionId, layout, name, holder.row);
                 }
@@ -174,11 +174,11 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     private void addDetailActionButtons(Context context, View view, FhemDevice device, LayoutInflater inflater, String connectionId) {
         LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
         List<DeviceDetailViewAction> actions = provideDetailActions();
-        if (!hasVisibleDetailActions(actions, device)) {
+        if (!hasVisibleDetailActions(actions, device, context)) {
             actionLayout.setVisibility(View.GONE);
         }
         for (DeviceDetailViewAction action : actions) {
-            if (!action.isVisible(device)) continue;
+            if (!action.isVisible(device, context)) continue;
 
             View actionView = action.createView(context, inflater, device, actionLayout, connectionId);
             actionLayout.addView(actionView);
@@ -210,11 +210,11 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
         graphLayout.addView(button);
     }
 
-    private boolean hasVisibleDetailActions(List<DeviceDetailViewAction> actions, FhemDevice device) {
+    private boolean hasVisibleDetailActions(List<DeviceDetailViewAction> actions, FhemDevice device, Context context) {
         if (actions.isEmpty()) return false;
 
         for (DeviceDetailViewAction detailAction : actions) {
-            if (detailAction.isVisible(device)) {
+            if (detailAction.isVisible(device, context)) {
                 return true;
             }
         }

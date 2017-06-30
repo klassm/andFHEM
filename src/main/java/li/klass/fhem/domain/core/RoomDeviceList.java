@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableSet;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -90,10 +91,9 @@ public class RoomDeviceList implements Serializable {
      * value.
      *
      * @param functionality device functionality to filter.
-     * @param <T>           class of the returned device list.
      * @return list of devices matching the functionality.
      */
-    public <T extends FhemDevice<T>> List<T> getDevicesOfFunctionality(String functionality) {
+    public List<FhemDevice> getDevicesOfFunctionality(String functionality) {
         return getDevicesOfFunctionality(functionality, true);
     }
 
@@ -104,14 +104,13 @@ public class RoomDeviceList implements Serializable {
      * @param group            group to filter.
      * @param respectSupported set the parameter to false to also include devices that
      *                         are not supported
-     * @param <T>              class of the returned device list.
      * @return list of devices matching the group.
      */
-    public <T extends FhemDevice> List<T> getDevicesOfFunctionality(String group,
-                                                                    boolean respectSupported) {
-        Set<T> deviceSet = getOrCreateDeviceList(group);
-        List<T> deviceList = newArrayList();
-        for (T device : deviceSet) {
+    private List<FhemDevice> getDevicesOfFunctionality(String group,
+                                                       boolean respectSupported) {
+        Set<FhemDevice> deviceSet = getOrCreateDeviceList(group);
+        List<FhemDevice> deviceList = newArrayList();
+        for (FhemDevice device : deviceSet) {
             if (!(device instanceof AtDevice) && (!respectSupported ||
                     device.isSupported())) {
                 deviceList.add(device);
@@ -119,7 +118,7 @@ public class RoomDeviceList implements Serializable {
         }
 
         try {
-            Collections.sort(deviceList);
+            Collections.sort(deviceList, FhemDevice.BY_NAME);
         } catch (Exception e) {
             Log.e(RoomDeviceList.class.getName(), "cannot sort", e);
         }
@@ -148,7 +147,7 @@ public class RoomDeviceList implements Serializable {
             }
         }
 
-        Collections.sort(deviceList);
+        Collections.sort(deviceList, FhemDevice.BY_NAME);
         return deviceList;
     }
 

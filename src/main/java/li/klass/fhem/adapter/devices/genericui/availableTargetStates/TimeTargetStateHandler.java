@@ -37,7 +37,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry;
 
-public class TimeTargetStateHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class TimeTargetStateHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
         return entry instanceof TimeSetListEntry;

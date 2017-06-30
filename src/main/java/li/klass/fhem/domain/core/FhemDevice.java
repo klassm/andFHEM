@@ -35,6 +35,7 @@ import org.joda.time.DateTime;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import li.klass.fhem.domain.EventMap;
@@ -56,7 +57,7 @@ import static java.util.Arrays.asList;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
-public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Comparable<T> {
+public abstract class FhemDevice extends HookedDevice {
 
     static final Function<FhemDevice, XmlListDevice> TO_XMLLIST_DEVICE = new Function<FhemDevice, XmlListDevice>() {
         @Override
@@ -78,6 +79,16 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     private DeviceFunctionality deviceFunctionality;
 
     private OverviewViewSettings overviewViewSettingsCache;
+
+    public static final Comparator<FhemDevice> BY_NAME = new Comparator<FhemDevice>() {
+        @Override
+        public int compare(FhemDevice o1, FhemDevice o2) {
+            String comparableAttribute = firstNonNull(o1.sortBy, o1.getAliasOrName());
+            String otherComparableAttribute = firstNonNull(o2.sortBy, o2.getAliasOrName());
+
+            return comparableAttribute.compareTo(otherComparableAttribute);
+        }
+    };
 
     public final OverviewViewSettings getOverviewViewSettingsCache() {
         return overviewViewSettingsCache;
@@ -246,13 +257,13 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return name != null ? name.hashCode() : 0;
     }
 
-    @Override
-    public final int compareTo(@NotNull T other) {
-        String comparableAttribute = firstNonNull(sortBy, getAliasOrName());
-        String otherComparableAttribute = firstNonNull(other.sortBy, other.getAliasOrName());
-
-        return comparableAttribute.compareTo(otherComparableAttribute);
-    }
+//    @Override
+//    public final int compareTo(@NotNull FhemDevice other) {
+//        String comparableAttribute = firstNonNull(sortBy, getAliasOrName());
+//        String otherComparableAttribute = firstNonNull(other.sortBy, other.getAliasOrName());
+//
+//        return comparableAttribute.compareTo(otherComparableAttribute);
+//    }
 
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     public String getState() {
@@ -354,7 +365,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return groups;
     }
 
-    protected boolean useTimeAndWeekAttributesForMeasureTime() {
+    private boolean useTimeAndWeekAttributesForMeasureTime() {
         return true;
     }
 

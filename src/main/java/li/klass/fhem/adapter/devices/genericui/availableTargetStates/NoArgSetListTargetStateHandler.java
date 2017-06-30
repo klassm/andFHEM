@@ -30,7 +30,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
 
-public class NoArgSetListTargetStateHandler<D extends FhemDevice<?>> implements SetListTargetStateHandler<D> {
+public class NoArgSetListTargetStateHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
     @Override
     public boolean canHandle(SetListEntry entry) {
         return entry instanceof NoArgSetListEntry;

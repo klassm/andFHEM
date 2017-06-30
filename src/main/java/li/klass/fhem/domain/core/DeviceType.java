@@ -155,7 +155,7 @@ public enum DeviceType {
     private DeviceAdapter adapter;
     private DeviceVisibility visibility = null;
 
-    <T extends FhemDevice<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
+    <T extends FhemDevice> DeviceType(String xmllistTag, Class<T> deviceClass) {
         this(xmllistTag, deviceClass, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow());
     }
 
@@ -170,7 +170,7 @@ public enum DeviceType {
         this.visibility = visibility;
     }
 
-    public static <T extends FhemDevice<T>> DeviceAdapter getAdapterFor(T device) {
+    public static <T extends FhemDevice> DeviceAdapter getAdapterFor(T device) {
         DeviceType type = getDeviceTypeFor(device);
         return type == null ? null : type.getAdapter();
     }

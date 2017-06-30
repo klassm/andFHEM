@@ -39,7 +39,7 @@ import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.service.room.xmllist.XmlListDevice
 
-class SliderSetListTargetStateHandler<D : FhemDevice<*>> : SetListTargetStateHandler<D> {
+class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandler<D> {
     private var dimProgress = 0f
 
     override fun canHandle(entry: SetListEntry): Boolean {

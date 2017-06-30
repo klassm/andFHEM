@@ -34,11 +34,11 @@ public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
 
     private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-        private final FhemDevice<?> device;
+        private final FhemDevice device;
         private final Context context;
         private final int widgetId;
 
-        ListRemoteViewsFactory(Context context, FhemDevice<?> device, int widgetId) {
+        ListRemoteViewsFactory(Context context, FhemDevice device, int widgetId) {
             this.context = context;
             this.device = device;
             this.widgetId = widgetId;
@@ -88,13 +88,13 @@ public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
     }
 
     public RemoteViewsService.RemoteViewsFactory getRemoteViewsFactory(Context context,
-                                                                       FhemDevice<?> device,
+                                                                       FhemDevice device,
                                                                        int widgetId) {
         return new ListRemoteViewsFactory(context, device, widgetId);
     }
 
-    protected abstract int getListItemCount(FhemDevice<?> device);
+    protected abstract int getListItemCount(FhemDevice device);
 
-    protected abstract RemoteViews getRemoteViewAt(Context context, FhemDevice<?> device,
+    protected abstract RemoteViews getRemoteViewAt(Context context, FhemDevice device,
                                                    int position, int widgetId);
 }

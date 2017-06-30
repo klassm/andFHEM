@@ -74,8 +74,8 @@ public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
             }
 
             @Override
-            public boolean isVisible(FhemDevice device) {
-                return !gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device, getContext());
+            public boolean isVisible(FhemDevice device, Context context) {
+                return !gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device, context);
             }
         });
 

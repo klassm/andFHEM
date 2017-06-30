@@ -79,7 +79,7 @@ public class FhemDeviceTest {
         devices = newArrayList(devices);
 
         // when
-        Collections.sort(devices);
+        Collections.sort(devices, FhemDevice.BY_NAME);
 
         // then
         ImmutableList<String> names = from(devices).transform(TO_NAME).toList();

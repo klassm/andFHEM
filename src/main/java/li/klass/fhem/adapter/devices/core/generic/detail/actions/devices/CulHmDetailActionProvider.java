@@ -118,7 +118,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
     private static class KFM100ContentView implements StateAttributeAction {
 
         @Override
-        public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, final Context context, LayoutInflater inflater, ViewGroup parent) {
+        public TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, final Context context, ViewGroup parent) {
             String model = device.getAttribute("model").get();
             final double fillContentPercentage = determineContentPercentage(device, model);
 
@@ -128,7 +128,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
                 public View getContentView() {
                     return new LitreContentView(context, fillContentPercentage);
                 }
-            }.createRow(inflater, parent);
+            }.createRow(LayoutInflater.from(context), parent);
         }
 
         private double determineContentPercentage(XmlListDevice device, String model) {

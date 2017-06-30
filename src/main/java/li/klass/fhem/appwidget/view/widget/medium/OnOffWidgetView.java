@@ -61,7 +61,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         boolean isOn = onOffBehavior.isOn(device);
 
         String onStateName = deviceHookProvider.getOnStateName(device);
@@ -95,7 +95,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice<?> device, Context context) {
+    public boolean supports(FhemDevice device, Context context) {
         return device instanceof ToggleableDevice;
     }
 

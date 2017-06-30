@@ -99,7 +99,7 @@ public class StartupActivity extends Activity {
         Button loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 EditText passwordInput = (EditText) findViewById(R.id.password);
                 String password = passwordInput.getText().toString();
                 if (password.equals(getPassword())) {

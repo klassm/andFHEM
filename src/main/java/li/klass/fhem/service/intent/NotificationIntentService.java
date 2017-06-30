@@ -61,7 +61,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         } else if (intent.getAction().equals(Actions.NOTIFICATION_TRIGGER)) {
             @SuppressWarnings("unchecked")
             Map<String, String> updateMap = (Map<String, String>) intent.getSerializableExtra(BundleExtraKeys.UPDATE_MAP);
-            FhemDevice<?> device = (FhemDevice<?>) intent.getSerializableExtra(BundleExtraKeys.DEVICE);
+            FhemDevice device = (FhemDevice) intent.getSerializableExtra(BundleExtraKeys.DEVICE);
             boolean vibrate = intent.getBooleanExtra(BundleExtraKeys.VIBRATE, false);
 
             notificationService.deviceNotification(deviceName, updateMap, device, vibrate, this);
