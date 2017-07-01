@@ -34,7 +34,10 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/devices"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/errorHeader"
+        android:layout_above="@+id/adContainer"
+        tools:ignore="UnknownIdInLayout" />
 
     <LinearLayout
         android:id="@+id/adContainer"

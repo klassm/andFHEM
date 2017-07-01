@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.device;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -52,7 +54,6 @@ import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Iterables.partition;
 import static li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.DELAY;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.service.deviceConfiguration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND;
 
@@ -157,10 +158,15 @@ public class GenericDeviceService {
 
     public void update(FhemDevice device, final Context context, Optional<String> connectionId) {
         Integer delay = device.getDeviceConfiguration().transform(TO_DELAY_FOR_UPDATE_AFTER_COMMAND).or(0);
-        context.startService(new Intent(DO_REMOTE_UPDATE)
+        Intent updateIntent = new Intent(DO_REMOTE_UPDATE)
                 .putExtra(DEVICE_NAME, device.getName())
-                .putExtra(DELAY, delay)
                 .putExtra(CONNECTION_ID, connectionId.orNull())
-                .setClass(context, RoomListUpdateIntentService.class));
+                .setClass(context, RoomListUpdateIntentService.class);
+        if (delay > 0) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC, delay * 1000, PendingIntent.getService(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        } else {
+            context.startService(updateIntent);
+        }
     }
 }

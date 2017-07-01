@@ -39,6 +39,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.room_detail.view.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.adapter.rooms.ViewableParentsCalculator
@@ -46,7 +48,7 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.FAVORITE_ADD
 import li.klass.fhem.constants.Actions.FAVORITE_REMOVE
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys.IS_FAVORITE
 import li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.domain.core.DeviceType
@@ -55,10 +57,13 @@ import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.fhem.DataConnectionSwitch
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.service.intent.FavoritesIntentService
+import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.util.device.DeviceActionUtil
 import li.klass.fhem.widget.notification.NotificationSettingView
+import org.apache.commons.lang3.time.StopWatch
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
@@ -74,6 +79,8 @@ abstract class DeviceListFragment : BaseFragment() {
     lateinit var viewableParentsCalculator: ViewableParentsCalculator
     @Inject
     lateinit var advertisementService: AdvertisementService
+    @Inject
+    lateinit var roomListUpdateService: RoomListUpdateService
 
     private val actionModeCallback = object : ActionMode.Callback {
         override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
@@ -132,7 +139,6 @@ abstract class DeviceListFragment : BaseFragment() {
         }
 
         override fun onDestroyActionMode(actionMode: ActionMode) {
-
         }
     }
     private var actionMode: ActionMode? = null
@@ -164,7 +170,6 @@ abstract class DeviceListFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
-        update(false);
     }
 
     override fun canChildScrollUp(): Boolean {
@@ -184,24 +189,55 @@ abstract class DeviceListFragment : BaseFragment() {
         if (doUpdate) {
             activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         }
-        view?.invalidate()
 
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$doUpdate)")
 
-        val intent = Intent(updateAction)
-                .setClass(activity, updateActionIntentTargetClass)
-                .putExtra(DO_REFRESH, doUpdate)
-                .putExtra(RESULT_RECEIVER, DeviceListUpdateReceiver())
-        fillIntent(intent)
+        async(UI) {
 
-        activity?.startService(intent)
+            val (deviceList, parents) = bg {
+                if (doUpdate) {
+                    activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+                    executeRemoteUpdate()
+                    activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+                }
+                val deviceList = getRoomDeviceListForUpdate()
+                val parents = viewableParentsCalculator.calculateParents(activity, deviceList)
+                Pair(deviceList, parents)
+            }.await()
+            if (view != null) {
+                updateWith(parents, deviceList, view!!)
+            }
+        }
     }
 
-    protected abstract val updateActionIntentTargetClass: Class<*>
+    abstract fun getRoomDeviceListForUpdate(): RoomDeviceList
 
-    protected abstract val updateAction: String
+    abstract fun executeRemoteUpdate()
 
-    protected open fun fillIntent(intent: Intent) {}
+    private fun updateWith(parents: List<String>, deviceList: RoomDeviceList, view: View) {
+        val stopWatch = StopWatch()
+        stopWatch.start()
+        view.devices.adapter = DeviceGroupAdapter(parents, deviceList,
+                onClickListener = { device -> onClick(device) },
+                onLongClickListener = { device -> onLongClick(device) })
+        view.invalidate()
+        LOGGER.info("updateWith - adapter is set, time=${stopWatch.time}")
+
+        if (deviceList.isEmptyOrOnlyContainsDoNotShowDevices) {
+            showEmptyView()
+        } else {
+            hideEmptyView()
+        }
+        LOGGER.info("updateWith - adapter is set, time=${stopWatch.time}")
+
+        val dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification)
+        if (!dataConnectionSwitch.isDummyDataActive(activity)) {
+            dummyConnectionNotification.visibility = View.GONE
+        } else {
+            dummyConnectionNotification.visibility = View.VISIBLE
+        }
+        LOGGER.info("updateWith - update dummyConnectionNotification, time=${stopWatch.time}")
+    }
 
     override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo)
@@ -221,38 +257,6 @@ abstract class DeviceListFragment : BaseFragment() {
         NotificationSettingView(activity, deviceName).show(activity)
     }
 
-    private inner class DeviceListUpdateReceiver : FhemResultReceiver() {
-
-        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-
-            val view = view ?: return
-
-            if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
-                activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
-
-                val deviceList = resultData.getSerializable(DEVICE_LIST) as RoomDeviceList
-                val parents = viewableParentsCalculator.calculateParents(context, deviceList)
-                view.devices.adapter = DeviceGroupAdapter(parents, deviceList,
-                        onClickListener = { device -> onClick(device) },
-                        onLongClickListener = { device -> onLongClick(device) })
-                view.invalidate()
-
-                if (deviceList.isEmptyOrOnlyContainsDoNotShowDevices) {
-                    showEmptyView()
-                } else {
-                    hideEmptyView()
-                }
-            }
-
-            val dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification)
-            if (!dataConnectionSwitch.isDummyDataActive(activity)) {
-                dummyConnectionNotification.visibility = View.GONE
-            } else {
-                dummyConnectionNotification.visibility = View.VISIBLE
-            }
-        }
-    }
-
     private fun onClick(device: FhemDevice) {
         val adapter = DeviceType.getAdapterFor(device)
         if (adapter != null && adapter.supportsDetailView(device)) {
@@ -263,7 +267,7 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private fun onLongClick(device: FhemDevice): Boolean {
         val intent = Intent(Actions.FAVORITES_IS_FAVORITES)
-                .setClass(getActivity(), FavoritesIntentService::class.java)
+                .setClass(activity, FavoritesIntentService::class.java)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
@@ -278,7 +282,6 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     companion object {
-
         protected var contextMenuClickedDevice = AtomicReference<FhemDevice>()
         protected var currentClickFragment = AtomicReference<DeviceListFragment>()
         protected var isClickedDeviceFavorite = AtomicBoolean(false)

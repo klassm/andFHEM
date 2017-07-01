@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.room_device_content.view.*
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
+import org.apache.commons.lang3.time.StopWatch
+import org.slf4j.LoggerFactory
 
 class DeviceGroupListAdapter(val devices: List<FhemDevice>,
                              val onClickListener: (FhemDevice) -> Unit,
@@ -27,18 +29,35 @@ class DeviceGroupListAdapter(val devices: List<FhemDevice>,
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(device: FhemDevice, onClickListener: (FhemDevice) -> Unit, onLongClickListener: (FhemDevice) -> Boolean) {
+            val stopWatch = StopWatch()
+            stopWatch.start()
+
             val adapter = DeviceType.getAdapterFor(device)
+
+            LOGGER.info("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
+
             val contentView = adapter.createOverviewView(firstChildOf(itemView.card), device, itemView.context)
+
+            LOGGER.info("bind - creating view for device=${device.name}, time=${stopWatch.time}")
 
             itemView.card.removeAllViews()
             itemView.card.addView(contentView)
+
+            LOGGER.info("bind - adding content view device=${device.name}, time=${stopWatch.time}")
+
             itemView.setOnClickListener { onClickListener(device) }
             itemView.setOnLongClickListener { onLongClickListener(device) }
+
+            LOGGER.info("bind - finished device=${device.name}, time=${stopWatch.time}")
         }
 
         private fun firstChildOf(layout: CardView) = when (layout.childCount) {
             0 -> null
             else -> layout.getChildAt(0)
         }
+    }
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(DeviceGroupListAdapter::class.java)
     }
 }

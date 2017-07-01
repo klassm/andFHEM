@@ -138,7 +138,7 @@ public class DefaultViewStrategy extends ViewStrategy {
         }
     }
 
-    protected GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
+    private GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
         GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = new GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder();
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
         assert tableRow != null;
@@ -148,7 +148,7 @@ public class DefaultViewStrategy extends ViewStrategy {
         return holder;
     }
 
-    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
+    private void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
         String value = item.getValueFor(device);
         String description = item.getName(deviceDescMapping, context);
         setTextView(holder.description, description);

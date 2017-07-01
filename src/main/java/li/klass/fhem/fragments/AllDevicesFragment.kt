@@ -22,39 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments;
+package li.klass.fhem.fragments
 
-import android.content.Context;
+import android.content.Context
+import com.google.common.base.Optional
+import li.klass.fhem.R
+import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.fragments.core.DeviceListFragment
+import li.klass.fhem.service.room.RoomListService
+import javax.inject.Inject
 
-import javax.inject.Inject;
-
-import li.klass.fhem.R;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.fragments.core.DeviceListFragment;
-import li.klass.fhem.service.intent.RoomListIntentService;
-
-public class AllDevicesFragment extends DeviceListFragment {
+class AllDevicesFragment : DeviceListFragment() {
     @Inject
-    public AllDevicesFragment() {
+    lateinit var roomListService: RoomListService
+
+    override fun getTitle(context: Context): CharSequence {
+        return context.getString(R.string.alldevices)
     }
 
-    @Override
-    protected Class<?> getUpdateActionIntentTargetClass() {
-        return RoomListIntentService.class;
+    override fun inject(applicationComponent: ApplicationComponent) {
+        applicationComponent.inject(this)
     }
 
-    @Override
-    public CharSequence getTitle(Context context) {
-        return context.getString(R.string.alldevices);
+    override fun executeRemoteUpdate() {
+        roomListUpdateService.updateAllDevices(Optional.absent(), context)
     }
 
-    @Override
-    protected String getUpdateAction() {
-        return Actions.GET_ALL_ROOMS_DEVICE_LIST;
-    }
-
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
-    }
+    override fun getRoomDeviceListForUpdate() = roomListService.getAllRoomsDeviceList(Optional.absent(), activity)!!
 }
