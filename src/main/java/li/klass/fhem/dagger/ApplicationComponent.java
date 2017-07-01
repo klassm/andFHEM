@@ -44,7 +44,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
-import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
@@ -172,8 +171,6 @@ public interface ApplicationComponent {
     void inject(GCMSendDeviceAdapter object);
 
     void inject(LightSceneAdapter object);
-
-    void inject(PCA9532DeviceAdapter object);
 
     void inject(PIDDeviceAdapter object);
 

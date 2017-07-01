@@ -37,7 +37,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
-import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
@@ -76,7 +75,6 @@ import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwthermDevice;
-import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
@@ -120,7 +118,6 @@ public enum DeviceType {
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
-    PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
