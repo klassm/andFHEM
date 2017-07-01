@@ -31,6 +31,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +69,7 @@ import static com.google.common.collect.Sets.newHashSet;
 
 public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(OverviewDeviceAdapter.class);
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
 
@@ -89,16 +94,16 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     @Inject
     DefaultViewStrategy defaultOverviewStrategy;
 
-    List<ViewStrategy> overviewStrategies;
+    private List<ViewStrategy> overviewStrategies;
 
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
      * recreating this list on each view creation is really really expensive (involves reflection,
      * list sorting, object creation, ...)
      */
-    protected transient Set<DeviceViewItem> annotatedClassItems;
+    private transient Set<DeviceViewItem> annotatedClassItems;
 
-    protected Map<String, List<FieldNameAddedToDetailListener>> fieldNameAddedListeners = newHashMap();
+    Map<String, List<FieldNameAddedToDetailListener>> fieldNameAddedListeners = newHashMap();
 
     @Override
     protected void onAfterInject() {
@@ -122,14 +127,19 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     }
 
     public final View createOverviewView(View convertView, FhemDevice rawDevice, Context context) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         ViewStrategy viewStrategy = getMostSpecificOverviewStrategy(rawDevice);
         if (viewStrategy == null) {
             throw new NullPointerException("was null for device " + rawDevice.toString() + " and adapter " + getClass().getSimpleName());
         }
-        return viewStrategy.createOverviewView(LayoutInflater.from(context), convertView, rawDevice, getSortedAnnotatedClassItems(rawDevice, context), null);
+        LOGGER.debug("createOverviewView - viewStrategy=" + viewStrategy.getClass().getSimpleName() + ",time=" + stopWatch.getTime());
+        View view = viewStrategy.createOverviewView(LayoutInflater.from(context), convertView, rawDevice, getSortedAnnotatedClassItems(rawDevice, context), null);
+        LOGGER.debug("createOverviewView - finished, time=" + stopWatch.getTime());
+        return view;
     }
 
-    protected GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
+    GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
         GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = new GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder();
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
         assert tableRow != null;
@@ -139,7 +149,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         return holder;
     }
 
-    protected void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
+    void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
         String value = item.getValueFor(device);
         String description = item.getName(deviceDescMapping, context);
         setTextView(holder.description, description);
@@ -151,7 +161,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         }
     }
 
-    protected List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device, Context context) {
+    List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device, Context context) {
         if (annotatedClassItems == null) {
             annotatedClassItems = annotatedMethodsAndFieldsProvider.generateAnnotatedClassItemsList(device.getClass());
         }
@@ -168,7 +178,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         return result;
     }
 
-    protected void registerListenersFor(FhemDevice device, Set<DeviceViewItem> xmlViewItems) {
+    private void registerListenersFor(FhemDevice device, Set<DeviceViewItem> xmlViewItems) {
         for (DeviceViewItem xmlViewItem : xmlViewItems) {
             registerListenerFor(device, xmlViewItem);
         }

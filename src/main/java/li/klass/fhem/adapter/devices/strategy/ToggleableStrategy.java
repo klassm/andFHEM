@@ -31,6 +31,10 @@ import android.widget.TableRow;
 
 import com.google.common.base.Optional;
 
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,8 +53,6 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
-import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_OVERVIEW;
-import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.HOLDER_KEY;
 import static li.klass.fhem.adapter.devices.hook.ButtonHook.NORMAL;
 import static li.klass.fhem.adapter.devices.hook.ButtonHook.TOGGLE_DEVICE;
 import static li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE;
@@ -63,6 +65,8 @@ public class ToggleableStrategy extends ViewStrategy {
     @Inject
     OnOffBehavior onOffBehavior;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ToggleableStrategy.class);
+
     @Inject
     public ToggleableStrategy() {
     }
@@ -70,16 +74,21 @@ public class ToggleableStrategy extends ViewStrategy {
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
         ToggleableDevice device = (ToggleableDevice) rawDevice;
-
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
             GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);
             convertView.setTag(holder);
+            LOGGER.debug("createOverviewView - inflating layout, device=" + rawDevice.getName() + ", time=" + stopWatch.getTime());
+        } else {
+            LOGGER.debug("createOverviewView - reusing generic device overview view for device=" + rawDevice.getName());
         }
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
         addOverviewSwitchActionRow(holder, device, layoutInflater, null);
+        LOGGER.debug("createOverviewView - finished, device=" + rawDevice.getName() + ", time=" + stopWatch.getTime());
         return convertView;
     }
 
@@ -89,24 +98,31 @@ public class ToggleableStrategy extends ViewStrategy {
     }
 
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, LayoutInflater layoutInflater, String connectionId) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         ButtonHook hook = hookProvider.buttonHookFor(device);
         if (hook != NORMAL && hook != TOGGLE_DEVICE) {
             addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, layoutInflater, Optional.<Integer>absent(), connectionId);
         } else {
-            addToggleDeviceActionRow(holder, device, LAYOUT_OVERVIEW, layoutInflater);
+            addToggleDeviceActionRow(holder, device, layoutInflater.getContext());
         }
+        LOGGER.debug("addOverviewSwitchActionRow - finished, time=" + stopWatch.getTime());
     }
 
-    private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater) {
-        Context context = layoutInflater.getContext();
+    private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(GenericDeviceOverviewViewHolder holder, T device, Context context) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
 
-        ToggleDeviceActionRow actionRow = holder.getAdditionalHolderFor(HOLDER_KEY);
+        ToggleDeviceActionRow actionRow = holder.getAdditionalHolderFor(ToggleDeviceActionRow.Companion.getHOLDER_KEY());
         if (actionRow == null) {
-            actionRow = new ToggleDeviceActionRow(layoutInflater, layoutId, onOffBehavior);
-            holder.putAdditionalHolder(HOLDER_KEY, actionRow);
+            actionRow = new ToggleDeviceActionRow(context, onOffBehavior);
+            holder.putAdditionalHolder(ToggleDeviceActionRow.Companion.getHOLDER_KEY(), actionRow);
+            LOGGER.info("addToggleDeviceActionRow - creating row, time=" + stopWatch.getTime());
         }
         actionRow.fillWith(context, device, device.getAliasOrName());
         holder.getTableLayout().addView(actionRow.getView());
+
+        LOGGER.debug("addToggleDeviceActionRow - finished, time=" + stopWatch.getTime());
     }
 
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId, LayoutInflater layoutInflater, Optional<Integer> text, String connectionId) {

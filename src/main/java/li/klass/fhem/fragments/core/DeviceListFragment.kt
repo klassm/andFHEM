@@ -25,13 +25,15 @@
 package li.klass.fhem.fragments.core
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager.VERTICAL
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
@@ -43,7 +45,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
-import li.klass.fhem.adapter.rooms.ViewableParentsCalculator
+import li.klass.fhem.adapter.rooms.ViewableElementsCalculator
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.FAVORITE_ADD
 import li.klass.fhem.constants.Actions.FAVORITE_REMOVE
@@ -76,11 +78,13 @@ abstract class DeviceListFragment : BaseFragment() {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     @Inject
-    lateinit var viewableParentsCalculator: ViewableParentsCalculator
+    lateinit var viewableElementsCalculator: ViewableElementsCalculator
     @Inject
     lateinit var advertisementService: AdvertisementService
     @Inject
     lateinit var roomListUpdateService: RoomListUpdateService
+
+    private var actionMode: ActionMode? = null
 
     private val actionModeCallback = object : ActionMode.Callback {
         override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
@@ -141,16 +145,13 @@ abstract class DeviceListFragment : BaseFragment() {
         override fun onDestroyActionMode(actionMode: ActionMode) {
         }
     }
-    private var actionMode: ActionMode? = null
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
 
-
         val view = inflater!!.inflate(R.layout.room_detail, container, false)
-        view.devices.layoutManager = LinearLayoutManager(context)
-
         advertisementService.addAd(view, activity)
 
         assert(view != null)
@@ -161,7 +162,7 @@ abstract class DeviceListFragment : BaseFragment() {
         if (!isNavigation) {
             val rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0, activity)
             view.setPadding(view.paddingLeft, view.paddingTop,
-                    rightPadding, view.paddingBottom);
+                    rightPadding, view.paddingBottom)
         }
 
         return view
@@ -173,7 +174,7 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     override fun canChildScrollUp(): Boolean {
-        return ViewCompat.canScrollVertically(view?.devices, -1) || super.canChildScrollUp();
+        return ViewCompat.canScrollVertically(view?.devices, -1) || super.canChildScrollUp()
     }
 
     protected open fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
@@ -193,19 +194,17 @@ abstract class DeviceListFragment : BaseFragment() {
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$doUpdate)")
 
         async(UI) {
-
-            val (deviceList, parents) = bg {
+            val elements = bg {
                 if (doUpdate) {
                     activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
                     executeRemoteUpdate()
                     activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
                 }
                 val deviceList = getRoomDeviceListForUpdate()
-                val parents = viewableParentsCalculator.calculateParents(activity, deviceList)
-                Pair(deviceList, parents)
+                viewableElementsCalculator.calculateElements(activity, deviceList)
             }.await()
             if (view != null) {
-                updateWith(parents, deviceList, view!!)
+                updateWith(elements, view!!)
             }
         }
     }
@@ -214,16 +213,31 @@ abstract class DeviceListFragment : BaseFragment() {
 
     abstract fun executeRemoteUpdate()
 
-    private fun updateWith(parents: List<String>, deviceList: RoomDeviceList, view: View) {
+    private fun updateWith(elements: List<ViewableElementsCalculator.Element>, view: View) {
+
+        fun dpFromPx(px: Float): Float {
+            return px / Resources.getSystem().displayMetrics.density
+        }
+
+        fun getNumberOfColumns(): Int {
+            val displayMetrics = Resources.getSystem().displayMetrics
+            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 300F).toInt()
+            return when {
+                calculated < 1 -> 1
+                else -> calculated
+            }
+        }
+
         val stopWatch = StopWatch()
         stopWatch.start()
-        view.devices.adapter = DeviceGroupAdapter(parents, deviceList,
-                onClickListener = { device -> onClick(device) },
-                onLongClickListener = { device -> onLongClick(device) })
+        view.devices.adapter = DeviceGroupAdapter(elements,
+                onClickListener = this@DeviceListFragment::onClick,
+                onLongClickListener = this@DeviceListFragment::onLongClick)
+        view.devices.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), VERTICAL)
         view.invalidate()
         LOGGER.info("updateWith - adapter is set, time=${stopWatch.time}")
 
-        if (deviceList.isEmptyOrOnlyContainsDoNotShowDevices) {
+        if (elements.isEmpty()) {
             showEmptyView()
         } else {
             hideEmptyView()
@@ -271,14 +285,14 @@ abstract class DeviceListFragment : BaseFragment() {
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                        contextMenuClickedDevice.set(device);
-                        isClickedDeviceFavorite.set(resultData.getBoolean(IS_FAVORITE));
-                        actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback);
+                        contextMenuClickedDevice.set(device)
+                        isClickedDeviceFavorite.set(resultData.getBoolean(IS_FAVORITE))
+                        actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
                     }
-                });
-        activity?.startService(intent);
+                })
+        activity?.startService(intent)
 
-        return true;
+        return true
     }
 
     companion object {

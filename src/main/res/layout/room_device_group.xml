@@ -34,9 +34,9 @@
         style="@style/deviceOverviewParent"
         android:text="@string/dummy_text"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/content"
-        android:orientation="vertical" />
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/content"-->
+    <!--android:orientation="vertical" />-->
 </LinearLayout>

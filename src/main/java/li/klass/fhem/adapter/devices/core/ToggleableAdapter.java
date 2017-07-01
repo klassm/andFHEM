@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -49,7 +48,6 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
-import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYOUT_DETAIL;
 
 public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow {
     @Inject
@@ -75,8 +73,8 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
 
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(Context context, T device,
-                                                                          TableLayout tableLayout, int layoutId) {
-        tableLayout.addView(new ToggleDeviceActionRow(LayoutInflater.from(context), layoutId, onOffBehavior)
+                                                                          TableLayout tableLayout) {
+        tableLayout.addView(new ToggleDeviceActionRow(context, onOffBehavior)
                 .createRow(context, device, device.getAliasOrName()));
     }
 
@@ -104,7 +102,7 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         if (hook != ButtonHook.NORMAL && hook != ButtonHook.TOGGLE_DEVICE) {
             addOnOffActionRow(context, device, layout, OnOffActionRowForToggleables.LAYOUT_DETAIL, connectionId);
         } else {
-            addToggleDeviceActionRow(context, device, layout, LAYOUT_DETAIL);
+            addToggleDeviceActionRow(context, device, layout);
         }
     }
 

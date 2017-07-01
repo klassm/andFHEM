@@ -25,19 +25,15 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          style="@style/deviceOverviewLayout">
+    style="@style/deviceOverviewLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
-<TextView
+    <TextView
         android:id="@+id/description"
         style="@style/deviceOverviewLayoutDeviceName"
         android:layout_width="match_parent"
-        android:layout_column="1"
-        android:layout_gravity="center_vertical"
-        android:text="@string/dummy_text"/>
+        android:text="@string/dummy_text" />
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        style="@style/deviceOverviewToggleButton"/>
+    <include layout="@layout/togglebutton" />
 </TableRow>

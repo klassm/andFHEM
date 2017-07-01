@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.google.common.base.Optional;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,15 +66,19 @@ public class DefaultViewStrategy extends ViewStrategy {
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(getOverviewLayout(), null);
             GenericDeviceOverviewViewHolder viewHolder = new GenericDeviceOverviewViewHolder(convertView);
             convertView.setTag(viewHolder);
+            LOGGER.debug("createOverviewView - inflating layout, device=" + rawDevice.getName() + ", time=" + stopWatch.getTime());
         } else {
-            LOGGER.info("Reusing generic device overview view");
+            LOGGER.debug("createOverviewView - reusing generic device overview view for device=" + rawDevice.getName());
         }
         GenericDeviceOverviewViewHolder viewHolder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         fillDeviceOverviewView(convertView, rawDevice, viewHolder, deviceItems, layoutInflater);
+        LOGGER.debug("createOverviewView - finished, device=" + rawDevice.getName() + ", time=" + stopWatch.getTime());
         return convertView;
     }
 
