@@ -154,6 +154,7 @@ android {
         disable 'IconDipSize'
         disable 'IconLocation'
         disable 'IconDensities'
+        abortOnError false
     }
 }
 
