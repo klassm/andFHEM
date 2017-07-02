@@ -128,7 +128,7 @@ public class DeviceListParser {
             xmlList = xmlList.trim();
         }
 
-        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.Companion.getALL_DEVICES_ROOM());
 
         if (xmlList == null || "".equals(xmlList)) {
             LOG.error("xmlList is null or blank");
@@ -231,7 +231,7 @@ public class DeviceListParser {
     }
 
     private RoomDeviceList buildRoomDeviceList(Map<String, FhemDevice> allDevices, Context context) {
-        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.Companion.getALL_DEVICES_ROOM());
         for (FhemDevice device : allDevices.values()) {
             roomDeviceList.addDevice(device, context);
         }

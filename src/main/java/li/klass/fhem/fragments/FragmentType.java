@@ -46,7 +46,6 @@ public enum FragmentType {
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
     SEND_COMMAND(SendCommandFragment.class, R.id.send_command, null),
     DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
-    DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
     TIMER_OVERVIEW(TimerListFragment.class, R.id.timer, null),
     TIMER_DETAIL(TimerDetailFragment.class),
     CONNECTION_LIST(ConnectionListFragment.class),

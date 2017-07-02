@@ -23,7 +23,7 @@ class ViewableElementsCalculator @Inject constructor(
         val customParents = roomDeviceList.allDevices.flatMap { it.getInternalDeviceGroupOrGroupAttributes(context) as List<String> }.toSet()
 
         val groupComparator = GroupComparator(DeviceFunctionality.UNKNOWN.getCaptionText(context), visibleParents)
-        val elementsInGroup: Map<String, MutableList<FhemDevice>> = (visibleParents + customParents)
+        val elementsInGroup = (visibleParents + customParents)
                 .filter { it !in invisibleParents }
                 .map { parent -> Pair(parent, roomDeviceList.getDevicesOfFunctionality(parent)) }
                 .toMap()

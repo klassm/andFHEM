@@ -22,35 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments.device;
+package li.klass.fhem.fragments.device
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Intent
+import android.os.Bundle
 
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.constants.ResultCodes
+import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.domain.core.FhemDevice
 
-public class DeviceNameSelectionFragment extends DeviceNameListFragment {
-    @Override
-    protected void onDeviceNameClick(String parent, FhemDevice child) {
-        if (child == null) return;
-
+class DeviceNameSelectionFragment : DeviceNameListFragment() {
+    override fun onDeviceNameClick(child: FhemDevice) {
         if (resultReceiver != null) {
-            Bundle result = new Bundle();
-            result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, child);
-            resultReceiver.send(ResultCodes.SUCCESS, result);
+            val result = Bundle()
+            result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, child)
+            resultReceiver!!.send(ResultCodes.SUCCESS, result)
         }
 
-        Intent intent = new Intent(Actions.BACK);
-        intent.putExtra(BundleExtraKeys.CLICKED_DEVICE, child);
-        getActivity().sendBroadcast(intent);
+        activity.sendBroadcast(Intent(Actions.BACK)
+                .putExtra(BundleExtraKeys.FRAGMENT, callingFragment)
+                .putExtra(BundleExtraKeys.CLICKED_DEVICE, child))
     }
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
+    override fun inject(applicationComponent: ApplicationComponent) {
+        applicationComponent.inject(this)
     }
 }

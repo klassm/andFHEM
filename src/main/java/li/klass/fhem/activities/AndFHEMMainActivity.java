@@ -87,6 +87,7 @@ import static li.klass.fhem.constants.Actions.SHOW_ALERT;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
+import static li.klass.fhem.constants.Actions.UPDATE_NAVIGATION;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
@@ -101,6 +102,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AndFHEMMainActivity.class);
+
     private class Receiver extends BroadcastReceiver {
 
         private final IntentFilter intentFilter;
@@ -109,6 +111,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             intentFilter = new IntentFilter();
             intentFilter.addAction(SHOW_FRAGMENT);
             intentFilter.addAction(DO_UPDATE);
+            intentFilter.addAction(UPDATE_NAVIGATION);
             intentFilter.addAction(SHOW_EXECUTING_DIALOG);
             intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
             intentFilter.addAction(SHOW_TOAST);
@@ -144,6 +147,8 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                             } else if (action.equals(DO_UPDATE)) {
                                 updateShowRefreshProgressIcon();
                                 refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false));
+                            } else if (action.equals(UPDATE_NAVIGATION)) {
+                                refreshNavigation();
                             } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
                                 updateShowRefreshProgressIcon();
                                 refreshLayout.setRefreshing(true);
@@ -161,7 +166,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
                                         intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
                                         intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
                             } else if (action.equals(BACK)) {
-                                onBackPressed();
+                                onBackPressed((FragmentType) intent.getSerializableExtra(FRAGMENT));
                             } else if (CONNECTIONS_CHANGED.equals(action)) {
                                 if (availableConnectionDataAdapter != null) {
                                     availableConnectionDataAdapter.doLoad();
@@ -548,13 +553,21 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     }
 
     private void refreshFragments(boolean doUpdate) {
-        BaseFragment content = getContentFragment();
-        if (content != null) {
-            content.update(doUpdate);
-        }
+        refreshContent(doUpdate);
+        refreshNavigation();
+    }
+
+    private void refreshNavigation() {
         BaseFragment nav = getNavigationFragment();
         if (nav != null) {
             nav.update(false);
+        }
+    }
+
+    private void refreshContent(boolean doUpdate) {
+        BaseFragment content = getContentFragment();
+        if (content != null) {
+            content.update(doUpdate);
         }
     }
 
@@ -622,6 +635,17 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         }
     }
 
+    public void onBackPressed(FragmentType fragmentType) {
+        if (fragmentType == null) {
+            onBackPressed();
+            return;
+        }
+        FragmentManager manager = getSupportFragmentManager();
+        while (manager.getBackStackEntryCount() > 0 && !getContentFragment().getClass().equals(fragmentType.getContentClass())) {
+            manager.popBackStackImmediate();
+        }
+    }
+
     private void redrawContent() {
 
         BaseFragment contentFragment = getContentFragment();
@@ -652,7 +676,8 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             BaseFragment contentFragment = createContentFragment(fragmentType, data);
             BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
 
-            setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment());
+            boolean addToBackstack = !(contentFragment != null && getContentFragment() != null && contentFragment.getClass().equals(getContentFragment().getClass()));
+            setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment() && addToBackstack);
         }
     }
 
@@ -740,6 +765,8 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         if (addToBackStack) {
             transaction.addToBackStack(contentFragment.getClass().getName());
             showDrawerToggle(false);
+        } else {
+            transaction.addToBackStack(null);
         }
 
         transaction.setBreadCrumbTitle(contentFragment.getTitle(this));

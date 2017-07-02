@@ -161,7 +161,7 @@ android {
 }
 
 kotlin {
-    experimental { coroutines 'enable' }
+    experimental { coroutines "enable" }
 }
 
 github {

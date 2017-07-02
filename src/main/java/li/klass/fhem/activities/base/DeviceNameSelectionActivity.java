@@ -26,6 +26,7 @@ package li.klass.fhem.activities.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -47,8 +48,8 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
-            public boolean isSelectable(FhemDevice device) {
-                return DeviceNameSelectionActivity.this.isSelectable(device);
+            public boolean isSelectable(@NonNull FhemDevice device) {
+                return true;
             }
         });
 
@@ -77,14 +78,8 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         }
     }
 
-    protected boolean isSelectable(FhemDevice device) {
-        return true;
-    }
-
     protected void deviceClicked(final FhemDevice device) {
-        Intent result = new Intent();
-        result.putExtra(BundleExtraKeys.DEVICE, device);
-        setResult(RESULT_OK, result);
+        setResult(RESULT_OK, new Intent().putExtra(BundleExtraKeys.DEVICE, device));
         finish();
     }
 }

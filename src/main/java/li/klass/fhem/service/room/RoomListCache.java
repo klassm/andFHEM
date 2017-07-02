@@ -78,7 +78,7 @@ public class RoomListCache {
     }
 
     public synchronized void clearRoomDeviceList(Context context) {
-        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM), context);
+        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.Companion.getALL_DEVICES_ROOM()), context);
     }
 
     private void storeDeviceListMapInternal(RoomDeviceList roomDeviceList, Context context) {

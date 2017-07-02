@@ -32,6 +32,7 @@ import android.os.ResultReceiver
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
+import android.support.v7.widget.CardView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager.VERTICAL
 import android.util.Log
@@ -41,6 +42,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.room_detail.view.*
+import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
@@ -199,6 +201,7 @@ abstract class DeviceListFragment : BaseFragment() {
                     activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
                     executeRemoteUpdate()
                     activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+                    activity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
                 }
                 val deviceList = getRoomDeviceListForUpdate()
                 viewableElementsCalculator.calculateElements(activity, deviceList)
@@ -215,13 +218,13 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private fun updateWith(elements: List<ViewableElementsCalculator.Element>, view: View) {
 
-        fun dpFromPx(px: Float): Float {
-            return px / Resources.getSystem().displayMetrics.density
-        }
-
         fun getNumberOfColumns(): Int {
+            fun dpFromPx(px: Float): Float {
+                return px / Resources.getSystem().displayMetrics.density
+            }
+
             val displayMetrics = Resources.getSystem().displayMetrics
-            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 300F).toInt()
+            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 400F).toInt()
             return when {
                 calculated < 1 -> 1
                 else -> calculated
@@ -231,18 +234,20 @@ abstract class DeviceListFragment : BaseFragment() {
         val stopWatch = StopWatch()
         stopWatch.start()
         view.devices.adapter = DeviceGroupAdapter(elements,
-                onClickListener = this@DeviceListFragment::onClick,
-                onLongClickListener = this@DeviceListFragment::onLongClick)
+                configuration = DeviceGroupAdapter.Configuration(
+                        deviceResourceId = R.layout.room_device_content,
+                        bind = this@DeviceListFragment::createDeviceView))
+
         view.devices.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), VERTICAL)
         view.invalidate()
-        LOGGER.info("updateWith - adapter is set, time=${stopWatch.time}")
+        LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
         if (elements.isEmpty()) {
             showEmptyView()
         } else {
             hideEmptyView()
         }
-        LOGGER.info("updateWith - adapter is set, time=${stopWatch.time}")
+        LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
         val dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification)
         if (!dataConnectionSwitch.isDummyDataActive(activity)) {
@@ -250,8 +255,37 @@ abstract class DeviceListFragment : BaseFragment() {
         } else {
             dummyConnectionNotification.visibility = View.VISIBLE
         }
-        LOGGER.info("updateWith - update dummyConnectionNotification, time=${stopWatch.time}")
+        LOGGER.debug("updateWith - update dummyConnectionNotification, time=${stopWatch.time}")
     }
+
+    private fun createDeviceView(device: FhemDevice, view: View) {
+        fun firstChildOf(layout: CardView) = when (layout.childCount) {
+            0 -> null
+            else -> layout.getChildAt(0)
+        }
+
+        val stopWatch = StopWatch()
+        stopWatch.start()
+
+        val adapter = DeviceType.getAdapterFor(device)
+
+        LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
+
+        val contentView = adapter.createOverviewView(firstChildOf(view.card), device, view.context)
+
+        LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
+
+        view.card.removeAllViews()
+        view.card.addView(contentView)
+
+        LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
+
+        view.setOnClickListener { onClick(device) }
+        view.setOnLongClickListener { onLongClick(device) }
+
+        LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
+    }
+
 
     override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo)

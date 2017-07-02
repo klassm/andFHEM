@@ -138,7 +138,6 @@ public class AndFHEMApplication extends MultiDexApplication {
                     .build());
         } catch (Exception e) {
             Log.v(TAG, "cannot enable strict mode", e);
-            // ignore
         }
     }
 

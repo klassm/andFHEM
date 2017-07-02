@@ -71,8 +71,8 @@ import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
+import static li.klass.fhem.constants.BundleExtraKeys.CALLING_FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.CLICKED_DEVICE;
-import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
@@ -104,7 +104,6 @@ public class TimerDetailFragment extends BaseFragment {
 
     private transient FhemDevice targetDevice;
     private String savedTimerDeviceName;
-    private String connectionId;
 
     @Override
     protected void inject(ApplicationComponent applicationComponent) {
@@ -116,7 +115,6 @@ public class TimerDetailFragment extends BaseFragment {
         if (args.containsKey(DEVICE_NAME)) {
             savedTimerDeviceName = args.getString(DEVICE_NAME);
         }
-        connectionId = args.getString(CONNECTION_ID);
     }
 
     @Override
@@ -153,7 +151,7 @@ public class TimerDetailFragment extends BaseFragment {
         }
         setTargetDeviceName("", view);
 
-        if (isModify()) {
+        if (isModify() && targetDevice == null) {
             setTimerDeviceValuesForName(savedTimerDeviceName);
         }
 
@@ -213,6 +211,7 @@ public class TimerDetailFragment extends BaseFragment {
                 getActivity().sendBroadcast(new Intent(SHOW_FRAGMENT)
                         .putExtra(FRAGMENT, DEVICE_SELECTION)
                         .putExtra(BundleExtraKeys.DEVICE_FILTER, DEVICE_FILTER)
+                        .putExtra(CALLING_FRAGMENT, FragmentType.TIMER_DETAIL)
                         .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
                             @Override
                             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -319,8 +318,8 @@ public class TimerDetailFragment extends BaseFragment {
         if (view == null || targetDevice == null) {
             return;
         }
-        setTargetDeviceName(targetDevice.getName(), view);
         TimerDetailFragment.this.targetDevice = targetDevice;
+        setTargetDeviceName(targetDevice.getName(), view);
 
         if (!updateTargetStateRowVisibility(view)) {
             setTargetState(getString(R.string.unknown), view);

@@ -148,7 +148,8 @@ public class RoomListFragment extends BaseFragment {
         if (getView() == null) return;
 
         hideEmptyView();
-        if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
+        if (doUpdate && !isNavigation())
+            getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
         getActivity().startService(new Intent(Actions.GET_ROOM_NAME_LIST)
                 .setClass(getActivity(), RoomListIntentService.class)
@@ -203,7 +204,9 @@ public class RoomListFragment extends BaseFragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             if (getView() == null) return;
 
-            getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+            if (!isNavigation()) {
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+            }
 
             if (resultCode == ResultCodes.SUCCESS) {
                 List<String> roomList1 = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);

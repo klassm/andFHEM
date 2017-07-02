@@ -32,6 +32,7 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fragments.RoomListFragment;
 
 import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.CALLING_FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
@@ -49,12 +50,11 @@ public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
 
     @Override
     public void onClick(String roomName) {
-        Intent intent = new Intent(SHOW_FRAGMENT);
-        intent.putExtra(FRAGMENT, DEVICE_SELECTION);
-        intent.putExtra(ROOM_NAME, roomName);
-        intent.putExtra(RESULT_RECEIVER, resultReceiver);
-
-        getActivity().sendBroadcast(intent);
+        getActivity().sendBroadcast(new Intent(SHOW_FRAGMENT)
+                .putExtra(FRAGMENT, DEVICE_SELECTION)
+                .putExtra(ROOM_NAME, roomName)
+                .putExtra(CALLING_FRAGMENT, getArguments().getSerializable(CALLING_FRAGMENT))
+                .putExtra(RESULT_RECEIVER, resultReceiver));
     }
 
     @Override

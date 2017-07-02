@@ -1,30 +1,26 @@
 package li.klass.fhem.adapter.rooms
 
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.android.synthetic.main.room_device_group.view.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.ViewableElementsCalculator.Element
-import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
 
 class DeviceGroupAdapter(
         private val elements: List<Element>,
-        private val onClickListener: (FhemDevice) -> Unit,
-        private val onLongClickListener: (FhemDevice) -> Boolean
+        private val configuration: Configuration
 ) : RecyclerView.Adapter<DeviceGroupAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = elements[position]
         when (holder) {
-            is ViewHolder.ForDevice -> holder.bind((element as Element.Device).device, onClickListener, onLongClickListener)
+            is ViewHolder.ForDevice -> holder.bind((element as Element.Device).device, configuration)
             is ViewHolder.ForGroup -> holder.bind((element as Element.Group).group)
         }
     }
@@ -44,7 +40,7 @@ class DeviceGroupAdapter(
         LOGGER.info("onCreateViewHolder, viewType = $viewType")
         return when (viewType) {
             TYPE_GROUP -> ViewHolder.ForGroup(inflateWith(R.layout.room_device_group))
-            TYPE_DEVICE -> ViewHolder.ForDevice(inflateWith(R.layout.room_device_content))
+            TYPE_DEVICE -> ViewHolder.ForDevice(inflateWith(configuration.deviceResourceId))
             else -> throw RuntimeException("invalid type: " + viewType)
         }
     }
@@ -65,32 +61,8 @@ class DeviceGroupAdapter(
         }
 
         class ForDevice(view: View) : ViewHolder(view) {
-            fun bind(device: FhemDevice, onClickListener: (FhemDevice) -> Unit, onLongClickListener: (FhemDevice) -> Boolean) {
-                val stopWatch = StopWatch()
-                stopWatch.start()
-
-                val adapter = DeviceType.getAdapterFor(device)
-
-                LOGGER.info("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
-
-                val contentView = adapter.createOverviewView(firstChildOf(itemView.card), device, itemView.context)
-
-                LOGGER.info("bind - creating view for device=${device.name}, time=${stopWatch.time}")
-
-                itemView.card.removeAllViews()
-                itemView.card.addView(contentView)
-
-                LOGGER.info("bind - adding content view device=${device.name}, time=${stopWatch.time}")
-
-                itemView.setOnClickListener { onClickListener(device) }
-                itemView.setOnLongClickListener { onLongClickListener(device) }
-
-                LOGGER.info("bind - finished device=${device.name}, time=${stopWatch.time}")
-            }
-
-            private fun firstChildOf(layout: CardView) = when (layout.childCount) {
-                0 -> null
-                else -> layout.getChildAt(0)
+            fun bind(device: FhemDevice, configuration: Configuration) {
+                configuration.bind(device, itemView)
             }
         }
     }
@@ -100,4 +72,7 @@ class DeviceGroupAdapter(
         private val TYPE_GROUP = 1
         private val TYPE_DEVICE = 2
     }
+
+    data class Configuration(val deviceResourceId: Int,
+                             val bind: (FhemDevice, View) -> Unit)
 }
