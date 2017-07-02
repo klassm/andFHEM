@@ -52,7 +52,6 @@ import java.security.cert.X509Certificate;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -110,12 +109,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                     final AndFHEMMemorizingTrustManager trustManager = new AndFHEMMemorizingTrustManager(getContext());
                     trustManager.bindDisplayActivity(getActivity());
                     final X509Certificate x509Certificate = (X509Certificate) ReflectionUtil.getFieldValue(certificate, certificate.getClass().getDeclaredField("mX509Certificate"));
-                    final String hostname;
-                    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                        handler.proceed();
-                        return;
-                    }
-                    hostname = new URL(error.getUrl()).getHost();
+                    final String hostname = new URL(error.getUrl()).getHost();
 
                     new Thread(new Runnable() {
                         @Override

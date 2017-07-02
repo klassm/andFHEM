@@ -37,7 +37,6 @@ import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.constants.Actions;
@@ -51,12 +50,7 @@ public class MyAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
 
-        Optional<String> text;
-        if (Build.VERSION.SDK_INT < 14) {
-            text = getTextForOldAndroidVersions(accessibilityEvent);
-        } else {
-            text = getTextForNewAndroidVersions(accessibilityEvent);
-        }
+        Optional<String> text = getTextForNewAndroidVersions(accessibilityEvent);
 
         if (!text.isPresent()) {
             return;
@@ -78,13 +72,6 @@ public class MyAccessibilityService extends AccessibilityService {
             return Optional.absent();
         }
         return Optional.of(source.getText().toString());
-    }
-
-    private Optional<String> getTextForOldAndroidVersions(AccessibilityEvent accessibilityEvent) {
-        List<CharSequence> texts = accessibilityEvent.getText();
-        if (texts.isEmpty()) return Optional.absent();
-
-        return Optional.of(texts.get(0).toString());
     }
 
     @Override

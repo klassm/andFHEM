@@ -64,18 +64,18 @@
             android:id="@+id/day_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:text="@string/temperature"
             android:textColor="@android:color/black"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/day_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:text="@string/forecast"
             android:textColor="@android:color/black"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:maxLines="1" />
     </LinearLayout>
 </RelativeLayout>

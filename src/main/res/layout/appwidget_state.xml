@@ -34,8 +34,7 @@
         <TextView style="@style/appwidget_item"
                   android:textSize="12sp"
                   android:id="@+id/status"
-                  android:text="@string/dummy_weather_state"
-                  android:singleLine="false"/>
+            android:text="@string/dummy_weather_state" />
     </LinearLayout>
     <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>

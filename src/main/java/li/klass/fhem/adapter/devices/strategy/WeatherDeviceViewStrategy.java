@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices.strategy;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,7 +49,7 @@ public class WeatherDeviceViewStrategy extends ViewStrategy {
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
-        RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather, null);
+        @SuppressLint("InflateParams") RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather, null);
         fillDeviceOverviewView(layout, (WeatherDevice) rawDevice);
         return layout;
     }

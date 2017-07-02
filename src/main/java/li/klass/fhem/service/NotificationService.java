@@ -77,7 +77,7 @@ public class NotificationService {
     }
 
     public void setDeviceNotification(String deviceName, int updateType, Context context) {
-        getPreferences(context).edit().putInt(deviceName, updateType).commit();
+        getPreferences(context).edit().putInt(deviceName, updateType).apply();
     }
 
     public void deviceNotification(String deviceName, Map<String, String> updateMap, FhemDevice device, boolean vibrate, Context context) {
