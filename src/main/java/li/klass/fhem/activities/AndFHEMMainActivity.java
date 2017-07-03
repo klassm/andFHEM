@@ -628,10 +628,10 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+            BaseFragment contentFragment = getContentFragment();
+            System.out.println(contentFragment);
         }
     }
 
@@ -676,8 +676,7 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
             BaseFragment contentFragment = createContentFragment(fragmentType, data);
             BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
 
-            boolean addToBackstack = !(contentFragment != null && getContentFragment() != null && contentFragment.getClass().equals(getContentFragment().getClass()));
-            setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment() && addToBackstack);
+            setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment());
         }
     }
 
@@ -765,8 +764,6 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
         if (addToBackStack) {
             transaction.addToBackStack(contentFragment.getClass().getName());
             showDrawerToggle(false);
-        } else {
-            transaction.addToBackStack(null);
         }
 
         transaction.setBreadCrumbTitle(contentFragment.getTitle(this));
