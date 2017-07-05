@@ -150,6 +150,20 @@ abstract class DeviceListFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        fun getNumberOfColumns(): Int {
+            fun dpFromPx(px: Float): Float {
+                return px / Resources.getSystem().displayMetrics.density
+            }
+
+            val displayMetrics = Resources.getSystem().displayMetrics
+            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 400F).toInt()
+            return when {
+                calculated < 1 -> 1
+                else -> calculated
+            }
+        }
+
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
 
@@ -166,6 +180,13 @@ abstract class DeviceListFragment : BaseFragment() {
             view.setPadding(view.paddingLeft, view.paddingTop,
                     rightPadding, view.paddingBottom)
         }
+
+        view.devices.adapter = DeviceGroupAdapter(emptyList(),
+                configuration = DeviceGroupAdapter.Configuration(
+                        deviceResourceId = R.layout.room_device_content,
+                        bind = this@DeviceListFragment::createDeviceView))
+
+        view.devices.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), VERTICAL)
 
         return view
     }
@@ -217,29 +238,10 @@ abstract class DeviceListFragment : BaseFragment() {
     abstract fun executeRemoteUpdate()
 
     private fun updateWith(elements: List<ViewableElementsCalculator.Element>, view: View) {
-
-        fun getNumberOfColumns(): Int {
-            fun dpFromPx(px: Float): Float {
-                return px / Resources.getSystem().displayMetrics.density
-            }
-
-            val displayMetrics = Resources.getSystem().displayMetrics
-            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 400F).toInt()
-            return when {
-                calculated < 1 -> 1
-                else -> calculated
-            }
-        }
-
         val stopWatch = StopWatch()
         stopWatch.start()
-        view.devices.adapter = DeviceGroupAdapter(elements,
-                configuration = DeviceGroupAdapter.Configuration(
-                        deviceResourceId = R.layout.room_device_content,
-                        bind = this@DeviceListFragment::createDeviceView))
-
-        view.devices.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), VERTICAL)
-        view.invalidate()
+        (view.devices.adapter as DeviceGroupAdapter)
+                .updateWidth(elements)
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
         if (elements.isEmpty()) {

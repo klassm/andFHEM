@@ -13,9 +13,11 @@ import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
 
 class DeviceGroupAdapter(
-        private val elements: List<Element>,
+        elements: List<Element>,
         private val configuration: Configuration
 ) : RecyclerView.Adapter<DeviceGroupAdapter.ViewHolder>() {
+
+    private var elements: MutableList<Element> = elements.toMutableList()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = elements[position]
@@ -45,6 +47,11 @@ class DeviceGroupAdapter(
         }
     }
 
+    fun updateWidth(newElements: List<Element>) {
+        elements.clear()
+        elements.addAll(newElements)
+        notifyDataSetChanged()
+    }
 
     sealed class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
