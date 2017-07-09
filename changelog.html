@@ -6,12 +6,27 @@ bigimg: /images/changelog.jpg
 
 <div id="home">
 
+    <h3><a href="https://github.com/klassm/andFHEM/milestones/4.5.9">4.5.9</a> (14.07.2017)</h3>
+    <div>
+        <ul>
+            <li>Update device list layout: Move self-written layout (GridView) to Android standard layout (RecyclerView with Staggered Layout). <b>Implications</b>:
+                <ul>
+                    <li>First of all, this should resolve some (very) long standing issues. Especially, when opening the app after some time, the device list was shown as empty (no devices found). This bug should be just fixed with the new infrastructure.</li>
+                    <li>The staggered view also means that when using multiple columns, especially for tablets, rows of different columns are no longer aligned. The columns are layouted completely separately. In effect, this uses much more of the available space.</li>
+                    <li>However, this also means that there is no longer a grid - thus it is difficult to find out which attributes of each row belong to each other. Android has introduced cards to treat that issue. This is exactly what AndFHEM does now. However, <b>this is a design experiment</b>, so if you don't like it, feel free to send me a message, together with a hint on how to solve this issue in a better way.</li>
+                    <li>Previously it was possible to specify column sizes within the preferences. This option is gone by now. AndFHEM will calculate a "good" column width for you. However, if this does not work on your device, please tell me.</li>
+                </ul>
+            </li>
+            <li>Migrate PCA9532 and PCF8574 as generic devices</li>
+        </ul>
+    </div>
+
     <h3><a href="https://github.com/klassm/andFHEM/milestones/4.5.8">4.5.8</a> (02.07.2017)</h3>
     <div>
         <ul>
-		<li>HM485 as generic device</li>
-		<li>Remove misleading message for on-for-timer switching</li>
-		<li>Add Google Inapp Search</li>
+        <li>HM485 as generic device</li>
+        <li>Remove misleading message for on-for-timer switching</li>
+        <li>Add Google Inapp Search</li>
         </ul>
     </div>
 
