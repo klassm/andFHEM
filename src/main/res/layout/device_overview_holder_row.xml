@@ -38,20 +38,17 @@
         android:text="@string/dummy_text"/>
 
     <LinearLayout
+        android:orientation="horizontal"
         style="@style/deviceOverviewContent"
-        android:orientation="vertical"
+        android:padding="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="2">
+        android:layout_width="wrap_content"
+        android:layout_weight="1">
         <org.apmem.tools.layouts.FlowLayout
             android:id="@+id/holder"
             f:layoutDirection="ltr"
-            android:paddingLeft="0dp"
-            android:paddingStart="0dp"
-            android:paddingRight="3dp"
-            android:paddingEnd="3dp"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:gravity="end" />
     </LinearLayout>

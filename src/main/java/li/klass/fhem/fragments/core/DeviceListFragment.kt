@@ -311,7 +311,7 @@ abstract class DeviceListFragment : BaseFragment() {
         val adapter = DeviceType.getAdapterFor(device)
         if (adapter != null && adapter.supportsDetailView(device)) {
             if (actionMode != null) actionMode!!.finish()
-            adapter.gotoDetailView(getActivity(), device)
+            adapter.gotoDetailView(activity, device)
         }
     }
 
