@@ -111,7 +111,7 @@ abstract class DeviceListFragment : BaseFragment() {
                     favoriteAddIntent.setClass(activity, FavoritesIntentService::class.java)
                     favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get())
                     favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, object : ResultReceiver(Handler()) {
-                        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+                        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
                             if (resultCode != ResultCodes.SUCCESS) return
 
                             Toast.makeText(activity, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show()
@@ -124,7 +124,7 @@ abstract class DeviceListFragment : BaseFragment() {
                     favoriteRemoveIntent.setClass(activity, FavoritesIntentService::class.java)
                     favoriteRemoveIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get())
                     favoriteRemoveIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, object : ResultReceiver(Handler()) {
-                        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+                        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
                             if (resultCode != ResultCodes.SUCCESS) return
 
                             Toast.makeText(activity, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show()
