@@ -152,10 +152,10 @@ public class TimerListFragment extends BaseFragment {
     }
 
     @Override
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         getActivity().startService(new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST)
                 .setClass(getActivity(), RoomListIntentService.class)
-                .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
+                .putExtra(BundleExtraKeys.DO_REFRESH, refresh)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {

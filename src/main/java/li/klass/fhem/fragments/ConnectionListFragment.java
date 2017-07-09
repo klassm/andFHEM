@@ -222,16 +222,16 @@ public class ConnectionListFragment extends BaseFragment {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         if (getView() == null) return;
 
         hideEmptyView();
 
-        if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
+        if (refresh) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
         Intent intent = new Intent(Actions.CONNECTIONS_LIST);
         intent.setClass(getActivity(), ConnectionsIntentService.class);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, refresh);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {

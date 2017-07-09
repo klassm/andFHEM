@@ -104,6 +104,6 @@ public class ConversionFragment extends BaseFragment {
     }
 
     @Override
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
     }
 }

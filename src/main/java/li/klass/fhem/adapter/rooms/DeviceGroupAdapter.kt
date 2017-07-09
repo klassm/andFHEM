@@ -47,7 +47,7 @@ class DeviceGroupAdapter(
         }
     }
 
-    fun updateWidth(newElements: List<Element>) {
+    fun updateWith(newElements: List<Element>) {
         elements.clear()
         elements.addAll(newElements)
         notifyDataSetChanged()

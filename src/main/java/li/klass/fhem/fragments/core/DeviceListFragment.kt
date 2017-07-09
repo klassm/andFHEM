@@ -27,8 +27,6 @@ package li.klass.fhem.fragments.core
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
@@ -36,11 +34,11 @@ import android.support.v7.widget.CardView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager.VERTICAL
 import android.util.Log
-import android.view.*
-import android.widget.AdapterView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.experimental.android.UI
@@ -49,30 +47,21 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.adapter.rooms.ViewableElementsCalculator
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.Actions.FAVORITE_ADD
-import li.klass.fhem.constants.Actions.FAVORITE_REMOVE
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.IS_FAVORITE
 import li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING
-import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.fhem.DataConnectionSwitch
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.service.intent.FavoritesIntentService
+import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.FhemResultReceiver
-import li.klass.fhem.util.device.DeviceActionUtil
-import li.klass.fhem.widget.notification.NotificationSettingView
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
+@Suppress("EXPERIMENTAL_FEATURE_WARNING")
 abstract class DeviceListFragment : BaseFragment() {
 
     @Inject
@@ -85,69 +74,10 @@ abstract class DeviceListFragment : BaseFragment() {
     lateinit var advertisementService: AdvertisementService
     @Inject
     lateinit var roomListUpdateService: RoomListUpdateService
+    @Inject
+    lateinit var favoritesService: FavoritesService
 
     private var actionMode: ActionMode? = null
-
-    private val actionModeCallback = object : ActionMode.Callback {
-        override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-            val inflater = actionMode.menuInflater
-            inflater.inflate(R.menu.device_menu, menu)
-            if (isClickedDeviceFavorite.get()) {
-                menu.removeItem(R.id.menu_favorites_add)
-            } else {
-                menu.removeItem(R.id.menu_favorites_remove)
-            }
-            return true
-        }
-
-        override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-            return false
-        }
-
-        override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
-            when (menuItem.itemId) {
-                R.id.menu_favorites_add -> {
-                    val favoriteAddIntent = Intent(FAVORITE_ADD)
-                    favoriteAddIntent.setClass(activity, FavoritesIntentService::class.java)
-                    favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get())
-                    favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, object : ResultReceiver(Handler()) {
-                        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                            if (resultCode != ResultCodes.SUCCESS) return
-
-                            Toast.makeText(activity, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                    activity.startService(favoriteAddIntent)
-                }
-                R.id.menu_favorites_remove -> {
-                    val favoriteRemoveIntent = Intent(FAVORITE_REMOVE)
-                    favoriteRemoveIntent.setClass(activity, FavoritesIntentService::class.java)
-                    favoriteRemoveIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get())
-                    favoriteRemoveIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, object : ResultReceiver(Handler()) {
-                        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                            if (resultCode != ResultCodes.SUCCESS) return
-
-                            Toast.makeText(activity, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                    activity.startService(favoriteRemoveIntent)
-                }
-                R.id.menu_rename -> DeviceActionUtil.renameDevice(activity, contextMenuClickedDevice.get())
-                R.id.menu_delete -> DeviceActionUtil.deleteDevice(activity, contextMenuClickedDevice.get())
-                R.id.menu_room -> DeviceActionUtil.moveDevice(activity, contextMenuClickedDevice.get())
-                R.id.menu_alias -> DeviceActionUtil.setAlias(activity, contextMenuClickedDevice.get())
-                R.id.menu_notification -> handleNotifications(contextMenuClickedDevice.get().name)
-                else -> return false
-            }
-            actionMode.finish()
-            update(false)
-            return true
-        }
-
-        override fun onDestroyActionMode(actionMode: ActionMode) {
-        }
-    }
-
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -165,7 +95,7 @@ abstract class DeviceListFragment : BaseFragment() {
         }
 
         val superView = super.onCreateView(inflater, container, savedInstanceState)
-        if (superView != null) return superView
+        superView ?: return superView
 
         val view = inflater!!.inflate(R.layout.room_detail, container, false)
         advertisementService.addAd(view, activity)
@@ -208,17 +138,17 @@ abstract class DeviceListFragment : BaseFragment() {
         view.addView(emptyView)
     }
 
-    override fun update(doUpdate: Boolean) {
+    override fun update(refresh: Boolean) {
 
-        if (doUpdate) {
+        if (refresh) {
             activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         }
 
-        Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$doUpdate)")
+        Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$refresh)")
 
         async(UI) {
             val elements = bg {
-                if (doUpdate) {
+                if (refresh) {
                     activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
                     executeRemoteUpdate()
                     activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
@@ -240,8 +170,7 @@ abstract class DeviceListFragment : BaseFragment() {
     private fun updateWith(elements: List<ViewableElementsCalculator.Element>, view: View) {
         val stopWatch = StopWatch()
         stopWatch.start()
-        (view.devices.adapter as DeviceGroupAdapter)
-                .updateWidth(elements)
+        (view.devices.adapter as DeviceGroupAdapter).updateWith(elements)
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
         if (elements.isEmpty()) {
@@ -288,53 +217,26 @@ abstract class DeviceListFragment : BaseFragment() {
         LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
     }
 
-
-    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo) {
-        super.onCreateContextMenu(menu, view, menuInfo)
-
-        val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val tag = info.targetView.tag ?: return
-
-        if (tag is FhemDevice) {
-            contextMenuClickedDevice.set(tag)
-            currentClickFragment.set(this)
-
-            (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
-        }
-    }
-
-    private fun handleNotifications(deviceName: String) {
-        NotificationSettingView(activity, deviceName).show(activity)
-    }
-
     private fun onClick(device: FhemDevice) {
         val adapter = DeviceType.getAdapterFor(device)
         if (adapter != null && adapter.supportsDetailView(device)) {
-            if (actionMode != null) actionMode!!.finish()
+            actionMode?.finish()
             adapter.gotoDetailView(activity, device)
         }
     }
 
     private fun onLongClick(device: FhemDevice): Boolean {
-        val intent = Intent(Actions.FAVORITES_IS_FAVORITES)
-                .setClass(activity, FavoritesIntentService::class.java)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                        contextMenuClickedDevice.set(device)
-                        isClickedDeviceFavorite.set(resultData.getBoolean(IS_FAVORITE))
-                        actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
-                    }
-                })
-        activity?.startService(intent)
-
+        async(UI) {
+            val isFavorite = bg {
+                favoritesService.isFavorite(device.name, activity)
+            }.await()
+            val callback = DeviceListActionModeCallback(favoritesService, device, isFavorite, activity, updateListener = { update(false) })
+            actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)
+        }
         return true
     }
 
     companion object {
-        protected var contextMenuClickedDevice = AtomicReference<FhemDevice>()
-        protected var currentClickFragment = AtomicReference<DeviceListFragment>()
-        protected var isClickedDeviceFavorite = AtomicBoolean(false)
         private val LOGGER = LoggerFactory.getLogger(DeviceListFragment::class.java)
     }
 }

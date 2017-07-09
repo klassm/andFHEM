@@ -114,15 +114,15 @@ public class DeviceDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         hideEmptyView();
 
-        if (doUpdate) getActivity().sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
+        if (refresh) getActivity().sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
 
         getActivity().startService(new Intent(GET_DEVICE_FOR_NAME)
                 .setClass(getActivity(), RoomListIntentService.class)
                 .putExtra(CONNECTION_ID, connectionId)
-                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(DO_REFRESH, refresh)
                 .putExtra(DEVICE_NAME, deviceName)
                 .putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override

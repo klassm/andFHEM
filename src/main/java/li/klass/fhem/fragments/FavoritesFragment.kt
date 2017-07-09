@@ -31,14 +31,9 @@ import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.DeviceListFragment
-import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.util.Reject
-import javax.inject.Inject
 
 class FavoritesFragment : DeviceListFragment() {
-    @Inject
-    lateinit var favoritesService: FavoritesService
-
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
     }

@@ -402,7 +402,7 @@ public class ConnectionDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         if (!isModify) {
             Log.e(TAG, "I can only update if a connection is being modified!");
             getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));

@@ -89,6 +89,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
+        container ?: return superView
         if (superView != null) return superView
 
         val view = inflater!!.inflate(R.layout.device_name_list, container, false)!!
@@ -108,13 +109,13 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
     protected abstract fun onDeviceNameClick(child: FhemDevice)
 
-    override fun update(doUpdate: Boolean) {
+    override fun update(refresh: Boolean) {
 
         async(UI) {
             val elements = bg {
                 activity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
-                if (doUpdate && !isNavigation) {
+                if (refresh && !isNavigation) {
                     roomListUpdateService.updateAllDevices(Optional.absent(), activity)
                     activity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }

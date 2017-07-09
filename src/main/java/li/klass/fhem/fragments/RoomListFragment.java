@@ -144,16 +144,16 @@ public class RoomListFragment extends BaseFragment {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         if (getView() == null) return;
 
         hideEmptyView();
-        if (doUpdate && !isNavigation())
+        if (refresh && !isNavigation())
             getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
         getActivity().startService(new Intent(Actions.GET_ROOM_NAME_LIST)
                 .setClass(getActivity(), RoomListIntentService.class)
-                .putExtra(BundleExtraKeys.DO_REFRESH, doUpdate)
+                .putExtra(BundleExtraKeys.DO_REFRESH, refresh)
                 .putExtra(RESULT_RECEIVER, new RoomListUpdateResultReceiver()));
     }
 

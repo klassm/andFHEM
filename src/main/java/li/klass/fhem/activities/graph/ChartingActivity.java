@@ -143,18 +143,18 @@ public class ChartingActivity extends AppCompatActivity implements Updateable {
     }
 
     @Override
-    public void update(final boolean doUpdate) {
+    public void update(final boolean refresh) {
         startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
                 .setClass(this, RoomListIntentService.class)
                 .putExtra(DEVICE_NAME, deviceName)
                 .putExtra(CONNECTION_ID, connectionId)
-                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(DO_REFRESH, refresh)
                 .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode != ResultCodes.SUCCESS) return;
 
-                        readDataAndCreateChart(doUpdate, (FhemDevice) resultData.getSerializable(DEVICE));
+                        readDataAndCreateChart(refresh, (FhemDevice) resultData.getSerializable(DEVICE));
                     }
                 }));
     }

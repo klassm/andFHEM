@@ -25,5 +25,5 @@
 package li.klass.fhem.activities.core;
 
 public interface Updateable {
-    void update(boolean doUpdate);
+    void update(boolean refresh);
 }

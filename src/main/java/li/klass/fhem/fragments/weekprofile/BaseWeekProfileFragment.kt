@@ -115,11 +115,11 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         DialogUtil.showAlertDialog(activity, R.string.doneTitle, R.string.switchDelayNotification) { back() }
     }
 
-    override fun update(doUpdate: Boolean) {
+    override fun update(refresh: Boolean) {
 
         activity.startService(Intent(Actions.GET_DEVICE_FOR_NAME)
                 .setClass(activity, RoomListIntentService::class.java)
-                .putExtra(DO_REFRESH, doUpdate)
+                .putExtra(DO_REFRESH, refresh)
                 .putExtra(DEVICE_NAME, deviceName)
                 .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle) {

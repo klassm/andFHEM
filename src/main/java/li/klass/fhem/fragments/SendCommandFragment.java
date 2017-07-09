@@ -145,7 +145,7 @@ public class SendCommandFragment extends BaseFragment {
     }
 
     @Override
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         Intent intent = new Intent(Actions.RECENT_COMMAND_LIST);
         intent.setClass(getActivity(), SendCommandIntentService.class);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {

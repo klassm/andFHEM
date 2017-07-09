@@ -203,7 +203,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
     }
 
     @Override
-    public void update(boolean doUpdate) {
+    public void update(boolean refresh) {
         if (getView() == null) return;
 
         WebView webView = (WebView) getView().findViewById(R.id.webView);
