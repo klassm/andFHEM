@@ -95,7 +95,7 @@ abstract class DeviceListFragment : BaseFragment() {
         }
 
         val superView = super.onCreateView(inflater, container, savedInstanceState)
-        superView ?: return superView
+        if (superView != null) return superView
 
         val view = inflater!!.inflate(R.layout.room_detail, container, false)
         advertisementService.addAd(view, activity)
@@ -127,7 +127,8 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     override fun canChildScrollUp(): Boolean {
-        return ViewCompat.canScrollVertically(view?.devices, -1) || super.canChildScrollUp()
+        view ?: return false
+        return ViewCompat.canScrollVertically(view!!.devices, -1) || super.canChildScrollUp()
     }
 
     protected open fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
