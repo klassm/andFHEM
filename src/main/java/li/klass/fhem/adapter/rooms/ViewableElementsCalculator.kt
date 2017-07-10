@@ -34,7 +34,7 @@ class ViewableElementsCalculator @Inject constructor(
         return groups
                 .flatMap { group ->
                     val devices = elementsInGroup[group]!!
-                            .sortedBy { it.aliasOrName.toLowerCase() }
+                            .sortedWith(FhemDevice.BY_NAME)
                             .map { Element.Device(it) }
                     listOf(Element.Group(group)) + devices
                 }

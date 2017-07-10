@@ -30,7 +30,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 
-import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
 import java.util.Arrays;
@@ -256,14 +255,6 @@ public abstract class FhemDevice extends HookedDevice {
         String name = getName();
         return name != null ? name.hashCode() : 0;
     }
-
-//    @Override
-//    public final int compareTo(@NotNull FhemDevice other) {
-//        String comparableAttribute = firstNonNull(sortBy, getAliasOrName());
-//        String otherComparableAttribute = firstNonNull(other.sortBy, other.getAliasOrName());
-//
-//        return comparableAttribute.compareTo(otherComparableAttribute);
-//    }
 
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     public String getState() {
