@@ -70,8 +70,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val retryButton = view!!.findViewById(R.id.retry) as Button
-        retryButton.setOnClickListener {
+        val retryButton = view?.findViewById(R.id.retry) as Button?
+        retryButton?.setOnClickListener {
             hideConnectionError()
 
             val resendIntent = Intent(RESEND_LAST_FAILED_COMMAND)
