@@ -34,7 +34,7 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
-public class PioneerAvrZoneDevice extends ToggleableDevice<PioneerAvrZoneDevice> implements VolumeDevice {
+public class PioneerAvrZoneDevice extends ToggleableDevice implements VolumeDevice {
 
     @XmllistAttribute("input")
     private String input;

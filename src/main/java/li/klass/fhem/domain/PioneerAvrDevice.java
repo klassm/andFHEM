@@ -32,7 +32,7 @@ import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class PioneerAvrDevice extends ToggleableDevice<PioneerAvrDevice> implements VolumeDevice {
+public class PioneerAvrDevice extends ToggleableDevice implements VolumeDevice {
     @XmllistAttribute("volume")
     @ShowField(description = ResourceIdMapper.musicVolume, showInOverview = true)
     private String volume;

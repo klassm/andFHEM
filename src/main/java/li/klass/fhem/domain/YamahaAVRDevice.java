@@ -36,7 +36,7 @@ import static li.klass.fhem.util.ValueExtractUtil.onOffToTrueFalse;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> implements VolumeDevice {
+public class YamahaAVRDevice extends ToggleableDevice implements VolumeDevice {
 
     @XmllistAttribute(value = {"volume", "volume_level"})
     private int volume;

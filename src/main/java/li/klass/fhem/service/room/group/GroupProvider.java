@@ -78,7 +78,7 @@ public class GroupProvider {
         DeviceFunctionality functionality = DeviceFunctionality.UNKNOWN;
         if (DimmableBehavior.behaviorFor(device, null).isPresent() && !isDimDisabled(device)) {
             functionality = DeviceFunctionality.DIMMER;
-        } else if (OnOffBehavior.supports(device)) {
+        } else if (OnOffBehavior.Companion.supports(device)) {
             functionality = DeviceFunctionality.SWITCH;
         } else if (device.getDeviceConfiguration().isPresent()) {
             functionality = device.getDeviceConfiguration().get().getDefaultGroup();

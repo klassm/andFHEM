@@ -31,7 +31,7 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.util.NumberSystemUtil;
 
-public class WifiLightDevice extends ToggleableDevice<WifiLightDevice> {
+public class WifiLightDevice extends ToggleableDevice {
     private int rgb = 0;
 
     @Override

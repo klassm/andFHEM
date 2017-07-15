@@ -74,11 +74,14 @@ public class DeviceHookProvider {
     }
 
     public String getOnStateName(FhemDevice device) {
-        return device.getXmlListDevice().attributeValueFor(ON_STATE_NAME).or("on");
+        return device.getXmlListDevice().attributeValueFor(ON_STATE_NAME).or(
+                device.getSetList().getFirstPresentStateOf("on", "ON")
+        );
     }
 
     public String getOffStateName(FhemDevice device) {
-        return device.getXmlListDevice().attributeValueFor(OFF_STATE_NAME).or("off");
+        return device.getXmlListDevice().attributeValueFor(OFF_STATE_NAME)
+                .or(device.getSetList().getFirstPresentStateOf("off", "OFF"));
     }
 
     public boolean invertState(FhemDevice device) {

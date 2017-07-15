@@ -32,7 +32,7 @@ import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class EnigmaDevice extends ToggleableDevice<EnigmaDevice> implements VolumeDevice {
+public class EnigmaDevice extends ToggleableDevice implements VolumeDevice {
     @XmllistAttribute("channel")
     @ShowField(description = ResourceIdMapper.channel)
     private String channel;

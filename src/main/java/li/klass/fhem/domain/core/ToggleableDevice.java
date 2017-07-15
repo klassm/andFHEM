@@ -24,16 +24,17 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+
 import static com.google.common.collect.Sets.newHashSet;
 
-@SuppressWarnings("unused")
-public abstract class ToggleableDevice<T extends FhemDevice> extends FhemDevice {
+public abstract class ToggleableDevice extends FhemDevice {
 
     private String onStateName = "on";
     private String offStateName = "off";
 
     public boolean supportsToggle() {
-        return getSetList().contains("on", "off") ||
+        return OnOffBehavior.Companion.supports(this) ||
                 getWebCmd().containsAll(newHashSet("on", "off")) ||
                 (eventMap.contains("on") && eventMap.contains("off"));
     }

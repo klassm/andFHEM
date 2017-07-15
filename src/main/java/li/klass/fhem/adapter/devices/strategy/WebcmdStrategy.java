@@ -75,13 +75,13 @@ public class WebcmdStrategy extends ViewStrategy {
         return hookProvider.buttonHookFor(fhemDevice) == WEBCMD_DEVICE;
     }
 
-    private <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, String connectionId) {
+    private <T extends ToggleableDevice> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, String connectionId) {
         TableLayout layout = holder.getTableLayout();
         addWebCmdOverviewActionRow(layout.getContext(), device, layout, connectionId);
     }
 
-    private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
-                                                                            TableLayout tableLayout, String connectionId) {
+    private <T extends ToggleableDevice> void addWebCmdOverviewActionRow(Context context, T device,
+                                                                         TableLayout tableLayout, String connectionId) {
         tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
                 .createRow(context, tableLayout, device, connectionId));
     }

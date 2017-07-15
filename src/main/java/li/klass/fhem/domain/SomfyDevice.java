@@ -29,7 +29,7 @@ import android.content.Context;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
-public class SomfyDevice extends ToggleableDevice<SomfyDevice> {
+public class SomfyDevice extends ToggleableDevice {
 
     @Override
     public void afterDeviceXMLRead(Context context) {

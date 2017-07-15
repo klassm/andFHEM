@@ -75,6 +75,10 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
         return StringUtils.join(parts, " ")
     }
 
+    fun getFirstPresentStateOf(vararg states: String): String? {
+        return states.asSequence().first { contains(it) }
+    }
+
     companion object {
         fun parse(inputText: String): SetList {
             val text = inputText

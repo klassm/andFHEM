@@ -26,7 +26,7 @@ package li.klass.fhem.domain.core;
 
 import li.klass.fhem.util.FloatUtils;
 
-public abstract class DimmableDevice<D extends FhemDevice> extends ToggleableDevice<D> {
+public abstract class DimmableDevice<D extends FhemDevice> extends ToggleableDevice {
     public float getDimPosition() {
         float position = getPositionForDimStateInternal(getDimStateFieldValue());
         if (position == -1) {

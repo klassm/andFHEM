@@ -26,8 +26,6 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
-import java.util.Map;
-
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -40,7 +38,7 @@ import static li.klass.fhem.domain.OwDevice.SubType.UNKNOWN;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
-public class OwDevice extends ToggleableDevice<OwDevice> {
+public class OwDevice extends ToggleableDevice {
 
     enum SubType {
         TEMPERATURE(DeviceFunctionality.TEMPERATURE),

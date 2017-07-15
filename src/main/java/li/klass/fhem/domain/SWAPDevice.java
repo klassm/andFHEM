@@ -27,14 +27,11 @@ package li.klass.fhem.domain;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
-import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SuppressWarnings("unused")
-public class SWAPDevice extends ToggleableDevice<SWAPDevice> {
+public class SWAPDevice extends ToggleableDevice {
 
     private int rgb = 0;
 

@@ -32,7 +32,7 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
+public class FS20ZDRDevice extends ToggleableDevice {
     @Override
     public boolean supportsToggle() {
         return true;

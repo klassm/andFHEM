@@ -32,7 +32,7 @@ import li.klass.fhem.domain.multimedia.VolumeDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueExtractUtil;
 
-public class SBPlayerDevice extends ToggleableDevice<SBPlayerDevice> implements VolumeDevice {
+public class SBPlayerDevice extends ToggleableDevice implements VolumeDevice {
 
     @XmllistAttribute("POWER")
     private String power;

@@ -42,7 +42,7 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 import static com.google.common.collect.Lists.newArrayList;
 
 @SuppressWarnings("unused")
-public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
+public class RemoteControlDevice extends ToggleableDevice {
     public class Row implements Serializable, Comparable<Row> {
         public final int index;
         public final List<Entry> entries;

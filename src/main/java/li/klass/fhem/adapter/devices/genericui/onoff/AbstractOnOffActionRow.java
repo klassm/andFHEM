@@ -99,11 +99,11 @@ public abstract class AbstractOnOffActionRow {
     }
 
     protected String getOnStateName(FhemDevice device, Context context) {
-        return "on";
+        return device.getSetList().getFirstPresentStateOf("on", "ON");
     }
 
     protected String getOffStateName(FhemDevice device, Context context) {
-        return "off";
+        return device.getSetList().getFirstPresentStateOf("off", "OFF");
     }
 
     protected String getOnStateText(FhemDevice device, Context context) {

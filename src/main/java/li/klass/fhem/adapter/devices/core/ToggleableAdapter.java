@@ -72,13 +72,13 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(Context context, T device,
-                                                                          TableLayout tableLayout) {
+    private <T extends ToggleableDevice> void addToggleDeviceActionRow(Context context, T device,
+                                                                       TableLayout tableLayout) {
         tableLayout.addView(new ToggleDeviceActionRow(context, onOffBehavior)
                 .createRow(context, device, device.getAliasOrName()));
     }
 
-    private <T extends ToggleableDevice<T>> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId, String connectionId) {
+    private <T extends ToggleableDevice> void addOnOffActionRow(Context context, T device, TableLayout tableLayout, int layoutId, String connectionId) {
         tableLayout.addView(new OnOffActionRowForToggleables(layoutId, deviceHookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
                 .createRow(device, context));
     }
