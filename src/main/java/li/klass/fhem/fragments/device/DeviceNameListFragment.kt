@@ -137,7 +137,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
     protected fun deviceListReceived(elements: List<ViewableElementsCalculator.Element>) {
         val devicesView = view?.devices ?: return
         devicesView.adapter = DeviceGroupAdapter(elements, DeviceGroupAdapter.Configuration(
-                deviceResourceId = R.layout.device_name_selection,
+                deviceResourceId = if (isNavigation) R.layout.device_name_selection_navigation else R.layout.device_name_selection,
                 bind = { device, view ->
                     view.name.text = device.aliasOrName
                     view.onClick { onDeviceNameClick(device) }
@@ -165,6 +165,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
         val displayMetrics = Resources.getSystem().displayMetrics
         val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 250).toInt()
         return when {
+            isNavigation -> 1
             calculated < 1 -> 1
             else -> calculated
         }
