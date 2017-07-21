@@ -47,6 +47,13 @@ class SetListTest {
         assertThat(setList.entries).containsOnly(*testCase.expected)
     }
 
+    @Test
+    fun should_get_first_present_element_if_element_is_not_present() {
+        val setList = SetList.parse("bla")
+
+        assertThat(setList.getFirstPresentStateOf("blub")).isNull()
+    }
+
     class TestCase internal constructor(private val desc: String) {
         lateinit var setList: String
         lateinit var expected: Array<out MapEntry>

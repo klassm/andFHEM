@@ -76,7 +76,7 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
     }
 
     fun getFirstPresentStateOf(vararg states: String): String? {
-        return states.asSequence().first { contains(it) }
+        return states.asSequence().firstOrNull { contains(it) }
     }
 
     companion object {
