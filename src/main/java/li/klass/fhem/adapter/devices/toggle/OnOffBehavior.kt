@@ -83,7 +83,7 @@ class OnOffBehavior
     companion object {
 
         fun supports(device: FhemDevice): Boolean {
-            return device.setList.contains("on", "off") || device.setList.contains("ON", "OFF")
+            return device.setList.contains("on", "off") || device.setList.contains("ON", "OFF") || device.webCmd.containsAll(listOf("on", "off"))
         }
     }
 }
