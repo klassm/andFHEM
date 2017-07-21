@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class GenericDeviceOverviewViewHolder {
         public TableRow row;
         public TextView description;
         public TextView value;
+        public ImageView devStateIcon;
     }
 
     public void resetHolder() {

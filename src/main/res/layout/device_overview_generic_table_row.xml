@@ -24,16 +24,29 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableRow
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tableRow"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/deviceOverviewLayout"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    style="@style/deviceOverviewLayout">
+    android:layout_height="wrap_content">
 
-<TextView android:id="@+id/description"
-              style="@style/deviceOverviewDescription"/>
+    <TextView
+        android:id="@+id/description"
+        style="@style/deviceOverviewDescription" />
 
-    <TextView android:id="@+id/value"
-              style="@style/deviceOverviewContent"/>
+    <TextView
+        android:id="@+id/value"
+        style="@style/deviceOverviewContent" />
+
+    <ImageView
+        android:id="@+id/devStateIcon"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:paddingStart="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="0dp"
+        android:paddingEnd="0dp"
+        android:contentDescription="devStateIcon" />
 </TableRow>

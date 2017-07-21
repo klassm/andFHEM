@@ -27,6 +27,7 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.DevStateIconAdder;
 import li.klass.fhem.adapter.devices.core.deviceItems.AnnotatedMethodsAndFieldsProvider;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter;
@@ -93,6 +95,9 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
     @Inject
     DefaultViewStrategy defaultOverviewStrategy;
+
+    @Inject
+    DevStateIconAdder devStateIconAdder;
 
     private List<ViewStrategy> overviewStrategies;
 
@@ -146,6 +151,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         holder.row = tableRow;
         holder.description = (TextView) tableRow.findViewById(R.id.description);
         holder.value = (TextView) tableRow.findViewById(R.id.value);
+        holder.devStateIcon = (ImageView) tableRow.findViewById(R.id.devStateIcon);
         return holder;
     }
 
@@ -159,6 +165,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         } else {
             holder.row.setVisibility(View.VISIBLE);
         }
+        devStateIconAdder.addDevStateIconIfRequired(context, value, device, holder.devStateIcon);
     }
 
     List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device, Context context) {

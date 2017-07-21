@@ -6,7 +6,7 @@
     {
       "key": "previous",
       "desc": "lastState",
-      "showInOverview": true
+      "showInOverview": false
     }
   ]
 }

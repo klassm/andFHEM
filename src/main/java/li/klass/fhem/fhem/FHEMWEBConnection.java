@@ -155,7 +155,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                     .setConnectTimeout(SOCKET_TIMEOUT)
                     .setReadTimeout(SOCKET_TIMEOUT)
                     .setLoggingEnabled(false)
-                    .setHeaders(new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword()))
+                    .setHeaders(getBasicAuthHeaders())
                     .execute();
 
             LOG.debug("response status code is " + response.getStatusCode());
@@ -184,7 +184,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                     .setConnectTimeout(SOCKET_TIMEOUT)
                     .setReadTimeout(SOCKET_TIMEOUT)
                     .setLoggingEnabled(false)
-                    .setHeaders(new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword()))
+                    .setHeaders(getBasicAuthHeaders())
                     .execute();
 
             @SuppressWarnings("unchecked") List<Object> value = (List<Object>) response.getHeaders().get("X-FHEM-csrfToken");
@@ -195,6 +195,10 @@ public class FHEMWEBConnection extends FHEMConnection {
             LOG.info("cannot load csrf token", e);
             return Optional.absent();
         }
+    }
+
+    public HttpHeaders getBasicAuthHeaders() {
+        return new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword());
     }
 
     private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e, Context context) {

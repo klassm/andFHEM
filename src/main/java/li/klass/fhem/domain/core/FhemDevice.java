@@ -360,6 +360,11 @@ public abstract class FhemDevice extends HookedDevice {
         return true;
     }
 
+    public DevStateIcons getDevStateIcons() {
+        Optional<String> attribute = getXmlListDevice().getAttribute("devStateIcon");
+        return DevStateIcons.Companion.parse(attribute.orNull());
+    }
+
     @Override
     public String toString() {
         String name = getName();
