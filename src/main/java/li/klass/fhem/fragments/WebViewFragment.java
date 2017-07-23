@@ -47,4 +47,9 @@ public class WebViewFragment extends AbstractWebViewFragment {
     protected String getLoadUrl() {
         return loadUrl;
     }
+
+    @Override
+    public boolean showProgressDialog() {
+        return false;
+    }
 }

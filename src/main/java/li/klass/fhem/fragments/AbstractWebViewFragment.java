@@ -92,11 +92,13 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress < 100) {
-                    progressDialog.setProgress(newProgress);
-                    progressDialog.show();
-                } else {
-                    progressDialog.hide();
+                if (showProgressDialog()) {
+                    if (newProgress < 100) {
+                        progressDialog.setProgress(newProgress);
+                        progressDialog.show();
+                    } else {
+                        progressDialog.hide();
+                    }
                 }
             }
         });
@@ -231,6 +233,10 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
     }
 
     protected abstract String getLoadUrl();
+
+    public boolean showProgressDialog() {
+        return true;
+    }
 
     protected Optional<String> getAlternateLoadUrl() {
         return Optional.absent();
