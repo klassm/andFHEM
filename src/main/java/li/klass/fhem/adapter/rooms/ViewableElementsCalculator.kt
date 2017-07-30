@@ -8,9 +8,8 @@ import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+// No singleton (to reread the ordering configuration regularly)
 class ViewableElementsCalculator @Inject constructor(
         private val deviceGroupHolder: DeviceGroupHolder,
         private val applicationProperties: ApplicationProperties
