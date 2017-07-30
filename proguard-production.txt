@@ -76,3 +76,6 @@
 -keepnames class org.ietf.jgss.** { *; }
 -dontwarn org.apache.**
 -dontwarn org.w3c.dom.**
+
+# Picasso (according to docs (https://github.com/square/picasso)
+-dontwarn com.squareup.okhttp.**
