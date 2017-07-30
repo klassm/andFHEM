@@ -155,9 +155,7 @@ public class CommandExecutionService extends AbstractService {
                 schedule(timeoutForNextTry, resendCommand);
             }
         } finally {
-            if (!command.command.contains("xmllist")) {
-                hideExecutingDialog(context);
-            }
+            hideExecutingDialog(context);
         }
         return result;
     }

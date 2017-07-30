@@ -31,6 +31,7 @@ import android.graphics.BitmapFactory;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.HttpResponseException;
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -139,15 +140,14 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry, Context context) {
-
-        initSslContext(context);
-        if (urlSuffix.contains("cmd=")) {
-            String csrfToken = findCsrfToken(serverUrl).or("");
-            urlSuffix += "&fwcsrf=" + csrfToken;
-        }
-
         String url = null;
         try {
+            initSslContext(context);
+            if (urlSuffix.contains("cmd=")) {
+                String csrfToken = findCsrfToken(serverUrl).or("");
+                urlSuffix += "&fwcsrf=" + csrfToken;
+            }
+
             url = serverUrl + urlSuffix;
             LOG.info("accessing URL {}", url);
             HttpResponse response = newCompatibleTransport()
@@ -161,16 +161,15 @@ public class FHEMWEBConnection extends FHEMConnection {
             LOG.debug("response status code is " + response.getStatusCode());
 
 
-            RequestResult<InputStream> errorResult = handleHttpStatusCode(response.getStatusCode());
-            if (errorResult != null) {
-                String msg = "found error " + errorResult.error.getDeclaringClass().getSimpleName() + " for " +
-                        "status code " + response.getStatusCode();
-                LOG.debug(msg);
-                ErrorHolder.setError(null, msg);
-                return errorResult;
-            }
-
             return new RequestResult<>((InputStream) new BufferedInputStream(response.getContent()));
+        } catch (HttpResponseException e) {
+            RequestResult<InputStream> errorResult = handleHttpStatusCode(e.getStatusCode());
+            String msg = "found error " + errorResult.error.getDeclaringClass().getSimpleName() + " for " +
+                    "status code " + e.getStatusCode();
+            LOG.debug(msg);
+            ErrorHolder.setError(null, msg);
+            return errorResult;
+
         } catch (Exception e) {
             LOG.info("error while loading data", e);
             return handleError(urlSuffix, isRetry, url, e, context);
