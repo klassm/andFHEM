@@ -28,7 +28,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -268,10 +267,5 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     protected fun back() {
         val intent = Intent(Actions.BACK)
         activity.sendBroadcast(intent)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        super.onConfigurationChanged(newConfig)
-        update(false)
     }
 }

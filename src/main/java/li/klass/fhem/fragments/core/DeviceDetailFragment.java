@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -93,17 +94,32 @@ public class DeviceDetailFragment extends BaseFragment {
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
+        setArgumentsFrom(args);
+    }
+
+    private void setArgumentsFrom(Bundle args) {
+        if (args == null) {
+            return;
+        }
         deviceName = args.getString(DEVICE_NAME);
         connectionId = args.getString(CONNECTION_ID);
     }
 
     @Override
-    protected void inject(ApplicationComponent applicationComponent) {
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DEVICE_NAME, deviceName);
+        outState.putString(CONNECTION_ID, connectionId);
+    }
+
+    @Override
+    protected void inject(@NonNull ApplicationComponent applicationComponent) {
         applicationComponent.inject(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setArgumentsFrom(savedInstanceState);
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 

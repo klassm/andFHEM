@@ -80,20 +80,6 @@ abstract class DeviceListFragment : BaseFragment() {
     private var actionMode: ActionMode? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        fun getNumberOfColumns(): Int {
-            fun dpFromPx(px: Float): Float {
-                return px / Resources.getSystem().displayMetrics.density
-            }
-
-            val displayMetrics = Resources.getSystem().displayMetrics
-            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 300F).toInt()
-            return when {
-                calculated < 1 -> 1
-                else -> calculated
-            }
-        }
-
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
 
@@ -121,6 +107,19 @@ abstract class DeviceListFragment : BaseFragment() {
         return view
     }
 
+    private fun getNumberOfColumns(): Int {
+        fun dpFromPx(px: Float): Float {
+            return px / Resources.getSystem().displayMetrics.density
+        }
+
+        val displayMetrics = Resources.getSystem().displayMetrics
+        val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 300F).toInt()
+        return when {
+            calculated < 1 -> 1
+            else -> calculated
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
@@ -140,7 +139,6 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     override fun update(refresh: Boolean) {
-
         if (refresh) {
             activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         }
