@@ -87,7 +87,7 @@ abstract class DeviceListFragment : BaseFragment() {
             }
 
             val displayMetrics = Resources.getSystem().displayMetrics
-            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 400F).toInt()
+            val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 300F).toInt()
             return when {
                 calculated < 1 -> 1
                 else -> calculated
