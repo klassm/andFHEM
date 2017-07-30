@@ -27,19 +27,21 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
         }
         imageView.visibility = View.VISIBLE
 
-        licenseService.isPremium({
-            val connection = currentProvider as FHEMWEBConnection
-            val url = connection.server.url + "/images/default/" + icon + ".png"
-            val authHeader = connection.basicAuthHeaders.authorization
-            val glideUrl = GlideUrl(url, LazyHeaders.Builder()
-                    .addHeader("Authorization", authHeader)
-                    .build())
+        licenseService.isPremium({ isPremium ->
+            if (isPremium) {
+                val connection = currentProvider as FHEMWEBConnection
+                val url = connection.server.url + "/images/default/" + icon + ".png"
+                val authHeader = connection.basicAuthHeaders.authorization
+                val glideUrl = GlideUrl(url, LazyHeaders.Builder()
+                        .addHeader("Authorization", authHeader)
+                        .build())
 
-            Glide.with(context)
-                    .load(glideUrl)
-                    .error(R.drawable.empty)
-                    .crossFade()
-                    .into(imageView)
+                Glide.with(context)
+                        .load(glideUrl)
+                        .error(R.drawable.empty)
+                        .crossFade()
+                        .into(imageView)
+            }
         }, context)
     }
 }
