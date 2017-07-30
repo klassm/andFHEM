@@ -154,6 +154,9 @@ public class RoomListService extends AbstractService {
      */
     @SuppressWarnings("unchecked")
     public <T extends FhemDevice> Optional<T> getDeviceForName(String deviceName, Optional<String> connectionId, Context context) {
+        if (deviceName == null) {
+            return Optional.absent();
+        }
         return Optional.fromNullable((T) getAllRoomsDeviceList(connectionId, context).getDeviceFor(deviceName));
     }
 
