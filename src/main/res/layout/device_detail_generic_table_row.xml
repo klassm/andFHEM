@@ -46,9 +46,9 @@
         android:layout_gravity="center"
         android:layout_width="13dp"
         android:layout_height="13dp"
-        android:paddingLeft="2dp"
-        android:paddingStart="2dp"
-        android:paddingRight="0dp"
-        android:paddingEnd="0dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginEnd="0dp"
         android:contentDescription="devStateIcon" />
 </TableRow>

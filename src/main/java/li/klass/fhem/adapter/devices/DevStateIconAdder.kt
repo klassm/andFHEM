@@ -38,7 +38,7 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
             Glide.with(context)
                     .load(glideUrl)
                     .error(R.drawable.empty)
-                    .fitCenter()
+                    .crossFade()
                     .into(imageView)
         }, context)
     }
