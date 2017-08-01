@@ -38,11 +38,14 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
+import static com.tngtech.java.junit.dataprovider.DataProviders.$;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_OFF;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_ON;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_ON_OFF;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_TOGGLE;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_WEBCMD;
+import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.OFF_STATE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.GENERIC;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.ATTR;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,5 +93,27 @@ public class DeviceHookProviderTest {
         device.setXmlListDevice(xmlListDevice);
 
         return device;
+    }
+
+    @DataProvider
+    public static Object[][] offStateNameProvider() {
+        return $$(
+                $("", "", "off"),
+                $("on", "off", "off"),
+                $("off", "OFF", "OFF")
+        );
+    }
+
+    @UseDataProvider("offStateNameProvider")
+    @Test
+    public void should_provide_off_state_name(String setList, String offStateName, String expectedState) throws Exception {
+        DeviceHookProvider provider = new DeviceHookProvider();
+        GenericDevice device = deviceFor(HOOK_OFF, true);
+        device.setSetList(setList);
+        device.getXmlListDevice().setAttribute(OFF_STATE_NAME, offStateName);
+
+        String stateName = provider.getOffStateName(device);
+
+        assertThat(stateName).isEqualTo(expectedState);
     }
 }
