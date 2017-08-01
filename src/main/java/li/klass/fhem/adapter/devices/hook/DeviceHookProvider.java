@@ -80,8 +80,9 @@ public class DeviceHookProvider {
     }
 
     public String getOffStateName(FhemDevice device) {
+        String setListState = Optional.fromNullable(device.getSetList().getFirstPresentStateOf("off", "OFF")).or("off");
         return device.getXmlListDevice().attributeValueFor(OFF_STATE_NAME)
-                .or(device.getSetList().getFirstPresentStateOf("off", "OFF"));
+                .or(setListState);
     }
 
     public boolean invertState(FhemDevice device) {
