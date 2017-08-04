@@ -25,7 +25,10 @@
 package li.klass.fhem.service.room
 
 import android.content.Context
+import android.content.Intent
 import com.google.common.base.Optional
+import li.klass.fhem.appwidget.service.AppWidgetUpdateService
+import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.service.Command
 import li.klass.fhem.service.CommandExecutionService
@@ -83,9 +86,17 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
         val success = update(context, connectionId, roomDeviceList)
 
         return when (success) {
-            true -> UpdateResult.Success(roomDeviceList.orNull())
+            true -> {
+                updateWidgets(context)
+                UpdateResult.Success(roomDeviceList.orNull())
+            }
             else -> UpdateResult.Error()
         }
+    }
+
+    private fun updateWidgets(context: Context) {
+        context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
+                .setClass(context, AppWidgetUpdateService::class.java))
     }
 
     private fun parseResult(connectionId: Optional<String>, context: Context, result: String, updateHandler: UpdateHandler): Optional<RoomDeviceList> {
@@ -97,10 +108,6 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
             return Optional.of(newDeviceList)
         }
         return Optional.absent<RoomDeviceList>()
-    }
-
-    interface RoomListUpdateListener {
-        fun onUpdateFinished(result: Boolean)
     }
 
     private interface UpdateHandler {
