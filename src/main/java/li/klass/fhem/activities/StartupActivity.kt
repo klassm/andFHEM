@@ -46,7 +46,6 @@ import li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START
 import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.service.intent.FavoritesIntentService
 import li.klass.fhem.service.intent.LicenseIntentService
-import li.klass.fhem.service.intent.RoomListIntentService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
@@ -88,8 +87,11 @@ class StartupActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        startService(Intent(Actions.REMOTE_UPDATE_RESET)
-                .setClass(this, RoomListIntentService::class.java))
+        async(UI) {
+            bg {
+                roomListService.resetUpdateProgress(this@StartupActivity)
+            }.await()
+        }
 
         if (!isNullOrEmpty(password)) {
             showLoginDialog()
