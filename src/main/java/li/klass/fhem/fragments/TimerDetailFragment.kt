@@ -36,6 +36,8 @@ import com.google.common.base.Preconditions.checkNotNull
 import com.google.common.base.Splitter
 import com.google.common.base.Strings
 import com.google.common.collect.ImmutableList
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.showSwitchOptionsMenu
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
@@ -50,18 +52,23 @@ import li.klass.fhem.fragments.FragmentType.DEVICE_SELECTION
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListFragment
 import li.klass.fhem.service.intent.DeviceIntentService
-import li.klass.fhem.service.intent.RoomListIntentService
+import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
 import li.klass.fhem.widget.TimePickerWithSecondsDialog
 import org.apache.commons.lang3.StringUtils.isBlank
+import org.jetbrains.anko.coroutines.experimental.bg
+import javax.inject.Inject
 
 class TimerDetailFragment : BaseFragment() {
     var timerDevice: AtDevice? = null
 
     @Transient private var targetDevice: FhemDevice? = null
     private var savedTimerDeviceName: String? = null
+
+    @Inject
+    lateinit var roomListService: RoomListService
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
@@ -277,43 +284,33 @@ class TimerDetailFragment : BaseFragment() {
     private fun setTimerDeviceValuesForName(timerDeviceName: String) {
         checkNotNull(timerDeviceName)
 
-        activity.startService(Intent(GET_DEVICE_FOR_NAME)
-                .setClass(activity, RoomListIntentService::class.java)
-                .putExtra(DEVICE_NAME, timerDeviceName)
-                .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultData == null || resultCode != ResultCodes.SUCCESS || !resultData.containsKey(DEVICE)) {
-                            return
-                        }
-                        val device = resultData.getSerializable(DEVICE) as FhemDevice
-                        if (device !is AtDevice) {
-                            Log.e(TAG, "expected an AtDevice, but got " + device)
-                            return
-                        }
+        async(UI) {
+            val device = bg {
+                roomListService.getDeviceForName<FhemDevice>(timerDeviceName, Optional.absent(), activity)
+            }.await().orNull()
+            if (device is AtDevice) {
+                setValuesForCurrentTimerDevice(device)
 
-                        setValuesForCurrentTimerDevice(device)
-
-                        val activity = activity
-                        activity?.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
-                    }
-                }))
+                val activity = activity
+                activity?.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+            } else {
+                Log.e(TAG, "expected an AtDevice, but got " + device)
+            }
+        }
     }
 
     private fun setValuesForCurrentTimerDevice(atDevice: AtDevice) {
         this.timerDevice = atDevice
-
-        activity.startService(Intent(GET_DEVICE_FOR_NAME)
-                .setClass(activity, RoomListIntentService::class.java)
-                .putExtra(DEVICE_NAME, atDevice.targetDevice)
-                .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultData != null && resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE)) {
-                            updateTargetDevice(resultData.get(DEVICE) as FhemDevice, this@TimerDetailFragment.view)
-                        }
-                    }
-                }))
-
         updateTimerInformation(timerDevice)
+
+        async(UI) {
+            val device = bg {
+                roomListService.getDeviceForName<FhemDevice>(atDevice.targetDevice, Optional.absent(), activity)
+            }.await()
+            if (device.isPresent) {
+                updateTargetDevice(device.get(), this@TimerDetailFragment.view)
+            }
+        }
     }
 
     private fun updateTimerInformation(timerDevice: AtDevice?) {
@@ -437,7 +434,6 @@ class TimerDetailFragment : BaseFragment() {
     private class SwitchTime internal constructor(internal val hour: Int, internal val minute: Int, internal val second: Int)
 
     companion object {
-
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {
             override fun isSelectable(device: FhemDevice): Boolean {
                 return device.setList.size() > 0
