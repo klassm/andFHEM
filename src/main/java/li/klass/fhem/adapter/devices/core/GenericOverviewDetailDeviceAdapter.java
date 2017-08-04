@@ -119,7 +119,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     @Override
-    protected View getDeviceDetailView(Context context, final FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, long lastUpdate) {
+    protected View getDeviceDetailView(Context context, final FhemDevice device, Set<SvgGraphDefinition> graphDefinitions, String connectionId) {
         GenericDevice genericDevice = (GenericDevice) device;
 
         List<GenericDetailActionProvider> providers = from(detailActionProviders)

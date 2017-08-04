@@ -89,7 +89,7 @@ public abstract class ExplicitOverviewDetailDeviceAdapter extends OverviewDevice
     }
 
     @Override
-    protected final View getDeviceDetailView(Context context, FhemDevice device, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, long lastUpdate) {
+    protected final View getDeviceDetailView(Context context, FhemDevice device, Set<SvgGraphDefinition> graphDefinitions, String connectionId) {
         View view = LayoutInflater.from(context).inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device, connectionId);
 
