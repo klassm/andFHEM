@@ -30,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -219,7 +218,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChartingActivity.showChart(context, device, connectionId, svgGraphDefinition);
+                    ChartingActivity.Companion.showChart(context, device, connectionId, svgGraphDefinition);
                 }
             });
             graphLayout.addView(button);

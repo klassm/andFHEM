@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
@@ -167,7 +166,7 @@ public abstract class DeviceAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChartingActivity.showChart(context, device, connectionId, svgGraphDefinition);
+                ChartingActivity.Companion.showChart(context, device, connectionId, svgGraphDefinition);
             }
         });
     }
