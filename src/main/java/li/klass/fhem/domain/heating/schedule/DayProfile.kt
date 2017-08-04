@@ -59,6 +59,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
 
         val interval = heatingIntervals[position]
         deletedIntervals.add(interval)
+        heatingIntervals.removeAt(position)
 
         return true
     }

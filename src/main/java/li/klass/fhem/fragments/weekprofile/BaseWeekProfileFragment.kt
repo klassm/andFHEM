@@ -30,10 +30,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.Lists.newArrayList
 import kotlinx.android.synthetic.main.weekprofile.*
 import kotlinx.android.synthetic.main.weekprofile.view.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
 import li.klass.fhem.constants.Actions
@@ -46,16 +49,22 @@ import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.intent.DeviceIntentService
-import li.klass.fhem.service.intent.RoomListIntentService
+import li.klass.fhem.service.room.RoomListService
+import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
+import javax.inject.Inject
 
 abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>> : BaseFragment() {
 
     private lateinit var deviceName: String
     private lateinit var heatingConfiguration: HeatingConfiguration<INTERVAL, *>
     private lateinit var weekProfile: WeekProfile<INTERVAL, *>
+
+    @Inject lateinit var roomListService: RoomListService
+    @Inject lateinit var roomListUpdateService: RoomListUpdateService
 
     override fun setArguments(args: Bundle) {
         super.setArguments(args)
@@ -116,22 +125,18 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     override fun update(refresh: Boolean) {
-
-        activity.startService(Intent(Actions.GET_DEVICE_FOR_NAME)
-                .setClass(activity, RoomListIntentService::class.java)
-                .putExtra(DO_REFRESH, refresh)
-                .putExtra(DEVICE_NAME, deviceName)
-                .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultData != null && resultCode == ResultCodes.SUCCESS && view != null) {
-                            val device = resultData.getSerializable(BundleExtraKeys.DEVICE) as FhemDevice
-
-                            weekProfile = heatingConfiguration.fillWith(device.getXmlListDevice())
-
-                            updateChangeButtonsHolderVisibility(weekProfile)
-                        }
-                    }
-                }))
+        async(UI) {
+            val device = bg {
+                if (refresh) {
+                    roomListUpdateService.updateSingleDevice(deviceName, Optional.absent(), activity)
+                }
+                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.absent(), activity)
+            }.await()
+            if (device.isPresent) {
+                weekProfile = heatingConfiguration.fillWith(device.get().xmlListDevice)
+                updateChangeButtonsHolderVisibility(weekProfile)
+            }
+        }
     }
 
     private fun updateChangeButtonsHolderVisibility(weekProfile: WeekProfile<INTERVAL, *>) {
