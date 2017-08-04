@@ -27,6 +27,7 @@ package li.klass.fhem.util;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.annotation.Nullable;
 
 public abstract class FhemResultReceiver extends ResultReceiver {
     public FhemResultReceiver() {
@@ -34,5 +35,5 @@ public abstract class FhemResultReceiver extends ResultReceiver {
     }
 
     @Override
-    protected abstract void onReceiveResult(int resultCode, Bundle resultData);
+    protected abstract void onReceiveResult(int resultCode, @Nullable Bundle resultData);
 }

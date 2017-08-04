@@ -135,8 +135,8 @@ class ChartingActivity : AppCompatActivity(), Updateable {
                 .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DEVICE_GRAPH_DEFINITION, svgGraphDefinition)
                 .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                        if (resultCode == ResultCodes.SUCCESS) {
+                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+                        if (resultData != null && resultCode == ResultCodes.SUCCESS) {
                             startDate = resultData.get(START_DATE) as DateTime
                             endDate = resultData.get(END_DATE) as DateTime
                             createChart(device, resultData.get(DEVICE_GRAPH_ENTRY_MAP) as Map<GPlotSeries, MutableList<GraphEntry>>)

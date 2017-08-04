@@ -132,7 +132,7 @@ class StartupActivity : Activity() {
         startService(Intent(Actions.IS_PREMIUM)
                 .setClass(this, LicenseIntentService::class.java)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
                         if (resultCode == ResultCodes.ERROR) {
                             Log.e(TAG, "initializeGoogleBilling() : cannot initialize connection to Google Billing")
                         } else {
@@ -186,8 +186,8 @@ class StartupActivity : Activity() {
         startService(Intent(Actions.FAVORITES_PRESENT)
                 .setClass(this, FavoritesIntentService::class.java)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                        if (resultCode == ResultCodes.ERROR) {
+                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+                        if (resultData == null || resultCode == ResultCodes.ERROR) {
                             Log.e(TAG, "loadFavorites : cannot load favorites: " + resultData)
                         } else {
                             val favoritesPresent = resultData.getBoolean(BundleExtraKeys.HAS_FAVORITES)
