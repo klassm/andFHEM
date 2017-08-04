@@ -37,13 +37,6 @@ public class Actions {
     public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
     public static final String SHOW_ALERT = prefix + "SHOW_ALERT";
 
-    public static final String GET_ALL_ROOMS_DEVICE_LIST = prefix + "ALL_ROOMS_DEVICE_LIST";
-    public static final String GET_ROOM_DEVICE_LIST = prefix + "GET_ROOM_DEVICE_LIST";
-    public static final String GET_ROOM_NAME_LIST = prefix + "GET_ROOM_NAME_LIST";
-    public static final String GET_DEVICE_FOR_NAME = prefix + "GET_DEVICE_FOR_NAME";
-    public static final String UPDATE_DEVICE_WITH_UPDATE_MAP = prefix + "UPDATE_DEVICE_WITH_UPDATE_MAP";
-    public static final String UPDATE_IF_REQUIRED = prefix + "UPDATE_IF_REQUIRED";
-
     public static final String FAVORITE_ROOM_LIST = prefix + "GET_FAVORITE_LIST";
     public static final String FAVORITE_ADD = prefix + "ADD_FAVORITE";
     public static final String FAVORITE_REMOVE = prefix + "REMOVE_FAVORITE";
@@ -75,7 +68,6 @@ public class Actions {
 
     public static final String DEVICE_SET_SUB_STATE = prefix + "DEVICE_SET_SUB_STATE";
     public static final String DEVICE_SET_SUB_STATES = prefix + "DEVICE_SET_SUB_STATES";
-
 
     public static final String LOAD_IMAGE = prefix + "LOAD_IMAGE";
 
@@ -121,10 +113,7 @@ public class Actions {
     public static final String LOAD_PROPERTIES = prefix + "LOAD_PROPERTIES";
 
     public static final String RECOGNIZE_VOICE_COMMAND = prefix + "RECOGNIZE_VOICE_COMMAND";
-    public static final String REMOTE_UPDATE_RESET = prefix + "REMOTE_UDPATE_RESET";
     public static final String SAY = prefix + "SAY";
-
-    public static final String CLEAR_DEVICE_LIST = prefix + "CLEAR_DEVICE_LIST";
 
     public static final String UPDATE_NEXT_ALARM_CLOCK = prefix + "NEXT_ALARM_CLOCK";
     public static final String SCHEDULE_ALARM_CLOCK_UPDATE = prefix + "SCHEDULE_ALARM_CLOCK_UPDATE";

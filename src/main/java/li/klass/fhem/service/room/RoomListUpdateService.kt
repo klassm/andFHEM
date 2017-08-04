@@ -27,6 +27,7 @@ package li.klass.fhem.service.room
 import android.content.Context
 import android.content.Intent
 import com.google.common.base.Optional
+import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
@@ -90,6 +91,8 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
                 if (updateWidgets) {
                     updateWidgets(context)
                 }
+                context.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
+                        .setClass(context, AppIndexIntentService::class.java))
                 UpdateResult.Success(roomDeviceList.orNull())
             }
             else -> UpdateResult.Error()

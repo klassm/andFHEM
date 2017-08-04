@@ -50,7 +50,6 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
-import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class VoiceCommandIntentService extends ConvenientIntentService {
 
@@ -73,9 +72,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     protected State handleIntent(final Intent intent, long updatePeriod, final ResultReceiver resultReceiver) {
         final String action = intent.getAction();
 
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == REQUIRED) {
-            return State.DONE;
-        }
+        roomListService.updateRoomDeviceListIfRequired(updatePeriod, this, null, null, null);
 
         licenseService.isPremium(new LicenseService.IsPremiumListener() {
             @Override

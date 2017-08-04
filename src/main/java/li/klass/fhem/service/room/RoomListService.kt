@@ -45,7 +45,6 @@ import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.service.AbstractService
 import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.NotificationIntentService
-import li.klass.fhem.service.intent.RoomListUpdateIntentService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DateFormatUtil.toReadable
 import org.slf4j.LoggerFactory
@@ -157,58 +156,6 @@ constructor() : AbstractService() {
         sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context)
     }
 
-    /**
-     * Method will check if a remote update of the current device list is required. This is
-     * determined by two indicators:
-     *
-     *  * After loading the cached device map, the cached map is still null. Effectively
-     * this means that no devices had been cached.
-     *  * The update period indicates that we have to update the device map.
-     *
-     * When finding out that we have to remotely update the device list, the current request
-     * (as intent) is cached and an intent to [li.klass.fhem.service.intent.RoomListUpdateIntentService]
-     * is sent. When the remote update completes, we will get an answer effectively calling
-     * {#remoteUpdateFinished}. The method will resent all cached intents, resulting in
-     * answers to waiting requests.
-     *
-     * By caching calling intents that all want to remotely load device lists, we make
-     * sure that only one remote update is concurrently executed. Also, we do not queue
-     * remote requests, as they would load the same content from the server.
-     *
-     * @param intent       calling intent (that might request a remote update)
-     *
-     * @param updatePeriod update period (that might indicate a necessary remote update)
-     *
-     * @return [li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED] if the
-     *  calling intent will be cached and resend when the remote update has completed, otherwise
-     *  [li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.NOT_REQUIRED]
-     */
-    fun updateRoomDeviceListIfRequired(intent: Intent, updatePeriod: Long, context: Context): RemoteUpdateRequired {
-        val connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID))
-        val connectionExists = connectionService.exists(connectionId, context)
-        val hasDevice = intent.hasExtra(DEVICE_NAME)
-        val requiresUpdate = connectionExists && shouldUpdate(updatePeriod, connectionId, context, hasDevice)
-        if (requiresUpdate) {
-            LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.action)
-            resendIntents.add(createResendIntent(intent))
-            if (hasDevice || remoteUpdateInProgress.compareAndSet(false, true)) {
-                context.startService(Intent(DO_REMOTE_UPDATE)
-                        .putExtra(DEVICE_NAME, intent.getStringExtra(DEVICE_NAME))
-                        .putExtra(ROOM_NAME, intent.getStringExtra(ROOM_NAME))
-                        .putExtra(CONNECTION_ID, connectionId.orNull())
-                        .setClass(context, RoomListUpdateIntentService::class.java))
-            }
-            LOG.debug("updateRoomDeviceListIfRequired() - remote update is required")
-            return RemoteUpdateRequired.REQUIRED
-        } else if (remoteUpdateInProgress.get()) {
-            resendIntents.add(createResendIntent(intent))
-            return RemoteUpdateRequired.REQUIRED
-        } else {
-            LOG.debug("updateRoomDeviceListIfRequired() - remote update is not required")
-            return RemoteUpdateRequired.NOT_REQUIRED
-        }
-    }
-
     fun updateRoomDeviceListIfRequired(updatePeriod: Long, context: Context, connectionId: String? = null, room: String? = null, deviceName: String? = null) {
         val connectionExists = connectionService.exists(connectionId, context)
         val requiresUpdate = connectionExists && shouldUpdate(updatePeriod, Optional.fromNullable(connectionId), context, deviceName != null)
@@ -221,43 +168,6 @@ constructor() : AbstractService() {
             } else {
                 roomListUpdateService.updateAllDevices(Optional.fromNullable(connectionId), context, updateWidgets = false)
             }
-        }
-    }
-
-    /**
-     * Entry point for completed remote updates. See [.updateRoomDeviceListIfRequired] for
-     * details on the process.
-     */
-    fun remoteUpdateFinished(context: Context, success: Boolean) {
-        try {
-            LOG.info("remoteUpdateFinished() - starting after actions")
-
-
-            if (success) {
-                LOG.info("remoteUpdateFinished() - requesting redraw of all appwidgets")
-
-                for (resendIntent in resendIntents) {
-                    resend(resendIntent, context)
-                }
-
-                context.sendBroadcast(Intent(DO_UPDATE)
-                        .putExtra(DO_REFRESH, false))
-                context.startService(Intent(REDRAW_ALL_WIDGETS)
-                        .setClass(context, AppWidgetUpdateService::class.java)
-                        .putExtra(ALLOW_REMOTE_UPDATES, false))
-
-                LOG.info("remoteUpdateFinished() - remote update finished, device list is {}")
-            } else {
-                LOG.info("remoteUpdateFinished() - update was not successful")
-
-                for (resendIntent in resendIntents) {
-                    answerError(resendIntent)
-                }
-            }
-            resendIntents.clear()
-        } finally {
-            LOG.info("remoteUpdateFinished() - finished, dismissing executing dialog")
-            resetUpdateProgress(context)
         }
     }
 

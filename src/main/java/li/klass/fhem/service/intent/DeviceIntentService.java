@@ -125,10 +125,8 @@ import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TYPE;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
-import static li.klass.fhem.service.intent.ConvenientIntentService.State.DONE;
 import static li.klass.fhem.service.intent.ConvenientIntentService.State.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.State.SUCCESS;
-import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class DeviceIntentService extends ConvenientIntentService {
 
@@ -167,10 +165,6 @@ public class DeviceIntentService extends ConvenientIntentService {
 
     @Override
     protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == REQUIRED) {
-            return DONE;
-        }
 
         String deviceName = intent.getStringExtra(DEVICE_NAME);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));

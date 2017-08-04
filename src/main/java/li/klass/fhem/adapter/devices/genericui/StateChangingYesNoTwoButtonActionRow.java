@@ -29,16 +29,12 @@ import android.content.Context;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffStateActionRow;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffStateActionRow {
 
-    private final StateUiService stateUiService;
-
-    public StateChangingYesNoTwoButtonActionRow(StateUiService stateUiService, int description, String connectionId) {
+    public StateChangingYesNoTwoButtonActionRow(int description, String connectionId) {
         super(AbstractOnOffActionRow.LAYOUT_DETAIL, description, connectionId);
-        this.stateUiService = stateUiService;
     }
 
     @Override
@@ -49,11 +45,6 @@ public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffStateAct
     @Override
     protected String getOffStateText(FhemDevice device, Context context) {
         return context.getString(R.string.no);
-    }
-
-    @Override
-    public void onButtonClick(Context context, FhemDevice device, String connectionId, String targetState) {
-        stateUiService.setState(device, targetState, context, connectionId);
     }
 
     @Override

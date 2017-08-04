@@ -65,9 +65,7 @@ public class FavoritesIntentService extends ConvenientIntentService {
             return State.ERROR;
         }
 
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == RoomListService.RemoteUpdateRequired.REQUIRED) {
-            return State.DONE;
-        }
+        roomListService.updateRoomDeviceListIfRequired(updatePeriod, this, null, null, null);
 
         if (FAVORITE_ROOM_LIST.equals(action)) {
             RoomDeviceList favorites = favoritesService.getFavorites(this);

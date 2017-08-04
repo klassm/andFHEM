@@ -27,9 +27,7 @@ package li.klass.fhem.service.intent
 import android.content.Intent
 import android.os.ResultReceiver
 import com.google.common.base.Optional
-import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.service.room.RoomListUpdateService
@@ -71,11 +69,7 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
         when (result) {
             is UpdateResult.Success -> {
                 LOG.info("doRemoteUpdate() - remote device list update finished")
-                startService(Intent(REMOTE_UPDATE_FINISHED)
-                        .putExtra(SUCCESS, true)
-                        .setClass(this@RoomListUpdateIntentService, RoomListIntentService::class.java))
-                startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
-                        .setClass(this@RoomListUpdateIntentService, AppIndexIntentService::class.java))
+                sendBroadcast(Intent(DO_REFRESH))
             }
             is UpdateResult.Error -> LOG.error("handleResult - update failed")
         }

@@ -125,7 +125,6 @@ import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.intent.ImageIntentService;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
-import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandIntentService;
 import li.klass.fhem.service.intent.VoiceCommandIntentService;
@@ -312,8 +311,6 @@ public interface ApplicationComponent {
     void inject(ConnectionsIntentService object);
 
     void inject(SendCommandIntentService object);
-
-    void inject(RoomListIntentService object);
 
     void inject(RoomListUpdateIntentService object);
 
