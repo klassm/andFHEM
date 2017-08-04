@@ -53,7 +53,6 @@ import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
-import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
@@ -93,9 +92,9 @@ public class AppWidgetDataHolderTest {
     @Before
     public void before() {
         context = mock(Context.class);
-        given(sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, context))
+        given(sharedPreferencesService.getPreferences(AppWidgetDataHolder.Companion.getSAVE_PREFERENCE_NAME(), context))
                 .willReturn(sharedPreferences);
-        given(sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME, context))
+        given(sharedPreferencesService.getSharedPreferencesEditor(AppWidgetDataHolder.Companion.getSAVE_PREFERENCE_NAME(), context))
                 .willReturn(sharedPreferencesEditor);
         given(sharedPreferences.edit()).willReturn(sharedPreferencesEditor);
         given(context.getSystemService(Context.ALARM_SERVICE)).willReturn(alarmManager);

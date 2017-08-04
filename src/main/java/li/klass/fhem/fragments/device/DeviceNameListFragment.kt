@@ -120,7 +120,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
                     activity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }
                 val deviceList = when {
-                    roomName != null -> roomListService.getDeviceListForRoom(roomName, Optional.absent(), activity)
+                    roomName != null -> roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), activity)
                     else -> roomListService.getAllRoomsDeviceList(Optional.absent(), activity)
                 }.filter(activity, deviceFilter::isSelectable)
 

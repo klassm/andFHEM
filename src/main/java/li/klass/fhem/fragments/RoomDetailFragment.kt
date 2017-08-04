@@ -61,7 +61,7 @@ class RoomDetailFragment : DeviceListFragment() {
         return arguments.getString(BundleExtraKeys.ROOM_NAME)
     }
 
-    override fun getRoomDeviceListForUpdate() = roomListService.getDeviceListForRoom(roomName, Optional.absent(), activity)!!
+    override fun getRoomDeviceListForUpdate() = roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), activity)
 
     override fun executeRemoteUpdate() {
         if (roomName != null) {
