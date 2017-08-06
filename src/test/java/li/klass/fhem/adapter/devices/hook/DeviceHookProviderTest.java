@@ -46,6 +46,7 @@ import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_ON_OFF;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_TOGGLE;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_WEBCMD;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.OFF_STATE_NAME;
+import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.ON_STATE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.GENERIC;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.ATTR;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -113,6 +114,28 @@ public class DeviceHookProviderTest {
         device.getXmlListDevice().setAttribute(OFF_STATE_NAME, offStateName);
 
         String stateName = provider.getOffStateName(device);
+
+        assertThat(stateName).isEqualTo(expectedState);
+    }
+
+    @DataProvider
+    public static Object[][] onStateNameProvider() {
+        return $$(
+                $("", "", "on"),
+                $("off", "on", "on"),
+                $("on", "ON", "ON")
+        );
+    }
+
+    @UseDataProvider("onStateNameProvider")
+    @Test
+    public void should_provide_on_state_name(String setList, String onStateName, String expectedState) throws Exception {
+        DeviceHookProvider provider = new DeviceHookProvider();
+        GenericDevice device = deviceFor(HOOK_ON, true);
+        device.setSetList(setList);
+        device.getXmlListDevice().setAttribute(ON_STATE_NAME, onStateName);
+
+        String stateName = provider.getOnStateName(device);
 
         assertThat(stateName).isEqualTo(expectedState);
     }

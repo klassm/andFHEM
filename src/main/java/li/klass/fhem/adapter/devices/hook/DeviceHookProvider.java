@@ -38,14 +38,14 @@ import li.klass.fhem.service.room.xmllist.DeviceNode;
 @Singleton
 public class DeviceHookProvider {
 
-    public static final String HOOK_ON_OFF = "onOffDevice";
-    public static final String HOOK_ON = "onDevice";
-    public static final String HOOK_OFF = "offDevice";
-    public static final String HOOK_WEBCMD = "webcmdDevice";
-    public static final String HOOK_TOGGLE = "toggleDevice";
-    public static final String ON_STATE_NAME = "onStateName";
-    public static final String OFF_STATE_NAME = "offStateName";
-    public static final String INVERT_STATE = "invertState";
+    static final String HOOK_ON_OFF = "onOffDevice";
+    static final String HOOK_ON = "onDevice";
+    static final String HOOK_OFF = "offDevice";
+    static final String HOOK_WEBCMD = "webcmdDevice";
+    static final String HOOK_TOGGLE = "toggleDevice";
+    static final String ON_STATE_NAME = "onStateName";
+    static final String OFF_STATE_NAME = "offStateName";
+    private static final String INVERT_STATE = "invertState";
 
     private static final ImmutableMap<String, ButtonHook> HOOK_MAPPING =
             ImmutableMap.<String, ButtonHook>builder()
@@ -74,9 +74,9 @@ public class DeviceHookProvider {
     }
 
     public String getOnStateName(FhemDevice device) {
-        return device.getXmlListDevice().attributeValueFor(ON_STATE_NAME).or(
-                device.getSetList().getFirstPresentStateOf("on", "ON")
-        );
+        String setListState = Optional.fromNullable(device.getSetList().getFirstPresentStateOf("on", "ON")).or("on");
+        return device.getXmlListDevice().attributeValueFor(ON_STATE_NAME)
+                .or(setListState);
     }
 
     public String getOffStateName(FhemDevice device) {
