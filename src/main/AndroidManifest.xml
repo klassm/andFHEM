@@ -267,18 +267,6 @@
         </service>
 
         <service
-            android:name="li.klass.fhem.service.intent.FavoritesIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.GET_FAVORITE_LIST" />
-                <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE" />
-                <action android:name="li.klass.fhem.constants.Actions.REMOVE_FAVORITE" />
-                <action android:name="li.klass.fhem.constants.Actions.FAVORITES_PRESENT" />
-                <action android:name="li.klass.fhem.constants.Actions.FAVORITES_IS_FAVORITE" />
-            </intent-filter>
-        </service>
-
-        <service
             android:name="li.klass.fhem.service.intent.DeviceIntentService"
             android:exported="false">
             <intent-filter>

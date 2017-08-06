@@ -27,8 +27,6 @@ package li.klass.fhem.fragments.core
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
@@ -46,7 +44,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition
 import li.klass.fhem.service.intent.DeviceIntentService
-import li.klass.fhem.service.intent.FavoritesIntentService
 import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.service.room.RoomListUpdateService
@@ -189,21 +186,12 @@ class DeviceDetailFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            R.id.menu_favorites_add, R.id.menu_favorites_remove -> {
-                val isAdd = item.itemId == R.id.menu_favorites_add
-                activity.startService(Intent(if (isAdd) FAVORITE_ADD else FAVORITE_REMOVE)
-                        .setClass(activity, FavoritesIntentService::class.java)
-                        .putExtra(DEVICE, device)
-                        .putExtra(RESULT_RECEIVER, object : ResultReceiver(Handler()) {
-                            override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                                if (resultCode != SUCCESS) return
 
-                                Toast.makeText(activity,
-                                        if (isAdd) R.string.context_favoriteadded else R.string.context_favoriteremoved,
-                                        Toast.LENGTH_SHORT).show()
-                                update(false)
-                            }
-                        }))
+            R.id.menu_favorites_add -> {
+                callUpdating(favoritesService::addFavorite, R.string.context_favoriteadded)
+            }
+            R.id.menu_favorites_remove -> {
+                callUpdating(favoritesService::removeFavorite, R.string.context_favoriteremoved)
             }
             R.id.menu_room -> DeviceActionUtil.moveDevice(activity, device)
             R.id.menu_alias -> DeviceActionUtil.setAlias(activity, device)
@@ -211,6 +199,21 @@ class DeviceDetailFragment : BaseFragment() {
             else -> return false
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun callUpdating(actionToCall: (Context, String) -> Unit, toastStringId: Int) {
+        deviceName ?: return
+        async(UI) {
+            bg {
+                actionToCall(activity, deviceName!!)
+            }.await()
+            showToast(toastStringId)
+            update(false)
+        }
+    }
+
+    private fun showToast(textStringId: Int) {
+        Toast.makeText(activity, textStringId, Toast.LENGTH_SHORT).show()
     }
 
     override fun canChildScrollUp(): Boolean {

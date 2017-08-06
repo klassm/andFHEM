@@ -44,8 +44,8 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.PreferenceKeys.STARTUP_PASSWORD
 import li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START
 import li.klass.fhem.constants.ResultCodes
-import li.klass.fhem.service.intent.FavoritesIntentService
 import li.klass.fhem.service.intent.LicenseIntentService
+import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
@@ -64,6 +64,9 @@ class StartupActivity : Activity() {
 
     @Inject
     lateinit var roomListService: RoomListService
+
+    @Inject
+    lateinit var favoritesService: FavoritesService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -185,19 +188,13 @@ class StartupActivity : Activity() {
     private fun loadFavorites() {
         setCurrentStatus(R.string.currentStatus_loadingFavorites)
 
-        startService(Intent(Actions.FAVORITES_PRESENT)
-                .setClass(this, FavoritesIntentService::class.java)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultData == null || resultCode == ResultCodes.ERROR) {
-                            Log.e(TAG, "loadFavorites : cannot load favorites: " + resultData)
-                        } else {
-                            val favoritesPresent = resultData.getBoolean(BundleExtraKeys.HAS_FAVORITES)
-                            Log.d(TAG, "loadFavorites : favorites_present=" + favoritesPresent)
-                            gotoMainActivity(favoritesPresent)
-                        }
-                    }
-                }))
+        async(UI) {
+            val hasFavorites = bg {
+                favoritesService.hasFavorites(this@StartupActivity)
+            }.await()
+            Log.d(TAG, "loadFavorites : favorites_present=" + hasFavorites)
+            gotoMainActivity(hasFavorites)
+        }
     }
 
     private fun setCurrentStatus(stringId: Int) {
