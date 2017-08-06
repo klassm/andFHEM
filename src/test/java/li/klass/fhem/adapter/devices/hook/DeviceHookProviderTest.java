@@ -40,13 +40,7 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
 import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_OFF;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_ON;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_ON_OFF;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_TOGGLE;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.HOOK_WEBCMD;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.OFF_STATE_NAME;
-import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.ON_STATE_NAME;
+import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.Companion;
 import static li.klass.fhem.domain.core.DeviceType.GENERIC;
 import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.ATTR;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,18 +49,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DeviceHookProviderTest {
     @DataProvider
     public static Object[][] buttonHookProvider() {
-        deviceFor(HOOK_OFF, true);
+        deviceFor(Companion.getHOOK_OFF(), true);
         return new Object[][]{
-                {deviceFor(HOOK_OFF, true), ButtonHook.OFF_DEVICE},
-                {deviceFor(HOOK_OFF, false), ButtonHook.NORMAL},
-                {deviceFor(HOOK_ON, true), ButtonHook.ON_DEVICE},
-                {deviceFor(HOOK_ON, false), ButtonHook.NORMAL},
-                {deviceFor(HOOK_ON_OFF, true), ButtonHook.ON_OFF_DEVICE},
-                {deviceFor(HOOK_ON_OFF, false), ButtonHook.NORMAL},
-                {deviceFor(HOOK_TOGGLE, true), ButtonHook.TOGGLE_DEVICE},
-                {deviceFor(HOOK_TOGGLE, false), ButtonHook.NORMAL},
-                {deviceFor(HOOK_WEBCMD, true), ButtonHook.WEBCMD_DEVICE},
-                {deviceFor(HOOK_WEBCMD, false), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_OFF(), true), ButtonHook.OFF_DEVICE},
+                {deviceFor(Companion.getHOOK_OFF(), false), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_ON(), true), ButtonHook.ON_DEVICE},
+                {deviceFor(Companion.getHOOK_ON(), false), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_ON_OFF(), true), ButtonHook.ON_OFF_DEVICE},
+                {deviceFor(Companion.getHOOK_ON_OFF(), false), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_TOGGLE(), true), ButtonHook.TOGGLE_DEVICE},
+                {deviceFor(Companion.getHOOK_TOGGLE(), false), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_WEBCMD(), true), ButtonHook.WEBCMD_DEVICE},
+                {deviceFor(Companion.getHOOK_WEBCMD(), false), ButtonHook.NORMAL},
         };
     }
 
@@ -109,9 +103,9 @@ public class DeviceHookProviderTest {
     @Test
     public void should_provide_off_state_name(String setList, String offStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
-        GenericDevice device = deviceFor(HOOK_OFF, true);
+        GenericDevice device = deviceFor(Companion.getHOOK_OFF(), true);
         device.setSetList(setList);
-        device.getXmlListDevice().setAttribute(OFF_STATE_NAME, offStateName);
+        device.getXmlListDevice().setAttribute(Companion.getOFF_STATE_NAME(), offStateName);
 
         String stateName = provider.getOffStateName(device);
 
@@ -131,9 +125,9 @@ public class DeviceHookProviderTest {
     @Test
     public void should_provide_on_state_name(String setList, String onStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
-        GenericDevice device = deviceFor(HOOK_ON, true);
+        GenericDevice device = deviceFor(Companion.getHOOK_ON(), true);
         device.setSetList(setList);
-        device.getXmlListDevice().setAttribute(ON_STATE_NAME, onStateName);
+        device.getXmlListDevice().setAttribute(Companion.getON_STATE_NAME(), onStateName);
 
         String stateName = provider.getOnStateName(device);
 
