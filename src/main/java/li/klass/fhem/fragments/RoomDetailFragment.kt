@@ -61,6 +61,18 @@ class RoomDetailFragment : DeviceListFragment() {
         return arguments.getString(BundleExtraKeys.ROOM_NAME)
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putString(BundleExtraKeys.ROOM_NAME, roomName)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            roomName = savedInstanceState.getString(BundleExtraKeys.ROOM_NAME)
+        }
+    }
+
     override fun getRoomDeviceListForUpdate() = roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), activity)
 
     override fun executeRemoteUpdate() {
