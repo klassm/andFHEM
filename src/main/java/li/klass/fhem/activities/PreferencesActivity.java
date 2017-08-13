@@ -56,6 +56,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
+import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.ui.service.importExport.ImportExportUIService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -65,6 +66,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
+import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.EXPORT_SETTINGS;
 import static li.klass.fhem.constants.PreferenceKeys.IMPORT_SETTINGS;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_APP_LOG;
@@ -104,6 +106,7 @@ public class PreferencesActivity extends PreferenceActivity
         addPreferencesFromResource(R.layout.preferences);
 
         attachListSummaryListenerTo(PreferenceKeys.STARTUP_VIEW, R.array.startupViewsValues, R.array.startupViews, R.string.prefStartupViewSummary);
+        attachIntSummaryListenerTo(PreferenceKeys.DEVICE_COLUMN_WIDTH, R.string.prefDeviceColumnWidthSummary);
         attachIntSummaryListenerTo(PreferenceKeys.DEVICE_LIST_RIGHT_PADDING, R.string.prefDeviceListPaddingRightSummary);
         attachListSummaryListenerTo(PreferenceKeys.GRAPH_DEFAULT_TIMESPAN, R.array.graphDefaultTimespanValues, R.array.graphDefaultTimespanEntries, R.string.prefDefaultTimespanSummary);
         attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_WLAN, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeWLANSummary);
@@ -120,6 +123,11 @@ public class PreferencesActivity extends PreferenceActivity
         attachIntSummaryListenerTo(PreferenceKeys.CONNECTION_TIMEOUT, R.string.prefConnectionTimeoutSummary);
         attachIntSummaryListenerTo(PreferenceKeys.COMMAND_EXECUTION_RETRIES, R.string.prefCommandExecutionRetriesSummary);
         attachStringSummaryListenerTo(PreferenceKeys.FHEMWEB_DEVICE_NAME, R.string.prefFHEMWEBDeviceNameSummary);
+
+        SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
+        deviceColumnWidthPreference.setMinimumValue(200);
+        deviceColumnWidthPreference.setDefaultValue(DeviceListFragment.Companion.getDEFAULT_COLUMN_WIDTH());
+        deviceColumnWidthPreference.setMaximumValue(800);
 
         findPreference(SEND_LAST_ERROR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -344,5 +352,4 @@ public class PreferencesActivity extends PreferenceActivity
         }
         return delegate;
     }
-
 }

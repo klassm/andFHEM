@@ -26,6 +26,7 @@ package li.klass.fhem.constants;
 
 public class PreferenceKeys {
     public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
+    public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
     public static final String APPLICATION_VERSION = "APPLICATION_VERSION";
     public static final String UPDATE_ON_ROOM_OPEN = "UPDATE_ON_ROOM_OPEN";
     public static final String UPDATE_ON_APPLICATION_START = "UPDATE_ON_APPLICATION_START";
@@ -55,4 +56,5 @@ public class PreferenceKeys {
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";
 
     public static final String SELECTED_CONNECTION = "SELECTED_CONNECTION";
+
 }

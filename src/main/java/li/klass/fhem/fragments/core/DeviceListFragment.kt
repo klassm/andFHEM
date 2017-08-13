@@ -47,6 +47,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.adapter.rooms.ViewableElementsCalculator
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
@@ -113,11 +114,15 @@ abstract class DeviceListFragment : BaseFragment() {
         }
 
         val displayMetrics = Resources.getSystem().displayMetrics
-        val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 300F).toInt()
+        val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / getColumnWidth()).toInt()
         return when {
             calculated < 1 -> 1
             else -> calculated
         }
+    }
+
+    private fun getColumnWidth(): Float {
+        return applicationProperties.getIntegerSharedPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context).toFloat()
     }
 
     override fun onResume() {
@@ -237,5 +242,6 @@ abstract class DeviceListFragment : BaseFragment() {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DeviceListFragment::class.java)
+        val DEFAULT_COLUMN_WIDTH = 300
     }
 }
