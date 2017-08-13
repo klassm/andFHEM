@@ -107,7 +107,7 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
         val doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true, this)
         val viewCreateUpdateInterval = if (doRemoteWidgetUpdates && allowRemoteUpdate) updateInterval else RoomListService.Companion.NEVER_UPDATE_PERIOD
 
-        appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, updateInterval)
+        appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, viewCreateUpdateInterval)
 
         LOG.info("updateWidget - request widget update for widget-id {}, interval is {}, update interval is {}ms", appWidgetId, viewCreateUpdateInterval, updateInterval)
 
@@ -116,9 +116,9 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
             bg {
                 if (configuration.widgetType.widgetView is DeviceAppWidgetView) {
                     val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                    roomListService.updateRoomDeviceListIfRequired(updateInterval, serviceAsContext, connectionId = configuration.connectionId.orNull(), deviceName = deviceName)
+                    roomListService.updateRoomDeviceListIfRequired(viewCreateUpdateInterval, serviceAsContext, connectionId = configuration.connectionId.orNull(), deviceName = deviceName)
                 } else {
-                    roomListService.updateRoomDeviceListIfRequired(updateInterval, serviceAsContext, connectionId = configuration.connectionId.orNull())
+                    roomListService.updateRoomDeviceListIfRequired(viewCreateUpdateInterval, serviceAsContext, connectionId = configuration.connectionId.orNull())
                 }
             }.await()
             updateWidgetAfterDeviceListReload(appWidgetId)
