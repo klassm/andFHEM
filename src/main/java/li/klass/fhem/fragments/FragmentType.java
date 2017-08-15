@@ -24,6 +24,8 @@
 
 package li.klass.fhem.fragments;
 
+import android.support.annotation.Nullable;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -100,6 +102,7 @@ public enum FragmentType {
         return null;
     }
 
+    @Nullable
     public static FragmentType forEnumName(String name) {
         try {
             return FragmentType.valueOf(name);
