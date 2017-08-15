@@ -46,7 +46,7 @@ import static com.google.common.collect.FluentIterable.from;
 
 @Singleton
 public class FavoritesService {
-    public static final String PREFERENCES_NAME = "favorites";
+    private static final String PREFERENCES_NAME = "favorites";
 
     @Inject
     RoomListService roomListService;

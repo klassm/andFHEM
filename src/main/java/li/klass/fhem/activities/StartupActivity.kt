@@ -30,26 +30,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.google.common.base.Optional
-import com.google.common.base.Strings.isNullOrEmpty
+import kotlinx.android.synthetic.main.startup.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.PreferenceKeys.STARTUP_PASSWORD
 import li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START
 import li.klass.fhem.constants.ResultCodes
+import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
@@ -67,6 +65,9 @@ class StartupActivity : Activity() {
 
     @Inject
     lateinit var favoritesService: FavoritesService
+
+    @Inject
+    lateinit var loginUiService: LoginUIService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,29 +97,26 @@ class StartupActivity : Activity() {
             }.await()
         }
 
-        if (!isNullOrEmpty(password)) {
-            showLoginDialog()
-        } else {
-            handleLoginStatus()
-        }
-    }
+        loginUiService.doLoginIfRequired(this, object : LoginUIService.LoginStrategy {
+            override fun requireLogin(context: Context, checkLogin: (String) -> Unit) {
+                loginStatus.visibility = View.GONE
+                loginLayout.visibility = View.VISIBLE
 
-    private fun showLoginDialog() {
-        loginStatus.visibility = View.GONE
-        loginLayout.visibility = View.VISIBLE
-
-        val loginButton = findViewById(R.id.login) as Button
-        loginButton.setOnClickListener {
-            val passwordInput = findViewById(R.id.password) as EditText
-            val password = passwordInput.text.toString()
-            if (password == password) {
-                handleLoginStatus()
-            } else {
-                DialogUtil.showAlertDialog(this@StartupActivity, null,
-                        getString(R.string.wrongPassword))
+                login.setOnClickListener {
+                    val passwordInput = findViewById(R.id.password) as EditText
+                    val password = passwordInput.text.toString()
+                    checkLogin(password)
+                }
             }
-            passwordInput.setText("")
-        }
+
+            override fun onLoginSuccess() {
+                handleLoginStatus()
+            }
+
+            override fun onLoginFailure() {
+                finish()
+            }
+        })
     }
 
     private val loginLayout: View
@@ -200,9 +198,6 @@ class StartupActivity : Activity() {
     private fun setCurrentStatus(stringId: Int) {
         (findViewById(R.id.currentStatus) as TextView).setText(stringId)
     }
-
-    private val password: String
-        get() = applicationProperties.getStringSharedPreference(STARTUP_PASSWORD, "", this)
 
     private fun gotoMainActivity(favoritesPresent: Boolean) {
 

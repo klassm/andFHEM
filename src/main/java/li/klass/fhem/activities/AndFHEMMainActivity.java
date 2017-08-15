@@ -47,6 +47,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -59,6 +60,8 @@ import java.util.Timer;
 
 import javax.inject.Inject;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
@@ -69,6 +72,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.login.LoginUIService;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.update.UpdateHandler;
@@ -204,6 +208,9 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
     @Inject
     GCMSendDeviceService gcmSendDeviceService;
+
+    @Inject
+    LoginUIService loginUiService;
 
     private Receiver broadcastReceiver;
 
@@ -496,20 +503,41 @@ public class AndFHEMMainActivity extends AppCompatActivity implements
 
         Log.i(TAG, "onResume() : resuming");
 
-        saveInstanceStateCalled = false;
+        loginUiService.doLoginIfRequired(this, new LoginUIService.LoginStrategy() {
+            @Override
+            public void requireLogin(@NonNull Context context, @NonNull final Function1<? super String, Unit> checkLogin) {
+                final View view = getLayoutInflater().inflate(R.layout.login, null);
+                DialogUtil.showContentDialog(context, getString(R.string.login), view, new DialogUtil.AlertOnClickListener() {
+                    @Override
+                    public void onClick() {
+                        checkLogin.invoke(((EditText) view.findViewById(R.id.password)).getText().toString());
+                    }
+                });
+            }
 
-        if (broadcastReceiver != null) {
-            registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
-        }
+            @Override
+            public void onLoginSuccess() {
+                saveInstanceStateCalled = false;
 
-        if (availableConnectionDataAdapter != null) {
-            availableConnectionDataAdapter.doLoad();
-        }
-        updateNavigationVisibility();
+                if (broadcastReceiver != null) {
+                    registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
+                }
 
-        handleTimerUpdates();
-        handleOpenIntent();
-        updateTitle();
+                if (availableConnectionDataAdapter != null) {
+                    availableConnectionDataAdapter.doLoad();
+                }
+                updateNavigationVisibility();
+
+                handleTimerUpdates();
+                handleOpenIntent();
+                updateTitle();
+            }
+
+            @Override
+            public void onLoginFailure() {
+                finish();
+            }
+        });
     }
 
     @Override
