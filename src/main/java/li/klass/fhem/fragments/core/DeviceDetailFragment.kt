@@ -123,13 +123,13 @@ class DeviceDetailFragment : BaseFragment() {
                 this@DeviceDetailFragment.device = device.get()
                 val adapter = DeviceType.getAdapterFor<FhemDevice>(device.get())
                 if (adapter != null) {
-                    loadGraphs()
                     activity.supportInvalidateOptionsMenu()
                     val scrollView = findScrollView()
                     if (scrollView != null) {
                         scrollView.removeAllViews()
                         scrollView.addView(adapter.createDetailView(activity, device.get(), emptySet(), connectionId))
                     }
+                    loadGraphs()
                 }
             }
         }

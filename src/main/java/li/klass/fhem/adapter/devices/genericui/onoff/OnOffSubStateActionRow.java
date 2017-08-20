@@ -43,7 +43,8 @@ public class OnOffSubStateActionRow extends AbstractOnOffActionRow {
 
     @Override
     protected boolean isOn(FhemDevice device, Context context) {
-        return !getOffStateName(device, context).equalsIgnoreCase(device.getXmlListDevice().getState(subState).or("off"));
+        String offStateName = getOffStateName(device, context);
+        return offStateName != null && !offStateName.equalsIgnoreCase(device.getXmlListDevice().getState(subState).or("off"));
     }
 
     @Override

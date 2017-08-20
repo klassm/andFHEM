@@ -32,6 +32,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.api.client.repackaged.com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
 import li.klass.fhem.R;
@@ -99,11 +100,13 @@ public abstract class AbstractOnOffActionRow {
     }
 
     protected String getOnStateName(FhemDevice device, Context context) {
-        return device.getSetList().getFirstPresentStateOf("on", "ON");
+        String state = device.getSetList().getFirstPresentStateOf("on", "ON");
+        return Objects.firstNonNull(state, "on");
     }
 
     protected String getOffStateName(FhemDevice device, Context context) {
-        return device.getSetList().getFirstPresentStateOf("off", "OFF");
+        String state = device.getSetList().getFirstPresentStateOf("off", "OFF");
+        return Objects.firstNonNull(state, "off");
     }
 
     protected String getOnStateText(FhemDevice device, Context context) {
@@ -111,7 +114,8 @@ public abstract class AbstractOnOffActionRow {
         EventMap eventMap = device.getEventMap();
 
         String onStateName = getOnStateName(device, context);
-        return eventMap.getOr(onStateName, context.getString(R.string.on));
+        if (onStateName == null) onStateName = "on";
+        return eventMap.getOr(onStateName, "on");
     }
 
     protected String getOffStateText(FhemDevice device, Context context) {
@@ -119,7 +123,8 @@ public abstract class AbstractOnOffActionRow {
         EventMap eventMap = device.getEventMap();
 
         String offStateName = getOffStateName(device, context);
-        return eventMap.getOr(offStateName, context.getString(R.string.off));
+        if (offStateName == null) offStateName = "off";
+        return eventMap.getOr(offStateName, "off");
     }
 
     protected boolean isOn(FhemDevice device, Context context) {
