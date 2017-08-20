@@ -114,9 +114,9 @@ class DeviceDetailFragment : BaseFragment() {
         async(UI) {
             val device = bg {
                 if (refresh) {
-                    roomListUpdateService.updateSingleDevice(deviceName!!, Optional.absent(), activity)
+                    roomListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), activity)
                 }
-                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.absent(), activity)
+                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), activity)
             }.await()
             activity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             if (device.isPresent) {
@@ -158,9 +158,8 @@ class DeviceDetailFragment : BaseFragment() {
                 }))
     }
 
-    private fun findScrollView(): ScrollView? {
-        return view!!.findViewById(R.id.deviceDetailView) as ScrollView
-    }
+    private fun findScrollView(): ScrollView? =
+            view!!.findViewById(R.id.deviceDetailView) as ScrollView
 
     override fun getTitle(context: Context): CharSequence? {
         var name = arguments.getString(DEVICE_DISPLAY_NAME)
@@ -216,7 +215,6 @@ class DeviceDetailFragment : BaseFragment() {
         Toast.makeText(activity, textStringId, Toast.LENGTH_SHORT).show()
     }
 
-    override fun canChildScrollUp(): Boolean {
-        return super.canChildScrollUp() || findScrollView()!!.scrollY > 0
-    }
+    override fun canChildScrollUp(): Boolean =
+            super.canChildScrollUp() || findScrollView()!!.scrollY > 0
 }
