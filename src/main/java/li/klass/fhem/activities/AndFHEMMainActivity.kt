@@ -26,6 +26,7 @@ package li.klass.fhem.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -446,7 +447,12 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         loginUiService.doLoginIfRequired(this, object : LoginUIService.LoginStrategy {
             override fun requireLogin(context: Context, checkLogin: Function1<String, Unit>) {
                 val view = layoutInflater.inflate(R.layout.login, null)
-                DialogUtil.showContentDialog(context, getString(R.string.login), view) { checkLogin.invoke((view.findViewById(R.id.password) as EditText).text.toString()) }
+                AlertDialog.Builder(context)
+                        .setView(view)
+                        .setTitle(R.string.login)
+                        .setOnCancelListener { finish() }
+                        .setPositiveButton(R.string.okButton, { _, _ -> checkLogin.invoke((view.findViewById(R.id.password) as EditText).text.toString()) })
+                        .show()
             }
 
             override fun onLoginSuccess() {
