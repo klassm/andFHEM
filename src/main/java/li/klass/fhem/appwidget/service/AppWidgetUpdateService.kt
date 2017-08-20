@@ -109,7 +109,7 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
 
         appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, viewCreateUpdateInterval)
 
-        LOG.info("updateWidget - request widget update for widget-id {}, interval is {}, update interval is {}ms", appWidgetId, viewCreateUpdateInterval, updateInterval)
+        LOG.info("updateWidget - request widget update for widget-id {}, interval is {}, update interval is {}ms, connectionId={}", appWidgetId, viewCreateUpdateInterval, updateInterval, configuration.connectionId.orNull())
 
         val serviceAsContext: Context = intentService
         async(UI) {

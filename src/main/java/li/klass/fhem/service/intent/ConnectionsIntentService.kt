@@ -27,7 +27,6 @@ package li.klass.fhem.service.intent
 import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
-import com.google.common.base.Optional
 import com.google.common.base.Strings
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
@@ -101,7 +100,6 @@ class ConnectionsIntentService : ConvenientIntentService(ConnectionsIntentServic
 
             if (currentlySelected == id) return ConvenientIntentService.State.SUCCESS
 
-            roomListService.clearDeviceList(Optional.absent(), this)
             connectionService.setSelectedId(id, this)
 
             val updateIntent = Intent(Actions.DO_UPDATE)
