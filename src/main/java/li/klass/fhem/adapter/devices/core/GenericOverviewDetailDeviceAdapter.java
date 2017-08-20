@@ -43,6 +43,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -87,22 +90,18 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     @Inject
     ToggleableStrategy toggleableStrategy;
-
     @Inject
     DimmableStrategy dimmableStrategy;
-
     @Inject
     WebcmdStrategy webcmdStrategy;
-
     @Inject
     OnOffBehavior onOffBehavior;
-
     @Inject
     DeviceHookProvider deviceHookProvider;
-
     @Inject
     Set<GenericDetailActionProvider> detailActionProviders;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericOverviewDetailDeviceAdapter.class);
     @Override
     protected void inject(ApplicationComponent daggerComponent) {
         daggerComponent.inject(this);
@@ -203,6 +202,11 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     private void fillPlotsCard(final GenericDevice device, Set<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout, final Context context) {
         CardView plotsCard = (CardView) linearLayout.findViewById(R.id.plotsCard);
+        if (plotsCard == null) {
+            LOGGER.error("fillPlotsCard - cannot find plots card, is null");
+            return;
+        }
+
         ImmutableList<SvgGraphDefinition> definitions = from(graphDefinitions).toSortedList(BY_NAME);
         if (graphDefinitions.isEmpty()) {
             plotsCard.setVisibility(View.GONE);
@@ -211,6 +215,11 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         plotsCard.setVisibility(View.VISIBLE);
 
         LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
+        if (graphLayout == null) {
+            LOGGER.error("fillPlotsCard - cannot find graphLayout, is null");
+            return;
+        }
+
         graphLayout.removeAllViews();
         for (final SvgGraphDefinition svgGraphDefinition : definitions) {
             Button button = (Button) LayoutInflater.from(context).inflate(R.layout.device_detail_card_plots_button, graphLayout, false);
