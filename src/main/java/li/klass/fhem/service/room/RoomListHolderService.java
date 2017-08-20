@@ -62,10 +62,6 @@ public class RoomListHolderService {
         return getCacheFor(connectionId, context).storeDeviceListMap(roomDeviceList, context);
     }
 
-    public synchronized void clearRoomDeviceList(Optional<String> connectionId, Context context) {
-        getCacheFor(connectionId, context).clearRoomDeviceList(context);
-    }
-
     public Optional<RoomDeviceList> getCachedRoomDeviceListMap(Optional<String> connectionId, Context context) {
         return getCacheFor(connectionId, context).getCachedRoomDeviceListMap(context);
     }

@@ -324,10 +324,6 @@ constructor() : AbstractService() {
         return roomDeviceList
     }
 
-    fun clearDeviceList(connectionId: Optional<String>, context: Context) {
-        roomListHolderService.clearRoomDeviceList(connectionId, context)
-    }
-
     enum class RemoteUpdateRequired {
         REQUIRED, NOT_REQUIRED
     }
