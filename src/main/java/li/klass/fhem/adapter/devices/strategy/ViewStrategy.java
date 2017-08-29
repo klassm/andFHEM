@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices.strategy;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableRow;
@@ -38,12 +39,13 @@ public abstract class ViewStrategy {
     public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId);
 
     protected void setTextView(TextView textView, String value) {
+        CharSequence toSet = value.contains("<") ? Html.fromHtml(value) : value;
         if (textView != null) {
-            textView.setText(value);
+            textView.setText(toSet);
         }
     }
 
-    protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
+    void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
 
         if (hideIfNull(tableRow, value)) {
@@ -53,14 +55,14 @@ public abstract class ViewStrategy {
         setTextView(view, textFieldLayoutId, value);
     }
 
-    protected void setTextView(View view, int textFieldLayoutId, String value) {
+    void setTextView(View view, int textFieldLayoutId, String value) {
         TextView textView = (TextView) view.findViewById(textFieldLayoutId);
         if (textView != null) {
             textView.setText(value);
         }
     }
 
-    protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
+    private boolean hideIfNull(View layoutElement, Object valueToCheck) {
         if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).length() == 0) {
             layoutElement.setVisibility(View.GONE);
             return true;

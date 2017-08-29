@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
@@ -146,8 +147,9 @@ public abstract class DeviceAdapter {
     }
 
     protected void setTextView(TextView textView, String value) {
+        CharSequence toSet = value.contains("<") ? Html.fromHtml(value) : value;
         if (textView != null) {
-            textView.setText(value);
+            textView.setText(toSet);
         }
     }
 
