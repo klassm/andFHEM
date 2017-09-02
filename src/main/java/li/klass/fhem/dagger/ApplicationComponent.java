@@ -24,6 +24,8 @@
 
 package li.klass.fhem.dagger;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -34,6 +36,7 @@ import li.klass.fhem.activities.PremiumActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
+import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
@@ -350,4 +353,6 @@ public interface ApplicationComponent {
     DeviceConfigurationProvider getDeviceConfigurationProvider();
 
     GroupProvider getGroupProvider();
+
+    void inject(@NotNull ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
 }
