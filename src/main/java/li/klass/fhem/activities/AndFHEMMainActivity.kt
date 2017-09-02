@@ -138,7 +138,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                                     intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
                                     intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank))
                         } else if (action == BACK) {
-                            onBackPressed(intent.getSerializableExtra(FRAGMENT) as FragmentType)
+                            onBackPressed(intent.getSerializableExtra(FRAGMENT) as FragmentType?)
                         } else if (CONNECTIONS_CHANGED == action) {
                             if (availableConnectionDataAdapter != null) {
                                 availableConnectionDataAdapter!!.doLoad()

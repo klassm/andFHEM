@@ -32,6 +32,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -119,7 +120,6 @@ public class ConnectionDetailFragment extends BaseFragment {
         }
 
         view = inflater.inflate(R.layout.connection_detail, container, false);
-        assert (view != null);
 
         Spinner connectionTypeSpinner = (Spinner) view.findViewById(R.id.connectionType);
         if (isModify) {
@@ -396,8 +396,7 @@ public class ConnectionDetailFragment extends BaseFragment {
     }
 
     @Override
-    public CharSequence getTitle(Context context) {
-        // FIXME: maybe better 'Edit connection'?
+    public CharSequence getTitle(@NonNull Context context) {
         return context.getString(R.string.connectionManageTitle);
     }
 
