@@ -37,6 +37,7 @@ import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
+import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
@@ -355,4 +356,6 @@ public interface ApplicationComponent {
     GroupProvider getGroupProvider();
 
     void inject(@NotNull ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
+
+    void inject(@NotNull SendCommandLocaleSettingActivity sendCommandLocaleSettingActivity);
 }
