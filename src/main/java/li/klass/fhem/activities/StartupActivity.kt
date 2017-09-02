@@ -103,7 +103,7 @@ class StartupActivity : Activity() {
                 loginLayout.visibility = View.VISIBLE
 
                 login.setOnClickListener {
-                    val passwordInput = findViewById(R.id.password) as EditText
+                    val passwordInput = findViewById<EditText>(R.id.password)
                     val password = passwordInput.text.toString()
                     checkLogin(password)
                 }
@@ -196,7 +196,7 @@ class StartupActivity : Activity() {
     }
 
     private fun setCurrentStatus(stringId: Int) {
-        (findViewById(R.id.currentStatus) as TextView).setText(stringId)
+        (findViewById<TextView>(R.id.currentStatus) as TextView).setText(stringId)
     }
 
     private fun gotoMainActivity(favoritesPresent: Boolean) {

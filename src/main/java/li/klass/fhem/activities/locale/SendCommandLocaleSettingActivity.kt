@@ -60,7 +60,7 @@ class SendCommandLocaleSettingActivity : Activity() {
 
         setContentView(R.layout.locale_send_command)
 
-        val commandView = findViewById(R.id.fhemCommand) as EditText
+        val commandView = findViewById<EditText>(R.id.fhemCommand)
 
         val intent = intent
         val bundle = intent.getBundleExtra(EXTRA_BUNDLE)
@@ -73,7 +73,7 @@ class SendCommandLocaleSettingActivity : Activity() {
             }
         }
 
-        val spinner = findViewById(R.id.connectionListSpinner) as Spinner
+        val spinner = findViewById<Spinner>(R.id.connectionListSpinner)
         val connectionListAdapter = ConnectionListAdapter(this)
         spinner.adapter = connectionListAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -92,7 +92,7 @@ class SendCommandLocaleSettingActivity : Activity() {
             fillConnectionSpinner(connections, connectionListAdapter)
         }
 
-        val saveButton = findViewById(R.id.save) as Button
+        val saveButton = findViewById<Button>(R.id.save)
         saveButton.setOnClickListener {
             val resultIntent = Intent()
 
@@ -135,7 +135,7 @@ class SendCommandLocaleSettingActivity : Activity() {
 
 
     private fun selectConnection(connectionListAdapter: ConnectionListAdapter) {
-        val spinner = findViewById(R.id.connectionListSpinner) as Spinner
+        val spinner = findViewById<Spinner>(R.id.connectionListSpinner)
         val data = connectionListAdapter.data
         for (i in data.indices) {
             val spec = data[i]

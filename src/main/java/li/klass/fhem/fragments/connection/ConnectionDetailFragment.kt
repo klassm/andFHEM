@@ -89,7 +89,7 @@ class ConnectionDetailFragment : BaseFragment() {
 
         view = inflater!!.inflate(R.layout.connection_detail, container, false)
 
-        val connectionTypeSpinner = view!!.findViewById(R.id.connectionType) as Spinner
+        val connectionTypeSpinner = view!!.findViewById<Spinner>(R.id.connectionType)
         if (isModify) {
             connectionTypeSpinner.isEnabled = false
         }
@@ -154,8 +154,8 @@ class ConnectionDetailFragment : BaseFragment() {
 
         assert(view != null)
 
-        val showPasswordCheckbox = view!!.findViewById(R.id.showPasswordCheckbox) as CheckBox?
-        val passwordView = view.findViewById(R.id.password) as EditText?
+        val showPasswordCheckbox = view!!.findViewById<CheckBox?>(R.id.showPasswordCheckbox)
+        val passwordView = view.findViewById<EditText?>(R.id.password)
         if (showPasswordCheckbox != null && passwordView != null) {
             showPasswordCheckbox.setOnClickListener { myView ->
                 val radio = myView as CheckBox
@@ -170,8 +170,8 @@ class ConnectionDetailFragment : BaseFragment() {
             if (isModify) showPasswordCheckbox.isEnabled = false
         }
 
-        val showCertificatePasswordCheckbox = view.findViewById(R.id.showCertificatePasswordCheckbox) as CheckBox?
-        val passwordClientCertificateView = view.findViewById(R.id.clientCertificatePassword) as EditText?
+        val showCertificatePasswordCheckbox = view.findViewById<CheckBox?>(R.id.showCertificatePasswordCheckbox)
+        val passwordClientCertificateView = view.findViewById<EditText?>(R.id.clientCertificatePassword)
         if (showCertificatePasswordCheckbox != null && passwordClientCertificateView != null) {
             showCertificatePasswordCheckbox.setOnClickListener { myView ->
                 val radio = myView as CheckBox
@@ -186,7 +186,7 @@ class ConnectionDetailFragment : BaseFragment() {
             if (isModify) showCertificatePasswordCheckbox.isEnabled = false
         }
 
-        val connectionPreferences = checkNotNull<View>(getView()).findViewById(R.id.connectionPreferences) as ViewGroup
+        val connectionPreferences = checkNotNull<View>(getView()).findViewById<ViewGroup>(R.id.connectionPreferences)
         checkNotNull(connectionPreferences)
         connectionPreferences.removeAllViews()
         connectionPreferences.addView(view)
@@ -223,14 +223,14 @@ class ConnectionDetailFragment : BaseFragment() {
     }
 
     private fun handleFHEMWEBView(view: View?) {
-        val setClientCertificate = view!!.findViewById(R.id.setClientCertificatePath) as ImageButton
+        val setClientCertificate = view!!.findViewById<ImageButton>(R.id.setClientCertificatePath)
         setClientCertificate.setOnClickListener(View.OnClickListener {
             if (getView() == null) return@OnClickListener
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
             }
-            val clientCertificatePath = getView()!!.findViewById(R.id.clientCertificatePath) as TextView
+            val clientCertificatePath = getView()!!.findViewById<TextView>(R.id.clientCertificatePath)
             val initialPath = File(clientCertificatePath.text.toString())
 
             val properties = DialogProperties()
@@ -293,7 +293,7 @@ class ConnectionDetailFragment : BaseFragment() {
                     fillDetail(connection)
                 }
             }
-            val connectionTypeSpinner = view.findViewById(R.id.connectionType) as Spinner
+            val connectionTypeSpinner = view.findViewById<Spinner>(R.id.connectionType)
             connectionTypeSpinner.setSelection(selectionIndexFor(connection.serverType), true)
         }
     }

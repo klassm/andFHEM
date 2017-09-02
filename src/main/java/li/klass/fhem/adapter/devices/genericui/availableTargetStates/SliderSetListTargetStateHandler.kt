@@ -57,9 +57,9 @@ class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandle
         val inflater = LayoutInflater.from(context)
         @SuppressLint("InflateParams") val tableLayout = inflater.inflate(R.layout.availabletargetstates_action_with_seekbar, null, false) as TableLayout
 
-        val updateRow = tableLayout.findViewById(R.id.updateRow) as TableRow
-        (updateRow.findViewById(R.id.description) as TextView).text = ""
-        (updateRow.findViewById(R.id.value) as TextView).text = ""
+        val updateRow = tableLayout.findViewById<TableRow>(R.id.updateRow)
+        (updateRow.findViewById<TextView>(R.id.description)).text = ""
+        (updateRow.findViewById<TextView>(R.id.value)).text = ""
 
         tableLayout.addView(object : DeviceDimActionRowFullWidth(initialProgress,
                 sliderSetListEntry.start, sliderSetListEntry.step, sliderSetListEntry.stop,

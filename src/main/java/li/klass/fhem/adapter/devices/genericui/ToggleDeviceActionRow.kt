@@ -54,14 +54,12 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
         this.view = LayoutInflater.from(context).inflate(LAYOUT_OVERVIEW, null) as TableRow
         LOGGER.debug("inflation complete, time=" + stopWatch.time)
 
-        this.descriptionView = this.view.findViewById(R.id.description) as TextView
-        this.toggleButton = this.view.findViewById(R.id.toggleButton) as ToggleButton
+        this.descriptionView = this.view.findViewById<TextView>(R.id.description)
+        this.toggleButton = this.view.findViewById<ToggleButton>(R.id.toggleButton)
         LOGGER.debug("finished, time=" + stopWatch.time)
     }
 
-    private fun isOn(device: FhemDevice): Boolean {
-        return onOffBehavior.isOn(device)
-    }
+    private fun isOn(device: FhemDevice): Boolean = onOffBehavior.isOn(device)
 
     protected fun onButtonClick(context: Context, device: FhemDevice) {
         context.startService(Intent(Actions.DEVICE_TOGGLE_STATE)
@@ -100,13 +98,11 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
         }
     }
 
-    private fun getOnStateText(eventMap: EventMap): Optional<String> {
-        return Optional.fromNullable(eventMap.getValueFor("on"))
-    }
+    private fun getOnStateText(eventMap: EventMap): Optional<String> =
+            Optional.fromNullable(eventMap.getValueFor("on"))
 
-    private fun getOffStateText(eventMap: EventMap): Optional<String> {
-        return Optional.fromNullable(eventMap.getValueFor("off"))
-    }
+    private fun getOffStateText(eventMap: EventMap): Optional<String> =
+            Optional.fromNullable(eventMap.getValueFor("off"))
 
     companion object {
         val HOLDER_KEY = ToggleDeviceActionRow::class.java.name!!

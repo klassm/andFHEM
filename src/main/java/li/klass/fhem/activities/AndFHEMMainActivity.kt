@@ -47,6 +47,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Spinner
 import android.widget.Toast
 import com.google.common.base.Optional
@@ -321,10 +322,10 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun initDrawerLayout() {
-        drawerLayout = findViewById(R.id.drawer_layout) as RepairedDrawerLayout
+        drawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout!!.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
 
-        navigationView = findViewById(R.id.nav_drawer) as NavigationView
+        navigationView = findViewById(R.id.nav_drawer)
         navigationView!!.setNavigationItemSelectedListener(this)
         if (packageName == PREMIUM_PACKAGE) {
             navigationView!!.menu.removeItem(R.id.menu_premium)
@@ -354,7 +355,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun initSwipeRefreshLayout() {
-        refreshLayout = findViewById(R.id.refresh_layout) as SwipeRefreshLayout
+        refreshLayout = findViewById(R.id.refresh_layout)
         assert(refreshLayout != null)
         refreshLayout!!.setOnRefreshListener(this)
         refreshLayout!!.setChildScrollDelegate(this)
@@ -417,7 +418,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         val hasNavigation = hasNavigation(navigationFragment, contentFragment)
-        val navigationView = findViewById(R.id.navigation)
+        val navigationView = findViewById<FrameLayout>(R.id.navigation)
         if (navigationView != null) {
             if (navigationFragment == null || fragmentType.navigationClass == null) {
                 navigationView.visibility = View.GONE
@@ -434,7 +435,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LOGGER.error("hasNavigation - cannot find fragment type for {}", contentFragment.javaClass.name)
             return false
         }
-        val navigationView = findViewById(R.id.navigation)
+        val navigationView = findViewById<FrameLayout>(R.id.navigation)
         return navigationView != null && !(navigationFragment == null || fragmentType.navigationClass == null)
     }
 
@@ -450,7 +451,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                         .setView(view)
                         .setTitle(R.string.login)
                         .setOnCancelListener { finish() }
-                        .setPositiveButton(R.string.okButton, { _, _ -> checkLogin.invoke((view.findViewById(R.id.password) as EditText).text.toString()) })
+                        .setPositiveButton(R.string.okButton, { _, _ -> checkLogin.invoke((view.findViewById<EditText>(R.id.password)).text.toString()) })
                         .show()
             }
 
@@ -668,7 +669,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun createNavigationFragment(fragmentType: FragmentType, data: Bundle): BaseFragment? {
-        val navigationView = findViewById(R.id.navigation) ?: return null
+        val navigationView = findViewById<FrameLayout?>(R.id.navigation) ?: return null
 
         try {
             val navigationClass = fragmentType.navigationClass

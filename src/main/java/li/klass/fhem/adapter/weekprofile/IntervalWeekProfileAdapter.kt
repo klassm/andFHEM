@@ -57,7 +57,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
         val isNew = child.isNew
 
         val intervalStringId = weekProfile!!.getIntervalType().stringId
-        val intervalTypeTextView = view.findViewById(R.id.intervalType) as TextView
+        val intervalTypeTextView = view.findViewById<TextView>(R.id.intervalType)
         intervalTypeTextView.setText(intervalStringId)
 
         setDetailTextView(view, R.id.time, child.changedSwitchTime, child.switchTime, isNew)
@@ -78,7 +78,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             }
         })
 
-        val deleteButton = view.findViewById(R.id.delete) as Button
+        val deleteButton = view.findViewById<Button>(R.id.delete)
         deleteButton.setOnClickListener {
             DialogUtil.showConfirmBox(context, R.string.areYouSure, R.string.deleteConfirmIntervalText) {
                 parent.deleteHeatingIntervalAt(relativeChildPosition)
@@ -115,7 +115,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
     private fun setTemperatureAndInterval(view: View, buttonId: Int, interval: FilledTemperatureInterval,
                                           viewGroup: ViewGroup, listener: OnIntervalTemperatureChangedListener) {
 
-        val button = view.findViewById(buttonId) as Button
+        val button = view.findViewById<Button>(buttonId)
         button.setOnClickListener { IntervalEditHolder(interval, listener).showDialog(context, viewGroup) }
     }
 
@@ -139,7 +139,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             val contentView = AndroidBug.handleColorStateBug(object : AndroidBug.BugHandler {
                 override fun bugEncountered(): View {
                     val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector_android_bug, viewGroup, false)
-                    val timePicker = contentView.findViewById(R.id.timePicker) as FallbackTimePicker
+                    val timePicker = contentView.findViewById<FallbackTimePicker>(R.id.timePicker)
                     timePicker.hours = hours
                     timePicker.minutes = minutes
                     timePicker.setOnValueChangedListener { hours, minutes ->
@@ -152,7 +152,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
 
                 override fun defaultAction(): View {
                     val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false)
-                    val timePicker = contentView.findViewById(R.id.timePicker) as TimePicker
+                    val timePicker = contentView.findViewById<TimePicker>(R.id.timePicker)
                     timePicker.setIs24HourView(true)
 
                     timePicker.currentHour = hours
@@ -169,18 +169,15 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
                 }
             })
 
-            val layout = contentView.findViewById(R.id.tableLayout) as LinearLayout
+            val layout = contentView.findViewById<LinearLayout>(R.id.tableLayout)
 
-            val updateRow = contentView.findViewById(R.id.updateRow) as TableRow
+            val updateRow = contentView.findViewById<TableRow>(R.id.updateRow)
+            val appProperties = applicationProperties
             val temperatureChangeTableRow = object : TemperatureChangeTableRow(context, interval.changedTemperature,
                     updateRow, 5.5, 30.0, applicationProperties) {
-                override fun getApplicationProperties(): ApplicationProperties {
-                    return applicationProperties
-                }
+                override fun getApplicationProperties(): ApplicationProperties = appProperties
 
-                override fun showButton(): Boolean {
-                    return false
-                }
+                override fun showButton(): Boolean = false
             }
 
 

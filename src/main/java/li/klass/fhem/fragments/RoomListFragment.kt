@@ -91,10 +91,10 @@ open class RoomListFragment : BaseFragment() {
 
         assert(layout != null)
 
-        val emptyView = layout!!.findViewById(R.id.emptyView) as LinearLayout
+        val emptyView = layout!!.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, emptyTextId, container!!)
 
-        roomList = layout.findViewById(R.id.roomList) as ListView
+        roomList = layout.findViewById<ListView>(R.id.roomList)
         Reject.ifNull<ListView>(roomList)
         roomList!!.adapter = adapter
 
@@ -155,7 +155,7 @@ open class RoomListFragment : BaseFragment() {
         get() {
             if (view == null) return null
 
-            val listView = view!!.findViewById(R.id.roomList) as ListView
+            val listView = view!!.findViewById<ListView>(R.id.roomList)
             return listView.adapter as RoomListAdapter
         }
 
@@ -164,7 +164,7 @@ open class RoomListFragment : BaseFragment() {
 
         val view = view ?: return
 
-        val roomListView = view.findViewById(R.id.roomList) as ListView ?: return
+        val roomListView = view.findViewById<ListView>(R.id.roomList) as ListView
 
         for (i in roomList.indices) {
             val roomName = roomList[i]

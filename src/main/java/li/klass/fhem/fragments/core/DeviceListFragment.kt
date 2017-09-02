@@ -89,7 +89,7 @@ abstract class DeviceListFragment : BaseFragment() {
 
         assert(view != null)
 
-        val emptyView = view!!.findViewById(R.id.emptyView) as LinearLayout
+        val emptyView = view!!.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, container!!)
 
         if (!isNavigation) {
@@ -109,9 +109,7 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun getNumberOfColumns(): Int {
-        fun dpFromPx(px: Float): Float {
-            return px / Resources.getSystem().displayMetrics.density
-        }
+        fun dpFromPx(px: Float): Float = px / Resources.getSystem().displayMetrics.density
 
         val displayMetrics = Resources.getSystem().displayMetrics
         val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / getColumnWidth()).toInt()
@@ -121,9 +119,8 @@ abstract class DeviceListFragment : BaseFragment() {
         }
     }
 
-    private fun getColumnWidth(): Float {
-        return applicationProperties.getIntegerSharedPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context).toFloat()
-    }
+    private fun getColumnWidth(): Float =
+            applicationProperties.getIntegerSharedPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context).toFloat()
 
     override fun onResume() {
         super.onResume()
@@ -137,7 +134,7 @@ abstract class DeviceListFragment : BaseFragment() {
 
     protected open fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, viewGroup, false)!!
-        val emptyText = emptyView.findViewById(R.id.emptyText) as TextView
+        val emptyText = emptyView.findViewById<TextView>(R.id.emptyText)
         emptyText.setText(R.string.noDevices)
 
         view.addView(emptyView)
@@ -184,7 +181,7 @@ abstract class DeviceListFragment : BaseFragment() {
         }
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
-        val dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification)
+        val dummyConnectionNotification = view.findViewById<TextView>(R.id.dummyConnectionNotification)
         if (!dataConnectionSwitch.isDummyDataActive(activity)) {
             dummyConnectionNotification.visibility = View.GONE
         } else {

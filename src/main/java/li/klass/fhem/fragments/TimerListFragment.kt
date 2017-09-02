@@ -81,8 +81,8 @@ class TimerListFragment : BaseFragment() {
         val listAdapter = TimerListAdapter(context, Lists.newArrayList<AtDevice>())
 
         val layout = inflater!!.inflate(R.layout.timer_overview, container, false)
-        val emptyView = layout.findViewById(android.R.id.empty) as TextView
-        listView = layout.findViewById(R.id.list) as ListView
+        val emptyView = layout.findViewById<TextView>(android.R.id.empty)
+        listView = layout.findViewById<ListView>(R.id.list)
 
         listView!!.emptyView = emptyView
         listView!!.adapter = listAdapter
@@ -150,7 +150,7 @@ class TimerListFragment : BaseFragment() {
     private val adapter: TimerListAdapter?
         get() {
             if (view == null) return null
-            val listView = view!!.findViewById(R.id.list) as ListView
+            val listView = view!!.findViewById<ListView>(R.id.list)
             return listView.adapter as TimerListAdapter
         }
 
@@ -178,14 +178,10 @@ class TimerListFragment : BaseFragment() {
         return super.onContextItemSelected(item)
     }
 
-    override fun getTitle(context: Context): CharSequence? {
-        return context.getString(R.string.timer)
-    }
+    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.timer)
 
     companion object {
-
         private val TAG = TimerListFragment::class.java.name
-
         private val CONTEXT_MENU_DELETE = 1
     }
 }

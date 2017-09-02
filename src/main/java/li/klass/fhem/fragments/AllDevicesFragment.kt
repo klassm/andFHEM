@@ -48,5 +48,5 @@ class AllDevicesFragment : DeviceListFragment() {
         roomListUpdateService.updateAllDevices(Optional.absent(), context)
     }
 
-    override fun getRoomDeviceListForUpdate() = roomListService.getAllRoomsDeviceList(Optional.absent(), activity)!!
+    override fun getRoomDeviceListForUpdate() = roomListService.getAllRoomsDeviceList(Optional.absent(), activity)
 }

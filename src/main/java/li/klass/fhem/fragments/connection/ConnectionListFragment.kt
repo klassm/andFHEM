@@ -88,10 +88,10 @@ class ConnectionListFragment : BaseFragment() {
         val layout = inflater!!.inflate(R.layout.connection_list, container, false)
         advertisementService.addAd(layout, activity)
 
-        val emptyView = layout.findViewById(R.id.emptyView) as LinearLayout
+        val emptyView = layout.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView)
 
-        val connectionList = layout.findViewById(R.id.connectionList) as ListView
+        val connectionList = layout.findViewById<ListView>(R.id.connectionList)
         Reject.ifNull(connectionList)
         connectionList.adapter = adapter
 
@@ -140,7 +140,7 @@ class ConnectionListFragment : BaseFragment() {
 
     protected fun fillEmptyView(view: LinearLayout) {
         val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, view)!!
-        val emptyText = emptyView.findViewById(R.id.emptyText) as TextView
+        val emptyText = emptyView.findViewById<TextView>(R.id.emptyText)
         emptyText.setText(R.string.noConnections)
     }
 
@@ -152,7 +152,7 @@ class ConnectionListFragment : BaseFragment() {
 
     private val adapter: ConnectionListAdapter
         get() {
-            val listView = view!!.findViewById(R.id.connectionList) as ListView
+            val listView = view!!.findViewById<ListView>(R.id.connectionList)
             return listView.adapter as ConnectionListAdapter
         }
 
@@ -213,7 +213,7 @@ class ConnectionListFragment : BaseFragment() {
 
         val view = view ?: return
 
-        val connectionListView = view.findViewById(R.id.connectionList) as ListView
+        val connectionListView = view.findViewById<ListView>(R.id.connectionList)
 
         for (i in serverList.indices) {
             val serverSpec = serverList[i]

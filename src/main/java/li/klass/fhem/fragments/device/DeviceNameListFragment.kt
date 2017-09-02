@@ -94,7 +94,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
         val view = inflater!!.inflate(R.layout.device_name_list, container, false)!!
 
-        val emptyView = view.findViewById(R.id.emptyView) as LinearLayout
+        val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, emptyTextId, container)
 
         return view
@@ -158,9 +158,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
     }
 
     private fun getNumberOfColumns(): Int {
-        fun dpFromPx(px: Float): Float {
-            return px / Resources.getSystem().displayMetrics.density
-        }
+        fun dpFromPx(px: Float): Float = px / Resources.getSystem().displayMetrics.density
 
         val displayMetrics = Resources.getSystem().displayMetrics
         val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 250).toInt()

@@ -26,7 +26,7 @@ def appVersionCode = 468
 def appVersionName = "4.6.8"
 
 ext {
-    supportLibVersion = '25.3.1'
+    supportLibVersion = '26.0.2'
     firebaseVersion = '11.0.2'
     buildProperties = getBuildProperties()
     anko_version = '0.10.1'
@@ -59,6 +59,7 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
     maven { url "https://jitpack.io" }
+    maven { url "https://maven.google.com" }
 }
 
 apply plugin: 'com.android.application'
@@ -69,8 +70,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.1'
     testBuildType 'debug'
     compileOptions.incremental = true
 

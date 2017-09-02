@@ -38,6 +38,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
@@ -69,7 +70,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val retryButton = view?.findViewById(R.id.retry) as Button?
+        val retryButton = view?.findViewById<Button?>(R.id.retry)
         retryButton?.setOnClickListener {
             hideConnectionError()
 
@@ -96,13 +97,12 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
         val view = view ?: return
 
-        val errorLayout = view.findViewById(R.id.errorLayout) ?: return
+        val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
         errorLayout.visibility = View.GONE
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return contentView
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            contentView
 
     override fun onResume() {
         super.onResume()
@@ -148,7 +148,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     protected fun hideEmptyView() {
         val view = view
         if (view != null) {
-            val emptyView = view.findViewById(R.id.emptyView) ?: return
+            val emptyView = view.findViewById<LinearLayout?>(R.id.emptyView) ?: return
             emptyView.visibility = View.GONE
         }
     }
@@ -156,14 +156,14 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     protected fun showEmptyView() {
         if (isNavigation || view == null) return
 
-        val emptyView = view!!.findViewById(R.id.emptyView) ?: return
+        val emptyView = view!!.findViewById<LinearLayout?>(R.id.emptyView) ?: return
         emptyView.visibility = View.VISIBLE
     }
 
     protected fun fillEmptyView(view: LinearLayout, text: Int, container: ViewGroup) {
         if (text != 0) {
             val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, container, false)!!
-            val emptyText = emptyView.findViewById(R.id.emptyText) as TextView
+            val emptyText = emptyView.findViewById<TextView>(R.id.emptyText) as TextView
             emptyText.setText(text)
 
             view.addView(emptyView)
@@ -175,7 +175,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
         val view = view ?: return
 
-        val errorLayout = view.findViewById(R.id.errorLayout) ?: return
+        val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
 
         errorLayout.setOnLongClickListener {
             ErrorHolder.sendLastErrorAsMail(activity)
@@ -185,17 +185,13 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
         errorLayout.visibility = View.VISIBLE
 
-        val errorView = view.findViewById(R.id.errorView) as TextView
+        val errorView = view.findViewById<TextView>(R.id.errorView)
         errorView.text = content
     }
 
-    protected open fun mayUpdateFromBroadcast(): Boolean {
-        return true
-    }
+    protected open fun mayUpdateFromBroadcast(): Boolean = true
 
-    protected open fun mayPullToRefresh(): Boolean {
-        return true
-    }
+    protected open fun mayPullToRefresh(): Boolean = true
 
     private fun updateInternal(doRefresh: Boolean) {
         if (mayUpdateFromBroadcast()) {
@@ -219,8 +215,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             val action = intent.action
             activity.runOnUiThread(Runnable {
                 Log.v(UIBroadcastReceiver::class.java.name, "received action " + action!!)
-
-                if (action == null) return@Runnable
 
                 try {
                     if (action == TOP_LEVEL_BACK) {
@@ -260,9 +254,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
     }
 
-    open fun getTitle(context: Context): CharSequence? {
-        return null
-    }
+    open fun getTitle(context: Context): CharSequence? = null
 
     protected fun back() {
         val intent = Intent(Actions.BACK)

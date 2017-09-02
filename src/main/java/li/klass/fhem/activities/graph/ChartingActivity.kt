@@ -174,7 +174,7 @@ class ChartingActivity : AppCompatActivity(), Updateable {
         }
         supportActionBar!!.title = title
 
-        val lineChart = findViewById(R.id.chart) as LineChart
+        val lineChart = findViewById<LineChart>(R.id.chart)
 
         // must be called before setting chart data!
         val plotDefinition = svgGraphDefinition!!.plotDefinition

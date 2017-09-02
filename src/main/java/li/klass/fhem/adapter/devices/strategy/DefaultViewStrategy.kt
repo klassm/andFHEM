@@ -27,9 +27,7 @@ package li.klass.fhem.adapter.devices.strategy
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.TableRow
-import android.widget.TextView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
@@ -131,9 +129,9 @@ constructor(
         val holder = GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder()
         val tableRow = inflater.inflate(resource, null) as TableRow
         holder.row = tableRow
-        holder.description = tableRow.findViewById(R.id.description) as TextView
-        holder.value = tableRow.findViewById(R.id.value) as TextView
-        holder.devStateIcon = tableRow.findViewById(R.id.devStateIcon) as ImageView
+        holder.description = tableRow.findViewById(R.id.description)
+        holder.value = tableRow.findViewById(R.id.value)
+        holder.devStateIcon = tableRow.findViewById(R.id.devStateIcon)
         return holder
     }
 

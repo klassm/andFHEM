@@ -72,10 +72,10 @@ class FromToWeekProfileAdapter(context: Context) : BaseWeekProfileAdapter<FromTo
 
         val position = relativeChildPosition + 1
 
-        val fromText = myView.findViewById(R.id.fromText) as TextView
+        val fromText = myView.findViewById<TextView>(R.id.fromText)
         fromText.text = context.getString(R.string.fromTimetable, position)
 
-        val toText = myView.findViewById(R.id.toText) as TextView
+        val toText = myView.findViewById<TextView>(R.id.toText)
         toText.text = context.getString(R.string.toTimetable, position)
 
         return myView
@@ -83,7 +83,7 @@ class FromToWeekProfileAdapter(context: Context) : BaseWeekProfileAdapter<FromTo
 
     private fun setChangeTimeButton(view: View, buttonId: Int, currentTime: String, listener: OnTimeChangedListener) {
 
-        val setTimeButton = view.findViewById(buttonId) as Button
+        val setTimeButton = view.findViewById<Button>(buttonId)
         setTimeButton.setOnClickListener {
             var hours = Integer.valueOf(currentTime.substring(0, 2))!!
             if (hours == 24) hours = 0

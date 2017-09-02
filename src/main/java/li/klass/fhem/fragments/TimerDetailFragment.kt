@@ -187,7 +187,7 @@ class TimerDetailFragment : BaseFragment() {
     }
 
     private fun bindSwitchTimeButton(view: View) {
-        val switchTimeChangeButton = view.findViewById(R.id.switchTimeSet) as Button
+        val switchTimeChangeButton = view.findViewById<Button>(R.id.switchTimeSet)
         switchTimeChangeButton.setOnClickListener {
             val switchTime = getSwitchTime(view).or(SwitchTime(0, 0, 0))
             TimePickerWithSecondsDialog(activity, switchTime.hour, switchTime.minute, switchTime.second, TimePickerWithSecondsDialog.TimePickerWithSecondsListener { _, newHour, newMinute, newSecond, _ -> setSwitchTime(newHour, newMinute, newSecond, view) }).show()
@@ -271,7 +271,7 @@ class TimerDetailFragment : BaseFragment() {
     private fun updateTargetStateRowVisibility(view: View?): Boolean {
         if (view == null) return false
 
-        val targetDeviceRow = view.findViewById(R.id.targetStateRow)
+        val targetDeviceRow = view.findViewById<TableRow>(R.id.targetStateRow)
         if (targetDevice == null) {
             targetDeviceRow.visibility = View.GONE
             return false
@@ -329,17 +329,13 @@ class TimerDetailFragment : BaseFragment() {
         getTimerNameInput(view).setText(timerDeviceName)
     }
 
-    private fun getTimerName(view: View): String {
-        return getTimerNameInput(view).text.toString()
-    }
+    private fun getTimerName(view: View): String = getTimerNameInput(view).text.toString()
 
     private fun setTargetState(targetState: String, view: View) {
         getTargetStateTextView(view).setText(targetState)
     }
 
-    private fun getTargetState(view: View): String {
-        return getTargetStateTextView(view).text.toString()
-    }
+    private fun getTargetState(view: View): String = getTargetStateTextView(view).text.toString()
 
     private fun setSwitchTime(hour: Int, minute: Int, second: Int, view: View) {
         getSwitchTimeTextView(view).text = getFormattedValue(hour, minute, second)
@@ -362,67 +358,51 @@ class TimerDetailFragment : BaseFragment() {
         getIsActiveCheckbox(view).isChecked = isActive
     }
 
-    private fun getIsActive(view: View): Boolean {
-        return getIsActiveCheckbox(view).isChecked
-    }
+    private fun getIsActive(view: View): Boolean = getIsActiveCheckbox(view).isChecked
 
     private fun setRepetition(repetition: AtDevice.AtRepetition, view: View) {
         getRepetitionSpinner(view).setSelection(repetition.ordinal)
     }
 
-    private fun getRepetition(view: View): AtDevice.AtRepetition {
-        return AtDevice.AtRepetition.values()[getRepetitionSpinner(view).selectedItemPosition]
-    }
+    private fun getRepetition(view: View): AtDevice.AtRepetition =
+            AtDevice.AtRepetition.values()[getRepetitionSpinner(view).selectedItemPosition]
 
     private fun setType(type: AtDevice.TimerType, view: View) {
         getTypeSpinner(view).setSelection(type.ordinal)
     }
 
-    private fun getType(view: View): AtDevice.TimerType {
-        return AtDevice.TimerType.values()[getTypeSpinner(view).selectedItemPosition]
-    }
+    private fun getType(view: View): AtDevice.TimerType =
+            AtDevice.TimerType.values()[getTypeSpinner(view).selectedItemPosition]
 
     override fun update(refresh: Boolean) {}
 
-    override fun getTitle(context: Context): CharSequence? {
-        return context.getString(R.string.timer)
-    }
+    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.timer)
 
-    private fun getTimerNameInput(view: View): EditText {
-        return view.findViewById(R.id.timerNameInput) as EditText
-    }
+    private fun getTimerNameInput(view: View): EditText =
+            view.findViewById(R.id.timerNameInput)
 
-    private fun getRepetitionSpinner(view: View): Spinner {
-        return view.findViewById(R.id.timerRepetition) as Spinner
-    }
+    private fun getRepetitionSpinner(view: View): Spinner =
+            view.findViewById(R.id.timerRepetition)
 
-    private fun getIsActiveCheckbox(view: View): CheckBox {
-        return view.findViewById(R.id.isActive) as CheckBox
-    }
+    private fun getIsActiveCheckbox(view: View): CheckBox =
+            view.findViewById(R.id.isActive)
 
-    private fun getTypeSpinner(view: View): Spinner {
-        return view.findViewById(R.id.timerType) as Spinner
-    }
+    private fun getTypeSpinner(view: View): Spinner = view.findViewById(R.id.timerType)
 
-    private fun getSwitchTimeTextView(view: View): TextView {
-        return view.findViewById(R.id.switchTimeContent) as TextView
-    }
+    private fun getSwitchTimeTextView(view: View): TextView =
+            view.findViewById(R.id.switchTimeContent)
 
-    private fun getTargetDeviceTextView(view: View): TextView {
-        return view.findViewById(R.id.targetDeviceName) as TextView
-    }
+    private fun getTargetDeviceTextView(view: View): TextView =
+            view.findViewById(R.id.targetDeviceName)
 
-    private fun getTargetDeviceChangeButton(view: View): Button {
-        return view.findViewById(R.id.targetDeviceSet) as Button
-    }
+    private fun getTargetDeviceChangeButton(view: View): Button =
+            view.findViewById(R.id.targetDeviceSet)
 
-    private fun getTargetStateTextView(view: View): EditText {
-        return view.findViewById(R.id.targetState) as EditText
-    }
+    private fun getTargetStateTextView(view: View): EditText =
+            view.findViewById(R.id.targetState)
 
-    private fun getTargetStateChangeButton(view: View): Button {
-        return view.findViewById(R.id.targetStateSet) as Button
-    }
+    private fun getTargetStateChangeButton(view: View): Button =
+            view.findViewById(R.id.targetStateSet)
 
     private fun setTargetDeviceName(string: String, view: View) {
         getTargetDeviceTextView(view).text = string
@@ -435,9 +415,7 @@ class TimerDetailFragment : BaseFragment() {
 
     companion object {
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {
-            override fun isSelectable(device: FhemDevice): Boolean {
-                return device.setList.size() > 0
-            }
+            override fun isSelectable(device: FhemDevice): Boolean = device.setList.size() > 0
         }
 
         private val TAG = TimerDetailFragment::class.java.name

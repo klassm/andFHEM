@@ -65,10 +65,10 @@ abstract class BaseWeekProfileAdapter<INTERVAL : BaseHeatingInterval<INTERVAL>> 
     override fun getParentView(parent: DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>, view: View?, viewGroup: ViewGroup): View {
         val myView = layoutInflater.inflate(R.layout.weekprofile_parent, viewGroup, false)
 
-        val parentTextView = myView.findViewById(R.id.parent) as TextView
+        val parentTextView = myView.findViewById<TextView>(R.id.parent)
         parentTextView.text = getParentTextFor(parent)
 
-        val button = myView.findViewById(R.id.copy) as Button
+        val button = myView.findViewById<Button>(R.id.copy)
         button.setOnClickListener { showCopyContextMenuFor(parent) }
 
         return myView
@@ -146,7 +146,7 @@ abstract class BaseWeekProfileAdapter<INTERVAL : BaseHeatingInterval<INTERVAL>> 
 
     fun setDetailTextView(view: View, layoutItemId: Int, currentText: String?,
                           originalText: String?, isNew: Boolean) {
-        val layoutItem = view.findViewById(layoutItemId) as TextView
+        val layoutItem = view.findViewById<TextView>(layoutItemId)
         layoutItem.text = weekProfile!!.formatTimeForDisplay(currentText, context)
 
         if (isNew || originalText == null || currentText == null || originalText != currentText) {
