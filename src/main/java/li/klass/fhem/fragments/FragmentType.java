@@ -28,6 +28,8 @@ import android.support.annotation.Nullable;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragment;
+import li.klass.fhem.fragments.connection.ConnectionDetailFragment;
+import li.klass.fhem.fragments.connection.ConnectionListFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;

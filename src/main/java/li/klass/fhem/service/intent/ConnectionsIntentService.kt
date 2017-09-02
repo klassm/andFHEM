@@ -27,14 +27,12 @@ package li.klass.fhem.service.intent
 import android.content.Intent
 import android.os.Bundle
 import android.os.ResultReceiver
-import com.google.common.base.Strings
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.constants.ResultCodes.SUCCESS
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.fhem.connection.ServerType
 import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.room.RoomListService
 import javax.inject.Inject
@@ -56,34 +54,6 @@ class ConnectionsIntentService : ConvenientIntentService(ConnectionsIntentServic
             bundle.putSerializable(CONNECTION_LIST, serverSpecs)
             bundle.putString(CONNECTION_ID, connectionService.getSelectedId(this))
             sendResult(resultReceiver, SUCCESS, bundle)
-        } else if (Actions.CONNECTION_CREATE == action || Actions.CONNECTION_UPDATE == action) {
-
-            val id = intent.getStringExtra(CONNECTION_ID)
-            val name = intent.getStringExtra(CONNECTION_NAME)
-            val serverType = ServerType.valueOf(intent.getStringExtra(CONNECTION_TYPE))
-            val url = intent.getStringExtra(CONNECTION_URL)
-            val alternateUrl = intent.getStringExtra(CONNECTION_ALTERNATE_URL)
-            val username = intent.getStringExtra(CONNECTION_USERNAME)
-            val password = intent.getStringExtra(CONNECTION_PASSWORD)
-            val ip = intent.getStringExtra(CONNECTION_IP)
-            val clientCertificatePath = intent.getStringExtra(CONNECTION_CLIENT_CERTIFICATE_PATH)
-            val clientCertificatePassword = intent.getStringExtra(CONNECTION_CLIENT_CERTIFICATE_PASSWORD)
-
-            var portString = intent.getStringExtra(CONNECTION_PORT)
-            if (Strings.isNullOrEmpty(portString)) portString = "0"
-            val port = Integer.valueOf(portString)!!
-
-            if (Actions.CONNECTION_CREATE == action) {
-                connectionService.create(name, serverType, username,
-                        password, ip, port, url, alternateUrl, clientCertificatePath, clientCertificatePassword, this)
-            } else {
-                connectionService.update(id, name, serverType, username, password, ip,
-                        port, url, alternateUrl, clientCertificatePath, clientCertificatePassword, this)
-            }
-
-            sendChangedBroadcast()
-
-            return ConvenientIntentService.State.SUCCESS
         } else if (Actions.CONNECTION_GET == action) {
             val id = intent.getStringExtra(CONNECTION_ID)
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, CONNECTION,

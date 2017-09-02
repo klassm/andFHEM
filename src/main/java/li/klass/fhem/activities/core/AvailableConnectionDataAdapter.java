@@ -61,9 +61,9 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
     private int currentlySelectedPosition = -1;
     private Spinner parent;
 
-    private static class ManagementPill extends FHEMServerSpec {
+    public static class ManagementPill extends FHEMServerSpec {
         private ManagementPill() {
-            super(ConnectionService.MANAGEMENT_DATA_ID);
+            super(ConnectionService.Companion.getMANAGEMENT_DATA_ID());
             setName("managementDummy");
         }
 
@@ -124,7 +124,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
                                 String selectedId = resultData.getString(CONNECTION_ID);
                                 select(selectedId);
                             } else {
-                                select(ConnectionService.DUMMY_DATA_ID);
+                                select(ConnectionService.Companion.getDUMMY_DATA_ID());
                             }
                         }
                     }

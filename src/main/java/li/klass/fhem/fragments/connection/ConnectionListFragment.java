@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments;
+package li.klass.fhem.fragments.connection;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,6 +55,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
