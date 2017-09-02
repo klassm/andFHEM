@@ -69,6 +69,7 @@ import li.klass.fhem.fragments.FragmentType
 import li.klass.fhem.fragments.FragmentType.*
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
+import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.device.GCMSendDeviceService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.update.UpdateHandler
@@ -157,18 +158,16 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     @Inject
     lateinit var applicationProperties: ApplicationProperties
-
     @Inject
     lateinit var billingService: BillingService
-
     @Inject
     lateinit var updateHandler: UpdateHandler
-
     @Inject
     lateinit var gcmSendDeviceService: GCMSendDeviceService
-
     @Inject
     lateinit var loginUiService: LoginUIService
+    @Inject
+    lateinit var connectionService: ConnectionService
 
     private var broadcastReceiver: Receiver? = null
 
@@ -245,7 +244,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
         val connectionSpinner = spinner as Spinner
-        availableConnectionDataAdapter = AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged)
+        availableConnectionDataAdapter = AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged, connectionService)
         connectionSpinner.adapter = availableConnectionDataAdapter
         connectionSpinner.onItemSelectedListener = availableConnectionDataAdapter
         availableConnectionDataAdapter!!.doLoad()
