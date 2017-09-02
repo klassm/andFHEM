@@ -37,12 +37,6 @@ public class Actions {
     public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
     public static final String SHOW_ALERT = prefix + "SHOW_ALERT";
 
-    public static final String FAVORITE_ROOM_LIST = prefix + "GET_FAVORITE_LIST";
-    public static final String FAVORITE_ADD = prefix + "ADD_FAVORITE";
-    public static final String FAVORITE_REMOVE = prefix + "REMOVE_FAVORITE";
-    public static final String FAVORITES_PRESENT = prefix + "FAVORITES_PRESENT";
-    public static final String FAVORITES_IS_FAVORITES = prefix + "FAVORITES_IS_FAVORITE";
-
     public static final String DEVICE_GRAPH = prefix + "DEVICE_GRAPH";
     public static final String DEVICE_GRAPH_DEFINITIONS = prefix + "DEVICE_GRAPH_DEFINITIONS";
     public static final String DEVICE_TOGGLE_STATE = prefix + "TOGGLE_STATE";
@@ -74,7 +68,6 @@ public class Actions {
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
     public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";
     public static final String UPDATE_NAVIGATION = prefix + "UPDATE_NAVIGATION";
-    public static final String REMOTE_UPDATE_FINISHED = prefix + "REMOTE_UPDATE_FINISHED";
     public static final String REDRAW = prefix + "REDRAW";
 
     public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";
@@ -96,9 +89,7 @@ public class Actions {
 
     public static final String CONNECTIONS_LIST = prefix + "CONNECTIONS_LIST";
     public static final String CONNECTIONS_CHANGED = prefix + "CONNECTIONS_CHANGED";
-    public static final String CONNECTION_GET = prefix + "CONNECTION_GET";
     public static final String CONNECTION_UPDATE = prefix + "CONNECTION_UPDATE";
-    public static final String CONNECTION_CREATE = prefix + "CONNECTION_CREATE";
     public static final String CONNECTION_DELETE = prefix + "CONNECTION_DELETE";
     public static final String CONNECTION_SET_SELECTED = prefix + "CONNECTION_SET_SELECTED";
     public static final String CONNECTION_GET_SELECTED = prefix + "CONNECTION_GET_SELECTED";

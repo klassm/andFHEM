@@ -43,15 +43,11 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.CONNECTION
-import li.klass.fhem.constants.ResultCodes.SUCCESS
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fhem.connection.FHEMServerSpec
 import li.klass.fhem.fhem.connection.ServerType
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.connection.ConnectionService
-import li.klass.fhem.service.intent.ConnectionsIntentService
-import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.util.PermissionUtil
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
@@ -219,12 +215,10 @@ class ConnectionDetailFragment : BaseFragment() {
 
     private fun strategyFor(connectionType: ServerType?): ConnectionStrategy {
         val type = connectionType ?: ServerType.FHEMWEB
-        return if (type == ServerType.FHEMWEB) {
-            FhemWebStrategy(context)
-        } else if (type == ServerType.TELNET) {
-            TelnetStrategy(context)
-        } else {
-            throw IllegalArgumentException("don't know what to do with " + type)
+        return when (type) {
+            ServerType.FHEMWEB -> FhemWebStrategy(context)
+            ServerType.TELNET -> TelnetStrategy(context)
+            else -> throw IllegalArgumentException("don't know what to do with " + type)
         }
     }
 
@@ -265,29 +259,17 @@ class ConnectionDetailFragment : BaseFragment() {
             return
         }
 
-        val intent = Intent(Actions.CONNECTION_GET)
-                .setClass(activity, ConnectionsIntentService::class.java)
-                .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultCode != SUCCESS || !resultData!!.containsKey(CONNECTION)) {
-                            return
-                        }
-
-                        val serializable = resultData.getSerializable(CONNECTION)
-                        if (serializable !is FHEMServerSpec) {
-                            LOG.error("expected an FHEMServerSpec, but got " + serializable!!)
-                            return
-                        }
-
-                        setValuesForCurrentConnection(serializable)
-
-                        val activity = activity
-                        activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
-                    }
-                })
-        activity.startService(intent)
+        async(UI) {
+            val result = bg {
+                connectionService.forId(connectionId!!, getContext())
+            }.await()
+            if (result == null) {
+                LOG.error("update - cannot find server with ID $connectionId")
+                activity.sendBroadcast(Intent(Actions.BACK))
+            } else {
+                setValuesForCurrentConnection(result)
+            }
+        }
     }
 
     private fun setValuesForCurrentConnection(connection: FHEMServerSpec) {

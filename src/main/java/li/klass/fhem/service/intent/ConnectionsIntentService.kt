@@ -30,7 +30,6 @@ import android.os.ResultReceiver
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.constants.ResultCodes.SUCCESS
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.service.connection.ConnectionService
@@ -54,10 +53,6 @@ class ConnectionsIntentService : ConvenientIntentService(ConnectionsIntentServic
             bundle.putSerializable(CONNECTION_LIST, serverSpecs)
             bundle.putString(CONNECTION_ID, connectionService.getSelectedId(this))
             sendResult(resultReceiver, SUCCESS, bundle)
-        } else if (Actions.CONNECTION_GET == action) {
-            val id = intent.getStringExtra(CONNECTION_ID)
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, CONNECTION,
-                    connectionService.forId(id, this))
         } else if (Actions.CONNECTION_DELETE == action) {
             val id = intent.getStringExtra(CONNECTION_ID)
             connectionService.delete(id, this)
