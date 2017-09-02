@@ -87,12 +87,9 @@ public class Actions {
     public static final String NOTIFICATION_GET_FOR_DEVICE = prefix + "NOTIFICATION_GET_FOR_DEVICE";
     public static final String NOTIFICATION_TRIGGER = prefix + "NOTIFICATION_TRIGGER";
 
-    public static final String CONNECTIONS_LIST = prefix + "CONNECTIONS_LIST";
     public static final String CONNECTIONS_CHANGED = prefix + "CONNECTIONS_CHANGED";
     public static final String CONNECTION_UPDATE = prefix + "CONNECTION_UPDATE";
-    public static final String CONNECTION_DELETE = prefix + "CONNECTION_DELETE";
     public static final String CONNECTION_SET_SELECTED = prefix + "CONNECTION_SET_SELECTED";
-    public static final String CONNECTION_GET_SELECTED = prefix + "CONNECTION_GET_SELECTED";
 
     public static final String CONNECTION_ERROR = prefix + "CONNECTION_ERROR";
     public static final String CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE";

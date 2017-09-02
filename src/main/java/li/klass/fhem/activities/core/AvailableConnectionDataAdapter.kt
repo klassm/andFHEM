@@ -39,7 +39,6 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.fhem.connection.FHEMServerSpec
 import li.klass.fhem.fragments.FragmentType
 import li.klass.fhem.service.connection.ConnectionService
-import li.klass.fhem.service.intent.ConnectionsIntentService
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import java.lang.IllegalArgumentException
@@ -115,10 +114,12 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
             context.sendBroadcast(intent)
         } else {
             currentlySelectedPosition = pos
-            val intent = Intent(Actions.CONNECTION_SET_SELECTED)
-            intent.setClass(context, ConnectionsIntentService::class.java)
-            intent.putExtra(BundleExtraKeys.CONNECTION_ID, data[pos].id)
-            context.startService(intent)
+            val myContext = context
+            async(UI) {
+                bg {
+                    connectionService.setSelectedId(data[pos].id, myContext)
+                }
+            }
         }
         onConnectionChanged.run()
     }

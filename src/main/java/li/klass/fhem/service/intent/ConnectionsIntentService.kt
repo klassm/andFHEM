@@ -25,41 +25,23 @@
 package li.klass.fhem.service.intent
 
 import android.content.Intent
-import android.os.Bundle
 import android.os.ResultReceiver
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.ResultCodes.SUCCESS
+import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.service.connection.ConnectionService
-import li.klass.fhem.service.room.RoomListService
 import javax.inject.Inject
 
 class ConnectionsIntentService : ConvenientIntentService(ConnectionsIntentService::class.java.name) {
 
     @Inject
     lateinit var connectionService: ConnectionService
-    @Inject
-    lateinit var roomListService: RoomListService
 
     override fun handleIntent(intent: Intent, updatePeriod: Long, resultReceiver: ResultReceiver?): ConvenientIntentService.State {
         val action = intent.action
 
-        if (Actions.CONNECTIONS_LIST == action) {
-            val serverSpecs = connectionService.listAll(this)
-
-            val bundle = Bundle()
-            bundle.putSerializable(CONNECTION_LIST, serverSpecs)
-            bundle.putString(CONNECTION_ID, connectionService.getSelectedId(this))
-            sendResult(resultReceiver, SUCCESS, bundle)
-        } else if (Actions.CONNECTION_DELETE == action) {
-            val id = intent.getStringExtra(CONNECTION_ID)
-            connectionService.delete(id, this)
-
-            sendChangedBroadcast()
-            return ConvenientIntentService.State.SUCCESS
-        } else if (Actions.CONNECTION_SET_SELECTED == action) {
+        if (Actions.CONNECTION_SET_SELECTED == action) {
             val currentlySelected = connectionService.getSelectedId(this)
             val id = intent.getStringExtra(CONNECTION_ID)
 
@@ -72,20 +54,8 @@ class ConnectionsIntentService : ConvenientIntentService(ConnectionsIntentServic
             sendBroadcast(updateIntent)
 
             return ConvenientIntentService.State.SUCCESS
-        } else if (Actions.CONNECTION_GET_SELECTED == action) {
-            val bundle = Bundle()
-            val selectedId = connectionService.getSelectedId(this)
-            bundle.putString(CONNECTION_ID, selectedId)
-            bundle.putSerializable(CONNECTION, connectionService.forId(selectedId, this))
-
-            sendResult(resultReceiver, SUCCESS, bundle)
         }
         return ConvenientIntentService.State.DONE
-    }
-
-    private fun sendChangedBroadcast() {
-        val changedIntent = Intent(Actions.CONNECTIONS_CHANGED)
-        sendBroadcast(changedIntent)
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
