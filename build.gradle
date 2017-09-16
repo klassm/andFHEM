@@ -22,8 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def appVersionCode = 468
-def appVersionName = "4.6.8"
+def appVersionCode = 469
+def appVersionName = "4.6.9"
 
 ext {
     supportLibVersion = '26.1.0'
