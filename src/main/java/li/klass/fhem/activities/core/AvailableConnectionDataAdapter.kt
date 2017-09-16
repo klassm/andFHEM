@@ -42,11 +42,11 @@ import li.klass.fhem.service.connection.ConnectionService
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import java.lang.IllegalArgumentException
-import java.util.*
 
 class AvailableConnectionDataAdapter(private val parent: Spinner,
                                      private val onConnectionChanged: Runnable,
-                                     private val connectionService: ConnectionService)
+                                     private val connectionService: ConnectionService
+)
     : ListDataAdapter<FHEMServerSpec>(parent.context, R.layout.connection_spinner_item, ArrayList()), AdapterView.OnItemSelectedListener {
     private var currentlySelectedPosition = -1
 
@@ -118,6 +118,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
             async(UI) {
                 bg {
                     connectionService.setSelectedId(data[pos].id, myContext)
+                    myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true))
                 }
             }
         }

@@ -25,12 +25,15 @@
 package li.klass.fhem.adapter;
 
 import android.content.Context;
-import android.view.*;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Collections;
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
-
-import java.util.*;
 
 public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
     private String selectedConnectionId;
@@ -49,10 +52,10 @@ public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
 
         assert convertView != null;
 
-        TextView nameView = (TextView) convertView.findViewById(R.id.connectionListName);
+        TextView nameView = convertView.findViewById(R.id.connectionListName);
         nameView.setText(server.getName());
 
-        TextView typeView = (TextView) convertView.findViewById(R.id.connectionListType);
+        TextView typeView = convertView.findViewById(R.id.connectionListType);
         if (server.getServerType() != null) {
             typeView.setText(server.getServerType().name());
         }
