@@ -112,13 +112,16 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
             val intent = Intent(Actions.SHOW_FRAGMENT)
             intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_LIST)
             context.sendBroadcast(intent)
-        } else {
+        } else if (currentlySelectedPosition != pos) {
+            LOG.info("onItemSelected - changing from $currentlySelectedPosition to $pos")
             currentlySelectedPosition = pos
             val myContext = context
             async(UI) {
                 bg {
                     connectionService.setSelectedId(data[pos].id, myContext)
-                    myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true))
+                    if (currentlySelectedPosition != -1) {
+                        myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true))
+                    }
                 }
             }
         }

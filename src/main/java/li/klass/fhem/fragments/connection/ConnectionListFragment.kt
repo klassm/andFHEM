@@ -224,6 +224,11 @@ class ConnectionListFragment : BaseFragment() {
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        activity.sendBroadcast(Intent(Actions.CONNECTIONS_CHANGED))
+    }
+
     companion object {
         private val CONTEXT_MENU_DELETE = 1
     }
