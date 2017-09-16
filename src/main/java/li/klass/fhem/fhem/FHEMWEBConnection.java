@@ -197,7 +197,10 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     public HttpHeaders getBasicAuthHeaders() {
-        return new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword());
+        if (serverSpec.getUsername() != null && serverSpec.getPassword() != null) {
+            return new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword());
+        }
+        return new HttpHeaders();
     }
 
     private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e, Context context) {
