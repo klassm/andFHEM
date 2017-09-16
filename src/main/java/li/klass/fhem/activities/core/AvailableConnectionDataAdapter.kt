@@ -120,7 +120,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
                 bg {
                     connectionService.setSelectedId(data[pos].id, myContext)
                     if (currentlySelectedPosition != -1) {
-                        myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true))
+                        myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, false))
                     }
                 }
             }
