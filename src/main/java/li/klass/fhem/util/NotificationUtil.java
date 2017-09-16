@@ -25,6 +25,7 @@
 package li.klass.fhem.util;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -36,12 +37,16 @@ import android.support.v4.app.NotificationCompat;
 import li.klass.fhem.R;
 
 public class NotificationUtil {
+
+    private static final String NOTIFICATION_CHANNEL = "ANDFHEM_NOTIFICATION";
+
     public static void notify(Context context, int notifyId, PendingIntent pendingIntent,
                               String contentTitle, String contentText, String tickerText,
                               boolean vibrate) {
 
+        createChannel(context);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)
                 .setTicker(tickerText)
@@ -65,5 +70,20 @@ public class NotificationUtil {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notifyId, notification);
+    }
+
+    private static void createChannel(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, "andFHEM Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("andFHEM notifications");
+            channel.canShowBadge();
+            channel.setLightColor(0xff00960b);
+            channel.canBypassDnd();
+            channel.enableLights(true);
+            channel.enableVibration(true);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

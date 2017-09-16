@@ -39,6 +39,7 @@ public abstract class ViewStrategy {
     public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId);
 
     protected void setTextView(TextView textView, String value) {
+        value = value == null ? "" : value;
         CharSequence toSet = value.contains("<") ? Html.fromHtml(value) : value;
         if (textView != null) {
             textView.setText(toSet);

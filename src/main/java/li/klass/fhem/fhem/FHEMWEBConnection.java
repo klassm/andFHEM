@@ -27,6 +27,7 @@ package li.klass.fhem.fhem;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.TrafficStats;
 
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
@@ -141,6 +142,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     private RequestResult<InputStream> executeRequest(String serverUrl, String urlSuffix, boolean isRetry, Context context) {
         String url = null;
+        TrafficStats.setThreadStatsTag(1);
         try {
             initSslContext(context);
             if (urlSuffix.contains("cmd=")) {
@@ -150,6 +152,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
             url = serverUrl + urlSuffix;
             LOG.info("accessing URL {}", url);
+
             HttpResponse response = newCompatibleTransport()
                     .createRequestFactory().buildGetRequest(new GenericUrl(url))
                     .setConnectTimeout(SOCKET_TIMEOUT)
@@ -197,10 +200,9 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     public HttpHeaders getBasicAuthHeaders() {
-        if (serverSpec.getUsername() != null && serverSpec.getPassword() != null) {
-            return new HttpHeaders().setBasicAuthentication(serverSpec.getUsername(), serverSpec.getPassword());
-        }
-        return new HttpHeaders();
+        String password = Optional.fromNullable(serverSpec.getPassword()).or("");
+        String username = Optional.fromNullable(serverSpec.getUsername()).or("");
+        return new HttpHeaders().setBasicAuthentication(username, password);
     }
 
     private RequestResult<InputStream> handleError(String urlSuffix, boolean isRetry, String url, Exception e, Context context) {

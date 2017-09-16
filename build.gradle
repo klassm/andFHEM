@@ -26,7 +26,7 @@ def appVersionCode = 468
 def appVersionName = "4.6.8"
 
 ext {
-    supportLibVersion = '26.0.2'
+    supportLibVersion = '26.1.0'
     firebaseVersion = '11.0.2'
     buildProperties = getBuildProperties()
     anko_version = '0.10.1'
