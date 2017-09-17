@@ -67,8 +67,7 @@ public class NotificationUtil {
 
         Notification notification = notificationBuilder.build();
 
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notifyId, notification);
     }
 
@@ -76,11 +75,12 @@ public class NotificationUtil {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, "andFHEM Notification", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("andFHEM notifications");
-            channel.canShowBadge();
+            String name = "andFHEM Notification";
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, name, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(name);
+            channel.setShowBadge(true);
             channel.setLightColor(0xff00960b);
-            channel.canBypassDnd();
+            channel.setBypassDnd(true);
             channel.enableLights(true);
             channel.enableVibration(true);
             notificationManager.createNotificationChannel(channel);
