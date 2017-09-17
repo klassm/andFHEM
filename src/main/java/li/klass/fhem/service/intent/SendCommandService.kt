@@ -115,9 +115,9 @@ class SendCommandService @Inject constructor(
             sharedPreferencesService.getPreferences(PREFERENCES_NAME, context)
 
     companion object {
-        internal val PREFERENCES_NAME = "SendCommandStorage"
-        internal val COMMANDS_JSON_PROPERTY = "commands"
-        internal val COMMANDS_PROPERTY = "RECENT_COMMANDS"
+        val PREFERENCES_NAME = "SendCommandStorage"
+        val COMMANDS_JSON_PROPERTY = "commands"
+        val COMMANDS_PROPERTY = "RECENT_COMMANDS"
         private val MAX_NUMBER_OF_COMMANDS = 10
 
         private val LOG = LoggerFactory.getLogger(SendCommandService::class.java)

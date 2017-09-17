@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.intent;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.collect.ImmutableList;
@@ -48,6 +49,7 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
 import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
+import static li.klass.fhem.service.intent.SendCommandService.Companion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -65,6 +67,8 @@ public class SendCommandServiceTest {
     SharedPreferences sharedPreferences;
     @Mock
     SharedPreferences.Editor editor;
+    @Mock
+    Context context;
 
     @InjectMocks
     SendCommandService intentService;
@@ -84,7 +88,7 @@ public class SendCommandServiceTest {
     @Test
     @UseDataProvider("recentCommandsProvider")
     public void should_get_recent_commands(String jsonInput, List<String> expectedCommands) {
-        given(sharedPreferencesService.getPreferences(Companion.getPREFERENCES_NAME(), null))
+        given(sharedPreferencesService.getPreferences(Companion.getPREFERENCES_NAME(), context))
                 .willReturn(sharedPreferences);
         given(sharedPreferences.getString(Companion.getCOMMANDS_PROPERTY(), null)).willReturn(jsonInput);
 
