@@ -296,18 +296,6 @@
         </service>
 
         <service
-            android:name="li.klass.fhem.service.intent.SendCommandIntentService"
-            android:exported="true"
-            android:permission="li.klass.fhem.permissions.SEND_COMMAND">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.EXECUTE_COMMAND" />
-                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMANDS_LIST" />
-                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMAND_DELETE" />
-                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMAND_EDIT" />
-            </intent-filter>
-        </service>
-
-        <service
             android:name="li.klass.fhem.service.intent.NotificationIntentService"
             android:exported="false">
             <intent-filter>

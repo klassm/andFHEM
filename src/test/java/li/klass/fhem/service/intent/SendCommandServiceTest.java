@@ -48,15 +48,12 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
 import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
-import static li.klass.fhem.service.intent.SendCommandIntentService.COMMANDS_JSON_PROPERTY;
-import static li.klass.fhem.service.intent.SendCommandIntentService.COMMANDS_PROPERTY;
-import static li.klass.fhem.service.intent.SendCommandIntentService.PREFERENCES_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(DataProviderRunner.class)
-public class SendCommandIntentServiceTest {
+public class SendCommandServiceTest {
 
     @Mock
     ConnectionService connectionService;
@@ -70,7 +67,7 @@ public class SendCommandIntentServiceTest {
     SharedPreferences.Editor editor;
 
     @InjectMocks
-    SendCommandIntentService intentService;
+    SendCommandService intentService;
 
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
@@ -78,7 +75,7 @@ public class SendCommandIntentServiceTest {
     @DataProvider
     public static Object[][] recentCommandsProvider() {
         return $$(
-                $(String.format("{%s: %s}", COMMANDS_JSON_PROPERTY, "['a', 'b', 'c']"), ImmutableList.of("a", "b", "c")),
+                $(String.format("{%s: %s}", Companion.getCOMMANDS_JSON_PROPERTY(), "['a', 'b', 'c']"), ImmutableList.of("a", "b", "c")),
                 $(null, Collections.<String>emptyList()),
                 $("{", Collections.<String>emptyList())
         );
@@ -87,11 +84,11 @@ public class SendCommandIntentServiceTest {
     @Test
     @UseDataProvider("recentCommandsProvider")
     public void should_get_recent_commands(String jsonInput, List<String> expectedCommands) {
-        given(sharedPreferencesService.getPreferences(PREFERENCES_NAME, null))
+        given(sharedPreferencesService.getPreferences(Companion.getPREFERENCES_NAME(), null))
                 .willReturn(sharedPreferences);
-        given(sharedPreferences.getString(COMMANDS_PROPERTY, null)).willReturn(jsonInput);
+        given(sharedPreferences.getString(Companion.getCOMMANDS_PROPERTY(), null)).willReturn(jsonInput);
 
-        ArrayList<String> result = intentService.getRecentCommands();
+        ArrayList<String> result = intentService.getRecentCommands(context);
 
         assertThat(result).containsExactlyElementsOf(expectedCommands);
         verifyZeroInteractions(commandExecutionService);

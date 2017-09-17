@@ -129,7 +129,7 @@ import li.klass.fhem.service.intent.ImageIntentService;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
-import li.klass.fhem.service.intent.SendCommandIntentService;
+import li.klass.fhem.service.intent.SendCommandService;
 import li.klass.fhem.service.intent.VoiceCommandIntentService;
 import li.klass.fhem.service.room.RoomListUpdateService;
 import li.klass.fhem.service.room.group.GroupProvider;
@@ -313,7 +313,7 @@ public interface ApplicationComponent {
 
     void inject(ConnectionsIntentService object);
 
-    void inject(SendCommandIntentService object);
+    void inject(SendCommandService object);
 
     void inject(RoomListUpdateIntentService object);
 

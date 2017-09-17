@@ -30,7 +30,6 @@ public class BundleExtraKeys {
     public static final String DO_REFRESH = "DOREFRESH";
     public static final String UPDATE_PERIOD = "UPDATE_PERIOD";
     public static final String ROOM_NAME = "ROOMNAME";
-    public static final String ROOM_LIST = "ROOMLIST";
     public static final String DEVICE = "DEVICE";
     public static final String DEVICE_NAME = "DEVICENAME";
     public static final String DEVICE_DISPLAY_NAME = "DEVICEDISPLAYNAME";
@@ -38,25 +37,19 @@ public class BundleExtraKeys {
     public static final String DEVICE_NEW_ROOM = "DEVICENEWROOM";
     public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";
     public static final String TIMES_TO_SEND = "TIMES_TO_SEND";
-    public static final String DEVICE_LIST = "DEVICELIST";
     public static final String RESULT_RECEIVER = "RESULTRECEIVER";
     public static final String STRING_ID = "STRINGID";
     public static final String STRING = "STRING";
     public static final String ALERT_CONTENT_ID = "ALERTCONTENTID";
     public static final String ALERT_TITLE_ID = "ALERTTITLEID";
     public static final String HAS_FAVORITES = "HAS_FAVORITES";
-    public static final String IS_FAVORITE = "IS_FAVORITE";
     public static final String ALLOW_REMOTE_UPDATES = "ALLOW_REMOTE_UPDATES";
-    public static final String COLUMN_WIDTH = "COLUMN_WIDTH";
     public static final String EMPTY_TEXT_ID = "EMPTY_TEXT_ID";
     public static final String ROOM_SELECTABLE_CALLBACK = "ROOM_SELECTABLE_CALLBACK";
     public static final String ON_CLICKED_CALLBACK = "ON_CLICKED_CALLBACK";
     public static final String TEXT = "TEXT";
-    public static final String SUCCESS = "SUCCESS";
-    public static final String ORIGIN = "ORIGIN";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
-    public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";
     public static final String DEVICE_GRAPH_DEFINITION = "DEVICE_GRAPH_DEFINITION";
     public static final String START_DATE = "STARTDATE";
     public static final String END_DATE = "ENDDATE";
@@ -65,20 +58,14 @@ public class BundleExtraKeys {
     public static final String STATES = "STATES";
     public static final String DEVICE_TEMPERATURE = "TEMPERATURE";
     public static final String DEVICE_MODE = "DEVICEMODE";
-    public static final String DEVICE_HOLIDAY1 = "HOLIDAY1";
-    public static final String DEVICE_HOLIDAY2 = "HOLIDAY2";
 
     public static final String FRAGMENT_NAME = "FRAGMENTNAME";
     public static final String FRAGMENT = "FRAGMENT";
     public static final String CALLING_FRAGMENT = "CALLING_FRAGMENT";
 
     public static final String CONTENT = "CONTENT";
-    public static final String LAST_UPDATE = "LAST_UPDATE";
 
     public static final String COMMAND = "COMMAND";
-    public static final String COMMAND_NEW_NAME = "COMMAND_NEW_NAME";
-    public static final String COMMAND_RESULT = "COMMAND_RESULT";
-    public static final String RECENT_COMMANDS = "RECENT_COMMANDS";
 
     public static final String IMAGE_RELATIVE_PATH = "IMAGE_RELATIVE_PATH";
     public static final String IMAGE = "LOAD_IMAGE";
@@ -111,25 +98,10 @@ public class BundleExtraKeys {
 
     public static final String LOAD_URL = "LOAD_URL";
 
-    public static final String CONNECTION_LIST = "CONNECTION_LIST";
-    public static final String CONNECTION = "CONNECTION";
     public static final String CONNECTION_ID = "CONNECTION_ID";
-    public static final String CONNECTION_NAME = "CONNECTION_NAME";
-    public static final String CONNECTION_TYPE = "CONNECTION_TYPE";
-    public static final String CONNECTION_URL = "CONNECTION_URL";
-    public static final String CONNECTION_ALTERNATE_URL = "CONNECTION_ALTERNATE_URL";
-    public static final String CONNECTION_USERNAME = "CONNECTION_USERNAME";
-    public static final String CONNECTION_PASSWORD = "CONNECTION_PASSWORD";
-    public static final String CONNECTION_PORT = "CONNECTION_PORT";
-    public static final String CONNECTION_IP = "CONNECTION_IP";
-    public static final String CONNECTION_CLIENT_CERTIFICATE_PATH = "CONNECTION_CLIENT_CERTIFICATE_PATH";
-    public static final String CONNECTION_CLIENT_CERTIFICATE_PASSWORD = "CONNECTION_CLIENT_CERTIFICATE_PASSWORD";
 
     public static final String IS_PREMIUM = "IS_PREMIUM";
 
-    public static final String SENDER = "SENDER";
     public static final String RESEND_TRY = "RESEND_TRY";
     public static final String HEATING_CONFIGURATION = "HEATING_CONFIGURATION";
-    public static final String WEEK_PROFILE = "WEEK_PROFILE";
-    public static final String DELAY = "DELAY";
 }

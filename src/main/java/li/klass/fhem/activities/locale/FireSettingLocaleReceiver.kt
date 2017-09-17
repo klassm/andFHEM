@@ -32,7 +32,7 @@ import android.util.Log
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.service.intent.ConnectionsIntentService
-import li.klass.fhem.service.intent.SendCommandIntentService
+import li.klass.fhem.service.intent.SendCommandService
 
 class FireSettingLocaleReceiver : BroadcastReceiver() {
 
@@ -45,7 +45,7 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
 
         if (Actions.EXECUTE_COMMAND == action) {
             context.startService(Intent(Actions.EXECUTE_COMMAND)
-                    .setClass(context, SendCommandIntentService::class.java)
+                    .setClass(context, SendCommandService::class.java)
                     .putExtra(BundleExtraKeys.COMMAND, command)
                     .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId))
         } else if (Actions.CONNECTION_UPDATE == action) {
