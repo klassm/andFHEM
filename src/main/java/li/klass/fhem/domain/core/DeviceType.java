@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import li.klass.fhem.adapter.devices.DmxAdapter;
-import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
@@ -57,7 +56,6 @@ import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.DMXDevice;
-import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EnOceanDevice;
@@ -102,7 +100,6 @@ public enum DeviceType {
     PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
-    DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
     AT("at", AtDevice.class, null),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter()),

@@ -32,7 +32,7 @@ import org.mockito.Mock;
 
 import java.util.List;
 
-import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +49,7 @@ public class WebCmdActionRowTest {
     public void should_handle_null_webcmds() {
         // given
         DummyWebCmdRow row = new DummyWebCmdRow("row", 0);
-        DummyDevice dummyDevice = new DummyDevice();
+        GenericDevice dummyDevice = new GenericDevice();
 
         // expect
         assertThat(dummyDevice.getWebCmd()).isEmpty();

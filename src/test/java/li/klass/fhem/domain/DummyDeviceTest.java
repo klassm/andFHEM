@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DummyDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
-        DummyDevice device = getDefaultDevice(DummyDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -49,7 +49,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInCommonDummy() {
-        DummyDevice device = getDeviceFor("device1", DummyDevice.class);
+        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo("device1");
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -61,7 +61,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithSetList() {
-        DummyDevice device = getDeviceFor("deviceWithSetlist", DummyDevice.class);
+        GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
 
         assertThat((GroupSetListEntry) device.getSetList().get("state"))
                 .isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
@@ -70,15 +70,14 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithTimer() {
-        DummyDevice device = getDeviceFor("timerDevice", DummyDevice.class);
+        GenericDevice device = getDeviceFor("timerDevice", GenericDevice.class);
 
-        assertThat(device.isTimerDevice()).isEqualTo(true);
         assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
     public void testSliderDevice() {
-        DummyDevice device = getDeviceFor("sliderDevice", DummyDevice.class);
+        GenericDevice device = getDeviceFor("sliderDevice", GenericDevice.class);
         assertThat(device.supportsDim()).isEqualTo(true);
 
         assertThat(device.getDimUpperBound()).isEqualTo(50);
@@ -88,7 +87,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testEventMapDevice() {
-        DummyDevice device = getDeviceFor("eventMapDevice", DummyDevice.class);
+        GenericDevice device = getDeviceFor("eventMapDevice", GenericDevice.class);
 
         String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
         assertThat(eventMapStates).isNotNull();
@@ -104,16 +103,8 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
     }
 
     @Test
-    public void testRGBDevice() {
-        DummyDevice device = getDeviceFor("rgbDevice", DummyDevice.class);
-
-        assertThat(device.getRgbDesc()).isEqualTo("0xFFAB01");
-        assertThat(device.getRGBColor()).isEqualTo(16755457);
-    }
-
-    @Test
     public void testOnOffEventMapDevice() {
-        DummyDevice device = getDeviceFor("onOffEventMap", DummyDevice.class);
+        GenericDevice device = getDeviceFor("onOffEventMap", GenericDevice.class);
 
         assertThat(device.supportsToggle()).isEqualTo(true);
     }
