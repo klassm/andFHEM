@@ -78,14 +78,14 @@ bigimg: /images/installation.jpg
         FHEM server. Port is the above mentioned FHEM command line interface port, such as 7072.</p>
 
 
-    <h2 id="gcm">Google Cloud Messaging</h2>
+    <h2 id="fcm">Firebase Cloud Messaging</h2>
 
-    <p>Google Cloud Messaging (GCM) enables you to send push notifications to Android handsets. This enables you to send
+    <p>Firebase Cloud Messaging (FCM) enables you to send push notifications to Android handsets. This enables you to send
         updates in nearly realtime to andFHEM (from 2.4.2 onwards).</p>
 
     <p><b>Installation Steps:</b>
     <ul>
-        <li>Download and install the <a href="http://svn.code.sf.net/p/fhem/code/trunk/fhem/contrib/98_gcmsend.pm">98_gcmsend.pm</a>
+        <li>Download and install the <a href="https://raw.githubusercontent.com/klassm/andFHEM/master/fhem_modules/98_gcmsend.pm">98_gcmsend.pm</a>
             module for FHEM (copy the file to the FHEM directory, make sure that your Perl installation meets all the
             dependencies. FHEM will tell you if it can load the module, especially when issuing <span class="code">reload 98_gcmsend</span>.
             You can also copy the file from the <span class="code">contrib</span> directory. If doing so, don't forget
@@ -121,8 +121,7 @@ bigimg: /images/installation.jpg
                 <li>Hit the gear button and jump to project settings.<br/>
                     <a href="../images/installation/gcm/3.png"><img src="../images/installation/gcm/3.png"/></a>
                 </li>
-                <li>Select cloud messaging. This page contains our required server key ("api key") and the required
-                    sender id ("project number") <br/>
+                <li>Select cloud messaging. This page contains our required server key ("api key"). The sender-id is no longer required as of andFHEM 4.7.0<br/>
                     <a href="../images/installation/gcm/4.png"><img src="../images/installation/gcm/4.png"/></a>
                 </li>
             </ul>
@@ -131,7 +130,7 @@ bigimg: /images/installation.jpg
         <li>Now we create a GCM device. Issue <span class="code">define &lt;gcm_device_name&gt; gcmsend</span> within
             your FHEM instance.
         </li>
-        <li>Afterwards we need to configure the device to talk to GCM. This is why we have to issue another FHEM
+        <li>Afterwards we need to configure the device to talk to FCM. This is why we have to issue another FHEM
             command: <br/>
             <span class="code">attr &lt;gcm_device_name&gt; apiKey &lt;apiKey&gt;</span><br/>
             whereas <span class="code">&lt;gcm_device_name&gt;</span> is the name of the device you created before and
@@ -141,9 +140,6 @@ bigimg: /images/installation.jpg
 
         <li>Link andFHEM
             <ul>
-                <li>Enter the andFHEM settings and enter the GCM project number (from the Google console page in section
-                    "Overview") within the field "GCM Project Number".
-                </li>
                 <li>Refresh your xmllist and look for your GCMSend device you just created. Open the detail page and
                     click the button to register your device. Internally, andFHEM will add your device as regIds
                     attribute of your gcm device. <br/>
@@ -152,7 +148,6 @@ bigimg: /images/installation.jpg
             </ul>
         </li>
     </ul>
-    </p>
 
     <h2 id="client_side_certificates">Client Side Certificates</h2>
 
