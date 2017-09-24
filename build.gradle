@@ -22,8 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def appVersionCode = 469
-def appVersionName = "4.6.9"
+def getAppVersionCode() {
+    return Integer.valueOf(version.replaceAll("\\.", ""))
+}
 
 ext {
     supportLibVersion = '26.1.0'
@@ -89,8 +90,8 @@ android {
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        versionCode appVersionCode
-        versionName appVersionName
+        versionCode getAppVersionCode()
+        versionName version
     }
 
     compileOptions {
@@ -169,10 +170,10 @@ github {
     owner = 'klassm'
     repo = 'andFHEM'
     token = buildProperties['githubToken'] ?: "??"
-    tagName = appVersionName
+    tagName = version
     targetCommitish = 'master'
-    name = appVersionName
-    body = "Release ${appVersionName}"
+    name = version
+    body = "Release ${version}"
     assets = [
             'build/outputs/apk/workspace-inapp-release.apk'
     ]
