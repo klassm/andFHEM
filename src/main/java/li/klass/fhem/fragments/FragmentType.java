@@ -55,7 +55,8 @@ public enum FragmentType {
     CONNECTION_LIST(ConnectionListFragment.class),
     CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class),
     WEB_VIEW(WebViewFragment.class),
-    OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class);
+    OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class),
+    SEARCH(SearchResultsFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;
@@ -128,4 +129,4 @@ public enum FragmentType {
     public int getDrawerMenuId() {
         return fragmentDrawerId;
     }
-}
+    }

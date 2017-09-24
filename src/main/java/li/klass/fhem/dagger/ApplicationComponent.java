@@ -111,6 +111,7 @@ import li.klass.fhem.fragments.WebViewFragment;
 import li.klass.fhem.fragments.connection.ConnectionDetailFragment;
 import li.klass.fhem.fragments.connection.ConnectionListFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
+import li.klass.fhem.fragments.SearchResultsFragment;
 import li.klass.fhem.fragments.device.DeviceNameListFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
@@ -355,4 +356,6 @@ public interface ApplicationComponent {
     void inject(@NotNull ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
 
     void inject(@NotNull SendCommandLocaleSettingActivity sendCommandLocaleSettingActivity);
+
+    void inject(@NotNull SearchResultsFragment searchResultsFragment);
 }

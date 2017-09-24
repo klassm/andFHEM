@@ -97,11 +97,11 @@ public abstract class AppWidgetSelectionActivity extends AppCompatActivity imple
             });
         } else {
             setContentView(R.layout.appwidget_selection);
-            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            ViewPager viewPager = findViewById(R.id.viewpager);
             assert viewPager != null;
             viewPager.setAdapter(new AppWidgetSelectionFragmentAdapter(getSupportFragmentManager(), this, widgetSize, this));
 
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            TabLayout tabLayout = findViewById(R.id.sliding_tabs);
             assert tabLayout != null;
             tabLayout.setupWithViewPager(viewPager);
         }

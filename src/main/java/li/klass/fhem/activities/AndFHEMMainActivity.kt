@@ -27,6 +27,7 @@ package li.klass.fhem.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.SearchManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -42,6 +43,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.RepairedDrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -428,6 +430,12 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         return hasNavigation
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data ?: return
+        broadcastReceiver?.onReceive(this, data)
+    }
+
     private fun hasNavigation(navigationFragment: BaseFragment?, contentFragment: BaseFragment?): Boolean {
         val fragmentType = getFragmentFor(contentFragment!!.javaClass)
         if (fragmentType == null) {
@@ -490,10 +498,8 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun handleOpenIntent() {
         val intentFragment = fragmentTypeFromStartupIntent
         if (intentFragment.isPresent) {
-            Handler().postDelayed({
-                switchToFragment(intentFragment.get(), intent.extras)
-                intent = null
-            }, 500)
+            switchToFragment(intentFragment.get(), intent.extras)
+            intent = null
         }
     }
 
@@ -748,8 +754,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             onBackPressed()
             return true
         } else if (item.itemId == R.id.menu_refresh) {
-            sendBroadcast(Intent(DO_UPDATE)
-                    .putExtra(DO_REFRESH, true))
+            sendBroadcast(Intent(DO_UPDATE).putExtra(DO_REFRESH, true))
             return true
         }
 
@@ -762,15 +767,20 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         if (packageName == PREMIUM_PACKAGE) {
             menu.removeItem(R.id.menu_premium)
         }
-        this.optionsMenu = menu
 
-        val refreshItem = optionsMenu!!.findItem(R.id.menu_refresh)
+        val refreshItem = menu.findItem(R.id.menu_refresh)
 
         if (refreshLayout!!.isRefreshing) {
             refreshItem.setActionView(R.layout.actionbar_indeterminate_progress)
         } else {
             refreshItem.actionView = null
         }
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.menu_search)?.actionView as SearchView?
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName));
+
+        this.optionsMenu = menu
 
         return super.onCreateOptionsMenu(menu)
     }

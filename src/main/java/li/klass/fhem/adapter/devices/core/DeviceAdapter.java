@@ -42,6 +42,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
@@ -108,9 +109,9 @@ public abstract class DeviceAdapter {
         }
 
         Intent intent = new Intent(Actions.SHOW_FRAGMENT)
-                .putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName())
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                .putExtra(BundleExtraKeys.ROOM_NAME, (String) device.getRooms().get(0))
+                .putExtra(BundleExtraKeys.ROOM_NAME, device.getRooms().get(0))
                 .putExtra(BundleExtraKeys.DEVICE_DISPLAY_NAME, device.getAliasOrName());
 
         intent = onFillDeviceDetailIntent(context, device, intent);

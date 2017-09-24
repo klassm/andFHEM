@@ -76,7 +76,6 @@ public class Actions {
 
     public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
 
-    public static final String GCM_REGISTERED = prefix + "GCM_REGISTERED";
     public static final String GCM_REMOVE_ID = prefix + "GCM_REMOVE_ID";
     public static final String GCM_ADD_SELF = prefix + "GCM_ADD_SELF";
 

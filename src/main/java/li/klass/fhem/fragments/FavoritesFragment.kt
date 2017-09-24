@@ -44,9 +44,7 @@ class FavoritesFragment : DeviceListFragment() {
         view.addView(inflater.inflate(R.layout.favorites_empty_view, viewGroup, false))
     }
 
-    override fun getTitle(context: Context): CharSequence {
-        return context.getString(R.string.favorites)
-    }
+    override fun getTitle(context: Context): CharSequence = context.getString(R.string.favorites)
 
     override fun getRoomDeviceListForUpdate() = favoritesService.getFavorites(activity)!!
 
