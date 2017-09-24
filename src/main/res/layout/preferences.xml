@@ -163,12 +163,6 @@
             android:summaryOn="@string/prefUpdateRoomOnOpenSummaryOn"
             android:summaryOff="@string/prefUpdateRoomOnOpenSummaryOff" />
 
-        <EditTextPreference
-            android:defaultValue=""
-            android:inputType="number"
-            android:key="GCM_PROJECT_ID"
-            android:title="@string/prefGCMProjectId"/>
-
         <ListPreference
             android:id="@+id/autoUpdateTime"
             android:defaultValue="-1"

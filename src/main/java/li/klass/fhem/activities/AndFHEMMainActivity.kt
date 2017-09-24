@@ -195,7 +195,6 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         updateHandler.onApplicationUpdate()
-        gcmSendDeviceService.registerWithGCM(this)
     }
 
     private fun initialize(savedInstanceState: Bundle?) {

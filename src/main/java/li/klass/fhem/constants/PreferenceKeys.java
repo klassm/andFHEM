@@ -32,8 +32,6 @@ public class PreferenceKeys {
     public static final String UPDATE_ON_APPLICATION_START = "UPDATE_ON_APPLICATION_START";
     public static final String SHOW_SET_VALUE_BUTTONS = "SHOW_SET_VALUE_BUTTONS";
     public static final String DEVICE_LIST_RIGHT_PADDING = "DEVICE_LIST_PADDING_RIGHT";
-    public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
-    public static final String GCM_PROJECT_ID = "GCM_PROJECT_ID";
     public static final String GCM_WIDGET_UPDATE = "GCM_WIDGET_UPDATE";
     public static final String SEND_LAST_ERROR = "SEND_LAST_ERROR";
     public static final String STARTUP_VIEW = "STARTUP_VIEW";

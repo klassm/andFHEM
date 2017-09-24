@@ -22,15 +22,33 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.gcm;
+package li.klass.fhem.fcm;
 
-import android.content.Context;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.InjectMocks;
 
-import com.google.android.gcm.GCMBroadcastReceiver;
+import java.util.Map;
 
-public class AndFHEMGCMBroadcastReceiver extends GCMBroadcastReceiver {
+import li.klass.fhem.testutil.MockitoRule;
 
-    protected String getGCMIntentServiceClassName(Context context) {
-        return GCMIntentService.class.getName();
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
+
+public class FcmIntentServiceTest {
+
+    @InjectMocks
+    FcmIntentService service;
+
+    @Rule
+    public MockitoRule mockitoRule = new MockitoRule();
+
+    @Test
+    public void should_read_device_state_updates_with_multiple_colons() {
+        // when
+        Map<String, String> changes = service.extractChanges("device", "temperature:18.9<|>T:18.9 H: 61");
+
+        // then
+        assertThat(changes).contains(entry("temperature", "18.9"), entry("state", "T:18.9 H: 61"));
     }
 }

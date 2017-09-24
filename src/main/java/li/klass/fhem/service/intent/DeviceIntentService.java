@@ -32,6 +32,7 @@ import android.util.Log;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -110,7 +111,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TEMPERATURE;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
-import static li.klass.fhem.constants.BundleExtraKeys.GCM_REGISTRATION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
@@ -269,7 +269,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             gcmSendDeviceService.addSelf((GCMSendDevice) device, this);
 
         } else if (GCM_REMOVE_ID.equals(action)) {
-            String registrationId = intent.getStringExtra(GCM_REGISTRATION_ID);
+            String registrationId = intent.getStringExtra(FirebaseInstanceId.getInstance().getId());
             gcmSendDeviceService.removeRegistrationId((GCMSendDevice) device, registrationId, this);
 
         } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {

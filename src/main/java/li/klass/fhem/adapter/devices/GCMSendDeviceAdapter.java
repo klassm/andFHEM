@@ -75,7 +75,7 @@ public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
 
             @Override
             public boolean isVisible(FhemDevice device, Context context) {
-                return !gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device, context);
+                return !gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device);
             }
         });
 
@@ -84,7 +84,7 @@ public class GCMSendDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
 
     @Override
     protected String getGeneralDetailsNotificationText(Context context, FhemDevice device) {
-        if (gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device, context)) {
+        if (gcmSendDeviceService.isDeviceRegistered((GCMSendDevice) device)) {
             return context.getString(R.string.gcmAlreadyRegistered);
         }
         return null;

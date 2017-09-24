@@ -98,6 +98,7 @@ import li.klass.fhem.appwidget.view.widget.small.RoomsLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SendCommandLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.view.widget.small.TimersLinkWidget;
+import li.klass.fhem.fcm.FcmIntentService;
 import li.klass.fhem.fragments.AllDevicesFragment;
 import li.klass.fhem.fragments.ConversionFragment;
 import li.klass.fhem.fragments.FavoritesFragment;
@@ -117,7 +118,6 @@ import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
-import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.importexport.ImportExportService;
@@ -309,7 +309,7 @@ public interface ApplicationComponent {
 
     void inject(AppIndexIntentService object);
 
-    void inject(GCMIntentService object);
+    void inject(FcmIntentService object);
 
     void inject(ConnectionsIntentService object);
 

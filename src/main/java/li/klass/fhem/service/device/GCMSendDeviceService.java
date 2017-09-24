@@ -27,7 +27,7 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.android.gcm.GCMRegistrar;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,8 +43,6 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayUtil;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
-import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 
 @Singleton
 public class GCMSendDeviceService extends AbstractService {
@@ -62,7 +60,7 @@ public class GCMSendDeviceService extends AbstractService {
 
     public void addSelf(GCMSendDevice device, Context context) {
 
-        String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null, context);
+        String registrationId = FirebaseInstanceId.getInstance().getId();
         if (isNullOrEmpty(registrationId)) {
             showToast(R.string.gcmRegistrationNotActive, context);
             return;
@@ -99,32 +97,9 @@ public class GCMSendDeviceService extends AbstractService {
         setRegIdsAttributeFor(device, newRegIds, context);
     }
 
-    public boolean isDeviceRegistered(GCMSendDevice device, Context context) {
-        String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null, context);
+    public boolean isDeviceRegistered(GCMSendDevice device) {
+        String registrationId = FirebaseInstanceId.getInstance().getId();
 
         return (registrationId != null && ArrayUtil.contains(device.getRegIds(), registrationId));
-    }
-
-    public void registerWithGCM(Context context) {
-        String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null, context);
-        registerWithGCMInternal(context, projectId);
-    }
-
-    private void registerWithGCMInternal(Context context, String projectId) {
-        if (isNullOrEmpty(projectId)) return;
-
-        if (!GCMRegistrar.isRegisteredOnServer(context)) {
-            GCMRegistrar.checkDevice(context);
-            GCMRegistrar.checkManifest(context);
-
-            GCMRegistrar.setRegisterOnServerLifespan(context, 1000L * 60 * 60 * 24 * 30);
-            GCMRegistrar.register(context, projectId);
-        }
-    }
-
-    public void registerWithGCM(Context context, String projectId) {
-        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, null, context);
-        GCMRegistrar.unregister(context);
-        registerWithGCMInternal(context, projectId);
     }
 }

@@ -22,25 +22,19 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.gcm
+package li.klass.fhem.fcm
 
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.os.SystemClock
-import com.google.android.gcm.GCMBaseIntentService
-import com.google.android.gcm.GCMRegistrar
 import com.google.common.base.Optional
 import com.google.common.base.Strings
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps.newHashMap
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.activities.AndFHEMMainActivity
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID
-import li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.util.ApplicationProperties
@@ -53,7 +47,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
-class GCMIntentService : GCMBaseIntentService() {
+class FcmIntentService : FirebaseMessagingService() {
 
     @Inject
     lateinit var applicationProperties: ApplicationProperties
@@ -66,81 +60,59 @@ class GCMIntentService : GCMBaseIntentService() {
         (application as AndFHEMApplication).daggerComponent.inject(this)
     }
 
-    override fun onRegistered(context: Context, registrationId: String) {
-        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId, context)
-        LOG.info("onRegistered - device registered with regId {}", registrationId)
+    override fun onMessageReceived(message: RemoteMessage?) {
+        message ?: return
 
-        val intent = Intent(Actions.GCM_REGISTERED)
-        intent.putExtra(BundleExtraKeys.GCM_REGISTRATION_ID, registrationId)
-        sendBroadcast(intent)
-    }
+        val data = message.data?.toMap() ?: return
 
-    override fun onUnregistered(context: Context, registrationId: String) {
-        LOG.info("onUnregistered - device unregistered")
-        if (GCMRegistrar.isRegisteredOnServer(context)) {
-            GCMRegistrar.unregister(this)
-        } else {
-            LOG.info("onUnregistered - Ignoring unregister callback")
-        }
-    }
-
-    override fun onMessage(context: Context, intent: Intent) {
-        var extras: Bundle? = intent.extras
-        extras ?: return
-
-        LOG.info(GCMBaseIntentService.TAG, "onMessage - received GCM message with content: {}", extras)
-
-        if (!extras.containsKey("type") || !extras.containsKey("source")) {
-            LOG.info(GCMBaseIntentService.TAG, "onMessage - received GCM message, but doesn't fit required fields")
+        if (!data.containsKey("type") || !data.containsKey("source")) {
+            LOG.info("onMessage - received GCM message, but doesn't fit required fields")
             return
         }
 
-        extras = decrypt(extras)
+        val decrypted = decrypt(data)
 
-        val type = extras.getString("type")
+        val type = decrypted.get("type")
         if ("message".equals(type!!, ignoreCase = true)) {
-            handleMessage(extras)
+            handleMessage(decrypted)
         } else if ("notify".equals(type, ignoreCase = true) || Strings.isNullOrEmpty(type)) {
-            handleNotify(extras)
+            handleNotify(decrypted)
         } else {
             LOG.error("onMessage - unknown type: {}", type)
         }
     }
 
-    private fun decrypt(extras: Bundle): Bundle {
-        if (!extras.containsKey("gcmDeviceName")) {
-            return extras
+    private fun decrypt(data: Map<String, String>): Map<String, String> {
+        if (!data.containsKey("gcmDeviceName")) {
+            return data
         }
 
-        val device = roomListService.getDeviceForName<FhemDevice>(extras.getString("gcmDeviceName"), Optional.absent<String>(), this)
+        val device = roomListService.getDeviceForName<FhemDevice>(data.get("gcmDeviceName"), Optional.absent<String>(), this)
         if (!device.isPresent) {
-            return extras
+            return data
         }
 
         val cryptKey = device.get().xmlListDevice.getAttribute("cryptKey")
         if (!cryptKey.isPresent) {
-            return extras
+            return data
         }
 
-        return decrypt(extras, cryptKey.get())
+        return decrypt(data, cryptKey.get())
     }
 
-    private fun decrypt(extras: Bundle, cryptKey: String): Bundle {
+    private fun decrypt(data: Map<String, String>, cryptKey: String): Map<String, String> {
         val cipherOptional = cipherFor(cryptKey)
         if (!cipherOptional.isPresent) {
-            return extras
+            return data
         }
 
         val cipher = cipherOptional.get()
-        val newBundle = Bundle()
-        newBundle.putAll(extras)
-        for (key in extras.keySet()) {
-            if (DECRYPT_KEYS.contains(key)) {
-                newBundle.putString(key, decrypt(cipher, extras.getString(key)))
-            }
-        }
-
-        return newBundle
+        return data.entries
+                .map {
+                    if (DECRYPT_KEYS.contains(it.key)) {
+                        it.key to decrypt(cipher, it.value)
+                    } else it.key to it.value
+                }.toMap()
     }
 
     private fun decrypt(cipher: Cipher, value: String): String {
@@ -148,7 +120,6 @@ class GCMIntentService : GCMBaseIntentService() {
             val hexBytes = Hex.decodeHex(value.toCharArray())
             return String(cipher.doFinal(hexBytes))
         } catch (e: Exception) {
-            e.printStackTrace()
             LOG.error("decrypt($value)", e)
             return value
         }
@@ -170,14 +141,14 @@ class GCMIntentService : GCMBaseIntentService() {
 
     }
 
-    private fun handleMessage(extras: Bundle) {
+    private fun handleMessage(data: Map<String, String>) {
         var notifyId = 1
         try {
-            if (extras.containsKey("notifyId")) {
-                notifyId = Integer.valueOf(extras.getString("notifyId"))!!
+            if (data.containsKey("notifyId")) {
+                notifyId = Integer.valueOf(data.get("notifyId"))!!
             }
         } catch (e: Exception) {
-            LOG.error("handleMessage - invalid notify id: {}", extras.getString("notifyId"))
+            LOG.error("handleMessage - invalid notify id: {}", data.get("notifyId"))
         }
 
         val openIntent = Intent(this, AndFHEMMainActivity::class.java)
@@ -186,19 +157,18 @@ class GCMIntentService : GCMBaseIntentService() {
         val pendingIntent = PendingIntent.getActivity(this, notifyId, openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
-        NotificationUtil.notify(this, notifyId, pendingIntent, extras.getString("contentTitle"),
-                extras.getString("contentText"), extras.getString("tickerText"),
-                shouldVibrate(extras))
+        NotificationUtil.notify(this, notifyId, pendingIntent, data.get("contentTitle"),
+                data.get("contentText"), data.get("tickerText"),
+                shouldVibrate(data))
     }
 
-    private fun handleNotify(extras: Bundle) {
-        if (!extras.containsKey("changes")) return
+    private fun handleNotify(data: Map<String, String>) {
+        if (!data.containsKey("changes")) return
 
-        val deviceName = extras.getString("deviceName")
+        val deviceName = data.get("deviceName") ?: return
+        val changesText = data.get("changes") ?: return
 
-        val changesText = extras.getString("changes") ?: return
-
-        roomListService.parseReceivedDeviceStateMap(deviceName, extractChanges(deviceName, changesText), shouldVibrate(extras), this)
+        roomListService.parseReceivedDeviceStateMap(deviceName, extractChanges(deviceName, changesText), shouldVibrate(data), this)
     }
 
     fun extractChanges(deviceName: String, changesText: String): Map<String, String> {
@@ -226,33 +196,11 @@ class GCMIntentService : GCMBaseIntentService() {
         return changeMap
     }
 
-    private fun shouldVibrate(extras: Bundle): Boolean {
-        return extras.containsKey("vibrate") && "true".equals(extras.getString("vibrate")!!, ignoreCase = true)
-    }
-
-    override fun onDeletedMessages(context: Context?, total: Int) {
-        LOG.info("onDeletedMessages - Received deleted messages notification")
-    }
-
-    public override fun onError(context: Context, errorId: String) {
-        LOG.info("onError - received error: " + errorId)
-    }
-
-    override fun onRecoverableError(context: Context?, errorId: String?): Boolean {
-        LOG.info("onRecoverableError - errorId={}", errorId)
-        return super.onRecoverableError(context, errorId)
-    }
-
-    override fun getSenderIds(context: Context?): Array<String> {
-        val projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null, context)
-        if (Strings.isNullOrEmpty(projectId)) {
-            return arrayOf()
-        }
-        return arrayOf(projectId)
-    }
+    private fun shouldVibrate(data: Map<String, String>): Boolean =
+            data.containsKey("vibrate") && "true".equals(data.get("vibrate")!!, ignoreCase = true)
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(GCMIntentService::class.java)
+        private val LOG = LoggerFactory.getLogger(FcmIntentService::class.java)
 
         private val DECRYPT_KEYS = ImmutableSet.of("type", "notifyId", "changes", "deviceName", "tickerText", "contentText", "contentTitle")
     }

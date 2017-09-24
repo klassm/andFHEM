@@ -31,7 +31,6 @@
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -373,18 +372,11 @@
             </intent-filter>
         </receiver>
 
-        <receiver
-            android:name="li.klass.fhem.gcm.AndFHEMGCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <service android:name="li.klass.fhem.fcm.FcmIntentService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="li.klass.fhem" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </receiver>
-
-        <service android:name="li.klass.fhem.gcm.GCMIntentService" />
+        </service>
 
         <activity
             android:name="li.klass.fhem.activities.FHEMUrlActivity"
