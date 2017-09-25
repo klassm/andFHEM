@@ -37,6 +37,7 @@ import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
+import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
@@ -104,6 +105,7 @@ import li.klass.fhem.fragments.FavoritesFragment;
 import li.klass.fhem.fragments.FloorplanFragment;
 import li.klass.fhem.fragments.RoomDetailFragment;
 import li.klass.fhem.fragments.RoomListFragment;
+import li.klass.fhem.fragments.SearchResultsFragment;
 import li.klass.fhem.fragments.SendCommandFragment;
 import li.klass.fhem.fragments.TimerDetailFragment;
 import li.klass.fhem.fragments.TimerListFragment;
@@ -111,7 +113,6 @@ import li.klass.fhem.fragments.WebViewFragment;
 import li.klass.fhem.fragments.connection.ConnectionDetailFragment;
 import li.klass.fhem.fragments.connection.ConnectionListFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
-import li.klass.fhem.fragments.SearchResultsFragment;
 import li.klass.fhem.fragments.device.DeviceNameListFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
@@ -358,4 +359,6 @@ public interface ApplicationComponent {
     void inject(@NotNull SendCommandLocaleSettingActivity sendCommandLocaleSettingActivity);
 
     void inject(@NotNull SearchResultsFragment searchResultsFragment);
+
+    void inject(@NotNull FireSettingLocaleReceiver fireSettingLocaleReceiver);
 }

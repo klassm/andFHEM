@@ -88,9 +88,9 @@ class SendCommandFragment : BaseFragment() {
     private fun sendCommandIntent(command: String) {
         async(UI) {
             val result = bg {
-                sendCommandService.executeCommand(command, activity)
+                sendCommandService.executeCommand(command, connectionId = null, context = activity)
             }.await()
-            if (!isEmpty(result.replace("[\\r\\n]".toRegex(), ""))) {
+            if (!isEmpty(result?.replace("[\\r\\n]".toRegex(), ""))) {
                 AlertDialog.Builder(activity)
                         .setTitle(R.string.command_execution_result)
                         .setMessage(result)
@@ -114,7 +114,7 @@ class SendCommandFragment : BaseFragment() {
                 val adapter: ArrayAdapter<String> = view!!.command_history.adapter as ArrayAdapter<String>
                 adapter.clear()
 
-                adapter.addAll(recentCommands!!)
+                adapter.addAll(recentCommands)
                 adapter.notifyDataSetChanged()
 
                 ListViewUtil.setHeightBasedOnChildren(view!!.command_history)

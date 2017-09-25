@@ -50,7 +50,7 @@ import li.klass.fhem.constants.PreferenceKeys.*
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS
 import li.klass.fhem.fragments.core.DeviceListFragment
-import li.klass.fhem.service.CommandExecutionService.DEFAULT_NUMBER_OF_RETRIES
+import li.klass.fhem.service.CommandExecutionService
 import li.klass.fhem.service.device.GCMSendDeviceService
 import li.klass.fhem.ui.service.importExport.ImportExportUIService
 import li.klass.fhem.util.ApplicationProperties
@@ -154,7 +154,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
         connectionTimeoutPreference.setDefaultValue(CONNECTION_TIMEOUT_DEFAULT_SECONDS)
 
         val commandExecutionRetriesPreference = findPreference(COMMAND_EXECUTION_RETRIES) as SeekBarPreference
-        commandExecutionRetriesPreference.setDefaultValue(DEFAULT_NUMBER_OF_RETRIES)
+        commandExecutionRetriesPreference.setDefaultValue(CommandExecutionService.Companion.DEFAULT_NUMBER_OF_RETRIES)
 
         val voiceCommands = findPreference(PreferenceKeys.VOICE_COMMANDS)
         voiceCommands.onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -181,9 +181,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
         getDelegate().invalidateOptionsMenu()
     }
 
-    override fun getMenuInflater(): MenuInflater {
-        return getDelegate().menuInflater
-    }
+    override fun getMenuInflater(): MenuInflater = getDelegate().menuInflater
 
     override fun setContentView(@LayoutRes layoutResID: Int) {
         getDelegate().setContentView(layoutResID)
@@ -240,7 +238,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
             preference.summary = String.format(getString(summaryTemplate), newValue)
             true
         }
-        preference.summary = String.format(getString(summaryTemplate), applicationProperties!!.getIntegerSharedPreference(preferenceKey, 0, this))
+        preference.summary = String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0, this))
     }
 
     private fun attachStringSummaryListenerTo(preferenceKey: String, summaryTemplate: Int, listener: Preference.OnPreferenceChangeListener? = null) {

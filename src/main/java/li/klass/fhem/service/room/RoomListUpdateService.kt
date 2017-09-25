@@ -40,21 +40,17 @@ import javax.inject.Singleton
 @Singleton
 class RoomListUpdateService @Inject constructor(val commandExecutionService: CommandExecutionService,
                                                 val deviceListParser: DeviceListParser,
-                                                val roomListHolderService: RoomListHolderService) {
+                                                private val roomListHolderService: RoomListHolderService) {
 
-    fun updateSingleDevice(deviceName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult {
-        return executeXmllistPartial(connectionId, context, deviceName, updateWidgets)
-    }
+    fun updateSingleDevice(deviceName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult =
+            executeXmllistPartial(connectionId, context, deviceName, updateWidgets)
 
-    fun updateRoom(roomName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult {
-        return executeXmllistPartial(connectionId, context, "room=" + roomName, updateWidgets)
-    }
+    fun updateRoom(roomName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult =
+            executeXmllistPartial(connectionId, context, "room=" + roomName, updateWidgets)
 
     fun updateAllDevices(connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult {
         return executeXmllist(connectionId, context, "", updateWidgets, object : UpdateHandler {
-            override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
-                return parsed
-            }
+            override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList = parsed
         })
     }
 
@@ -82,7 +78,7 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
     private fun executeXmllist(connectionId: Optional<String>, context: Context, xmllistSuffix: String, updateWidgets: Boolean, updateHandler: UpdateHandler):
             UpdateResult {
         val command = Command("xmllist" + xmllistSuffix, connectionId)
-        val result = commandExecutionService.executeSync(command, context)
+        val result = commandExecutionService.executeSync(command, context) ?: ""
         val roomDeviceList = parseResult(connectionId, context, result, updateHandler)
         val success = update(context, connectionId, roomDeviceList)
 

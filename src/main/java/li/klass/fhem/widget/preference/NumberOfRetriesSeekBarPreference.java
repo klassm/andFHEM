@@ -53,7 +53,7 @@ public class NumberOfRetriesSeekBarPreference extends SeekBarPreference {
         text += String.format(template, 0, 0);
 
         for (int i = 1; i <= tries; i++) {
-            text += String.format(template, i, CommandExecutionService.secondsForTry(i));
+            text += String.format(template, i, CommandExecutionService.Companion.secondsForTry(i));
         }
 
         return text;
