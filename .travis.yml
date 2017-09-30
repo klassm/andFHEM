@@ -21,4 +21,4 @@ android:
     - google-gdk-license-.+
 
 script:
-  ./gradlew clean test
+  ./gradlew clean test --no-daemon

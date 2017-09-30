@@ -13,6 +13,6 @@ dependencies:
     - ci/install-dependencies.sh
 test:
   override:
-    - ./gradlew clean test
+    - ./gradlew clean test --no-daemon
 
 

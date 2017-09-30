@@ -8,7 +8,7 @@ node {
     }
 
     stage 'Build'
-    sh './gradlew clean test lint'
+    sh './gradlew clean test lint --no-daemon'
     androidLint pattern: 'build/**/lint*.xml'
     step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/**/*.xml'])
 }
