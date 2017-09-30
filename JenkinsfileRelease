@@ -8,7 +8,7 @@ node {
     }
 
     stage 'Build'
-    sh './gradlew clean assembleRelease'
+    sh './gradlew release -Prelease.useAutomaticVersion=true'
 
     stage 'Archive Artifacts'
     step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])

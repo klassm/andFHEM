@@ -22,19 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-def getAppVersionCode() {
-    return Integer.valueOf(version.replaceAll("\\.", ""))
-}
-
-ext {
-    supportLibVersion = '26.1.0'
-    firebaseVersion = '11.4.0'
-    buildProperties = getBuildProperties()
-    anko_version = '0.10.1'
-}
-
 buildscript {
-    ext.kotlin_version = '1.1.2-3'
+    ext.kotlin_version = '1.1.50'
     repositories {
         mavenCentral()
         jcenter()
@@ -53,9 +42,14 @@ buildscript {
     }
 }
 
+plugins {
+    id 'net.researchgate.release' version '2.4.0'
+}
+
 repositories {
     mavenCentral()
     jcenter()
+    maven { url 'https://plugins.gradle.org/m2/' }
     maven { url 'https://dl.bintray.com/mamohr/maven' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
@@ -63,12 +57,24 @@ repositories {
     maven { url "https://maven.google.com" }
 }
 
+
+def getAppVersionCode() {
+    return Integer.valueOf(version.replaceAll("\\.", ""))
+}
+
+ext {
+    supportLibVersion = '26.1.0'
+    firebaseVersion = '11.4.0'
+    buildProperties = getBuildProperties()
+    anko_version = '0.10.1'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
 apply plugin: 'co.riiid.gradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
@@ -186,10 +192,6 @@ project.gradle.taskGraph.whenReady {
 }
 
 unMock {
-    // classes to keep
-    // matched by "startsWith" - you also need to include the dependencies manually
-    // if you start with an "-" the class will match by "equals" (and it will additionally  match
-    // inner classes of this class)
     keep = [
             "android.text.TextUtils",
             "android.util.",
@@ -221,7 +223,7 @@ dependencies {
     compile 'com.google.guava:guava:20.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.google.dagger:dagger:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
     provided 'javax.annotation:jsr250-api:1.0'
     compile('com.google.http-client:google-http-client-android:1.22.0') {
         exclude group: 'com.google.code.findbugs'
@@ -283,6 +285,8 @@ dependencies {
     })
 }
 
+task myRelease(dependsOn: 'assembleRelease')
+
 task readSigningPasswordsFromConsole(
         dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
 
@@ -308,25 +312,9 @@ tasks.whenTaskAdded { task ->
     }
 }
 
-task release(dependsOn: ['testInappDebugUnitTest', 'assembleRelease', 'uploadToGoogleSites']) << {}
-
 def readFromConsole(String prompt) {
     def console = System.console()
     return new String(console.readPassword('\n\n' + prompt + '\n> '))
-}
-
-task artifacts {
-    group = "Help"
-    description = "Displays the artifacts associated with each configuration of " + project
-    doFirst {
-        println "  Project:" + project.name
-        project.configurations.each { conf ->
-            println "    Configuration: ${conf.name}"
-            conf.allDependencies.each { dep ->
-                println "      ${dep.group}:${dep.name}:${dep.version}"
-            }
-        }
-    }
 }
 
 def getBuildProperty(String key) {
@@ -356,6 +344,11 @@ android.applicationVariants.all { variant ->
     }
 }
 
+release {
+    buildTasks = ['myRelease']
+}
+
 apply from: 'build-includes/test-resources.gradle'
 apply from: 'build-includes/resource-id-mapper-generator.gradle'
 apply from: 'build-includes/device-configuration-generator.gradle'
+apply plugin: 'com.google.gms.google-services'
