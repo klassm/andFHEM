@@ -3,4 +3,7 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:hint="@string/app_name"
     android:label="@string/search_title"
+    android:searchSuggestAuthority="li.klass.fhem.search.MySearchSuggestionsProvider"
+    android:searchSuggestSelection=" ?"
+    android:searchSuggestIntentAction="android.intent.action.VIEW"
     />

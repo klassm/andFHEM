@@ -54,6 +54,12 @@
         <item name="android:textColorSecondaryInverseNoDisable">
             @android:color/secondary_text_light_nodisable
         </item>
+        <item name="android:dropDownItemStyle">@style/myDropDownItemStyle</item>
+    </style>
+
+    <style name="myDropDownItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="FullscreenTheme" parent="@style/Theme.AppCompat.Light">

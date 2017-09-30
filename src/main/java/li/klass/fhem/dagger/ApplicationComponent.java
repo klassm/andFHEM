@@ -105,7 +105,6 @@ import li.klass.fhem.fragments.FavoritesFragment;
 import li.klass.fhem.fragments.FloorplanFragment;
 import li.klass.fhem.fragments.RoomDetailFragment;
 import li.klass.fhem.fragments.RoomListFragment;
-import li.klass.fhem.fragments.SearchResultsFragment;
 import li.klass.fhem.fragments.SendCommandFragment;
 import li.klass.fhem.fragments.TimerDetailFragment;
 import li.klass.fhem.fragments.TimerListFragment;
@@ -119,6 +118,8 @@ import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
+import li.klass.fhem.search.MySearchSuggestionsProvider;
+import li.klass.fhem.search.SearchResultsFragment;
 import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.importexport.ImportExportService;
@@ -358,4 +359,6 @@ public interface ApplicationComponent {
     void inject(@NotNull SearchResultsFragment searchResultsFragment);
 
     void inject(@NotNull FireSettingLocaleReceiver fireSettingLocaleReceiver);
+
+    void inject(@NotNull MySearchSuggestionsProvider mySearchSuggestionsProvider);
 }

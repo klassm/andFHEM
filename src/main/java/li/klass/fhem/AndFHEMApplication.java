@@ -81,6 +81,14 @@ public class AndFHEMApplication extends MultiDexApplication {
     }
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        daggerComponent = createDaggerComponent();
+        daggerComponent.inject(this);
+        application = this;
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         setDefaultUncaughtExceptionHandler();
@@ -89,10 +97,6 @@ public class AndFHEMApplication extends MultiDexApplication {
         if (firebaseApp != null) {
             firebaseApp.setAutomaticResourceManagementEnabled(true);
         }
-        application = this;
-
-        daggerComponent = createDaggerComponent();
-        daggerComponent.inject(this);
 
         setApplicationInformation();
 

@@ -78,7 +78,12 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="android.app.default_searchable"
-            android:value="li.klass.fhem.activities.SearchResultsActivity" />
+            android:value="li.klass.fhem.search.SearchResultsActivity" />
+
+        <provider
+            android:exported="false"
+            android:name=".search.MySearchSuggestionsProvider"
+            android:authorities="li.klass.fhem.search.MySearchSuggestionsProvider" />
 
         <activity android:name=".activities.DuplicateInstallActivity" />
         <activity
@@ -97,7 +102,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.SearchResultsActivity">
+        <activity
+            android:name=".search.SearchResultsActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

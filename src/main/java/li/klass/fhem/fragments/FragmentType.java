@@ -37,6 +37,7 @@ import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
+import li.klass.fhem.search.SearchResultsFragment;
 
 public enum FragmentType {
     FAVORITES(FavoritesFragment.class, R.id.favorites, null),

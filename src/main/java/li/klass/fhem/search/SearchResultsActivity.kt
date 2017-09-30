@@ -1,4 +1,4 @@
-package li.klass.fhem.activities
+package li.klass.fhem.search
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,8 +7,10 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import li.klass.fhem.R
+import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.fragments.SearchResultsFragment
+import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.fragments.FragmentType
 
 
 class SearchResultsActivity : AppCompatActivity() {
@@ -23,6 +25,22 @@ class SearchResultsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        when (intent.action) {
+            Intent.ACTION_SEARCH -> handleSearch()
+            Intent.ACTION_VIEW -> handleView()
+        }
+    }
+
+    private fun handleView() {
+        val deviceName = intent.extras.getString("query")
+        val bundle = Bundle()
+        bundle.putString(BundleExtraKeys.DEVICE_NAME, deviceName)
+        bundle.putSerializable(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
+        startActivity(Intent(this, AndFHEMMainActivity::class.java).putExtras(bundle))
+        finish()
+    }
+
+    private fun handleSearch() {
         setContentView(R.layout.search_results_main)
 
         val fragment = SearchResultsFragment()
