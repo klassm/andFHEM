@@ -1,14 +1,14 @@
 node {
+
     stage 'Checkout'
     checkout scm
+    sh 'git checkout master'
+    sh 'git rebase'
 
-    stage 'Prepare'
-    lock('dependencies') {
-        sh 'ci/install-dependencies.sh'
-    }
+
 
     stage 'Build'
-    sh './gradlew release -Prelease.useAutomaticVersion=true --no-daemon'
+    sh './gradlew clean release -Prelease.useAutomaticVersion=true --no-daemon'
 
     stage 'Archive Artifacts'
     step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])

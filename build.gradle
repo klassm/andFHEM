@@ -346,6 +346,8 @@ android.applicationVariants.all { variant ->
 
 release {
     buildTasks = ['myRelease']
+    versionPropertyFile = 'gradle.properties'
+    versionProperties = ['version']
 }
 
 apply from: 'build-includes/test-resources.gradle'
