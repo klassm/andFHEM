@@ -224,13 +224,6 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.intent.ConnectionsIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_SET_SELECTED" />
-            </intent-filter>
-        </service>
-        <service
             android:name=".service.intent.ExternalApiService"
             android:exported="true"
             android:permission="li.klass.fhem.permissions.EXTERNAL">

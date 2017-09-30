@@ -31,7 +31,7 @@ import android.util.Log
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.service.intent.ConnectionsIntentService
+import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.SendCommandService
 import org.jetbrains.anko.doAsync
 import javax.inject.Inject
@@ -40,6 +40,8 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var sendCommandService: SendCommandService
+    @Inject
+    lateinit var connectionsService: ConnectionService
 
     init {
         AndFHEMApplication.getApplication().daggerComponent.inject(this)
@@ -52,15 +54,14 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
 
         Log.i(TAG, "action=$action,command=$command,connectionId=$connectionId")
 
-
         if (Actions.EXECUTE_COMMAND == action) {
             doAsync {
                 sendCommandService.executeCommand(command, connectionId, context)
             }
         } else if (Actions.CONNECTION_UPDATE == action) {
-            context.startService(Intent(Actions.CONNECTION_SET_SELECTED)
-                    .setClass(context, ConnectionsIntentService::class.java)
-                    .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId))
+            doAsync {
+                connectionsService.setSelectedId(connectionId, context)
+            }
         }
     }
 

@@ -123,7 +123,6 @@ import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
 import li.klass.fhem.service.graph.gplot.GPlotHolder;
 import li.klass.fhem.service.importexport.ImportExportService;
 import li.klass.fhem.service.intent.AppActionsIntentService;
-import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.ExternalApiService;
 import li.klass.fhem.service.intent.ImageIntentService;
@@ -309,8 +308,6 @@ public interface ApplicationComponent {
     void inject(AppIndexIntentService object);
 
     void inject(FcmIntentService object);
-
-    void inject(ConnectionsIntentService object);
 
     void inject(SendCommandService object);
 
