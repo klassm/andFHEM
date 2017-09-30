@@ -27,7 +27,6 @@ package li.klass.fhem.fragments.core
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
 import android.support.v7.widget.CardView
@@ -124,13 +123,13 @@ abstract class DeviceListFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        val layoutManager = view?.devices?.layoutManager as StaggeredGridLayoutManager
+        layoutManager.spanCount = getNumberOfColumns()
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
     }
 
-    override fun canChildScrollUp(): Boolean {
-        view ?: return false
-        return ViewCompat.canScrollVertically(view!!.devices, -1) || super.canChildScrollUp()
-    }
+    override fun canChildScrollUp(): Boolean =
+            view?.devices?.canScrollVertically(-1) ?: false || super.canChildScrollUp()
 
     protected open fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, viewGroup, false)!!
