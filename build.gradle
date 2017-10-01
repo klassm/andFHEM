@@ -59,7 +59,7 @@ repositories {
 
 
 def getAppVersionCode() {
-    return Integer.valueOf(version.replaceAll("\\.", ""))
+    return Integer.valueOf(version.replaceAll("\\.", "").replace("-SNAPSHOT", ""))
 }
 
 ext {
