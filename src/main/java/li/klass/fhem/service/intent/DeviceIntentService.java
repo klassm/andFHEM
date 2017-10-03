@@ -32,7 +32,6 @@ import android.util.Log;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -46,7 +45,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
@@ -61,7 +59,6 @@ import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.service.device.AtService;
 import li.klass.fhem.service.device.DeviceService;
 import li.klass.fhem.service.device.DimmableDeviceService;
-import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
 import li.klass.fhem.service.device.HeatingService;
@@ -95,8 +92,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY;
 import static li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW;
 import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
-import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
-import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
@@ -140,8 +135,6 @@ public class DeviceIntentService extends ConvenientIntentService {
     FavoritesService favoritesService;
     @Inject
     GenericDeviceService genericDeviceService;
-    @Inject
-    GCMSendDeviceService gcmSendDeviceService;
     @Inject
     CommandExecutionService commandExecutionService;
     @Inject
@@ -264,13 +257,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
 
             genericDeviceService.setSubStates(device, statesToSet, connectionId, this);
-
-        } else if (GCM_ADD_SELF.equals(action)) {
-            gcmSendDeviceService.addSelf((GCMSendDevice) device, this);
-
-        } else if (GCM_REMOVE_ID.equals(action)) {
-            String registrationId = intent.getStringExtra(FirebaseInstanceId.getInstance().getId());
-            gcmSendDeviceService.removeRegistrationId((GCMSendDevice) device, registrationId, this);
 
         } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
 

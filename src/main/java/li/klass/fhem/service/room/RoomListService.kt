@@ -145,9 +145,8 @@ constructor() : AbstractService() {
      * *
      * @param context context
      */
-    fun getRoomDeviceList(connectionId: Optional<String>, context: Context): Optional<RoomDeviceList> {
-        return roomListHolderService.getCachedRoomDeviceListMap(connectionId, context)
-    }
+    fun getRoomDeviceList(connectionId: Optional<String>, context: Context): Optional<RoomDeviceList> =
+            roomListHolderService.getCachedRoomDeviceListMap(connectionId, context)
 
     fun resetUpdateProgress(context: Context) {
         LOG.debug("resetUpdateProgress()")
@@ -171,36 +170,6 @@ constructor() : AbstractService() {
         }
     }
 
-    private fun answerError(resendIntent: Intent) {
-        val receiver = resendIntent.getParcelableExtra<ResultReceiver>(RESULT_RECEIVER)
-        receiver?.send(ResultCodes.ERROR, Bundle())
-    }
-
-    private fun resend(intent: Intent, context: Context) {
-        LOG.info("resend() : resending {}", intent.action)
-
-        if (intent.getIntExtra(RESEND_TRY, 0) > 2) {
-            if (intent.hasExtra(RESULT_RECEIVER)) {
-                val receiver = intent.getParcelableExtra<ResultReceiver>(RESULT_RECEIVER)
-                receiver.send(ResultCodes.ERROR, Bundle())
-                LOG.error("resend() - exceeds maximum attempts, sending error")
-            }
-        } else {
-            context.startService(intent)
-        }
-    }
-
-    private fun createResendIntent(intent: Intent): Intent {
-        val resendIntent = Intent(intent)
-        resendIntent.removeExtra(DO_REFRESH)
-        resendIntent.removeExtra(UPDATE_PERIOD)
-
-        resendIntent.putExtra(UPDATE_PERIOD, NEVER_UPDATE_PERIOD)
-        resendIntent.putExtra(RESEND_TRY, intent.getIntExtra(RESEND_TRY, 0) + 1)
-
-        return resendIntent
-    }
-
     private fun shouldUpdate(updatePeriod: Long, connectionId: Optional<String>, context: Context, hasDevice: Boolean): Boolean {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
             LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
@@ -222,9 +191,8 @@ constructor() : AbstractService() {
         return shouldUpdate
     }
 
-    fun getLastUpdate(connectionId: Optional<String>, context: Context): Long {
-        return roomListHolderService.getLastUpdate(connectionId, context)
-    }
+    fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
+            roomListHolderService.getLastUpdate(connectionId, context)
 
     fun getAvailableDeviceNames(connectionId: Optional<String>, context: Context): ArrayList<String> {
         val deviceNames = newArrayList<String>()
@@ -322,10 +290,6 @@ constructor() : AbstractService() {
         }
 
         return roomDeviceList
-    }
-
-    enum class RemoteUpdateRequired {
-        REQUIRED, NOT_REQUIRED
     }
 
     companion object {

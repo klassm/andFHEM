@@ -51,7 +51,7 @@ import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS
 import li.klass.fhem.fragments.core.DeviceListFragment
 import li.klass.fhem.service.CommandExecutionService
-import li.klass.fhem.service.device.GCMSendDeviceService
+import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.ui.service.importExport.ImportExportUIService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.widget.preference.SeekBarPreference

@@ -292,8 +292,6 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES" />
-                <action android:name="li.klass.fhem.constants.Actions.GCM_REMOVE_ID" />
-                <action android:name="li.klass.fhem.constants.Actions.GCM_ADD_SELF" />
                 <action android:name="li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS" />
             </intent-filter>
@@ -370,7 +368,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".fcm.FcmIntentService">
+        <service android:name=".fcm.FcmIntentService" android:exported="true" android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

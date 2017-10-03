@@ -76,16 +76,12 @@ public class Actions {
 
     public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
 
-    public static final String GCM_REMOVE_ID = prefix + "GCM_REMOVE_ID";
-    public static final String GCM_ADD_SELF = prefix + "GCM_ADD_SELF";
-
     public static final String NOTIFICATION_SET_FOR_DEVICE = prefix + "NOTIFICATION_SET_FOR_DEVICE";
     public static final String NOTIFICATION_GET_FOR_DEVICE = prefix + "NOTIFICATION_GET_FOR_DEVICE";
     public static final String NOTIFICATION_TRIGGER = prefix + "NOTIFICATION_TRIGGER";
 
     public static final String CONNECTIONS_CHANGED = prefix + "CONNECTIONS_CHANGED";
     public static final String CONNECTION_UPDATE = prefix + "CONNECTION_UPDATE";
-    public static final String CONNECTION_SET_SELECTED = prefix + "CONNECTION_SET_SELECTED";
 
     public static final String CONNECTION_ERROR = prefix + "CONNECTION_ERROR";
     public static final String CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE";

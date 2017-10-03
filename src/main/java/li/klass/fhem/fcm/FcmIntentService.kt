@@ -61,6 +61,8 @@ class FcmIntentService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage?) {
+        super.onMessageReceived(message)
+
         message ?: return
 
         val data = message.data?.toMap() ?: return

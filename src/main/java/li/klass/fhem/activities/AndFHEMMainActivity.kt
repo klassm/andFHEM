@@ -73,7 +73,7 @@ import li.klass.fhem.fragments.FragmentType.*
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.connection.ConnectionService
-import li.klass.fhem.service.device.GCMSendDeviceService
+import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.update.UpdateHandler
 import li.klass.fhem.util.ApplicationProperties

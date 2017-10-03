@@ -82,7 +82,7 @@ class CommandExecutionService @Inject constructor(
         executeSafely(command, 0, context, resultListener)
     }
 
-    fun executeSafely(command: Command, delay: Int, context: Context, resultListener: ResultListener) {
+    private fun executeSafely(command: Command, delay: Int, context: Context, resultListener: ResultListener) {
         LOG.info("executeSafely(command={}, delay={})", command, delay)
         if (delay == 0) {
             executeImmediately(command, 0, context, resultListener)
@@ -145,7 +145,7 @@ class CommandExecutionService @Inject constructor(
         if (result.error == null) return false
         if (result.error != CONNECTION_TIMEOUT && result.error != HOST_CONNECTION_ERROR)
             return false
-        return if (currentTry > getNumberOfRetries(context)) false else true
+        return currentTry <= getNumberOfRetries(context)
 
     }
 
@@ -194,11 +194,11 @@ class CommandExecutionService @Inject constructor(
         if (result.handleErrors(context)) {
             return Optional.absent()
         }
-        try {
-            return Optional.of(CharStreams.toString(InputStreamReader(result.content)))
+        return try {
+            Optional.of(CharStreams.toString(InputStreamReader(result.content)))
         } catch (e: IOException) {
             LOG.error("executeRequest() - cannot read stream", e)
-            return Optional.absent()
+            Optional.absent()
         } finally {
             CloseableUtil.close(result.content)
         }
@@ -221,7 +221,7 @@ class CommandExecutionService @Inject constructor(
         fun getResult(): String? = if (result != null) result!!.trim { it <= ' ' } else null
     }
 
-    inner class ResendCommand internal constructor(internal var command: Command, internal var currentTry: Int, private val context: Context, private val resultListener: ResultListener) : Runnable {
+    inner class ResendCommand internal constructor(internal var command: Command, private var currentTry: Int, private val context: Context, private val resultListener: ResultListener) : Runnable {
 
         override fun run() {
             executeImmediately(command, currentTry, context, resultListener)

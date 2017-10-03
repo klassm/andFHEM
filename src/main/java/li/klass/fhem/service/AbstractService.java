@@ -50,10 +50,4 @@ public class AbstractService {
         broadcastIntent.putExtras(bundle);
         context.sendBroadcast(broadcastIntent);
     }
-
-    protected void showToast(int stringId, Context context) {
-        Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.STRING_ID, stringId);
-        context.sendBroadcast(intent);
-    }
 }
