@@ -268,7 +268,6 @@
             android:name=".service.intent.DeviceIntentService"
             android:exported="false">
             <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_GRAPH" />
                 <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.SET_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_DIM" />

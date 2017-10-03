@@ -30,10 +30,8 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +40,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -63,17 +60,14 @@ import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
 import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
-import li.klass.fhem.service.graph.GraphData;
 import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.util.BundleUtil;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
-import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
@@ -96,7 +90,6 @@ import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_MODE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
@@ -105,8 +98,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ROOM;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TEMPERATURE;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
-import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
@@ -172,9 +163,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         String action = intent.getAction();
 
         State result = State.SUCCESS;
-        if (DEVICE_GRAPH.equals(action)) {
-            result = graphIntent(intent, device, resultReceiver);
-        } else if (DEVICE_TOGGLE_STATE.equals(action)) {
+        if (DEVICE_TOGGLE_STATE.equals(action)) {
             result = toggleIntent(device, connectionId);
         } else if (DEVICE_SET_STATE.equals(action)) {
             result = setStateIntent(intent, device, connectionId);
@@ -275,29 +264,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         }
 
         return result;
-    }
-
-    /**
-     * Find out graph data for a given device and notify the result receiver with the read graph data
-     *
-     * @param intent         received intent
-     * @param device         device to read the graph data
-     * @param resultReceiver receiver to notify on result
-     * @return success?
-     */
-    private State graphIntent(Intent intent, FhemDevice device, ResultReceiver resultReceiver) {
-        SvgGraphDefinition graphDefinition = (SvgGraphDefinition) intent.getSerializableExtra(DEVICE_GRAPH_DEFINITION);
-        DateTime startDate = (DateTime) intent.getSerializableExtra(START_DATE);
-        DateTime endDate = (DateTime) intent.getSerializableExtra(END_DATE);
-        Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(BundleExtraKeys.CONNECTION_ID));
-
-        GraphData graphData = graphService.getGraphData(device, connectionId, graphDefinition, startDate, endDate, this);
-        sendResult(resultReceiver, ResultCodes.SUCCESS, BundleUtil.mapToBundle(
-                ImmutableMap.of(DEVICE_GRAPH_ENTRY_MAP, graphData.getData(),
-                        START_DATE, graphData.getInterval().getStart(),
-                        END_DATE, graphData.getInterval().getEnd())
-        ));
-        return State.DONE;
     }
 
     /**

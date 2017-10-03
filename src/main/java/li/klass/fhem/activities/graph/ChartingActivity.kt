@@ -32,7 +32,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.github.mikephil.charting.charts.LineChart
@@ -52,18 +51,15 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
-import li.klass.fhem.constants.Actions.DEVICE_GRAPH
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.graph.GraphEntry
+import li.klass.fhem.service.graph.GraphService
 import li.klass.fhem.service.graph.gplot.GPlotSeries
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition
-import li.klass.fhem.service.intent.DeviceIntentService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT
 import li.klass.fhem.util.DisplayUtil
-import li.klass.fhem.util.FhemResultReceiver
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -79,6 +75,9 @@ class ChartingActivity : AppCompatActivity(), Updateable {
 
     @Inject
     lateinit var roomListService: RoomListService
+
+    @Inject
+    lateinit var graphService: GraphService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,44 +111,28 @@ class ChartingActivity : AppCompatActivity(), Updateable {
                 roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), activityAsContext)
             }.await()
             if (device.isPresent) {
-                readDataAndCreateChart(refresh, device.get())
+                readDataAndCreateChart(device.get())
             }
         }
     }
 
     /**
      * Reads all the charting data for a given date and the column specifications set as attribute.
-
-     * @param doRefresh should the underlying room device list be refreshed?
-     * *
      * @param device    concerned device
      */
-    private fun readDataAndCreateChart(doRefresh: Boolean, device: FhemDevice) {
-        showDialog(DIALOG_EXECUTING)
-        startService(Intent(DEVICE_GRAPH)
-                .setClass(this, DeviceIntentService::class.java)
-                .putExtra(DO_REFRESH, doRefresh)
-                .putExtra(DEVICE_NAME, deviceName)
-                .putExtra(START_DATE, startDate)
-                .putExtra(END_DATE, endDate)
-                .putExtra(CONNECTION_ID, connectionId)
-                .putExtra(DEVICE_GRAPH_DEFINITION, svgGraphDefinition)
-                .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultData != null && resultCode == ResultCodes.SUCCESS) {
-                            startDate = resultData.get(START_DATE) as DateTime
-                            endDate = resultData.get(END_DATE) as DateTime
-                            createChart(device, resultData.get(DEVICE_GRAPH_ENTRY_MAP) as Map<GPlotSeries, MutableList<GraphEntry>>)
-                        }
+    private fun readDataAndCreateChart(device: FhemDevice) {
+        val myContext = this
+        async(UI) {
+            showDialog(DIALOG_EXECUTING)
+            val result = bg {
+                graphService.getGraphData(device, Optional.absent(), svgGraphDefinition, startDate, endDate, myContext)
+            }.await()
+            dismissDialog(DIALOG_EXECUTING)
 
-                        try {
-                            dismissDialog(DIALOG_EXECUTING)
-                        } catch (e: Exception) {
-                            Log.e(ChartingActivity::class.java.name, "error while hiding dialog", e)
-                        }
-
-                    }
-                }))
+            startDate = result.interval.start
+            endDate = result.interval.end
+            createChart(device, result.data)
+        }
     }
 
     /**
@@ -192,7 +175,7 @@ class ChartingActivity : AppCompatActivity(), Updateable {
         lineChart.description = description
         lineChart.setNoDataText(getString(R.string.noGraphEntries))
         lineChart.data = lineData
-        lineChart.markerView = ChartMarkerView(this)
+        lineChart.marker = ChartMarkerView(this)
 
         lineChart.animateX(200)
     }
