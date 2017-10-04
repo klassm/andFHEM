@@ -36,7 +36,7 @@ import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.appwidget.WidgetConfiguration
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.ToggleableDevice
@@ -46,7 +46,6 @@ import javax.inject.Inject
 open class ToggleWidgetView : DeviceAppWidgetView() {
     @Inject
     lateinit var deviceHookProvider: DeviceHookProvider
-
     @Inject
     lateinit var onOffBehavior: OnOffBehavior
 
@@ -55,36 +54,8 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
     override fun getContentView(): Int = R.layout.appwidget_toggle
 
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
-        var isOn = onOffBehavior.isOn(device)
-
-        val actionIntent: Intent
-
-        val hook = deviceHookProvider.buttonHookFor(device)
-
-        if (hook != ButtonHook.ON_DEVICE && hook != ButtonHook.OFF_DEVICE) {
-            actionIntent = Intent(Actions.DEVICE_WIDGET_TOGGLE)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId)
-                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                    .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId.orNull())
-        } else {
-            actionIntent = Intent(Actions.DEVICE_SET_STATE)
-                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                    .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId.orNull())
-
-
-            when (hook) {
-                ButtonHook.ON_DEVICE -> {
-                    isOn = true
-                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, deviceHookProvider.getOnStateName(device))
-                }
-                ButtonHook.OFF_DEVICE -> {
-                    isOn = false
-                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, deviceHookProvider.getOffStateName(device))
-                }
-            }
-        }
-        actionIntent.setClass(context, DeviceIntentService::class.java)
+        val isOn = onOffBehavior.isOnConsideringHooks(device)
+        val actionIntent = actionIntentFor(device, widgetConfiguration, context)
 
         if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE)
@@ -96,13 +67,35 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
             view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(deviceHookProvider.getOffStateName(device)))
         }
 
-        val pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         view.setOnClickPendingIntent(R.id.toggleOff, pendingIntent)
         view.setOnClickPendingIntent(R.id.toggleOn, pendingIntent)
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
+
+    private fun actionIntentFor(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): Intent {
+        val hook = deviceHookProvider.buttonHookFor(device)
+
+        val actionIntent = when (hook) {
+            ButtonHook.ON_DEVICE -> actionIntentForOnOffDevice(device, widgetConfiguration)
+                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOnStateName(device))
+            ButtonHook.OFF_DEVICE -> actionIntentForOnOffDevice(device, widgetConfiguration)
+                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOffStateName(device))
+            else -> Intent(Actions.DEVICE_WIDGET_TOGGLE)
+                    .putExtra(APP_WIDGET_ID, widgetConfiguration.widgetId)
+                    .putExtra(DEVICE_NAME, device.name)
+                    .putExtra(CONNECTION_ID, widgetConfiguration.connectionId.orNull())
+        }
+        return actionIntent
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .setClass(context, DeviceIntentService::class.java)
+    }
+
+    private fun actionIntentForOnOffDevice(device: FhemDevice, widgetConfiguration: WidgetConfiguration): Intent =
+            Intent(Actions.DEVICE_SET_STATE)
+                    .putExtra(DEVICE_NAME, device.name)
+                    .putExtra(CONNECTION_ID, widgetConfiguration.connectionId.orNull())
 
     override fun supports(device: FhemDevice, context: Context): Boolean =
             device is ToggleableDevice && device.supportsToggle()

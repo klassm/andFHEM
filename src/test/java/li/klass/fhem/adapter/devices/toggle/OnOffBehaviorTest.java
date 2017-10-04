@@ -34,14 +34,18 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.domain.EIBDevice;
+import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
+import static com.tngtech.java.junit.dataprovider.DataProviders.$;
+import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class OnOffBehaviorTest {
@@ -73,6 +77,7 @@ public class OnOffBehaviorTest {
         ToggleableDevice device = new EIBDevice();
         device.setXmlListDevice(new XmlListDevice("BLUB"));
         device.setState(readState);
+        when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
 
         // expect
         assertThat(onOffBehavior.isOnByState(device)).isEqualTo(isOn);
@@ -88,17 +93,45 @@ public class OnOffBehaviorTest {
         xmlListDevice.setInternal("NAME", "Name");
         device.setXmlListDevice(xmlListDevice);
         device.setState(readState);
-        given(deviceHookProvider.invertState(device)).willReturn(false);
+        when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
+        when(deviceHookProvider.invertState(device)).thenReturn(false);
 
         ToggleableDevice device2 = new EIBDevice();
         XmlListDevice xmlListDevice2 = new XmlListDevice("BLA");
         xmlListDevice.setInternal("NAME", "name");
         device2.setXmlListDevice(xmlListDevice2);
         device2.setState(readState);
-        given(deviceHookProvider.invertState(device2)).willReturn(true);
+        when(deviceHookProvider.getOffStateName(device2)).thenReturn("off");
+        when(deviceHookProvider.invertState(device2)).thenReturn(true);
 
         // expect
         assertThat(onOffBehavior.isOn(device)).isEqualTo(isOn);
         assertThat(onOffBehavior.isOn(device2)).isEqualTo(!isOn);
+    }
+
+    @DataProvider
+    public static Object[][] hookProvider() {
+        return $$(
+                $(ButtonHook.ON_DEVICE, true, true),
+                $(ButtonHook.ON_DEVICE, false, true),
+                $(ButtonHook.OFF_DEVICE, true, false),
+                $(ButtonHook.OFF_DEVICE, false, false),
+                $(ButtonHook.NORMAL, true, true),
+                $(ButtonHook.NORMAL, false, false)
+        );
+    }
+
+    @Test
+    @UseDataProvider("hookProvider")
+    public void isOnConsideringHooks(ButtonHook hook, boolean isOn, boolean expected) throws Exception {
+        GenericDevice device = new GenericDevice();
+        device.setXmlListDevice(new XmlListDevice("GENERIC"));
+        when(deviceHookProvider.buttonHookFor(device)).thenReturn(hook);
+        when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
+        device.setState(isOn ? "on" : "off");
+
+        boolean result = onOffBehavior.isOnConsideringHooks(device);
+
+        assertThat(result).isEqualTo(expected);
     }
 }

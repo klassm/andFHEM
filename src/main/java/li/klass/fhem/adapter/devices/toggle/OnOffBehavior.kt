@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.toggle
 
 import com.google.common.collect.Lists.newArrayList
+import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
 import java.util.*
@@ -35,9 +36,7 @@ import javax.inject.Singleton
 class OnOffBehavior
 @Inject constructor(val hookProvider: DeviceHookProvider) {
 
-    fun isOnByState(device: FhemDevice): Boolean {
-        return !isOffByState(device)
-    }
+    fun isOnByState(device: FhemDevice): Boolean = !isOffByState(device)
 
     fun isOffByState(device: FhemDevice): Boolean {
         val internalState = device.internalState.toLowerCase(Locale.getDefault())
@@ -63,12 +62,17 @@ class OnOffBehavior
         return isOn
     }
 
+    fun isOnConsideringHooks(device: FhemDevice): Boolean =
+            when (hookProvider.buttonHookFor(device)) {
+                ButtonHook.ON_DEVICE -> true
+                ButtonHook.OFF_DEVICE -> false
+                else -> isOn(device)
+            }
+
     private fun getOffStateNames(device: FhemDevice): List<String> {
         val offStateNames = newArrayList("off", "OFF")
         val offStateName = hookProvider.getOffStateName(device)
-        if (offStateName != null) {
-            offStateNames.add(offStateName.toLowerCase(Locale.getDefault()))
-        }
+        offStateNames.add(offStateName.toLowerCase(Locale.getDefault()))
 
         for (state in newArrayList(offStateNames)) {
             val reverseEventMapState = device.getReverseEventMapStateFor(state)
