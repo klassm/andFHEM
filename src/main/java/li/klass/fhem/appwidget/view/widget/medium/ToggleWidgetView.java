@@ -70,7 +70,7 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
 
         ButtonHook hook = deviceHookProvider.buttonHookFor(device);
 
-        if (hook == ButtonHook.NORMAL || hook == ButtonHook.ON_OFF_DEVICE) {
+        if (hook != ButtonHook.ON_DEVICE && hook != ButtonHook.OFF_DEVICE) {
             actionIntent = new Intent(Actions.DEVICE_WIDGET_TOGGLE)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId)
