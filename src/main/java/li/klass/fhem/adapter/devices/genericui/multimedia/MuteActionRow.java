@@ -28,12 +28,11 @@ import android.content.Context;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.StateChangingYesNoTwoButtonActionRow;
-import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.util.vol.VolumeUtilBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class MuteActionRow extends StateChangingYesNoTwoButtonActionRow {
-    public MuteActionRow(StateUiService stateUiService, String connectionId) {
+    public MuteActionRow(String connectionId) {
         super(R.string.musicMute, connectionId);
     }
 

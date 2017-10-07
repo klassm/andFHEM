@@ -68,7 +68,7 @@ public class EnigmaDeviceAdapter extends ToggleableAdapter {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
                 EnigmaDevice enigmaDevice = (EnigmaDevice) device;
-                tableLayout.addView(new MuteActionRow(stateUiService, connectionId)
+                tableLayout.addView(new MuteActionRow(connectionId)
                         .createRow(device, context));
 
                 GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("input");

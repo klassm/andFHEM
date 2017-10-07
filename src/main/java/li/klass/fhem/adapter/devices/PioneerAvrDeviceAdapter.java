@@ -68,7 +68,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow(stateUiService, connectionId)
+                tableLayout.addView(new MuteActionRow(connectionId)
                         .createRow(device, context));
 
                 GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("input");

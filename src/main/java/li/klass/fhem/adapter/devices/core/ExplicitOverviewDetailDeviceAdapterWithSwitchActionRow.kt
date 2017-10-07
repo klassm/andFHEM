@@ -22,33 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.core
 
-import android.content.Context;
-import android.content.Intent;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction
+import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.domain.core.FhemDevice
 
-import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.WebLinkDevice;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.fragments.FragmentType;
-
-public class WebLinkAdapter extends ExplicitOverviewDetailDeviceAdapter {
-    @Override
-    public Class<? extends FhemDevice> getSupportedDeviceClass() {
-        return WebLinkDevice.class;
+open class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow : ExplicitOverviewDetailDeviceAdapter() {
+    override fun inject(daggerComponent: ApplicationComponent) {
+        daggerComponent.inject(this)
     }
 
-    @Override
-    protected void inject(ApplicationComponent daggerComponent) {
-        daggerComponent.inject(this);
+    override fun getSupportedDeviceClass(): Class<out FhemDevice> {
+        return FhemDevice::class.java
     }
 
-    @Override
-    protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
-        return intent
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW)
-                .putExtra(BundleExtraKeys.LOAD_URL, ((WebLinkDevice) device).getLink());
+    override fun provideDetailActions(): MutableList<DeviceDetailViewAction> {
+        val actions = super.provideDetailActions()
+        actions.add(AvailableTargetStatesSwitchAction())
+        return actions
     }
 }

@@ -51,7 +51,7 @@ class GCMSendDeviceAdapter : ExplicitOverviewDetailDeviceAdapterWithSwitchAction
         daggerComponent.inject(this)
     }
 
-    override fun provideDetailActions(): List<DeviceDetailViewAction> {
+    override fun provideDetailActions(): MutableList<DeviceDetailViewAction> {
         val detailActions = super.provideDetailActions()
 
         detailActions.add(object : DeviceDetailViewButtonAction(R.string.gcmRegisterThis) {
@@ -67,8 +67,10 @@ class GCMSendDeviceAdapter : ExplicitOverviewDetailDeviceAdapterWithSwitchAction
                 }
             }
 
-            override fun isVisible(device: FhemDevice, context: Context): Boolean =
-                    !gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice)
+            override fun isVisible(device: FhemDevice, context: Context): Boolean {
+                val registered = gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice, context)
+                return !registered
+            }
         })
 
         return detailActions
@@ -81,7 +83,8 @@ class GCMSendDeviceAdapter : ExplicitOverviewDetailDeviceAdapterWithSwitchAction
     }
 
     override fun getGeneralDetailsNotificationText(context: Context, device: FhemDevice): String? {
-        return if (gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice)) {
+        val registered = gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice, context)
+        return if (registered) {
             context.getString(R.string.gcmAlreadyRegistered)
         } else null
     }

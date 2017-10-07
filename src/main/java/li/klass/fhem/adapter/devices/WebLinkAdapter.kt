@@ -22,37 +22,30 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.Context
+import android.content.Intent
 
-import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.FloorplanDevice;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter
+import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.domain.WebLinkDevice
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.fragments.FragmentType
 
-public class FloorplanAdapter extends ExplicitOverviewDetailDeviceAdapter {
-    public FloorplanAdapter() {
-        super();
+class WebLinkAdapter : ExplicitOverviewDetailDeviceAdapter() {
+    override fun getSupportedDeviceClass(): Class<out FhemDevice> {
+        return WebLinkDevice::class.java
     }
 
-    @Override
-    protected void inject(ApplicationComponent daggerComponent) {
-        daggerComponent.inject(this);
+    override fun inject(daggerComponent: ApplicationComponent) {
+        daggerComponent.inject(this)
     }
 
-    @Override
-    public Class<? extends FhemDevice> getSupportedDeviceClass() {
-        return FloorplanDevice.class;
-    }
-
-    @Override
-    protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
+    override fun onFillDeviceDetailIntent(context: Context, device: FhemDevice, intent: Intent): Intent {
         return intent
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW)
+                .putExtra(BundleExtraKeys.LOAD_URL, (device as WebLinkDevice).link)
     }
 }

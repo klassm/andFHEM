@@ -65,7 +65,7 @@ public class SBPlayerDeviceAdapter extends ToggleableAdapter {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                tableLayout.addView(new MuteActionRow(stateUiService, connectionId)
+                tableLayout.addView(new MuteActionRow(connectionId)
                         .createRow(device, context));
             }
         });

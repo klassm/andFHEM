@@ -178,7 +178,7 @@
     <string name="alarm">Alarm</string>
     <string name="apiKey">API-Key</string>
     <string name="gcmAlreadyRegistered">Gerät ist bereits registriert!</string>
-    <string name="gcmRegistrationNotActive">GCM ist nicht aktiv! Stimmt die Projekt-ID?</string>
+    <string name="gcmRegistrationNotActive">FCM ist nicht aktiv! Stimmt die Cloud Messaging Sender-Id?</string>
     <string name="gcmRegisterThis">Dieses Gerät registrieren</string>
     <string name="gcmSuccessfullyRegistered">Gerät wurde registriert.</string>
     <string name="notificationAllUpdates">Alle Aktualisierungen</string>

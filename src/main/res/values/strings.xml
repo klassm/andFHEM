@@ -178,7 +178,7 @@
     <string name="alarm">Alarm</string>
     <string name="apiKey">API Key</string>
     <string name="gcmAlreadyRegistered">Device is already registered!</string>
-    <string name="gcmRegistrationNotActive">GCM not active! Is the project id valid?</string>
+    <string name="gcmRegistrationNotActive">FCM not active! Is the cloud messaging sender-id valid?</string>
     <string name="gcmRegisterThis">Register this device</string>
     <string name="gcmSuccessfullyRegistered">Device was registered.</string>
     <string name="notificationAllUpdates">All updates</string>
@@ -372,6 +372,7 @@
     <string name="prefClearTrustedCertificatesFinished">Certificates removed</string>
     <string name="prefVoiceCommand">Voice commands</string>
     <string name="prefVoiceCommandSummary">Enable andFHEM as accessibility service to enable voice recognition. This is a Premium only feature.</string>
+    <string name="prefFCMSenderId" translatable="false">Cloud Messaging Sender-ID</string>
 
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>

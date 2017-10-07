@@ -27,23 +27,34 @@ package li.klass.fhem.fcm
 import android.content.Context
 import com.google.common.base.Strings.isNullOrEmpty
 import com.google.firebase.iid.FirebaseInstanceId
+import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.domain.GCMSendDevice
 import li.klass.fhem.service.Command
 import li.klass.fhem.service.CommandExecutionService
+import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.ArrayUtil
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class GCMSendDeviceService @Inject
-constructor(val commandExecutionService: CommandExecutionService) {
+constructor(val commandExecutionService: CommandExecutionService,
+            val applicationProperties: ApplicationProperties) {
 
-    private val registrationId: String?
-        get() = FirebaseInstanceId.getInstance().token
+    private fun getRegistrationId(context: Context): String? {
+        val senderId = applicationProperties.getStringSharedPreference(PreferenceKeys.FCM_SENDER_ID, context)
+        if (senderId == null) {
+            LOGGER.info("getRegistrationId - no value for senderId found")
+            return null
+        }
+        LOGGER.debug("getRegistrationId - senderId=$senderId")
+        return FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
+    }
 
     fun addSelf(device: GCMSendDevice, context: Context): AddSelfResult {
 
-        val registrationId = registrationId
+        val registrationId = getRegistrationId(context)
         if (isNullOrEmpty(registrationId)) {
             return AddSelfResult.FCM_NOT_ACTIVE
         }
@@ -64,13 +75,14 @@ constructor(val commandExecutionService: CommandExecutionService) {
         device.setRegIds(regIdsAttribute)
     }
 
-    fun isDeviceRegistered(device: GCMSendDevice): Boolean {
-        val registrationId = registrationId
+    fun isDeviceRegistered(device: GCMSendDevice, context: Context): Boolean {
+        val registrationId = getRegistrationId(context)
 
         return registrationId != null && ArrayUtil.contains(device.regIds, registrationId)
     }
 
     companion object {
         private val ATTR_REG_IDS_COMMAND = "attr %s regIds %s"
+        private val LOGGER = LoggerFactory.getLogger(GCMSendDeviceService::class.java)
     }
 }

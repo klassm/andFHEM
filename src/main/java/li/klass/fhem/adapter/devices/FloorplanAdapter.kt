@@ -22,30 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core;
+package li.klass.fhem.adapter.devices
 
-import java.util.List;
+import android.content.Context
+import android.content.Intent
 
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter
+import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.domain.FloorplanDevice
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.fragments.FragmentType
 
-public class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow extends ExplicitOverviewDetailDeviceAdapter {
-    @Override
-    protected void inject(ApplicationComponent daggerComponent) {
-        daggerComponent.inject(this);
+class FloorplanAdapter : ExplicitOverviewDetailDeviceAdapter() {
+
+    override fun inject(daggerComponent: ApplicationComponent) {
+        daggerComponent.inject(this)
     }
 
-    @Override
-    public Class<? extends FhemDevice> getSupportedDeviceClass() {
-        return FhemDevice.class;
-    }
+    override fun getSupportedDeviceClass(): Class<out FhemDevice> = FloorplanDevice::class.java
 
-    @Override
-    protected List<DeviceDetailViewAction> provideDetailActions() {
-        List<DeviceDetailViewAction> actions = super.provideDetailActions();
-        actions.add(new AvailableTargetStatesSwitchAction());
-        return actions;
+    override fun onFillDeviceDetailIntent(context: Context, device: FhemDevice, intent: Intent): Intent {
+        return intent
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
     }
 }

@@ -171,6 +171,12 @@
             android:key="AUTO_UPDATE_TIME"
             android:title="@string/prefAutoUpdate"/>
 
+        <EditTextPreference
+            android:defaultValue=""
+            android:inputType="number"
+            android:key="FCM_SENDER_ID"
+            android:title="@string/prefFCMSenderId" />
+
         <li.klass.fhem.widget.preference.SeekBarPreference
             min="1"
             android:layout_width="wrap_content"
