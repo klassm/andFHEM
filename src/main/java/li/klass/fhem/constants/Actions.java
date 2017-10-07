@@ -37,7 +37,6 @@ public class Actions {
     public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
     public static final String SHOW_ALERT = prefix + "SHOW_ALERT";
 
-    public static final String DEVICE_GRAPH_DEFINITIONS = prefix + "DEVICE_GRAPH_DEFINITIONS";
     public static final String DEVICE_TOGGLE_STATE = prefix + "TOGGLE_STATE";
     public static final String DEVICE_SET_STATE = prefix + "SET_STATE";
     public static final String DEVICE_DIM = prefix + "DEVICE_DIM";

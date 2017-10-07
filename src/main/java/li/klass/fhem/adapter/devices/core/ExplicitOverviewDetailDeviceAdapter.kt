@@ -32,7 +32,6 @@ import android.view.View
 import android.widget.*
 import com.google.common.base.Strings
 import com.google.common.collect.FluentIterable.from
-import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -201,7 +200,7 @@ abstract class ExplicitOverviewDetailDeviceAdapter : OverviewDeviceAdapter() {
 
     protected open fun provideDetailActions(): MutableList<DeviceDetailViewAction> = Lists.newArrayList()
 
-    override fun attachGraphs(context: Context, detailView: View, graphDefinitions: ImmutableSet<SvgGraphDefinition>, connectionId: String?, device: FhemDevice) {
+    override fun attachGraphs(context: Context, detailView: View, graphDefinitions: Set<SvgGraphDefinition>, connectionId: String?, device: FhemDevice) {
         addDetailGraphButtons(context, detailView, device, graphDefinitions, connectionId, LayoutInflater.from(context))
     }
 

@@ -30,7 +30,6 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -61,14 +59,12 @@ import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
 import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
 import li.klass.fhem.service.graph.GraphService;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
-import static li.klass.fhem.constants.Actions.DEVICE_GRAPH_DEFINITIONS;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
@@ -89,7 +85,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_DEFINITION;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_MODE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
@@ -256,11 +251,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             } else {
                 commandExecutionService.resendLastFailedCommand(this);
             }
-        } else if (DEVICE_GRAPH_DEFINITIONS.equals(action) && device != null) {
-            ImmutableSet<SvgGraphDefinition> definitions = graphDefinitionsForDeviceService.graphDefinitionsFor(this, device.getXmlListDevice(), connectionId);
-
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_DEFINITION, definitions);
-            return State.DONE;
         }
 
         return result;

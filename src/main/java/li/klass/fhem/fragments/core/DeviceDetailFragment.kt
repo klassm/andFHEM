@@ -31,23 +31,20 @@ import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
 import com.google.common.base.Optional
-import com.google.common.collect.ImmutableSet
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
-import li.klass.fhem.constants.Actions.*
+import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
+import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.ResultCodes.SUCCESS
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition
-import li.klass.fhem.service.intent.DeviceIntentService
+import li.klass.fhem.service.device.GraphDefinitionsForDeviceService
 import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.service.room.RoomListUpdateService
-import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.util.device.DeviceActionUtil
 import li.klass.fhem.widget.notification.NotificationSettingView
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -62,6 +59,8 @@ class DeviceDetailFragment : BaseFragment() {
     lateinit var roomListUpdateService: RoomListUpdateService
     @Inject
     lateinit var roomListService: RoomListService
+    @Inject
+    lateinit var graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
 
     private var deviceName: String? = null
     private var device: FhemDevice? = null
@@ -136,26 +135,19 @@ class DeviceDetailFragment : BaseFragment() {
     }
 
     private fun loadGraphs() {
+        device ?: return
+        val myContext = context
 
-        activity.startService(Intent(DEVICE_GRAPH_DEFINITIONS)
-                .setClass(activity, DeviceIntentService::class.java)
-                .putExtra(CONNECTION_ID, connectionId)
-                .putExtra(DEVICE_NAME, deviceName)
-                .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultCode != SUCCESS
-                                || view == null
-                                || resultData == null
-                                || !resultData.containsKey(DEVICE_GRAPH_DEFINITION)) {
-                            return
-                        }
-                        val detailView = findScrollView()!!.getChildAt(0)
-                        val adapter = DeviceType.getAdapterFor<FhemDevice>(device) ?: return
-                        val graphs = resultData.get(DEVICE_GRAPH_DEFINITION) as ImmutableSet<SvgGraphDefinition>
-                        adapter.attachGraphs(activity, detailView, graphs, connectionId, device)
-                        detailView.invalidate()
-                    }
-                }))
+        async(UI) {
+            val graphs = bg {
+                graphDefinitionsForDeviceService.graphDefinitionsFor(myContext, device!!.xmlListDevice, Optional.absent())
+            }.await()
+
+            val detailView = findScrollView()!!.getChildAt(0)
+            val adapter = DeviceType.getAdapterFor<FhemDevice>(device)
+            adapter?.attachGraphs(activity, detailView, graphs, connectionId, device)
+            detailView.invalidate()
+        }
     }
 
     private fun findScrollView(): ScrollView? =

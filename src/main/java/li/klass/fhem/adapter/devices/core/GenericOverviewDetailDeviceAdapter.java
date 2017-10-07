@@ -41,7 +41,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +101,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     Set<GenericDetailActionProvider> detailActionProviders;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericOverviewDetailDeviceAdapter.class);
+
     @Override
     protected void inject(ApplicationComponent daggerComponent) {
         daggerComponent.inject(this);
@@ -136,7 +136,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     @Override
-    public void attachGraphs(Context context, View detailView, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device) {
+    public void attachGraphs(Context context, View detailView, Set<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device) {
         fillPlotsCard((GenericDevice) device, graphDefinitions, connectionId, (LinearLayout) detailView, context);
     }
 

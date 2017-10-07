@@ -32,8 +32,6 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.common.collect.ImmutableSet;
-
 import java.util.Set;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -178,6 +176,6 @@ public abstract class DeviceAdapter {
         return null;
     }
 
-    public abstract void attachGraphs(Context context, View detailView, ImmutableSet<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device);
+    public abstract void attachGraphs(Context context, View detailView, Set<SvgGraphDefinition> graphDefinitions, String connectionId, FhemDevice device);
 
 }
