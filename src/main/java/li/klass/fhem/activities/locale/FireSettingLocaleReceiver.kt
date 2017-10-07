@@ -44,7 +44,7 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
     lateinit var connectionsService: ConnectionService
 
     init {
-        AndFHEMApplication.getApplication().daggerComponent.inject(this)
+        AndFHEMApplication.application?.daggerComponent?.inject(this)
     }
 
     override fun onReceive(context: Context, intent: Intent) {

@@ -133,7 +133,7 @@ public class ErrorHolder {
                                  Uri attachment) throws IOException {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{AndFHEMApplication.ANDFHEM_MAIL});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{AndFHEMApplication.Companion.getANDFHEM_MAIL()});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, text);
 
@@ -182,7 +182,7 @@ public class ErrorHolder {
                 "Manufacturer: " + Build.MANUFACTURER,
                 "Model: " + android.os.Build.MODEL,
                 "Product: " + android.os.Build.PRODUCT,
-                "App-version: " + AndFHEMApplication.getApplication().getCurrentApplicationVersion()
+                "App-version: " + AndFHEMApplication.Companion.getApplication().getCurrentApplicationVersion()
         ));
     }
 

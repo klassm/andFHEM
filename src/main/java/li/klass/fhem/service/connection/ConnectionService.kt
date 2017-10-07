@@ -33,7 +33,7 @@ import com.google.common.collect.FluentIterable.from
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists.newArrayList
 import com.google.gson.Gson
-import li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS
+import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION
 import li.klass.fhem.domain.core.DeviceType
@@ -74,7 +74,7 @@ constructor(val applicationProperties: ApplicationProperties,
     fun create(saveData: SaveData, context: Context) {
         if (exists(saveData.name, context)) return
         licenseIntentService.isPremium({ isPremium ->
-            if (isPremium || getCountWithoutDummy(context) < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+            if (isPremium || getCountWithoutDummy(context) < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
                 val server = FHEMServerSpec(newUniqueId(context))
                 saveData.fillServer(server)
@@ -115,21 +115,6 @@ constructor(val applicationProperties: ApplicationProperties,
         }
 
         return id
-    }
-
-    private fun fillServerWith(name: String, server: FHEMServerSpec, serverType: ServerType, username: String?,
-                               password: String?, ip: String?, port: Int?, url: String?, alternateUrl: String?,
-                               clientCertificatePath: String?, clientCertificatePassword: String?) {
-        server.name = name
-        server.serverType = serverType
-        server.username = username
-        server.port = port ?: 0
-        server.password = password
-        server.ip = ip
-        server.url = url
-        server.alternateUrl = alternateUrl
-        server.clientCertificatePath = clientCertificatePath
-        server.clientCertificatePassword = clientCertificatePassword
     }
 
     private fun saveToPreferences(server: FHEMServerSpec, context: Context) {

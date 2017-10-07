@@ -50,7 +50,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
     RoomListService roomListService;
 
     public ConditionQueryLocaleReceiver() {
-        ApplicationComponent daggerComponent = AndFHEMApplication.getApplication().getDaggerComponent();
+        ApplicationComponent daggerComponent = AndFHEMApplication.Companion.getApplication().getDaggerComponent();
         daggerComponent.inject(this);
     }
 

@@ -54,7 +54,7 @@ public class PremiumActivity extends AppCompatActivity implements BillingService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AndFHEMApplication.getApplication().getDaggerComponent().inject(this);
+        AndFHEMApplication.Companion.getApplication().getDaggerComponent().inject(this);
 
         setContentView(R.layout.shop_premium);
 
@@ -69,9 +69,9 @@ public class PremiumActivity extends AppCompatActivity implements BillingService
         findViewById(R.id.shop_premium_buy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID);
+                Log.i(TAG, "request purchase for product " + AndFHEMApplication.Companion.getINAPP_PREMIUM_ID());
                 billingService.requestPurchase(PremiumActivity.this,
-                        AndFHEMApplication.INAPP_PREMIUM_ID, null, PremiumActivity.this);
+                        AndFHEMApplication.Companion.getINAPP_PREMIUM_ID(), null, PremiumActivity.this);
             }
         });
 

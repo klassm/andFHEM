@@ -43,7 +43,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -51,7 +50,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class DeviceAdapter {
 
     protected DeviceAdapter() {
-        AndFHEMApplication application = AndFHEMApplication.getApplication();
+        AndFHEMApplication application = AndFHEMApplication.Companion.getApplication();
         if (application != null) {
             inject(application.getDaggerComponent());
             onAfterInject();

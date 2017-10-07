@@ -54,7 +54,6 @@ import android.widget.Spinner
 import android.widget.Toast
 import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE
 import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.AvailableConnectionDataAdapter
@@ -68,12 +67,12 @@ import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT
 import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME
 import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW
+import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.fragments.FragmentType
 import li.klass.fhem.fragments.FragmentType.*
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.connection.ConnectionService
-import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.update.UpdateHandler
 import li.klass.fhem.util.ApplicationProperties
@@ -328,7 +327,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         navigationView = findViewById(R.id.nav_drawer)
         navigationView!!.setNavigationItemSelectedListener(this)
-        if (packageName == PREMIUM_PACKAGE) {
+        if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
             navigationView!!.menu.removeItem(R.id.menu_premium)
         }
 
@@ -764,7 +763,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     @SuppressLint("NewApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-        if (packageName == PREMIUM_PACKAGE) {
+        if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
             menu.removeItem(R.id.menu_premium)
         }
 

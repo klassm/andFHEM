@@ -48,10 +48,10 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.constants.PreferenceKeys.*
 import li.klass.fhem.error.ErrorHolder
+import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS
 import li.klass.fhem.fragments.core.DeviceListFragment
 import li.klass.fhem.service.CommandExecutionService
-import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.ui.service.importExport.ImportExportUIService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.widget.preference.SeekBarPreference
@@ -136,7 +136,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
             importExportUIService.handleExport(this@PreferencesActivity)
             true
         }
-        if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.KITKAT) {
+        if (AndFHEMApplication.androidSDKLevel <= Build.VERSION_CODES.KITKAT) {
             preferenceScreen.removePreference(exportPreference)
         }
 
@@ -145,7 +145,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
             importExportUIService.handleImport(this@PreferencesActivity)
             true
         }
-        if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.KITKAT) {
+        if (AndFHEMApplication.androidSDKLevel <= Build.VERSION_CODES.KITKAT) {
             preferenceScreen.removePreference(importPreference)
         }
 

@@ -45,7 +45,7 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     AppWidgetDataHolder appWidgetDataHolder;
 
     protected AndFHEMAppWidgetProvider() {
-        AndFHEMApplication application = AndFHEMApplication.getApplication();
+        AndFHEMApplication application = AndFHEMApplication.Companion.getApplication();
         if (application != null) {
             inject(application.getDaggerComponent());
         }

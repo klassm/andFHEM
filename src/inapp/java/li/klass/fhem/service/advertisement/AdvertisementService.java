@@ -119,7 +119,7 @@ public class AdvertisementService {
             Log.i(TAG, "showing ad");
 
             AdView adView = new AdView(activity);
-            adView.setAdUnitId(AndFHEMApplication.AD_UNIT_ID);
+            adView.setAdUnitId(AndFHEMApplication.Companion.getAD_UNIT_ID());
             adView.setAdSize(AdSize.BANNER);
 
             addListener(activity, adContainer, adView);

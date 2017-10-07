@@ -45,7 +45,7 @@ public abstract class AppWidgetView {
 
 
     public AppWidgetView() {
-        AndFHEMApplication application = AndFHEMApplication.getApplication();
+        AndFHEMApplication application = AndFHEMApplication.Companion.getApplication();
         if (application != null) {
             inject(application.getDaggerComponent());
         }

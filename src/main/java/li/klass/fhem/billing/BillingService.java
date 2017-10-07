@@ -38,8 +38,9 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.AndFHEMApplication;
+
 import static com.google.common.base.Preconditions.checkNotNull;
-import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
 
 @Singleton
 public class BillingService {
@@ -174,7 +175,7 @@ public class BillingService {
     }
 
     IabHelper createIabHelper(Context context) {
-        return new IabHelper(context, PUBLIC_KEY_ENCODED);
+        return new IabHelper(context, AndFHEMApplication.Companion.getPUBLIC_KEY_ENCODED());
     }
 
     private synchronized void loadInternal(final OnLoadInventoryFinishedListener listener) {

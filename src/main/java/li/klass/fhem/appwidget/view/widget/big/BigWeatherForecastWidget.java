@@ -80,7 +80,7 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
 
     @Override
     public boolean supports(FhemDevice device, Context context) {
-        if (AndFHEMApplication.getAndroidSDKLevel() < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (AndFHEMApplication.Companion.getAndroidSDKLevel() < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return false;
         }
         return device instanceof WeatherDevice;

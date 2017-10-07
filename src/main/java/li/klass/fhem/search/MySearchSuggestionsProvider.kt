@@ -19,7 +19,7 @@ class MySearchSuggestionsProvider : SearchRecentSuggestionsProvider() {
     }
 
     override fun onCreate(): Boolean {
-        AndFHEMApplication.getApplication().daggerComponent.inject(this)
+        AndFHEMApplication.application?.daggerComponent?.inject(this)
         return super.onCreate()
     }
 

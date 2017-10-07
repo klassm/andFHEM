@@ -39,8 +39,6 @@ import javax.security.cert.X509Certificate;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
-
 @Singleton
 public class LicenseService {
 

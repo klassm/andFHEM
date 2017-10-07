@@ -44,8 +44,8 @@ import li.klass.fhem.AndFHEMApplication;
 public class XMLUtil {
     @TargetApi(Build.VERSION_CODES.FROYO)
     public static String nodeToString(Node node) {
-        if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.FROYO) {
-            return "Android version unsupported (" + AndFHEMApplication.getAndroidSDKLevel() + ")";
+        if (AndFHEMApplication.Companion.getAndroidSDKLevel() <= Build.VERSION_CODES.FROYO) {
+            return "Android version unsupported (" + AndFHEMApplication.Companion.getAndroidSDKLevel() + ")";
         }
 
         StringWriter sw = new StringWriter();

@@ -39,8 +39,6 @@ import javax.security.cert.X509Certificate;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
-
 @Singleton
 public class LicenseService {
     @Inject
@@ -73,14 +71,14 @@ public class LicenseService {
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
             LOGGER.info("found IS_PREMIUM application property to be true => premium");
             isPremium = true;
-        } else if (context.getPackageName().equals(PREMIUM_PACKAGE)) {
-            LOGGER.info("found package name to be " + PREMIUM_PACKAGE + " => premium");
+        } else if (context.getPackageName().equals(AndFHEMApplication.Companion.getPREMIUM_PACKAGE())) {
+            LOGGER.info("found package name to be " + AndFHEMApplication.Companion.getPREMIUM_PACKAGE() + " => premium");
             isPremium = true;
         } else if (isDebug(context)) {
             LOGGER.info("running in debug => premium");
             isPremium = true;
-        } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||
-                billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID))) {
+        } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.Companion.getINAPP_PREMIUM_ID()) ||
+                billingService.contains(AndFHEMApplication.Companion.getINAPP_PREMIUM_DONATOR_ID()))) {
             LOGGER.info("found inapp premium purchase => premium");
             isPremium = true;
         } else {

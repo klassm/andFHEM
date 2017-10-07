@@ -13,7 +13,7 @@ class SearchResultsProvider @Inject constructor(val roomListService: RoomListSer
             return RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM)
         }
         val comparableQuery = toComparable(query)
-        val context = AndFHEMApplication.getApplication().applicationContext
+        val context = AndFHEMApplication.application?.applicationContext!!
         val allRoomsList = roomListService.getAllRoomsDeviceList(Optional.absent(), context)
         return allRoomsList.filter(context, {
             (toComparable(it.name).contains(comparableQuery)
