@@ -110,6 +110,7 @@ constructor() : AbstractService() {
      * *
      * @return found device or null
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T : FhemDevice> getDeviceForName(deviceName: String?, connectionId: Optional<String>, context: Context): Optional<T> {
         if (deviceName == null) {
             return Optional.absent<T>()
@@ -141,7 +142,7 @@ constructor() : AbstractService() {
      * *
      * @param context context
      */
-    fun getRoomDeviceList(connectionId: Optional<String>, context: Context): Optional<RoomDeviceList> =
+    fun getRoomDeviceList(connectionId: Optional<String>, context: Context) =
             roomListHolderService.getCachedRoomDeviceListMap(connectionId, context)
 
     fun resetUpdateProgress(context: Context) {

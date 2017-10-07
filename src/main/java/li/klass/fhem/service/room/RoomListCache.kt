@@ -55,10 +55,6 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
         return true
     }
 
-    @Synchronized fun clearRoomDeviceList(context: Context) {
-        storeDeviceListMapInternal(RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM), context)
-    }
-
     private fun storeDeviceListMapInternal(roomDeviceList: RoomDeviceList, context: Context) {
         fillHiddenRoomsAndHiddenGroups(roomDeviceList, findFHEMWEBDevice(roomDeviceList, context))
         cachedRoomList = roomDeviceList
@@ -90,9 +86,8 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
     }
 
 
-    private fun findFHEMWEBDevice(allRoomDeviceList: RoomDeviceList, context: Context): FHEMWEBDevice {
-        return FHEMWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, allRoomDeviceList, context).get()
-    }
+    private fun findFHEMWEBDevice(allRoomDeviceList: RoomDeviceList, context: Context): FHEMWEBDevice =
+            FHEMWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, allRoomDeviceList, context).get()
 
     /**
      * Loads the currently cached room device list map data from the file storage.
