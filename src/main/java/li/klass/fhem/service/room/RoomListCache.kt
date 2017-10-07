@@ -42,6 +42,7 @@ import java.io.ObjectOutputStream
 class RoomListCache(private val connectionId: String, internal var applicationProperties: ApplicationProperties, internal var connectionService: ConnectionService, private val sharedPreferencesService: SharedPreferencesService) {
     @Volatile private var cachedRoomList: RoomDeviceList? = null
     @Volatile private var fileStoreNotFilled = false
+    @Volatile private var excptionDuringLoad = false
     private val lastUpdateProperty = RoomListService.Companion.LAST_UPDATE_PROPERTY + "_" + this.connectionId
 
     @Synchronized fun storeDeviceListMap(roomDeviceList: RoomDeviceList?, context: Context): Boolean {
@@ -125,6 +126,7 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
             } catch (e: Exception) {
                 LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e)
                 fileStoreNotFilled = true
+                excptionDuringLoad = true
                 return Optional.absent<RoomDeviceList>()
             } finally {
                 CloseableUtil.close(objectInputStream)
@@ -134,17 +136,17 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
         return Optional.fromNullable(cachedRoomList)
     }
 
-    fun getLastUpdate(context: Context): Long {
-        return getPreferences(context).getLong(lastUpdateProperty, 0L)
-    }
+    fun getLastUpdate(context: Context): Long =
+            getPreferences(context).getLong(lastUpdateProperty, 0L)
 
     private fun setLastUpdate(context: Context) {
         getPreferences(context).edit().putLong(lastUpdateProperty, System.currentTimeMillis()).apply()
     }
 
-    private fun getPreferences(context: Context): SharedPreferences {
-        return sharedPreferencesService.getPreferences(RoomListService.Companion.PREFERENCES_NAME, context)
-    }
+    private fun getPreferences(context: Context): SharedPreferences =
+            sharedPreferencesService.getPreferences(RoomListService.Companion.PREFERENCES_NAME, context)
+
+    fun isCorrupted() = excptionDuringLoad
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RoomListCache::class.java)

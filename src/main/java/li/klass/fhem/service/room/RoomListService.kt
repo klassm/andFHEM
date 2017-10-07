@@ -26,8 +26,6 @@ package li.klass.fhem.service.room
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.ResultReceiver
 import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Sets
@@ -36,12 +34,12 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.constants.PreferenceKeys
-import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.DeviceType.AT
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
+import li.klass.fhem.fhem.connection.DummyServerSpec
 import li.klass.fhem.service.AbstractService
 import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.NotificationIntentService
@@ -60,8 +58,6 @@ class RoomListService @Inject
 constructor() : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
-
-    private var resendIntents: MutableList<Intent> = newArrayList()
 
     @Inject
     lateinit var connectionService: ConnectionService
@@ -151,7 +147,6 @@ constructor() : AbstractService() {
     fun resetUpdateProgress(context: Context) {
         LOG.debug("resetUpdateProgress()")
         remoteUpdateInProgress.set(false)
-        resendIntents = newArrayList<Intent>()
         sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context)
     }
 
@@ -292,6 +287,18 @@ constructor() : AbstractService() {
         return roomDeviceList
     }
 
+    fun checkForCorruptedDeviceList(context: Context) {
+        val connections = connectionService.listAll(context)
+                .filter { it !is DummyServerSpec }
+        connections.forEach { connection ->
+            val connectionId = Optional.of(connection.id)
+            val corrupted = roomListHolderService.isCorrupted(connectionId, context)
+            if (corrupted) {
+                roomListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
+            }
+        }
+    }
+
     companion object {
 
         private val LOG = LoggerFactory.getLogger(RoomListService::class.java)
@@ -299,10 +306,10 @@ constructor() : AbstractService() {
         val PREFERENCES_NAME = RoomListService::class.java.name
 
         val LAST_UPDATE_PROPERTY = "LAST_UPDATE"
-
         val NEVER_UPDATE_PERIOD: Long = 0
-        val ALWAYS_UPDATE_PERIOD: Long = -1
 
+        val ALWAYS_UPDATE_PERIOD: Long = -1
         val SORT_ROOMS_DELIMITER = " "
+
     }
 }

@@ -32,6 +32,7 @@ import android.os.Build
 import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
 import android.util.Log
+import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
@@ -43,22 +44,24 @@ import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.ApplicationModule
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.service.intent.AppActionsIntentService
+import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.InstalledApplications
 import javax.inject.Inject
 
-class AndFHEMApplication : MultiDexApplication() {
-
+class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
+    @Inject
+    lateinit var roomListService: RoomListService
 
     var isUpdate = false
         private set
+
     var currentApplicationVersion: String? = null
         private set
     lateinit var daggerComponent: ApplicationComponent
         private set
-
     val isAndFHEMAlreadyInstalled: Boolean
         get() {
             val installedApps = InstalledApplications.getInstalledApps(applicationContext)
@@ -81,12 +84,19 @@ class AndFHEMApplication : MultiDexApplication() {
         super.onCreate()
         setDefaultUncaughtExceptionHandler()
         setStrictMode()
+
+        Phoenix.rise(this, this);
+
         val firebaseApp = FirebaseApp.initializeApp(this)
         firebaseApp?.setAutomaticResourceManagementEnabled(true)
 
         setApplicationInformation()
 
         startService(Intent(Actions.SCHEDULE_ALARM_CLOCK_UPDATE).setClass(this, AppActionsIntentService::class.java))
+    }
+
+    override fun onUpdate(oldVersion: Int, newVersion: Int) {
+        roomListService.checkForCorruptedDeviceList(this)
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

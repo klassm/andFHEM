@@ -28,6 +28,8 @@ import android.content.Context;
 
 import com.google.common.base.Optional;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,5 +87,9 @@ public class RoomListHolderService {
 
     public FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList roomDeviceList, Context context) {
         return new FHEMWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomDeviceList, context).get();
+    }
+
+    public boolean isCorrupted(@NotNull Optional<String> connection, Context context) {
+        return getCacheForConnectionId(connection, context).isCorrupted();
     }
 }
