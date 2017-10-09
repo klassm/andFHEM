@@ -1,2 +1,2 @@
-DEL ./FHEM/98_gcmsend.pm
-UPD 10:49:21 12314 https://raw.githubusercontent.com/klassm/andFHEM/master/fhem_modules/98_gcmsend.pm
+DEL FHEM/98_gcmsend.pm
+UPD 2017-24-09_10:49:21 12314 FHEM/98_gcmsend.pm
