@@ -58,7 +58,7 @@ import li.klass.fhem.service.graph.GraphService
 import li.klass.fhem.service.graph.gplot.GPlotSeries
 import li.klass.fhem.service.graph.gplot.SvgGraphDefinition
 import li.klass.fhem.service.room.RoomListService
-import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT
+import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
 import li.klass.fhem.util.DisplayUtil
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.DateTime
@@ -164,7 +164,7 @@ class ChartingActivity : AppCompatActivity(), Updateable {
         setRangeFor(plotDefinition.leftAxis.range, lineChart.axisLeft)
         setRangeFor(plotDefinition.rightAxis.range, lineChart.axisRight)
         val xAxis = lineChart.xAxis
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis -> ANDFHEM_DATE_FORMAT.print(value.toLong()) }
+        xAxis.valueFormatter = IAxisValueFormatter { value, axis -> ANDFHEM_DATE_TIME_FORMAT.print(value.toLong()) }
         xAxis.labelRotationAngle = 300f
         val labelCount = DisplayUtil.getWidthInDP(applicationContext) / 150
         xAxis.setLabelCount(if (labelCount < 2) 2 else labelCount, true)

@@ -28,6 +28,10 @@
             android:id="@+id/conversion"
             android:icon="@drawable/conversion"
             android:title="@string/conversion" />
+        <item
+            android:id="@+id/fcm_history"
+            android:icon="@drawable/ic_menu_notification"
+            android:title="@string/fcm_history" />
     </group>
     <group android:id="@+id/secondary_items">
         <item

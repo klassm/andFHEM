@@ -28,6 +28,7 @@ import android.support.annotation.Nullable;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragment;
+import li.klass.fhem.fcm.history.view.FcmHistoryFragment;
 import li.klass.fhem.fragments.connection.ConnectionDetailFragment;
 import li.klass.fhem.fragments.connection.ConnectionListFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -57,7 +58,8 @@ public enum FragmentType {
     CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class),
     WEB_VIEW(WebViewFragment.class),
     OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class),
-    SEARCH(SearchResultsFragment.class);
+    SEARCH(SearchResultsFragment.class),
+    FCM_HISTORY(FcmHistoryFragment.class, R.id.fcm_history, null);
 
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;

@@ -27,12 +27,14 @@ package li.klass.fhem.activities.graph;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.TextView;
+
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
+
 import li.klass.fhem.R;
 
-import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT;
+import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT;
 
 @SuppressLint("ViewConstructor")
 public class ChartMarkerView extends MarkerView {
@@ -44,7 +46,7 @@ public class ChartMarkerView extends MarkerView {
 
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        ((TextView) findViewById(R.id.time)).setText(ANDFHEM_DATE_FORMAT.print((long) e.getX()));
+        ((TextView) findViewById(R.id.time)).setText(ANDFHEM_DATE_TIME_FORMAT.print((long) e.getX()));
         ((TextView) findViewById(R.id.value)).setText(String.valueOf(e.getY()));
     }
 

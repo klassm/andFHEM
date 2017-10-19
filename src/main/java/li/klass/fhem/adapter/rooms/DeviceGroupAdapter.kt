@@ -27,11 +27,9 @@ class DeviceGroupAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (elements[position]) {
-            is Element.Group -> TYPE_GROUP
-            is Element.Device -> TYPE_DEVICE
-        }
+    override fun getItemViewType(position: Int): Int = when (elements[position]) {
+        is Element.Group -> TYPE_GROUP
+        is Element.Device -> TYPE_DEVICE
     }
 
     override fun getItemCount() = elements.size

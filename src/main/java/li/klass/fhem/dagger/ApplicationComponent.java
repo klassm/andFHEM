@@ -99,6 +99,8 @@ import li.klass.fhem.appwidget.view.widget.small.SendCommandLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.view.widget.small.TimersLinkWidget;
 import li.klass.fhem.fcm.FcmIntentService;
+import li.klass.fhem.fcm.history.view.FcmHistoryMessagesFragment;
+import li.klass.fhem.fcm.history.view.FcmHistoryUpdatesFragment;
 import li.klass.fhem.fragments.AllDevicesFragment;
 import li.klass.fhem.fragments.ConversionFragment;
 import li.klass.fhem.fragments.FavoritesFragment;
@@ -361,4 +363,8 @@ public interface ApplicationComponent {
     void inject(@NotNull FireSettingLocaleReceiver fireSettingLocaleReceiver);
 
     void inject(@NotNull MySearchSuggestionsProvider mySearchSuggestionsProvider);
+
+    void inject(@NotNull FcmHistoryMessagesFragment fcmHistoryMessagesFragment);
+
+    void inject(@NotNull FcmHistoryUpdatesFragment fcmHistoryUpdatesFragment);
 }

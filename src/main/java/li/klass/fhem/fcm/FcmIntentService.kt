@@ -36,6 +36,7 @@ import com.google.firebase.messaging.RemoteMessage
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.NotificationUtil
@@ -54,6 +55,9 @@ class FcmIntentService : FirebaseMessagingService() {
 
     @Inject
     lateinit var roomListService: RoomListService
+
+    @Inject
+    lateinit var fcmHistoryService: FcmHistoryService
 
     override fun onCreate() {
         super.onCreate()
@@ -74,7 +78,7 @@ class FcmIntentService : FirebaseMessagingService() {
 
         val decrypted = decrypt(data)
 
-        val type = decrypted.get("type")
+        val type = decrypted["type"]
         if ("message".equals(type!!, ignoreCase = true)) {
             handleMessage(decrypted)
         } else if ("notify".equals(type, ignoreCase = true) || Strings.isNullOrEmpty(type)) {
@@ -89,7 +93,7 @@ class FcmIntentService : FirebaseMessagingService() {
             return data
         }
 
-        val device = roomListService.getDeviceForName<FhemDevice>(data.get("gcmDeviceName"), Optional.absent<String>(), this)
+        val device = roomListService.getDeviceForName<FhemDevice>(data["gcmDeviceName"], Optional.absent<String>(), this)
         if (!device.isPresent) {
             return data
         }
@@ -147,10 +151,10 @@ class FcmIntentService : FirebaseMessagingService() {
         var notifyId = 1
         try {
             if (data.containsKey("notifyId")) {
-                notifyId = Integer.valueOf(data.get("notifyId"))!!
+                notifyId = Integer.valueOf(data["notifyId"])!!
             }
         } catch (e: Exception) {
-            LOG.error("handleMessage - invalid notify id: {}", data.get("notifyId"))
+            LOG.error("handleMessage - invalid notify id: {}", data["notifyId"])
         }
 
         val openIntent = Intent(this, AndFHEMMainActivity::class.java)
@@ -159,18 +163,25 @@ class FcmIntentService : FirebaseMessagingService() {
         val pendingIntent = PendingIntent.getActivity(this, notifyId, openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
-        NotificationUtil.notify(this, notifyId, pendingIntent, data.get("contentTitle"),
-                data.get("contentText"), data.get("tickerText"),
-                shouldVibrate(data))
+        val title = data["contentTitle"]
+        val text = data["contentText"]
+        val ticker = data["tickerText"]
+
+        NotificationUtil.notify(this, notifyId, pendingIntent, title, text, ticker, shouldVibrate(data))
+        fcmHistoryService.addMessage(this, FcmHistoryService.ReceivedMessage(
+                title ?: "", text ?: "", ticker ?: ""
+        ))
     }
 
     private fun handleNotify(data: Map<String, String>) {
         if (!data.containsKey("changes")) return
 
-        val deviceName = data.get("deviceName") ?: return
-        val changesText = data.get("changes") ?: return
+        val deviceName = data["deviceName"] ?: return
+        val changesText = data["changes"] ?: return
 
-        roomListService.parseReceivedDeviceStateMap(deviceName, extractChanges(deviceName, changesText), shouldVibrate(data), this)
+        val changes = extractChanges(deviceName, changesText)
+        fcmHistoryService.addChanges(this, deviceName, changes)
+        roomListService.parseReceivedDeviceStateMap(deviceName, changes, shouldVibrate(data), this)
     }
 
     fun extractChanges(deviceName: String, changesText: String): Map<String, String> {
@@ -199,7 +210,7 @@ class FcmIntentService : FirebaseMessagingService() {
     }
 
     private fun shouldVibrate(data: Map<String, String>): Boolean =
-            data.containsKey("vibrate") && "true".equals(data.get("vibrate")!!, ignoreCase = true)
+            data.containsKey("vibrate") && "true".equals(data["vibrate"]!!, ignoreCase = true)
 
     companion object {
         private val LOG = LoggerFactory.getLogger(FcmIntentService::class.java)

@@ -59,6 +59,7 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.core.AvailableConnectionDataAdapter
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.billing.BillingService
+import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.Actions.IS_PREMIUM
 import li.klass.fhem.constants.BundleExtraKeys
@@ -170,6 +171,8 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var loginUiService: LoginUIService
     @Inject
     lateinit var connectionService: ConnectionService
+    @Inject
+    lateinit var licenseService: LicenseService
 
     private var broadcastReceiver: Receiver? = null
 
@@ -330,6 +333,12 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
             navigationView!!.menu.removeItem(R.id.menu_premium)
         }
+
+        licenseService.isPremium({ isPremium ->
+            if (!isPremium) {
+                navigationView!!.menu.removeItem(R.id.fcm_history)
+            }
+        }, this)
 
         initConnectionSpinner(navigationView!!.getHeaderView(0).findViewById(R.id.connection_spinner),
                 Runnable {

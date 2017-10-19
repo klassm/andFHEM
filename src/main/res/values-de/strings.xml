@@ -627,4 +627,14 @@
     <string name="H">H</string>
 
     <string name="search_title">Suchen</string>
+
+    <string name="fcm_history_message_ticker">Ticker</string>
+    <string name="fcm_history_message_title">Titel</string>
+    <string name="fcm_history_updates_device">Gerät</string>
+    <string name="fcm_history">FCM Historie</string>
+    <string name="fcm_history_messages">Nachrichten</string>
+    <string name="fcm_history_updates">Aktualisierungen</string>
+    <string name="fcm_history_no_messages">Keine Nachrichten gefunden.</string>
+    <string name="fcm_history_no_updates">Keine Aktualisierungen gefunden.</string>
+    <string name="fcm_history_date_label">Daten vom</string>
 </resources>

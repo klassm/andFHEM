@@ -35,7 +35,8 @@ public class DateFormatUtil {
 
     public static final DateTimeFormatter FHEM_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     public static final DateTimeFormatter ANDFHEM_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm");
-    public static final DateTimeFormatter ANDFHEM_DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+    public static final DateTimeFormatter ANDFHEM_DATE_TIME_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+    public static final DateTimeFormatter ANDFHEM_DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy");
 
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
@@ -58,7 +59,7 @@ public class DateFormatUtil {
         if (time.toLocalDate().equals(LocalDate.now())) {
             return ANDFHEM_TIME_FORMAT.print(time);
         } else {
-            return ANDFHEM_DATE_FORMAT.print(time);
+            return ANDFHEM_DATE_TIME_FORMAT.print(time);
         }
     }
 

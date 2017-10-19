@@ -122,7 +122,7 @@ public class ExternalApiService extends Service {
                     String deviceName = null;
                     String readingName = null;
                     String defaultVal = null;
-                    //FIXME: create a new Message to reply with because we will loose msg somewhere in the AsyncTask below
+                    //FIXME: create a new ReceivedMessage to reply with because we will loose msg somewhere in the AsyncTask below
                     externalApiService.replyMsg = Message.obtain(null, msg.what);
                     externalApiService.replyMsg.setData(msg.getData());
                     externalApiService.replyMsg.replyTo = msg.replyTo;

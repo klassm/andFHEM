@@ -366,7 +366,10 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".fcm.FcmIntentService" android:exported="true" android:enabled="true">
+        <service
+            android:name=".fcm.FcmIntentService"
+            android:exported="false"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -388,6 +391,17 @@
         <activity
             android:name="de.duenndns.ssl.MemorizingActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:authorities="li.klass.fhem.fcm.history.messages"
+            android:name=".fcm.history.data.FcmMessagesContentProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+        <provider
+            android:authorities="li.klass.fhem.fcm.history.updates"
+            android:name=".fcm.history.data.FcmUpdatesContentProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>
