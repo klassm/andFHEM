@@ -1,16 +1,25 @@
 {
   "defaultGroup": "TEMPERATURE",
   "sensorDevice": true,
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
   "states": [
     {
       "key": "temperature",
       "desc": "temperature",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
     },
     {
       "key": "humidity",
       "desc": "humidity",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ]
     },
     {
       "key": "battery",
