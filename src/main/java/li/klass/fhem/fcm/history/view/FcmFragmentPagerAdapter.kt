@@ -3,10 +3,10 @@ package li.klass.fhem.fcm.history.view
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.app.FragmentStatePagerAdapter
 import li.klass.fhem.R
 
-class FcmFragmentPagerAdapter(val context: Context, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+class FcmFragmentPagerAdapter(val context: Context, fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> FcmHistoryMessagesFragment()
         else -> FcmHistoryUpdatesFragment()

@@ -34,13 +34,17 @@ class FcmMessagesAdapter(elements: List<FcmHistoryService.SavedMessage>) : Recyc
         fun bind(message: FcmHistoryService.SavedMessage) {
             view.apply {
                 time.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.time)
-                setTextOrHide(ticker, message.ticker)
-                setTextOrHide(title, message.title)
-                setTextOrHide(text, message.text)
+                if (message.ticker == message.title) {
+                    ticker.visibility = View.GONE
+                } else {
+                    setText(ticker, message.ticker)
+                }
+                setText(title, message.title)
+                setText(text, message.text)
             }
         }
 
-        private fun setTextOrHide(textView: TextView, content: String) {
+        private fun setText(textView: TextView, content: String) {
             val nullableContent: String? = StringUtils.trimToNull(content)
             if (nullableContent == null) {
                 textView.visibility = View.GONE

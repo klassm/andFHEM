@@ -1,11 +1,13 @@
 package li.klass.fhem.fcm.history.view
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.fcm_history_updates.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
+import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.LocalDate
@@ -20,6 +22,7 @@ class FcmHistoryUpdatesFragment : FcmHistoryBaseFragment<FcmUpdatesAdapter>(R.la
                 fcmHistoryService.getChanges(activity, localDate)
             }.await()
 
+            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             showEmptyViewIfRequired(updates.isEmpty(), view.updates, view.fcm_no_updates)
             (view.updates.adapter as FcmUpdatesAdapter).updateWith(updates)
         }
