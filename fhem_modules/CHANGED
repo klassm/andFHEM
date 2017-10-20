@@ -1,2 +1,5 @@
+20.10.2017
+ - device updates are sent with priority "normal" to save battery
+
 10.10.2017
  - Initial gcmsend module

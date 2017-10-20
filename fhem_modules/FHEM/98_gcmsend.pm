@@ -84,7 +84,7 @@ sub gcmsend_array_to_json(@) {
 }
 
 sub gcmsend_sendPayload($%) {
-    my ($hash, %payload) = @_;
+    my ($hash, $priority, %payload) = @_;
     my %generalPayload = gcmsend_getGeneralPayload($hash);
     my %toSendPayload = (%generalPayload, %payload);
     my %encryptedPayload = gcmsend_encrypt($hash, %toSendPayload);
@@ -110,7 +110,7 @@ sub gcmsend_sendPayload($%) {
     my $data =
         "{".
             "\"registration_ids\":".gcmsend_array_to_json(@registrationIds).",".
-            "\"priority\":\"high\"".
+            "\"priority\":\"$priority\"".
             "\"data\": $jsonPayload".
             "}";
 
@@ -157,7 +157,7 @@ sub gcmsend_sendNotify($$$) {
         "changes"    => $changes,
         "type"       => "notify"
     );
-    gcmsend_sendPayload($hash, %payload);
+    gcmsend_sendPayload($hash, "normal", %payload);
 }
 
 sub gcmsend_toJson(%) {
@@ -239,7 +239,7 @@ sub gcmsend_sendMessage($$) {
         "notifyId"     => $notifyId,
         "type"         => "message"
     );
-    gcmsend_sendPayload($hash, %payload);
+    gcmsend_sendPayload($hash, "high", %payload);
 
     return undef;
 }
