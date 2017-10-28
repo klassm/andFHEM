@@ -1,3 +1,7 @@
+28.10.2017
+ - Resolve error when loading module usith >= Perl 5.22
+ - Resolve warnings
+
 20.10.2017
  - device updates are sent with priority "normal" to save battery
 

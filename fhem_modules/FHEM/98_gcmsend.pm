@@ -2,10 +2,10 @@ package main;
 
 use strict;
 use warnings;
+use utf8;
 use HTTP::Request;
 use LWP::UserAgent;
 use IO::Socket::SSL;
-use utf8;
 use Crypt::CBC;
 use Crypt::Cipher::AES;
 
@@ -20,29 +20,29 @@ sub gcmsend_Initialize($)
 }
 
 sub gcmsend_attr {
-    my ($cmd, $name, $aName, $aVal) = @_;
-    if (not $aName eq "cryptKey") {
+    my ($cmd, $name, $attributeName, $attributeValue) = @_;
+    if (not $attributeName eq "cryptKey") {
         return undef;
     }
-    $aVal = sprintf("%016s", $aVal);
-    $aVal = substr $aVal, length($aVal) - 16, 16;
-    $_[3] = $aVal;
+    $attributeValue = sprintf("%016s", $attributeValue);
+    $attributeValue = substr $attributeValue, length($attributeValue) - 16, 16;
+    $_[3] = $attributeValue;
     return undef;
 }
 
 sub gcmsend_set {
-    my ($hash, @a) = @_;
-    my $v = @a[1];
+    my ($hash, @args) = @_;
+    my $v = $args[1];
     if ($v eq "delete_saved_states") {
         $hash->{STATES} = { };
         return "deleted";
     } elsif ($v eq "send") {
         my $msg = "";
-        for (my $i = 2; $i < int(@a); $i++) {
+        for (my $i = 2; $i < int(@args); $i++) {
             if (!($msg eq "")) {
                 $msg .= " ";
             }
-            $msg .= @a[$i];
+            $msg .= $args[$i];
         }
         return gcmsend_sendMessage($hash, $msg);
     } else {
@@ -69,14 +69,14 @@ sub gcmsend_Define($$)
 }
 
 sub gcmsend_array_to_json(@) {
-    my (@array) = @_;
+    my (@args) = @_;
     my $ret = "";
 
-    for (my $i = 0; $i < int(@array); $i++) {
+    for (my $i = 0; $i < int(@args); $i++) {
         if ($i != 0) {
             $ret .= ",";
         }
-        my $value = @array[$i];
+        my $value = $args[$i];
         $ret .= ("\"".$value."\"");
     }
 
@@ -171,8 +171,8 @@ sub gcmsend_toJson(%) {
     return "{".join(", ", @entries)."}";
 }
 
-my %gcmsend_encrypt_keys = ("type" => "", "notifyId" => "", "changes" => "", "deviceName" => "",
-    "tickerText"                   => "", "contentText" => "", "contentTitle" => "");
+my $gcmsend_encrypt_keys = { "type" => "", "notifyId" => "", "changes" => "", "deviceName" => "",
+    "tickerText"                    => "", "contentText" => "", "contentTitle" => "" };
 sub gcmsend_encrypt($%) {
     my ($hash, %payload) = @_;
     my $key = AttrVal($hash->{NAME}, "cryptKey", "");
@@ -192,13 +192,10 @@ sub gcmsend_encrypt($%) {
     );
     my %newPayload = ();
     while (my ($key, $value) = each %payload) {
-        if (exists(%gcmsend_encrypt_keys->{$key})) {
-            my $padded = sprintf '%16s', $value;
-            my $length = length($padded);
-
-            %newPayload->{$key} = $cipher->encrypt_hex( $value );
+        if (exists($gcmsend_encrypt_keys->{$key})) {
+            $newPayload{$key} = $cipher->encrypt_hex( $value );
         } else {
-            %newPayload->{$key} = $value;
+            $newPayload{$key} = $value;
         }
     }
     return %newPayload;
@@ -217,16 +214,15 @@ sub gcmsend_sendMessage($$) {
     my $length = int(@parts);
 
     if ($length == 3 || $length == 4) {
-        $tickerText = @parts[0];
-        $contentTitle = @parts[1];
-        $contentText = @parts[2];
+        $tickerText = $parts[0];
+        $contentTitle = $parts[1];
+        $contentText = $parts[2];
 
         if ($length == 4) {
-            my $notifyIdText = @parts[3];
-            if (!(@parts[3] =~ m/[1-9][0-9]*/)) {
+            if (!($parts[3] =~ m/[1-9][0-9]*/)) {
                 return "notifyId must be numeric and positive";
             }
-            $notifyId = @parts[3];
+            $notifyId = $parts[3];
         }
     } else {
         return "Illegal message format. Required format is \r\n ".
@@ -297,7 +293,7 @@ sub gcmsend_notify($$)
         my $key;
         my $value;
         my $position = index($change, ':');
-        if ($position == -1) {
+        if ($position == - 1) {
             $key = "state";
             $value = $keyValue[0];
         } else {

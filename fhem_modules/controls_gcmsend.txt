@@ -1,2 +1,2 @@
 DEL FHEM/98_gcmsend.pm
-UPD 2017-20-10_11:33:01 12348 FHEM/98_gcmsend.pm
+UPD 2017-29-10_09:06:32 12309 FHEM/98_gcmsend.pm

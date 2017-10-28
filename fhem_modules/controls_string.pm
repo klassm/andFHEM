@@ -1,12 +1,14 @@
+use warnings FATAL => 'all';
+use strict;
 use File::stat;
 use POSIX;
 
-$file = "FHEM/98_gcmsend.pm";
+my $file = "FHEM/98_gcmsend.pm";
 
-$stat = stat($file);
+my $stat = stat($file);
 
-$size = $stat->size;
-$date = POSIX::strftime("%Y-%d-%m", localtime( $stat->mtime ));
-$time = POSIX::strftime("%H:%M:%S", localtime( $stat->mtime ));
+my $size = $stat->size;
+my $date = POSIX::strftime("%Y-%d-%m", localtime( $stat->mtime ));
+my $time = POSIX::strftime("%H:%M:%S", localtime( $stat->mtime ));
 
 print "UPD ${date}_${time} $size FHEM/98_gcmsend.pm"
