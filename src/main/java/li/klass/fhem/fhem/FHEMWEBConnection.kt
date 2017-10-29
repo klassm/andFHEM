@@ -45,6 +45,7 @@ import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.CloseableUtil.close
 import org.slf4j.LoggerFactory
 import java.io.*
+import java.net.SocketTimeoutException
 import java.net.URLEncoder
 import java.security.KeyStore
 import javax.net.ssl.*
@@ -157,11 +158,16 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
             response.content.close()
             return value
+        } catch (e: SocketTimeoutException) {
+            LOG.info("socket timed out", e)
+            throw e
+        } catch (e: SSLHandshakeException) {
+            LOG.info("ssl handshake failed", e)
+            throw e
         } catch (e: IOException) {
             LOG.info("cannot load csrf token", e)
             return null
         }
-
     }
 
     private fun handleError(urlSuffix: String, isRetry: Boolean, url: String?, e: Exception, context: Context): RequestResult<InputStream> {
