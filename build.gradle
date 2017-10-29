@@ -140,7 +140,7 @@ android {
         main {
             aidl.srcDirs = ['src/main/aidl']
             java.srcDirs = ['src/main/java', 'src/gen/java']
-            resources.srcDir file('src/gen/resources')
+            resources.srcDirs = ['src/gen/resources', 'src/main/resources']
         }
     }
 
@@ -149,6 +149,13 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'APK LICENSE.txt'
         exclude 'LICENSE.txt'
+        pickFirst 'application.properties'
+        pickFirst '**/*.json'
+        pickFirst '**/gplot/*.gplot'
+        pickFirst '**/gplot/dummy.txt'
+        pickFirst '**/floorplan-modify.js'
+        pickFirst '**/dummyData.xml'
+        pickFirst '**/test.xml'
     }
 
     productFlavors {
