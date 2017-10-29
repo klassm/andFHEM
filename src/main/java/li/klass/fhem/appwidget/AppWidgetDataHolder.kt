@@ -120,7 +120,7 @@ constructor() {
 
             cancelUpdating(context, widgetConfiguration.widgetId, alarmManager)
             if (pendingIntent != null) {
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, firstRun, widgetUpdateInterval, pendingIntent)
+                alarmManager.setRepeating(AlarmManager.RTC, firstRun, widgetUpdateInterval, pendingIntent)
             }
         }
     }
