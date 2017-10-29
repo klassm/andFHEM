@@ -24,11 +24,13 @@
 
 package li.klass.fhem.domain;
 
+import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
+import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
 @SuppressWarnings("unused")
@@ -51,8 +53,10 @@ public class LightSceneDevice extends FhemDevice {
     }
 
     public List<String> getScenes() {
-        GroupSetListEntry sceneGroup = (GroupSetListEntry) getSetList().get("scene");
-        return sceneGroup.getGroupStates();
+        SetListEntry entry = getSetList().get("scene");
+        return entry instanceof GroupSetListEntry
+                ? ((GroupSetListEntry) entry).getGroupStates()
+                : Collections.<String>emptyList();
     }
 
     public String getScene() {
