@@ -28,7 +28,6 @@ import android.content.Context;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -42,7 +41,6 @@ import org.mockito.Mock;
 import java.util.List;
 
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.service.room.xmllist.XmlListDevice;
@@ -226,13 +224,8 @@ public class VoiceCommandServiceTest {
     @Test
     public void should_handle_light_scenes() {
         // given
-        LightSceneDevice lightSceneDevice = new LightSceneDevice() {
-            @Override
-            public List<String> getInternalDeviceGroupOrGroupAttributes(Context context) {
-                return Lists.newArrayList("group");
-            }
-        };
-        lightSceneDevice.setXmlListDevice(new XmlListDevice("dummy"));
+        TestDummy lightSceneDevice = new TestDummy("device");
+        lightSceneDevice.setXmlListDevice(new XmlListDevice("LightScene"));
         lightSceneDevice.getXmlListDevice().setInternal("NAME", "device");
         lightSceneDevice.setSetList("scene:off,on");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice, context);

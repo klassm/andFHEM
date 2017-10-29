@@ -54,9 +54,9 @@ public abstract class HolderActionRow<I> {
         LayoutInflater inflater = LayoutInflater.from(context);
         TableRow row = (TableRow) inflater.inflate(layout, viewGroup, false);
 
-        FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);
+        FlowLayout holder = row.findViewById(R.id.holder);
 
-        TextView descriptionView = (TextView) row.findViewById(R.id.description);
+        TextView descriptionView = row.findViewById(R.id.description);
         if (descriptionView != null) {
             descriptionView.setText(description);
         }

@@ -24,12 +24,8 @@
 
 package li.klass.fhem.adapter.devices.strategy;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 @Singleton
 public class StrategyProvider {
@@ -47,6 +43,4 @@ public class StrategyProvider {
 
     @Inject
     WeatherDeviceViewStrategy weatherDeviceStrategy;
-
-    private List<ViewStrategy> strategies = newArrayList();
 }

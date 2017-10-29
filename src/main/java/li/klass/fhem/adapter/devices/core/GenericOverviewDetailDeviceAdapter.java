@@ -141,13 +141,13 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private void fillActionsCard(final GenericDevice genericDevice, final LinearLayout linearLayout, List<GenericDetailActionProvider> detailActionProviders, String connectionId, Context context) {
-        CardView actionsCard = (CardView) linearLayout.findViewById(R.id.actionsCard);
+        CardView actionsCard = linearLayout.findViewById(R.id.actionsCard);
         if (genericDevice.getSetList().size() == 0) {
             actionsCard.setVisibility(View.GONE);
             return;
         }
 
-        LinearLayout layout = (LinearLayout) actionsCard.findViewById(R.id.actionsList);
+        LinearLayout layout = actionsCard.findViewById(R.id.actionsList);
         layout.addView(new AvailableTargetStatesSwitchAction().createView(context, LayoutInflater.from(context), genericDevice, linearLayout, connectionId));
 
         ImmutableList<View> views = from(detailActionProviders)
@@ -201,7 +201,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private void fillPlotsCard(final GenericDevice device, Set<SvgGraphDefinition> graphDefinitions, final String connectionId, LinearLayout linearLayout, final Context context) {
-        CardView plotsCard = (CardView) linearLayout.findViewById(R.id.plotsCard);
+        CardView plotsCard = linearLayout.findViewById(R.id.plotsCard);
         if (plotsCard == null) {
             LOGGER.error("fillPlotsCard - cannot find plots card, is null");
             return;
@@ -214,7 +214,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         }
         plotsCard.setVisibility(View.VISIBLE);
 
-        LinearLayout graphLayout = (LinearLayout) plotsCard.findViewById(R.id.plotsList);
+        LinearLayout graphLayout = plotsCard.findViewById(R.id.plotsList);
         if (graphLayout == null) {
             LOGGER.error("fillPlotsCard - cannot find graphLayout, is null");
             return;
@@ -247,14 +247,14 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private void fillCard(final GenericDevice device, final String connectionId, LinearLayout linearLayout, int cardId, int caption, final ItemProvider itemProvider, final List<GenericDetailActionProvider> providers, final Context context) {
-        CardView card = (CardView) linearLayout.findViewById(cardId);
+        CardView card = linearLayout.findViewById(cardId);
 
         boolean hasConfiguration = device.getDeviceConfiguration().isPresent();
 
-        TextView captionTextView = (TextView) card.findViewById(R.id.cardCaption);
+        TextView captionTextView = card.findViewById(R.id.cardCaption);
         captionTextView.setText(caption);
 
-        final TableLayout table = (TableLayout) card.findViewById(R.id.table);
+        final TableLayout table = card.findViewById(R.id.table);
 
         boolean showExpandButton = hasConfiguration;
         List<DeviceViewItem> itemsToShow = getSortedClassItems(device, itemProvider, false, context);
@@ -265,7 +265,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
         }
         fillTable(device, connectionId, table, itemsToShow, providers, context);
 
-        final Button button = (Button) card.findViewById(R.id.expandButton);
+        final Button button = card.findViewById(R.id.expandButton);
         button.setVisibility(showExpandButton ? View.VISIBLE : View.GONE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -46,7 +46,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
-import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
@@ -172,8 +171,6 @@ public interface ApplicationComponent {
     void inject(FS20ZDRDeviceAdapter object);
 
     void inject(GCMSendDeviceAdapter object);
-
-    void inject(LightSceneAdapter object);
 
     void inject(PIDDeviceAdapter object);
 

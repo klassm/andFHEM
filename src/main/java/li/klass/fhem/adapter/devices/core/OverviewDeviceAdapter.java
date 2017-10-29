@@ -27,10 +27,8 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -54,6 +52,7 @@ import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.strategy.DefaultViewStrategy;
+import li.klass.fhem.adapter.devices.strategy.LightSceneDeviceViewStrategy;
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
@@ -97,6 +96,9 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     DefaultViewStrategy defaultOverviewStrategy;
 
     @Inject
+    LightSceneDeviceViewStrategy lightSceneDeviceViewStrategy;
+
+    @Inject
     DevStateIconAdder devStateIconAdder;
 
     private List<ViewStrategy> overviewStrategies;
@@ -120,6 +122,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
     protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         overviewStrategies.add(defaultOverviewStrategy);
+        overviewStrategies.add(lightSceneDeviceViewStrategy);
     }
 
     private ViewStrategy getMostSpecificOverviewStrategy(FhemDevice device) {
@@ -149,9 +152,9 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
         assert tableRow != null;
         holder.row = tableRow;
-        holder.description = (TextView) tableRow.findViewById(R.id.description);
-        holder.value = (TextView) tableRow.findViewById(R.id.value);
-        holder.devStateIcon = (ImageView) tableRow.findViewById(R.id.devStateIcon);
+        holder.description = tableRow.findViewById(R.id.description);
+        holder.value = tableRow.findViewById(R.id.value);
+        holder.devStateIcon = tableRow.findViewById(R.id.devStateIcon);
         return holder;
     }
 

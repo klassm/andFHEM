@@ -34,7 +34,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
-import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
@@ -69,7 +68,6 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
-import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwthermDevice;
@@ -114,7 +112,6 @@ public enum DeviceType {
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
