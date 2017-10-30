@@ -14,10 +14,10 @@ node {
     step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])
 
     stage 'Release Inapp'
-    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-inapp-release.apk', trackName: 'production'
+    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/inapp/release/workspace-inapp-release.apk', trackName: 'production'
 
     stage 'Release Premium'
-    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/workspace-premium-release.apk', trackName: 'production'
+    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/premium/release/workspace-premium-release.apk', trackName: 'production'
 
     stage 'Upload GitHub'
     sh './gradlew githubRelease'
