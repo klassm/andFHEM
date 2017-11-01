@@ -1,6 +1,7 @@
 package li.klass.fhem.fcm.history.view
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -27,7 +28,7 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
         view ?: return view
 
         val recyclerView = getRecyclerViewFrom(view)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = LinearLayoutManager(activity as Context)
         recyclerView.adapter = getAdapter()
 
         val dateFormat = DateFormatUtil.ANDFHEM_DATE_FORMAT
@@ -35,9 +36,9 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
         view.changeDateButton.setOnClickListener { _ ->
             val lastDate = dateFormat.parseLocalDate(view.selectedDate.text.toString())
             DatePickerDialog(context, { _, year, month, day ->
-                view.selectedDate.text = dateFormat.print(LocalDate(year, month, day))
+                view.selectedDate.text = dateFormat.print(LocalDate(year, month + 1, day))
                 update(false)
-            }, lastDate.year, lastDate.monthOfYear, lastDate.dayOfMonth).show()
+            }, lastDate.year, lastDate.monthOfYear - 1, lastDate.dayOfMonth).show()
         }
         return view
     }
