@@ -2,7 +2,9 @@ package li.klass.fhem.fcm.history.data
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT
+import li.klass.fhem.util.DateTimeProvider
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -12,7 +14,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
-class FcmHistoryService @Inject constructor() {
+class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTimeProvider) {
     fun addMessage(context: Context, message: ReceivedMessage) {
         val now = LocalDateTime.now()
         val values = ContentValues().apply {
@@ -30,12 +32,19 @@ class FcmHistoryService @Inject constructor() {
         val cursor = context.contentResolver.query(FcmMessagesContentProvider.contentUri, null,
                 "${FcmMessagesContentProvider.columnDate} = ?", arrayOf(ANDFHEM_DATE_FORMAT.print(localDate)), null)
 
+        val result = readMessagesCursor(cursor)
+        cursor.close()
+        return result
+    }
+
+    private fun readMessagesCursor(cursor: Cursor): List<SavedMessage> {
         val columnDatetime = cursor.getColumnIndex(FcmMessagesContentProvider.columnDatetime)
         val columnText = cursor.getColumnIndex(FcmMessagesContentProvider.columnText)
         val columnTicker = cursor.getColumnIndex(FcmMessagesContentProvider.columnTicker)
         val columnTitle = cursor.getColumnIndex(FcmMessagesContentProvider.columnTitle)
 
-        val result = generateSequence { if (cursor.moveToNext()) cursor else null }
+
+        return generateSequence { if (cursor.moveToNext()) cursor else null }
                 .map {
                     SavedMessage(
                             time = DateTime.parse(cursor.getString(columnDatetime), dateFormat),
@@ -44,8 +53,6 @@ class FcmHistoryService @Inject constructor() {
                             text = cursor.getString(columnText))
                 }
                 .toList()
-        cursor.close()
-        return result
     }
 
     fun addChanges(context: Context, device: String, changes: Map<String, String>) {
@@ -68,11 +75,17 @@ class FcmHistoryService @Inject constructor() {
         val cursor = context.contentResolver.query(FcmUpdatesContentProvider.contentUri, null,
                 "${FcmUpdatesContentProvider.columnDate} = ?", arrayOf(ANDFHEM_DATE_FORMAT.print(localDate)), null)
 
+        val result = readChangesCursor(cursor)
+        cursor.close()
+        return result
+    }
+
+    private fun readChangesCursor(cursor: Cursor): List<SavedChange> {
         val columnDatetime = cursor.getColumnIndex(FcmUpdatesContentProvider.columnDatetime)
         val columnDevice = cursor.getColumnIndex(FcmUpdatesContentProvider.columnDevice)
         val columnChanges = cursor.getColumnIndex(FcmUpdatesContentProvider.columnChanges)
 
-        val result = generateSequence { if (cursor.moveToNext()) cursor else null }
+        return generateSequence { if (cursor.moveToNext()) cursor else null }
                 .map {
                     val changesAsJson = JSONArray(cursor.getString(columnChanges))
                     val changesAsPairs = (0 until changesAsJson.length())
@@ -89,8 +102,30 @@ class FcmHistoryService @Inject constructor() {
                             deviceName = cursor.getString(columnDevice))
                 }
                 .toList()
-        cursor.close()
-        return result
+    }
+
+    fun deleteContentOlderThan(days: Int, context: Context) {
+        if (days <= 0) {
+            return
+        }
+
+        try {
+            val now = dateTimeProvider.now()
+            val deleteUntil = dateFormat.print(now.minusDays(days))
+            logger.info("deleteContentOlderThan - deleting content older than $days days < $deleteUntil")
+
+            val deletesUpdates = context.contentResolver.delete(FcmUpdatesContentProvider.contentUri,
+                    "${FcmUpdatesContentProvider.columnDatetime} < ?",
+                    arrayOf(deleteUntil))
+            logger.info("deleteContentOlderThan - deleted $deletesUpdates updates")
+
+            val deletedMessages = context.contentResolver.delete(FcmUpdatesContentProvider.contentUri,
+                    "${FcmMessagesContentProvider.columnDatetime} < ?",
+                    arrayOf(deleteUntil))
+            logger.info("deleteContentOlderThan - deleted $deletedMessages messages")
+        } catch (e: Exception) {
+            logger.error("deleteContentOlderThan - error during deletion", e)
+        }
     }
 
     class ReceivedMessage(val contentTitle: String,

@@ -69,4 +69,14 @@
         <item>Alle Geräte</item>
         <item>Räume</item>
     </string-array>
+
+    <string-array name="fcm_keep_messages_days" translatable="false">
+        <item>1 Tag</item>
+        <item>7 Tage</item>
+        <item>14 Tage</item>
+        <item>30 Tage</item>
+        <item>90 Tage</item>
+        <item>365 Tage</item>
+        <item>nie löschen</item>
+    </string-array>
 </resources>

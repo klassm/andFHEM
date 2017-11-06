@@ -40,8 +40,10 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START
 import li.klass.fhem.constants.ResultCodes
+import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.service.room.FavoritesService
@@ -56,18 +58,16 @@ class StartupActivity : Activity() {
 
     @Inject
     lateinit var applicationProperties: ApplicationProperties
-
     @Inject
     lateinit var roomListUpdateService: RoomListUpdateService
-
     @Inject
     lateinit var roomListService: RoomListService
-
     @Inject
     lateinit var favoritesService: FavoritesService
-
     @Inject
     lateinit var loginUiService: LoginUIService
+    @Inject
+    lateinit var fcmHistoryService: FcmHistoryService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -159,7 +159,7 @@ class StartupActivity : Activity() {
         if (updateOnApplicationStart) {
             executeRemoteUpdate()
         } else {
-            loadFavorites()
+            deleteOldFcmMessages()
         }
     }
 
@@ -180,6 +180,19 @@ class StartupActivity : Activity() {
                     gotoMainActivity(false)
                 }
             }
+        }
+    }
+
+    private fun deleteOldFcmMessages() {
+        setCurrentStatus(R.string.currentStatus_deleteFcmHistory)
+        val activityAsContext: Context = this
+        val retentionDays = Integer.parseInt(applicationProperties.getStringSharedPreference(PreferenceKeys.FCM_KEEP_MESSAGES_DAYS, "-1", activityAsContext))
+
+        async(UI) {
+            bg {
+                fcmHistoryService.deleteContentOlderThan(retentionDays, activityAsContext)
+            }.await()
+            loadFavorites()
         }
     }
 

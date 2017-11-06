@@ -370,6 +370,8 @@
     <string name="prefClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
     <string name="prefVoiceCommand">Sprachkommandos</string>
     <string name="prefVoiceCommandSummary">andFHEM muss als Eingabehilfe eingerichtet werden, um Sprachkommandos zu verwenden. Sprachkommandos funktionieren nur in andFHEM Premium!</string>
+    <string name="prefKeepMessagesDays">FCM-Nachrichten Aufbewahrungszeit</string>
+    <string name="prefKeepMessagesDaysSummary">Anzahl Tage, für die GCM Nachrichten vorgehalten werden</string>
 
     <string name="error_update">Fehler während des Update-Vorgangs.</string>
     <string name="error_timeout">Zeitüberschreitung der Anforderung.</string>
@@ -585,6 +587,7 @@
     <string name="currentStatus_loadingDeviceList">Lade Geräteliste …</string>
     <string name="currentStatus_loadingFavorites">Lade Favoriten …</string>
     <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen.</string>
+    <string name="currentStatus_deleteFcmHistory">Lösche alte FCM Einträge …</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
     <string name="androidBugDialogDatePickerContent">Android 5.0 beinhaltet einen Bug, der den nachfolgenden Dialog zum Absturz bringt, weshalb dieses Feature in dieser Android-Version nicht verwendet werden kann.</string>

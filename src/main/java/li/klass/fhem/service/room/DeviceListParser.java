@@ -177,12 +177,12 @@ public class DeviceListParser {
 
         int errorCount = 0;
 
-        String errorText = "";
+        StringBuilder errorText = new StringBuilder();
 
         for (XmlListDevice xmlListDevice : xmlListDevices) {
             if (!deviceFromXmlListDevice(deviceClass, xmlListDevice, allDevices, context, deviceConfiguration)) {
                 errorCount++;
-                errorText += xmlListDevice.toString() + "\r\n\r\n";
+                errorText.append(xmlListDevice.toString()).append("\r\n\r\n");
             }
         }
 

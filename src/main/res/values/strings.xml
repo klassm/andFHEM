@@ -373,6 +373,8 @@
     <string name="prefVoiceCommand">Voice commands</string>
     <string name="prefVoiceCommandSummary">Enable andFHEM as accessibility service to enable voice recognition. This is a Premium only feature.</string>
     <string name="prefFCMSenderId" translatable="false">Cloud Messaging Sender-ID</string>
+    <string name="prefKeepMessagesDays">FCM-Messages Retention Time</string>
+    <string name="prefKeepMessagesDaysSummary">Number of days FCM messages are stored.</string>
 
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>
@@ -625,6 +627,7 @@
     <string name="currentStatus_loadingDeviceList">Loading device list …</string>
     <string name="currentStatus_loadingFavorites">Loading favorites …</string>
     <string name="currentStatus_billingInitError">Cannot initialize connection to Google billing!</string>
+    <string name="currentStatus_deleteFcmHistory">Delete old FCM history entries …</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deactivated</string>
     <string name="androidBugDialogDatePickerContent">Android 5.0 contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled in this version.</string>

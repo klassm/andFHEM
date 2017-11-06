@@ -50,6 +50,7 @@ public class PreferenceKeys {
     public static final String AUTO_UPDATE_TIME = "AUTO_UPDATE_TIME";
     public static final String EXPORT_SETTINGS = "EXPORT_SETTINGS";
     public static final String IMPORT_SETTINGS = "IMPORT_SETTINGS";
+    public static final String FCM_KEEP_MESSAGES_DAYS = "FCM_KEEP_MESSAGES_DAYS";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";

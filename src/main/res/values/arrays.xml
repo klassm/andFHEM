@@ -128,4 +128,24 @@
         <item>ALL_DEVICES</item>
         <item>ROOM_LIST</item>
     </string-array>
+
+    <string-array name="fcm_keep_messages_days" translatable="false">
+        <item>1 day</item>
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>90 days</item>
+        <item>365 days</item>
+        <item>never delete</item>
+    </string-array>
+
+    <string-array name="fcm_keep_messages_days_values" translatable="false">
+        <item>1</item>
+        <item>7</item>
+        <item>14</item>
+        <item>30</item>
+        <item>90</item>
+        <item>365</item>
+        <item>-1</item>
+    </string-array>
 </resources>

@@ -177,6 +177,14 @@
             android:key="FCM_SENDER_ID"
             android:title="@string/prefFCMSenderId" />
 
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/fcm_keep_messages_days"
+            android:entryValues="@array/fcm_keep_messages_days_values"
+            android:key="FCM_KEEP_MESSAGES_DAYS"
+            android:title="@string/prefKeepMessagesDays"
+            android:summary="@string/prefKeepMessagesDaysSummary" />
+
         <li.klass.fhem.widget.preference.SeekBarPreference
             min="1"
             android:layout_width="wrap_content"
