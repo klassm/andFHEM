@@ -172,7 +172,6 @@
             android:title="@string/prefAutoUpdate"/>
 
         <EditTextPreference
-            android:defaultValue=""
             android:inputType="number"
             android:key="FCM_SENDER_ID"
             android:title="@string/prefFCMSenderId" />
@@ -207,13 +206,11 @@
             android:title="@string/prefCommandExecutionRetries"/>
 
         <EditTextPreference
-            android:defaultValue=""
             android:inputType="text"
             android:key="DEVICE_NAME"
             android:title="@string/prefFHEMWEBDeviceName" />
 
         <EditTextPreference
-            android:defaultValue=""
             android:key="PASSWORD"
             android:password="true"
             android:summary="@string/prefApplicationPasswordSummary"

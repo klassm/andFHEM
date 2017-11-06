@@ -75,6 +75,7 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.LicenseIntentService
+import li.klass.fhem.settings.SettingsActivity
 import li.klass.fhem.update.UpdateHandler
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
@@ -282,7 +283,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         when (menuItem.itemId) {
             R.id.menu_settings -> {
-                val settingsIntent = Intent(this, PreferencesActivity::class.java)
+                val settingsIntent = Intent(this, SettingsActivity::class.java)
                 startActivityForResult(settingsIntent, Activity.RESULT_OK)
                 return true
             }

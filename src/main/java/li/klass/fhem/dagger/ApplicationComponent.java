@@ -31,7 +31,6 @@ import javax.inject.Singleton;
 import dagger.Component;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
-import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.activities.PremiumActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
@@ -136,6 +135,8 @@ import li.klass.fhem.service.intent.VoiceCommandIntentService;
 import li.klass.fhem.service.room.RoomListUpdateService;
 import li.klass.fhem.service.room.group.GroupProvider;
 import li.klass.fhem.service.room.xmllist.XmlListParser;
+import li.klass.fhem.settings.SettingsActivity;
+import li.klass.fhem.settings.SettingsFragment;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
@@ -150,8 +151,6 @@ public interface ApplicationComponent {
     void inject(ChartingActivity object);
 
     void inject(StartupActivity object);
-
-    void inject(PreferencesActivity object);
 
     void inject(SmallWidgetSelectionActivity object);
 
@@ -364,4 +363,8 @@ public interface ApplicationComponent {
     void inject(@NotNull FcmHistoryMessagesFragment fcmHistoryMessagesFragment);
 
     void inject(@NotNull FcmHistoryUpdatesFragment fcmHistoryUpdatesFragment);
+
+    void inject(@NotNull SettingsActivity settingsActivity);
+
+    void inject(@NotNull SettingsFragment settingsFragment);
 }

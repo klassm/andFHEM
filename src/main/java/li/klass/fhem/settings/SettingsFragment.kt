@@ -22,27 +22,21 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities
+package li.klass.fhem.settings
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.preference.Preference
-import android.preference.PreferenceActivity
+import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
-import android.support.annotation.LayoutRes
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatDelegate
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.google.common.base.MoreObjects.firstNonNull
 import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.AndFHEMApplication
+import li.klass.fhem.AndFHEMApplication.Companion.application
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.PreferenceKeys
@@ -61,7 +55,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 
-class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Inject
     lateinit var gcmSendDeviceService: GCMSendDeviceService
@@ -74,19 +68,15 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
 
     private var delegate: AppCompatDelegate? = null
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        getDelegate().installViewFactory()
-        getDelegate().onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (application as AndFHEMApplication).daggerComponent.inject(this)
 
         super.onCreate(savedInstanceState)
 
-        (application as AndFHEMApplication).daggerComponent.inject(this)
-        supportActionBar.setDisplayHomeAsUpEnabled(true)
-
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(activity)
         preferences.registerOnSharedPreferenceChangeListener(this)
 
-        addPreferencesFromResource(R.layout.preferences)
+        addPreferencesFromResource(R.xml.preferences)
 
         attachListSummaryListenerTo(PreferenceKeys.STARTUP_VIEW, R.array.startupViewsValues, R.array.startupViews, R.string.prefStartupViewSummary)
         attachIntSummaryListenerTo(PreferenceKeys.DEVICE_COLUMN_WIDTH, R.string.prefDeviceColumnWidthSummary)
@@ -105,17 +95,17 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
         deviceColumnWidthPreference.setMaximumValue(800)
 
         findPreference(SEND_LAST_ERROR).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            ErrorHolder.sendLastErrorAsMail(this@PreferencesActivity)
+            ErrorHolder.sendLastErrorAsMail(activity)
             true
         }
 
         findPreference(SEND_APP_LOG).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            ErrorHolder.sendApplicationLogAsMail(this@PreferencesActivity)
+            ErrorHolder.sendApplicationLogAsMail(activity)
             true
         }
 
         findPreference(CLEAR_TRUSTED_CERTIFICATES).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val mtm = MemorizingTrustManager(this@PreferencesActivity)
+            val mtm = MemorizingTrustManager(activity)
             val aliases = mtm.certificates
             while (aliases.hasMoreElements()) {
                 val alias = aliases.nextElement()
@@ -127,13 +117,13 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
                 }
 
             }
-            Toast.makeText(applicationContext, getString(R.string.prefClearTrustedCertificatesFinished), Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, getString(R.string.prefClearTrustedCertificatesFinished), Toast.LENGTH_SHORT).show()
             true
         }
 
         val exportPreference = findPreference(EXPORT_SETTINGS)
         exportPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            importExportUIService.handleExport(this@PreferencesActivity)
+            importExportUIService.handleExport(activity)
             true
         }
         if (AndFHEMApplication.androidSDKLevel <= Build.VERSION_CODES.KITKAT) {
@@ -142,7 +132,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
 
         val importPreference = findPreference(IMPORT_SETTINGS)
         importPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            importExportUIService.handleImport(this@PreferencesActivity)
+            importExportUIService.handleImport(activity)
             true
         }
         if (AndFHEMApplication.androidSDKLevel <= Build.VERSION_CODES.KITKAT) {
@@ -164,106 +154,46 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
         }
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        getDelegate().onPostCreate(savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        getDelegate().onDestroy()
-    }
-
-    val supportActionBar: ActionBar
-        get() = getDelegate().supportActionBar!!
-
-    override fun invalidateOptionsMenu() {
-        getDelegate().invalidateOptionsMenu()
-    }
-
-    override fun getMenuInflater(): MenuInflater = getDelegate().menuInflater
-
-    override fun setContentView(@LayoutRes layoutResID: Int) {
-        getDelegate().setContentView(layoutResID)
-    }
-
-    override fun setContentView(view: View) {
-        getDelegate().setContentView(view)
-    }
-
-    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
-        getDelegate().setContentView(view, params)
-    }
-
-    override fun addContentView(view: View, params: ViewGroup.LayoutParams) {
-        getDelegate().addContentView(view, params)
-    }
-
-    override fun onPostResume() {
-        super.onPostResume()
-        getDelegate().onPostResume()
-    }
-
-    override fun onTitleChanged(title: CharSequence, color: Int) {
-        super.onTitleChanged(title, color)
-        getDelegate().setTitle(title)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        getDelegate().onConfigurationChanged(newConfig)
-    }
-
     override fun onStop() {
         super.onStop()
-        getDelegate().onStop()
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this)
+        PreferenceManager.getDefaultSharedPreferences(activity).unregisterOnSharedPreferenceChangeListener(this)
 
-        sendBroadcast(Intent(Actions.REDRAW))
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
+        activity.sendBroadcast(Intent(Actions.REDRAW))
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, s: String) {}
 
     private fun attachIntSummaryListenerTo(preferenceKey: String, summaryTemplate: Int) {
         val preference = findPreference(preferenceKey)
-        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            preference.summary = String.format(getString(summaryTemplate), newValue)
+        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
+            pref.summary = String.format(getString(summaryTemplate), newValue)
             true
         }
-        preference.summary = String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0, this))
+        preference.summary = String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0, activity))
     }
 
     private fun attachStringSummaryListenerTo(preferenceKey: String, summaryTemplate: Int, listener: Preference.OnPreferenceChangeListener? = null) {
         val preference = findPreference(preferenceKey)
-        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            preference.summary = String.format(getString(summaryTemplate), newValue)
+        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
+            pref.summary = String.format(getString(summaryTemplate), newValue)
 
-            listener == null || listener.onPreferenceChange(preference, newValue)
+            listener == null || listener.onPreferenceChange(pref, newValue)
         }
-        preference.summary = String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null, this), ""))
+        preference.summary = String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null, activity), ""))
     }
 
     private fun attachListSummaryListenerTo(preferenceKey: String, valuesArrayResource: Int, textArrayResource: Int, summaryTemplate: Int) {
         val preference = findPreference(preferenceKey)
-        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            preference.summary = nameForArrayValueFormatted(valuesArrayResource, textArrayResource, newValue.toString(), summaryTemplate)
+        preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
+            pref.summary = nameForArrayValueFormatted(valuesArrayResource, textArrayResource, newValue.toString(), summaryTemplate)
             true
         }
         preference.summary = nameForArrayValueFormatted(valuesArrayResource, textArrayResource,
-                applicationProperties.getStringSharedPreference(preferenceKey, this), summaryTemplate)
+                applicationProperties.getStringSharedPreference(preferenceKey, activity), summaryTemplate)
     }
 
-    private fun nameForArrayValueFormatted(valuesArrayResource: Int, textArrayResource: Int, value: String, summaryTemplate: Int): String {
-        return String.format(getString(summaryTemplate), nameForArrayValue(valuesArrayResource, textArrayResource, value))
-    }
+    private fun nameForArrayValueFormatted(valuesArrayResource: Int, textArrayResource: Int, value: String, summaryTemplate: Int): String =
+            String.format(getString(summaryTemplate), nameForArrayValue(valuesArrayResource, textArrayResource, value))
 
     private fun nameForArrayValue(valuesArrayResource: Int, textArrayResource: Int, value: String): String? {
         val index = ArrayUtils.indexOf(resources.getStringArray(valuesArrayResource), value)
@@ -274,14 +204,7 @@ class PreferencesActivity : PreferenceActivity(), SharedPreferences.OnSharedPref
         return resources.getStringArray(textArrayResource)[index]
     }
 
-    private fun getDelegate(): AppCompatDelegate {
-        if (delegate == null) {
-            delegate = AppCompatDelegate.create(this, null)
-        }
-        return delegate!!
-    }
-
     companion object {
-        private val LOGGER = Logger.getLogger(PreferencesActivity::class.java.name)
+        private val LOGGER = Logger.getLogger(SettingsFragment::class.java.name)
     }
 }
