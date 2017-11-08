@@ -314,9 +314,9 @@
     <string name="timer">Zeitschaltuhr</string>
     <string name="send_command">Kommando senden</string>
 
-    <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
+    <string name="prefOthersCategory">Andere Einstellungen</string>
     <string name="prefAppearancePreferencesCategory">Darstellung</string>
-    <string name="prefErrorsPreferencesCategory">Fehlerbehandlung</string>
+    <string name="prefErrorsCategory">Fehlerbehandlung</string>
     <string name="prefErrorSendSummary">Den letzten Fehler senden. Vorsicht: Dies bezieht sich nur auf das Laden neuer Inhalte vom Server</string>
     <string name="prefApplicationLogSendSummary">Das App-Protokoll senden. Bitte diesen Knopf verwenden, wenn der Support detaillierte Informationen zum Status der App anfordert</string>
     <string name="prefWidgetCategory">Widgets</string>

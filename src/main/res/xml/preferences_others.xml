@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -23,25 +22,10 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-
-    <PreferenceCategory android:title="@string/prefErrorsCategory">
-
-        <Preference
-            android:key="SEND_LAST_ERROR"
-            android:title="@string/error_send"
-            android:summary="@string/prefErrorSendSummary"/>
-
-        <Preference
-            android:key="SEND_APP_LOG"
-            android:title="@string/application_log_send"
-            android:summary="@string/prefApplicationLogSendSummary"/>
-    </PreferenceCategory>
-
 
     <PreferenceCategory android:title="@string/prefOthersCategory">
 
@@ -50,7 +34,7 @@
             android:key="UPDATE_ON_APPLICATION_START"
             android:title="@string/prefUpdateOnApplicationStart"
             android:summaryOn="@string/prefUpdateOnApplicationStartSummaryOn"
-            android:summaryOff="@string/prefUpdateOnApplicationStartSummaryOff"/>
+            android:summaryOff="@string/prefUpdateOnApplicationStartSummaryOff" />
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -65,7 +49,7 @@
             android:entries="@array/updateRoomListTimeEntries"
             android:entryValues="@array/updateRoomListTimeValues"
             android:key="AUTO_UPDATE_TIME"
-            android:title="@string/prefAutoUpdate"/>
+            android:title="@string/prefAutoUpdate" />
 
         <EditTextPreference
             android:inputType="number"
@@ -89,7 +73,7 @@
             android:defaultValue="4"
             android:max="20"
             android:text="@string/s_suffix"
-            android:title="@string/prefConnectionTimeout"/>
+            android:title="@string/prefConnectionTimeout" />
 
         <li.klass.fhem.widget.preference.NumberOfRetriesSeekBarPreference
             android:layout_width="wrap_content"
@@ -99,7 +83,7 @@
             android:defaultValue="3"
             android:max="20"
             android:text=""
-            android:title="@string/prefCommandExecutionRetries"/>
+            android:title="@string/prefCommandExecutionRetries" />
 
         <EditTextPreference
             android:inputType="text"
@@ -111,26 +95,26 @@
             android:password="true"
             android:summary="@string/prefApplicationPasswordSummary"
             android:title="@string/prefApplicationPassword"
-            tools:ignore="Deprecated"/>
+            tools:ignore="Deprecated" />
 
         <Preference
             android:key="CLEAR_TRUSTED_CERTIFICATES"
             android:title="@string/prefClearTrustedCertificates"
-            android:summary="@string/prefClearTrustedCertificatesSummary"/>
+            android:summary="@string/prefClearTrustedCertificatesSummary" />
 
         <Preference
             android:title="@string/prefVoiceCommand"
             android:key="VOICE_COMMANDS"
-            android:summary="@string/prefVoiceCommandSummary"/>
+            android:summary="@string/prefVoiceCommandSummary" />
 
         <Preference
             android:title="@string/exportPreferences"
             android:key="EXPORT_SETTINGS"
-            android:summary="@string/exportPreferencesSummary"/>
+            android:summary="@string/exportPreferencesSummary" />
 
         <Preference
             android:title="@string/importPreferences"
             android:key="IMPORT_SETTINGS"
-            android:summary="@string/importPreferencesSummary"/>
+            android:summary="@string/importPreferencesSummary" />
     </PreferenceCategory>
 </PreferenceScreen>

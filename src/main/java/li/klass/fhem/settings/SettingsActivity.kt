@@ -1,18 +1,19 @@
 package li.klass.fhem.settings
 
-import android.app.Activity
-import android.os.Bundle
-import li.klass.fhem.AndFHEMApplication
+import android.content.Intent
+import android.preference.PreferenceActivity
+import li.klass.fhem.R
+import li.klass.fhem.constants.Actions
 
-class SettingsActivity : Activity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (application as AndFHEMApplication).daggerComponent.inject(this)
-
-        // Display the fragment as the main content.
-        fragmentManager.beginTransaction()
-                .replace(android.R.id.content, SettingsFragment())
-                .commit()
+class SettingsActivity : PreferenceActivity() {
+    override fun onBuildHeaders(target: MutableList<Header>?) {
+        loadHeadersFromResource(R.xml.preferences_headers, target);
     }
+
+    override fun onStop() {
+        super.onStop()
+        sendBroadcast(Intent(Actions.REDRAW))
+    }
+
+    override fun isValidFragment(fragmentName: String?) = true
 }

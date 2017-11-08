@@ -316,9 +316,9 @@
     <string name="timer">Timer</string>
     <string name="send_command">Send Command</string>
 
-    <string name="prefOtherPreferencesCategory">Other Preferences</string>
+    <string name="prefOthersCategory">Other Preferences</string>
     <string name="prefAppearancePreferencesCategory">Appearance</string>
-    <string name="prefErrorsPreferencesCategory">Error-Handling</string>
+    <string name="prefErrorsCategory">Error-Handling</string>
     <string name="prefErrorSendSummary">Send the last error. Careful: This is only related to FHEM server requests</string>
     <string name="prefApplicationLogSendSummary">Send the application log. Please use this button if the support requests detailed information on your application status</string>
     <string name="prefWidgetCategory">Widgets</string>
