@@ -26,35 +26,35 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefWidgetCategory">
+    <PreferenceCategory android:title="@string/settingsWidgetCategory">
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="prefWidgetRemoteUpdate"
-            android:title="@string/prefWidgetRemoteUpdate"
-            android:summaryOn="@string/prefWidgetRemoteUpdateSummaryOn"
-            android:summaryOff="@string/prefWidgetRemoteUpdateSummaryOff" />
+            android:title="@string/settingsWidgetRemoteUpdate"
+            android:summaryOn="@string/settingsWidgetRemoteUpdateSummaryOn"
+            android:summaryOff="@string/settingsWidgetRemoteUpdateSummaryOff" />
 
         <ListPreference
             android:defaultValue="3600"
             android:entries="@array/widgetUpdateTimeEntries"
             android:entryValues="@array/widgetUpdateTimeValues"
             android:key="WIDGET_UPDATE_INTERVAL_WLAN"
-            android:title="@string/prefWidgetUpdateTimeWLAN" />
+            android:title="@string/settingsWidgetUpdateTimeWLAN" />
 
         <ListPreference
             android:defaultValue="3600"
             android:entries="@array/widgetUpdateTimeEntries"
             android:entryValues="@array/widgetUpdateTimeValues"
             android:key="WIDGET_UPDATE_INTERVAL_MOBILE"
-            android:title="@string/prefWidgetUpdateTimeMobile" />
+            android:title="@string/settingsWidgetUpdateTimeMobile" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="GCM_WIDGET_UPDATE"
-            android:title="@string/prefGcmWidgetUpdate"
-            android:summaryOn="@string/prefGcmWidgetUpdateSummaryOn"
-            android:summaryOff="@string/prefGcmWidgetUpdateSummaryOff" />
+            android:title="@string/settingsGcmWidgetUpdate"
+            android:summaryOn="@string/settingsGcmWidgetUpdateSummaryOn"
+            android:summaryOff="@string/settingsGcmWidgetUpdateSummaryOff" />
 
     </PreferenceCategory>
 

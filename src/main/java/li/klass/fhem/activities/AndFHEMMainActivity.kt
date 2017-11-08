@@ -66,8 +66,6 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH
 import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT
 import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME
-import li.klass.fhem.constants.PreferenceKeys
-import li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW
 import li.klass.fhem.fcm.GCMSendDeviceService
 import li.klass.fhem.fragments.FragmentType
 import li.klass.fhem.fragments.FragmentType.*
@@ -76,6 +74,8 @@ import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.settings.SettingsActivity
+import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.settings.SettingsKeys.STARTUP_VIEW
 import li.klass.fhem.update.UpdateHandler
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
@@ -547,7 +547,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         // We post this delayed, as otherwise we will block the application startup (causing
         // ugly ANRs).
         Handler().post {
-            val updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(PreferenceKeys.AUTO_UPDATE_TIME,
+            val updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(SettingsKeys.AUTO_UPDATE_TIME,
                     "-1", this@AndFHEMMainActivity))!!
 
             if (timer == null && updateInterval != -1) {

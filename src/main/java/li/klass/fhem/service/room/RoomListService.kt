@@ -33,7 +33,6 @@ import li.klass.fhem.appwidget.service.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.DeviceType.AT
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
@@ -43,6 +42,7 @@ import li.klass.fhem.fhem.connection.DummyServerSpec
 import li.klass.fhem.service.AbstractService
 import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.NotificationIntentService
+import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DateFormatUtil.toReadable
 import org.slf4j.LoggerFactory
@@ -96,7 +96,7 @@ constructor() : AbstractService() {
 
         context.sendBroadcast(Intent(DO_UPDATE))
 
-        val updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false, context)
+        val updateWidgets = applicationProperties.getBooleanSharedPreference(SettingsKeys.GCM_WIDGET_UPDATE, false, context)
         if (updateWidgets) {
             context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
                     .setClass(context, AppWidgetUpdateService::class.java))

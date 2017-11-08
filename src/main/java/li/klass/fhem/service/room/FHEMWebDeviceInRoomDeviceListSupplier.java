@@ -44,7 +44,7 @@ import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.FluentIterable.from;
-import static li.klass.fhem.constants.PreferenceKeys.FHEMWEB_DEVICE_NAME;
+import static li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME;
 
 public class FHEMWebDeviceInRoomDeviceListSupplier implements Supplier<FHEMWEBDevice> {
     public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";

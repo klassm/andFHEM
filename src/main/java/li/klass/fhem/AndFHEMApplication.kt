@@ -39,12 +39,12 @@ import li.klass.fhem.activities.StartupActivity
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity
 import li.klass.fhem.activities.graph.ChartingActivity
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.PreferenceKeys.APPLICATION_VERSION
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.ApplicationModule
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.service.intent.AppActionsIntentService
 import li.klass.fhem.service.room.RoomListService
+import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.InstalledApplications
 import javax.inject.Inject

@@ -26,17 +26,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefErrorsCategory">
+    <PreferenceCategory android:title="@string/settingsErrorsCategory">
 
         <Preference
             android:key="SEND_LAST_ERROR"
             android:title="@string/error_send"
-            android:summary="@string/prefErrorSendSummary" />
+            android:summary="@string/settingsErrorSendSummary" />
 
         <Preference
             android:key="SEND_APP_LOG"
             android:title="@string/application_log_send"
-            android:summary="@string/prefApplicationLogSendSummary" />
+            android:summary="@string/settingsApplicationLogSendSummary" />
     </PreferenceCategory>
 
 </PreferenceScreen>

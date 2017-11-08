@@ -27,9 +27,9 @@ package li.klass.fhem.fhem;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.settings.SettingsKeys;
 import li.klass.fhem.util.ApplicationProperties;
 
 public abstract class FHEMConnection {
@@ -61,7 +61,7 @@ public abstract class FHEMConnection {
 
     protected int getConnectionTimeoutMilliSeconds(Context context) {
         return 1000 * applicationProperties.getIntegerSharedPreference(
-                PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS,
+                SettingsKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS,
                 context);
     }
 }

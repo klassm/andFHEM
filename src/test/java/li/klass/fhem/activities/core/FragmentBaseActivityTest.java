@@ -28,7 +28,7 @@
 //import li.klass.fhem.activities.AndFHEMMainActivity;
 //import li.klass.fhem.constants.Actions;
 //import li.klass.fhem.constants.BundleExtraKeys;
-//import li.klass.fhem.constants.PreferenceKeys;
+//import li.klass.fhem.settings.SettingsKeys;
 //import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 //import li.klass.fhem.util.ApplicationProperties;
 //import org.junit.Before;
@@ -89,6 +89,6 @@
 //
 //    private void setDoUpdateOnApplicationStart(boolean doUpdate) {
 //        when(activity.applicationProperties
-//                .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false)).thenReturn(doUpdate);
+//                .getBooleanSharedPreference(SettingsKeys.UPDATE_ON_APPLICATION_START, false)).thenReturn(doUpdate);
 //    }
 //}

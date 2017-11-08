@@ -1,7 +1,7 @@
 package li.klass.fhem.login
 
 import android.content.Context
-import li.klass.fhem.constants.PreferenceKeys
+import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DateTimeProvider
 import li.klass.fhem.util.preferences.SharedPreferencesService
@@ -49,7 +49,7 @@ class LoginUIService @Inject constructor(
     private fun readLastLogin(context: Context) = DateTime(sharedPreferencesService.getPreferences(sharedPreferenceName, context).getLong(lastLogin, 0), DateTimeZone.UTC)
 
     private fun readPassword(context: Context): String? =
-            StringUtils.trimToNull(applicationProperties.getStringSharedPreference(PreferenceKeys.STARTUP_PASSWORD, null, context))
+            StringUtils.trimToNull(applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null, context))
 
     companion object {
         val sharedPreferenceName = "login"

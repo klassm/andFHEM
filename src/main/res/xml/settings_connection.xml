@@ -26,19 +26,30 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefCloudMessagingCategory">
+    <PreferenceCategory android:title="@string/settingsConnectionCategory">
+        <li.klass.fhem.widget.preference.SeekBarPreference
+            min="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="4"
+            android:dialogMessage=""
+            android:key="CONNECTION_TIMEOUT"
+            android:max="20"
+            android:text="@string/s_suffix"
+            android:title="@string/settingsConnectionTimeout" />
 
-        <EditTextPreference
-            android:inputType="number"
-            android:key="FCM_SENDER_ID"
-            android:title="@string/prefFCMSenderId" />
-
-        <ListPreference
-            android:defaultValue="30"
-            android:entries="@array/fcm_keep_messages_days"
-            android:entryValues="@array/fcm_keep_messages_days_values"
-            android:key="FCM_KEEP_MESSAGES_DAYS"
-            android:summary="@string/prefKeepMessagesDaysSummary"
-            android:title="@string/prefKeepMessagesDays" />
+        <li.klass.fhem.widget.preference.NumberOfRetriesSeekBarPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="3"
+            android:dialogMessage=""
+            android:key="COMMAND_EXECUTION_RETRIES"
+            android:max="20"
+            android:text=""
+            android:title="@string/settingsCommandExecutionRetries" />
+        <Preference
+            android:key="CLEAR_TRUSTED_CERTIFICATES"
+            android:summary="@string/settingsClearTrustedCertificatesSummary"
+            android:title="@string/settingsClearTrustedCertificates" />
     </PreferenceCategory>
 </PreferenceScreen>

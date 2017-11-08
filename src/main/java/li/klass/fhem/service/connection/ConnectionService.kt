@@ -35,13 +35,13 @@ import com.google.common.collect.Lists.newArrayList
 import com.google.gson.Gson
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.LicenseService
-import li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.DeviceVisibility
 import li.klass.fhem.fhem.connection.DummyServerSpec
 import li.klass.fhem.fhem.connection.FHEMServerSpec
 import li.klass.fhem.fhem.connection.ServerType
 import li.klass.fhem.fhem.connection.ServerType.FHEMWEB
+import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
 import li.klass.fhem.util.ApplicationProperties
 import java.util.*
 import java.util.regex.Pattern

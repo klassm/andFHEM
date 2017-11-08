@@ -1,20 +1,20 @@
 package li.klass.fhem.settings.type
 
 import li.klass.fhem.R
-import li.klass.fhem.constants.PreferenceKeys
+import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.updater.ListSummaryAction
-import li.klass.fhem.settings.updater.PreferenceUpdater
+import li.klass.fhem.settings.updater.SettingsUpdater
 import javax.inject.Inject
 
 class AutoUpdateTypeHandler @Inject constructor()
     : SettingsTypeHandler("auto_update", updateHandlers) {
 
-    override fun getResource(): Int = R.xml.preferences_auto_update
+    override fun getResource(): Int = R.xml.settings_auto_update
 
     companion object {
         val updateHandlers = listOf(
-                PreferenceUpdater(PreferenceKeys.AUTO_UPDATE_TIME,
-                        ListSummaryAction(R.string.prefAutoUpdateSummary, R.array.updateRoomListTimeValues, R.array.updateRoomListTimeEntries))
+                SettingsUpdater(SettingsKeys.AUTO_UPDATE_TIME,
+                        ListSummaryAction(R.string.settingsAutoUpdateSummary, R.array.updateRoomListTimeValues, R.array.updateRoomListTimeEntries))
         )
     }
 }

@@ -26,15 +26,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefBackupCategory">
-        <Preference
-            android:key="EXPORT_SETTINGS"
-            android:summary="@string/exportPreferencesSummary"
-            android:title="@string/exportPreferences" />
+    <PreferenceCategory android:title="@string/settingsCloudMessagingCategory">
 
-        <Preference
-            android:key="IMPORT_SETTINGS"
-            android:summary="@string/importPreferencesSummary"
-            android:title="@string/importPreferences" />
+        <EditTextPreference
+            android:inputType="number"
+            android:key="FCM_SENDER_ID"
+            android:title="@string/settingsFCMSenderId" />
+
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/fcm_keep_messages_days"
+            android:entryValues="@array/fcm_keep_messages_days_values"
+            android:key="FCM_KEEP_MESSAGES_DAYS"
+            android:summary="@string/settingsKeepMessagesDaysSummary"
+            android:title="@string/settingsKeepMessagesDays" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -1,10 +1,10 @@
 package li.klass.fhem.adapter.rooms
 
 import android.content.Context
-import li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES
 import li.klass.fhem.domain.core.DeviceFunctionality
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
+import li.klass.fhem.settings.SettingsKeys.SHOW_HIDDEN_DEVICES
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder
 import javax.inject.Inject

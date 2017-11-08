@@ -44,8 +44,8 @@ import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.settings.SettingsKeys;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayListUtil;
 import li.klass.fhem.util.Filter;
@@ -180,7 +180,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
             SharedPreferences sharedPreferences = getSharedPreferences();
             assert sharedPreferences != null;
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(PreferenceKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE,
+            editor.putString(SettingsKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE,
                     ObjectSerializer.serialize(toPersist)).apply();
         }
     }

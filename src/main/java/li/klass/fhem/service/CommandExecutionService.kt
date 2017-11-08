@@ -32,13 +32,13 @@ import com.google.common.io.CharStreams
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
-import li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES
 import li.klass.fhem.fhem.DataConnectionSwitch
 import li.klass.fhem.fhem.FHEMWEBConnection
 import li.klass.fhem.fhem.RequestResult
 import li.klass.fhem.fhem.RequestResultError
 import li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT
 import li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR
+import li.klass.fhem.settings.SettingsKeys.COMMAND_EXECUTION_RETRIES
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.Cache
 import li.klass.fhem.util.CloseableUtil

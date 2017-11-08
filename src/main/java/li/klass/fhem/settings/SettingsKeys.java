@@ -22,9 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.constants;
+package li.klass.fhem.settings;
 
-public class PreferenceKeys {
+public class SettingsKeys {
     public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
     public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
     public static final String APPLICATION_VERSION = "APPLICATION_VERSION";

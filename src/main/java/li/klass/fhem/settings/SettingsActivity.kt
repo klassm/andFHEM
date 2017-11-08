@@ -7,7 +7,7 @@ import li.klass.fhem.constants.Actions
 
 class SettingsActivity : PreferenceActivity() {
     override fun onBuildHeaders(target: MutableList<Header>?) {
-        loadHeadersFromResource(R.xml.preferences_headers, target);
+        loadHeadersFromResource(R.xml.settings_headers, target);
     }
 
     override fun onStop() {

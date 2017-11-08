@@ -47,7 +47,7 @@ public class NumberOfRetriesSeekBarPreference extends SeekBarPreference {
         String text = "";
 
         Context context = getContext();
-        String template = context.getString(R.string.prefCommandExecutionRetriesTimeDialogEntry);
+        String template = context.getString(R.string.settingsCommandExecutionRetriesTimeDialogEntry);
         template += "\r\n";
 
         text += String.format(template, 0, 0);

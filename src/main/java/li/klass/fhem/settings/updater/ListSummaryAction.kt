@@ -9,7 +9,7 @@ class ListSummaryAction(
         private val summaryTemplate: Int,
         private val valuesArrayResource: Int,
         private val textArrayResource: Int
-) : PreferenceUpdater.Action {
+) : SettingsUpdater.Action {
     override fun onChange(preference: Preference, sharedPreferences: SharedPreferences) {
         val currentValue = sharedPreferences.getString(preference.key, null)
         preference.summary = nameForArrayValueFormatted(valuesArrayResource, textArrayResource,

@@ -6,16 +6,16 @@ import android.content.SharedPreferences
 import android.preference.Preference
 import android.provider.Settings
 import li.klass.fhem.R
-import li.klass.fhem.constants.PreferenceKeys
+import li.klass.fhem.settings.SettingsKeys
 import javax.inject.Inject
 
 class OthersTypeHandler @Inject constructor()
     : SettingsTypeHandler("others") {
 
-    override fun getResource(): Int = R.xml.preferences_others
+    override fun getResource(): Int = R.xml.settings_others
 
     override fun initWith(sharedPreferences: SharedPreferences, preferenceFinder: (String) -> Preference, activity: Activity) {
-        val voiceCommands = preferenceFinder(PreferenceKeys.VOICE_COMMANDS)
+        val voiceCommands = preferenceFinder(SettingsKeys.VOICE_COMMANDS)
         voiceCommands.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             activity.startActivity(intent)

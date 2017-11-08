@@ -27,10 +27,10 @@ package li.klass.fhem.fcm
 import android.content.Context
 import com.google.common.base.Strings.isNullOrEmpty
 import com.google.firebase.iid.FirebaseInstanceId
-import li.klass.fhem.constants.PreferenceKeys
 import li.klass.fhem.domain.GCMSendDevice
 import li.klass.fhem.service.Command
 import li.klass.fhem.service.CommandExecutionService
+import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.ArrayUtil
 import org.slf4j.LoggerFactory
@@ -43,7 +43,7 @@ constructor(val commandExecutionService: CommandExecutionService,
             val applicationProperties: ApplicationProperties) {
 
     private fun getRegistrationId(context: Context): String? {
-        val senderId = applicationProperties.getStringSharedPreference(PreferenceKeys.FCM_SENDER_ID, context)
+        val senderId = applicationProperties.getStringSharedPreference(SettingsKeys.FCM_SENDER_ID, context)
         if (senderId == null) {
             LOGGER.info("getRegistrationId - no value for senderId found")
             return null

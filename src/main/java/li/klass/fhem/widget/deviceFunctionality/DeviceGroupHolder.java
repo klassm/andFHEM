@@ -42,8 +42,8 @@ import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_FUNCTIONALITY_ORDER_VISIBLE;
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE;
+import static li.klass.fhem.settings.SettingsKeys.DEVICE_FUNCTIONALITY_ORDER_VISIBLE;
+import static li.klass.fhem.settings.SettingsKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE;
 
 public class DeviceGroupHolder {
 

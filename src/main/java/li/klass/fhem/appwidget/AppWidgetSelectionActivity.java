@@ -45,9 +45,9 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.settings.SettingsKeys;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
@@ -87,7 +87,7 @@ public abstract class AppWidgetSelectionActivity extends AppCompatActivity imple
             return;
         }
 
-        if (applicationProperties.getStringSharedPreference(PreferenceKeys.STARTUP_PASSWORD, null, this) != null) {
+        if (applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null, this) != null) {
             DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password, new DialogUtil.AlertOnClickListener() {
                 @Override
                 public void onClick() {

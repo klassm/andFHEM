@@ -2,56 +2,56 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefAppearancePreferencesCategory">
+        android:title="@string/settingsAppearancePreferencesCategory">
         <extra
             android:name="type"
             android:value="appearance" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefWidgetCategory">
+        android:title="@string/settingsWidgetCategory">
         <extra
             android:name="type"
             android:value="widgets" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefErrorsCategory">
+        android:title="@string/settingsErrorsCategory">
         <extra
             android:name="type"
             android:value="errors" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefCloudMessagingCategory">
+        android:title="@string/settingsCloudMessagingCategory">
         <extra
             android:name="type"
             android:value="cloud_messaging" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefAutoUpdateCategory">
+        android:title="@string/settingsAutoUpdateCategory">
         <extra
             android:name="type"
             android:value="auto_update" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefConnectionCategory">
+        android:title="@string/settingsConnectionCategory">
         <extra
             android:name="type"
             android:value="connection" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefBackupCategory">
+        android:title="@string/settingsBackupCategory">
         <extra
             android:name="type"
             android:value="backup" />
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
-        android:title="@string/prefOthersCategory">
+        android:title="@string/settingsOthersCategory">
         <extra
             android:name="type"
             android:value="others" />

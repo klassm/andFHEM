@@ -27,7 +27,7 @@
     android:layout_height="fill_parent">
 
     <PreferenceCategory
-        android:title="@string/prefAppearancePreferencesCategory"
+        android:title="@string/settingsAppearancePreferencesCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -37,25 +37,25 @@
             android:entries="@array/startupViews"
             android:entryValues="@array/startupViewsValues"
             android:key="STARTUP_VIEW"
-            android:title="@string/prefStartupView"
+            android:title="@string/settingsStartupView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="SHOW_SET_VALUE_BUTTONS"
-            android:title="@string/prefShowSetValueButtons"
-            android:summaryOn="@string/prefShowSetValueButtonsSummaryOn"
-            android:summaryOff="@string/prefShowSetValueButtonsSummaryOff"
+            android:title="@string/settingsShowSetValueButtons"
+            android:summaryOn="@string/settingsShowSetValueButtonsSummaryOn"
+            android:summaryOff="@string/settingsShowSetValueButtonsSummaryOff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="prefShowHiddenDevices"
-            android:title="@string/prefShowHiddenDevices"
-            android:summaryOn="@string/prefShowHiddenDevicesSummaryOn"
-            android:summaryOff="@string/prefShowHiddenDevicesSummaryOff"
+            android:title="@string/settingsShowHiddenDevices"
+            android:summaryOn="@string/settingsShowHiddenDevicesSummaryOn"
+            android:summaryOff="@string/settingsShowHiddenDevicesSummaryOff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -67,7 +67,7 @@
             android:key="DEVICE_COLUMN_WIDTH"
             android:max="1000"
             android:text="@string/dp_suffix"
-            android:title="@string/prefDeviceColumnWidth" />
+            android:title="@string/settingsDeviceColumnWidth" />
 
         <li.klass.fhem.widget.preference.SeekBarPreference
             android:layout_width="wrap_content"
@@ -77,14 +77,14 @@
             android:key="DEVICE_LIST_PADDING_RIGHT"
             android:max="1000"
             android:text="@string/dp_suffix"
-            android:title="@string/prefDeviceListPaddingRight" />
+            android:title="@string/settingsDeviceListPaddingRight" />
 
         <li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:key="DEVICE_FUNCTIONALITY_ORDER_VISIBLE"
-            android:summary="@string/prefDeviceFunctionalityOrderSummary"
-            android:title="@string/prefDeviceFunctionalityOrder" />
+            android:summary="@string/settingsDeviceFunctionalityOrderSummary"
+            android:title="@string/settingsDeviceFunctionalityOrder" />
 
         <ListPreference
             android:id="@+id/graphDefaultTimespanSelector"
@@ -93,7 +93,7 @@
             android:entryValues="@array/graphDefaultTimespanValues"
             android:key="GRAPH_DEFAULT_TIMESPAN"
             android:summary=""
-            android:title="@string/prefDefaultTimespan" />
+            android:title="@string/settingsDefaultTimespan" />
 
     </PreferenceCategory>
 </PreferenceScreen>

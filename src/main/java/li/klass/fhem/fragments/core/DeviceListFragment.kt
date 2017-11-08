@@ -46,8 +46,6 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.adapter.rooms.ViewableElementsCalculator
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.PreferenceKeys
-import li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
@@ -55,6 +53,8 @@ import li.klass.fhem.fhem.DataConnectionSwitch
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.service.room.RoomListUpdateService
+import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.util.ApplicationProperties
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -119,7 +119,7 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun getColumnWidth(): Float =
-            applicationProperties.getIntegerSharedPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context).toFloat()
+            applicationProperties.getIntegerSharedPreference(SettingsKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context).toFloat()
 
     override fun onResume() {
         super.onResume()

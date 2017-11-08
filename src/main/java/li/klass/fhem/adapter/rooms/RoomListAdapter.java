@@ -42,7 +42,7 @@ import li.klass.fhem.adapter.ListDataAdapter;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
+import static li.klass.fhem.settings.SettingsKeys.SHOW_HIDDEN_DEVICES;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
     public static final Comparator<String> CASE_INSENSITIVE_COMPARATOR = new Comparator<String>() {

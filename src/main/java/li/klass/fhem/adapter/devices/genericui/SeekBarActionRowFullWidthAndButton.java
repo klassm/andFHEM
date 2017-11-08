@@ -36,7 +36,7 @@ import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
-import static li.klass.fhem.constants.PreferenceKeys.SHOW_SET_VALUE_BUTTONS;
+import static li.klass.fhem.settings.SettingsKeys.SHOW_SET_VALUE_BUTTONS;
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 
 public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRowFullWidth {

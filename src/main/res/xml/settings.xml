@@ -29,35 +29,35 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefErrorsCategory">
+    <PreferenceCategory android:title="@string/settingsErrorsCategory">
 
         <Preference
             android:key="SEND_LAST_ERROR"
             android:title="@string/error_send"
-            android:summary="@string/prefErrorSendSummary"/>
+            android:summary="@string/settingsErrorSendSummary" />
 
         <Preference
             android:key="SEND_APP_LOG"
             android:title="@string/application_log_send"
-            android:summary="@string/prefApplicationLogSendSummary"/>
+            android:summary="@string/settingsApplicationLogSendSummary" />
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="@string/prefOthersCategory">
+    <PreferenceCategory android:title="@string/settingsOthersCategory">
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="UPDATE_ON_APPLICATION_START"
-            android:title="@string/prefUpdateOnApplicationStart"
-            android:summaryOn="@string/prefUpdateOnApplicationStartSummaryOn"
-            android:summaryOff="@string/prefUpdateOnApplicationStartSummaryOff"/>
+            android:title="@string/settingsUpdateOnApplicationStart"
+            android:summaryOn="@string/settingsUpdateOnApplicationStartSummaryOn"
+            android:summaryOff="@string/settingsUpdateOnApplicationStartSummaryOff" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="UPDATE_ON_ROOM_OPEN"
-            android:title="@string/prefUpdateRoomOnOpen"
-            android:summaryOn="@string/prefUpdateRoomOnOpenSummaryOn"
-            android:summaryOff="@string/prefUpdateRoomOnOpenSummaryOff" />
+            android:title="@string/settingsUpdateRoomOnOpen"
+            android:summaryOn="@string/settingsUpdateRoomOnOpenSummaryOn"
+            android:summaryOff="@string/settingsUpdateRoomOnOpenSummaryOff" />
 
         <ListPreference
             android:id="@+id/autoUpdateTime"
@@ -65,20 +65,20 @@
             android:entries="@array/updateRoomListTimeEntries"
             android:entryValues="@array/updateRoomListTimeValues"
             android:key="AUTO_UPDATE_TIME"
-            android:title="@string/prefAutoUpdate"/>
+            android:title="@string/settingsAutoUpdate" />
 
         <EditTextPreference
             android:inputType="number"
             android:key="FCM_SENDER_ID"
-            android:title="@string/prefFCMSenderId" />
+            android:title="@string/settingsFCMSenderId" />
 
         <ListPreference
             android:defaultValue="30"
             android:entries="@array/fcm_keep_messages_days"
             android:entryValues="@array/fcm_keep_messages_days_values"
             android:key="FCM_KEEP_MESSAGES_DAYS"
-            android:title="@string/prefKeepMessagesDays"
-            android:summary="@string/prefKeepMessagesDaysSummary" />
+            android:title="@string/settingsKeepMessagesDays"
+            android:summary="@string/settingsKeepMessagesDaysSummary" />
 
         <li.klass.fhem.widget.preference.SeekBarPreference
             min="1"
@@ -89,7 +89,7 @@
             android:defaultValue="4"
             android:max="20"
             android:text="@string/s_suffix"
-            android:title="@string/prefConnectionTimeout"/>
+            android:title="@string/settingsConnectionTimeout" />
 
         <li.klass.fhem.widget.preference.NumberOfRetriesSeekBarPreference
             android:layout_width="wrap_content"
@@ -99,29 +99,29 @@
             android:defaultValue="3"
             android:max="20"
             android:text=""
-            android:title="@string/prefCommandExecutionRetries"/>
+            android:title="@string/settingsCommandExecutionRetries" />
 
         <EditTextPreference
             android:inputType="text"
             android:key="DEVICE_NAME"
-            android:title="@string/prefFHEMWEBDeviceName" />
+            android:title="@string/settingsFHEMWEBDeviceName" />
 
         <EditTextPreference
             android:key="PASSWORD"
             android:password="true"
-            android:summary="@string/prefApplicationPasswordSummary"
-            android:title="@string/prefApplicationPassword"
+            android:summary="@string/settingsApplicationPasswordSummary"
+            android:title="@string/settingsApplicationPassword"
             tools:ignore="Deprecated"/>
 
         <Preference
             android:key="CLEAR_TRUSTED_CERTIFICATES"
-            android:title="@string/prefClearTrustedCertificates"
-            android:summary="@string/prefClearTrustedCertificatesSummary"/>
+            android:title="@string/settingsClearTrustedCertificates"
+            android:summary="@string/settingsClearTrustedCertificatesSummary" />
 
         <Preference
-            android:title="@string/prefVoiceCommand"
+            android:title="@string/settingsVoiceCommand"
             android:key="VOICE_COMMANDS"
-            android:summary="@string/prefVoiceCommandSummary"/>
+            android:summary="@string/settingsVoiceCommandSummary" />
 
         <Preference
             android:title="@string/exportPreferences"
