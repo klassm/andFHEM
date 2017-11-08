@@ -319,6 +319,10 @@
     <string name="prefOthersCategory">Other Preferences</string>
     <string name="prefAppearancePreferencesCategory">Appearance</string>
     <string name="prefErrorsCategory">Error-Handling</string>
+    <string name="prefCloudMessagingCategory">Cloud Messaging</string>
+    <string name="prefAutoUpdateCategory">Automatic Updates</string>
+    <string name="prefConnectionCategory">Connection</string>
+    <string name="prefBackupCategory">Backup</string>
     <string name="prefErrorSendSummary">Send the last error. Careful: This is only related to FHEM server requests</string>
     <string name="prefApplicationLogSendSummary">Send the application log. Please use this button if the support requests detailed information on your application status</string>
     <string name="prefWidgetCategory">Widgets</string>

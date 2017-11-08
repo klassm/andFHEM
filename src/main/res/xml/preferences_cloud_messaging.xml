@@ -23,26 +23,22 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefOthersCategory">
-        <EditTextPreference
-            android:inputType="text"
-            android:key="DEVICE_NAME"
-            android:title="@string/prefFHEMWEBDeviceName" />
+    <PreferenceCategory android:title="@string/prefCloudMessagingCategory">
 
         <EditTextPreference
-            android:key="PASSWORD"
-            android:password="true"
-            android:summary="@string/prefApplicationPasswordSummary"
-            android:title="@string/prefApplicationPassword"
-            tools:ignore="Deprecated" />
+            android:inputType="number"
+            android:key="FCM_SENDER_ID"
+            android:title="@string/prefFCMSenderId" />
 
-        <Preference
-            android:key="VOICE_COMMANDS"
-            android:summary="@string/prefVoiceCommandSummary"
-            android:title="@string/prefVoiceCommand" />
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/fcm_keep_messages_days"
+            android:entryValues="@array/fcm_keep_messages_days_values"
+            android:key="FCM_KEEP_MESSAGES_DAYS"
+            android:summary="@string/prefKeepMessagesDaysSummary"
+            android:title="@string/prefKeepMessagesDays" />
     </PreferenceCategory>
 </PreferenceScreen>

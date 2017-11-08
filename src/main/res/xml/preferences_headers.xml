@@ -23,6 +23,34 @@
     </header>
     <header
         android:fragment="li.klass.fhem.settings.SettingsFragment"
+        android:title="@string/prefCloudMessagingCategory">
+        <extra
+            android:name="type"
+            android:value="cloud_messaging" />
+    </header>
+    <header
+        android:fragment="li.klass.fhem.settings.SettingsFragment"
+        android:title="@string/prefAutoUpdateCategory">
+        <extra
+            android:name="type"
+            android:value="auto_update" />
+    </header>
+    <header
+        android:fragment="li.klass.fhem.settings.SettingsFragment"
+        android:title="@string/prefConnectionCategory">
+        <extra
+            android:name="type"
+            android:value="connection" />
+    </header>
+    <header
+        android:fragment="li.klass.fhem.settings.SettingsFragment"
+        android:title="@string/prefBackupCategory">
+        <extra
+            android:name="type"
+            android:value="backup" />
+    </header>
+    <header
+        android:fragment="li.klass.fhem.settings.SettingsFragment"
         android:title="@string/prefOthersCategory">
         <extra
             android:name="type"

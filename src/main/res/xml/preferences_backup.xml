@@ -23,26 +23,18 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefOthersCategory">
-        <EditTextPreference
-            android:inputType="text"
-            android:key="DEVICE_NAME"
-            android:title="@string/prefFHEMWEBDeviceName" />
-
-        <EditTextPreference
-            android:key="PASSWORD"
-            android:password="true"
-            android:summary="@string/prefApplicationPasswordSummary"
-            android:title="@string/prefApplicationPassword"
-            tools:ignore="Deprecated" />
+    <PreferenceCategory android:title="@string/prefBackupCategory">
+        <Preference
+            android:key="EXPORT_SETTINGS"
+            android:summary="@string/exportPreferencesSummary"
+            android:title="@string/exportPreferences" />
 
         <Preference
-            android:key="VOICE_COMMANDS"
-            android:summary="@string/prefVoiceCommandSummary"
-            android:title="@string/prefVoiceCommand" />
+            android:key="IMPORT_SETTINGS"
+            android:summary="@string/importPreferencesSummary"
+            android:title="@string/importPreferences" />
     </PreferenceCategory>
 </PreferenceScreen>

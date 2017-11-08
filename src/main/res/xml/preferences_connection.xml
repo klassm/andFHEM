@@ -23,26 +23,33 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefOthersCategory">
-        <EditTextPreference
-            android:inputType="text"
-            android:key="DEVICE_NAME"
-            android:title="@string/prefFHEMWEBDeviceName" />
+    <PreferenceCategory android:title="@string/prefConnectionCategory">
+        <li.klass.fhem.widget.preference.SeekBarPreference
+            min="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="4"
+            android:dialogMessage=""
+            android:key="CONNECTION_TIMEOUT"
+            android:max="20"
+            android:text="@string/s_suffix"
+            android:title="@string/prefConnectionTimeout" />
 
-        <EditTextPreference
-            android:key="PASSWORD"
-            android:password="true"
-            android:summary="@string/prefApplicationPasswordSummary"
-            android:title="@string/prefApplicationPassword"
-            tools:ignore="Deprecated" />
-
+        <li.klass.fhem.widget.preference.NumberOfRetriesSeekBarPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="3"
+            android:dialogMessage=""
+            android:key="COMMAND_EXECUTION_RETRIES"
+            android:max="20"
+            android:text=""
+            android:title="@string/prefCommandExecutionRetries" />
         <Preference
-            android:key="VOICE_COMMANDS"
-            android:summary="@string/prefVoiceCommandSummary"
-            android:title="@string/prefVoiceCommand" />
+            android:key="CLEAR_TRUSTED_CERTIFICATES"
+            android:summary="@string/prefClearTrustedCertificatesSummary"
+            android:title="@string/prefClearTrustedCertificates" />
     </PreferenceCategory>
 </PreferenceScreen>

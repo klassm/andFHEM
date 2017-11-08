@@ -317,6 +317,10 @@
     <string name="prefOthersCategory">Andere Einstellungen</string>
     <string name="prefAppearancePreferencesCategory">Darstellung</string>
     <string name="prefErrorsCategory">Fehlerbehandlung</string>
+    <string name="prefCloudMessagingCategory">Cloud Messaging</string>
+    <string name="prefAutoUpdateCategory">Automatische Updates</string>
+    <string name="prefConnectionCategory">Verbindung</string>
+    <string name="prefBackupCategory">Backup</string>
     <string name="prefErrorSendSummary">Den letzten Fehler senden. Vorsicht: Dies bezieht sich nur auf das Laden neuer Inhalte vom Server</string>
     <string name="prefApplicationLogSendSummary">Das App-Protokoll senden. Bitte diesen Knopf verwenden, wenn der Support detaillierte Informationen zum Status der App anfordert</string>
     <string name="prefWidgetCategory">Widgets</string>

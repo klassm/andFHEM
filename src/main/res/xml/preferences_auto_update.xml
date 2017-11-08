@@ -23,26 +23,31 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefOthersCategory">
-        <EditTextPreference
-            android:inputType="text"
-            android:key="DEVICE_NAME"
-            android:title="@string/prefFHEMWEBDeviceName" />
+    <PreferenceCategory android:title="@string/prefAutoUpdateCategory">
 
-        <EditTextPreference
-            android:key="PASSWORD"
-            android:password="true"
-            android:summary="@string/prefApplicationPasswordSummary"
-            android:title="@string/prefApplicationPassword"
-            tools:ignore="Deprecated" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="UPDATE_ON_APPLICATION_START"
+            android:title="@string/prefUpdateOnApplicationStart"
+            android:summaryOn="@string/prefUpdateOnApplicationStartSummaryOn"
+            android:summaryOff="@string/prefUpdateOnApplicationStartSummaryOff" />
 
-        <Preference
-            android:key="VOICE_COMMANDS"
-            android:summary="@string/prefVoiceCommandSummary"
-            android:title="@string/prefVoiceCommand" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="UPDATE_ON_ROOM_OPEN"
+            android:title="@string/prefUpdateRoomOnOpen"
+            android:summaryOn="@string/prefUpdateRoomOnOpenSummaryOn"
+            android:summaryOff="@string/prefUpdateRoomOnOpenSummaryOff" />
+
+        <ListPreference
+            android:id="@+id/autoUpdateTime"
+            android:defaultValue="-1"
+            android:entries="@array/updateRoomListTimeEntries"
+            android:entryValues="@array/updateRoomListTimeValues"
+            android:key="AUTO_UPDATE_TIME"
+            android:title="@string/prefAutoUpdate" />
     </PreferenceCategory>
 </PreferenceScreen>
