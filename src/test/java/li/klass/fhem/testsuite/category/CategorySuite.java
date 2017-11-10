@@ -132,12 +132,12 @@ public class CategorySuite extends Suite {
 
     private Class<?> getIncludedCategory(Class<?> cls) {
         Categories.IncludeCategory annotation = cls.getAnnotation(Categories.IncludeCategory.class);
-        return annotation == null ? null : annotation.value();
+        return annotation == null ? null : annotation.value()[0];
     }
 
     private Class<?> getExcludedCategory(Class<?> cls) {
         Categories.ExcludeCategory annotation = cls.getAnnotation(Categories.ExcludeCategory.class);
-        return annotation == null ? null : annotation.value();
+        return annotation == null ? null : annotation.value()[0];
     }
 
     private static Class[] getSuiteClasses() {
