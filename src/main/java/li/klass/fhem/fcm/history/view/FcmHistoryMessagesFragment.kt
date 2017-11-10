@@ -23,7 +23,7 @@ class FcmHistoryMessagesFragment : FcmHistoryBaseFragment<FcmMessagesAdapter>(R.
     override fun doUpdateView(localDate: LocalDate, view: View) {
         async(UI) {
             val messages = bg {
-                fcmHistoryService.getMessages(activity, localDate)
+                fcmHistoryService.getMessages(localDate)
             }.await()
 
             activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))

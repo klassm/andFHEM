@@ -42,6 +42,7 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.ApplicationModule
 import li.klass.fhem.dagger.DaggerApplicationComponent
+import li.klass.fhem.dagger.DatabaseModule
 import li.klass.fhem.service.intent.AppActionsIntentService
 import li.klass.fhem.service.room.RoomListService
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
@@ -129,7 +130,10 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     }
 
     private fun createDaggerComponent(): ApplicationComponent =
-            DaggerApplicationComponent.builder().applicationModule(ApplicationModule(this)).build()
+            DaggerApplicationComponent.builder()
+                    .databaseModule(DatabaseModule(this))
+                    .applicationModule(ApplicationModule(this))
+                    .build()
 
     private fun setApplicationInformation() {
         val context = applicationContext

@@ -158,9 +158,8 @@ class StartupActivity : Activity() {
         val updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(UPDATE_ON_APPLICATION_START, false, this)
         if (updateOnApplicationStart) {
             executeRemoteUpdate()
-        } else {
-            deleteOldFcmMessages()
         }
+        deleteOldFcmMessages()
     }
 
     private fun executeRemoteUpdate() {
@@ -190,7 +189,7 @@ class StartupActivity : Activity() {
 
         async(UI) {
             bg {
-                fcmHistoryService.deleteContentOlderThan(retentionDays, activityAsContext)
+                fcmHistoryService.deleteContentOlderThan(retentionDays)
             }.await()
             loadFavorites()
         }

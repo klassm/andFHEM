@@ -39,7 +39,7 @@ buildscript {
         classpath 'de.mobilej.unmock:UnMockPlugin:0.6.4'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.google.gms:google-services:3.1.2'
     }
 }
 
@@ -65,9 +65,10 @@ def getAppVersionCode() {
 
 ext {
     supportLibVersion = '26.1.0'
-    firebaseVersion = '11.4.0'
+    firebaseVersion = '11.6.0'
     buildProperties = getBuildProperties()
     anko_version = '0.10.1'
+    architectureComponentsVersion = '1.0.0'
 }
 
 apply plugin: 'com.android.application'
@@ -100,6 +101,11 @@ android {
         multiDexEnabled true
         versionCode getAppVersionCode()
         versionName version
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     compileOptions {
@@ -227,10 +233,10 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:${firebaseVersion}"
     compile "com.google.firebase:firebase-ads:${firebaseVersion}"
     compile 'commons-net:commons-net:3.3'
-    compile 'commons-codec:commons-codec:1.10'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'commons-codec:commons-codec:1.11'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.google.guava:guava:20.0'
-    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.google.dagger:dagger:2.11'
     kapt 'com.google.dagger:dagger-compiler:2.11'
     provided 'javax.annotation:jsr250-api:1.0'
@@ -240,13 +246,13 @@ dependencies {
     }
     compile 'com.github.angads25:filepicker:1.1.0'
 
-    compile 'joda-time:joda-time:2.4'
+    compile 'joda-time:joda-time:2.9.9'
     //noinspection GradleDependency
     compile 'org.slf4j:slf4j-android:1.7.12'
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile project(':external-dep')
     compile 'net.lingala.zip4j:zip4j:1.3.2'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
@@ -269,9 +275,12 @@ dependencies {
     compile "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
     compile "org.jetbrains.anko:anko-coroutines:$anko_version"
 
-    testCompile 'junit:junit:4.11'
+    implementation "android.arch.persistence.room:runtime:$architectureComponentsVersion"
+    kapt "android.arch.persistence.room:compiler:${architectureComponentsVersion}"
+
+    testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.8.9'
-    testCompile 'com.tngtech.java:junit-dataprovider:1.9.3'
+    testCompile 'com.tngtech.java:junit-dataprovider:1.12.0'
     testCompile 'org.assertj:assertj-core:1.7.1'
     testCompile('org.assertj:assertj-guava:1.3.1') {
         exclude group: 'com.google.guava'

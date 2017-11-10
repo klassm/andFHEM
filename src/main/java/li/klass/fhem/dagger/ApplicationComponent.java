@@ -140,7 +140,8 @@ import li.klass.fhem.settings.SettingsFragment;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, DetailActionsModule.class, DeviceGroupProviderModule.class})
+@Component(modules = {ApplicationModule.class, DetailActionsModule.class, DeviceGroupProviderModule.class,
+        DatabaseModule.class})
 public interface ApplicationComponent {
 
     void inject(DeviceFunctionalityOrderPreference object);

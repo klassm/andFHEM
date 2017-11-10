@@ -391,17 +391,6 @@
         <activity
             android:name="de.duenndns.ssl.MemorizingActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <provider
-            android:authorities="li.klass.fhem.fcm.history.messages"
-            android:name=".fcm.history.data.FcmMessagesContentProvider"
-            android:exported="false"
-            android:grantUriPermissions="true" />
-        <provider
-            android:authorities="li.klass.fhem.fcm.history.updates"
-            android:name=".fcm.history.data.FcmUpdatesContentProvider"
-            android:exported="false"
-            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

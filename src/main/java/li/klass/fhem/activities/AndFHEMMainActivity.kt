@@ -88,10 +88,8 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     inner class Receiver : BroadcastReceiver() {
 
-        val intentFilter: IntentFilter
-
+        val intentFilter = IntentFilter()
         init {
-            intentFilter = IntentFilter()
             intentFilter.addAction(SHOW_FRAGMENT)
             intentFilter.addAction(DO_UPDATE)
             intentFilter.addAction(UPDATE_NAVIGATION)

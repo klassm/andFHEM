@@ -168,7 +168,7 @@ class FcmIntentService : FirebaseMessagingService() {
         val ticker = data["tickerText"]
 
         NotificationUtil.notify(this, notifyId, pendingIntent, title, text, ticker, shouldVibrate(data))
-        fcmHistoryService.addMessage(this, FcmHistoryService.ReceivedMessage(
+        fcmHistoryService.addMessage(FcmHistoryService.ReceivedMessage(
                 title ?: "", text ?: "", ticker ?: ""
         ))
     }
@@ -180,7 +180,7 @@ class FcmIntentService : FirebaseMessagingService() {
         val changesText = data["changes"] ?: return
 
         val changes = extractChanges(deviceName, changesText)
-        fcmHistoryService.addChanges(this, deviceName, changes)
+        fcmHistoryService.addChanges(deviceName, changes)
         roomListService.parseReceivedDeviceStateMap(deviceName, changes, shouldVibrate(data), this)
     }
 

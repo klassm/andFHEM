@@ -19,7 +19,7 @@ class FcmHistoryUpdatesFragment : FcmHistoryBaseFragment<FcmUpdatesAdapter>(R.la
     override fun doUpdateView(localDate: LocalDate, view: View) {
         async(UI) {
             val updates = bg {
-                fcmHistoryService.getChanges(activity, localDate)
+                fcmHistoryService.getChanges(localDate)
             }.await()
 
             activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
