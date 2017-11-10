@@ -51,6 +51,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
+import li.klass.fhem.dagger.DatabaseModule;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.xmllist.DeviceNode;
@@ -91,8 +92,10 @@ public abstract class DeviceXMLParsingBase {
 
     @Before
     public void before() throws Exception {
+        AndFHEMApplication application = new AndFHEMApplication();
         ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(new AndFHEMApplication())).build();
+                .applicationModule(new ApplicationModule(application))
+                .databaseModule(new DatabaseModule(application)).build();
 
         setFieldValue(deviceListParser, "parser", applicationComponent.getXmlListParser());
         setFieldValue(deviceListParser, "gPlotHolder", applicationComponent.getGPlotHolder());
