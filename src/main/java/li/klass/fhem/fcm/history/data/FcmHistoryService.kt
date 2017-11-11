@@ -4,7 +4,6 @@ import li.klass.fhem.fcm.history.data.change.FcmHistoryChangeDao
 import li.klass.fhem.fcm.history.data.change.FcmHistoryChangeEntity
 import li.klass.fhem.fcm.history.data.message.FcmHistoryMessageDao
 import li.klass.fhem.fcm.history.data.message.FcmHistoryMessageEntity
-import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_FORMAT
 import li.klass.fhem.util.DateTimeProvider
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -21,8 +20,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
     fun addMessage(message: ReceivedMessage) {
         val now = LocalDateTime.now()
         val id = fcmHistoryMessageDao.insertMessage(FcmHistoryMessageEntity(
-                datetime = now.toString(dateFormat),
-                date = ANDFHEM_DATE_FORMAT.print(now),
+                datetime = now.toString(datetimeFormat),
+                date = dateFormat.print(now),
                 text = message.contentText,
                 ticker = message.tickerText,
                 title = message.contentTitle
@@ -31,10 +30,10 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
     }
 
     fun getMessages(localDate: LocalDate): List<SavedMessage> {
-        return fcmHistoryMessageDao.getMessagesAt(ANDFHEM_DATE_FORMAT.print(localDate))
+        return fcmHistoryMessageDao.getMessagesAt(dateFormat.print(localDate))
                 .map {
                     SavedMessage(
-                            time = DateTime.parse(it.datetime, dateFormat),
+                            time = DateTime.parse(it.datetime, datetimeFormat),
                             title = it.title ?: "",
                             ticker = it.ticker ?: "",
                             text = it.text ?: ""
@@ -49,8 +48,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
         val now = LocalDateTime.now()
 
         val id = fcmHistoryChangeDao.insertChange(FcmHistoryChangeEntity(
-                datetime = now.toString(dateFormat),
-                date = ANDFHEM_DATE_FORMAT.print(now),
+                datetime = now.toString(datetimeFormat),
+                date = dateFormat.print(now),
                 device = device,
                 changes = changesAsString
         ))
@@ -58,7 +57,7 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
     }
 
     fun getChanges(localDate: LocalDate): List<SavedChange> {
-        return fcmHistoryChangeDao.getChangesAt(ANDFHEM_DATE_FORMAT.print(localDate))
+        return fcmHistoryChangeDao.getChangesAt(dateFormat.print(localDate))
                 .map {
                     val changes = it.changes ?: ""
                     val changesAsJson = if (changes.isEmpty()) JSONArray() else JSONArray(it.changes ?: "")
@@ -71,7 +70,7 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                             }
 
                     SavedChange(
-                            time = DateTime.parse(it.datetime, dateFormat),
+                            time = DateTime.parse(it.datetime, datetimeFormat),
                             changes = changesAsPairs,
                             deviceName = it.device ?: ""
                     )
@@ -86,7 +85,7 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
 
         try {
             val now = dateTimeProvider.now()
-            val deleteUntil = dateFormat.print(now.minusDays(days))
+            val deleteUntil = datetimeFormat.print(now.minusDays(days))
             logger.info("deleteContentOlderThan - deleting content older than $days days < $deleteUntil")
 
             val deletesUpdates = fcmHistoryChangeDao.deleteWhereDataIsBefore(deleteUntil)
@@ -117,6 +116,7 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
 
     companion object {
         val logger = LoggerFactory.getLogger(FcmHistoryService::class.java)!!
-        val dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")!!
+        val datetimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")!!
+        val dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd")!!
     }
 }

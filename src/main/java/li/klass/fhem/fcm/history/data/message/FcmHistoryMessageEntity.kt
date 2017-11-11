@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import li.klass.fhem.fcm.history.data.FcmHistoryEntity
 
-@Entity(tableName = "fcm_history_messages")
+@Entity(tableName = FcmHistoryMessageEntity.tableName)
 class FcmHistoryMessageEntity : FcmHistoryEntity {
     @ColumnInfo(name = columnTitle)
     var title: String? = null
@@ -30,5 +30,6 @@ class FcmHistoryMessageEntity : FcmHistoryEntity {
         const val columnTitle: String = "TITLE"
         const val columnText: String = "TEXT"
         const val columnTicker: String = "TICKER"
+        const val tableName: String = "fcm_history_messages"
     }
 }
