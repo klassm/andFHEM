@@ -40,7 +40,7 @@ import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.OtherAppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.ui.FragmentType;
 
 public abstract class SmallIconWidget extends OtherAppWidgetView {
     @Override

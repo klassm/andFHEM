@@ -45,10 +45,10 @@ import li.klass.fhem.adapter.rooms.ViewableElementsCalculator
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fragments.FragmentType
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.service.room.RoomListService
-import li.klass.fhem.service.room.RoomListUpdateService
+import li.klass.fhem.room.list.backend.RoomListService
+import li.klass.fhem.room.list.backend.RoomListUpdateService
+import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.ApplicationProperties
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick

@@ -28,7 +28,7 @@ import android.content.Context;
 
 import java.util.Locale;
 
-import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceDescMapping;
 
 public class XmlDeviceViewItem implements DeviceViewItem {
     private final String key;

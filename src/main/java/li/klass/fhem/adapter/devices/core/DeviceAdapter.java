@@ -35,13 +35,13 @@ import android.widget.TextView;
 import java.util.Set;
 
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition;
+import li.klass.fhem.graph.ui.GraphActivity;
+import li.klass.fhem.ui.FragmentType;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -167,7 +167,7 @@ public abstract class DeviceAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChartingActivity.Companion.showChart(context, device, connectionId, svgGraphDefinition);
+                GraphActivity.Companion.showChart(context, device, connectionId, svgGraphDefinition);
             }
         });
     }

@@ -37,9 +37,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import li.klass.fhem.service.DateService;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DateTimeProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.DateTimeConstants.JANUARY;
@@ -49,7 +49,7 @@ import static org.mockito.BDDMockito.given;
 public class HolidayShortTest {
 
     @Mock
-    private DateService dateService;
+    private DateTimeProvider dateTimeProvider;
 
     @Mock
     private ApplicationProperties applicationProperties;
@@ -119,7 +119,7 @@ public class HolidayShortTest {
     @UseDataProvider("switchTimeCalculationProvider")
     public void should_calculate_switch_time(SwitchTimeTestCase testCase) {
         // given
-        given(dateService.now()).willReturn(testCase.now);
+        given(dateTimeProvider.now()).willReturn(testCase.now);
 
         // when
         DateTime time = holidayShort.holiday1SwitchTimeFor(testCase.switchTimeHour, testCase.switchTimeMinute);
@@ -133,7 +133,7 @@ public class HolidayShortTest {
         // given
         given(timePicker.getCurrentHour()).willReturn(24);
         given(timePicker.getCurrentMinute()).willReturn(30);
-        given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
+        given(dateTimeProvider.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
         DateTime time = holidayShort.holiday1SwitchTimeFor(24, 30);
@@ -143,21 +143,21 @@ public class HolidayShortTest {
     }
 
     private static class CalculationTestCase {
-        public int currentHour;
-        public int currentMinute;
-        public int expectedHoliday1Value;
+        int currentHour;
+        int currentMinute;
+        int expectedHoliday1Value;
 
-        public CalculationTestCase withCurrentHour(int currentHour) {
+        CalculationTestCase withCurrentHour(int currentHour) {
             this.currentHour = currentHour;
             return this;
         }
 
-        public CalculationTestCase withCurrentMinute(int currentMinute) {
+        CalculationTestCase withCurrentMinute(int currentMinute) {
             this.currentMinute = currentMinute;
             return this;
         }
 
-        public CalculationTestCase withExpectedHoliday1Value(int expectedHoliday1Value) {
+        CalculationTestCase withExpectedHoliday1Value(int expectedHoliday1Value) {
             this.expectedHoliday1Value = expectedHoliday1Value;
             return this;
         }
@@ -173,27 +173,27 @@ public class HolidayShortTest {
     }
 
     private static class SwitchTimeTestCase {
-        public DateTime now;
-        public int switchTimeHour;
-        public int switchTimeMinute;
-        public DateTime expectedTime;
+        DateTime now;
+        int switchTimeHour;
+        int switchTimeMinute;
+        DateTime expectedTime;
 
-        public SwitchTimeTestCase withNow(DateTime now) {
+        SwitchTimeTestCase withNow(DateTime now) {
             this.now = now;
             return this;
         }
 
-        public SwitchTimeTestCase withSwitchTimeHour(int switchTimeHour) {
+        SwitchTimeTestCase withSwitchTimeHour(int switchTimeHour) {
             this.switchTimeHour = switchTimeHour;
             return this;
         }
 
-        public SwitchTimeTestCase withSwitchTimeMinute(int switchTimeMinute) {
+        SwitchTimeTestCase withSwitchTimeMinute(int switchTimeMinute) {
             this.switchTimeMinute = switchTimeMinute;
             return this;
         }
 
-        public SwitchTimeTestCase withExpectedTime(DateTime expectedTime) {
+        SwitchTimeTestCase withExpectedTime(DateTime expectedTime) {
             this.expectedTime = expectedTime;
             return this;
         }

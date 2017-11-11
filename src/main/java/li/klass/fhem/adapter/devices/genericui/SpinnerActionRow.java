@@ -39,7 +39,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public abstract class SpinnerActionRow {
     private String description;

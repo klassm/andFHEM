@@ -90,9 +90,6 @@ public class Actions {
     public static final String IS_PREMIUM = prefix + "IS_PREMIUM";
     public static final String LOAD_PROPERTIES = prefix + "LOAD_PROPERTIES";
 
-    public static final String RECOGNIZE_VOICE_COMMAND = prefix + "RECOGNIZE_VOICE_COMMAND";
-    public static final String SAY = prefix + "SAY";
-
     public static final String UPDATE_NEXT_ALARM_CLOCK = prefix + "NEXT_ALARM_CLOCK";
     public static final String SCHEDULE_ALARM_CLOCK_UPDATE = prefix + "SCHEDULE_ALARM_CLOCK_UPDATE";
 }

@@ -32,7 +32,7 @@ import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
 
 public class DimmableBehavior {
 

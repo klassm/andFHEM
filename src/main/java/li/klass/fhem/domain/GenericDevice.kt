@@ -29,7 +29,7 @@ import li.klass.fhem.domain.core.DimmableContinuousStatesDevice
 import li.klass.fhem.domain.genericview.OverviewViewSettings
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
-import li.klass.fhem.service.room.xmllist.DeviceNode
+import li.klass.fhem.room.list.backend.xmllist.DeviceNode
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 open class GenericDevice : DimmableContinuousStatesDevice<GenericDevice>() {

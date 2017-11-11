@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
 
-import static li.klass.fhem.service.room.xmllist.DeviceNode.DeviceNodeType.STATE;
+import static li.klass.fhem.room.list.backend.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class FS20ZDRDevice extends ToggleableDevice {

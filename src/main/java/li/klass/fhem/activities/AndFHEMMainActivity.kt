@@ -60,23 +60,21 @@ import li.klass.fhem.activities.core.AvailableConnectionDataAdapter
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.billing.BillingService
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.Actions.IS_PREMIUM
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH
 import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT
 import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME
-import li.klass.fhem.fcm.GCMSendDeviceService
-import li.klass.fhem.fragments.FragmentType
-import li.klass.fhem.fragments.FragmentType.*
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
-import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.settings.SettingsActivity
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.STARTUP_VIEW
-import li.klass.fhem.update.UpdateHandler
+import li.klass.fhem.ui.FragmentType
+import li.klass.fhem.ui.FragmentType.*
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.widget.SwipeRefreshLayout
@@ -163,10 +161,6 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     @Inject
     lateinit var billingService: BillingService
     @Inject
-    lateinit var updateHandler: UpdateHandler
-    @Inject
-    lateinit var gcmSendDeviceService: GCMSendDeviceService
-    @Inject
     lateinit var loginUiService: LoginUIService
     @Inject
     lateinit var connectionService: ConnectionService
@@ -196,8 +190,6 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         } catch (e: Throwable) {
             Log.e(TAG, "onCreate() : error during initialization", e)
         }
-
-        updateHandler.onApplicationUpdate()
     }
 
     private fun initialize(savedInstanceState: Bundle?) {

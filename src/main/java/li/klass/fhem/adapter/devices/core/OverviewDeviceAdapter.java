@@ -56,12 +56,12 @@ import li.klass.fhem.adapter.devices.strategy.LightSceneDeviceViewStrategy;
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
+import li.klass.fhem.connection.backend.DataConnectionSwitch;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.service.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceDescMapping;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;

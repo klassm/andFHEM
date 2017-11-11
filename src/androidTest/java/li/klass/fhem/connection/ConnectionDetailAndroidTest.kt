@@ -12,7 +12,7 @@ import android.support.test.runner.AndroidJUnit4
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.core.AvailableConnectionDataAdapter
-import li.klass.fhem.fhem.connection.FHEMServerSpec
+import li.klass.fhem.connection.backend.FHEMServerSpec
 import org.hamcrest.BaseMatcher
 import org.hamcrest.CoreMatchers.anything
 import org.hamcrest.CoreMatchers.instanceOf

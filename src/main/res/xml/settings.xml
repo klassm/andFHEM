@@ -119,11 +119,6 @@
             android:summary="@string/settingsClearTrustedCertificatesSummary" />
 
         <Preference
-            android:title="@string/settingsVoiceCommand"
-            android:key="VOICE_COMMANDS"
-            android:summary="@string/settingsVoiceCommandSummary" />
-
-        <Preference
             android:title="@string/exportPreferences"
             android:key="EXPORT_SETTINGS"
             android:summary="@string/exportPreferencesSummary"/>

@@ -42,7 +42,6 @@ public class SettingsKeys {
     public static final String STARTUP_PASSWORD = "PASSWORD";
     public static final String SEND_APP_LOG = "SEND_APP_LOG";
     public static final String ALLOW_REMOTE_UPDATE = "prefWidgetRemoteUpdate";
-    public static final String VOICE_COMMANDS = "VOICE_COMMANDS";
     public static final String CLEAR_TRUSTED_CERTIFICATES = "CLEAR_TRUSTED_CERTIFICATES";
     public static final String GRAPH_DEFAULT_TIMESPAN = "GRAPH_DEFAULT_TIMESPAN";
     public static final String WIDGET_UPDATE_INTERVAL_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";

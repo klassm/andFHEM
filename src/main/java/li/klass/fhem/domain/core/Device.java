@@ -29,10 +29,10 @@ import com.google.common.base.Optional;
 import java.io.Serializable;
 
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
-import li.klass.fhem.service.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.service.room.AllDevicesReadCallback;
-import li.klass.fhem.service.room.DeviceReadCallback;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.AllDevicesReadCallback;
+import li.klass.fhem.room.list.backend.DeviceReadCallback;
+import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public abstract class Device implements Serializable {
 

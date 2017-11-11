@@ -39,11 +39,11 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE
 import li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_STRING_BLURB
 import li.klass.fhem.adapter.ConnectionListAdapter
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.FHEMServerSpec
+import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions.EXECUTE_COMMAND
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.fhem.connection.FHEMServerSpec
-import li.klass.fhem.fhem.connection.ServerType
-import li.klass.fhem.service.connection.ConnectionService
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject

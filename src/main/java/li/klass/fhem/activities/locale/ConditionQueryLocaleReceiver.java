@@ -37,7 +37,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.room.list.backend.RoomListService;
 
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED;
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNSATISFIED;

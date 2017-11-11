@@ -29,7 +29,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.REMOTE_CONTROL;
 

@@ -33,7 +33,7 @@ import com.google.common.collect.Maps.newHashMap
 import com.google.common.collect.Sets.newHashSet
 import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
-import li.klass.fhem.service.room.xmllist.XmlListDevice
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice
 import java.io.Serializable
 import java.util.*
 

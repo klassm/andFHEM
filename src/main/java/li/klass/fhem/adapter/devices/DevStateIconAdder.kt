@@ -8,9 +8,9 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import li.klass.fhem.R
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.connection.backend.DataConnectionSwitch
+import li.klass.fhem.connection.backend.FHEMWEBConnection
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fhem.DataConnectionSwitch
-import li.klass.fhem.fhem.FHEMWEBConnection
 import javax.inject.Inject
 
 class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnectionSwitch, val licenseService: LicenseService) {

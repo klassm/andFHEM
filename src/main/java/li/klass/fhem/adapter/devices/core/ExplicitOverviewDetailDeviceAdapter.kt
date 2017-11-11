@@ -41,8 +41,8 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.genericview.DetailViewSettings
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition.BY_NAME
+import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
+import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition.BY_NAME
 import org.jetbrains.anko.coroutines.experimental.bg
 
 abstract class ExplicitOverviewDetailDeviceAdapter : OverviewDeviceAdapter() {

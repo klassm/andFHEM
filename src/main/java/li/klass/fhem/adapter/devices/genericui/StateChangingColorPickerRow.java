@@ -36,7 +36,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.ColorUtil;
 
 public class StateChangingColorPickerRow {

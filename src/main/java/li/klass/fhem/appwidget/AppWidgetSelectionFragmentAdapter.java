@@ -37,8 +37,8 @@ import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragmen
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.room.list.ui.RoomListFragment;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_SIZE;

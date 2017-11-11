@@ -6,7 +6,7 @@ import android.preference.Preference
 import android.widget.Toast
 import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.R
-import li.klass.fhem.fhem.FHEMConnection
+import li.klass.fhem.connection.backend.FHEMConnection
 import li.klass.fhem.service.CommandExecutionService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.updater.IntSummaryAction

@@ -36,8 +36,8 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;

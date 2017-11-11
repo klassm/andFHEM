@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.ui.FragmentType;
 
 public class FHEMUrlActivity extends Activity {
     @Override

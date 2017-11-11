@@ -48,13 +48,13 @@ import java.util.regex.Pattern;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.connection.backend.ConnectionService;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.dagger.DatabaseModule;
-import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.service.room.DeviceListParser;
-import li.klass.fhem.service.room.xmllist.DeviceNode;
+import li.klass.fhem.room.list.backend.DeviceListParser;
+import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.util.CloseableUtil;

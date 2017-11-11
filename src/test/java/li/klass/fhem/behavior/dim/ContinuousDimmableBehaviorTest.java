@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
 import static com.tngtech.java.junit.dataprovider.DataProviders.$$;

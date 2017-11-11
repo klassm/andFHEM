@@ -372,8 +372,6 @@
     <string name="settingsClearTrustedCertificatesSummary">Alle Zertifikate aus dem App-Trust-Store entfernen</string>
     <string name="settingsClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
     <string name="settingsClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
-    <string name="settingsVoiceCommand">Sprachkommandos</string>
-    <string name="settingsVoiceCommandSummary">andFHEM muss als Eingabehilfe eingerichtet werden, um Sprachkommandos zu verwenden. Sprachkommandos funktionieren nur in andFHEM Premium!</string>
     <string name="settingsKeepMessagesDays">FCM-Nachrichten Aufbewahrungszeit</string>
     <string name="settingsKeepMessagesDaysSummary">Anzahl Tage, für die GCM Nachrichten vorgehalten werden</string>
 
@@ -597,9 +595,6 @@
     <string name="androidBugDialogDatePickerContent">Android 5.0 beinhaltet einen Bug, der den nachfolgenden Dialog zum Absturz bringt, weshalb dieses Feature in dieser Android-Version nicht verwendet werden kann.</string>
 
     <string name="accessibility_description">Dieser Bedienungshilfen-Dienst erlaubt andFHEM, jedes Google Now-Sprachkommando mitzuhören. AndFHEM speichert diese Daten nicht, versucht aber daraus FHEM-Kommandos zu generieren.</string>
-
-    <string name="voiceMoreThanOneDeviceMatches">Mehr als ein Gerät passt zu diesem Kommando.</string>
-    <string name="voiceNoDeviceMatches">Kein Gerät passt zu diesem Kommando.</string>
 
     <string name="importPreferences">Import</string>
     <string name="importPreferencesSummary">Importiert die App-Einstellungen aus einem bestehenden Backup</string>

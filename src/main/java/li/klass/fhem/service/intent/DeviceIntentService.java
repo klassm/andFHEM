@@ -40,6 +40,13 @@ import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
+import li.klass.fhem.devices.backend.AtService;
+import li.klass.fhem.devices.backend.DeviceService;
+import li.klass.fhem.devices.backend.DimmableDeviceService;
+import li.klass.fhem.devices.backend.GenericDeviceService;
+import li.klass.fhem.devices.backend.HeatingService;
+import li.klass.fhem.devices.backend.ToggleableService;
+import li.klass.fhem.devices.favorites.backend.FavoritesService;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
@@ -48,19 +55,11 @@ import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
+import li.klass.fhem.graph.backend.GraphService;
+import li.klass.fhem.room.list.backend.RoomListService;
 import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.NotificationService;
-import li.klass.fhem.service.device.AtService;
-import li.klass.fhem.service.device.DeviceService;
-import li.klass.fhem.service.device.DimmableDeviceService;
-import li.klass.fhem.service.device.GenericDeviceService;
-import li.klass.fhem.service.device.GraphDefinitionsForDeviceService;
-import li.klass.fhem.service.device.HeatingService;
-import li.klass.fhem.service.device.ToggleableService;
-import li.klass.fhem.service.graph.GraphService;
-import li.klass.fhem.service.room.FavoritesService;
-import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
@@ -133,8 +132,6 @@ public class DeviceIntentService extends ConvenientIntentService {
     GraphService graphService;
     @Inject
     NotificationService notificationService;
-    @Inject
-    GraphDefinitionsForDeviceService graphDefinitionsForDeviceService;
 
     private static final Logger LOG = LoggerFactory.getLogger(DeviceIntentService.class);
 

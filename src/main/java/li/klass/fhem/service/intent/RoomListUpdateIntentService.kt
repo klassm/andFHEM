@@ -30,8 +30,8 @@ import com.google.common.base.Optional
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.service.room.RoomListUpdateService
-import li.klass.fhem.service.room.RoomListUpdateService.UpdateResult
+import li.klass.fhem.room.list.backend.RoomListUpdateService
+import li.klass.fhem.room.list.backend.RoomListUpdateService.UpdateResult
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 

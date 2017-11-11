@@ -32,7 +32,7 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.WebLinkDevice
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fragments.FragmentType
+import li.klass.fhem.ui.FragmentType
 
 class WebLinkAdapter : ExplicitOverviewDetailDeviceAdapter() {
     override fun getSupportedDeviceClass(): Class<out FhemDevice> {

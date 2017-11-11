@@ -41,7 +41,7 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.RoomAppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.ui.FragmentType;
 
 public class RoomDetailLinkWidget extends RoomAppWidgetView {
     @Override

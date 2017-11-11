@@ -32,7 +32,7 @@ import android.widget.Button;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public abstract class ActionCardButton implements ActionCardAction {
 

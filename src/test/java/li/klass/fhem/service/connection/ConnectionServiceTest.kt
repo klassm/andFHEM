@@ -31,8 +31,9 @@ import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
 import li.klass.fhem.billing.LicenseService
-import li.klass.fhem.fhem.connection.FHEMServerSpec
-import li.klass.fhem.fhem.connection.ServerType
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.FHEMServerSpec
+import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
 import li.klass.fhem.testutil.mock
 import li.klass.fhem.util.ApplicationProperties

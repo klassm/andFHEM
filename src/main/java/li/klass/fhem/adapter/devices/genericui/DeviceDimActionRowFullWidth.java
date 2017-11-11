@@ -27,7 +27,7 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 import android.widget.TableRow;
 
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWidth {
 

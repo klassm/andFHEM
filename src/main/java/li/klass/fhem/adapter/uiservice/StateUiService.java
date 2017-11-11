@@ -33,8 +33,8 @@ import javax.inject.Singleton;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;

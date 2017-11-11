@@ -39,7 +39,7 @@ import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.testutil.MockitoRule;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;

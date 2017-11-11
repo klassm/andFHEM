@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;

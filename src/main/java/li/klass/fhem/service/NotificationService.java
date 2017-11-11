@@ -48,7 +48,7 @@ import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.ui.FragmentType;
 import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.ReflectionUtil;
 

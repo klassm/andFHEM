@@ -32,7 +32,7 @@ import java.util.Map;
 
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public abstract class DeviceDetailActionProvider implements GenericDetailActionProvider {
     private Map<String, StateAttributeAction> stateAttributeActionMap = Maps.newHashMap();

@@ -4,7 +4,7 @@ import com.google.api.client.repackaged.com.google.common.base.Predicate;
 
 import java.util.regex.Pattern;
 
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public class ConcernsDevicePredicate implements Predicate<XmlListDevice> {
 

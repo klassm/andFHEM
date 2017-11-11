@@ -45,14 +45,14 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.adapter.rooms.ViewableElementsCalculator
+import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.devices.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.fhem.DataConnectionSwitch
+import li.klass.fhem.room.list.backend.RoomListUpdateService
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.service.room.FavoritesService
-import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.util.ApplicationProperties

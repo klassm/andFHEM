@@ -34,11 +34,11 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.fhem.connection.FHEMServerSpec
-import li.klass.fhem.fragments.FragmentType
-import li.klass.fhem.service.connection.ConnectionService
+import li.klass.fhem.ui.FragmentType
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import java.lang.IllegalArgumentException

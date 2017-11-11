@@ -25,7 +25,7 @@
 package li.klass.fhem.domain.core;
 
 
-import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.connection.backend.ServerType;
 
 public enum DeviceVisibility {
     FHEMWEB_ONLY(ServerType.FHEMWEB),

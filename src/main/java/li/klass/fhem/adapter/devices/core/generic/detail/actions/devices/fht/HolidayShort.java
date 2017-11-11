@@ -44,11 +44,11 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.service.DateService;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DateFormatUtil;
+import li.klass.fhem.util.DateTimeProvider;
 import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.widget.FallbackTimePicker;
 
@@ -59,25 +59,25 @@ import static li.klass.fhem.ui.AndroidBug.handleColorStateBug;
 public class HolidayShort {
 
     private final ApplicationProperties applicationProperties;
-    private final DateService dateService;
+    private final DateTimeProvider dateTimeProvider;
 
     private int hour = 0;
     private int minute = 0;
 
-    public HolidayShort(ApplicationProperties applicationProperties, DateService dateService) {
+    public HolidayShort(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
         this.applicationProperties = applicationProperties;
-        this.dateService = dateService;
+        this.dateTimeProvider = dateTimeProvider;
     }
 
     public void showDialog(final Context context, final ViewGroup parent, final LayoutInflater layoutInflater,
                            final SpinnerActionRow spinnerActionRow, final XmlListDevice device, final Intent switchIntent) {
-        final DateTime now = dateService.now();
+        final DateTime now = dateTimeProvider.now();
         final TableLayout contentView = (TableLayout) handleColorStateBug(new AndroidBug.BugHandler() {
             @Override
             public View bugEncountered() {
                 final TableLayout contentView = (TableLayout) layoutInflater.inflate(R.layout.fht_holiday_short_dialog_android_bug, parent, false);
 
-                final FallbackTimePicker timePicker = (FallbackTimePicker) contentView.findViewById(R.id.timePicker);
+                final FallbackTimePicker timePicker = contentView.findViewById(R.id.timePicker);
                 timePicker.setMinutes(0);
                 timePicker.setHours(now.getHourOfDay());
 
@@ -98,7 +98,7 @@ public class HolidayShort {
             public View defaultAction() {
                 final TableLayout contentView = (TableLayout) layoutInflater.inflate(R.layout.fht_holiday_short_dialog, parent, false);
 
-                final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.timePicker);
+                final TimePicker timePicker = contentView.findViewById(R.id.timePicker);
                 timePicker.setIs24HourView(true);
                 timePicker.setCurrentMinute(0);
                 timePicker.setCurrentHour(now.getHourOfDay());
@@ -122,7 +122,7 @@ public class HolidayShort {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
 
 
-        TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateTemperatureRow);
+        TableRow temperatureUpdateRow = contentView.findViewById(R.id.updateTemperatureRow);
         final TemperatureChangeTableRow temperatureChangeTableRow =
                 new TemperatureChangeTableRow(context, MINIMUM_TEMPERATURE, temperatureUpdateRow,
                         MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties);
@@ -170,7 +170,7 @@ public class HolidayShort {
         }
         hourOfDay %= 24;
 
-        DateTime now = dateService.now();
+        DateTime now = dateTimeProvider.now();
         DateTime switchTime = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), hourOfDay, newMinute);
 
         if (holidayShortIsTomorrow(switchTime, now)) {

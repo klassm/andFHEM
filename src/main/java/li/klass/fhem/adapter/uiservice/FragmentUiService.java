@@ -32,8 +32,8 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
-import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.ui.FragmentType;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;

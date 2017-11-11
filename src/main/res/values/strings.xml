@@ -374,8 +374,6 @@
     <string name="settingsClearTrustedCertificates">Clear trusted certificates</string>
     <string name="settingsClearTrustedCertificatesSummary">Remove all manually trusted certificates from the application trust store</string>
     <string name="settingsClearTrustedCertificatesFinished">Certificates removed</string>
-    <string name="settingsVoiceCommand">Voice commands</string>
-    <string name="settingsVoiceCommandSummary">Enable andFHEM as accessibility service to enable voice recognition. This is a Premium only feature.</string>
     <string name="settingsFCMSenderId" translatable="false">Cloud Messaging Sender-ID</string>
     <string name="settingsKeepMessagesDays">FCM-Messages Retention Time</string>
     <string name="settingsKeepMessagesDaysSummary">Number of days FCM messages are stored.</string>
@@ -637,9 +635,6 @@
     <string name="androidBugDialogDatePickerContent">Android 5.0 contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled in this version.</string>
 
     <string name="accessibility_description">This accessibility service will allow andFHEM to listen to any text entered in Google Now. andFHEM will not store any information and will only try to send FHEM commands based on your input.</string>
-
-    <string name="voiceMoreThanOneDeviceMatches">More than one device matches the command.</string>
-    <string name="voiceNoDeviceMatches">No device matches the command.</string>
 
     <string name="importPreferences">Import</string>
     <string name="importPreferencesSummary">Imports an existing backup of application preferences.</string>

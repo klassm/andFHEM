@@ -38,13 +38,13 @@ import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.devices.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
+import li.klass.fhem.room.list.backend.RoomListService
+import li.klass.fhem.room.list.backend.RoomListUpdateService
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.service.device.GraphDefinitionsForDeviceService
-import li.klass.fhem.service.room.FavoritesService
-import li.klass.fhem.service.room.RoomListService
-import li.klass.fhem.service.room.RoomListUpdateService
 import li.klass.fhem.util.device.DeviceActionUtil
 import li.klass.fhem.widget.notification.NotificationSettingView
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -165,7 +165,7 @@ class DeviceDetailFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
         if (device != null) {
             inflater!!.inflate(R.menu.device_menu, menu)
-            if (favoritesService.isFavorite(deviceName, activity)) {
+            if (favoritesService.isFavorite(deviceName ?: "", activity)) {
                 menu!!.removeItem(R.id.menu_favorites_add)
             } else {
                 menu!!.removeItem(R.id.menu_favorites_remove)

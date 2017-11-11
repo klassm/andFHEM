@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.connection.backend.FHEMServerSpec;
 
 public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
     private String selectedConnectionId;

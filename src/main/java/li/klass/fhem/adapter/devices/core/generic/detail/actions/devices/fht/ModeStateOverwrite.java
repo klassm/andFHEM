@@ -45,12 +45,12 @@ import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.service.DateService;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
 import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DatePickerUtil;
+import li.klass.fhem.util.DateTimeProvider;
 import li.klass.fhem.util.EnumUtils;
 import li.klass.fhem.util.StateToSet;
 
@@ -65,9 +65,9 @@ public class ModeStateOverwrite implements StateAttributeAction {
     private final HolidayShort holidayShort;
     private final ApplicationProperties applicationProperties;
 
-    public ModeStateOverwrite(ApplicationProperties applicationProperties, DateService dateService) {
+    public ModeStateOverwrite(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
         this.applicationProperties = applicationProperties;
-        this.holidayShort = new HolidayShort(applicationProperties, dateService);
+        this.holidayShort = new HolidayShort(applicationProperties, dateTimeProvider);
     }
 
     @Override

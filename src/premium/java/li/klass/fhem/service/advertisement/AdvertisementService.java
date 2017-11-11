@@ -25,35 +25,10 @@
 package li.klass.fhem.service.advertisement;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.service.intent.LicenseIntentService;
-import li.klass.fhem.util.FhemResultReceiver;
-
-import static li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM;
-import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 @Singleton
 public class AdvertisementService {

@@ -26,7 +26,7 @@ package li.klass.fhem.appwidget.view.widget.small;
 
 import li.klass.fhem.R;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.ui.FragmentType;
 
 public class FavoritesLinkWidget extends SmallIconWidget {
     @Override

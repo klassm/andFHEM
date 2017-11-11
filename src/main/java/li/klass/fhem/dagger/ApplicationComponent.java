@@ -24,8 +24,6 @@
 
 package li.klass.fhem.dagger;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -33,7 +31,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.PremiumActivity;
 import li.klass.fhem.activities.StartupActivity;
-import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
@@ -96,21 +93,16 @@ import li.klass.fhem.appwidget.view.widget.small.RoomsLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SendCommandLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.view.widget.small.TimersLinkWidget;
+import li.klass.fhem.backup.ImportExportService;
+import li.klass.fhem.connection.ui.ConnectionDetailFragment;
+import li.klass.fhem.connection.ui.ConnectionListFragment;
+import li.klass.fhem.conversion.ui.ConversionFragment;
+import li.klass.fhem.devices.all.ui.AllDevicesFragment;
+import li.klass.fhem.devices.favorites.ui.FavoritesFragment;
 import li.klass.fhem.fcm.FcmIntentService;
 import li.klass.fhem.fcm.history.view.FcmHistoryMessagesFragment;
 import li.klass.fhem.fcm.history.view.FcmHistoryUpdatesFragment;
-import li.klass.fhem.fragments.AllDevicesFragment;
-import li.klass.fhem.fragments.ConversionFragment;
-import li.klass.fhem.fragments.FavoritesFragment;
-import li.klass.fhem.fragments.FloorplanFragment;
-import li.klass.fhem.fragments.RoomDetailFragment;
-import li.klass.fhem.fragments.RoomListFragment;
-import li.klass.fhem.fragments.SendCommandFragment;
-import li.klass.fhem.fragments.TimerDetailFragment;
-import li.klass.fhem.fragments.TimerListFragment;
-import li.klass.fhem.fragments.WebViewFragment;
-import li.klass.fhem.fragments.connection.ConnectionDetailFragment;
-import li.klass.fhem.fragments.connection.ConnectionListFragment;
+import li.klass.fhem.floorplan.ui.FloorplanFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
@@ -118,11 +110,17 @@ import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
+import li.klass.fhem.graph.backend.gplot.GPlotHolder;
+import li.klass.fhem.graph.ui.GraphActivity;
+import li.klass.fhem.room.detail.ui.RoomDetailFragment;
+import li.klass.fhem.room.list.backend.RoomListUpdateService;
+import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.room.list.backend.group.GroupProvider;
+import li.klass.fhem.room.list.backend.xmllist.XmlListParser;
+import li.klass.fhem.room.list.ui.RoomListFragment;
 import li.klass.fhem.search.MySearchSuggestionsProvider;
 import li.klass.fhem.search.SearchResultsFragment;
-import li.klass.fhem.service.deviceConfiguration.DeviceConfigurationProvider;
-import li.klass.fhem.service.graph.gplot.GPlotHolder;
-import li.klass.fhem.service.importexport.ImportExportService;
+import li.klass.fhem.sendCommand.ui.SendCommandFragment;
 import li.klass.fhem.service.intent.AppActionsIntentService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.ExternalApiService;
@@ -131,12 +129,11 @@ import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandService;
-import li.klass.fhem.service.intent.VoiceCommandIntentService;
-import li.klass.fhem.service.room.RoomListUpdateService;
-import li.klass.fhem.service.room.group.GroupProvider;
-import li.klass.fhem.service.room.xmllist.XmlListParser;
 import li.klass.fhem.settings.SettingsActivity;
 import li.klass.fhem.settings.SettingsFragment;
+import li.klass.fhem.timer.ui.TimerDetailFragment;
+import li.klass.fhem.timer.ui.TimerListFragment;
+import li.klass.fhem.ui.WebViewFragment;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
@@ -149,7 +146,7 @@ public interface ApplicationComponent {
 
     void inject(AndFHEMMainActivity object);
 
-    void inject(ChartingActivity object);
+    void inject(GraphActivity object);
 
     void inject(StartupActivity object);
 
@@ -327,8 +324,6 @@ public interface ApplicationComponent {
 
     void inject(AppActionsIntentService object);
 
-    void inject(VoiceCommandIntentService object);
-
     void inject(ImportExportService object);
 
     void inject(AndFHEMApplication object);
@@ -351,21 +346,21 @@ public interface ApplicationComponent {
 
     GroupProvider getGroupProvider();
 
-    void inject(@NotNull ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
+    void inject(ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
 
-    void inject(@NotNull SendCommandLocaleSettingActivity sendCommandLocaleSettingActivity);
+    void inject(SendCommandLocaleSettingActivity sendCommandLocaleSettingActivity);
 
-    void inject(@NotNull SearchResultsFragment searchResultsFragment);
+    void inject(SearchResultsFragment searchResultsFragment);
 
-    void inject(@NotNull FireSettingLocaleReceiver fireSettingLocaleReceiver);
+    void inject(FireSettingLocaleReceiver fireSettingLocaleReceiver);
 
-    void inject(@NotNull MySearchSuggestionsProvider mySearchSuggestionsProvider);
+    void inject(MySearchSuggestionsProvider mySearchSuggestionsProvider);
 
-    void inject(@NotNull FcmHistoryMessagesFragment fcmHistoryMessagesFragment);
+    void inject(FcmHistoryMessagesFragment fcmHistoryMessagesFragment);
 
-    void inject(@NotNull FcmHistoryUpdatesFragment fcmHistoryUpdatesFragment);
+    void inject(FcmHistoryUpdatesFragment fcmHistoryUpdatesFragment);
 
-    void inject(@NotNull SettingsActivity settingsActivity);
+    void inject(SettingsActivity settingsActivity);
 
-    void inject(@NotNull SettingsFragment settingsFragment);
+    void inject(SettingsFragment settingsFragment);
 }

@@ -10,7 +10,7 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.fragments.FragmentType
+import li.klass.fhem.ui.FragmentType
 
 
 class SearchResultsActivity : AppCompatActivity() {

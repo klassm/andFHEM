@@ -41,11 +41,11 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.ModeStateOverwrite;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
-import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.service.DateService;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.ui.FragmentType;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DateTimeProvider;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
@@ -59,8 +59,8 @@ public class FHTDetailActionProvider extends DeviceDetailActionProvider {
     public static double MINIMUM_TEMPERATURE = 5.5;
 
     @Inject
-    public FHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
-        addStateAttributeAction("mode", new ModeStateOverwrite(applicationProperties, dateService));
+    public FHTDetailActionProvider(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
+        addStateAttributeAction("mode", new ModeStateOverwrite(applicationProperties, dateTimeProvider));
     }
 
     @Override

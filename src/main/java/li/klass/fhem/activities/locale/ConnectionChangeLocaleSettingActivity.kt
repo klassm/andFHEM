@@ -36,13 +36,13 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.FHEMServerSpec
+import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.COMMAND
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
-import li.klass.fhem.fhem.connection.FHEMServerSpec
-import li.klass.fhem.fhem.connection.ServerType
-import li.klass.fhem.service.connection.ConnectionService
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 

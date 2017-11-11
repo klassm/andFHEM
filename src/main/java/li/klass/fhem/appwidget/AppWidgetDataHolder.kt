@@ -37,7 +37,7 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
-import li.klass.fhem.service.room.RoomListService
+import li.klass.fhem.room.list.backend.RoomListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.NetworkState
 import li.klass.fhem.util.preferences.SharedPreferencesService

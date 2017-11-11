@@ -43,9 +43,9 @@ import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
+import li.klass.fhem.devices.backend.GenericDeviceService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.service.device.GenericDeviceService;
-import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.room.list.backend.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class AppActionsIntentService extends ConvenientIntentService {

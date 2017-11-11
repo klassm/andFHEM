@@ -39,10 +39,5 @@
             android:summary="@string/settingsApplicationPasswordSummary"
             android:title="@string/settingsApplicationPassword"
             tools:ignore="Deprecated" />
-
-        <Preference
-            android:key="VOICE_COMMANDS"
-            android:summary="@string/settingsVoiceCommandSummary"
-            android:title="@string/settingsVoiceCommand" />
     </PreferenceCategory>
 </PreferenceScreen>

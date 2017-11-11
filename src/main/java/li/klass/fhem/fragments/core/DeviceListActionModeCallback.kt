@@ -8,8 +8,8 @@ import android.widget.Toast
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
+import li.klass.fhem.devices.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.service.room.FavoritesService
 import li.klass.fhem.util.device.DeviceActionUtil
 import li.klass.fhem.widget.notification.NotificationSettingView
 import org.jetbrains.anko.coroutines.experimental.bg

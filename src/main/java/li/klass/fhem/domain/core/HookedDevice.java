@@ -38,12 +38,6 @@ public abstract class HookedDevice extends Device {
     protected boolean alwaysHidden = false;
 
     /**
-     * Provides some pronunciation for only this device.
-     */
-    @XmllistAttribute("PRONUNCIATION")
-    protected String pronunciation;
-
-    /**
      * Optionally contains some sortBy attribute that is used for device ordering.
      */
     @XmllistAttribute("SORTBY")
@@ -52,10 +46,6 @@ public abstract class HookedDevice extends Device {
     @XmllistAttribute("ALWAYS_HIDDEN")
     public void setAlwaysHidden(String value) {
         alwaysHidden = "true".equalsIgnoreCase(value);
-    }
-
-    public String getPronunciation() {
-        return pronunciation;
     }
 
     public String getSortBy() {
@@ -70,7 +60,4 @@ public abstract class HookedDevice extends Device {
         this.sortBy = sortBy;
     }
 
-    public void setPronunciation(String pronunciation) {
-        this.pronunciation = pronunciation;
-    }
 }

@@ -29,9 +29,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import li.klass.fhem.AndFHEMApplication
+import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.service.connection.ConnectionService
 import li.klass.fhem.service.intent.SendCommandService
 import org.jetbrains.anko.doAsync
 import javax.inject.Inject

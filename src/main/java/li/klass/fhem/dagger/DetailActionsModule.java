@@ -33,15 +33,15 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.CulHmDe
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.MAXDetailActionProvider;
 import li.klass.fhem.adapter.uiservice.FragmentUiService;
-import li.klass.fhem.service.DateService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DateTimeProvider;
 
 @Module
 public class DetailActionsModule {
     @Provides
     @IntoSet
-    GenericDetailActionProvider provideFHTDetailActionProvider(ApplicationProperties applicationProperties, DateService dateService) {
-        return new FHTDetailActionProvider(applicationProperties, dateService);
+    GenericDetailActionProvider provideFHTDetailActionProvider(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
+        return new FHTDetailActionProvider(applicationProperties, dateTimeProvider);
     }
 
     @Provides

@@ -52,7 +52,6 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
-import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider;
@@ -79,11 +78,12 @@ import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.service.graph.gplot.SvgGraphDefinition;
+import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition;
+import li.klass.fhem.graph.ui.GraphActivity;
 import li.klass.fhem.util.Optionals;
 
 import static com.google.common.collect.FluentIterable.from;
-import static li.klass.fhem.service.graph.gplot.SvgGraphDefinition.BY_NAME;
+import static li.klass.fhem.graph.backend.gplot.SvgGraphDefinition.BY_NAME;
 
 public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
@@ -227,7 +227,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ChartingActivity.Companion.showChart(context, device, connectionId, svgGraphDefinition);
+                    GraphActivity.Companion.showChart(context, device, connectionId, svgGraphDefinition);
                 }
             });
             graphLayout.addView(button);

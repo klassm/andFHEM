@@ -29,15 +29,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import com.google.common.base.Optional
 import com.google.common.io.CharStreams
+import li.klass.fhem.connection.backend.DataConnectionSwitch
+import li.klass.fhem.connection.backend.FHEMWEBConnection
+import li.klass.fhem.connection.backend.RequestResult
+import li.klass.fhem.connection.backend.RequestResultError.CONNECTION_TIMEOUT
+import li.klass.fhem.connection.backend.RequestResultError.HOST_CONNECTION_ERROR
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
-import li.klass.fhem.fhem.DataConnectionSwitch
-import li.klass.fhem.fhem.FHEMWEBConnection
-import li.klass.fhem.fhem.RequestResult
-import li.klass.fhem.fhem.RequestResultError
-import li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT
-import li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR
 import li.klass.fhem.settings.SettingsKeys.COMMAND_EXECUTION_RETRIES
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.Cache
@@ -114,7 +113,7 @@ class CommandExecutionService @Inject constructor(
     private fun execute(command: Command, currentTry: Int, context: Context, resultListener: ResultListener): RequestResult<String> {
         val currentProvider = dataConnectionSwitch.getProviderFor(context, command.connectionId)
         if (!currentProvider.isPresent) {
-            return RequestResult(RequestResultError.HOST_CONNECTION_ERROR)
+            return RequestResult(HOST_CONNECTION_ERROR)
         }
         val result = currentProvider.get().executeCommand(command.command, context)
 

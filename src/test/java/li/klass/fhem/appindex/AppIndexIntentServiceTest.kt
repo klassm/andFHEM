@@ -5,7 +5,7 @@ import com.google.common.base.Optional
 import com.google.firebase.appindexing.Indexable
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.service.room.RoomListService
+import li.klass.fhem.room.list.backend.RoomListService
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given

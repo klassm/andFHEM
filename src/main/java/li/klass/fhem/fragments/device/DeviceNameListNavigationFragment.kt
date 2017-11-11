@@ -30,7 +30,7 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fragments.FragmentType
+import li.klass.fhem.ui.FragmentType
 
 /**
  * Show all devices for a specific room and switch to the device detail when the name is clicked.

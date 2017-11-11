@@ -30,7 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.service.room.xmllist.XmlListDevice;
+import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 
 public interface ActionCardAction {
     View createView(XmlListDevice device, String connectionId, Context context, LayoutInflater inflater, ViewGroup parent);

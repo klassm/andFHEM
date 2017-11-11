@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.preference.Preference
 import li.klass.fhem.R
+import li.klass.fhem.backup.ui.ImportExportUIService
 import li.klass.fhem.settings.SettingsKeys
-import li.klass.fhem.ui.service.importExport.ImportExportUIService
 import javax.inject.Inject
 
 class BackupTypeHandler @Inject constructor(
