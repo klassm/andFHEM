@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.core
+package li.klass.fhem.connection.ui
 
 import android.content.Intent
 import android.view.View

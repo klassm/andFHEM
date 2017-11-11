@@ -36,12 +36,12 @@ import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
-import li.klass.fhem.activities.base.DeviceNameSelectionActivity
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.ApplicationModule
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
+import li.klass.fhem.devices.ui.DeviceNameSelectionActivity
 import li.klass.fhem.graph.ui.GraphActivity
 import li.klass.fhem.room.list.backend.RoomListService
 import li.klass.fhem.service.intent.AppActionsIntentService

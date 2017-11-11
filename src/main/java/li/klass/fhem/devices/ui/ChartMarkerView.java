@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.graph;
+package li.klass.fhem.devices.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.graph;
+package li.klass.fhem.graph.ui;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

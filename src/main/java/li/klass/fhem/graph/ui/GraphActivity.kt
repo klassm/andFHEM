@@ -51,9 +51,8 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
-import li.klass.fhem.activities.graph.ChartMarkerView
-import li.klass.fhem.activities.graph.ChartingDateSelectionActivity
 import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.devices.ui.ChartMarkerView
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphEntry
 import li.klass.fhem.graph.backend.GraphService

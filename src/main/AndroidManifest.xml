@@ -130,7 +130,7 @@
             android:name=".activities.CommandIndicatorActivity"
             android:theme="@style/transparentDialogTheme" />
         <activity android:name=".graph.ui.GraphActivity" />
-        <activity android:name=".activities.graph.ChartingDateSelectionActivity" />
+        <activity android:name=".graph.ui.ChartingDateSelectionActivity" />
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
@@ -291,7 +291,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.base.DeviceNameSelectionActivity" />
+        <activity android:name=".devices.ui.DeviceNameSelectionActivity" />
         <activity
             android:name=".activities.locale.ConditionQueryLocaleSettingActivity"
             android:exported="true"

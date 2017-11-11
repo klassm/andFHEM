@@ -34,7 +34,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import li.klass.fhem.R;
-import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
+import li.klass.fhem.devices.ui.DeviceNameSelectionActivity;
 import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;

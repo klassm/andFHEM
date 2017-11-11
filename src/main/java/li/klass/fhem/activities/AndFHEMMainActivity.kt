@@ -56,11 +56,11 @@ import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
-import li.klass.fhem.activities.core.AvailableConnectionDataAdapter
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.billing.BillingService
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.Actions.IS_PREMIUM
 import li.klass.fhem.constants.BundleExtraKeys
