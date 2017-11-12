@@ -41,9 +41,9 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.ModeStateOverwrite;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.ui.FragmentType;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DateTimeProvider;
 

@@ -45,16 +45,16 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.DateFormatUtil;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
-import static li.klass.fhem.room.list.backend.xmllist.DeviceNode.DeviceNodeType;
-import static li.klass.fhem.room.list.backend.xmllist.DeviceNode.DeviceNodeType.STATE;
+import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType;
+import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 public abstract class FhemDevice extends HookedDevice {
 
@@ -155,7 +155,8 @@ public abstract class FhemDevice extends HookedDevice {
     }
 
     public String getName() {
-        return getXmlListDevice().getName();
+        XmlListDevice xmlListDevice = getXmlListDevice();
+        return xmlListDevice == null ? null : xmlListDevice.getName();
     }
 
     public List<String> getRooms() {

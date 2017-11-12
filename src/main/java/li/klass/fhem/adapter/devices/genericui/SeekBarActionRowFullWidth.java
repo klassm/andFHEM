@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.DimConversionUtil;
 
 public abstract class SeekBarActionRowFullWidth {

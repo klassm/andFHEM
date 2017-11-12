@@ -51,11 +51,11 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.connection.backend.ConnectionService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.room.list.backend.RoomListService;
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceConfigurationProvider;
-import li.klass.fhem.room.list.backend.deviceConfiguration.ViewItemConfig;
 import li.klass.fhem.ui.FragmentType;
+import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;

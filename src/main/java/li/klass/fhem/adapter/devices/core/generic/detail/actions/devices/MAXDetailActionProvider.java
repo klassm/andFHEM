@@ -39,7 +39,7 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton;
 import li.klass.fhem.adapter.uiservice.FragmentUiService;
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 @Singleton
 public class MAXDetailActionProvider extends DeviceDetailActionProvider {

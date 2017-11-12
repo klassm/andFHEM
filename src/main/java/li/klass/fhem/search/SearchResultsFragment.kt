@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import com.google.common.base.Optional
 import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.fragments.core.DeviceListFragment
 import javax.inject.Inject
 
 

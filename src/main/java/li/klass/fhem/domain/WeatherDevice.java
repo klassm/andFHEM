@@ -48,7 +48,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import static com.google.common.collect.Lists.newArrayList;

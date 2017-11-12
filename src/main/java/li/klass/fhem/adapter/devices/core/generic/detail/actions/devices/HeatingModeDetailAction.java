@@ -31,7 +31,7 @@ import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
 

@@ -30,8 +30,8 @@ import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.log.ConcernsDevicePredicate
 import li.klass.fhem.graph.backend.gplot.GPlotHolder
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
-import li.klass.fhem.room.list.backend.RoomListService
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice
+import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject

@@ -36,8 +36,8 @@ import java.util.Map;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.StateToSet;
 

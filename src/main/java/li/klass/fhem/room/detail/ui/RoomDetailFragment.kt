@@ -29,9 +29,9 @@ import android.os.Bundle
 import com.google.common.base.Optional
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.fragments.core.DeviceListFragment
-import li.klass.fhem.room.list.backend.RoomListService
+import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_ROOM_OPEN
+import li.klass.fhem.update.backend.RoomListService
 import javax.inject.Inject
 
 class RoomDetailFragment : DeviceListFragment() {

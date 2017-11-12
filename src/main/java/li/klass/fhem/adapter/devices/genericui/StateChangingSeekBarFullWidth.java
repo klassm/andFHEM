@@ -29,7 +29,7 @@ import android.widget.TableRow;
 
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class StateChangingSeekBarFullWidth extends SeekBarActionRowFullWidthAndButton {

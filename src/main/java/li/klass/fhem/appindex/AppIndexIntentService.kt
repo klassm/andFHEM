@@ -4,7 +4,7 @@ import android.app.IntentService
 import android.content.Intent
 import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.room.list.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 

@@ -33,7 +33,7 @@ import com.google.common.collect.Maps.newHashMap
 import com.google.common.collect.Sets.newHashSet
 import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import java.io.Serializable
 import java.util.*
 
@@ -45,10 +45,6 @@ class RoomDeviceList(val roomName: String) : Serializable {
      * Actual devices.
      */
     private val deviceMap = newHashMap<String, MutableSet<FhemDevice>>()
-    var hiddenRooms: List<String> = newArrayList()
-
-    var hiddenGroups: List<String> = newArrayList()
-
 
     constructor(roomDeviceList: RoomDeviceList?, context: Context) : this(roomDeviceList?.roomName ?: "") {
 
@@ -68,9 +64,8 @@ class RoomDeviceList(val roomName: String) : Serializable {
      * *
      * @return list of devices matching the functionality.
      */
-    fun getDevicesOfFunctionality(functionality: String): List<FhemDevice> {
-        return getDevicesOfFunctionality(functionality, true)
-    }
+    fun getDevicesOfFunctionality(functionality: String): List<FhemDevice> =
+            getDevicesOfFunctionality(functionality, true)
 
     /**
      * Gets devices of a certain group. At-devices are always excluded, as they are not shown

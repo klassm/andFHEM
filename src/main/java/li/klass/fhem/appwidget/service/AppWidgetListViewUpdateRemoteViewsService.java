@@ -40,7 +40,7 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.base.DeviceListAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.base.EmptyRemoteViewsFactory;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.room.list.backend.RoomListService;
+import li.klass.fhem.update.backend.RoomListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_TYPE_NAME;

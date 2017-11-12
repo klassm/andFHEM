@@ -39,8 +39,8 @@ import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.room.list.backend.RoomListService
 import li.klass.fhem.settings.SettingsKeys.ALLOW_REMOTE_UPDATE
+import li.klass.fhem.update.backend.RoomListService
 import li.klass.fhem.util.ApplicationProperties
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory

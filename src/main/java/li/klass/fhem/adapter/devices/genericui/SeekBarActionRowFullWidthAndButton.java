@@ -32,7 +32,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 

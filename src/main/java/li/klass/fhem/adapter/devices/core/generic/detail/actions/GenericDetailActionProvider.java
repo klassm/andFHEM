@@ -33,7 +33,7 @@ import java.util.List;
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public interface GenericDetailActionProvider {
     boolean supports(XmlListDevice xmlListDevice);

@@ -54,7 +54,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import li.klass.fhem.connection.backend.ConnectionService;
-import li.klass.fhem.devices.favorites.backend.FavoritesService;
+import li.klass.fhem.devices.list.favorites.backend.FavoritesService;
 import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;

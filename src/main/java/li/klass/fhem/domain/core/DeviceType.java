@@ -86,7 +86,7 @@ import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
 

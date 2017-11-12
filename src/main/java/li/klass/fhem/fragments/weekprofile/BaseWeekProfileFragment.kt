@@ -48,9 +48,9 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.room.list.backend.RoomListService
-import li.klass.fhem.room.list.backend.RoomListUpdateService
 import li.klass.fhem.service.intent.DeviceIntentService
+import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListUpdateService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
 import org.jetbrains.anko.coroutines.experimental.bg

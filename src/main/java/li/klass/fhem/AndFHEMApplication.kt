@@ -43,9 +43,9 @@ import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
 import li.klass.fhem.devices.ui.DeviceNameSelectionActivity
 import li.klass.fhem.graph.ui.GraphActivity
-import li.klass.fhem.room.list.backend.RoomListService
 import li.klass.fhem.service.intent.AppActionsIntentService
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
+import li.klass.fhem.update.backend.RoomListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.InstalledApplications
 import javax.inject.Inject

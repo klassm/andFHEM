@@ -3,7 +3,7 @@ package li.klass.fhem.search
 import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.room.list.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListService
 import java.util.*
 import javax.inject.Inject
 

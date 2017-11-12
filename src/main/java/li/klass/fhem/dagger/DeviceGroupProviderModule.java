@@ -27,8 +27,8 @@ package li.klass.fhem.dagger;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoSet;
-import li.klass.fhem.room.list.backend.group.device.CulHmDeviceGroupProvider;
-import li.klass.fhem.room.list.backend.group.device.DeviceGroupProvider;
+import li.klass.fhem.update.backend.group.CulHmDeviceGroupProvider;
+import li.klass.fhem.update.backend.group.DeviceGroupProvider;
 
 @Module
 public class DeviceGroupProviderModule {

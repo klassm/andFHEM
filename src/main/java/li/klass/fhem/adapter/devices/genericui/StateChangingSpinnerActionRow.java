@@ -29,7 +29,7 @@ import android.content.Context;
 import java.util.List;
 
 import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public class StateChangingSpinnerActionRow extends SpinnerActionRow {
 

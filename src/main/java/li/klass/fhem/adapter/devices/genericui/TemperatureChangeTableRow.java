@@ -34,8 +34,8 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.device.DeviceActionUtil;
 

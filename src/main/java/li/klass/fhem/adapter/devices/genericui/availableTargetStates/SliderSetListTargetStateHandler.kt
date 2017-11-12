@@ -37,7 +37,7 @@ import li.klass.fhem.domain.core.DimmableDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
 class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandler<D> {
     private var dimProgress = 0f

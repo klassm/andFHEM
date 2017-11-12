@@ -49,8 +49,6 @@ public class FHEMWEBDevice extends FhemDevice {
     @ShowField(description = ResourceIdMapper.sortRooms)
     private String sortRooms;
 
-    private String port;
-
     private boolean temporary = false;
 
     @XmllistAttribute("SORTROOMS")
@@ -61,11 +59,6 @@ public class FHEMWEBDevice extends FhemDevice {
     @XmllistAttribute("TEMPORARY")
     public void setTemporary(String value) {
         this.temporary = "1".equals(value);
-    }
-
-    @XmllistAttribute("PORT")
-    public void setPort(String port) {
-        this.port = port;
     }
 
     public String getHiddenRoom() {
@@ -107,6 +100,6 @@ public class FHEMWEBDevice extends FhemDevice {
     }
 
     public String getPort() {
-        return port;
+        return getXmlListDevice().getInternal("PORT").or("80");
     }
 }

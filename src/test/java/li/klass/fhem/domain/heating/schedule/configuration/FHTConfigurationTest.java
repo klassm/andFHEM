@@ -32,7 +32,7 @@ import java.util.List;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.StateToSet;
 

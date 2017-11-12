@@ -29,7 +29,7 @@ import android.content.Context;
 import com.google.common.base.Strings;
 
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceDescMapping;
 
 public abstract class AnnotatedDeviceViewItem implements DeviceViewItem {
 

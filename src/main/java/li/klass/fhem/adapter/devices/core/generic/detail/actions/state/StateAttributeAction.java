@@ -28,7 +28,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TableRow;
 
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public interface StateAttributeAction {
     TableRow createRow(XmlListDevice device, String connectionId, String key, String stateValue, Context context, ViewGroup parent);

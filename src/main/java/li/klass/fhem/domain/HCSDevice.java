@@ -36,7 +36,7 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;

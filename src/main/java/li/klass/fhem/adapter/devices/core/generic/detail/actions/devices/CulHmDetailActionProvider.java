@@ -48,7 +48,7 @@ import li.klass.fhem.adapter.uiservice.FragmentUiService;
 import li.klass.fhem.domain.CulHmHeatingMode;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.widget.LitreContentView;
 
 import static li.klass.fhem.domain.CulHmHeatingMode.heatingModeFor;

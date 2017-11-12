@@ -41,14 +41,14 @@ import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.ResultCodes
-import li.klass.fhem.devices.favorites.backend.FavoritesService
+import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.login.LoginUIService
-import li.klass.fhem.room.list.backend.RoomListService
-import li.klass.fhem.room.list.backend.RoomListUpdateService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_APPLICATION_START
+import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.FhemResultReceiver
 import org.jetbrains.anko.coroutines.experimental.bg

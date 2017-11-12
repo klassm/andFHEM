@@ -26,7 +26,7 @@ package li.klass.fhem.adapter.devices.core.deviceItems;
 
 import android.content.Context;
 
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceDescMapping;
 
 public interface DeviceViewItem {
     String FIRST = "__first__";

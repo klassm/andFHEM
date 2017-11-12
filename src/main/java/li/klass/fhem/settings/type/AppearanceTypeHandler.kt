@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.preference.Preference
 import li.klass.fhem.R
-import li.klass.fhem.fragments.core.DeviceListFragment
+import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.updater.IntSummaryAction
 import li.klass.fhem.settings.updater.ListSummaryAction

@@ -41,9 +41,9 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.room.list.backend.deviceConfiguration.ViewItemConfig;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;

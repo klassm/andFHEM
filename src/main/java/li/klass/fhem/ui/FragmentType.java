@@ -31,12 +31,12 @@ import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragmen
 import li.klass.fhem.connection.ui.ConnectionDetailFragment;
 import li.klass.fhem.connection.ui.ConnectionListFragment;
 import li.klass.fhem.conversion.ui.ConversionFragment;
-import li.klass.fhem.devices.all.ui.AllDevicesFragment;
-import li.klass.fhem.devices.favorites.ui.FavoritesFragment;
+import li.klass.fhem.devices.detail.ui.DeviceDetailFragment;
+import li.klass.fhem.devices.list.all.ui.AllDevicesFragment;
+import li.klass.fhem.devices.list.favorites.ui.FavoritesFragment;
 import li.klass.fhem.fcm.history.view.FcmHistoryFragment;
 import li.klass.fhem.floorplan.ui.FloorplanFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;

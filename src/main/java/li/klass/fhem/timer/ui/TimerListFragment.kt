@@ -45,9 +45,9 @@ import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.room.list.backend.RoomListService
-import li.klass.fhem.room.list.backend.RoomListUpdateService
 import li.klass.fhem.ui.FragmentType
+import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListUpdateService
 import li.klass.fhem.util.device.DeviceActionUtil
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject

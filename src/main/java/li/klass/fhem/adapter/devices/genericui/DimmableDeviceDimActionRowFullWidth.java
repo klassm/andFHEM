@@ -33,8 +33,8 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public class DimmableDeviceDimActionRowFullWidth extends DeviceDimActionRowFullWidth {
 

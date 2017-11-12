@@ -50,10 +50,10 @@ import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListFragment
-import li.klass.fhem.room.list.backend.RoomListService
 import li.klass.fhem.service.intent.DeviceIntentService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.ui.FragmentType.DEVICE_SELECTION
+import li.klass.fhem.update.backend.RoomListService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue

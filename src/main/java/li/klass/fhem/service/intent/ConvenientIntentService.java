@@ -38,7 +38,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.room.list.backend.RoomListService;
+import li.klass.fhem.update.backend.RoomListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 

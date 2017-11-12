@@ -53,10 +53,10 @@ import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.dagger.DatabaseModule;
-import li.klass.fhem.room.list.backend.DeviceListParser;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 import li.klass.fhem.testutil.MockitoRule;
+import li.klass.fhem.update.backend.xmllist.DeviceListParser;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.util.CloseableUtil;
 
 import static li.klass.fhem.util.ReflectionUtil.setFieldValue;

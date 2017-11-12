@@ -42,11 +42,11 @@ import javax.inject.Singleton;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceDescMapping;
-import li.klass.fhem.room.list.backend.deviceConfiguration.ViewItemConfig;
-import li.klass.fhem.room.list.backend.xmllist.DeviceNode;
-import li.klass.fhem.room.list.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Sets.newHashSet;
 

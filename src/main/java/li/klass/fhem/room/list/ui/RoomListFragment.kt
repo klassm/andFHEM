@@ -44,10 +44,10 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.room.list.backend.RoomListService
-import li.klass.fhem.room.list.backend.RoomListUpdateService
+import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.ui.FragmentType
+import li.klass.fhem.update.backend.RoomListUpdateService
 import li.klass.fhem.util.Reject
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.Serializable
@@ -61,7 +61,7 @@ open class RoomListFragment : BaseFragment() {
     @Inject
     lateinit var roomListUpdateService: RoomListUpdateService
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var roomListService: ViewableRoomListService
 
     private var roomName: String? = null
     protected var emptyTextId = R.string.noRooms
@@ -138,19 +138,16 @@ open class RoomListFragment : BaseFragment() {
                 if (refresh) {
                     roomListUpdateService.updateAllDevices(Optional.absent(), activity)
                 }
-                roomListService.getRoomNameList(Optional.absent(), activity)
+                roomListService.sortedRoomNameList(context = activity)
             }.await()
             handleUpdateData(roomNameList)
         }
     }
 
-    override fun getTitle(context: Context): CharSequence? {
-        return context.getString(R.string.roomList)
-    }
+    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.roomList)
 
-    protected fun isRoomSelectable(roomName: String): Boolean {
-        return roomSelectableCallback == null || roomSelectableCallback!!.isRoomSelectable(roomName)
-    }
+    protected fun isRoomSelectable(roomName: String): Boolean =
+            roomSelectableCallback == null || roomSelectableCallback!!.isRoomSelectable(roomName)
 
     private val adapter: RoomListAdapter?
         get() {

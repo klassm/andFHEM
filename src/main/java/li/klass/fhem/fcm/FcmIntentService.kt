@@ -37,7 +37,7 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.history.data.FcmHistoryService
-import li.klass.fhem.room.list.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.NotificationUtil
 import li.klass.fhem.util.Tasker

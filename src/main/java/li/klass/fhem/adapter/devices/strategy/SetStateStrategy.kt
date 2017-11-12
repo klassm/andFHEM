@@ -32,7 +32,7 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.room.list.backend.deviceConfiguration.DeviceDescMapping
+import li.klass.fhem.update.backend.deviceConfiguration.DeviceDescMapping
 import javax.inject.Inject
 import javax.inject.Singleton
 

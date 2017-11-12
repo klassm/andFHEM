@@ -24,6 +24,8 @@
 
 package li.klass.fhem.dagger;
 
+import android.content.Context;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -43,5 +45,11 @@ public class ApplicationModule {
     @Singleton
     AndFHEMApplication getApplication() {
         return application;
+    }
+
+    @Provides
+    @ForApplication
+    Context getContent() {
+        return application.getApplicationContext();
     }
 }

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.room_device_group.view.*
 import li.klass.fhem.R
-import li.klass.fhem.adapter.rooms.ViewableElementsCalculator.Element
+import li.klass.fhem.devices.list.backend.ViewableElementsCalculator.Element
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
