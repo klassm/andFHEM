@@ -36,8 +36,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 import static com.google.common.collect.Maps.EntryTransformer;
 import static com.google.common.collect.Maps.newHashMap;

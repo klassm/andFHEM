@@ -43,9 +43,9 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 import static com.google.common.collect.Lists.newArrayList;
 

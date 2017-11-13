@@ -34,7 +34,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 public class ImageIntentService extends ConvenientIntentService {
 
@@ -49,7 +49,7 @@ public class ImageIntentService extends ConvenientIntentService {
     protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
-        if (action.equals(Actions.LOAD_IMAGE)) {
+        if (Actions.LOAD_IMAGE.equals(action)) {
             String relativePath = intent.getStringExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH);
             Bitmap bitmap = commandExecutionService.getBitmap(relativePath, this);
             if (bitmap == null) {

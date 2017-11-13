@@ -43,10 +43,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import li.klass.fhem.graph.backend.gplot.GPlotSeries;
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.testutil.ValueProvider;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 import static li.klass.fhem.graph.backend.GraphService.DATE_TIME_FORMATTER;
 import static org.assertj.core.api.Assertions.assertThat;

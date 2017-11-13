@@ -36,9 +36,9 @@ import javax.inject.Singleton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 /**
  * Class accumulating all device actions like renaming, moving or deleting.

@@ -29,8 +29,8 @@ import android.content.SharedPreferences
 import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkArgument
 import li.klass.fhem.connection.backend.ConnectionService
-import li.klass.fhem.service.Command
-import li.klass.fhem.service.CommandExecutionService
+import li.klass.fhem.update.backend.command.execution.Command
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.util.preferences.SharedPreferencesService
 import org.json.JSONArray
 import org.json.JSONException

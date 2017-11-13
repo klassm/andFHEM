@@ -56,10 +56,10 @@ import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.graph.backend.GraphService;
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;

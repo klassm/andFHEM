@@ -31,8 +31,8 @@ import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.service.Command
-import li.klass.fhem.service.CommandExecutionService
+import li.klass.fhem.update.backend.command.execution.Command
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.update.backend.xmllist.DeviceListParser
 import org.slf4j.LoggerFactory
 import javax.inject.Inject

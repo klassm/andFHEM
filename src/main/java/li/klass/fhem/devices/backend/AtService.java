@@ -38,9 +38,9 @@ import javax.inject.Singleton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 @Singleton
 public class AtService {

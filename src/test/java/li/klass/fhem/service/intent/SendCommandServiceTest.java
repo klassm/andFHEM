@@ -43,8 +43,8 @@ import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.connection.backend.ConnectionService;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.testutil.MockitoRule;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;

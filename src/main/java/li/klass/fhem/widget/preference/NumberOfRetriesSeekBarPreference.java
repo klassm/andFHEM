@@ -29,7 +29,7 @@ import android.util.AttributeSet;
 import android.widget.SeekBar;
 
 import li.klass.fhem.R;
-import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
 public class NumberOfRetriesSeekBarPreference extends SeekBarPreference {
     public NumberOfRetriesSeekBarPreference(Context context, AttributeSet attrs) {

@@ -28,9 +28,9 @@ import android.content.Context
 import com.google.common.base.Strings.isNullOrEmpty
 import com.google.firebase.iid.FirebaseInstanceId
 import li.klass.fhem.domain.GCMSendDevice
-import li.klass.fhem.service.Command
-import li.klass.fhem.service.CommandExecutionService
 import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.update.backend.command.execution.Command
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.ArrayUtil
 import org.slf4j.LoggerFactory

@@ -32,8 +32,8 @@ import org.joda.time.Interval;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.util.DateFormatUtil;
 
 class GraphIntervalProvider {

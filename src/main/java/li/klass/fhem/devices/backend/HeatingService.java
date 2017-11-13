@@ -42,8 +42,8 @@ import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
-import li.klass.fhem.service.Command;
-import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.update.backend.command.execution.Command;
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
 
 @Singleton
