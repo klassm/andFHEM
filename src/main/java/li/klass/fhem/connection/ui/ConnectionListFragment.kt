@@ -95,7 +95,7 @@ class ConnectionListFragment : BaseFragment() {
         Reject.ifNull(connectionList)
         connectionList.adapter = adapter
 
-        connectionList.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        connectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val connectionId = view.tag as String
             onClick(connectionId)
         }
@@ -138,13 +138,13 @@ class ConnectionListFragment : BaseFragment() {
     override fun getTitle(context: Context): CharSequence? =
             context.getString(R.string.connectionManageTitle)
 
-    protected fun fillEmptyView(view: LinearLayout) {
+    private fun fillEmptyView(view: LinearLayout) {
         val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, view)!!
         val emptyText = emptyView.findViewById<TextView>(R.id.emptyText)
         emptyText.setText(R.string.noConnections)
     }
 
-    protected fun onClick(connectionId: String) {
+    private fun onClick(connectionId: String) {
         activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL)
                 .putExtra(CONNECTION_ID, connectionId))

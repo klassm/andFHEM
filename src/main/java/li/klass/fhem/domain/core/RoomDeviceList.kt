@@ -82,11 +82,7 @@ class RoomDeviceList(val roomName: String) : Serializable {
                                           respectSupported: Boolean): List<FhemDevice> {
         val deviceSet = getOrCreateDeviceList<FhemDevice>(group)
         val deviceList = newArrayList<FhemDevice>()
-        for (device in deviceSet) {
-            if (device !is AtDevice && (!respectSupported || device.isSupported)) {
-                deviceList.add(device)
-            }
-        }
+        deviceSet.filterTo(deviceList) { it !is AtDevice && (!respectSupported || it.isSupported) }
 
         try {
             Collections.sort(deviceList, FhemDevice.BY_NAME)
@@ -99,23 +95,21 @@ class RoomDeviceList(val roomName: String) : Serializable {
 
     private fun <T : FhemDevice> getOrCreateDeviceList(group: String): MutableSet<T> {
         if (!deviceMap.containsKey(group)) {
-            deviceMap.put(group, HashSet<FhemDevice>())
+            deviceMap.put(group, HashSet())
         }
+        @Suppress("UNCHECKED_CAST")
         return deviceMap[group] as MutableSet<T>
     }
 
     fun <T : FhemDevice> getDevicesOfType(deviceType: DeviceType): List<T> {
         val allDevices = allDevices
         val deviceList = newArrayList<T>()
-        for (device in newArrayList(allDevices)) {
-            if (device == null || getDeviceTypeFor(device) != deviceType) {
-                continue
-            }
-
-            if (device.isSupported) {
-                deviceList.add(device as T)
-            }
-        }
+        newArrayList(allDevices)
+                .filter { it != null && getDeviceTypeFor(it) == deviceType && it.isSupported }
+                .forEach {
+                    @Suppress("UNCHECKED_CAST")
+                    deviceList.add(it as T)
+                }
 
         Collections.sort(deviceList, FhemDevice.BY_NAME)
         return deviceList
@@ -143,25 +137,21 @@ class RoomDeviceList(val roomName: String) : Serializable {
 
     fun <D : FhemDevice> getDeviceFor(deviceName: String): D? {
         val allDevices = allDevices
-        for (allDevice in allDevices) {
-            if (allDevice.name == deviceName) {
-                return allDevice as D
-            }
-        }
+        allDevices
+                .filter { it.name == deviceName }
+                .forEach {
+                    @Suppress("UNCHECKED_CAST")
+                    return it as D
+                }
         return null
     }
 
     val isEmptyOrOnlyContainsDoNotShowDevices: Boolean
         get() {
-            for (devices in deviceMap.values) {
-                for (device in devices) {
-                    if (device.isSupported) {
-                        return false
-                    }
-                }
-            }
 
-            return true
+            return deviceMap.values
+                    .flatMap { it }
+                    .none { it.isSupported }
         }
 
     fun <T : FhemDevice> addDevice(device: T?, context: Context): RoomDeviceList {

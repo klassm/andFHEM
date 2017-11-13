@@ -74,14 +74,12 @@ constructor() {
                 .putExtra(ALLOW_REMOTE_UPDATES, allowRemoteUpdate)
     }
 
-    private fun getSavedPreferences(context: Context): SharedPreferences {
-        return sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, context)
-    }
+    private fun getSavedPreferences(context: Context): SharedPreferences =
+            sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, context)
 
 
-    fun getAppWidgetView(configuration: WidgetConfiguration): AppWidgetView {
-        return configuration.widgetType.widgetView
-    }
+    fun getAppWidgetView(configuration: WidgetConfiguration): AppWidgetView =
+            configuration.widgetType.widgetView
 
     fun deleteWidget(context: Context, appWidgetId: Int) {
         Log.d(AppWidgetDataHolder::class.java.name, String.format("deleting widget for id %d", appWidgetId))
@@ -99,9 +97,7 @@ constructor() {
         cancelUpdating(context, appWidgetId, alarmManager)
     }
 
-    fun getAppWidgetHost(context: Context): AppWidgetHost {
-        return AppWidgetHost(context, 0)
-    }
+    fun getAppWidgetHost(context: Context): AppWidgetHost = AppWidgetHost(context, 0)
 
     private fun cancelUpdating(context: Context, appWidgetId: Int, alarmManager: AlarmManager) {
         val updatePendingIntent = updatePendingIndentForWidgetId(context, appWidgetId)
@@ -140,10 +136,10 @@ constructor() {
             updateInterval = RoomListService.Companion.NEVER_UPDATE_PERIOD
         } else if (NetworkState.isConnectedMobile(context)) {
             LOG.debug("getConnectionDependentUpdateInterval - mobile connection")
-            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE, context).toLong()
+            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE).toLong()
         } else {
             LOG.debug("getConnectionDependentUpdateInterval - wlan connection")
-            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN, context).toLong()
+            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN).toLong()
         }
 
         return updateInterval
@@ -167,7 +163,7 @@ constructor() {
         edit.apply()
     }
 
-    private fun getWidgetUpdateIntervalFor(key: String, context: Context): Int {
+    private fun getWidgetUpdateIntervalFor(key: String): Int {
         val value = applicationProperties.getStringSharedPreference(key, "3600")
         val intValue = parseInt(value)
         return intValue * 1000

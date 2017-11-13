@@ -144,7 +144,7 @@ class CommandExecutionService @Inject constructor(
         if (result.error == null) return false
         if (result.error != CONNECTION_TIMEOUT && result.error != HOST_CONNECTION_ERROR)
             return false
-        return currentTry <= getNumberOfRetries(context)
+        return currentTry <= getNumberOfRetries()
 
     }
 
@@ -159,7 +159,7 @@ class CommandExecutionService @Inject constructor(
         context.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
     }
 
-    private fun getNumberOfRetries(context: Context): Int {
+    private fun getNumberOfRetries(): Int {
         return applicationProperties.getIntegerSharedPreference(
                 COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
         )

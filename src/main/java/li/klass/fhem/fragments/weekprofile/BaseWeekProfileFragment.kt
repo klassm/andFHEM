@@ -73,6 +73,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         checkArgument(args.containsKey(HEATING_CONFIGURATION))
 
         deviceName = args.getString(DEVICE_NAME)
+        @Suppress("UNCHECKED_CAST")
         heatingConfiguration = args.getSerializable(HEATING_CONFIGURATION)!! as HeatingConfiguration<INTERVAL, *>
     }
 
@@ -92,13 +93,14 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         getAdapter().registerWeekProfileChangedListener(object : BaseWeekProfileAdapter.WeekProfileChangedListener {
             override fun onWeekProfileChanged(weekProfile: WeekProfile<*, *>) {
                 LOGGER.info("onWeekProfileChanged() - {}", weekProfile.toString())
-                updateChangeButtonsHolderVisibility(weekProfile!! as WeekProfile<INTERVAL, *>)
+                @Suppress("UNCHECKED_CAST")
+                updateChangeButtonsHolderVisibility(weekProfile as WeekProfile<INTERVAL, *>)
             }
         })
 
         change_value_button_holder.save_weekprofile_button.setOnClickListener { onSave() }
         change_value_button_holder.reset_weekprofile_button.setOnClickListener { onReset() }
-        weekprofile.adapter = getAdapter();
+        weekprofile.adapter = getAdapter()
     }
 
     fun onSave() {
@@ -154,13 +156,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     protected open fun beforeCreateView() {}
 
-    override fun mayPullToRefresh(): Boolean {
-        return false
-    }
+    override fun mayPullToRefresh(): Boolean = false
 
-    override fun mayUpdateFromBroadcast(): Boolean {
-        return false
-    }
+    override fun mayUpdateFromBroadcast(): Boolean = false
 
     override fun getTitle(context: Context) = deviceName
 

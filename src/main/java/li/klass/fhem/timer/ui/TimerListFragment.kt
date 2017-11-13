@@ -27,7 +27,6 @@ package li.klass.fhem.timer.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
@@ -83,7 +82,7 @@ class TimerListFragment : BaseFragment() {
 
         val layout = inflater!!.inflate(R.layout.timer_overview, container, false)
         val emptyView = layout.findViewById<TextView>(android.R.id.empty)
-        listView = layout.findViewById<ListView>(R.id.list)
+        listView = layout.findViewById(R.id.list)
 
         listView!!.emptyView = emptyView
         listView!!.adapter = listAdapter
@@ -127,7 +126,7 @@ class TimerListFragment : BaseFragment() {
     }
 
     override fun canChildScrollUp(): Boolean {
-        if (ViewCompat.canScrollVertically(listView, -1)) {
+        if (listView?.canScrollVertically(-1) == true) {
             return true
         }
         return super.canChildScrollUp()

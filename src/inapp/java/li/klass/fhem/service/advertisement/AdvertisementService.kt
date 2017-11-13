@@ -36,7 +36,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.android.gms.common.GoogleApiAvailability
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.PremiumActivity
@@ -80,9 +80,10 @@ constructor() {
             Log.i(TAG, "found premium version, skipping ads")
         }
 
+        val api = GoogleApiAvailability.getInstance();
         if (!showAds) {
             adContainer.visibility = View.GONE
-        } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
+        } else if (api.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
             addErrorView(activity, adContainer)
             Log.e(TAG, "cannot find PlayServices")
         } else {

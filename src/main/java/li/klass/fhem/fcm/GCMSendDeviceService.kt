@@ -42,7 +42,7 @@ class GCMSendDeviceService @Inject
 constructor(val commandExecutionService: CommandExecutionService,
             val applicationProperties: ApplicationProperties) {
 
-    private fun getRegistrationId(context: Context): String? {
+    private fun getRegistrationId(): String? {
         val senderId = applicationProperties.getStringSharedPreference(SettingsKeys.FCM_SENDER_ID)
         if (senderId == null) {
             LOGGER.info("getRegistrationId - no value for senderId found")
@@ -54,7 +54,7 @@ constructor(val commandExecutionService: CommandExecutionService,
 
     fun addSelf(device: GCMSendDevice, context: Context): AddSelfResult {
 
-        val registrationId = getRegistrationId(context)
+        val registrationId = getRegistrationId()
         if (isNullOrEmpty(registrationId)) {
             return AddSelfResult.FCM_NOT_ACTIVE
         }
@@ -75,8 +75,8 @@ constructor(val commandExecutionService: CommandExecutionService,
         device.setRegIds(regIdsAttribute)
     }
 
-    fun isDeviceRegistered(device: GCMSendDevice, context: Context): Boolean {
-        val registrationId = getRegistrationId(context)
+    fun isDeviceRegistered(device: GCMSendDevice): Boolean {
+        val registrationId = getRegistrationId()
 
         return registrationId != null && ArrayUtil.contains(device.regIds, registrationId)
     }

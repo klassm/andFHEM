@@ -31,7 +31,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
-import android.support.v4.view.ViewCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -84,7 +83,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         if (!mayPullToRefresh()) {
             return true
         }
-        return ViewCompat.canScrollVertically(view, -1)
+        return view?.canScrollVertically(-1) ?: false
     }
 
     override fun update(refresh: Boolean) {

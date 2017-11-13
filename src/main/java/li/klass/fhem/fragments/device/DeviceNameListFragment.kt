@@ -28,7 +28,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.ResultReceiver
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -101,7 +100,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
     }
 
     override fun canChildScrollUp(): Boolean {
-        if (ViewCompat.canScrollVertically(view?.devices, -1)) {
+        if (view?.devices?.canScrollVertically(-1) == true) {
             return true
         }
         return super.canChildScrollUp()

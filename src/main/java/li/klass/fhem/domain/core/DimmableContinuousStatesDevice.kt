@@ -42,20 +42,18 @@ abstract class DimmableContinuousStatesDevice<D : FhemDevice> : DimmableDevice<D
     }
 
     override fun getPositionForDimState(dimState: String): Float {
-        var dimState = dimState
-        dimState = dimState.replace(getSetListDimStateAttributeName().toRegex(), "").replace("[\\(\\)% ]".toRegex(), "")
-        if (dimState == getEventMapStateFor("on") || "on" == dimState || onStateName == dimState)
+        var targetState = dimState
+        targetState = targetState.replace(getSetListDimStateAttributeName().toRegex(), "").replace("[\\(\\)% ]".toRegex(), "")
+        if (targetState == getEventMapStateFor("on") || "on" == targetState || onStateName == targetState)
             return dimUpperBound
-        if (dimState == getEventMapStateFor("off") || "off" == dimState || offStateName == dimState)
+        if (targetState == getEventMapStateFor("off") || "off" == targetState || offStateName == targetState)
             return dimLowerBound
-        if (!isDecimalNumber(dimState)) return 0f
+        if (!isDecimalNumber(targetState)) return 0f
 
-        return extractLeadingFloat(dimState)
+        return extractLeadingFloat(targetState)
     }
 
-    override fun supportsDim(): Boolean {
-        return stateSliderValue != null
-    }
+    override fun supportsDim(): Boolean = stateSliderValue != null
 
     protected val stateSliderValue: SliderSetListEntry?
         get() {
@@ -93,7 +91,5 @@ abstract class DimmableContinuousStatesDevice<D : FhemDevice> : DimmableDevice<D
         return functionalityForDimmable(this)
     }
 
-    fun supportsOnOffDimMapping(): Boolean {
-        return true
-    }
+    private fun supportsOnOffDimMapping(): Boolean = true
 }

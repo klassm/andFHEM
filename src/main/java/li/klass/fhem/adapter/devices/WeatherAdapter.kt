@@ -98,23 +98,20 @@ class WeatherAdapter : ExplicitOverviewDetailDeviceAdapter() {
                 context, R.layout.weather_forecast_item, (device as WeatherDevice).forecasts
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                var convertView = convertView
+                val myView = convertView ?: inflater.inflate(resource, null)
                 val item = data[position]
-                if (convertView == null) {
-                    convertView = inflater.inflate(resource, null)
-                }
 
                 val date = item.dayOfWeek + ", " + item.date
-                setTextViewOrHideTableRow(convertView, R.id.tableRowDate, R.id.date, date)
+                setTextViewOrHideTableRow(myView, R.id.tableRowDate, R.id.date, date)
 
                 val temperature = item.lowTemperature + " - " + item.highTemperature
-                setTextViewOrHideTableRow(convertView, R.id.tableRowTemperature, R.id.temperature, temperature)
+                setTextViewOrHideTableRow(myView, R.id.tableRowTemperature, R.id.temperature, temperature)
 
-                setTextViewOrHideTableRow(convertView, R.id.tableRowCondition, R.id.condition, item.condition)
+                setTextViewOrHideTableRow(myView, R.id.tableRowCondition, R.id.condition, item.condition)
 
-                setWeatherIconIn(convertView!!.findViewById<View>(R.id.forecastWeatherImage) as ImageView, item.icon)
+                setWeatherIconIn(myView!!.findViewById<View>(R.id.forecastWeatherImage) as ImageView, item.icon)
 
-                return convertView
+                return myView
             }
 
             override fun areAllItemsEnabled(): Boolean = false

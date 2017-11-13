@@ -18,7 +18,7 @@ class LoginUIService @Inject constructor(
         val dateTimeProvider: DateTimeProvider
 ) {
     fun doLoginIfRequired(context: Context, loginStrategy: LoginStrategy) {
-        val requiredPassword = readPassword(context)
+        val requiredPassword = readPassword()
         val lastLogin = readLastLogin(context)
         val now = dateTimeProvider.now()
         val isStillLoggedIn = Minutes.minutesBetween(lastLogin, now).isLessThan(loginTime)
@@ -48,7 +48,7 @@ class LoginUIService @Inject constructor(
 
     private fun readLastLogin(context: Context) = DateTime(sharedPreferencesService.getPreferences(sharedPreferenceName, context).getLong(lastLogin, 0), DateTimeZone.UTC)
 
-    private fun readPassword(context: Context): String? =
+    private fun readPassword(): String? =
             StringUtils.trimToNull(applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null))
 
     companion object {

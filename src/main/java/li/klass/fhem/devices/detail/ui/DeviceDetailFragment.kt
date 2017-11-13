@@ -123,7 +123,7 @@ class DeviceDetailFragment : BaseFragment() {
                 this@DeviceDetailFragment.device = device.get()
                 val adapter = DeviceType.getAdapterFor<FhemDevice>(device.get())
                 if (adapter != null) {
-                    activity.supportInvalidateOptionsMenu()
+                    activity.invalidateOptionsMenu()
                     val scrollView = findScrollView()
                     if (scrollView != null) {
                         scrollView.removeAllViews()
@@ -151,8 +151,7 @@ class DeviceDetailFragment : BaseFragment() {
         }
     }
 
-    private fun findScrollView(): ScrollView? =
-            view!!.findViewById<ScrollView>(R.id.deviceDetailView)
+    private fun findScrollView(): ScrollView? = view!!.findViewById(R.id.deviceDetailView)
 
     override fun getTitle(context: Context): CharSequence? {
         var name = arguments.getString(DEVICE_DISPLAY_NAME)

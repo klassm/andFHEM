@@ -39,8 +39,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentManager
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.RepairedDrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
@@ -53,6 +53,7 @@ import android.widget.FrameLayout
 import android.widget.Spinner
 import android.widget.Toast
 import com.google.common.base.Optional
+import kotlinx.android.synthetic.main.main_view.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
@@ -87,6 +88,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     inner class Receiver : BroadcastReceiver() {
 
         val intentFilter = IntentFilter()
+
         init {
             intentFilter.addAction(SHOW_FRAGMENT)
             intentFilter.addAction(DO_UPDATE)
@@ -115,7 +117,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                                 val fragmentName = bundle.getString(FRAGMENT_NAME)
                                 fragmentType = getFragmentFor(fragmentName)
                             }
-                            drawerLayout!!.closeDrawer(GravityCompat.START)
+                            drawer_layout.closeDrawer(GravityCompat.START)
                             switchToFragment(fragmentType, intent.extras)
                         } else if (action == DO_UPDATE) {
                             updateShowRefreshProgressIcon()
@@ -124,10 +126,10 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                             refreshNavigation()
                         } else if (action == SHOW_EXECUTING_DIALOG) {
                             updateShowRefreshProgressIcon()
-                            refreshLayout!!.isRefreshing = true
+                            refresh_layout?.isRefreshing = true
                         } else if (action == DISMISS_EXECUTING_DIALOG) {
                             updateShowRefreshProgressIcon()
-                            refreshLayout!!.isRefreshing = false
+                            refresh_layout?.isRefreshing = false
                         } else if (action == SHOW_TOAST) {
                             var content: String? = intent.getStringExtra(BundleExtraKeys.CONTENT)
                             if (content == null) {
@@ -172,10 +174,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     protected var optionsMenu: Menu? = null
 
     private var timer: Timer? = null
-    private var drawerLayout: RepairedDrawerLayout? = null
-    private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
-    private var refreshLayout: SwipeRefreshLayout? = null
-    private var navigationView: NavigationView? = null
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     private var saveInstanceStateCalled: Boolean = false
     private var mSelectedDrawerId = -1
@@ -255,7 +254,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         super.onRestoreInstanceState(savedInstanceState)
         mSelectedDrawerId = savedInstanceState.getInt(STATE_DRAWER_ID, -1)
         if (mSelectedDrawerId > 0) {
-            navigationView!!.menu.findItem(mSelectedDrawerId).isChecked = true
+            nav_drawer.menu.findItem(mSelectedDrawerId).isChecked = true
         }
     }
 
@@ -269,7 +268,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        drawerLayout!!.closeDrawer(GravityCompat.START)
+        drawer_layout.closeDrawer(GravityCompat.START)
 
         when (menuItem.itemId) {
             R.id.menu_settings -> {
@@ -312,56 +311,55 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun showDrawerToggle(enable: Boolean) {
-        actionBarDrawerToggle!!.isDrawerIndicatorEnabled = enable
+        actionBarDrawerToggle.isDrawerIndicatorEnabled = enable
     }
 
     private fun initDrawerLayout() {
-        drawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout!!.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
+        drawer_layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
 
-        navigationView = findViewById(R.id.nav_drawer)
-        navigationView!!.setNavigationItemSelectedListener(this)
+        nav_drawer.setNavigationItemSelectedListener(this)
         if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
-            navigationView!!.menu.removeItem(R.id.menu_premium)
+            nav_drawer.menu.removeItem(R.id.menu_premium)
         }
 
         licenseService.isPremium({ isPremium ->
             if (!isPremium) {
-                navigationView!!.menu.removeItem(R.id.fcm_history)
+                nav_drawer.menu.removeItem(R.id.fcm_history)
             }
         }, this)
 
-        initConnectionSpinner(navigationView!!.getHeaderView(0).findViewById(R.id.connection_spinner),
+        initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
                 Runnable {
-                    if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-                        drawerLayout!!.closeDrawer(GravityCompat.START)
+                    if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                        drawer_layout.closeDrawer(GravityCompat.START)
                     }
                 })
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
 
-        actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawerLayout,
+        actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawer_layout,
                 R.string.drawerOpen, R.string.drawerClose) {
             override fun onDrawerClosed(view: View?) {
-                supportInvalidateOptionsMenu()
+                invalidateOptionsMenu()
             }
 
             override fun onDrawerOpened(drawerView: View?) {
-                supportInvalidateOptionsMenu()
+                invalidateOptionsMenu()
             }
         }
-        drawerLayout!!.setDrawerListener(actionBarDrawerToggle)
+        drawer_layout.addDrawerListener(actionBarDrawerToggle)
     }
 
     private fun initSwipeRefreshLayout() {
-        refreshLayout = findViewById(R.id.refresh_layout)
-        assert(refreshLayout != null)
-        refreshLayout!!.setOnRefreshListener(this)
-        refreshLayout!!.setChildScrollDelegate(this)
-        refreshLayout!!.setColorSchemeColors(
-                resources.getColor(R.color.primary), 0,
-                resources.getColor(R.color.accent), 0)
+        val activity = this
+        refresh_layout?.apply {
+            setOnRefreshListener(activity)
+            setChildScrollDelegate(activity)
+            setColorSchemeColors(
+                    ContextCompat.getColor(activity, R.color.primary), 0,
+                    ContextCompat.getColor(activity, R.color.accent), 0)
+        }
     }
 
     override fun canChildScrollUp(): Boolean {
@@ -371,12 +369,12 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        if (actionBarDrawerToggle != null) actionBarDrawerToggle!!.syncState()
+        actionBarDrawerToggle.syncState()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        actionBarDrawerToggle!!.onConfigurationChanged(newConfig)
+        actionBarDrawerToggle.onConfigurationChanged(newConfig)
         updateNavigationVisibility()
         contentFragment!!.invalidate()
         if (navigationFragment != null) {
@@ -385,7 +383,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     override fun onRefresh() {
-        refreshLayout!!.isRefreshing = true
+        refresh_layout?.isRefreshing = true
         val refreshIntent = Intent(DO_UPDATE)
         refreshIntent.putExtra(DO_REFRESH, true)
         sendBroadcast(refreshIntent)
@@ -451,13 +449,14 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         Log.i(TAG, "onResume() : resuming")
 
         loginUiService.doLoginIfRequired(this, object : LoginUIService.LoginStrategy {
+            @SuppressLint("InflateParams")
             override fun requireLogin(context: Context, checkLogin: Function1<String, Unit>) {
-                val view = layoutInflater.inflate(R.layout.login, null)
+                val loginView = layoutInflater.inflate(R.layout.login, null)
                 AlertDialog.Builder(context)
-                        .setView(view)
+                        .setView(loginView)
                         .setTitle(R.string.login)
                         .setOnCancelListener { finish() }
-                        .setPositiveButton(R.string.okButton, { _, _ -> checkLogin.invoke((view.findViewById<EditText>(R.id.password)).text.toString()) })
+                        .setPositiveButton(R.string.okButton, { _, _ -> checkLogin.invoke((loginView.findViewById<EditText>(R.id.password)).text.toString()) })
                         .show()
             }
 
@@ -571,7 +570,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             Log.i(TAG, "onStop() : receiver was not registered, ignore ...")
         }
 
-        refreshLayout!!.isRefreshing = false
+        refresh_layout?.isRefreshing = false
         updateShowRefreshProgressIcon()
     }
 
@@ -582,8 +581,8 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     override fun onBackPressed() {
-        if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
             val contentFragment = contentFragment
@@ -612,26 +611,26 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun switchToFragment(fragmentType: FragmentType?, data: Bundle?) {
-        var data = data
+        var myData = data
         if (!saveInstanceStateCalled) {
-            if (data == null) data = Bundle()
+            if (myData == null) myData = Bundle()
 
-            Log.i(TAG, "switch to " + fragmentType!!.name + " with " + data.toString())
+            Log.i(TAG, "switch to " + fragmentType!!.name + " with " + myData.toString())
             if (fragmentType.isTopLevelFragment) {
                 clearBackStack()
             }
 
             val drawerId = fragmentType.drawerMenuId
             if (drawerId > 0) {
-                val item = navigationView!!.menu.findItem(drawerId)
+                val item = nav_drawer.menu.findItem(drawerId)
                 if (item != null) {
                     item.isChecked = true
                     mSelectedDrawerId = drawerId
                 }
             }
 
-            val contentFragment = createContentFragment(fragmentType, data)
-            val navigationFragment = createNavigationFragment(fragmentType, data)
+            val contentFragment = createContentFragment(fragmentType, myData)
+            val navigationFragment = createNavigationFragment(fragmentType, myData)
 
             setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment)
         }
@@ -648,13 +647,13 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             title = fm.getBackStackEntryAt(backstackCount - 1).breadCrumbTitle
         }
         if (title == null && mSelectedDrawerId > 0) {
-            title = navigationView!!.menu.findItem(mSelectedDrawerId).title
+            title = nav_drawer.menu.findItem(mSelectedDrawerId).title
         }
         if (title == null) {
             title = getTitle()
         }
 
-        actionBar.setTitle(title)
+        actionBar.title = title
     }
 
     private fun createContentFragment(fragmentType: FragmentType?, data: Bundle): BaseFragment? {
@@ -737,13 +736,13 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun clearBackStack() {
         val entryCount = supportFragmentManager.backStackEntryCount
-        for (i in 0..entryCount - 1) {
+        for (i in 0 until entryCount) {
             supportFragmentManager.popBackStack()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (actionBarDrawerToggle!!.onOptionsItemSelected(item)) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true
         }
 
@@ -769,7 +768,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         val refreshItem = menu.findItem(R.id.menu_refresh)
 
-        if (refreshLayout!!.isRefreshing) {
+        if (refresh_layout?.isRefreshing == true) {
             refreshItem.setActionView(R.layout.actionbar_indeterminate_progress)
         } else {
             refreshItem.actionView = null
@@ -777,7 +776,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.menu_search)?.actionView as SearchView?
-        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName));
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         this.optionsMenu = menu
 
@@ -788,7 +787,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         private val LOGGER = LoggerFactory.getLogger(AndFHEMMainActivity::class.java)
 
-        val TAG = AndFHEMMainActivity::class.java.name
+        val TAG = AndFHEMMainActivity::class.java.name!!
         val NAVIGATION_TAG = "NAVIGATION_TAG"
         val CONTENT_TAG = "CONTENT_TAG"
         private val STATE_DRAWER_ID = "drawer_id"

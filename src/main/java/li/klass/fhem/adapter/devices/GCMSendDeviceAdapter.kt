@@ -68,7 +68,7 @@ class GCMSendDeviceAdapter : ExplicitOverviewDetailDeviceAdapterWithSwitchAction
             }
 
             override fun isVisible(device: FhemDevice, context: Context): Boolean {
-                val registered = gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice, context)
+                val registered = gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice)
                 return !registered
             }
         })
@@ -83,7 +83,7 @@ class GCMSendDeviceAdapter : ExplicitOverviewDetailDeviceAdapterWithSwitchAction
     }
 
     override fun getGeneralDetailsNotificationText(context: Context, device: FhemDevice): String? {
-        val registered = gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice, context)
+        val registered = gcmSendDeviceService.isDeviceRegistered(device as GCMSendDevice)
         return if (registered) {
             context.getString(R.string.gcmAlreadyRegistered)
         } else null

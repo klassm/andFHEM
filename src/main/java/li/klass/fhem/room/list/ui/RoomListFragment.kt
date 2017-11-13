@@ -27,7 +27,6 @@ package li.klass.fhem.room.list.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +63,7 @@ open class RoomListFragment : BaseFragment() {
     lateinit var roomListService: ViewableRoomListService
 
     private var roomName: String? = null
-    protected var emptyTextId = R.string.noRooms
+    private var emptyTextId = R.string.noRooms
         private set
     private var roomSelectableCallback: RoomSelectableCallback? = null
     private var roomClickedCallback: RoomClickedCallback? = null
@@ -95,11 +94,11 @@ open class RoomListFragment : BaseFragment() {
         val emptyView = layout!!.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, emptyTextId, container!!)
 
-        roomList = layout.findViewById<ListView>(R.id.roomList)
+        roomList = layout.findViewById(R.id.roomList)
         Reject.ifNull<ListView>(roomList)
         roomList!!.adapter = adapter
 
-        roomList!!.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        roomList!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val roomName = view.tag.toString()
             onClick(roomName)
         }
@@ -108,7 +107,7 @@ open class RoomListFragment : BaseFragment() {
     }
 
     override fun canChildScrollUp(): Boolean {
-        if (ViewCompat.canScrollVertically(roomList, -1)) {
+        if (roomList?.canScrollVertically(-1) == true) {
             return true
         }
         return super.canChildScrollUp()
@@ -146,7 +145,7 @@ open class RoomListFragment : BaseFragment() {
 
     override fun getTitle(context: Context): CharSequence? = context.getString(R.string.roomList)
 
-    protected fun isRoomSelectable(roomName: String): Boolean =
+    private fun isRoomSelectable(roomName: String): Boolean =
             roomSelectableCallback == null || roomSelectableCallback!!.isRoomSelectable(roomName)
 
     private val adapter: RoomListAdapter?

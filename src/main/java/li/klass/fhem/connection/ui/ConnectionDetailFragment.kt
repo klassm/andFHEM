@@ -186,10 +186,9 @@ class ConnectionDetailFragment : BaseFragment() {
             if (isModify) showCertificatePasswordCheckbox.isEnabled = false
         }
 
-        val connectionPreferences = checkNotNull<View>(getView()).findViewById<ViewGroup>(R.id.connectionPreferences)
-        checkNotNull(connectionPreferences)
-        connectionPreferences.removeAllViews()
-        connectionPreferences.addView(view)
+        val connectionPreferences = getView()?.findViewById<ViewGroup>(R.id.connectionPreferences)
+        connectionPreferences?.removeAllViews()
+        connectionPreferences?.addView(view)
 
         if (detailChangedListener != null) detailChangedListener!!.onChanged()
     }

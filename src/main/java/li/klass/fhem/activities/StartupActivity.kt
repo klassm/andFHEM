@@ -184,7 +184,6 @@ class StartupActivity : Activity() {
 
     private fun deleteOldFcmMessages() {
         setCurrentStatus(R.string.currentStatus_deleteFcmHistory)
-        val activityAsContext: Context = this
         val retentionDays = Integer.parseInt(applicationProperties.getStringSharedPreference(SettingsKeys.FCM_KEEP_MESSAGES_DAYS, "-1"))
 
         async(UI) {

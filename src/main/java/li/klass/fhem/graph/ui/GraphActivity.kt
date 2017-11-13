@@ -22,6 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
+@file:Suppress("DEPRECATION")
+
 package li.klass.fhem.graph.ui
 
 import android.app.Activity
@@ -148,12 +150,11 @@ class GraphActivity : AppCompatActivity(), Updateable {
         handleDiscreteValues(graphData)
         val lineData = createLineDataFor(graphData)
 
-        val title: String
-        if (DisplayUtil.getWidthInDP(applicationContext) < 500) {
-            title = device.aliasOrName + "\n\r" +
+        val title: String = if (DisplayUtil.getWidthInDP(applicationContext) < 500) {
+            device.aliasOrName + "\n\r" +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate)
         } else {
-            title = device.aliasOrName + " " +
+            device.aliasOrName + " " +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate)
         }
         supportActionBar!!.title = title
@@ -165,7 +166,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         setRangeFor(plotDefinition.leftAxis.range, lineChart.axisLeft)
         setRangeFor(plotDefinition.rightAxis.range, lineChart.axisRight)
         val xAxis = lineChart.xAxis
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis -> ANDFHEM_DATE_TIME_FORMAT.print(value.toLong()) }
+        xAxis.valueFormatter = IAxisValueFormatter { value, _ -> ANDFHEM_DATE_TIME_FORMAT.print(value.toLong()) }
         xAxis.labelRotationAngle = 300f
         val labelCount = DisplayUtil.getWidthInDP(applicationContext) / 150
         xAxis.setLabelCount(if (labelCount < 2) 2 else labelCount, true)
@@ -235,25 +236,29 @@ class GraphActivity : AppCompatActivity(), Updateable {
         val series = entry.key
         val yEntries = entry.value.map { Entry(it.date.millis.toFloat(), it.value) }.toList()
 
-        val lineDataSet = LineDataSet(yEntries, series.getTitle())
-        lineDataSet.axisDependency = if (series.getAxis() == GPlotSeries.Axis.LEFT)
+        val lineDataSet = LineDataSet(yEntries, series.title)
+        lineDataSet.axisDependency = if (series.axis == GPlotSeries.Axis.LEFT)
             YAxis.AxisDependency.LEFT
         else
             YAxis.AxisDependency.RIGHT
-        lineDataSet.color = series.getColor().getHexColor()
-        lineDataSet.setCircleColor(series.getColor().getHexColor())
-        lineDataSet.fillColor = series.getColor().getHexColor()
+        lineDataSet.color = series.color.hexColor
+        lineDataSet.setCircleColor(series.color.hexColor)
+        lineDataSet.fillColor = series.color.hexColor
         lineDataSet.setDrawCircles(false)
         lineDataSet.setDrawValues(false)
-        lineDataSet.lineWidth = series.getLineWidth()
+        lineDataSet.lineWidth = series.lineWidth
 
         when (series.seriesType) {
             GPlotSeries.SeriesType.FILL -> lineDataSet.setDrawFilled(true)
             GPlotSeries.SeriesType.DOT -> lineDataSet.enableDashedLine(3f, 2f, 1f)
+            else -> {
+            }
         }
 
         when (series.lineType) {
             GPlotSeries.LineType.POINTS -> lineDataSet.enableDashedLine(3f, 2f, 1f)
+            else -> {
+            }
         }
 
         if (isDiscreteSeries(series)) {
@@ -302,6 +307,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         outState.putSerializable(END_DATE, endDate)
     }
 
+    @Suppress("OverridingDeprecatedMember")
     override fun onCreateDialog(id: Int): Dialog? {
         super.onCreateDialog(id)
 

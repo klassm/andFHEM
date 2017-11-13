@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.weekprofile
 
 import android.content.Context
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -155,8 +156,15 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
                     val timePicker = contentView.findViewById<TimePicker>(R.id.timePicker)
                     timePicker.setIs24HourView(true)
 
-                    timePicker.currentHour = hours
-                    timePicker.currentMinute = minutes
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        timePicker.hour = hours
+                        timePicker.minute = minutes
+                    } else {
+                        @Suppress("DEPRECATION")
+                        timePicker.currentHour = hours
+                        @Suppress("DEPRECATION")
+                        timePicker.currentMinute = minutes
+                    }
 
                     timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
                         this@IntervalEditHolder.hours = hourOfDay
