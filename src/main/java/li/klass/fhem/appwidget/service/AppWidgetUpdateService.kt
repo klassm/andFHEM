@@ -30,6 +30,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.widget.Toast
+import com.google.common.base.Optional
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
@@ -41,7 +42,9 @@ import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.settings.SettingsKeys.ALLOW_REMOTE_UPDATE
 import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.RoomListUpdateService
 import li.klass.fhem.util.ApplicationProperties
+import li.klass.fhem.util.DateFormatUtil
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -56,7 +59,7 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
     lateinit var applicationProperties: ApplicationProperties
 
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var roomListUpdateService: RoomListUpdateService
 
     override fun onCreate() {
         super.onCreate()
@@ -109,20 +112,40 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
 
         appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, viewCreateUpdateInterval)
 
-        LOG.info("updateWidget - request widget update for widget-id {}, interval is {}, update interval is {}ms, connectionId={}", appWidgetId, viewCreateUpdateInterval, updateInterval, configuration.connectionId.orNull())
+        val connectionId = configuration.connectionId
+        LOG.info("updateWidget - request widget update for widget-id {}, interval is {}, update interval is {}ms, connectionId={}", appWidgetId, viewCreateUpdateInterval, updateInterval, connectionId.orNull())
 
         val serviceAsContext: Context = intentService
         async(UI) {
             bg {
                 if (configuration.widgetType.widgetView is DeviceAppWidgetView) {
                     val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                    roomListService.updateRoomDeviceListIfRequired(viewCreateUpdateInterval, serviceAsContext, connectionId = configuration.connectionId.orNull(), deviceName = deviceName)
+                    roomListUpdateService.updateSingleDevice(deviceName, connectionId, serviceAsContext, updateWidgets = false)
+                } else if (shouldUpdate(updateInterval, connectionId)) {
+                    roomListUpdateService.updateAllDevices(connectionId, serviceAsContext, updateWidgets = false)
                 } else {
-                    roomListService.updateRoomDeviceListIfRequired(viewCreateUpdateInterval, serviceAsContext, connectionId = configuration.connectionId.orNull())
                 }
             }.await()
             updateWidgetAfterDeviceListReload(appWidgetId)
         }
+    }
+
+    private fun shouldUpdate(updatePeriod: Long, connectionId: Optional<String>): Boolean {
+        if (updatePeriod == RoomListService.ALWAYS_UPDATE_PERIOD) {
+            LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
+            return true
+        }
+        if (updatePeriod == RoomListService.NEVER_UPDATE_PERIOD) {
+            LOG.debug("shouldUpdate() : recommend no update, as updatePeriod is set to NEVER_UPDATE")
+            return false
+        }
+
+        val lastUpdate = roomListUpdateService.getLastUpdate(connectionId, this)
+        val shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis()
+
+        LOG.debug("shouldUpdate() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", if (!shouldUpdate) "no " else "to", DateFormatUtil.toReadable(lastUpdate), updatePeriod / 1000 / 60)
+
+        return shouldUpdate
     }
 
     private fun updateWidgetAfterDeviceListReload(appWidgetId: Int) {
@@ -148,7 +171,6 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
     }
 
     companion object {
-
-        val LOG = LoggerFactory.getLogger(AppWidgetUpdateService::class.java)
+        private val LOG = LoggerFactory.getLogger(AppWidgetUpdateService::class.java)!!
     }
 }

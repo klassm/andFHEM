@@ -44,7 +44,6 @@ import li.klass.fhem.service.intent.NotificationIntentService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.xmllist.DeviceListParser
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.DateFormatUtil.toReadable
 import org.slf4j.LoggerFactory
 import java.io.Serializable
 import java.util.*
@@ -150,45 +149,6 @@ constructor() : AbstractService() {
         sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context)
     }
 
-    fun updateRoomDeviceListIfRequired(updatePeriod: Long, context: Context, connectionId: String? = null, room: String? = null, deviceName: String? = null) {
-        val connectionExists = connectionService.exists(connectionId, context)
-        val requiresUpdate = connectionExists && shouldUpdate(updatePeriod, Optional.fromNullable(connectionId), context, deviceName != null)
-        if (requiresUpdate) {
-            LOG.info("updateRoomDeviceListIfRequired() - requiring update")
-            if (room != null) {
-                roomListUpdateService.updateRoom(room, Optional.fromNullable(connectionId), context, updateWidgets = false)
-            } else if (deviceName != null) {
-                roomListUpdateService.updateSingleDevice(deviceName, Optional.fromNullable(connectionId), context, updateWidgets = false)
-            } else {
-                roomListUpdateService.updateAllDevices(Optional.fromNullable(connectionId), context, updateWidgets = false)
-            }
-        }
-    }
-
-    private fun shouldUpdate(updatePeriod: Long, connectionId: Optional<String>, context: Context, hasDevice: Boolean): Boolean {
-        if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
-            LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
-            return true
-        }
-        if (updatePeriod == NEVER_UPDATE_PERIOD) {
-            LOG.debug("shouldUpdate() : recommend no update, as updatePeriod is set to NEVER_UPDATE")
-            return false
-        } else if (hasDevice) {
-            LOG.debug("shouldUpdate() : has explicit device => update always")
-            return true
-        }
-
-        val lastUpdate = getLastUpdate(connectionId, context)
-        val shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis()
-
-        LOG.debug("shouldUpdate() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", if (!shouldUpdate) "no " else "to", toReadable(lastUpdate), updatePeriod / 1000 / 60)
-
-        return shouldUpdate
-    }
-
-    fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
-            roomListHolderService.getLastUpdate(connectionId, context)
-
     fun getAvailableDeviceNames(connectionId: Optional<String>, context: Context): ArrayList<String> {
         val deviceNames = newArrayList<String>()
         val allRoomsDeviceList = getAllRoomsDeviceList(connectionId, context)
@@ -270,9 +230,7 @@ constructor() : AbstractService() {
 
         val PREFERENCES_NAME = RoomListService::class.java.name
 
-        val LAST_UPDATE_PROPERTY = "LAST_UPDATE"
         val NEVER_UPDATE_PERIOD: Long = 0
-
         val ALWAYS_UPDATE_PERIOD: Long = -1
     }
 }

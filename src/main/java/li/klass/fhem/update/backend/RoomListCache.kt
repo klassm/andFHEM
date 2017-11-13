@@ -42,7 +42,7 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
     @Volatile private var cachedRoomList: RoomDeviceList? = null
     @Volatile private var fileStoreNotFilled = false
     @Volatile private var excptionDuringLoad = false
-    private val lastUpdateProperty = RoomListService.LAST_UPDATE_PROPERTY + "_" + this.connectionId
+    private val lastUpdateProperty = LAST_UPDATE_PROPERTY + "_" + this.connectionId
 
     @Synchronized fun storeDeviceListMap(roomDeviceList: RoomDeviceList?, context: Context): Boolean {
         if (roomDeviceList == null) {
@@ -131,5 +131,6 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RoomListCache::class.java)
+        val LAST_UPDATE_PROPERTY = "LAST_UPDATE"
     }
 }

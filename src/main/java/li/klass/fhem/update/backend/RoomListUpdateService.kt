@@ -55,6 +55,10 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
         })
     }
 
+    fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
+            roomListHolderService.getLastUpdate(connectionId, context)
+
+
     private fun update(context: Context, connectionId: Optional<String>, result: Optional<RoomDeviceList>): Boolean {
         var success = false
         if (result.isPresent) {

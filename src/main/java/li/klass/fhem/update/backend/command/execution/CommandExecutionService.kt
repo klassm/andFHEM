@@ -123,7 +123,7 @@ class CommandExecutionService @Inject constructor(
         try {
             if (result.error == null) {
                 sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE, context)
-            } else if (shouldTryResend(command.command, result, currentTry, context)) {
+            } else if (shouldTryResend(command.command, result, currentTry)) {
                 val timeoutForNextTry = secondsForTry(currentTry)
 
                 val resendCommand = ResendCommand(command, currentTry + 1, context, resultListener)
@@ -140,7 +140,7 @@ class CommandExecutionService @Inject constructor(
         return getScheduledExecutorService().schedule(resendCommand, timeoutForNextTry.toLong(), SECONDS)
     }
 
-    private fun shouldTryResend(command: String, result: RequestResult<*>, currentTry: Int, context: Context): Boolean {
+    private fun shouldTryResend(command: String, result: RequestResult<*>, currentTry: Int): Boolean {
         if (!command.startsWith("set") && !command.startsWith("attr")) return false
         if (result.error == null) return false
         if (result.error != CONNECTION_TIMEOUT && result.error != HOST_CONNECTION_ERROR)
@@ -187,10 +187,10 @@ class CommandExecutionService @Inject constructor(
         }
     }
 
-    fun executeRequest(relativPath: String, context: Context): Optional<String> {
+    fun executeRequest(relativePath: String, context: Context): Optional<String> {
         val provider = dataConnectionSwitch.getProviderFor(context) as? FHEMWEBConnection ?: return Optional.absent()
 
-        val result = provider.executeRequest(relativPath, context)
+        val result = provider.executeRequest(relativePath, context)
         if (result.handleErrors(context)) {
             return Optional.absent()
         }
