@@ -11,7 +11,7 @@ interface FcmHistoryChangeDao {
     @Insert(onConflict = OnConflictStrategy.FAIL)
     fun insertChange(change: FcmHistoryChangeEntity): Long
 
-    @Query("SELECT * FROM ${FcmHistoryChangeEntity.tableName} WHERE ${FcmHistoryEntity.columnDate} = :date")
+    @Query("SELECT * FROM ${FcmHistoryChangeEntity.tableName} WHERE ${FcmHistoryEntity.columnDate} = :date ORDER BY ${FcmHistoryEntity.columnDatetime} DESC")
     fun getChangesAt(date: String): List<FcmHistoryChangeEntity>
 
     @Query("SELECT * FROM ${FcmHistoryChangeEntity.tableName} WHERE ${FcmHistoryEntity.columnDatetime} <= :date")

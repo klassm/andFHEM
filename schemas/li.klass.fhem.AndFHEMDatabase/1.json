@@ -1,0 +1,107 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "32638622fc192c631c30b0a34157298d",
+    "entities": [
+      {
+        "tableName": "fcm_history_messages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TITLE` TEXT, `TEXT` TEXT, `TICKER` TEXT, `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `DATETIME` TEXT, `DATE` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "TITLE",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "TEXT",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ticker",
+            "columnName": "TICKER",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "ID",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "datetime",
+            "columnName": "DATETIME",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "DATE",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "fcm_history_changes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`DEVICE` TEXT, `CHANGES` TEXT, `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `DATETIME` TEXT, `DATE` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "device",
+            "columnName": "DEVICE",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "changes",
+            "columnName": "CHANGES",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "ID",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "datetime",
+            "columnName": "DATETIME",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "DATE",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"32638622fc192c631c30b0a34157298d\")"
+    ]
+  }
+}

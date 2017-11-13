@@ -11,7 +11,7 @@ interface FcmHistoryMessageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMessage(message: FcmHistoryMessageEntity): Long
 
-    @Query("SELECT * FROM ${FcmHistoryMessageEntity.tableName} WHERE ${FcmHistoryEntity.columnDate} = :date")
+    @Query("SELECT * FROM ${FcmHistoryMessageEntity.tableName} WHERE ${FcmHistoryEntity.columnDate} = :date  ORDER BY ${FcmHistoryEntity.columnDatetime} DESC")
     fun getMessagesAt(date: String): List<FcmHistoryMessageEntity>
 
     @Query("SELECT * FROM ${FcmHistoryMessageEntity.tableName} WHERE ${FcmHistoryEntity.columnDatetime} <= :date")
