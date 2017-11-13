@@ -24,13 +24,12 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import android.content.Context
+import android.app.Application
 import com.google.common.base.Optional
 import com.google.common.base.Predicate
 import com.google.common.base.Supplier
 import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.connection.backend.ConnectionService
-import li.klass.fhem.dagger.ForApplication
 import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
@@ -46,9 +45,10 @@ class FhemWebDeviceInRoomDeviceListSupplier
         private val applicationProperties: ApplicationProperties,
         private val connectionService: ConnectionService,
         private val roomListService: RoomListService,
-        @ForApplication private val context: Context) : Supplier<FHEMWEBDevice?> {
+        private val application: Application) : Supplier<FHEMWEBDevice?> {
 
     override fun get(): FHEMWEBDevice? {
+        val context = application.applicationContext
         val deviceList = roomListService.getAllRoomsDeviceList(Optional.of(connectionService.getSelectedId(context)), context)
         val fhemWebDevices = deviceList.getDevicesOfType<FhemDevice>(DeviceType.FHEMWEB)
         return getIn(fhemWebDevices)
@@ -59,10 +59,10 @@ class FhemWebDeviceInRoomDeviceListSupplier
         if (devices.size == 1) return devices[0] as FHEMWEBDevice
 
         val qualifierFromPreferences: String? =
-                stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null, context))
+                stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null))
 
         if (qualifierFromPreferences == null) {
-            val port = connectionService.getPortOfSelectedConnection(context)
+            val port = connectionService.getPortOfSelectedConnection(application.applicationContext)
             val match = from(devices).filter(predicateFHEMWEBDeviceForPort(port)).first()
             if (match.isPresent) {
                 return match.get() as FHEMWEBDevice

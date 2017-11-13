@@ -60,7 +60,7 @@ public abstract class FHEMConnection {
 
     protected int getConnectionTimeoutMilliSeconds(Context context) {
         return 1000 * applicationProperties.getIntegerSharedPreference(
-                SettingsKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS,
-                context);
+                SettingsKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
+        );
     }
 }

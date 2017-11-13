@@ -53,8 +53,8 @@ import li.klass.fhem.connection.backend.ConnectionService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.ui.FragmentType;
 import li.klass.fhem.update.backend.RoomListService;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
 import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;

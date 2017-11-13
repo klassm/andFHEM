@@ -168,7 +168,7 @@ constructor() {
     }
 
     private fun getWidgetUpdateIntervalFor(key: String, context: Context): Int {
-        val value = applicationProperties.getStringSharedPreference(key, "3600", context)
+        val value = applicationProperties.getStringSharedPreference(key, "3600")
         val intValue = parseInt(value)
         return intValue * 1000
     }

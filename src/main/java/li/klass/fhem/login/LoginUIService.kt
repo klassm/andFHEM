@@ -49,7 +49,7 @@ class LoginUIService @Inject constructor(
     private fun readLastLogin(context: Context) = DateTime(sharedPreferencesService.getPreferences(sharedPreferenceName, context).getLong(lastLogin, 0), DateTimeZone.UTC)
 
     private fun readPassword(context: Context): String? =
-            StringUtils.trimToNull(applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null, context))
+            StringUtils.trimToNull(applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null))
 
     companion object {
         val sharedPreferenceName = "login"

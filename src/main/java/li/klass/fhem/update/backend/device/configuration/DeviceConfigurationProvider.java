@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend.deviceConfiguration;
+package li.klass.fhem.update.backend.device.configuration;
 
 import android.support.annotation.NonNull;
 
@@ -84,10 +84,6 @@ public class DeviceConfigurationProvider {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public Optional<JSONObject> plainConfigurationFor(XmlListDevice device) {
-        return plainConfigurationFor(device.getType());
     }
 
     public Optional<JSONObject> plainConfigurationFor(String type) {
@@ -240,10 +236,5 @@ public class DeviceConfigurationProvider {
         }
 
         return markersResult;
-    }
-
-    public boolean isSensorDevice(XmlListDevice xmlListDevice) {
-        Optional<JSONObject> configOpt = plainConfigurationFor(xmlListDevice);
-        return configOpt.isPresent() && configOpt.get().optBoolean(SENSOR_DEVICE, false);
     }
 }

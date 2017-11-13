@@ -61,7 +61,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceDescMapping;
+import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;

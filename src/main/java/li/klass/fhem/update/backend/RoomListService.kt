@@ -95,7 +95,7 @@ constructor() : AbstractService() {
 
         context.sendBroadcast(Intent(DO_UPDATE))
 
-        val updateWidgets = applicationProperties.getBooleanSharedPreference(SettingsKeys.GCM_WIDGET_UPDATE, false, context)
+        val updateWidgets = applicationProperties.getBooleanSharedPreference(SettingsKeys.GCM_WIDGET_UPDATE, false)
         if (updateWidgets) {
             context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
                     .setClass(context, AppWidgetUpdateService::class.java))

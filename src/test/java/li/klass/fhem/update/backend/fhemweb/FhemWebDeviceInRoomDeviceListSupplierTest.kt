@@ -24,6 +24,7 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
+import android.app.Application
 import android.content.Context
 import com.google.common.base.Optional
 import com.nhaarman.mockito_kotlin.doReturn
@@ -53,7 +54,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn emptyRoomDeviceList
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, context)
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
 
         // when
         val result = supplier.get()
@@ -77,7 +78,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, context)
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
 
         // when
         val result = supplier.get()
@@ -107,7 +108,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId(context) } doReturn "123"
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, context)
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
 
         // when
         val result = supplier.get()
@@ -138,7 +139,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId(context) } doReturn "123"
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, context)
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
 
         // when
         val result = supplier.get()
@@ -153,7 +154,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val qualifier = "myQualifier"
         val context = mock<Context>()
         val applicationProperties = mock<ApplicationProperties> {
-            on { getStringSharedPreference(FHEMWEB_DEVICE_NAME, null, context) } doReturn qualifier
+            on { getStringSharedPreference(FHEMWEB_DEVICE_NAME, null) } doReturn qualifier
         }
         val device1 = fhemwebDeviceFor("device1")
         val device2 = fhemwebDeviceFor("device2" + qualifier)
@@ -168,7 +169,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId(context) } doReturn "123"
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, context)
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
 
         // when
         val result = supplier.get()
@@ -183,5 +184,11 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         device.xmlListDevice.setInternal(XmllistKey.Internal.name, name)
         device.xmlListDevice.setAttribute(XmllistKey.Attribute.group, "default")
         return device
+    }
+
+    private fun applicationFor(context: Context): Application {
+        return mock<Application> {
+            on { applicationContext } doReturn context
+        }
     }
 }

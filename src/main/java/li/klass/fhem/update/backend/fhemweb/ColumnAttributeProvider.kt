@@ -22,25 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.constants
+package li.klass.fhem.update.backend.fhemweb
 
-object XmllistKey {
-    object Attribute {
-        object FhemWeb {
-            const val sortRooms = "sortRooms"
-            const val hiddenRoom = "hiddenroom"
-            const val hiddenGroup = "hiddengroup"
-            const val column = "column"
-        }
+import li.klass.fhem.constants.XmllistKey
+import li.klass.fhem.domain.FHEMWEBDevice
+import javax.inject.Inject
 
-        const val group = "group"
+class ColumnAttributeProvider @Inject constructor() {
+    fun getFor(fhemwebDevice: FHEMWEBDevice, room: String): List<String> {
+
+        val attribute = fhemwebDevice.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.column).or("")
+        return attribute.split(" ")
+                .map { handleRoom(it) }
+                .filter { it != null }
+                .map { it!! }
+                .filter { it.first.matches(room) }
+                .flatMap { it.second }
+                .distinct()
     }
 
-    object Internal {
-        object FhemWeb {
-            const val port = "PORT"
+    private fun handleRoom(room: String): Pair<Regex, List<String>>? {
+        if (!room.contains(":")) {
+            return null
         }
 
-        const val name = "NAME"
+        val (name, value) = room.split(":")
+        return Regex(name) to value.replace(Regex("\\|"), ",").split(",")
     }
 }

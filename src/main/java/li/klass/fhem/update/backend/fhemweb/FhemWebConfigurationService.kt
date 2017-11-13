@@ -27,6 +27,7 @@ package li.klass.fhem.update.backend.fhemweb
 import android.content.Context
 import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.RoomDeviceList
+import java.util.*
 import javax.inject.Inject
 
 class FhemWebConfigurationService @Inject constructor(
@@ -34,7 +35,8 @@ class FhemWebConfigurationService @Inject constructor(
         private val roomSorter: RoomsSorter,
         private val sortRoomsAttributeProvider: SortRoomsAttributeProvider,
         private val hiddenRoomsAttributeProvider: HiddenRoomsAttributeProvider,
-        private val hiddenGroupsAttributeProvider: HiddenGroupsAttributeProvider
+        private val hiddenGroupsAttributeProvider: HiddenGroupsAttributeProvider,
+        private val columnAttributeProvider: ColumnAttributeProvider
 ) {
     fun sortRooms(roomNames: Collection<String>): List<String> {
         val fhemwebDevice = findFhemWebDevice() ?: return roomNames.sorted()
@@ -48,11 +50,19 @@ class FhemWebConfigurationService @Inject constructor(
         return roomNames.filter { it !in hiddenRooms }.toSet()
     }
 
-    fun filterHiddenGroupsFrom(context: Context, roomDeviceList: RoomDeviceList): RoomDeviceList {
+    fun filterHiddenGroupsFrom(roomDeviceList: RoomDeviceList, context: Context): RoomDeviceList {
         val fhemwebDevice = findFhemWebDevice() ?: return roomDeviceList
         val hiddenGroups = hiddenGroupsAttributeProvider.provideFor(fhemwebDevice)
 
-        return roomDeviceList.filter(context, { !hiddenGroups.containsAll(it.getInternalDeviceGroupOrGroupAttributes(context)) })
+        return roomDeviceList.filter(context, {
+            val groups = it.getInternalDeviceGroupOrGroupAttributes(context).map { it.toLowerCase(Locale.getDefault()) }
+            !hiddenGroups.containsAll(groups)
+        })
+    }
+
+    fun getColumnAttributeFor(room: String): List<String> {
+        val fhemwebDevice = findFhemWebDevice() ?: return emptyList()
+        return columnAttributeProvider.getFor(fhemwebDevice, room)
     }
 
     private fun findFhemWebDevice(): FHEMWEBDevice? = fhemWebDeviceInRoomDeviceListSupplier.get()

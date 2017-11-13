@@ -218,7 +218,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun handleStartupFragment(hasFavorites: Boolean) {
         val startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
-                FragmentType.FAVORITES.name, this)
+                FragmentType.FAVORITES.name)
         var preferencesStartupFragment: FragmentType? = FragmentType.forEnumName(startupView)
         Log.d(TAG, "handleStartupFragment() : startup view is " + preferencesStartupFragment)
 
@@ -538,7 +538,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         // ugly ANRs).
         Handler().post {
             val updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(SettingsKeys.AUTO_UPDATE_TIME,
-                    "-1", this@AndFHEMMainActivity))!!
+                    "-1"))!!
 
             if (timer == null && updateInterval != -1) {
                 timer = Timer()

@@ -41,6 +41,7 @@ public enum DeviceFunctionality {
     FILL_STATE(R.string.functionalityFillState),
     MOTION_DETECTOR(R.string.functionalityMotionDetector),
     KEY(R.string.functionalityKey),
+    NOTIFY(R.string.functionalityNotify),
     DUMMY(R.string.functionalityDummy),
     CALL_MONITOR(R.string.functionalityCallMonitor),
     FHEM(R.string.functionalityFHEM),
@@ -65,6 +66,10 @@ public enum DeviceFunctionality {
             return SWITCH;
         }
         return DUMMY;
+    }
+
+    public int getCaptionId() {
+        return captionId;
     }
 
     public String getCaptionText(Context context) {

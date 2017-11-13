@@ -22,25 +22,23 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.constants
+package li.klass.fhem.devices.list.backend
 
-object XmllistKey {
-    object Attribute {
-        object FhemWeb {
-            const val sortRooms = "sortRooms"
-            const val hiddenRoom = "hiddenroom"
-            const val hiddenGroup = "hiddengroup"
-            const val column = "column"
+import android.content.Context
+import li.klass.fhem.domain.core.RoomDeviceList
+import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.util.ApplicationProperties
+import javax.inject.Inject
+
+class HiddenRoomsDeviceFilter @Inject constructor(
+        val applicationProperties: ApplicationProperties
+) {
+    fun filterHiddenDevicesIfRequired(roomDeviceList: RoomDeviceList, context: Context): RoomDeviceList {
+        val showHiddenDevices = applicationProperties.getBooleanSharedPreference(SettingsKeys.SHOW_HIDDEN_DEVICES, false)
+        if (showHiddenDevices) {
+            return roomDeviceList
         }
 
-        const val group = "group"
-    }
-
-    object Internal {
-        object FhemWeb {
-            const val port = "PORT"
-        }
-
-        const val name = "NAME"
+        return roomDeviceList.filter(context, { !it.isInRoom("hidden") })
     }
 }

@@ -41,7 +41,7 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
 import li.klass.fhem.util.DialogUtil;

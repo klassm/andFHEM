@@ -43,7 +43,7 @@ constructor(val commandExecutionService: CommandExecutionService,
             val applicationProperties: ApplicationProperties) {
 
     private fun getRegistrationId(context: Context): String? {
-        val senderId = applicationProperties.getStringSharedPreference(SettingsKeys.FCM_SENDER_ID, context)
+        val senderId = applicationProperties.getStringSharedPreference(SettingsKeys.FCM_SENDER_ID)
         if (senderId == null) {
             LOGGER.info("getRegistrationId - no value for senderId found")
             return null

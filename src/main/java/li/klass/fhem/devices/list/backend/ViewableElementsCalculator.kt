@@ -29,34 +29,18 @@ import li.klass.fhem.adapter.rooms.GroupComparator
 import li.klass.fhem.domain.core.DeviceFunctionality
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.settings.SettingsKeys.SHOW_HIDDEN_DEVICES
-import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder
 import javax.inject.Inject
 
 // No singleton (to reread the ordering configuration regularly)
 class ViewableElementsCalculator @Inject constructor(
-        private val deviceGroupHolder: DeviceGroupHolder,
-        private val applicationProperties: ApplicationProperties
+        private val parentsProvider: ParentsProvider
 ) {
     fun calculateElements(context: Context, roomDeviceList: RoomDeviceList): List<Element> {
 
-        val showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false, context)
-        val visibleParents: List<String> = deviceGroupHolder.getVisible(context)
-                .map { it.getCaptionText(context) }
-                .toList()
-        val invisibleParents = deviceGroupHolder.getInvisible(context)
-                .map { it.getCaptionText(context) }
-                .toList()
-        val customParents = roomDeviceList.allDevices.flatMap { it.getInternalDeviceGroupOrGroupAttributes(context) as List<String> }.toSet()
-
-        val groupComparator = GroupComparator(DeviceFunctionality.UNKNOWN.getCaptionText(context), visibleParents)
-        val elementsInGroup = (visibleParents + customParents)
-                .filter { it !in invisibleParents }
-                .map { parent ->
-                    Pair(parent, roomDeviceList.getDevicesOfFunctionality(parent)
-                            .filter { !it.isInRoom("hidden") || showHiddenDevices })
-                }
+        val parents = parentsProvider.parentsFor(roomDeviceList)
+        val groupComparator = GroupComparator(DeviceFunctionality.UNKNOWN.getCaptionText(context), parents)
+        val elementsInGroup = parents
+                .map { Pair(it, roomDeviceList.getDevicesOfFunctionality(it)) }
                 .toMap()
 
         val groups = elementsInGroup.keys.sortedWith(groupComparator)

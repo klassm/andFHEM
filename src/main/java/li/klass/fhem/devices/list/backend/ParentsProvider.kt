@@ -24,20 +24,27 @@
 
 package li.klass.fhem.devices.list.backend
 
-import android.content.Context
+import android.app.Application
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
+import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder
 import javax.inject.Inject
 
-class ViewableRoomDeviceListProvider @Inject constructor(
-        val viewableElementsCalculator: ViewableElementsCalculator,
-        val hiddenRoomsDeviceFilter: HiddenRoomsDeviceFilter,
-        val fhemWebConfigurationService: FhemWebConfigurationService
-) {
-    fun provideFor(context: Context, roomDeviceList: RoomDeviceList): List<ViewableElementsCalculator.Element> {
-        val filteredDeviceList = fhemWebConfigurationService.filterHiddenGroupsFrom(roomDeviceList, context)
-        val withoutHiddenDevices = hiddenRoomsDeviceFilter.filterHiddenDevicesIfRequired(filteredDeviceList, context)
+class ParentsProvider @Inject constructor(private val groupHolder: DeviceGroupHolder,
+                                          private val fhemWebConfigurationService: FhemWebConfigurationService,
+                                          private val application: Application) {
+    fun parentsFor(roomDeviceList: RoomDeviceList): List<String> {
+        val context = application.applicationContext
 
-        return viewableElementsCalculator.calculateElements(context, withoutHiddenDevices)
+        val visibleParents: List<String> = groupHolder.getVisible(context)
+                .map { it.getCaptionText(context) }
+                .toList()
+        val invisibleParents = groupHolder.getInvisible(context)
+                .map { it.getCaptionText(context) }
+                .toList()
+        val customParents = roomDeviceList.getDeviceGroups(context).sorted()
+        val columnAttributeParents = fhemWebConfigurationService.getColumnAttributeFor(roomDeviceList.roomName)
+
+        return columnAttributeParents.plus(visibleParents).plus(customParents).minus(invisibleParents).distinct()
     }
 }

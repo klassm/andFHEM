@@ -94,7 +94,7 @@ abstract class DeviceListFragment : BaseFragment() {
         fillEmptyView(emptyView, container!!)
 
         if (!isNavigation) {
-            val rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0, activity)
+            val rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0)
             view.setPadding(view.paddingLeft, view.paddingTop,
                     rightPadding, view.paddingBottom)
         }
@@ -121,7 +121,7 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun getColumnWidth(): Float =
-            applicationProperties.getIntegerSharedPreference(SettingsKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context).toFloat()
+            applicationProperties.getIntegerSharedPreference(SettingsKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH).toFloat()
 
     override fun onResume() {
         super.onResume()
@@ -157,7 +157,7 @@ abstract class DeviceListFragment : BaseFragment() {
                     activity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
                 }
                 val deviceList = getRoomDeviceListForUpdate()
-                viewableRoomDeviceListProvider.provideFor(deviceList)
+                viewableRoomDeviceListProvider.provideFor(activity, deviceList)
             }.await()
             if (view != null) {
                 updateWith(elements, view!!)

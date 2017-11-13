@@ -31,7 +31,7 @@ import java.io.Serializable;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.update.backend.AllDevicesReadCallback;
 import li.klass.fhem.update.backend.DeviceReadCallback;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public abstract class Device implements Serializable {

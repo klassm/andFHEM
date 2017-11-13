@@ -194,6 +194,9 @@ class RoomDeviceList(val roomName: String) : Serializable {
         return newList
     }
 
+    fun getDeviceGroups(context: Context): Set<String> =
+            allDevices.flatMap { it.getInternalDeviceGroupOrGroupAttributes(context) as List<String> }.toSet()
+
     companion object {
 
         /**

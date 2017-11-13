@@ -47,7 +47,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import li.klass.fhem.update.backend.deviceConfiguration.Sanitiser;
+import li.klass.fhem.update.backend.device.configuration.Sanitiser;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType;

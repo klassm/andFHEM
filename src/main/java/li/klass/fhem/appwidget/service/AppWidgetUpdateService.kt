@@ -104,7 +104,7 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
 
         val updateInterval = appWidgetDataHolder.getConnectionDependentUpdateInterval(intentService)
 
-        val doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true, this)
+        val doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)
         val viewCreateUpdateInterval = if (doRemoteWidgetUpdates && allowRemoteUpdate) updateInterval else RoomListService.Companion.NEVER_UPDATE_PERIOD
 
         appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, viewCreateUpdateInterval)

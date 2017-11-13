@@ -46,7 +46,7 @@ import li.klass.fhem.service.Command;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.update.backend.RoomListUpdateService;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration;
+import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
 import li.klass.fhem.util.StateToSet;
 import li.klass.fhem.util.Tasker;
 
@@ -55,7 +55,7 @@ import static com.google.common.collect.Iterables.partition;
 import static li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
-import static li.klass.fhem.update.backend.deviceConfiguration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND;
+import static li.klass.fhem.update.backend.device.configuration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND;
 
 @Singleton
 public class GenericDeviceService {

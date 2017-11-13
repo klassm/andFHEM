@@ -26,6 +26,7 @@ package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.FHEMWEBDevice
+import java.util.*
 import javax.inject.Inject
 
 class HiddenGroupsAttributeProvider @Inject constructor() {
@@ -34,6 +35,7 @@ class HiddenGroupsAttributeProvider @Inject constructor() {
                 .or("")
                 .split(",")
                 .filter { it.isNotBlank() }
+                .map { it.toLowerCase(Locale.getDefault()) }
                 .toSet()
     }
 }

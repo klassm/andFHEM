@@ -136,13 +136,12 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
                     .build()
 
     private fun setApplicationInformation() {
-        val context = applicationContext
-        val savedVersion = applicationProperties.getStringSharedPreference(APPLICATION_VERSION, null, context)
+        val savedVersion = applicationProperties.getStringSharedPreference(APPLICATION_VERSION, null)
         currentApplicationVersion = findOutPackageApplicationVersion()
 
         if (currentApplicationVersion != savedVersion) {
             isUpdate = true
-            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion, context)
+            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion)
         }
     }
 

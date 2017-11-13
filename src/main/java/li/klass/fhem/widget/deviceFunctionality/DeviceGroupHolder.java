@@ -100,14 +100,14 @@ public class DeviceGroupHolder {
 
     private List<DeviceFunctionality> loadVisibleDeviceTypes(Context context) {
         String persistedValue = applicationProperties
-                .getStringSharedPreference(DEVICE_FUNCTIONALITY_ORDER_VISIBLE, null, context);
+                .getStringSharedPreference(DEVICE_FUNCTIONALITY_ORDER_VISIBLE, null);
 
         return parsePersistedValue(persistedValue, available);
     }
 
     private List<DeviceFunctionality> loadInvisibleDeviceTypes(Context context) {
         String persistedValue = applicationProperties
-                .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null, context);
+                .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null);
         return parsePersistedValue(persistedValue, new ArrayList<DeviceFunctionality>());
     }
 

@@ -131,7 +131,7 @@ import li.klass.fhem.timer.ui.TimerDetailFragment;
 import li.klass.fhem.timer.ui.TimerListFragment;
 import li.klass.fhem.ui.WebViewFragment;
 import li.klass.fhem.update.backend.RoomListUpdateService;
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceConfigurationProvider;
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
 import li.klass.fhem.update.backend.group.GroupProvider;
 import li.klass.fhem.update.backend.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;

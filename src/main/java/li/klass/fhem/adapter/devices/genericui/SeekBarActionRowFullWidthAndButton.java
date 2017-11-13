@@ -93,7 +93,7 @@ public abstract class SeekBarActionRowFullWidthAndButton extends SeekBarActionRo
     public abstract void onButtonSetValue(XmlListDevice device, float value);
 
     protected boolean showButton() {
-        return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false, context);
+        return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false);
     }
 
     protected abstract ApplicationProperties getApplicationProperties();

@@ -561,6 +561,7 @@
     <string name="functionalityFillState">Fill State</string>
     <string name="functionalityMotionDetector">Motion Detector</string>
     <string name="functionalityKey">Key</string>
+    <string name="functionalityNotify" translatable="false">Notify</string>
     <string name="functionalityDummy">Dummy</string>
     <string name="functionalityCallMonitor">Call Monitor</string>
     <string name="functionalityFHEM">FHEM</string>

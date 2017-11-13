@@ -42,7 +42,7 @@ class RoomDetailFragment : DeviceListFragment() {
 
     override fun onResume() {
         super.onResume()
-        val updateOnRoomOpen = applicationProperties.getBooleanSharedPreference(UPDATE_ON_ROOM_OPEN, false, activity)
+        val updateOnRoomOpen = applicationProperties.getBooleanSharedPreference(UPDATE_ON_ROOM_OPEN, false)
         if (updateOnRoomOpen) {
             update(true)
         }

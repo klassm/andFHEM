@@ -161,8 +161,8 @@ class CommandExecutionService @Inject constructor(
 
     private fun getNumberOfRetries(context: Context): Int {
         return applicationProperties.getIntegerSharedPreference(
-                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES,
-                context)
+                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
+        )
     }
 
     fun getBitmap(relativePath: String, context: Context): Bitmap? {

@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend.deviceConfiguration;
+package li.klass.fhem.update.backend.device.configuration;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;

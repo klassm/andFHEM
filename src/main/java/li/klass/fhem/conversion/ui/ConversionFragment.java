@@ -26,6 +26,7 @@ package li.klass.fhem.conversion.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,7 @@ public class ConversionFragment extends BaseFragment {
     private transient TextView resultField;
 
     @Override
-    protected void inject(ApplicationComponent applicationComponent) {
+    protected void inject(@NonNull ApplicationComponent applicationComponent) {
         applicationComponent.inject(this);
     }
 
@@ -53,10 +54,10 @@ public class ConversionFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.conversion, container, false);
-        inputField = (EditText) view.findViewById(R.id.input);
-        Button hexToQuatButton = (Button) view.findViewById(R.id.hexToQuat);
-        Button quatToHexButton = (Button) view.findViewById(R.id.quatToHex);
-        resultField = (TextView) view.findViewById(R.id.result);
+        inputField = view.findViewById(R.id.input);
+        Button hexToQuatButton = view.findViewById(R.id.hexToQuat);
+        Button quatToHexButton = view.findViewById(R.id.quatToHex);
+        resultField = view.findViewById(R.id.result);
 
         hexToQuatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +100,7 @@ public class ConversionFragment extends BaseFragment {
     }
 
     @Override
-    public CharSequence getTitle(Context context) {
+    public CharSequence getTitle(@NonNull Context context) {
         return context.getString(R.string.conversion);
     }
 

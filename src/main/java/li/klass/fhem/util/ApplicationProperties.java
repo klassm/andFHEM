@@ -24,6 +24,7 @@
 
 package li.klass.fhem.util;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -48,11 +49,13 @@ public class ApplicationProperties {
     public static final String TAG = ApplicationProperties.class.getName();
 
     private final Properties properties = new Properties();
+    private final Application application;
 
     private boolean isLoaded = false;
 
     @Inject
-    public ApplicationProperties() {
+    public ApplicationProperties(Application application) {
+        this.application = application;
     }
 
     public void load() {
@@ -101,17 +104,17 @@ public class ApplicationProperties {
         return properties.getProperty(key);
     }
 
-    public boolean getBooleanSharedPreference(String key, boolean defaultValue, Context context) {
-        SharedPreferences preferences = getPreferences(context);
+    public boolean getBooleanSharedPreference(String key, boolean defaultValue) {
+        SharedPreferences preferences = getPreferences();
         return preferences == null ? defaultValue : preferences.getBoolean(key, defaultValue);
     }
 
-    private SharedPreferences getPreferences(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
+    private SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
     }
 
-    public int getIntegerSharedPreference(String key, int defaultValue, Context context) {
-        SharedPreferences preferences = getPreferences(context);
+    public int getIntegerSharedPreference(String key, int defaultValue) {
+        SharedPreferences preferences = getPreferences();
         return preferences == null ? defaultValue : preferences.getInt(key, defaultValue);
     }
 
@@ -119,8 +122,8 @@ public class ApplicationProperties {
         return context.getPackageName() + "_preferences";
     }
 
-    public String getStringSharedPreference(String key, String defaultValue, Context context) {
-        SharedPreferences preferences = getPreferences(context);
+    public String getStringSharedPreference(String key, String defaultValue) {
+        SharedPreferences preferences = getPreferences();
         String value = preferences == null ? defaultValue : preferences.getString(key, defaultValue);
         if (isNullOrEmpty(value)) {
             return defaultValue;
@@ -129,17 +132,12 @@ public class ApplicationProperties {
         }
     }
 
-    public boolean containsSharedPreference(Context context, String key) {
-        SharedPreferences preferences = getPreferences(context);
-        return preferences == null ? false : preferences.contains(key);
+    public String getStringSharedPreference(String key) {
+        return getStringSharedPreference(key, null);
     }
 
-    public String getStringSharedPreference(String key, Context context) {
-        return getStringSharedPreference(key, null, context);
-    }
-
-    public void setSharedPreference(String key, String value, Context context) {
-        SharedPreferences preferences = getPreferences(context);
+    public void setSharedPreference(String key, String value) {
+        SharedPreferences preferences = getPreferences();
         if (preferences == null) return;
         preferences.edit().putString(key, value).apply();
     }

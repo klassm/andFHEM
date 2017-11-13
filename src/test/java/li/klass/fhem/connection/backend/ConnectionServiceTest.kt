@@ -83,7 +83,7 @@ class ConnectionServiceTest {
         // given
         val context = mock(Context::class.java)
         val sharedPreferences = mock(SharedPreferences::class.java)
-        given(applicationProperties.getStringSharedPreference(ArgumentMatchers.eq(SELECTED_CONNECTION), ArgumentMatchers.anyString(), ArgumentMatchers.eq(context))).willReturn("a")
+        given(applicationProperties.getStringSharedPreference(ArgumentMatchers.eq(SELECTED_CONNECTION), ArgumentMatchers.anyString())).willReturn("a")
         given(context.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE)).willReturn(sharedPreferences)
         given(sharedPreferences.contains("a")).willReturn(true)
         given(sharedPreferences.getString("a", null)).willReturn(ConnectionService.serialize(spec))

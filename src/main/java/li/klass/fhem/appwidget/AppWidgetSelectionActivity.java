@@ -87,7 +87,7 @@ public abstract class AppWidgetSelectionActivity extends AppCompatActivity imple
             return;
         }
 
-        if (applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null, this) != null) {
+        if (applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null) != null) {
             DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password, new DialogUtil.AlertOnClickListener() {
                 @Override
                 public void onClick() {

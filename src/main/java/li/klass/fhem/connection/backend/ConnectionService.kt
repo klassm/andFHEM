@@ -188,7 +188,7 @@ constructor(val applicationProperties: ApplicationProperties,
             forId(id.or(getSelectedId(context)), context)
 
     fun getSelectedId(context: Context): String {
-        val id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID, context)
+        val id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID)
 
         if (!exists(id, context)) {
             val all = getAllIncludingDummies(context)
@@ -202,7 +202,7 @@ constructor(val applicationProperties: ApplicationProperties,
     fun setSelectedId(id: String, context: Context) {
         var idToSet = id
         if (!exists(id, context)) idToSet = DUMMY_DATA_ID
-        applicationProperties.setSharedPreference(SELECTED_CONNECTION, idToSet, context)
+        applicationProperties.setSharedPreference(SELECTED_CONNECTION, idToSet)
     }
 
     fun getPortOfSelectedConnection(context: Context): Int {

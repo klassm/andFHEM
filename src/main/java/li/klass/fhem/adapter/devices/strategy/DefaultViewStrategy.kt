@@ -33,7 +33,7 @@ import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.update.backend.deviceConfiguration.DeviceDescMapping
+import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
