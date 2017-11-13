@@ -1,0 +1,139 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
+android {
+    flavorDimensions "default"
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+    testBuildType 'debug'
+    compileOptions.incremental = true
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "3000M"
+    }
+
+    defaultConfig {
+        targetSdkVersion 26
+        minSdkVersion 14
+        testApplicationId "li.klass.fhem.test"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        versionCode getAppVersionCode()
+        versionName version
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    compileOptions {
+        encoding 'UTF-8'
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            keyAlias "android"
+            storePassword ""
+            keyPassword ""
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-production.txt'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    sourceSets {
+        androidTest {
+            aidl.srcDirs = ['src/androidTest/java']
+        }
+        test {
+            java.srcDirs = ['src/test/java']
+            resources.srcDir file('src/test/resources')
+        }
+        main {
+            aidl.srcDirs = ['src/main/aidl']
+            java.srcDirs = ['src/main/java', 'src/gen/java']
+            resources.srcDirs = ['src/gen/resources', 'src/main/resources']
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'APK LICENSE.txt'
+        exclude 'LICENSE.txt'
+        pickFirst 'application.properties'
+        pickFirst '**/*.json'
+        pickFirst '**/gplot/*.gplot'
+        pickFirst '**/gplot/dummy.txt'
+        pickFirst '**/floorplan-modify.js'
+        pickFirst '**/dummyData.xml'
+        pickFirst '**/test.xml'
+    }
+
+    productFlavors {
+        inapp {
+            applicationId "li.klass.fhem"
+        }
+        premium {
+            applicationId "li.klass.fhempremium"
+        }
+    }
+
+    // TODO resolve errors and remove this
+    lintOptions {
+        disable 'IconColors'
+        disable 'IconDipSize'
+        disable 'IconLocation'
+        disable 'IconDensities'
+        abortOnError false
+    }
+}
+
+def getAppVersionCode() {
+    return Integer.valueOf(version.replaceAll("\\.", "").replace("-SNAPSHOT", ""))
+}
+
+if (project.hasProperty('andFHEMReleaseStorePassword')) {
+    android.signingConfigs.release.storePassword = andFHEMReleaseStorePassword
+}
+if (project.hasProperty('andFHEMReleaseAliasPassword')) {
+    android.signingConfigs.release.keyPassword = andFHEMReleaseAliasPassword
+}

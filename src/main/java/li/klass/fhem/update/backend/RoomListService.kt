@@ -274,7 +274,5 @@ constructor() : AbstractService() {
         val NEVER_UPDATE_PERIOD: Long = 0
 
         val ALWAYS_UPDATE_PERIOD: Long = -1
-        val SORT_ROOMS_DELIMITER = " "
-
     }
 }
