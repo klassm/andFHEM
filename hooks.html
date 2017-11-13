@@ -118,12 +118,29 @@ bigimg: /images/hooks.jpg
             </td>
             <td>3.0.7</td>
         </tr>
-
         <tr>
-            <td><b>Voice command device pronunciation</b><br>Attribute defining a pronunciation for the device.</td>
-            <td><span class="code">pronunciation</span></td>
-            <td><span class="code">attr mat_halogen pronunciation halogen</span>
-            <td>3.3.2</td>
+            <td><b>FHEMWEB column</b><br>Configure column ordering from your <a href="http://fhem.de/commandref.html#FHEMWEB" target="_blank">FHEMWEB device attributes</a></td>
+            <td><span class="code">column</span></td>
+            <td><span class="code">attr FHEMWEB column room:switch,dimmer</span><br/>Use ".*" as room definition to match all rooms and "favorites" to match only favorites</td>
+            <td>4.7.7</td>
+        </tr>
+        <tr>
+            <td><b>FHEMWEB sortRooms</b><br>Configure room ordering from your <a href="http://fhem.de/commandref.html#FHEMWEB" target="_blank">FHEMWEB device attributes</a></td>
+            <td><span class="code">sortRooms</span></td>
+            <td><span class="code">attr FHEMWEB sortRooms roomA roomB</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><b>FHEMWEB hiddenroom</b><br>Configure hidden rooms from your <a href="http://fhem.de/commandref.html#FHEMWEB" target="_blank">FHEMWEB device attributes</a></td>
+            <td><span class="code">hiddenroom</span></td>
+            <td><span class="code">attr FHEMWEB hiddenroom autocreate,myHiddenRoom</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><b>FHEMWEB hiddengroup</b><br>Configure hidden groups from your <a href="http://fhem.de/commandref.html#FHEMWEB" target="_blank">FHEMWEB device attributes</a></td>
+            <td><span class="code">hiddengroup</span></td>
+            <td><span class="code">attr FHEMWEB hiddenroom switch,dimmer</span></td>
+            <td></td>
         </tr>
         </tbody>
     </table>
