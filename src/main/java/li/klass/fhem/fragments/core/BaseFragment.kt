@@ -61,21 +61,21 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject((activity.application as AndFHEMApplication).daggerComponent)
+        inject((activity?.application as AndFHEMApplication).daggerComponent)
     }
 
     protected abstract fun inject(applicationComponent: ApplicationComponent)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val retryButton = view?.findViewById<Button?>(R.id.retry)
+        val retryButton = view.findViewById<Button?>(R.id.retry)
         retryButton?.setOnClickListener {
             hideConnectionError()
 
             val resendIntent = Intent(RESEND_LAST_FAILED_COMMAND)
             resendIntent.setClass(activity, DeviceIntentService::class.java)
-            activity.startService(resendIntent)
+            activity?.startService(resendIntent)
         }
     }
 
@@ -100,13 +100,14 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         errorLayout.visibility = View.GONE
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             contentView
 
     override fun onResume() {
         super.onResume()
+        val myActivity = activity ?: return
         if (broadcastReceiver == null) {
-            broadcastReceiver = UIBroadcastReceiver(activity)
+            broadcastReceiver = UIBroadcastReceiver(myActivity)
         }
         broadcastReceiver!!.attach()
 
@@ -257,6 +258,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     protected fun back() {
         val intent = Intent(Actions.BACK)
-        activity.sendBroadcast(intent)
+        activity?.sendBroadcast(intent)
     }
 }

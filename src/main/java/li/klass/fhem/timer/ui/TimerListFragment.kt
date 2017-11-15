@@ -71,7 +71,7 @@ class TimerListFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         if (view != null) {
             return view
@@ -80,7 +80,7 @@ class TimerListFragment : BaseFragment() {
 
         val listAdapter = TimerListAdapter(context, Lists.newArrayList<AtDevice>())
 
-        val layout = inflater!!.inflate(R.layout.timer_overview, container, false)
+        val layout = inflater.inflate(R.layout.timer_overview, container, false)
         val emptyView = layout.findViewById<TextView>(android.R.id.empty)
         listView = layout.findViewById(R.id.list)
 
@@ -90,7 +90,7 @@ class TimerListFragment : BaseFragment() {
         listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, myView, _, _ ->
             val device = myView.tag as AtDevice
 
-            activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
+            activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                     .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
                     .putExtra(BundleExtraKeys.DEVICE_NAME, device.name))
         }
@@ -109,7 +109,7 @@ class TimerListFragment : BaseFragment() {
 
             val intent = Intent(Actions.SHOW_FRAGMENT)
             intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
-            activity.sendBroadcast(intent)
+            activity?.sendBroadcast(intent)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -133,17 +133,17 @@ class TimerListFragment : BaseFragment() {
     }
 
     override fun update(refresh: Boolean) {
-
+        val myActivity = activity ?: return
         async(UI) {
             val allRoomsDeviceList = bg {
                 if (refresh) {
-                    roomListUpdateService.updateAllDevices(Optional.absent(), activity)
+                    roomListUpdateService.updateAllDevices(Optional.absent(), myActivity)
                 }
-                roomListService.getAllRoomsDeviceList(Optional.absent(), activity)
+                roomListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
 
             }.await()
             adapter?.updateData(allRoomsDeviceList.getDevicesOfType(DeviceType.AT))
-            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }
 

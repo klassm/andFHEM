@@ -26,7 +26,7 @@ class FcmHistoryMessagesFragment : FcmHistoryBaseFragment<FcmMessagesAdapter>(R.
                 fcmHistoryService.getMessages(localDate)
             }.await()
 
-            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             showEmptyViewIfRequired(messages.isEmpty(), view.messages, view.fcm_no_messages)
             (view.messages.adapter as FcmMessagesAdapter).updateWith(messages)
         }

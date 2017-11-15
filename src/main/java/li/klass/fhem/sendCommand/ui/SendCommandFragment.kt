@@ -57,10 +57,10 @@ class SendCommandFragment : BaseFragment() {
         applicationComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val view = inflater!!.inflate(R.layout.command_execution, container, false)
+        val view = inflater.inflate(R.layout.command_execution, container, false)
         view.send.setOnClickListener {
             val editText = view.findViewById<View>(R.id.input) as EditText
             val command = editText.text.toString()
@@ -86,9 +86,10 @@ class SendCommandFragment : BaseFragment() {
     override fun mayPullToRefresh(): Boolean = false
 
     private fun sendCommandIntent(command: String) {
+        val myActivity = activity ?: return
         async(UI) {
             val result = bg {
-                sendCommandService.executeCommand(command, connectionId = null, context = activity)
+                sendCommandService.executeCommand(command, connectionId = null, context = myActivity)
             }.await()
             if (!isEmpty(result?.replace("[\\r\\n]".toRegex(), ""))) {
                 AlertDialog.Builder(activity)
@@ -103,10 +104,11 @@ class SendCommandFragment : BaseFragment() {
     }
 
     override fun update(refresh: Boolean) {
-        activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        val myActivity = activity ?: return
+        myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         async(UI) {
             val recentCommands = bg {
-                sendCommandService.getRecentCommands(activity)
+                sendCommandService.getRecentCommands(myActivity)
             }.await()
 
             if (view != null) {
@@ -119,7 +121,7 @@ class SendCommandFragment : BaseFragment() {
 
                 ListViewUtil.setHeightBasedOnChildren(view!!.command_history)
 
-                activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+                myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             }
         }
     }
@@ -136,18 +138,18 @@ class SendCommandFragment : BaseFragment() {
             override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean = false
 
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                val myActivity = activity ?: return false
                 when (item.itemId) {
-
                     R.id.menu_delete -> async(UI) {
                         bg {
-                            sendCommandService.deleteCommand(command, activity)
+                            sendCommandService.deleteCommand(command, myActivity)
                         }.await()
                         update(false)
                     }
                     R.id.menu_edit -> DialogUtil.showInputBox(context, getString(R.string.context_edit), command) { text ->
                         async(UI) {
                             bg {
-                                sendCommandService.editCommand(command, text, activity)
+                                sendCommandService.editCommand(command, text, myActivity)
                             }.await()
                             update(false)
                         }

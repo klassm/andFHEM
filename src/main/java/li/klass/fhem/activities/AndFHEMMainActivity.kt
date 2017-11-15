@@ -340,11 +340,11 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawer_layout,
                 R.string.drawerOpen, R.string.drawerClose) {
-            override fun onDrawerClosed(view: View?) {
+            override fun onDrawerClosed(view: View) {
                 invalidateOptionsMenu()
             }
 
-            override fun onDrawerOpened(drawerView: View?) {
+            override fun onDrawerOpened(drawerView: View) {
                 invalidateOptionsMenu()
             }
         }

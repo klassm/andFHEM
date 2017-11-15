@@ -24,6 +24,7 @@
 
 package li.klass.fhem.devices.list.ui
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -81,12 +82,13 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private var actionMode: ActionMode? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
+        val myActivity = activity ?: return superView
         if (superView != null) return superView
 
-        val view = inflater!!.inflate(R.layout.room_detail, container, false)
-        advertisementService.addAd(view, activity)
+        val view = inflater.inflate(R.layout.room_detail, container, false)
+        advertisementService.addAd(view, myActivity)
 
         assert(view != null)
 
@@ -142,8 +144,9 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     override fun update(refresh: Boolean) {
+        val myActivity = activity ?: return
         if (refresh) {
-            activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+            myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         }
 
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$refresh)")
@@ -151,13 +154,13 @@ abstract class DeviceListFragment : BaseFragment() {
         async(UI) {
             val elements = bg {
                 if (refresh) {
-                    activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
-                    executeRemoteUpdate()
-                    activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
-                    activity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
+                    myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+                    executeRemoteUpdate(myActivity)
+                    myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+                    myActivity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
                 }
-                val deviceList = getRoomDeviceListForUpdate()
-                viewableRoomDeviceListProvider.provideFor(activity, deviceList)
+                val deviceList = getRoomDeviceListForUpdate(myActivity)
+                viewableRoomDeviceListProvider.provideFor(myActivity, deviceList)
             }.await()
             if (view != null) {
                 updateWith(elements, view!!)
@@ -165,9 +168,9 @@ abstract class DeviceListFragment : BaseFragment() {
         }
     }
 
-    abstract fun getRoomDeviceListForUpdate(): RoomDeviceList
+    abstract fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList
 
-    abstract fun executeRemoteUpdate()
+    abstract fun executeRemoteUpdate(context: Context)
 
     private fun updateWith(elements: List<ViewableElementsCalculator.Element>, view: View) {
         val stopWatch = StopWatch()
@@ -228,11 +231,12 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun onLongClick(device: FhemDevice): Boolean {
+        val myActivity = activity ?: return false
         async(UI) {
             val isFavorite = bg {
-                favoritesService.isFavorite(device.name, activity)
+                favoritesService.isFavorite(device.name, myActivity)
             }.await()
-            val callback = DeviceListActionModeCallback(favoritesService, device, isFavorite, activity, updateListener = { update(false) })
+            val callback = DeviceListActionModeCallback(favoritesService, device, isFavorite, myActivity, updateListener = { update(false) })
             actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)
         }
         return true

@@ -44,12 +44,11 @@ class IntervalWeekProfileFragment : BaseWeekProfileFragment<FilledTemperatureInt
     }
 
     override fun beforeCreateView() {
-        adapter = IntervalWeekProfileAdapter(activity, applicationProperties)
+        val myActivity = activity ?: return
+        adapter = IntervalWeekProfileAdapter(myActivity, applicationProperties)
     }
 
-    override fun getAdapter(): BaseWeekProfileAdapter<*> {
-        return adapter!!
-    }
+    override fun getAdapter(): BaseWeekProfileAdapter<*> = adapter!!
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)

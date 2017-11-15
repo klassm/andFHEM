@@ -66,8 +66,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     @Inject lateinit var roomListService: RoomListService
     @Inject lateinit var roomListUpdateService: RoomListUpdateService
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
+        args ?: return
 
         checkArgument(args.containsKey(DEVICE_NAME))
         checkArgument(args.containsKey(HEATING_CONFIGURATION))
@@ -77,15 +78,15 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         heatingConfiguration = args.getSerializable(HEATING_CONFIGURATION)!! as HeatingConfiguration<INTERVAL, *>
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
 
         beforeCreateView()
-        return inflater!!.inflate(R.layout.weekprofile, container, false)
+        return inflater.inflate(R.layout.weekprofile, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         update(false)
@@ -103,9 +104,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         weekprofile.adapter = getAdapter()
     }
 
-    fun onSave() {
+    private fun onSave() {
         val commands = newArrayList(weekProfile.getStatesToSet())
-        activity.startService(Intent(Actions.DEVICE_SET_SUB_STATES)
+        activity?.startService(Intent(Actions.DEVICE_SET_SUB_STATES)
                 .setClass(activity, DeviceIntentService::class.java)
                 .putExtra(DEVICE_NAME, deviceName)
                 .putExtra(BundleExtraKeys.STATES, commands)
@@ -118,7 +119,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
                 }))
     }
 
-    fun onReset() {
+    private fun onReset() {
         update(false)
     }
 
@@ -127,12 +128,13 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     override fun update(refresh: Boolean) {
+        val myActivity = activity ?: return
         async(UI) {
             val device = bg {
                 if (refresh) {
-                    roomListUpdateService.updateSingleDevice(deviceName, Optional.absent(), activity)
+                    roomListUpdateService.updateSingleDevice(deviceName, Optional.absent(), myActivity)
                 }
-                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.absent(), activity)
+                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.absent(), myActivity)
             }.await()
             if (device.isPresent) {
                 weekProfile = heatingConfiguration.fillWith(device.get().xmlListDevice)

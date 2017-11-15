@@ -63,7 +63,7 @@ import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class TimerDetailFragment : BaseFragment() {
-    var timerDevice: AtDevice? = null
+    private var timerDevice: AtDevice? = null
 
     @Transient private var targetDevice: FhemDevice? = null
     private var savedTimerDeviceName: String? = null
@@ -75,8 +75,8 @@ class TimerDetailFragment : BaseFragment() {
         applicationComponent.inject(this)
     }
 
-    override fun setArguments(args: Bundle) {
-        if (args.containsKey(DEVICE_NAME)) {
+    override fun setArguments(args: Bundle?) {
+        if (args?.containsKey(DEVICE_NAME) == true) {
             savedTimerDeviceName = args.getString(DEVICE_NAME)
         }
     }
@@ -86,12 +86,12 @@ class TimerDetailFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = super.onCreateView(inflater, container, savedInstanceState)
         if (view != null) {
             return view
         }
-        view = inflater!!.inflate(R.layout.timer_detail, container, false)
+        view = inflater.inflate(R.layout.timer_detail, container, false)
 
         bindRepetitionSpinner(view)
         bindSelectDeviceButton(view)
@@ -102,11 +102,8 @@ class TimerDetailFragment : BaseFragment() {
         return view
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (view == null) {
-            return
-        }
 
         val timerNameInput = getTimerNameInput(view)
         setTimerName("", view)
@@ -163,7 +160,7 @@ class TimerDetailFragment : BaseFragment() {
 
     private fun bindSelectDeviceButton(view: View) {
         getTargetDeviceChangeButton(view).setOnClickListener {
-            activity.sendBroadcast(Intent(SHOW_FRAGMENT)
+            activity?.sendBroadcast(Intent(SHOW_FRAGMENT)
                     .putExtra(FRAGMENT, DEVICE_SELECTION)
                     .putExtra(BundleExtraKeys.DEVICE_FILTER, DEVICE_FILTER)
                     .putExtra(CALLING_FRAGMENT, FragmentType.TIMER_DETAIL)
@@ -220,7 +217,7 @@ class TimerDetailFragment : BaseFragment() {
 
         val switchTimeOptional = getSwitchTime(view)
         if (targetDevice == null || isBlank(getTargetState(view)) || !switchTimeOptional.isPresent) {
-            activity.sendBroadcast(Intent(SHOW_TOAST)
+            activity?.sendBroadcast(Intent(SHOW_TOAST)
                     .putExtra(STRING_ID, R.string.incompleteConfigurationError))
             return
         }
@@ -236,7 +233,7 @@ class TimerDetailFragment : BaseFragment() {
         val action = if (isModify) DEVICE_TIMER_MODIFY else DEVICE_TIMER_NEW
         val switchTime = switchTimeOptional.get()
 
-        activity.startService(Intent(action)
+        activity?.startService(Intent(action)
                 .setClass(activity, DeviceIntentService::class.java)
                 .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
@@ -273,27 +270,27 @@ class TimerDetailFragment : BaseFragment() {
         if (view == null) return false
 
         val targetDeviceRow = view.findViewById<TableRow>(R.id.targetStateRow)
-        if (targetDevice == null) {
+        return if (targetDevice == null) {
             targetDeviceRow.visibility = View.GONE
-            return false
+            false
         } else {
             targetDeviceRow.visibility = View.VISIBLE
-            return true
+            true
         }
     }
 
     private fun setTimerDeviceValuesForName(timerDeviceName: String) {
         checkNotNull(timerDeviceName)
+        val myActivity = activity ?: return
 
         async(UI) {
             val device = bg {
-                roomListService.getDeviceForName<FhemDevice>(timerDeviceName, Optional.absent(), activity)
+                roomListService.getDeviceForName<FhemDevice>(timerDeviceName, Optional.absent(), myActivity)
             }.await().orNull()
             if (device is AtDevice) {
                 setValuesForCurrentTimerDevice(device)
 
-                val activity = activity
-                activity?.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             } else {
                 Log.e(TAG, "expected an AtDevice, but got " + device)
             }
@@ -303,10 +300,11 @@ class TimerDetailFragment : BaseFragment() {
     private fun setValuesForCurrentTimerDevice(atDevice: AtDevice) {
         this.timerDevice = atDevice
         updateTimerInformation(timerDevice)
+        val myActivity = activity ?: return
 
         async(UI) {
             val device = bg {
-                roomListService.getDeviceForName<FhemDevice>(atDevice.targetDevice, Optional.absent(), activity)
+                roomListService.getDeviceForName<FhemDevice>(atDevice.targetDevice, Optional.absent(), myActivity)
             }.await()
             if (device.isPresent) {
                 updateTargetDevice(device.get(), this@TimerDetailFragment.view)

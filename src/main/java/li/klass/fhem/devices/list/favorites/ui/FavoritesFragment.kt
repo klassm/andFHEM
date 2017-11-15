@@ -39,16 +39,16 @@ class FavoritesFragment : DeviceListFragment() {
     }
 
     override fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
-        val inflater = activity.layoutInflater
+        val inflater = activity?.layoutInflater
         Reject.ifNull(inflater)
-        view.addView(inflater.inflate(R.layout.favorites_empty_view, viewGroup, false))
+        view.addView(inflater?.inflate(R.layout.favorites_empty_view, viewGroup, false))
     }
 
     override fun getTitle(context: Context): CharSequence = context.getString(R.string.favorites)
 
-    override fun getRoomDeviceListForUpdate() = favoritesService.getFavorites(activity)
+    override fun getRoomDeviceListForUpdate(context: Context) = favoritesService.getFavorites(context)
 
-    override fun executeRemoteUpdate() {
+    override fun executeRemoteUpdate(context: Context) {
         roomListUpdateService.updateAllDevices(Optional.absent(), context)
     }
 }

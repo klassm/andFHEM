@@ -69,9 +69,9 @@ class ConnectionDetailFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        if (args.containsKey(BundleExtraKeys.CONNECTION_ID)) {
+        if (args?.containsKey(BundleExtraKeys.CONNECTION_ID) == true) {
             connectionId = args.getString(BundleExtraKeys.CONNECTION_ID)
             isModify = true
         }
@@ -81,13 +81,13 @@ class ConnectionDetailFragment : BaseFragment() {
         applicationComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = super.onCreateView(inflater, container, savedInstanceState)
         if (view != null) {
             return view
         }
 
-        view = inflater!!.inflate(R.layout.connection_detail, container, false)
+        view = inflater.inflate(R.layout.connection_detail, container, false)
 
         val connectionTypeSpinner = view!!.findViewById<Spinner>(R.id.connectionType)
         if (isModify) {
@@ -139,16 +139,15 @@ class ConnectionDetailFragment : BaseFragment() {
         if (view == null) return
 
         this.connectionType = checkNotNull(connectionType)
-        val activity = checkNotNull(activity)
-        val inflater = checkNotNull(activity.layoutInflater)
+        val activity = activity!!
 
         val view: View?
         when (connectionType) {
             ServerType.FHEMWEB -> {
-                view = inflater.inflate(R.layout.connection_fhemweb, null)
+                view = activity.layoutInflater.inflate(R.layout.connection_fhemweb, null)
                 handleFHEMWEBView(view)
             }
-            ServerType.TELNET -> view = inflater.inflate(R.layout.connection_telnet, null)
+            ServerType.TELNET -> view = activity.layoutInflater.inflate(R.layout.connection_telnet, null)
             else -> throw IllegalArgumentException("cannot handle connection type " + connectionType)
         }
 
@@ -196,10 +195,10 @@ class ConnectionDetailFragment : BaseFragment() {
     private fun handleSave() {
         view ?: return
 
-        val saveStrategy = strategyFor(connectionType ?: ServerType.FHEMWEB)
+        val myContext = context ?: return
+        val saveStrategy = strategyFor(connectionType ?: ServerType.FHEMWEB, myContext)
         val saveData = saveStrategy.saveDataFor(view!!) ?: return
 
-        val myContext = context
         async(UI) {
             bg {
                 if (isModify) {
@@ -208,11 +207,11 @@ class ConnectionDetailFragment : BaseFragment() {
                     connectionService.create(saveData, myContext)
                 }
             }.await()
-            activity.sendBroadcast(Intent(Actions.BACK))
+            activity?.sendBroadcast(Intent(Actions.BACK))
         }
     }
 
-    private fun strategyFor(connectionType: ServerType?): ConnectionStrategy {
+    private fun strategyFor(connectionType: ServerType?, context: Context): ConnectionStrategy {
         val type = connectionType ?: ServerType.FHEMWEB
         return when (type) {
             ServerType.FHEMWEB -> FhemWebStrategy(context)
@@ -254,17 +253,18 @@ class ConnectionDetailFragment : BaseFragment() {
     override fun update(refresh: Boolean) {
         if (!isModify) {
             LOG.info("I can only update if a connection is being modified!")
-            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             return
         }
 
+        val myContext = context ?: return
         async(UI) {
             val result = bg {
-                connectionService.forId(connectionId!!, getContext())
+                connectionService.forId(connectionId!!, myContext)
             }.await()
             if (result == null) {
                 LOG.error("update - cannot find server with ID $connectionId")
-                activity.sendBroadcast(Intent(Actions.BACK))
+                myContext.sendBroadcast(Intent(Actions.BACK))
             } else {
                 setValuesForCurrentConnection(result)
             }
@@ -299,7 +299,8 @@ class ConnectionDetailFragment : BaseFragment() {
 
     private fun fillDetail(fhemServerSpec: FHEMServerSpec) {
         view ?: return
-        strategyFor(connectionType).fillView(view!!, fhemServerSpec)
+        val myContext = context ?: return
+        strategyFor(connectionType, myContext).fillView(view!!, fhemServerSpec)
     }
 
     private fun selectionIndexFor(serverType: ServerType): Int {

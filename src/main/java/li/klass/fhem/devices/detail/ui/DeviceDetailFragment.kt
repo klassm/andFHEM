@@ -72,7 +72,7 @@ class DeviceDetailFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         setArgumentsFrom(args)
     }
@@ -85,9 +85,9 @@ class DeviceDetailFragment : BaseFragment() {
         connectionId = args.getString(CONNECTION_ID)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState!!.putString(DEVICE_NAME, deviceName)
+        outState.putString(DEVICE_NAME, deviceName)
         outState.putString(CONNECTION_ID, connectionId)
     }
 
@@ -95,13 +95,14 @@ class DeviceDetailFragment : BaseFragment() {
         applicationComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setArgumentsFrom(savedInstanceState)
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
+        val myActivity = activity ?: return superView
 
-        val view = inflater!!.inflate(R.layout.device_detail_view, container, false)
-        advertisementService.addAd(view, activity)
+        val view = inflater.inflate(R.layout.device_detail_view, container, false)
+        advertisementService.addAd(view, myActivity)
 
         return view
     }
@@ -110,24 +111,25 @@ class DeviceDetailFragment : BaseFragment() {
         hideEmptyView()
         deviceName ?: return
 
-        if (refresh) activity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
+        val myActivity = activity ?: return
+        if (refresh) myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
         async(UI) {
             val device = bg {
                 if (refresh) {
-                    roomListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), activity)
+                    roomListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), myActivity)
                 }
-                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), activity)
+                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), myActivity)
             }.await()
-            activity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+            myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             if (device.isPresent) {
                 this@DeviceDetailFragment.device = device.get()
                 val adapter = DeviceType.getAdapterFor<FhemDevice>(device.get())
                 if (adapter != null) {
-                    activity.invalidateOptionsMenu()
+                    myActivity.invalidateOptionsMenu()
                     val scrollView = findScrollView()
                     if (scrollView != null) {
                         scrollView.removeAllViews()
-                        scrollView.addView(adapter.createDetailView(activity, device.get(), emptySet(), connectionId))
+                        scrollView.addView(adapter.createDetailView(myActivity, device.get(), emptySet(), connectionId))
                     }
                     loadGraphs()
                 }
@@ -137,7 +139,7 @@ class DeviceDetailFragment : BaseFragment() {
 
     private fun loadGraphs() {
         device ?: return
-        val myContext = context
+        val myContext = context ?: return
 
         async(UI) {
             val graphs = bg {
@@ -154,18 +156,19 @@ class DeviceDetailFragment : BaseFragment() {
     private fun findScrollView(): ScrollView? = view!!.findViewById(R.id.deviceDetailView)
 
     override fun getTitle(context: Context): CharSequence? {
-        var name = arguments.getString(DEVICE_DISPLAY_NAME)
+        var name = arguments?.getString(DEVICE_DISPLAY_NAME)
         if (name == null) {
-            name = arguments.getString(DEVICE_NAME)
+            name = arguments?.getString(DEVICE_NAME)
         }
         return name
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
+        val myActivity = activity ?: return
         if (device != null) {
             inflater!!.inflate(R.menu.device_menu, menu)
-            if (favoritesService.isFavorite(deviceName ?: "", activity)) {
+            if (favoritesService.isFavorite(deviceName ?: "", myActivity)) {
                 menu!!.removeItem(R.id.menu_favorites_add)
             } else {
                 menu!!.removeItem(R.id.menu_favorites_remove)
@@ -194,9 +197,10 @@ class DeviceDetailFragment : BaseFragment() {
 
     private fun callUpdating(actionToCall: (Context, String) -> Unit, toastStringId: Int) {
         deviceName ?: return
+        val myActivity = activity ?: return
         async(UI) {
             bg {
-                actionToCall(activity, deviceName!!)
+                actionToCall(myActivity, deviceName!!)
             }.await()
             showToast(toastStringId)
             update(false)

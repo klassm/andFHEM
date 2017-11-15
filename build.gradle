@@ -59,7 +59,7 @@ repositories {
 }
 
 ext {
-    supportLibVersion = '26.1.0'
+    supportLibVersion = '27.0.1'
     firebaseVersion = '11.6.0'
     anko_version = '0.10.1'
     architectureComponentsVersion = '1.0.0'
@@ -80,7 +80,6 @@ dependencies {
     unmock 'org.robolectric:android-all:7.0.0_r1-robolectric-0'
 
     compile fileTree(dir: './libs', include: '*.jar')
-    //noinspection GradleDependency
     compile "com.google.firebase:firebase-appindexing:${firebaseVersion}"
     compile "com.google.firebase:firebase-messaging:${firebaseVersion}"
     compile "com.google.firebase:firebase-ads:${firebaseVersion}"
@@ -101,7 +100,6 @@ dependencies {
     compile 'com.github.angads25:filepicker:1.1.0'
 
     compile 'joda-time:joda-time:2.9.9'
-    //noinspection GradleDependency
     compile 'org.slf4j:slf4j-android:1.7.12'
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile project(':external-dep')

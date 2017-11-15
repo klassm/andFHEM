@@ -41,7 +41,7 @@ class DeviceNameSelectionFragment : DeviceNameListFragment() {
             resultReceiver!!.send(ResultCodes.SUCCESS, result)
         }
 
-        activity.sendBroadcast(Intent(Actions.BACK)
+        activity?.sendBroadcast(Intent(Actions.BACK)
                 .putExtra(BundleExtraKeys.FRAGMENT, callingFragment)
                 .putExtra(BundleExtraKeys.CLICKED_DEVICE, child))
     }

@@ -73,21 +73,23 @@ open class RoomListFragment : BaseFragment() {
         applicationComponent.inject(this)
     }
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
+        args ?: return
         roomName = args.getString(ROOM_NAME)
         emptyTextId = if (args.containsKey(EMPTY_TEXT_ID)) args.getInt(EMPTY_TEXT_ID) else R.string.noRooms
         roomSelectableCallback = args.getSerializable(ROOM_SELECTABLE_CALLBACK) as RoomSelectableCallback?
         roomClickedCallback = args.getSerializable(ON_CLICKED_CALLBACK) as RoomClickedCallback?
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
+        val myActivity = activity ?: return superView
 
         val adapter = RoomListAdapter(activity, R.layout.room_list_name, ArrayList<String>())
-        val layout = inflater!!.inflate(R.layout.room_list, container, false)
-        advertisementService.addAd(layout, activity)
+        val layout = inflater.inflate(R.layout.room_list, container, false)
+        advertisementService.addAd(layout, myActivity)
 
         assert(layout != null)
 
@@ -121,7 +123,7 @@ open class RoomListFragment : BaseFragment() {
             intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.ROOM_DETAIL)
             intent.putExtra(ROOM_NAME, roomName)
 
-            activity.sendBroadcast(intent)
+            activity?.sendBroadcast(intent)
         }
     }
 
@@ -130,14 +132,15 @@ open class RoomListFragment : BaseFragment() {
 
         hideEmptyView()
         if (refresh && !isNavigation)
-            activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
+        val myActivity = activity ?: return
         async(UI) {
             val roomNameList = bg {
                 if (refresh) {
-                    roomListUpdateService.updateAllDevices(Optional.absent(), activity)
+                    roomListUpdateService.updateAllDevices(Optional.absent(), myActivity)
                 }
-                roomListService.sortedRoomNameList(context = activity)
+                roomListService.sortedRoomNameList(context = myActivity)
             }.await()
             handleUpdateData(roomNameList)
         }

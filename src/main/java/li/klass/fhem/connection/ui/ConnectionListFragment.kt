@@ -65,9 +65,9 @@ class ConnectionListFragment : BaseFragment() {
     private var clickedConnectionId: String? = null
     private var connectionId: String? = null
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        connectionId = args.getString(CONNECTION_ID)
+        connectionId = args?.getString(CONNECTION_ID)
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
@@ -79,14 +79,14 @@ class ConnectionListFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
+        val myActivity = activity ?: return superView
 
-        val adapter = ConnectionListAdapter(activity
-        )
-        val layout = inflater!!.inflate(R.layout.connection_list, container, false)
-        advertisementService.addAd(layout, activity)
+        val adapter = ConnectionListAdapter(activity)
+        val layout = inflater.inflate(R.layout.connection_list, container, false)
+        advertisementService.addAd(layout, myActivity)
 
         val emptyView = layout.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView)
@@ -113,18 +113,18 @@ class ConnectionListFragment : BaseFragment() {
         if (item!!.itemId == R.id.connection_add) {
             val size = adapter.data.size
 
-            activity.startService(Intent(Actions.IS_PREMIUM)
+            activity?.startService(Intent(Actions.IS_PREMIUM)
                     .setClass(activity, LicenseIntentService::class.java)
                     .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
                         override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
                             val isPremium = resultCode == ResultCodes.SUCCESS && resultData!!.getBoolean(BundleExtraKeys.IS_PREMIUM, false)
 
                             if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                                activity.sendBroadcast(Intent(Actions.SHOW_ALERT)
+                                activity?.sendBroadcast(Intent(Actions.SHOW_ALERT)
                                         .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
                                         .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
                             } else {
-                                activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
+                                activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                                         .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL))
                             }
                         }
@@ -145,7 +145,7 @@ class ConnectionListFragment : BaseFragment() {
     }
 
     private fun onClick(connectionId: String) {
-        activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
+        activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL)
                 .putExtra(CONNECTION_ID, connectionId))
     }
@@ -173,12 +173,12 @@ class ConnectionListFragment : BaseFragment() {
         super.onContextItemSelected(item)
 
         if (clickedConnectionId == null) return false
-
+        val myActivity = activity ?: return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
                 async(UI) {
                     bg {
-                        connectionService.delete(clickedConnectionId!!, activity)
+                        connectionService.delete(clickedConnectionId!!, myActivity)
                     }.await()
                     update(false)
                 }
@@ -192,12 +192,12 @@ class ConnectionListFragment : BaseFragment() {
         if (view == null) return
 
         hideEmptyView()
-
-        if (refresh) activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        val myActivity = activity ?: return
+        if (refresh) myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
         async(UI) {
             val connectionList = bg {
-                connectionService.listAll(activity)
+                connectionService.listAll(myActivity)
             }.await()
 
             val nonDummyConnections = connectionList.filterNot { it.serverType == ServerType.DUMMY }
@@ -226,7 +226,7 @@ class ConnectionListFragment : BaseFragment() {
 
     override fun onDetach() {
         super.onDetach()
-        activity.sendBroadcast(Intent(Actions.CONNECTIONS_CHANGED))
+        activity?.sendBroadcast(Intent(Actions.CONNECTIONS_CHANGED))
     }
 
     companion object {

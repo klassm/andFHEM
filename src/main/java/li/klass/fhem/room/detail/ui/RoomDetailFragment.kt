@@ -52,18 +52,17 @@ class RoomDetailFragment : DeviceListFragment() {
         applicationComponent.inject(this)
     }
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        roomName = args.getString(BundleExtraKeys.ROOM_NAME)
+        roomName = args?.getString(BundleExtraKeys.ROOM_NAME)
     }
 
-    override fun getTitle(context: Context): CharSequence {
-        return arguments.getString(BundleExtraKeys.ROOM_NAME)
-    }
+    override fun getTitle(context: Context): CharSequence =
+            arguments?.getString(BundleExtraKeys.ROOM_NAME) ?: "unknown"
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putString(BundleExtraKeys.ROOM_NAME, roomName)
+        outState.putString(BundleExtraKeys.ROOM_NAME, roomName)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -73,9 +72,9 @@ class RoomDetailFragment : DeviceListFragment() {
         }
     }
 
-    override fun getRoomDeviceListForUpdate() = roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), activity)
+    override fun getRoomDeviceListForUpdate(context: Context) = roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), context)
 
-    override fun executeRemoteUpdate() {
+    override fun executeRemoteUpdate(context: Context) {
         if (roomName != null) {
             roomListUpdateService.updateRoom(roomName!!, Optional.absent(), context)
         }

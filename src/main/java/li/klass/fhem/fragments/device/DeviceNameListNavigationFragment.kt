@@ -39,16 +39,16 @@ class DeviceNameListNavigationFragment : DeviceNameListFragment() {
 
     private var roomName: String? = null
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        roomName = args.getString(ROOM_NAME)
+        roomName = args?.getString(ROOM_NAME)
     }
 
     override fun onDeviceNameClick(child: FhemDevice) {
-        activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
+        activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
                 .putExtra(DEVICE_NAME, child.name)
-                .putExtra(CALLING_FRAGMENT, arguments.getSerializable(CALLING_FRAGMENT))
+                .putExtra(CALLING_FRAGMENT, arguments?.getSerializable(CALLING_FRAGMENT))
                 .putExtra(ROOM_NAME, roomName))
     }
 

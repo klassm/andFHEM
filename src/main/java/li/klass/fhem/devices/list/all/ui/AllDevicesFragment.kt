@@ -29,6 +29,7 @@ import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
+import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.RoomListService
 import javax.inject.Inject
 
@@ -36,17 +37,17 @@ class AllDevicesFragment : DeviceListFragment() {
     @Inject
     lateinit var roomListService: RoomListService
 
-    override fun getTitle(context: Context): CharSequence {
-        return context.getString(R.string.alldevices)
-    }
+    override fun getTitle(context: Context): CharSequence = context.getString(R.string.alldevices)
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
     }
 
-    override fun executeRemoteUpdate() {
-        roomListUpdateService.updateAllDevices(Optional.absent(), context)
+    override fun executeRemoteUpdate(context: Context) {
+        val myContext = context ?: return
+        roomListUpdateService.updateAllDevices(Optional.absent(), myContext)
     }
 
-    override fun getRoomDeviceListForUpdate() = roomListService.getAllRoomsDeviceList(Optional.absent(), activity)
+    override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList =
+            roomListService.getAllRoomsDeviceList(Optional.absent(), context)
 }

@@ -1,6 +1,7 @@
 package li.klass.fhem.search
 
 import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import com.google.common.base.Optional
@@ -30,9 +31,9 @@ class SearchResultsFragment : DeviceListFragment() {
         suggestions.saveRecentQuery(query, null)
     }
 
-    override fun getRoomDeviceListForUpdate(): RoomDeviceList = searchResultsProvider.query(query)
+    override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList = searchResultsProvider.query(query)
 
-    override fun executeRemoteUpdate() {
+    override fun executeRemoteUpdate(context: Context) {
         roomListUpdateService.updateAllDevices(Optional.absent(), context)
     }
 

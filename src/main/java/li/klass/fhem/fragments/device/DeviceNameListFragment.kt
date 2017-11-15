@@ -75,8 +75,9 @@ abstract class DeviceNameListFragment : BaseFragment() {
     }
     private var emptyTextId: Int = R.string.devicelist_empty
 
-    override fun setArguments(args: Bundle) {
+    override fun setArguments(args: Bundle?) {
         super.setArguments(args)
+        args ?: return
 
         roomName = args.getString(ROOM_NAME)
         resultReceiver = args.getParcelable<ResultReceiver>(RESULT_RECEIVER)
@@ -86,12 +87,12 @@ abstract class DeviceNameListFragment : BaseFragment() {
         emptyTextId = if (args.containsKey(EMPTY_TEXT_ID)) args.getInt(EMPTY_TEXT_ID) else R.string.devicelist_empty
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         container ?: return superView
         if (superView != null) return superView
 
-        val view = inflater!!.inflate(R.layout.device_name_list, container, false)!!
+        val view = inflater.inflate(R.layout.device_name_list, container, false)!!
 
         val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, emptyTextId, container)
@@ -109,23 +110,23 @@ abstract class DeviceNameListFragment : BaseFragment() {
     protected abstract fun onDeviceNameClick(child: FhemDevice)
 
     override fun update(refresh: Boolean) {
-
+        val myActivity = activity ?: return
         async(UI) {
             val elements = bg {
-                activity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
+                myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
                 if (refresh && !isNavigation) {
-                    roomListUpdateService.updateAllDevices(Optional.absent(), activity)
-                    activity.sendBroadcast(Intent(UPDATE_NAVIGATION))
+                    roomListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }
                 val deviceList = when {
-                    roomName != null -> roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), activity)
-                    else -> roomListService.getAllRoomsDeviceList(Optional.absent(), activity)
-                }.filter(activity, deviceFilter::isSelectable)
+                    roomName != null -> roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), myActivity)
+                    else -> roomListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
+                }.filter(myActivity, deviceFilter::isSelectable)
 
-                val elements = viewableElementsCalculator.calculateElements(activity, deviceList)
+                val elements = viewableElementsCalculator.calculateElements(myActivity, deviceList)
                 if (!isNavigation) {
-                    activity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+                    myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
                 }
                 elements
             }.await()

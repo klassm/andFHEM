@@ -22,7 +22,7 @@ class FcmHistoryUpdatesFragment : FcmHistoryBaseFragment<FcmUpdatesAdapter>(R.la
                 fcmHistoryService.getChanges(localDate)
             }.await()
 
-            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             showEmptyViewIfRequired(updates.isEmpty(), view.updates, view.fcm_no_updates)
             (view.updates.adapter as FcmUpdatesAdapter).updateWith(updates)
         }
