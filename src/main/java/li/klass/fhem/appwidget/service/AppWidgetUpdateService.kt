@@ -93,8 +93,8 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
         updateWidget(this, widgetId, allowRemoteUpdates)
     }
 
-    fun updateWidget(intentService: IntentService,
-                     appWidgetId: Int, allowRemoteUpdate: Boolean) {
+    private fun updateWidget(intentService: IntentService,
+                             appWidgetId: Int, allowRemoteUpdate: Boolean) {
         val widgetConfigurationOptional = appWidgetDataHolder.getWidgetConfiguration(appWidgetId, this)
 
         if (!widgetConfigurationOptional.isPresent) {
@@ -118,12 +118,14 @@ class AppWidgetUpdateService : IntentService(AppWidgetUpdateService::class.java.
         val serviceAsContext: Context = intentService
         async(UI) {
             bg {
-                if (configuration.widgetType.widgetView is DeviceAppWidgetView) {
-                    val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                    roomListUpdateService.updateSingleDevice(deviceName, connectionId, serviceAsContext, updateWidgets = false)
-                } else if (shouldUpdate(updateInterval, connectionId)) {
-                    roomListUpdateService.updateAllDevices(connectionId, serviceAsContext, updateWidgets = false)
-                } else {
+                if (doRemoteWidgetUpdates) {
+                    when {
+                        configuration.widgetType.widgetView is DeviceAppWidgetView -> {
+                            val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
+                            roomListUpdateService.updateSingleDevice(deviceName, connectionId, serviceAsContext, updateWidgets = false)
+                        }
+                        shouldUpdate(updateInterval, connectionId) -> roomListUpdateService.updateAllDevices(connectionId, serviceAsContext, updateWidgets = false)
+                    }
                 }
             }.await()
             updateWidgetAfterDeviceListReload(appWidgetId)
