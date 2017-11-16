@@ -61,7 +61,7 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
         var objectOutputStream: ObjectOutputStream? = null
         try {
             objectOutputStream = ObjectOutputStream(BufferedOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE)))
-            objectOutputStream.writeObject(roomDeviceList)
+            objectOutputStream.writeObject(RoomDeviceList(roomDeviceList, context))
             fileStoreNotFilled = false
             LOG.info("storeDeviceListMap() : storing device list to cache completed after {} ms",
                     System.currentTimeMillis() - startLoad)
