@@ -53,24 +53,15 @@ import javax.inject.Singleton
 
 @Singleton
 class RoomListService @Inject
-constructor() : AbstractService() {
+constructor(
+        private val connectionService: ConnectionService,
+        private val deviceListParser: DeviceListParser,
+        private val applicationProperties: ApplicationProperties,
+        private val roomListHolderService: RoomListHolderService,
+        private val roomListUpdateService: RoomListUpdateService
+) : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
-
-    @Inject
-    lateinit var connectionService: ConnectionService
-
-    @Inject
-    lateinit var deviceListParser: DeviceListParser
-
-    @Inject
-    lateinit var applicationProperties: ApplicationProperties
-
-    @Inject
-    lateinit var roomListHolderService: RoomListHolderService
-
-    @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
 
     fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>,
                                     vibrateUponNotification: Boolean, context: Context) {
@@ -228,7 +219,7 @@ constructor() : AbstractService() {
 
         private val LOG = LoggerFactory.getLogger(RoomListService::class.java)
 
-        val PREFERENCES_NAME = RoomListService::class.java.name
+        val PREFERENCES_NAME = RoomListService::class.java.name!!
 
         val NEVER_UPDATE_PERIOD: Long = 0
         val ALWAYS_UPDATE_PERIOD: Long = -1

@@ -90,7 +90,6 @@ import li.klass.fhem.appwidget.ui.widget.small.RoomsLinkWidget;
 import li.klass.fhem.appwidget.ui.widget.small.SendCommandLinkWidget;
 import li.klass.fhem.appwidget.ui.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
-import li.klass.fhem.appwidget.update.AppWidgetDataHolder;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.appwidget.update.AppWidgetUpdateIntentService;
 import li.klass.fhem.backup.ImportExportService;
@@ -249,8 +248,6 @@ public interface ApplicationComponent {
     void inject(OnOffWidgetView object);
 
     void inject(AppWidgetListViewUpdateRemoteViewsService object);
-
-    void inject(AppWidgetDataHolder object);
 
     void inject(SmallAppWidgetProvider object);
 

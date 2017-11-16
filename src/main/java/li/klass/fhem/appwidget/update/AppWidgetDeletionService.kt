@@ -22,14 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.provider;
+package li.klass.fhem.appwidget.update
 
-import li.klass.fhem.dagger.ApplicationComponent;
+import android.app.Application
+import org.slf4j.LoggerFactory
+import javax.inject.Inject
 
-public class SmallAppWidgetProvider extends AndFHEMAppWidgetProvider {
+class AppWidgetDeletionService @Inject constructor(
+        val appWidgetInstanceManager: AppWidgetInstanceManager,
+        val application: Application,
+        val appWidgetSchedulingService: AppWidgetSchedulingService
+) {
+    fun deleteWidget(appWidgetId: Int) {
+        LOG.debug(String.format("deleting widget for id %d", appWidgetId))
+        appWidgetInstanceManager.delete(appWidgetId)
+        appWidgetSchedulingService.cancelUpdating(appWidgetId)
+    }
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
+    companion object {
+        val LOG = LoggerFactory.getLogger(AppWidgetDeletionService::class.java)!!
     }
 }

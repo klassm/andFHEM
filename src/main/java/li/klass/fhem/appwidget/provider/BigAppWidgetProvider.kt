@@ -22,14 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.provider;
+package li.klass.fhem.appwidget.provider
 
-import li.klass.fhem.dagger.ApplicationComponent;
+import li.klass.fhem.dagger.ApplicationComponent
 
-public class MediumAppWidgetProvider extends AndFHEMAppWidgetProvider {
+class BigAppWidgetProvider : AndFHEMAppWidgetProvider() {
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
+    override fun inject(applicationComponent: ApplicationComponent) {
+        applicationComponent.inject(this)
     }
 }
