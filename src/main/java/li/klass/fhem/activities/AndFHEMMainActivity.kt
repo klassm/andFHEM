@@ -585,8 +585,6 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
-            val contentFragment = contentFragment
-            println(contentFragment)
         }
     }
 

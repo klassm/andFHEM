@@ -56,7 +56,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     var isNavigation = false
     @Transient private var broadcastReceiver: UIBroadcastReceiver? = null
-    @Transient private var contentView: View? = null
     private var backPressCalled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,9 +99,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         errorLayout.visibility = View.GONE
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            contentView
-
     override fun onResume() {
         super.onResume()
         val myActivity = activity ?: return
@@ -110,19 +106,11 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             broadcastReceiver = UIBroadcastReceiver(myActivity)
         }
         broadcastReceiver!!.attach()
-
-        if (contentView != null) {
-            contentView!!.clearFocus()
-        }
         backPressCalled = false
 
         update(false)
     }
 
-    override fun onPause() {
-        contentView = view
-        super.onPause()
-    }
 
     override fun onDetach() {
         super.onDetach()
@@ -201,14 +189,10 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     inner class UIBroadcastReceiver(private val activity: FragmentActivity) : BroadcastReceiver() {
 
-        private val intentFilter: IntentFilter
-
-        init {
-
-            intentFilter = IntentFilter()
-            intentFilter.addAction(TOP_LEVEL_BACK)
-            intentFilter.addAction(CONNECTION_ERROR)
-            intentFilter.addAction(CONNECTION_ERROR_HIDE)
+        private val intentFilter: IntentFilter = IntentFilter().apply {
+            addAction(TOP_LEVEL_BACK)
+            addAction(CONNECTION_ERROR)
+            addAction(CONNECTION_ERROR_HIDE)
         }
 
         override fun onReceive(context: Context, intent: Intent) {
