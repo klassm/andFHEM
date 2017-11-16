@@ -29,8 +29,8 @@ import android.content.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
-import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
+import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.appwidget.ui.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;

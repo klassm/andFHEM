@@ -28,7 +28,7 @@ import com.google.common.base.Optional;
 
 import java.io.Serializable;
 
-import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.update.backend.AllDevicesReadCallback;
 import li.klass.fhem.update.backend.DeviceReadCallback;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;

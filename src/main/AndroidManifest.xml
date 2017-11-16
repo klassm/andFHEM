@@ -134,29 +134,29 @@
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
-        <activity android:name=".appwidget.type.small.SmallWidgetSelectionActivity">
+        <activity android:name=".appwidget.ui.selection.SmallWidgetSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".appwidget.type.medium.MediumWidgetSelectionActivity">
+        <activity android:name=".appwidget.ui.selection.MediumWidgetSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".appwidget.type.big.BigWidgetSelectionActivity">
+        <activity android:name=".appwidget.ui.selection.BigWidgetSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".appwidget.view.widget.activity.TargetStateAdditionalInformationActivity"
+            android:name=".appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:theme="@style/Theme.Dialog.Light" />
 
         <receiver
-            android:name=".appwidget.type.small.SmallAppWidgetProvider"
+            android:name=".appwidget.provider.SmallAppWidgetProvider"
             android:exported="true"
             android:label="@string/widget_small">
             <intent-filter>
@@ -168,7 +168,7 @@
                 android:resource="@xml/andfhem_appwidget_small" />
         </receiver>
         <receiver
-            android:name=".appwidget.type.medium.MediumAppWidgetProvider"
+            android:name=".appwidget.provider.MediumAppWidgetProvider"
             android:exported="true"
             android:label="@string/widget_medium">
             <intent-filter>
@@ -180,7 +180,7 @@
                 android:resource="@xml/andfhem_appwidget_medium" />
         </receiver>
         <receiver
-            android:name=".appwidget.type.big.BigAppWidgetProvider"
+            android:name=".appwidget.provider.BigAppWidgetProvider"
             android:exported="true"
             android:label="@string/widget_big">
             <intent-filter>
@@ -192,7 +192,7 @@
                 android:resource="@xml/andfhem_appwidget_big" />
         </receiver>
         <service
-            android:name=".appwidget.service.AppWidgetUpdateService"
+            android:name=".appwidget.update.AppWidgetUpdateIntentService"
             android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET" />
@@ -218,7 +218,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
+            android:name=".appwidget.update.AppWidgetListViewUpdateRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
             android:name=".service.intent.AppActionsIntentService"

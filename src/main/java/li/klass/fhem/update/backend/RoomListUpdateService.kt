@@ -28,7 +28,7 @@ import android.content.Context
 import android.content.Intent
 import com.google.common.base.Optional
 import li.klass.fhem.appindex.AppIndexIntentService
-import li.klass.fhem.appwidget.service.AppWidgetUpdateService
+import li.klass.fhem.appwidget.update.AppWidgetUpdateIntentService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.command.execution.Command
@@ -102,7 +102,7 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
 
     private fun updateWidgets(context: Context) {
         context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
-                .setClass(context, AppWidgetUpdateService::class.java))
+                .setClass(context, AppWidgetUpdateIntentService::class.java))
     }
 
     private fun parseResult(connectionId: Optional<String>, context: Context, result: String, updateHandler: UpdateHandler): Optional<RoomDeviceList> {

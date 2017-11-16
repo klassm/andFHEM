@@ -29,7 +29,7 @@ import android.content.Context;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
-import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
+import li.klass.fhem.appwidget.ui.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;

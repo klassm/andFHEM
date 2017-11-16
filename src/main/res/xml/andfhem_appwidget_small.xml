@@ -27,6 +27,6 @@
                     android:minWidth="40dp"
                     android:minHeight="40dp"
                     android:updatePeriodMillis="86400"
-                    android:configure="li.klass.fhem.appwidget.type.small.SmallWidgetSelectionActivity"
+    android:configure="li.klass.fhem.appwidget.ui.selection.SmallWidgetSelectionActivity"
                     android:initialLayout="@layout/appwidget_loading">
 </appwidget-provider>

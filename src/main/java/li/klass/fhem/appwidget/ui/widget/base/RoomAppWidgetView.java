@@ -21,14 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.annotation;
+package li.klass.fhem.appwidget.ui.widget.base;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView;
-
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SupportsWidget {
-    Class<? extends DeviceAppWidgetView>[] value();
+public abstract class RoomAppWidgetView extends AppWidgetView {
 }

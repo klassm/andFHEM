@@ -27,7 +27,7 @@ package li.klass.fhem.domain;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
+import li.klass.fhem.appwidget.ui.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;

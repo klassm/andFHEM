@@ -29,7 +29,7 @@ import android.content.Intent
 import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Sets
-import li.klass.fhem.appwidget.service.AppWidgetUpdateService
+import li.klass.fhem.appwidget.update.AppWidgetUpdateIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions
@@ -97,7 +97,7 @@ constructor() : AbstractService() {
         val updateWidgets = applicationProperties.getBooleanSharedPreference(SettingsKeys.GCM_WIDGET_UPDATE, false)
         if (updateWidgets) {
             context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
-                    .setClass(context, AppWidgetUpdateService::class.java))
+                    .setClass(context, AppWidgetUpdateIntentService::class.java))
         }
     }
 
