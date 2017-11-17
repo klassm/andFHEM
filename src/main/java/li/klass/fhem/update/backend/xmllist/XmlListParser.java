@@ -168,7 +168,7 @@ public class XmlListParser {
     private void addToHeaderIfPresent(NamedNodeMap attributes, XmlListDevice device, String attributeKey, String deviceType) {
         Node attribute = attributes.getNamedItem(attributeKey);
         if (attribute != null) {
-            device.getHeader().put(attributeKey,
+            device.getHeaders().put(attributeKey,
                     sanitiser.sanitise(deviceType, new DeviceNode(DeviceNodeType.HEADER, attributeKey, attribute.getNodeValue(), (DateTime) null)));
         }
     }

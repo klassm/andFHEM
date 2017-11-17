@@ -1,0 +1,15 @@
+{
+  "sensorDevice": false,
+  "states": [
+    {
+      "key": "desired_value",
+      "desc": "desiredTemperature"
+    }
+  ],
+  "sanitise": {
+    "sets": {
+      "replace": "desired",
+      "replaceBy": "desired:slider,4,1,30"
+    }
+  }
+}

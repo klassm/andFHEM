@@ -50,7 +50,6 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.DateFormatUtil;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType;
@@ -118,6 +117,9 @@ public abstract class FhemDevice extends HookedDevice {
         if (deviceConfiguration.isPresent()) {
             deviceFunctionality = deviceConfiguration.get().getDefaultGroup();
         }
+
+        setList = SetList.Companion.parse(getXmlListDevice().getHeader("sets").or("")
+                .replaceAll("\\*", ""));
 
         //Optimization to prevent the expensive calls to Annotations in getView()
         overviewViewSettingsCache = getExplicitOverviewSettings();
@@ -232,14 +234,6 @@ public abstract class FhemDevice extends HookedDevice {
         }
     }
 
-    @XmllistAttribute("SETS")
-    public void setSetList(String value) {
-        String setsText = value.replaceAll("\\*", "");
-        if (isNullOrEmpty(setsText)) return;
-
-        setList = SetList.Companion.parse(setsText);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -275,7 +269,7 @@ public abstract class FhemDevice extends HookedDevice {
         if (device.getInternals().containsKey("STATE")) {
             device.setInternal("STATE", state);
         }
-        if (device.getHeader().containsKey("state")) {
+        if (device.getHeaders().containsKey("state")) {
             device.setHeader("state", state);
         }
     }

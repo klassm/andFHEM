@@ -81,10 +81,9 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
 
     companion object {
         fun parse(inputText: String): SetList {
-            val text = inputText
-            if (isEmpty(text)) return SetList(emptyMap())
+            if (isEmpty(inputText)) return SetList(emptyMap())
 
-            val parts = text.trim()
+            val parts = inputText.trim()
                     .split(" ".toRegex()).toTypedArray()
 
             return SetList(parts.map { handlePart(it) }

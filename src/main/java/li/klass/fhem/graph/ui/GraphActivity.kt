@@ -108,7 +108,6 @@ class GraphActivity : AppCompatActivity(), Updateable {
     }
 
     override fun update(refresh: Boolean) {
-        val activityAsContext: Context = this
         async(UI) {
             val device = bg {
                 deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId)

@@ -52,7 +52,6 @@ import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
-import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
@@ -177,8 +176,6 @@ public interface ApplicationComponent {
     void inject(SonosPlayerAdapter object);
 
     void inject(SwapDeviceAdapter object);
-
-    void inject(ThresholdAdapter object);
 
     void inject(ToggleableAdapter object);
 

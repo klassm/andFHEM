@@ -94,7 +94,7 @@ public class ImportExportService {
                 .put("CONNECTIONS", ConnectionService.Companion.getPREFERENCES_NAME())
                 .put("NOTIFICATIONS", NotificationService.PREFERENCES_NAME)
                 .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context));
-        for (String preferenceName : favoritesService.getPreferenceNames(context)) {
+        for (String preferenceName : favoritesService.getPreferenceNames()) {
             builder.put("FAVORITE_" + preferenceName, preferenceName);
         }
         return builder.build();

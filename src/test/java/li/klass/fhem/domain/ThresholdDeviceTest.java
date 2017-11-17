@@ -34,7 +34,7 @@ import static org.hamcrest.core.Is.is;
 public class ThresholdDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        ThresholdDevice device = getDeviceFor("ThermostatWozi", ThresholdDevice.class);
+        GenericDevice device = getDeviceFor("ThermostatWozi", GenericDevice.class);
 
         assertThat(device.getState(), is("active 18 off"));
     }

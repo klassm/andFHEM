@@ -284,7 +284,7 @@ public class DeviceListParser {
         Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
         Iterable<DeviceNode> children = concat(xmlListDevice.getAttributes().values(), xmlListDevice.getInternals().values(),
-                xmlListDevice.getStates().values(), xmlListDevice.getHeader().values());
+                xmlListDevice.getStates().values(), xmlListDevice.getHeaders().values());
         for (DeviceNode child : newArrayList(children)) {
             if (child.getKey() == null) continue;
 

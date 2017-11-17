@@ -47,19 +47,19 @@ public class XmlListDevice implements Serializable {
     private Map<String, DeviceNode> attributes = new HashMap<>();
     private Map<String, DeviceNode> states = new HashMap<>();
     private Map<String, DeviceNode> internals = new HashMap<>();
-    private Map<String, DeviceNode> header = new HashMap<>();
+    private Map<String, DeviceNode> headers = new HashMap<>();
 
     public XmlListDevice(String type) {
         this.type = type;
     }
 
     public XmlListDevice(String type, Map<String, DeviceNode> attributes, Map<String, DeviceNode> states,
-                         Map<String, DeviceNode> internals, Map<String, DeviceNode> header) {
+                         Map<String, DeviceNode> internals, Map<String, DeviceNode> headers) {
         this.type = type;
         this.attributes = attributes;
         this.states = states;
         this.internals = internals;
-        this.header = header;
+        this.headers = headers;
     }
 
     public String getType() {
@@ -78,8 +78,8 @@ public class XmlListDevice implements Serializable {
         return internals;
     }
 
-    public Map<String, DeviceNode> getHeader() {
-        return header;
+    public Map<String, DeviceNode> getHeaders() {
+        return headers;
     }
 
     public boolean containsInternal(String key) {
@@ -102,6 +102,10 @@ public class XmlListDevice implements Serializable {
 
     public boolean containsAttribute(String attribute) {
         return attributes.containsKey(attribute);
+    }
+
+    public boolean containsHeader(String header) {
+        return headers.containsKey(header);
     }
 
     public Optional<String> getState(String state) {
@@ -128,6 +132,13 @@ public class XmlListDevice implements Serializable {
         return Optional.absent();
     }
 
+    public Optional<String> getHeader(String header) {
+        if (containsHeader(header)) {
+            return Optional.of(headers.get(header).getValue());
+        }
+        return Optional.absent();
+    }
+
     public Optional<String> getInternal(String key) {
         if (containsInternal(key)) {
             return Optional.of(internals.get(key).getValue());
@@ -144,7 +155,7 @@ public class XmlListDevice implements Serializable {
     }
 
     public void setHeader(String key, String value) {
-        getHeader().put(key, new DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow()));
+        getHeaders().put(key, new DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow()));
     }
 
     public void setAttribute(String key, String value) {

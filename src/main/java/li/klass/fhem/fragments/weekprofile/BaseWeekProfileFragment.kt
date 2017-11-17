@@ -127,7 +127,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     override fun update(refresh: Boolean) {
-        val myActivity = activity ?: return
+        activity ?: return
         async(UI) {
             val device = bg {
                 if (refresh) {

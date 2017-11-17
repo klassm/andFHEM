@@ -53,7 +53,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList("123") } doReturn emptyRoomDeviceList
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
         // when
         val result = supplier.get()
@@ -77,7 +77,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
         // when
         val result = supplier.get()
@@ -107,7 +107,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId() } doReturn "123"
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
         // when
         val result = supplier.get()
@@ -138,7 +138,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId() } doReturn "123"
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
         // when
         val result = supplier.get()
@@ -168,7 +168,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId() } doReturn "123"
         }
 
-        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
+        val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
         // when
         val result = supplier.get()
