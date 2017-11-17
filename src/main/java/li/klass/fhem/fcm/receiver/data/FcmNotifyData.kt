@@ -22,27 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fcm
+package li.klass.fhem.fcm.receiver.data
 
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
-import li.klass.fhem.AndFHEMApplication
-import javax.inject.Inject
-
-class FcmIntentService : FirebaseMessagingService() {
-
-    @Inject
-    lateinit var fcmService: FcmService
-
-    override fun onCreate() {
-        super.onCreate()
-        (application as AndFHEMApplication).daggerComponent.inject(this)
-    }
-
-    override fun onMessageReceived(message: RemoteMessage?) {
-        super.onMessageReceived(message)
-
-        val data = message?.data?.toMap() ?: return
-        fcmService.onMessageReceived(data, this)
-    }
+class FcmNotifyData(data: Map<String, String>) : FcmData(data) {
+    val changes get() = data["changes"]
+    val deviceName get() = data["deviceName"]
 }

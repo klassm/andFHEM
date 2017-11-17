@@ -22,12 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fcm
+package li.klass.fhem.fcm.receiver
 
 import android.content.Context
 import com.google.common.base.Strings.isNullOrEmpty
 import com.google.firebase.iid.FirebaseInstanceId
 import li.klass.fhem.domain.GCMSendDevice
+import li.klass.fhem.fcm.AddSelfResult
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService

@@ -76,7 +76,6 @@ public class Actions {
 
     public static final String NOTIFICATION_SET_FOR_DEVICE = prefix + "NOTIFICATION_SET_FOR_DEVICE";
     public static final String NOTIFICATION_GET_FOR_DEVICE = prefix + "NOTIFICATION_GET_FOR_DEVICE";
-    public static final String NOTIFICATION_TRIGGER = prefix + "NOTIFICATION_TRIGGER";
 
     public static final String CONNECTIONS_CHANGED = prefix + "CONNECTIONS_CHANGED";
     public static final String CONNECTION_UPDATE = prefix + "CONNECTION_UPDATE";

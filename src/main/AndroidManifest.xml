@@ -272,7 +272,6 @@
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_SET_FOR_DEVICE" />
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE" />
-                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER" />
             </intent-filter>
         </service>
         <service
@@ -339,7 +338,7 @@
         </receiver>
 
         <service
-            android:name=".fcm.FcmIntentService"
+            android:name=".fcm.receiver.FcmIntentService"
             android:exported="false"
             android:enabled="true">
             <intent-filter>

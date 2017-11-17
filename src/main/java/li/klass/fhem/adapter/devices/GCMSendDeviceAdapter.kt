@@ -37,7 +37,7 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.GCMSendDevice
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fcm.GCMSendDeviceService
+import li.klass.fhem.fcm.receiver.GCMSendDeviceService
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 

@@ -25,27 +25,19 @@
 package li.klass.fhem.update.backend
 
 import android.content.Context
-import android.content.Intent
 import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Sets
-import li.klass.fhem.appwidget.update.AppWidgetUpdateIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.domain.core.DeviceType.AT
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.service.AbstractService
-import li.klass.fhem.service.intent.NotificationIntentService
-import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.xmllist.DeviceListParser
-import li.klass.fhem.util.ApplicationProperties
 import org.slf4j.LoggerFactory
-import java.io.Serializable
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -56,15 +48,13 @@ class RoomListService @Inject
 constructor(
         private val connectionService: ConnectionService,
         private val deviceListParser: DeviceListParser,
-        private val applicationProperties: ApplicationProperties,
         private val roomListHolderService: RoomListHolderService,
         private val roomListUpdateService: RoomListUpdateService
 ) : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
 
-    fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>,
-                                    vibrateUponNotification: Boolean, context: Context) {
+    fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>, context: Context) {
 
         val deviceOptional = getDeviceForName<FhemDevice>(deviceName, Optional.absent<String>(), context)
         if (!deviceOptional.isPresent) {
@@ -75,21 +65,6 @@ constructor(
         deviceListParser.fillDeviceWith(device, updateMap, context)
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.name, updateMap.size)
-
-        context.startService(Intent(NOTIFICATION_TRIGGER)
-                .setClass(context, NotificationIntentService::class.java)
-                .putExtra(DEVICE_NAME, deviceName)
-                .putExtra(DEVICE, device)
-                .putExtra(UPDATE_MAP, updateMap as Serializable)
-                .putExtra(VIBRATE, vibrateUponNotification))
-
-        context.sendBroadcast(Intent(DO_UPDATE))
-
-        val updateWidgets = applicationProperties.getBooleanSharedPreference(SettingsKeys.GCM_WIDGET_UPDATE, false)
-        if (updateWidgets) {
-            context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
-                    .setClass(context, AppWidgetUpdateIntentService::class.java))
-        }
     }
 
     /**
