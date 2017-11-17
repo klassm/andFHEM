@@ -33,7 +33,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.ListView
-import com.google.common.base.Optional
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
@@ -140,7 +139,7 @@ open class RoomListFragment : BaseFragment() {
         async(UI) {
             val roomNameList = bg {
                 if (refresh) {
-                    deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
                 roomListService.sortedRoomNameList(context = myActivity)

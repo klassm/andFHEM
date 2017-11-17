@@ -185,7 +185,7 @@ constructor(
             val connectionId = Optional.of(connection.id)
             val corrupted = deviceListHolderService.isCorrupted(connectionId, context)
             if (corrupted) {
-                deviceListUpdateService.updateAllDevices(connectionId, context)
+                deviceListUpdateService.updateAllDevices(connection.id)
             }
         }
     }

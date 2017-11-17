@@ -50,20 +50,20 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
         if (action == Actions.DO_REMOTE_UPDATE) {
             val deviceName = Optional.fromNullable(intent.getStringExtra(DEVICE_NAME))
             val roomName = Optional.fromNullable(intent.getStringExtra(ROOM_NAME))
-            val connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID))
+            val connectionId = intent.getStringExtra(CONNECTION_ID)
             return doRemoteUpdate(deviceName, roomName, connectionId)
         } else {
             return ConvenientIntentService.State.DONE
         }
     }
 
-    private fun doRemoteUpdate(deviceName: Optional<String>, roomName: Optional<String>, connectionId: Optional<String>): ConvenientIntentService.State {
+    private fun doRemoteUpdate(deviceName: Optional<String>, roomName: Optional<String>, connectionId: String?): ConvenientIntentService.State {
         LOG.info("doRemoteUpdate() - starting remote update")
 
         val result = when {
-            deviceName.isPresent -> deviceListUpdateService.updateSingleDevice(deviceName.get(), connectionId, this)
-            roomName.isPresent -> deviceListUpdateService.updateRoom(roomName.get(), connectionId, this)
-            else -> deviceListUpdateService.updateAllDevices(connectionId, this)
+            deviceName.isPresent -> deviceListUpdateService.updateSingleDevice(deviceName.get(), connectionId)
+            roomName.isPresent -> deviceListUpdateService.updateRoom(roomName.get(), connectionId)
+            else -> deviceListUpdateService.updateAllDevices(connectionId)
         }
         handleResult(result)
         return ConvenientIntentService.State.DONE

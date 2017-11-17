@@ -24,6 +24,7 @@
 
 package li.klass.fhem.update.backend
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import com.google.common.base.Optional
@@ -41,17 +42,18 @@ import javax.inject.Singleton
 class DeviceListUpdateService @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
         private val deviceListParser: DeviceListParser,
-        private val deviceListHolderService: DeviceListHolderService
+        private val deviceListHolderService: DeviceListHolderService,
+        private val application: Application
 ) {
 
-    fun updateSingleDevice(deviceName: String, connectionId: Optional<String>, context: Context): UpdateResult =
-            executeXmllistPartial(connectionId, context, deviceName)
+    fun updateSingleDevice(deviceName: String, connectionId: String? = null): UpdateResult =
+            executeXmllistPartial(connectionId, deviceName)
 
-    fun updateRoom(roomName: String, connectionId: Optional<String>, context: Context): UpdateResult =
-            executeXmllistPartial(connectionId, context, "room=" + roomName)
+    fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult =
+            executeXmllistPartial(connectionId, "room=" + roomName)
 
-    fun updateAllDevices(connectionId: Optional<String>, context: Context): UpdateResult {
-        return executeXmllist(connectionId, context, "", object : UpdateHandler {
+    fun updateAllDevices(connectionId: String? = null): UpdateResult {
+        return executeXmllist(connectionId, "", object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList = parsed
         })
     }
@@ -70,22 +72,24 @@ class DeviceListUpdateService @Inject constructor(
         return success
     }
 
-    private fun executeXmllistPartial(connectionId: Optional<String>, context: Context, devSpec: String): UpdateResult {
+    private fun executeXmllistPartial(connectionId: String?, devSpec: String): UpdateResult {
         LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec)
-        return executeXmllist(connectionId, context, " " + devSpec, object : UpdateHandler {
+        return executeXmllist(connectionId, " " + devSpec, object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
-                cached.addAllDevicesOf(parsed, context)
+                cached.addAllDevicesOf(parsed, applicationContext)
                 return cached
             }
         })
     }
 
-    private fun executeXmllist(connectionId: Optional<String>, context: Context, xmllistSuffix: String, updateHandler: UpdateHandler):
+    private fun executeXmllist(connectionId: String?, xmllistSuffix: String, updateHandler: UpdateHandler):
             UpdateResult {
-        val command = Command("xmllist" + xmllistSuffix, connectionId)
+        val context = applicationContext
+        val connection = Optional.fromNullable(connectionId)
+        val command = Command("xmllist" + xmllistSuffix, connection)
         val result = commandExecutionService.executeSync(command, context) ?: ""
-        val roomDeviceList = parseResult(connectionId, context, result, updateHandler)
-        val success = update(context, connectionId, roomDeviceList)
+        val roomDeviceList = parseResult(connection, context, result, updateHandler)
+        val success = update(context, connection, roomDeviceList)
 
         return when (success) {
             true -> {
@@ -107,6 +111,8 @@ class DeviceListUpdateService @Inject constructor(
         }
         return Optional.absent<RoomDeviceList>()
     }
+
+    private val applicationContext: Context get() = application.applicationContext
 
     private interface UpdateHandler {
         fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList

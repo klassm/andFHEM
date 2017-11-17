@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import com.google.common.base.Optional
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.RoomDeviceList
@@ -34,7 +33,7 @@ class SearchResultsFragment : DeviceListFragment() {
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList = searchResultsProvider.query(query)
 
     override fun executeRemoteUpdate(context: Context) {
-        deviceListUpdateService.updateAllDevices(Optional.absent(), context)
+        deviceListUpdateService.updateAllDevices()
         appWidgetUpdateService.updateAllWidgets()
     }
 

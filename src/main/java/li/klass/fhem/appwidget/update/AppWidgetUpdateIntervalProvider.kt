@@ -62,7 +62,6 @@ class AppWidgetUpdateIntervalProvider @Inject constructor(
 
     private val applicationContext: Context get() = application.applicationContext
 
-
     companion object {
         private val WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN"
         private val WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE"

@@ -28,7 +28,6 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.Handler
 import android.widget.Toast
-import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions.*
@@ -63,7 +62,7 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
             }
             WIDGET_REQUEST_UPDATE == action -> {
                 Handler(mainLooper).post { Toast.makeText(this@AppWidgetUpdateIntentService, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show() }
-                deviceListUpdateService.updateAllDevices(Optional.absent(), this)
+                deviceListUpdateService.updateAllDevices()
             }
         }
     }
@@ -76,7 +75,7 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
         val widgetId = intent.getIntExtra(APP_WIDGET_ID, -1)
         LOG.debug("handleRedrawWidget() - updating widget-id {}, remote update is {}", widgetId, allowRemoteUpdates)
 
-        appWidgetUpdateService.doRemoteUpdate(this, widgetId, {
+        appWidgetUpdateService.doRemoteUpdate(widgetId, {
             appWidgetUpdateService.updateWidget(widgetId)
         })
     }

@@ -119,7 +119,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
                 myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
                 if (refresh && !isNavigation) {
-                    deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                     myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }

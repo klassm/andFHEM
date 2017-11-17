@@ -112,17 +112,17 @@ class DeviceDetailFragment : BaseFragment() {
 
     override fun update(refresh: Boolean) {
         hideEmptyView()
-        deviceName ?: return
+        val name = deviceName ?: return
 
         val myActivity = activity ?: return
         if (refresh) myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
         async(UI) {
             val device = bg {
                 if (refresh) {
-                    deviceListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), myActivity)
+                    deviceListUpdateService.updateSingleDevice(name, connectionId)
                     appWidgetUpdateService.updateAllWidgets()
                 }
-                deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(name, Optional.fromNullable(connectionId), myActivity)
             }.await()
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             if (device.isPresent) {

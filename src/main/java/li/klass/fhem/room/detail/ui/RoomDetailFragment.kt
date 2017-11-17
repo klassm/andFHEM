@@ -75,9 +75,8 @@ class RoomDetailFragment : DeviceListFragment() {
     override fun getRoomDeviceListForUpdate(context: Context) = deviceListService.getDeviceListForRoom(roomName!!, Optional.absent(), context)
 
     override fun executeRemoteUpdate(context: Context) {
-        if (roomName != null) {
-            deviceListUpdateService.updateRoom(roomName!!, Optional.absent(), context)
-            appWidgetUpdateService.updateAllWidgets()
-        }
+        val name = roomName ?: return
+        deviceListUpdateService.updateRoom(name)
+        appWidgetUpdateService.updateAllWidgets()
     }
 }

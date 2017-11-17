@@ -27,7 +27,6 @@ package li.klass.fhem.devices.list.favorites.ui
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
@@ -49,7 +48,7 @@ class FavoritesFragment : DeviceListFragment() {
     override fun getRoomDeviceListForUpdate(context: Context) = favoritesService.getFavorites(context)
 
     override fun executeRemoteUpdate(context: Context) {
-        deviceListUpdateService.updateAllDevices(Optional.absent(), context)
+        deviceListUpdateService.updateAllDevices()
         appWidgetUpdateService.updateAllWidgets()
     }
 }

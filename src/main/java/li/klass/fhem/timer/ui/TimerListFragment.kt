@@ -140,7 +140,7 @@ class TimerListFragment : BaseFragment() {
         async(UI) {
             val allRoomsDeviceList = bg {
                 if (refresh) {
-                    deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
                 deviceListService.getAllRoomsDeviceList(Optional.absent(), myActivity)

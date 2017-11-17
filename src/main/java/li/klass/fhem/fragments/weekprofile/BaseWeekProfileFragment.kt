@@ -132,7 +132,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         async(UI) {
             val device = bg {
                 if (refresh) {
-                    deviceListUpdateService.updateSingleDevice(deviceName, Optional.absent(), myActivity)
+                    deviceListUpdateService.updateSingleDevice(deviceName)
                 }
                 deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.absent(), myActivity)
             }.await()

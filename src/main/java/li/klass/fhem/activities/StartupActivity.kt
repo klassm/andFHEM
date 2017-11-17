@@ -32,7 +32,6 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.startup.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -169,7 +168,7 @@ class StartupActivity : Activity() {
         val activityAsContext: Context = this
         async(UI) {
             val result = bg {
-                val result = deviceListUpdateService.updateAllDevices(Optional.absent(), activityAsContext)
+                val result = deviceListUpdateService.updateAllDevices()
                 appWidgetUpdateService.updateAllWidgets()
                 result
             }.await()

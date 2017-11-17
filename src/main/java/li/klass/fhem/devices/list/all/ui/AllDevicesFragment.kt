@@ -44,7 +44,7 @@ class AllDevicesFragment : DeviceListFragment() {
     }
 
     override fun executeRemoteUpdate(context: Context) {
-        deviceListUpdateService.updateAllDevices(Optional.absent(), context)
+        deviceListUpdateService.updateAllDevices()
         appWidgetUpdateService.updateAllWidgets()
     }
 

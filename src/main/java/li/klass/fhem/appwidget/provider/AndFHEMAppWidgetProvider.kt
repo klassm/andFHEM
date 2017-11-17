@@ -54,7 +54,7 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
         async(UI) {
             bg {
                 appWidgetIds.forEach {
-                    appWidgetUpdateService.doRemoteUpdate(context, it, {
+                    appWidgetUpdateService.doRemoteUpdate(it, {
                         appWidgetUpdateService.updateWidget(it)
                     })
                 }
