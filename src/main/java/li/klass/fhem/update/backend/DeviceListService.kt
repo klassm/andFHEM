@@ -28,7 +28,6 @@ import android.content.Context
 import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Sets
-import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
@@ -50,8 +49,7 @@ constructor(
         private val connectionService: ConnectionService,
         private val deviceListParser: DeviceListParser,
         private val deviceListHolderService: DeviceListHolderService,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val appWidgetUpdateService: AppWidgetUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService
 ) : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
@@ -188,7 +186,6 @@ constructor(
             val corrupted = deviceListHolderService.isCorrupted(connectionId, context)
             if (corrupted) {
                 deviceListUpdateService.updateAllDevices(connectionId, context)
-                appWidgetUpdateService.updateAllWidgets()
             }
         }
     }

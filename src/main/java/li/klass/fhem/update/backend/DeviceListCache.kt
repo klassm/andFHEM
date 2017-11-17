@@ -32,6 +32,7 @@ import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.CloseableUtil
 import li.klass.fhem.util.preferences.SharedPreferencesService
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
@@ -118,8 +119,8 @@ class DeviceListCache(private val connectionId: String, internal var application
         return Optional.fromNullable(cachedRoomList)
     }
 
-    fun getLastUpdate(context: Context): Long =
-            getPreferences(context).getLong(lastUpdateProperty, 0L)
+    fun getLastUpdate(context: Context): DateTime =
+            DateTime(getPreferences(context).getLong(lastUpdateProperty, 0L))
 
     private fun setLastUpdate(context: Context) {
         getPreferences(context).edit().putLong(lastUpdateProperty, System.currentTimeMillis()).apply()

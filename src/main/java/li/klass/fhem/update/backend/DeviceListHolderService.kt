@@ -30,6 +30,7 @@ import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.preferences.SharedPreferencesService
+import org.joda.time.DateTime
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,7 +55,7 @@ class DeviceListHolderService @Inject constructor(
         return getCacheForConnectionId(toLoad, context)
     }
 
-    fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
+    fun getLastUpdate(connectionId: Optional<String>, context: Context): DateTime =
             getCacheFor(connectionId, context).getLastUpdate(context)
 
     private fun getCacheForConnectionId(connectionId: Optional<String>, context: Context): DeviceListCache {

@@ -60,6 +60,7 @@ class AppWidgetInstanceManager @Inject constructor(
         } catch (e: Exception) {
             LOG.error("updateWidgetAfterDeviceListReload() - something strange happened during appwidget update", e)
         }
+        appWidgetSchedulingService.scheduleUpdate(configuration)
     }
 
     fun getAllAppWidgetIds(): Set<Int> = getSavedPreferences()

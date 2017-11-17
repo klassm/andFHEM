@@ -33,16 +33,19 @@ import com.google.common.base.Optional
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.DateFormatUtil
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class AppWidgetSchedulingService @Inject constructor(
         private val application: Application,
         private val updateIntervalProvider: AppWidgetUpdateIntervalProvider,
-        private val deviceListUpdateService: DeviceListUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val deviceListService: DeviceListService
 ) {
 
     fun cancelUpdating(appWidgetId: Int) {
@@ -66,7 +69,22 @@ class AppWidgetSchedulingService @Inject constructor(
         }
     }
 
-    fun shouldUpdateDeviceList(connectionId: Optional<String>): Boolean {
+    fun shouldUpdateDeviceList(connectionId: String?): Boolean {
+        val lastUpdate = deviceListUpdateService.getLastUpdate(Optional.fromNullable(connectionId), applicationContext)
+        return shouldUpdate(lastUpdate)
+    }
+
+    fun shouldUpdateDevice(connectionId: String?, deviceName: String): Boolean {
+        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), applicationContext)
+        if (!device.isPresent) {
+            return false
+        }
+
+        val lastUpdate = device.get().xmlListDevice.creationTime
+        return shouldUpdate(lastUpdate)
+    }
+
+    private fun shouldUpdate(lastUpdate: DateTime): Boolean {
         val updatePeriod = updateIntervalProvider.getConnectionDependentUpdateInterval()
         if (updatePeriod == DeviceListService.ALWAYS_UPDATE_PERIOD) {
             LOG.debug("shouldUpdateDeviceList() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
@@ -77,8 +95,7 @@ class AppWidgetSchedulingService @Inject constructor(
             return false
         }
 
-        val lastUpdate = deviceListUpdateService.getLastUpdate(connectionId, applicationContext)
-        val shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis()
+        val shouldUpdate = (lastUpdate + updatePeriod).isBeforeNow
 
         LOG.debug("shouldUpdateDeviceList() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", if (!shouldUpdate) "no " else "to", DateFormatUtil.toReadable(lastUpdate), updatePeriod / 1000 / 60)
 

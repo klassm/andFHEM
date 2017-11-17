@@ -32,6 +32,7 @@ import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.update.backend.xmllist.DeviceListParser
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -55,7 +56,7 @@ class DeviceListUpdateService @Inject constructor(
         })
     }
 
-    fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
+    fun getLastUpdate(connectionId: Optional<String>, context: Context): DateTime =
             deviceListHolderService.getLastUpdate(connectionId, context)
 
     private fun update(context: Context, connectionId: Optional<String>, result: Optional<RoomDeviceList>): Boolean {

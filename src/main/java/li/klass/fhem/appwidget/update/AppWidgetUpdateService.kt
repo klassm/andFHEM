@@ -55,29 +55,40 @@ class AppWidgetUpdateService @Inject constructor(
     fun doRemoteUpdate(context: Context, appWidgetId: Int, callback: () -> Unit) {
         val configuration = appWidgetInstanceManager.getConfigurationFor(appWidgetId)
         val allowRemoteUpdates = applicationProperties.getBooleanSharedPreference(SettingsKeys.ALLOW_REMOTE_UPDATE, true)
-        val connectionId = configuration?.connectionId ?: Optional.absent()
-
+        val connectionId = configuration?.connectionId?.orNull()
         if (configuration == null || !allowRemoteUpdates) {
             callback()
             return
         }
 
-        LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId.orNull())
+        LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId)
 
         async(UI) {
             bg {
-                when {
-                    configuration.widgetType.widgetView is DeviceAppWidgetView -> {
-                        val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                        deviceListUpdateService.updateSingleDevice(deviceName, connectionId, context)
-                    }
-                    appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) ->
-                        deviceListUpdateService.updateAllDevices(connectionId, context)
-                    else -> {
-                    }
+                if (configuration.widgetType.widgetView is DeviceAppWidgetView) {
+                    val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
+                    handleDeviceUpdate(deviceName, connectionId, context)
+                } else {
+                    handleOtherUpdate(connectionId, context)
                 }
             }.await()
             callback()
+        }
+    }
+
+    private fun handleOtherUpdate(connectionId: String?, context: Context) {
+        if (appWidgetSchedulingService.shouldUpdateDeviceList(connectionId)) {
+            deviceListUpdateService.updateAllDevices(Optional.fromNullable(connectionId), context)
+        } else {
+            LOG.info("handleOtherUpdate - skipping update, as device list is recent enough")
+        }
+    }
+
+    private fun handleDeviceUpdate(deviceName: String, connectionId: String?, context: Context) {
+        if (appWidgetSchedulingService.shouldUpdateDevice(connectionId, deviceName)) {
+            deviceListUpdateService.updateSingleDevice(deviceName, Optional.fromNullable(connectionId), context)
+        } else {
+            LOG.info("handleDeviceUpdate(deviceName=$deviceName) - skipping update, as device list is recent enough")
         }
     }
 

@@ -43,6 +43,7 @@ public class XmlListDevice implements Serializable {
 
     private String type;
 
+    private DateTime creationTime = DateTime.now();
     private Map<String, DeviceNode> attributes = new HashMap<>();
     private Map<String, DeviceNode> states = new HashMap<>();
     private Map<String, DeviceNode> internals = new HashMap<>();
@@ -160,6 +161,10 @@ public class XmlListDevice implements Serializable {
     public String getName() {
         DeviceNode nameNode = getInternals().get("NAME");
         return nameNode == null ? null : nameNode.getValue();
+    }
+
+    public DateTime getCreationTime() {
+        return creationTime;
     }
 
     @Override

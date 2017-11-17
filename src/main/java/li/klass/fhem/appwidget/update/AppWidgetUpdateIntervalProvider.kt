@@ -49,7 +49,7 @@ class AppWidgetUpdateIntervalProvider @Inject constructor(
             LOG.debug("getConnectionDependentUpdateInterval - wlan connection")
             updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN).toLong()
         }
-        LOG.info("getConnectionDependentUpdateInterval - update interval is %d", updateInterval)
+        LOG.info("getConnectionDependentUpdateInterval - update interval is $updateInterval")
 
         return updateInterval
     }
