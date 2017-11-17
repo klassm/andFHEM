@@ -59,6 +59,7 @@ import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.billing.BillingService
+import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
@@ -83,7 +84,7 @@ import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
-class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener, android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
+open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener, android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
 
     inner class Receiver : BroadcastReceiver() {
 
@@ -171,7 +172,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private var broadcastReceiver: Receiver? = null
 
-    protected var optionsMenu: Menu? = null
+    private var optionsMenu: Menu? = null
 
     private var timer: Timer? = null
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
@@ -322,7 +323,7 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             nav_drawer.menu.removeItem(R.id.menu_premium)
         }
 
-        licenseService.isPremium(object : LicenseService.IsPremiumListener {
+        licenseService.isPremium(object : IsPremiumListener {
             override fun isPremium(isPremium: Boolean) {
                 if (!isPremium) {
                     nav_drawer.menu.removeItem(R.id.fcm_history)

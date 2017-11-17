@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
@@ -48,7 +49,7 @@ public class DimmableBehaviorTest {
     @Test
     public void should_create_discrete_behavior() {
         GenericDevice device = new GenericDevice();
-        device.setSetList("dim10% dim20%");
+        device.setSetList(SetList.Companion.parse("dim10% dim20%"));
 
         DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
 
@@ -59,7 +60,7 @@ public class DimmableBehaviorTest {
     @Test
     public void should_create_continuous_behavior() {
         GenericDevice device = new GenericDevice();
-        device.setSetList("state:slider,0,1,100");
+        device.setSetList(SetList.Companion.parse("state:slider,0,1,100"));
 
         DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
 
@@ -70,7 +71,7 @@ public class DimmableBehaviorTest {
     @Test
     public void should_return_absent_if_neither_continuous_nor_discrete_behavior_applies() {
         GenericDevice device = new GenericDevice();
-        device.setSetList("on off");
+        device.setSetList(SetList.Companion.parse("on off"));
 
         Optional<DimmableBehavior> result = DimmableBehavior.behaviorFor(device, null);
 
@@ -93,7 +94,7 @@ public class DimmableBehaviorTest {
         given(xmlListDevice.getStates()).willReturn(ImmutableMap.of("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", currentPosition + "", (DateTime) null)));
         GenericDevice device = new GenericDevice();
         device.setXmlListDevice(xmlListDevice);
-        device.setSetList("state:slider,0,1,100");
+        device.setSetList(SetList.Companion.parse("state:slider,0,1,100"));
 
         DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
 

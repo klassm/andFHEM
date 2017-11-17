@@ -92,6 +92,11 @@ public abstract class FhemDevice extends HookedDevice {
         return overviewViewSettingsCache;
     }
 
+
+    public void setSetList(SetList setList) {
+        this.setList = setList;
+    }
+
     protected OverviewViewSettings getExplicitOverviewSettings() {
         return null;
     }

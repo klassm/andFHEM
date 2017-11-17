@@ -35,6 +35,7 @@ import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
@@ -104,7 +105,7 @@ public class DeviceHookProviderTest {
     public void should_provide_off_state_name(String setList, String offStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
         GenericDevice device = deviceFor(Companion.getHOOK_OFF(), true);
-        device.setSetList(setList);
+        device.setSetList(SetList.Companion.parse(setList));
         device.getXmlListDevice().setAttribute(Companion.getOFF_STATE_NAME(), offStateName);
 
         String stateName = provider.getOffStateName(device);
@@ -126,7 +127,7 @@ public class DeviceHookProviderTest {
     public void should_provide_on_state_name(String setList, String onStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
         GenericDevice device = deviceFor(Companion.getHOOK_ON(), true);
-        device.setSetList(setList);
+        device.setSetList(SetList.Companion.parse(setList));
         device.getXmlListDevice().setAttribute(Companion.getON_STATE_NAME(), onStateName);
 
         String stateName = provider.getOnStateName(device);

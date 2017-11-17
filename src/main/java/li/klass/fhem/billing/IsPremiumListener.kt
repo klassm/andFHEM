@@ -22,39 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.core;
+package li.klass.fhem.billing
 
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
-import li.klass.fhem.domain.setlist.SetList;
-
-import static com.google.common.collect.Sets.newHashSet;
-
-public abstract class ToggleableDevice extends FhemDevice {
-
-    private String onStateName = "on";
-    private String offStateName = "off";
-
-    public boolean supportsToggle() {
-        return OnOffBehavior.Companion.supports(this) ||
-                getWebCmd().containsAll(newHashSet("on", "off")) ||
-                (eventMap.contains("on") && eventMap.contains("off"));
-    }
-
-    @XmllistAttribute("onStateName")
-    public void setOnStateName(String value) {
-        onStateName = value;
-    }
-
-    @XmllistAttribute("offStateName")
-    public void setOffStateName(String value) {
-        offStateName = value;
-    }
-
-    public String getOffStateName() {
-        return offStateName;
-    }
-
-    public String getOnStateName() {
-        return onStateName;
-    }
+interface IsPremiumListener {
+    fun isPremium(isPremium: Boolean)
 }

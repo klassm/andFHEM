@@ -29,6 +29,7 @@ import android.os.ResultReceiver;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.billing.IsPremiumListener;
 import li.klass.fhem.billing.LicenseService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
@@ -63,7 +64,7 @@ public class LicenseIntentService extends ConvenientIntentService {
 
     private void handlePremiumRequest(final ResultReceiver resultReceiver) {
 
-        licenseService.isPremium(new LicenseService.IsPremiumListener() {
+        licenseService.isPremium(new IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
                 sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium);

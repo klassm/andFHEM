@@ -35,6 +35,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists.newArrayList
 import com.google.gson.Gson
 import li.klass.fhem.AndFHEMApplication
+import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ServerType.FHEMWEB
 import li.klass.fhem.domain.core.DeviceType
@@ -72,7 +73,7 @@ constructor(private val applicationProperties: ApplicationProperties,
 
     fun create(saveData: SaveData) {
         if (exists(saveData.name)) return
-        licenseService.isPremium(object : LicenseService.IsPremiumListener {
+        licenseService.isPremium(object : IsPremiumListener {
             override fun isPremium(isPremium: Boolean) {
                 if (isPremium || getCountWithoutDummy() < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 

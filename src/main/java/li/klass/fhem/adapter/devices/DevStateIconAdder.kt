@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import li.klass.fhem.R
+import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
@@ -27,7 +28,7 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
         }
         imageView.visibility = View.VISIBLE
 
-        licenseService.isPremium(object : LicenseService.IsPremiumListener {
+        licenseService.isPremium(object : IsPremiumListener {
             override fun isPremium(isPremium: Boolean) {
                 if (isPremium) {
                     val connection = currentProvider as FHEMWEBConnection

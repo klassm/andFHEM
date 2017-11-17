@@ -80,7 +80,12 @@ class Sanitiser @Inject constructor(
         val modelNode = xmlListDevice.attributes["model"]
         val model = modelNode?.value
 
-        if ((0 until models.length()).any { models.getString(it).equals(model!!, ignoreCase = true) }) {
+        model ?: return
+
+        if ((0 until models.length())
+                .map { models.getString(it) }
+                .filter { it != null }
+                .any { it.equals(model, ignoreCase = true) }) {
             return
         }
         xmlListDevice.setAttribute(config.getString("key"), config.getString("value"))

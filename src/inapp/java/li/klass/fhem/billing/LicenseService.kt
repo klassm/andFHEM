@@ -87,10 +87,6 @@ class LicenseService @Inject constructor(
         return false
     }
 
-    interface IsPremiumListener {
-        fun isPremium(isPremium: Boolean)
-    }
-
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
