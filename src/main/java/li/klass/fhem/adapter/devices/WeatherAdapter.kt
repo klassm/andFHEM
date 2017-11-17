@@ -32,6 +32,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.RelativeLayout
+import com.bumptech.glide.Glide
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter
@@ -40,7 +41,6 @@ import li.klass.fhem.adapter.devices.strategy.WeatherDeviceViewStrategy
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.WeatherDevice
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.util.ImageUtil
 import li.klass.fhem.util.ListViewUtil
 import javax.inject.Inject
 
@@ -57,7 +57,11 @@ class WeatherAdapter : ExplicitOverviewDetailDeviceAdapter() {
 
     private fun setWeatherIconIn(imageView: ImageView, weatherIcon: String?) {
         val imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon + ".png"
-        ImageUtil.setExternalImageIn(imageView, imageURL)
+        Glide.with(imageView.context)
+                .load(imageURL)
+                .error(R.drawable.empty)
+                .crossFade()
+                .into(imageView)
     }
 
     override fun fillOtherStuffDetailLayout(context: Context, layout: LinearLayout, device: FhemDevice, inflater: LayoutInflater) {

@@ -57,8 +57,7 @@ import static com.google.common.collect.Sets.newTreeSet;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class WeatherDevice extends FhemDevice {
-    public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/images/weatherIcons/";
-    private static final DateTimeFormatter PARSE_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    public static final String IMAGE_URL_PREFIX = "https://github.com/klassm/andFHEM/raw/gh-pages/images/weatherIcons/";
 
     @WidgetMediumLine3
     private String condition;
