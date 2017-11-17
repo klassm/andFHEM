@@ -45,6 +45,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
@@ -79,6 +80,8 @@ abstract class DeviceListFragment : BaseFragment() {
     lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
     lateinit var favoritesService: FavoritesService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     private var actionMode: ActionMode? = null
 

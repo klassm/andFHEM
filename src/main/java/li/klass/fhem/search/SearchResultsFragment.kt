@@ -35,6 +35,7 @@ class SearchResultsFragment : DeviceListFragment() {
 
     override fun executeRemoteUpdate(context: Context) {
         deviceListUpdateService.updateAllDevices(Optional.absent(), context)
+        appWidgetUpdateService.updateAllWidgets()
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {

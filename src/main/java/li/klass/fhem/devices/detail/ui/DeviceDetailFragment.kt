@@ -34,6 +34,7 @@ import com.google.common.base.Optional
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.constants.BundleExtraKeys.*
@@ -62,6 +63,8 @@ class DeviceDetailFragment : BaseFragment() {
     lateinit var deviceListService: DeviceListService
     @Inject
     lateinit var graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     private var deviceName: String? = null
     private var device: FhemDevice? = null
@@ -117,6 +120,7 @@ class DeviceDetailFragment : BaseFragment() {
             val device = bg {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), myActivity)
+                    appWidgetUpdateService.updateAllWidgets()
                 }
                 deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), myActivity)
             }.await()

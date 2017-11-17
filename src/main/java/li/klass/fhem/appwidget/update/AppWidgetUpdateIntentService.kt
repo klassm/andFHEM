@@ -63,7 +63,7 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
             }
             WIDGET_REQUEST_UPDATE == action -> {
                 Handler(mainLooper).post { Toast.makeText(this@AppWidgetUpdateIntentService, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show() }
-                deviceListUpdateService.updateAllDevices(Optional.absent(), this, true)
+                deviceListUpdateService.updateAllDevices(Optional.absent(), this)
             }
         }
     }

@@ -44,8 +44,8 @@ class AllDevicesFragment : DeviceListFragment() {
     }
 
     override fun executeRemoteUpdate(context: Context) {
-        val myContext = context ?: return
-        deviceListUpdateService.updateAllDevices(Optional.absent(), myContext)
+        deviceListUpdateService.updateAllDevices(Optional.absent(), context)
+        appWidgetUpdateService.updateAllWidgets()
     }
 
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList =

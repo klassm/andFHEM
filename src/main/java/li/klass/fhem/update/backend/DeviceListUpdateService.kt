@@ -28,8 +28,6 @@ import android.content.Context
 import android.content.Intent
 import com.google.common.base.Optional
 import li.klass.fhem.appindex.AppIndexIntentService
-import li.klass.fhem.appwidget.update.AppWidgetUpdateIntentService
-import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
@@ -39,25 +37,26 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DeviceListUpdateService @Inject constructor(val commandExecutionService: CommandExecutionService,
-                                                  val deviceListParser: DeviceListParser,
-                                                  private val deviceListHolderService: DeviceListHolderService) {
+class DeviceListUpdateService @Inject constructor(
+        private val commandExecutionService: CommandExecutionService,
+        private val deviceListParser: DeviceListParser,
+        private val deviceListHolderService: DeviceListHolderService
+) {
 
-    fun updateSingleDevice(deviceName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult =
-            executeXmllistPartial(connectionId, context, deviceName, updateWidgets)
+    fun updateSingleDevice(deviceName: String, connectionId: Optional<String>, context: Context): UpdateResult =
+            executeXmllistPartial(connectionId, context, deviceName)
 
-    fun updateRoom(roomName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult =
-            executeXmllistPartial(connectionId, context, "room=" + roomName, updateWidgets)
+    fun updateRoom(roomName: String, connectionId: Optional<String>, context: Context): UpdateResult =
+            executeXmllistPartial(connectionId, context, "room=" + roomName)
 
-    fun updateAllDevices(connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult {
-        return executeXmllist(connectionId, context, "", updateWidgets, object : UpdateHandler {
+    fun updateAllDevices(connectionId: Optional<String>, context: Context): UpdateResult {
+        return executeXmllist(connectionId, context, "", object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList = parsed
         })
     }
 
     fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
             deviceListHolderService.getLastUpdate(connectionId, context)
-
 
     private fun update(context: Context, connectionId: Optional<String>, result: Optional<RoomDeviceList>): Boolean {
         var success = false
@@ -70,9 +69,9 @@ class DeviceListUpdateService @Inject constructor(val commandExecutionService: C
         return success
     }
 
-    private fun executeXmllistPartial(connectionId: Optional<String>, context: Context, devSpec: String, updateWidgets: Boolean): UpdateResult {
+    private fun executeXmllistPartial(connectionId: Optional<String>, context: Context, devSpec: String): UpdateResult {
         LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec)
-        return executeXmllist(connectionId, context, " " + devSpec, updateWidgets, object : UpdateHandler {
+        return executeXmllist(connectionId, context, " " + devSpec, object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
                 cached.addAllDevicesOf(parsed, context)
                 return cached
@@ -80,7 +79,7 @@ class DeviceListUpdateService @Inject constructor(val commandExecutionService: C
         })
     }
 
-    private fun executeXmllist(connectionId: Optional<String>, context: Context, xmllistSuffix: String, updateWidgets: Boolean, updateHandler: UpdateHandler):
+    private fun executeXmllist(connectionId: Optional<String>, context: Context, xmllistSuffix: String, updateHandler: UpdateHandler):
             UpdateResult {
         val command = Command("xmllist" + xmllistSuffix, connectionId)
         val result = commandExecutionService.executeSync(command, context) ?: ""
@@ -89,20 +88,12 @@ class DeviceListUpdateService @Inject constructor(val commandExecutionService: C
 
         return when (success) {
             true -> {
-                if (updateWidgets) {
-                    updateWidgets(context)
-                }
                 context.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
                         .setClass(context, AppIndexIntentService::class.java))
                 UpdateResult.Success(roomDeviceList.orNull())
             }
             else -> UpdateResult.Error()
         }
-    }
-
-    private fun updateWidgets(context: Context) {
-        context.startService(Intent(Actions.REDRAW_ALL_WIDGETS)
-                .setClass(context, AppWidgetUpdateIntentService::class.java))
     }
 
     private fun parseResult(connectionId: Optional<String>, context: Context, result: String, updateHandler: UpdateHandler): Optional<RoomDeviceList> {

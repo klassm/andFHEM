@@ -27,6 +27,7 @@ package li.klass.fhem.service.intent
 import android.content.Intent
 import android.os.ResultReceiver
 import com.google.common.base.Optional
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
@@ -39,6 +40,9 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
 
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
+
+    @Inject
+    lateinit var widgetUpdateService: AppWidgetUpdateService
 
     override fun handleIntent(intent: Intent, updatePeriod: Long, resultReceiver: ResultReceiver?): ConvenientIntentService.State {
         val action = intent.action
@@ -70,6 +74,7 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
             is UpdateResult.Success -> {
                 LOG.info("doRemoteUpdate() - remote device list update finished")
                 sendBroadcast(Intent(DO_REFRESH))
+                widgetUpdateService.updateAllWidgets()
             }
             is UpdateResult.Error -> LOG.error("handleResult - update failed")
         }

@@ -69,9 +69,10 @@ class AppWidgetUpdateService @Inject constructor(
                 when {
                     configuration.widgetType.widgetView is DeviceAppWidgetView -> {
                         val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                        deviceListUpdateService.updateSingleDevice(deviceName, connectionId, context, updateWidgets = false)
+                        deviceListUpdateService.updateSingleDevice(deviceName, connectionId, context)
                     }
-                    appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) -> deviceListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
+                    appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) ->
+                        deviceListUpdateService.updateAllDevices(connectionId, context)
                     else -> {
                     }
                 }

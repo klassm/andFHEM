@@ -50,5 +50,6 @@ class FavoritesFragment : DeviceListFragment() {
 
     override fun executeRemoteUpdate(context: Context) {
         deviceListUpdateService.updateAllDevices(Optional.absent(), context)
+        appWidgetUpdateService.updateAllWidgets()
     }
 }

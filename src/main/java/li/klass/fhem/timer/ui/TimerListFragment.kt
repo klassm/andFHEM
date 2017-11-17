@@ -38,6 +38,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.timer.TimerListAdapter
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
@@ -61,6 +62,8 @@ class TimerListFragment : BaseFragment() {
     lateinit var deviceListService: DeviceListService
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
@@ -138,6 +141,7 @@ class TimerListFragment : BaseFragment() {
             val allRoomsDeviceList = bg {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    appWidgetUpdateService.updateAllWidgets()
                 }
                 deviceListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
 

@@ -38,6 +38,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.RoomListAdapter
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
@@ -61,10 +62,11 @@ open class RoomListFragment : BaseFragment() {
     lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
     lateinit var roomListService: ViewableRoomListService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     private var roomName: String? = null
     private var emptyTextId = R.string.noRooms
-        private set
     private var roomSelectableCallback: RoomSelectableCallback? = null
     private var roomClickedCallback: RoomClickedCallback? = null
     private var roomList: ListView? = null
@@ -139,6 +141,7 @@ open class RoomListFragment : BaseFragment() {
             val roomNameList = bg {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    appWidgetUpdateService.updateAllWidgets()
                 }
                 roomListService.sortedRoomNameList(context = myActivity)
             }.await()

@@ -38,6 +38,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.ResultCodes
@@ -68,6 +69,8 @@ class StartupActivity : Activity() {
     lateinit var loginUiService: LoginUIService
     @Inject
     lateinit var fcmHistoryService: FcmHistoryService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -166,7 +169,9 @@ class StartupActivity : Activity() {
         val activityAsContext: Context = this
         async(UI) {
             val result = bg {
-                deviceListUpdateService.updateAllDevices(Optional.absent(), activityAsContext)
+                val result = deviceListUpdateService.updateAllDevices(Optional.absent(), activityAsContext)
+                appWidgetUpdateService.updateAllWidgets()
+                result
             }.await()
 
             when (result) {

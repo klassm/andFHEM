@@ -40,6 +40,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
@@ -66,6 +67,8 @@ abstract class DeviceNameListFragment : BaseFragment() {
     lateinit var viewableElementsCalculator: ViewableElementsCalculator
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     private var roomName: String? = null
     private var deviceName: String? = null
@@ -117,6 +120,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
                 if (refresh && !isNavigation) {
                     deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    appWidgetUpdateService.updateAllWidgets()
                     myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }
                 val deviceList = when {
