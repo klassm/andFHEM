@@ -25,8 +25,10 @@
 package li.klass.fhem.connection.backend
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.nhaarman.mockito_kotlin.doReturn
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
@@ -39,6 +41,7 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsNot.not
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
@@ -49,8 +52,16 @@ import org.mockito.Mockito.mock
 class ConnectionServiceTest {
     val licenseService: LicenseService = mock()
     val applicationProperties: ApplicationProperties = mock()
-    private val connectionService = ConnectionService(applicationProperties, licenseService)
+    val applicationContext: Context = mock()
+    lateinit var connectionService: ConnectionService
 
+    @Before
+    fun setUp() {
+        val application = com.nhaarman.mockito_kotlin.mock<Application> {
+            on { applicationContext } doReturn applicationContext
+        }
+        connectionService = ConnectionService(applicationProperties, licenseService, application)
+    }
 
     @Test
     fun testFHEMServerSpecSerializeDeserialize() {
@@ -81,10 +92,9 @@ class ConnectionServiceTest {
     @UseDataProvider("portDataProvider")
     fun should_extract_port(spec: FHEMServerSpec, expectedPort: Int) {
         // given
-        val context = mock(Context::class.java)
         val sharedPreferences = mock(SharedPreferences::class.java)
         given(applicationProperties.getStringSharedPreference(ArgumentMatchers.eq(SELECTED_CONNECTION), ArgumentMatchers.anyString())).willReturn("a")
-        given(context.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE)).willReturn(sharedPreferences)
+        given(applicationContext.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE)).willReturn(sharedPreferences)
         given(sharedPreferences.contains("a")).willReturn(true)
         given(sharedPreferences.getString("a", null)).willReturn(ConnectionService.serialize(spec))
 
