@@ -78,9 +78,7 @@ class Sanitiser @Inject constructor(
 
         val models = config.getJSONArray("models")
         val modelNode = xmlListDevice.attributes["model"]
-        val model = modelNode?.value
-
-        model ?: return
+        val model = modelNode?.value ?: return
 
         if ((0 until models.length())
                 .map { models.getString(it) }
@@ -96,9 +94,9 @@ class Sanitiser @Inject constructor(
         val attributes = generalOptions.optJSONArray("addAttributesIfNotPresent") ?: return
 
         for (i in 0 until attributes.length()) {
-            val `object` = attributes.getJSONObject(i)
-            val key = `object`.getString("key")
-            val value = `object`.getString("value")
+            val attribute = attributes.getJSONObject(i)
+            val key = attribute.getString("key")
+            val value = attribute.getString("value")
 
             if (!xmlListDevice.attributes.containsKey(key)) {
                 xmlListDevice.attributes.put(key, DeviceNode(ATTR, key, value, null as DateTime?))
