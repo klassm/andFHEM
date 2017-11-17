@@ -59,7 +59,7 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
             REDRAW_WIDGET == action -> handleRedrawWidget(intent, allowRemoteUpdates)
             REDRAW_ALL_WIDGETS == action -> {
                 LOG.info("onHandleIntent() - updating all widgets (received REDRAW_ALL_WIDGETS)")
-                appWidgetUpdateService.updateAllWidgets(this)
+                appWidgetUpdateService.updateAllWidgets()
             }
             WIDGET_REQUEST_UPDATE == action -> {
                 Handler(mainLooper).post { Toast.makeText(this@AppWidgetUpdateIntentService, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show() }
@@ -76,7 +76,9 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
         val widgetId = intent.getIntExtra(APP_WIDGET_ID, -1)
         LOG.debug("handleRedrawWidget() - updating widget-id {}, remote update is {}", widgetId, allowRemoteUpdates)
 
-        appWidgetUpdateService.updateWidget(this, widgetId)
+        appWidgetUpdateService.doRemoteUpdate(this, widgetId, {
+            appWidgetUpdateService.updateWidget(widgetId)
+        })
     }
 
     companion object {

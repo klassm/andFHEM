@@ -113,7 +113,7 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
             val activityAsContext: Context = this
             async(UI) {
                 bg {
-                    appWidgetUpdateService.updateWidget(activityAsContext, widgetId)
+                    appWidgetUpdateService.updateWidget(widgetId)
                 }
             }
 

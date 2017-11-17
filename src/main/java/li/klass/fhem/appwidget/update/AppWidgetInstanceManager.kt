@@ -34,11 +34,13 @@ import javax.inject.Inject
 
 class AppWidgetInstanceManager @Inject constructor(
         private val sharedPreferencesService: SharedPreferencesService,
+        private val appWidgetSchedulingService: AppWidgetSchedulingService,
         private val application: Application
 ) {
     fun delete(widgetId: Int) {
         val preferences = getSavedPreferences()
         if (preferences.contains(widgetId.toString())) {
+            LOG.info("delete(widgetId=$widgetId)")
             preferences.edit().remove(widgetId.toString()).apply()
         }
     }
@@ -68,6 +70,9 @@ class AppWidgetInstanceManager @Inject constructor(
     fun getConfigurationFor(widgetId: Int): WidgetConfiguration? {
         val sharedPreferences = getSavedPreferences()
         val value = sharedPreferences.getString(widgetId.toString(), null)
+        if (value == null) {
+            appWidgetSchedulingService.cancelUpdating(widgetId)
+        }
         return value?.let { WidgetConfiguration.fromSaveString(it) }
     }
 

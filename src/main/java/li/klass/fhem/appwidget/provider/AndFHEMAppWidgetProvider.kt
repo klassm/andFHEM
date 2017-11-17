@@ -30,7 +30,7 @@ import android.content.Context
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.appwidget.update.AppWidgetDeletionService
+import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.dagger.ApplicationComponent
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -38,7 +38,7 @@ import javax.inject.Inject
 
 abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvider() {
 
-    @Inject lateinit var appWidgetDataHolder: AppWidgetDeletionService
+    @Inject lateinit var appWidgetInstanceManager: AppWidgetInstanceManager
 
     @Inject lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
@@ -54,7 +54,9 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
         async(UI) {
             bg {
                 appWidgetIds.forEach {
-                    appWidgetUpdateService.updateWidget(context, it)
+                    appWidgetUpdateService.doRemoteUpdate(context, it, {
+                        appWidgetUpdateService.updateWidget(it)
+                    })
                 }
             }
         }
@@ -62,6 +64,6 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
-        appWidgetIds.forEach { appWidgetId -> appWidgetDataHolder.deleteWidget(appWidgetId) }
+        appWidgetIds.forEach { appWidgetId -> appWidgetInstanceManager.delete(appWidgetId) }
     }
 }

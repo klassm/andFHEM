@@ -25,6 +25,7 @@
 package li.klass.fhem.appwidget.update
 
 import android.content.Context
+import com.google.common.base.Optional
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
@@ -38,44 +39,44 @@ import javax.inject.Inject
 class AppWidgetUpdateService @Inject constructor(
         private val appWidgetInstanceManager: AppWidgetInstanceManager,
         private val appWidgetSchedulingService: AppWidgetSchedulingService,
-        private val appWidgetDeletionService: AppWidgetDeletionService,
         private val applicationProperties: ApplicationProperties,
         private val roomListUpdateService: RoomListUpdateService
 ) {
 
-    fun updateAllWidgets(context: Context) {
+    fun updateAllWidgets() {
         appWidgetInstanceManager.getAllAppWidgetIds()
-                .forEach { updateWidget(context, it) }
+                .forEach { updateWidget(it) }
     }
 
-    fun updateWidget(context: Context, appWidgetId: Int) {
+    fun updateWidget(appWidgetId: Int) {
+        appWidgetInstanceManager.update(appWidgetId)
+    }
+
+    fun doRemoteUpdate(context: Context, appWidgetId: Int, callback: () -> Unit) {
         val configuration = appWidgetInstanceManager.getConfigurationFor(appWidgetId)
-        if (configuration == null) {
-            appWidgetDeletionService.deleteWidget(appWidgetId)
-            LOG.info("updateWidget - widget with widget-id {} has been deleted", appWidgetId)
+        val allowRemoteUpdates = applicationProperties.getBooleanSharedPreference(SettingsKeys.ALLOW_REMOTE_UPDATE, true)
+        val connectionId = configuration?.connectionId ?: Optional.absent()
+
+        if (configuration == null || !allowRemoteUpdates) {
+            callback()
             return
         }
 
-        val allowRemoteUpdates = applicationProperties.getBooleanSharedPreference(SettingsKeys.ALLOW_REMOTE_UPDATE, true)
-
-        appWidgetSchedulingService.scheduleUpdate(configuration)
-
-        val connectionId = configuration.connectionId
-        LOG.info("updateWidget - request widget update for widget-id {}, connectionId={}", appWidgetId, connectionId.orNull())
+        LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId.orNull())
 
         async(UI) {
             bg {
-                if (allowRemoteUpdates) {
-                    when {
-                        configuration.widgetType.widgetView is DeviceAppWidgetView -> {
-                            val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                            roomListUpdateService.updateSingleDevice(deviceName, connectionId, context, updateWidgets = false)
-                        }
-                        appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) -> roomListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
+                when {
+                    configuration.widgetType.widgetView is DeviceAppWidgetView -> {
+                        val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
+                        roomListUpdateService.updateSingleDevice(deviceName, connectionId, context, updateWidgets = false)
+                    }
+                    appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) -> roomListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
+                    else -> {
                     }
                 }
             }.await()
-            appWidgetInstanceManager.update(appWidgetId)
+            callback()
         }
     }
 
