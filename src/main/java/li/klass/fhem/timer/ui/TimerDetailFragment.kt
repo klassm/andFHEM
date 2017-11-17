@@ -285,7 +285,7 @@ class TimerDetailFragment : BaseFragment() {
 
         async(UI) {
             val device = bg {
-                deviceListService.getDeviceForName<FhemDevice>(timerDeviceName, Optional.absent(), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(timerDeviceName)
             }.await().orNull()
             if (device is AtDevice) {
                 setValuesForCurrentTimerDevice(device)
@@ -300,11 +300,10 @@ class TimerDetailFragment : BaseFragment() {
     private fun setValuesForCurrentTimerDevice(atDevice: AtDevice) {
         this.timerDevice = atDevice
         updateTimerInformation(timerDevice)
-        val myActivity = activity ?: return
 
         async(UI) {
             val device = bg {
-                deviceListService.getDeviceForName<FhemDevice>(atDevice.targetDevice, Optional.absent(), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(atDevice.targetDevice)
             }.await()
             if (device.isPresent) {
                 updateTargetDevice(device.get(), this@TimerDetailFragment.view)

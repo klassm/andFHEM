@@ -32,7 +32,6 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
-import com.google.common.base.Optional
 import com.google.common.collect.Lists
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -143,7 +142,7 @@ class TimerListFragment : BaseFragment() {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
-                deviceListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
+                deviceListService.getAllRoomsDeviceList()
 
             }.await()
             adapter?.updateData(allRoomsDeviceList.getDevicesOfType(DeviceType.AT))

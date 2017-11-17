@@ -52,7 +52,7 @@ class FcmNotifyHandler @Inject constructor(
         val deviceName = data.deviceName ?: return
 
         val changes = extractChanges(deviceName, changesText, context)
-        deviceListService.parseReceivedDeviceStateMap(deviceName, changes, context)
+        deviceListService.parseReceivedDeviceStateMap(deviceName, changes)
 
         fcmHistoryService.addChanges(deviceName, changes)
         updateWidgets()
@@ -97,7 +97,7 @@ class FcmNotifyHandler @Inject constructor(
     }
 
     private fun showNotification(deviceName: String, updates: Map<String, String>, vibrate: Boolean, context: Context) {
-        val device: Optional<FhemDevice> = deviceListService.getDeviceForName(deviceName, Optional.absent(), context)
+        val device: Optional<FhemDevice> = deviceListService.getDeviceForName(deviceName)
         if (!device.isPresent) {
             return
         }

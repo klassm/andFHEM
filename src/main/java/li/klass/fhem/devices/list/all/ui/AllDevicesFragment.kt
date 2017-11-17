@@ -25,7 +25,6 @@
 package li.klass.fhem.devices.list.all.ui
 
 import android.content.Context
-import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
@@ -49,5 +48,5 @@ class AllDevicesFragment : DeviceListFragment() {
     }
 
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList =
-            deviceListService.getAllRoomsDeviceList(Optional.absent(), context)
+            deviceListService.getAllRoomsDeviceList()
 }

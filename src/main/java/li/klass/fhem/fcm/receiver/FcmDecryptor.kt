@@ -24,7 +24,6 @@
 
 package li.klass.fhem.fcm.receiver
 
-import android.content.Context
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.core.FhemDevice
@@ -40,12 +39,12 @@ class FcmDecryptor @Inject constructor(
         val deviceListService: DeviceListService
 ) {
 
-    fun decrypt(data: Map<String, String>, context: Context): Map<String, String> {
+    fun decrypt(data: Map<String, String>): Map<String, String> {
         if (!data.containsKey("gcmDeviceName")) {
             return data
         }
 
-        val device = deviceListService.getDeviceForName<FhemDevice>(data["gcmDeviceName"], Optional.absent<String>(), context)
+        val device = deviceListService.getDeviceForName<FhemDevice>(data["gcmDeviceName"])
         if (!device.isPresent) {
             return data
         }

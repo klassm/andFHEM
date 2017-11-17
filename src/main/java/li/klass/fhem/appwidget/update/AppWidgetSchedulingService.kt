@@ -29,7 +29,6 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Optional
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
@@ -70,12 +69,12 @@ class AppWidgetSchedulingService @Inject constructor(
     }
 
     fun shouldUpdateDeviceList(connectionId: String?): Boolean {
-        val lastUpdate = deviceListUpdateService.getLastUpdate(Optional.fromNullable(connectionId), applicationContext)
+        val lastUpdate = deviceListUpdateService.getLastUpdate(connectionId)
         return shouldUpdate(lastUpdate)
     }
 
     fun shouldUpdateDevice(connectionId: String?, deviceName: String): Boolean {
-        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), applicationContext)
+        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId)
         if (!device.isPresent) {
             return false
         }

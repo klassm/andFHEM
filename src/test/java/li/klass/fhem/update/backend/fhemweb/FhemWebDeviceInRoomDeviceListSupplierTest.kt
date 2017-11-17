@@ -26,7 +26,6 @@ package li.klass.fhem.update.backend.fhemweb
 
 import android.app.Application
 import android.content.Context
-import com.google.common.base.Optional
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import li.klass.fhem.connection.backend.ConnectionService
@@ -51,7 +50,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId(context) } doReturn "123"
         }
         val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn emptyRoomDeviceList
+            on { getAllRoomsDeviceList("123") } doReturn emptyRoomDeviceList
         }
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
@@ -75,7 +74,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getSelectedId(context) } doReturn "123"
         }
         val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
+            on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
@@ -101,7 +100,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(correctDevice, context)
 
         val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
+            on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
             on { getPortOfSelectedConnection(context) } doReturn port
@@ -132,7 +131,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(device1, context)
 
         val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
+            on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
             on { getPortOfSelectedConnection(context) } doReturn port
@@ -163,7 +162,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(device1, context)
 
         val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
+            on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
             on { getSelectedId(context) } doReturn "123"

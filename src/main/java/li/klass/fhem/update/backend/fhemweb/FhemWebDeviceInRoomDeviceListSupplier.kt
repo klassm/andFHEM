@@ -25,7 +25,6 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import android.app.Application
-import com.google.common.base.Optional
 import com.google.common.base.Predicate
 import com.google.common.base.Supplier
 import com.google.common.collect.FluentIterable.from
@@ -49,7 +48,7 @@ class FhemWebDeviceInRoomDeviceListSupplier
 
     override fun get(): FHEMWEBDevice? {
         val context = application.applicationContext
-        val deviceList = deviceListService.getAllRoomsDeviceList(Optional.of(connectionService.getSelectedId(context)), context)
+        val deviceList = deviceListService.getAllRoomsDeviceList(connectionService.getSelectedId(context))
         val fhemWebDevices = deviceList.getDevicesOfType<FhemDevice>(DeviceType.FHEMWEB)
         return getIn(fhemWebDevices)
     }

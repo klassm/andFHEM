@@ -97,7 +97,7 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     }
 
     override fun onUpdate(oldVersion: Int, newVersion: Int) {
-        deviceListService.checkForCorruptedDeviceList(this)
+        deviceListService.checkForCorruptedDeviceList()
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

@@ -30,7 +30,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.Lists.newArrayList
 import kotlinx.android.synthetic.main.weekprofile.*
@@ -134,7 +133,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName)
                 }
-                deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.absent(), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(deviceName)
             }.await()
             if (device.isPresent) {
                 weekProfile = heatingConfiguration.fillWith(device.get().xmlListDevice)

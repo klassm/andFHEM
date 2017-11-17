@@ -1,6 +1,5 @@
 package li.klass.fhem.search
 
-import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.DeviceListService
@@ -14,7 +13,7 @@ class SearchResultsProvider @Inject constructor(val deviceListService: DeviceLis
         }
         val comparableQuery = toComparable(query)
         val context = AndFHEMApplication.application?.applicationContext!!
-        val allRoomsList = deviceListService.getAllRoomsDeviceList(Optional.absent(), context)
+        val allRoomsList = deviceListService.getAllRoomsDeviceList()
         return allRoomsList.filter(context, {
             (toComparable(it.name).contains(comparableQuery)
                     || toComparable(it.aliasOrName).contains(comparableQuery)

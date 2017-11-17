@@ -114,7 +114,7 @@ public class ExternalApiService extends Service {
             final ExternalApiService externalApiService = externalApiServiceWeakReference.get();
             switch (msg.what) {
                 case ROOM_LIST:
-                    ArrayList<String> deviceNames = externalApiService.deviceListService.getAvailableDeviceNames(Optional.<String>absent(), externalApiService);
+                    ArrayList<String> deviceNames = externalApiService.deviceListService.getAvailableDeviceNames(Optional.<String>absent());
                     externalApiService.replyTo(msg, deviceNames);
 
                     break;

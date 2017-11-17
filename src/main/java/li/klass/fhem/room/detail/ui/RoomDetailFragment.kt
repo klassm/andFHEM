@@ -26,7 +26,6 @@ package li.klass.fhem.room.detail.ui
 
 import android.content.Context
 import android.os.Bundle
-import com.google.common.base.Optional
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
@@ -72,7 +71,7 @@ class RoomDetailFragment : DeviceListFragment() {
         }
     }
 
-    override fun getRoomDeviceListForUpdate(context: Context) = deviceListService.getDeviceListForRoom(roomName!!, Optional.absent(), context)
+    override fun getRoomDeviceListForUpdate(context: Context) = deviceListService.getDeviceListForRoom(roomName!!)
 
     override fun executeRemoteUpdate(context: Context) {
         val name = roomName ?: return

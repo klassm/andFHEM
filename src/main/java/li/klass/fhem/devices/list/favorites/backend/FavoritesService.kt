@@ -26,7 +26,6 @@ package li.klass.fhem.devices.list.favorites.backend
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.common.base.Optional
 import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.FhemDevice
@@ -84,7 +83,7 @@ constructor(val deviceListService: DeviceListService,
      * @return favorite [RoomDeviceList]
      */
     fun getFavorites(context: Context): RoomDeviceList {
-        val allRoomsDeviceList = deviceListService.getAllRoomsDeviceList(Optional.absent(), context)
+        val allRoomsDeviceList = deviceListService.getAllRoomsDeviceList()
         val favoritesList = RoomDeviceList("favorites")
 
         val favoriteDeviceNames = getPreferences(context).all.keys

@@ -33,7 +33,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_name_selection.view.*
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.coroutines.experimental.android.UI
@@ -124,8 +123,8 @@ abstract class DeviceNameListFragment : BaseFragment() {
                     myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }
                 val deviceList = when {
-                    roomName != null -> deviceListService.getDeviceListForRoom(roomName!!, Optional.absent(), myActivity)
-                    else -> deviceListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
+                    roomName != null -> deviceListService.getDeviceListForRoom(roomName!!)
+                    else -> deviceListService.getAllRoomsDeviceList()
                 }.filter(myActivity, deviceFilter::isSelectable)
 
                 val elements = viewableElementsCalculator.calculateElements(myActivity, deviceList)

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.update.backend
 
+import android.app.Application
 import android.content.Context
 import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
@@ -49,20 +50,21 @@ constructor(
         private val connectionService: ConnectionService,
         private val deviceListParser: DeviceListParser,
         private val deviceListHolderService: DeviceListHolderService,
-        private val deviceListUpdateService: DeviceListUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val application: Application
 ) : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
 
-    fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>, context: Context) {
+    fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>) {
 
-        val deviceOptional = getDeviceForName<FhemDevice>(deviceName, Optional.absent<String>(), context)
+        val deviceOptional = getDeviceForName<FhemDevice>(deviceName)
         if (!deviceOptional.isPresent) {
             return
         }
 
         val device = deviceOptional.get()
-        deviceListParser.fillDeviceWith(device, updateMap, context)
+        deviceListParser.fillDeviceWith(device, updateMap, applicationContext)
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.name, updateMap.size)
     }
@@ -75,11 +77,11 @@ constructor(
      * @return found device or null
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : FhemDevice> getDeviceForName(deviceName: String?, connectionId: Optional<String>, context: Context): Optional<T> {
+    fun <T : FhemDevice> getDeviceForName(deviceName: String?, connectionId: String? = null): Optional<T> {
         if (deviceName == null) {
             return Optional.absent<T>()
         }
-        return Optional.fromNullable(getAllRoomsDeviceList(connectionId, context).getDeviceFor<FhemDevice>(deviceName) as T?)
+        return Optional.fromNullable(getAllRoomsDeviceList(connectionId).getDeviceFor<FhemDevice>(deviceName) as T?)
     }
 
     /**
@@ -88,9 +90,9 @@ constructor(
 
      * @return [RoomDeviceList] containing all devices
      */
-    fun getAllRoomsDeviceList(connectionId: Optional<String>, context: Context): RoomDeviceList {
-        val originalRoomDeviceList = getRoomDeviceList(connectionId, context)
-        return RoomDeviceList(originalRoomDeviceList.orNull(), context)
+    fun getAllRoomsDeviceList(connectionId: String? = null): RoomDeviceList {
+        val originalRoomDeviceList = getRoomDeviceList(connectionId)
+        return RoomDeviceList(originalRoomDeviceList.orNull(), applicationContext)
     }
 
     /**
@@ -103,11 +105,9 @@ constructor(
      * this method from client code!
 
      * @return Currently cached [li.klass.fhem.domain.core.RoomDeviceList].
-     * *
-     * @param context context
      */
-    fun getRoomDeviceList(connectionId: Optional<String>, context: Context) =
-            deviceListHolderService.getCachedRoomDeviceListMap(connectionId, context)
+    fun getRoomDeviceList(connectionId: String? = null): Optional<RoomDeviceList> =
+            deviceListHolderService.getCachedRoomDeviceListMap(Optional.fromNullable(connectionId), applicationContext)
 
     fun resetUpdateProgress(context: Context) {
         LOG.debug("resetUpdateProgress()")
@@ -115,9 +115,9 @@ constructor(
         sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context)
     }
 
-    fun getAvailableDeviceNames(connectionId: Optional<String>, context: Context): ArrayList<String> {
+    fun getAvailableDeviceNames(connectionId: Optional<String>): ArrayList<String> {
         val deviceNames = newArrayList<String>()
-        val allRoomsDeviceList = getAllRoomsDeviceList(connectionId, context)
+        val allRoomsDeviceList = getAllRoomsDeviceList(connectionId.orNull())
 
         for (device in allRoomsDeviceList.allDevices) {
             deviceNames.add(device.name + "|" +
@@ -136,18 +136,16 @@ constructor(
     /**
      * Retrieves a list of all room names.
 
-     * @param context context
-     * *
      * @return list of all room names
      */
-    fun getRoomNameList(connectionId: Optional<String>, context: Context): Set<String> {
-        val roomDeviceList = getRoomDeviceList(connectionId, context)
+    fun getRoomNameList(connectionId: String? = null): Set<String> {
+        val roomDeviceList = getRoomDeviceList(connectionId)
         if (!roomDeviceList.isPresent) return emptySet()
 
         val roomNames = Sets.newHashSet<String>()
         for (device in roomDeviceList.get().allDevices) {
             val type = getDeviceTypeFor(device) ?: continue
-            if (device.isSupported && connectionService.mayShowInCurrentConnectionType(type, context) && type != AT) {
+            if (device.isSupported && connectionService.mayShowInCurrentConnectionType(type, applicationContext) && type != AT) {
 
                 roomNames.addAll(device.rooms)
             }
@@ -163,32 +161,32 @@ constructor(
      * *
      * @return found [RoomDeviceList] or null
      */
-    fun getDeviceListForRoom(roomName: String, connectionId: Optional<String>, context: Context): RoomDeviceList {
+    fun getDeviceListForRoom(roomName: String, connectionId: String? = null): RoomDeviceList {
         val roomDeviceList = RoomDeviceList(roomName)
 
-        val allRoomDeviceList = getRoomDeviceList(connectionId, context)
+        val allRoomDeviceList = getRoomDeviceList(connectionId)
         if (allRoomDeviceList.isPresent) {
-            for (device in allRoomDeviceList.get().allDevices) {
-                if (device.isInRoom(roomName)) {
-                    roomDeviceList.addDevice(device, context)
-                }
-            }
+            allRoomDeviceList.get().allDevices
+                    .filter { it.isInRoom(roomName) }
+                    .forEach { roomDeviceList.addDevice(it, applicationContext) }
         }
 
         return roomDeviceList
     }
 
-    fun checkForCorruptedDeviceList(context: Context) {
-        val connections = connectionService.listAll(context)
+    fun checkForCorruptedDeviceList() {
+        val connections = connectionService.listAll(applicationContext)
                 .filter { it !is DummyServerSpec }
         connections.forEach { connection ->
             val connectionId = Optional.of(connection.id)
-            val corrupted = deviceListHolderService.isCorrupted(connectionId, context)
+            val corrupted = deviceListHolderService.isCorrupted(connectionId, applicationContext)
             if (corrupted) {
                 deviceListUpdateService.updateAllDevices(connection.id)
             }
         }
     }
+
+    private val applicationContext: Context get() = application.applicationContext
 
     companion object {
 

@@ -58,8 +58,8 @@ class DeviceListUpdateService @Inject constructor(
         })
     }
 
-    fun getLastUpdate(connectionId: Optional<String>, context: Context): DateTime =
-            deviceListHolderService.getLastUpdate(connectionId, context)
+    fun getLastUpdate(connectionId: String?): DateTime =
+            deviceListHolderService.getLastUpdate(Optional.fromNullable(connectionId), applicationContext)
 
     private fun update(context: Context, connectionId: Optional<String>, result: Optional<RoomDeviceList>): Boolean {
         var success = false

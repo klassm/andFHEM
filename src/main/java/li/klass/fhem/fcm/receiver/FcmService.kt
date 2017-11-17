@@ -43,7 +43,7 @@ class FcmService @Inject constructor(
             return
         }
 
-        val decrypted = fcmDecryptor.decrypt(data, context)
+        val decrypted = fcmDecryptor.decrypt(data)
 
         val type = decrypted["type"]
         if ("message".equals(type!!, ignoreCase = true)) {

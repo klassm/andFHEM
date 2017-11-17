@@ -2,7 +2,6 @@ package li.klass.fhem.appindex
 
 import android.app.IntentService
 import android.content.Intent
-import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.update.backend.DeviceListService
 import org.slf4j.LoggerFactory
@@ -26,8 +25,8 @@ class AppIndexIntentService : IntentService(AppIndexIntentService::class.java.na
     public override fun onHandleIntent(intent: Intent?) {
         LOGGER.info("onHandleIntent - updating index")
 
-        val deviceList = deviceListService.getAllRoomsDeviceList(Optional.absent<String>(), this)
-        val roomNames = deviceListService.getRoomNameList(Optional.absent<String>(), this)
+        val deviceList = deviceListService.getAllRoomsDeviceList()
+        val roomNames = deviceListService.getRoomNameList()
 
         val indexableRoomNames = roomNames.map { roomName -> indexableCreator.indexableFor(this, roomName) }
         val indexableDevices = deviceList.allDevices.map { device -> indexableCreator.indexableFor(this, device) }

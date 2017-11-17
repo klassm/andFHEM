@@ -122,7 +122,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         if (shouldSetDeviceName()) {
             String deviceName = deviceNameFrom(widgetConfiguration);
 
-            FhemDevice device = getDeviceFor(deviceName, widgetConfiguration.connectionId, context);
+            FhemDevice device = getDeviceFor(deviceName, widgetConfiguration.connectionId);
             if (device == null) return null;
 
             views.setTextViewText(R.id.deviceName, device.getWidgetName());
@@ -139,8 +139,8 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         return true;
     }
 
-    private FhemDevice getDeviceFor(String deviceName, Optional<String> connectionId, Context context) {
-        return deviceListService.getDeviceForName(deviceName, connectionId, context).orNull();
+    private FhemDevice getDeviceFor(String deviceName, Optional<String> connectionId) {
+        return deviceListService.getDeviceForName(deviceName, connectionId.orNull()).orNull();
     }
 
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration, Context context) {
@@ -167,7 +167,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Optional<FhemDevice> device = deviceListService.getDeviceForName(payload[0], Optional.<String>absent(), context);
+        Optional<FhemDevice> device = deviceListService.getDeviceForName(payload[0], null);
         if (device.isPresent()) {
             createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device.get(), callback);
         } else {
@@ -201,7 +201,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     protected void fillWidgetView(Context context, RemoteViews view,
                                   WidgetConfiguration widgetConfiguration) {
-        FhemDevice device = getDeviceFor(deviceNameFrom(widgetConfiguration), widgetConfiguration.connectionId, context);
+        FhemDevice device = getDeviceFor(deviceNameFrom(widgetConfiguration), widgetConfiguration.connectionId);
         if (device != null) {
             view.setTextViewText(R.id.deviceName, device.getWidgetName());
             fillWidgetView(context, view, device, widgetConfiguration);

@@ -122,7 +122,7 @@ class DeviceDetailFragment : BaseFragment() {
                     deviceListUpdateService.updateSingleDevice(name, connectionId)
                     appWidgetUpdateService.updateAllWidgets()
                 }
-                deviceListService.getDeviceForName<FhemDevice>(name, Optional.fromNullable(connectionId), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(name, connectionId)
             }.await()
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             if (device.isPresent) {

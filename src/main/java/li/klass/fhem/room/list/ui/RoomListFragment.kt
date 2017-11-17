@@ -142,7 +142,7 @@ open class RoomListFragment : BaseFragment() {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
-                roomListService.sortedRoomNameList(context = myActivity)
+                roomListService.sortedRoomNameList()
             }.await()
             handleUpdateData(roomNameList)
         }

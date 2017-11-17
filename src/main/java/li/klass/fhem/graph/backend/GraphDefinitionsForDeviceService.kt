@@ -41,7 +41,7 @@ class GraphDefinitionsForDeviceService @Inject constructor(
         private val gPlotHolder: GPlotHolder) {
 
     fun graphDefinitionsFor(context: Context, device: XmlListDevice, connectionId: Optional<String>): Set<SvgGraphDefinition> {
-        val allDevices = deviceListService.getAllRoomsDeviceList(connectionId, context).allDevicesAsXmllistDevice
+        val allDevices = deviceListService.getAllRoomsDeviceList(connectionId.orNull()).allDevicesAsXmllistDevice
 
         LOGGER.info("graphDefinitionsFor(name={},connection={})", device.name, connectionId.or("--"))
         val graphDefinitions = getGraphDefinitionsFor(allDevices, device, context)
