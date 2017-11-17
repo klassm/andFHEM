@@ -322,11 +322,13 @@ class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             nav_drawer.menu.removeItem(R.id.menu_premium)
         }
 
-        licenseService.isPremium({ isPremium ->
-            if (!isPremium) {
-                nav_drawer.menu.removeItem(R.id.fcm_history)
+        licenseService.isPremium(object : LicenseService.IsPremiumListener {
+            override fun isPremium(isPremium: Boolean) {
+                if (!isPremium) {
+                    nav_drawer.menu.removeItem(R.id.fcm_history)
+                }
             }
-        }, this)
+        })
 
         initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
                 Runnable {

@@ -47,7 +47,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val context = mock<Context>()
         val emptyRoomDeviceList = RoomDeviceList("bla")
         val connectionService = mock<ConnectionService> {
-            on { getSelectedId(context) } doReturn "123"
+            on { getSelectedId() } doReturn "123"
         }
         val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList("123") } doReturn emptyRoomDeviceList
@@ -71,7 +71,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val deviceList = RoomDeviceList("bla")
                 .addDevice(device, context)
         val connectionService = mock<ConnectionService> {
-            on { getSelectedId(context) } doReturn "123"
+            on { getSelectedId() } doReturn "123"
         }
         val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
@@ -103,8 +103,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
-            on { getPortOfSelectedConnection(context) } doReturn port
-            on { getSelectedId(context) } doReturn "123"
+            on { getPortOfSelectedConnection() } doReturn port
+            on { getSelectedId() } doReturn "123"
         }
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
@@ -134,8 +134,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
-            on { getPortOfSelectedConnection(context) } doReturn port
-            on { getSelectedId(context) } doReturn "123"
+            on { getPortOfSelectedConnection() } doReturn port
+            on { getSelectedId() } doReturn "123"
         }
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))
@@ -165,7 +165,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
-            on { getSelectedId(context) } doReturn "123"
+            on { getSelectedId() } doReturn "123"
         }
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService, applicationFor(context))

@@ -64,7 +64,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 @Category(DeviceTestBase.class)
@@ -107,7 +106,7 @@ public abstract class DeviceXMLParsingBase {
 
         mockStrings();
 
-        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class), eq(context));
+        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class));
 
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;

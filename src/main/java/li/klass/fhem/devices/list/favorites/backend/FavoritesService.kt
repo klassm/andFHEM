@@ -55,7 +55,7 @@ constructor(val deviceListService: DeviceListService,
      * @return the [android.content.SharedPreferences] object.
      */
     private fun getPreferences(context: Context): SharedPreferences {
-        val name = preferenceNameFor(connectionService.getSelectedId(context))
+        val name = preferenceNameFor(connectionService.getSelectedId())
         return getPreferencesFor(context, name)
     }
 
@@ -63,7 +63,7 @@ constructor(val deviceListService: DeviceListService,
             sharedPreferencesService.getPreferences(name, context)
 
     fun getPreferenceNames(context: Context): Set<String> =
-            from(connectionService.listAll(context)).transform { input -> preferenceNameFor(input!!.id) }.toSet()
+            from(connectionService.listAll()).transform { input -> preferenceNameFor(input!!.id) }.toSet()
 
     private fun preferenceNameFor(id: String): String = PREFERENCES_NAME + "_" + id
 

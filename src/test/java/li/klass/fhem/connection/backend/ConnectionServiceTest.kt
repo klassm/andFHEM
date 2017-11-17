@@ -89,7 +89,7 @@ class ConnectionServiceTest {
         given(sharedPreferences.getString("a", null)).willReturn(ConnectionService.serialize(spec))
 
         // when
-        val port = connectionService.getPortOfSelectedConnection(context)
+        val port = connectionService.getPortOfSelectedConnection()
 
         // then
         assertThat(port).isEqualTo(expectedPort)

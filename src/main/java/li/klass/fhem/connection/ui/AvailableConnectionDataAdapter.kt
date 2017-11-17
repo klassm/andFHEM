@@ -83,7 +83,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
         val myContext = context
         async(UI) {
             val (all, selected) = bg {
-                Pair(connectionService.listAll(myContext), connectionService.getSelectedId(myContext))
+                Pair(connectionService.listAll(), connectionService.getSelectedId())
             }.await()
 
             updateData(all.toMutableList())
@@ -118,7 +118,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
             val myContext = context
             async(UI) {
                 bg {
-                    connectionService.setSelectedId(data[pos].id, myContext)
+                    connectionService.setSelectedId(data[pos].id)
                     if (currentlySelectedPosition != -1) {
                         myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, false))
                     }

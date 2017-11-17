@@ -178,7 +178,7 @@ class ConnectionListFragment : BaseFragment() {
             CONTEXT_MENU_DELETE -> {
                 async(UI) {
                     bg {
-                        connectionService.delete(clickedConnectionId!!, myActivity)
+                        connectionService.delete(clickedConnectionId!!)
                     }.await()
                     update(false)
                 }
@@ -197,7 +197,7 @@ class ConnectionListFragment : BaseFragment() {
 
         async(UI) {
             val connectionList = bg {
-                connectionService.listAll(myActivity)
+                connectionService.listAll()
             }.await()
 
             val nonDummyConnections = connectionList.filterNot { it.serverType == ServerType.DUMMY }

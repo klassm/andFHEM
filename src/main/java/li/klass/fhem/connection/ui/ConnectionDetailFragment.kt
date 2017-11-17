@@ -202,9 +202,9 @@ class ConnectionDetailFragment : BaseFragment() {
         async(UI) {
             bg {
                 if (isModify) {
-                    connectionService.update(connectionId!!, saveData, myContext)
+                    connectionService.update(connectionId!!, saveData)
                 } else {
-                    connectionService.create(saveData, myContext)
+                    connectionService.create(saveData)
                 }
             }.await()
             activity?.sendBroadcast(Intent(Actions.BACK))
@@ -260,7 +260,7 @@ class ConnectionDetailFragment : BaseFragment() {
         val myContext = context ?: return
         async(UI) {
             val result = bg {
-                connectionService.forId(connectionId!!, myContext)
+                connectionService.forId(connectionId!!)
             }.await()
             if (result == null) {
                 LOG.error("update - cannot find server with ID $connectionId")

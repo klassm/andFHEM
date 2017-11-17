@@ -90,13 +90,13 @@ public class FloorplanFragment extends AbstractWebViewFragment {
 
     @Override
     protected String getLoadUrl() {
-        FHEMServerSpec server = connectionService.getCurrentServer(getActivity());
+        FHEMServerSpec server = connectionService.getCurrentServer();
         return server.getUrl() + "/floorplan/" + deviceName;
     }
 
     @Override
     protected Optional<String> getAlternateLoadUrl() {
-        String url = connectionService.getCurrentServer(getActivity()).getAlternateUrl();
+        String url = connectionService.getCurrentServer().getAlternateUrl();
         if (url == null) {
             return Optional.absent();
         }

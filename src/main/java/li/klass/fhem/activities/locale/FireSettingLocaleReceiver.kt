@@ -60,7 +60,7 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
             }
         } else if (Actions.CONNECTION_UPDATE == action) {
             doAsync {
-                connectionsService.setSelectedId(connectionId, context)
+                connectionsService.setSelectedId(connectionId)
             }
         }
     }

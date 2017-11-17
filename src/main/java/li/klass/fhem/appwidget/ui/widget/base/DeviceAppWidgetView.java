@@ -196,7 +196,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     @NonNull
     protected Optional<String> getCurrentConnectionId(Context context) {
-        return Optional.of(connectionService.getSelectedId(context));
+        return Optional.of(connectionService.getSelectedId());
     }
 
     protected void fillWidgetView(Context context, RemoteViews view,

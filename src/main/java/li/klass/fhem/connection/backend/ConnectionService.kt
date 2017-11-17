@@ -25,6 +25,7 @@
 package li.klass.fhem.connection.backend
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.common.base.Optional
@@ -47,18 +48,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ConnectionService @Inject
-constructor(val applicationProperties: ApplicationProperties,
-            val licenseIntentService: LicenseService) {
-
-    private fun getTestData(context: Context): FHEMServerSpec? {
-        var testData: FHEMServerSpec? = null
-        if (LicenseService.isDebug(context)) {
-            testData = DummyServerSpec(TEST_DATA_ID, "test.xml")
-            testData.name = "TestData"
-            testData.serverType = ServerType.DUMMY
-        }
-        return testData
-    }
+constructor(private val applicationProperties: ApplicationProperties,
+            private val licenseService: LicenseService,
+            private val application: Application) {
 
     private val dummyData: FHEMServerSpec
         get() {
@@ -68,45 +60,59 @@ constructor(val applicationProperties: ApplicationProperties,
             return dummyData
         }
 
-    fun create(saveData: SaveData, context: Context) {
-        if (exists(saveData.name, context)) return
-        licenseIntentService.isPremium({ isPremium ->
-            if (isPremium || getCountWithoutDummy(context) < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+    private fun getTestData(): FHEMServerSpec? {
+        var testData: FHEMServerSpec? = null
+        if (licenseService.isDebug()) {
+            testData = DummyServerSpec(TEST_DATA_ID, "test.xml")
+            testData.name = "TestData"
+            testData.serverType = ServerType.DUMMY
+        }
+        return testData
+    }
 
-                val server = FHEMServerSpec(newUniqueId(context))
-                saveData.fillServer(server)
-                saveToPreferences(server, context)
+    fun create(saveData: SaveData) {
+        if (exists(saveData.name)) return
+        licenseService.isPremium(object : LicenseService.IsPremiumListener {
+            override fun isPremium(isPremium: Boolean) {
+                if (isPremium || getCountWithoutDummy() < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+
+                    val server = FHEMServerSpec(newUniqueId())
+                    saveData.fillServer(server)
+                    saveToPreferences(server)
+                }
             }
-        }, context)
+        })
     }
 
-    fun update(id: String, saveData: SaveData, context: Context) {
-        val server = forId(id, context) ?: return
+    fun update(id: String, saveData: SaveData) {
+        val server = forId(id) ?: return
         saveData.fillServer(server)
-        saveToPreferences(server, context)
+        saveToPreferences(server)
     }
 
-    fun exists(id: Optional<String>, context: Context): Boolean =
-            !id.isPresent || exists(id.get(), context)
+    fun exists(id: Optional<String>): Boolean =
+            !id.isPresent || exists(id.get())
 
-    fun exists(id: String?, context: Context): Boolean =
-            mayShowDummyConnections(context, getAll(context)) && (DUMMY_DATA_ID == id || TEST_DATA_ID == id) || getPreferences(context)!!.contains(id)
+    fun exists(id: String?): Boolean =
+            mayShowDummyConnections(getAll()) && (DUMMY_DATA_ID == id
+                    || TEST_DATA_ID == id)
+                    || getPreferences()!!.contains(id)
 
-    private fun mayShowDummyConnections(context: Context, all: List<FHEMServerSpec>): Boolean {
+    private fun mayShowDummyConnections(all: List<FHEMServerSpec>): Boolean {
         val nonDummies = from(all)
                 .filter(FHEMServerSpec.notInstanceOf(DummyServerSpec::class.java))
                 .toList()
-        return nonDummies.isEmpty() || LicenseService.isDebug(context)
+        return nonDummies.isEmpty() || licenseService.isDebug()
     }
 
-    private fun getCountWithoutDummy(context: Context): Int {
-        val all = getPreferences(context)!!.all ?: return 0
+    private fun getCountWithoutDummy(): Int {
+        val all = getPreferences()!!.all ?: return 0
         return all.size
     }
 
-    private fun newUniqueId(context: Context): String {
+    private fun newUniqueId(): String {
         var id: String? = null
-        while (id == null || exists(id, context) || DUMMY_DATA_ID == id
+        while (id == null || exists(id) || DUMMY_DATA_ID == id
                 || TEST_DATA_ID == id || MANAGEMENT_DATA_ID == id) {
             id = UUID.randomUUID().toString()
         }
@@ -114,40 +120,40 @@ constructor(val applicationProperties: ApplicationProperties,
         return id
     }
 
-    private fun saveToPreferences(server: FHEMServerSpec, context: Context) {
+    private fun saveToPreferences(server: FHEMServerSpec) {
         if (server.serverType == ServerType.DUMMY) return
 
-        getPreferences(context)!!.edit().putString(server.id, serialize(server)).apply()
+        getPreferences()!!.edit().putString(server.id, serialize(server)).apply()
     }
 
-    private fun getPreferences(context: Context): SharedPreferences? =
-            context.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE)
+    private fun getPreferences(): SharedPreferences? =
+            applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE)
 
-    fun forId(id: String, context: Context): FHEMServerSpec? {
+    fun forId(id: String): FHEMServerSpec? {
         if (DUMMY_DATA_ID == id) return dummyData
-        val testData = getTestData(context)
+        val testData = getTestData()
         if (TEST_DATA_ID == id && testData != null) return testData
 
-        val json = getPreferences(context)!!.getString(id, null) ?: return null
+        val json = getPreferences()!!.getString(id, null) ?: return null
         return deserialize(json)
     }
 
-    fun delete(id: String, context: Context): Boolean {
-        if (!exists(id, context)) return false
+    fun delete(id: String): Boolean {
+        if (!exists(id)) return false
 
-        getPreferences(context)!!.edit().remove(id).apply()
+        getPreferences()!!.edit().remove(id).apply()
 
         return true
     }
 
 
-    fun listAll(context: Context): ArrayList<FHEMServerSpec> =
-            ArrayList(getAllIncludingDummies(context))
+    fun listAll(): ArrayList<FHEMServerSpec> =
+            ArrayList(getAllIncludingDummies())
 
-    private fun getAll(context: Context): List<FHEMServerSpec> {
+    private fun getAll(): List<FHEMServerSpec> {
         val servers = newArrayList<FHEMServerSpec>()
 
-        val preferences = getPreferences(context) ?: return servers
+        val preferences = getPreferences() ?: return servers
 
         val all = preferences.all ?: return servers
 
@@ -159,39 +165,39 @@ constructor(val applicationProperties: ApplicationProperties,
         return servers
     }
 
-    private fun getAllIncludingDummies(context: Context): List<FHEMServerSpec> {
-        val all = getAll(context)
+    private fun getAllIncludingDummies(): List<FHEMServerSpec> {
+        val all = getAll()
         var builder: ImmutableList.Builder<FHEMServerSpec> = ImmutableList.builder<FHEMServerSpec>()
                 .addAll(all)
-        if (mayShowDummyConnections(context, all)) {
+        if (mayShowDummyConnections(all)) {
             builder = builder.add(dummyData)
-            val testData = getTestData(context)
+            val testData = getTestData()
             if (testData != null) builder = builder.add(testData)
         }
         return builder.build()
     }
 
-    fun mayShowInCurrentConnectionType(deviceType: DeviceType, context: Context): Boolean {
+    fun mayShowInCurrentConnectionType(deviceType: DeviceType): Boolean {
         val visibility = deviceType.visibility ?: return true
 
-        val serverType = getCurrentServer(context)!!.serverType
+        val serverType = getCurrentServer()!!.serverType
         if (visibility == DeviceVisibility.NEVER) return false
 
         val showOnlyIn = visibility.showOnlyIn
         return showOnlyIn == null || serverType == showOnlyIn
     }
 
-    fun getCurrentServer(context: Context): FHEMServerSpec? =
-            getServerFor(context, Optional.absent())
+    fun getCurrentServer(): FHEMServerSpec? =
+            getServerFor(Optional.absent())
 
-    fun getServerFor(context: Context, id: Optional<String>): FHEMServerSpec? =
-            forId(id.or(getSelectedId(context)), context)
+    fun getServerFor(id: Optional<String>): FHEMServerSpec? =
+            forId(id.or(getSelectedId()))
 
-    fun getSelectedId(context: Context): String {
+    fun getSelectedId(): String {
         val id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID)
 
-        if (!exists(id, context)) {
-            val all = getAllIncludingDummies(context)
+        if (!exists(id)) {
+            val all = getAllIncludingDummies()
             val connection = all[0]
             return connection.id
         }
@@ -199,14 +205,14 @@ constructor(val applicationProperties: ApplicationProperties,
         return id!!
     }
 
-    fun setSelectedId(id: String, context: Context) {
+    fun setSelectedId(id: String) {
         var idToSet = id
-        if (!exists(id, context)) idToSet = DUMMY_DATA_ID
+        if (!exists(id)) idToSet = DUMMY_DATA_ID
         applicationProperties.setSharedPreference(SELECTED_CONNECTION, idToSet)
     }
 
-    fun getPortOfSelectedConnection(context: Context): Int {
-        val spec = getCurrentServer(context)
+    fun getPortOfSelectedConnection(): Int {
+        val spec = getCurrentServer()
         val serverType = spec!!.serverType
 
         return when (serverType) {
@@ -234,8 +240,9 @@ constructor(val applicationProperties: ApplicationProperties,
         return if (url.startsWith("http://")) {
             80
         } else 0
-
     }
+
+    private val applicationContext: Context get() = application.applicationContext
 
     companion object {
         val DUMMY_DATA_ID = "-1"

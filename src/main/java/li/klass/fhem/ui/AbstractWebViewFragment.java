@@ -135,7 +135,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
             @SuppressWarnings("ConstantConditions")
             @Override
             public void onReceivedHttpAuthRequest(WebView view, @NotNull HttpAuthHandler handler, String host, String realm) {
-                FHEMServerSpec currentServer = connectionService.getCurrentServer(getActivity());
+                FHEMServerSpec currentServer = connectionService.getCurrentServer();
                 String url = currentServer.getUrl();
                 String alternativeUrl = trimToNull(currentServer.getAlternateUrl());
                 try {
@@ -171,7 +171,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                 if ("about:blank".equalsIgnoreCase(url)) {
                     Optional<String> alternativeUrl = getAlternateLoadUrl();
                     if (alternativeUrl.isPresent()) {
-                        webView.loadUrl(handleUrl(connectionService.getCurrentServer(getContext()).getAlternateUrl(), alternativeUrl.get()));
+                        webView.loadUrl(handleUrl(connectionService.getCurrentServer().getAlternateUrl(), alternativeUrl.get()));
                     }
                 } else {
                     onPageLoadFinishedCallback(view, url);
@@ -210,7 +210,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
         WebView webView = (WebView) getView().findViewById(R.id.webView);
 
-        FHEMServerSpec currentServer = connectionService.getCurrentServer(getActivity());
+        FHEMServerSpec currentServer = connectionService.getCurrentServer();
         String url = currentServer.getUrl();
         try {
             if (url != null) {
@@ -223,7 +223,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
                 }
             }
 
-            webView.loadUrl(handleUrl(connectionService.getCurrentServer(getContext()).getUrl(), getLoadUrl()));
+            webView.loadUrl(handleUrl(connectionService.getCurrentServer().getUrl(), getLoadUrl()));
         } catch (MalformedURLException e) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection);

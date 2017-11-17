@@ -145,7 +145,7 @@ constructor(
         val roomNames = Sets.newHashSet<String>()
         for (device in roomDeviceList.get().allDevices) {
             val type = getDeviceTypeFor(device) ?: continue
-            if (device.isSupported && connectionService.mayShowInCurrentConnectionType(type, applicationContext) && type != AT) {
+            if (device.isSupported && connectionService.mayShowInCurrentConnectionType(type) && type != AT) {
 
                 roomNames.addAll(device.rooms)
             }
@@ -175,7 +175,7 @@ constructor(
     }
 
     fun checkForCorruptedDeviceList() {
-        val connections = connectionService.listAll(applicationContext)
+        val connections = connectionService.listAll()
                 .filter { it !is DummyServerSpec }
         connections.forEach { connection ->
             val connectionId = Optional.of(connection.id)

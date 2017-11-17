@@ -51,7 +51,7 @@ class DeviceListHolderService @Inject constructor(
             getCacheFor(connectionId, context).getCachedRoomDeviceListMap(context)
 
     private fun getCacheFor(connectionId: Optional<String>, context: Context): DeviceListCache {
-        val toLoad = if (connectionService.exists(connectionId, context)) connectionId else Optional.absent()
+        val toLoad = if (connectionService.exists(connectionId)) connectionId else Optional.absent()
         return getCacheForConnectionId(toLoad, context)
     }
 
@@ -59,7 +59,7 @@ class DeviceListHolderService @Inject constructor(
             getCacheFor(connectionId, context).getLastUpdate(context)
 
     private fun getCacheForConnectionId(connectionId: Optional<String>, context: Context): DeviceListCache {
-        val id = connectionId.or(connectionService.getSelectedId(context))
+        val id = connectionId.or(connectionService.getSelectedId())
         if (!cache.containsKey(id)) {
             cache.put(id, DeviceListCache(id, applicationProperties, connectionService, sharedPreferencesService))
         }

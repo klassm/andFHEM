@@ -47,7 +47,7 @@ public class DataConnectionSwitch {
     }
 
     public Optional<FHEMConnection> getProviderFor(Context context, Optional<String> connectionId) {
-        if (connectionId.isPresent() && !connectionService.exists(connectionId, context)) {
+        if (connectionId.isPresent() && !connectionService.exists(connectionId)) {
             return getProviderFor(context, connectionId);
         }
         FHEMServerSpec serverSpec = getSpecFor(context, connectionId);
@@ -56,7 +56,7 @@ public class DataConnectionSwitch {
     }
 
     private FHEMServerSpec getSpecFor(Context context, Optional<String> connectionId) {
-        return connectionService.getServerFor(context, connectionId);
+        return connectionService.getServerFor(connectionId);
     }
 
     public FHEMConnection getProviderFor(Context context) {

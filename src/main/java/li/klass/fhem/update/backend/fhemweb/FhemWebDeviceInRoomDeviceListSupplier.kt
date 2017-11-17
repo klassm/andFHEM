@@ -48,7 +48,7 @@ class FhemWebDeviceInRoomDeviceListSupplier
 
     override fun get(): FHEMWEBDevice? {
         val context = application.applicationContext
-        val deviceList = deviceListService.getAllRoomsDeviceList(connectionService.getSelectedId(context))
+        val deviceList = deviceListService.getAllRoomsDeviceList(connectionService.getSelectedId())
         val fhemWebDevices = deviceList.getDevicesOfType<FhemDevice>(DeviceType.FHEMWEB)
         return getIn(fhemWebDevices)
     }
@@ -61,7 +61,7 @@ class FhemWebDeviceInRoomDeviceListSupplier
                 stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null))
 
         if (qualifierFromPreferences == null) {
-            val port = connectionService.getPortOfSelectedConnection(application.applicationContext)
+            val port = connectionService.getPortOfSelectedConnection()
             val match = from(devices).filter(predicateFHEMWEBDeviceForPort(port)).first()
             if (match.isPresent) {
                 return match.get() as FHEMWEBDevice
