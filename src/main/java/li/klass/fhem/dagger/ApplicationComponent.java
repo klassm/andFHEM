@@ -129,7 +129,7 @@ import li.klass.fhem.settings.SettingsFragment;
 import li.klass.fhem.timer.ui.TimerDetailFragment;
 import li.klass.fhem.timer.ui.TimerListFragment;
 import li.klass.fhem.ui.WebViewFragment;
-import li.klass.fhem.update.backend.RoomListUpdateService;
+import li.klass.fhem.update.backend.DeviceListUpdateService;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
 import li.klass.fhem.update.backend.group.GroupProvider;
 import li.klass.fhem.update.backend.xmllist.XmlListParser;
@@ -296,7 +296,7 @@ public interface ApplicationComponent {
 
     void inject(DeviceNameSelectionNavigationFragment object);
 
-    void inject(RoomListUpdateService object);
+    void inject(DeviceListUpdateService object);
 
 
     void inject(AppIndexIntentService object);

@@ -38,7 +38,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
@@ -85,9 +85,9 @@ public abstract class ConvenientIntentService extends IntentService {
     private void handleTaskInternal(Intent intent) {
         ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
         boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
-        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.Companion.getNEVER_UPDATE_PERIOD());
+        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, DeviceListService.Companion.getNEVER_UPDATE_PERIOD());
         if (doRefresh) {
-            updatePeriod = RoomListService.Companion.getALWAYS_UPDATE_PERIOD();
+            updatePeriod = DeviceListService.Companion.getALWAYS_UPDATE_PERIOD();
         }
 
         try {

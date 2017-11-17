@@ -52,7 +52,7 @@ import li.klass.fhem.appwidget.update.WidgetConfiguration;
 import li.klass.fhem.connection.backend.ConnectionService;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.ui.FragmentType;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
 import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
@@ -67,7 +67,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     public static final String TAG = DeviceAppWidgetView.class.getName();
 
     @Inject
-    public RoomListService roomListService;
+    public DeviceListService deviceListService;
 
     @Inject
     public DeviceConfigurationProvider deviceConfigurationProvider;
@@ -140,7 +140,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     private FhemDevice getDeviceFor(String deviceName, Optional<String> connectionId, Context context) {
-        return roomListService.getDeviceForName(deviceName, connectionId, context).orNull();
+        return deviceListService.getDeviceForName(deviceName, connectionId, context).orNull();
     }
 
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration, Context context) {
@@ -167,7 +167,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Optional<FhemDevice> device = roomListService.getDeviceForName(payload[0], Optional.<String>absent(), context);
+        Optional<FhemDevice> device = deviceListService.getDeviceForName(payload[0], Optional.<String>absent(), context);
         if (device.isPresent()) {
             createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device.get(), callback);
         } else {

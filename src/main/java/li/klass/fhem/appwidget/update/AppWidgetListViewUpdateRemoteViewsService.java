@@ -40,7 +40,7 @@ import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView;
 import li.klass.fhem.appwidget.ui.widget.base.EmptyRemoteViewsFactory;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_TYPE_NAME;
@@ -53,7 +53,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
     public static final String TAG = AppWidgetListViewUpdateRemoteViewsService.class.getName();
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
 
     @Override
     public void onCreate() {
@@ -67,7 +67,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         WidgetType widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME));
         String deviceName = intent.getStringExtra(DEVICE_NAME);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
-        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, connectionId, this);
+        Optional<FhemDevice> device = deviceListService.getDeviceForName(deviceName, connectionId, this);
         if (!device.isPresent()) {
             Log.e(TAG, "device is null, at least in the current connection");
             return null;

@@ -36,7 +36,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
@@ -50,7 +50,7 @@ public class DeviceService {
     CommandExecutionService commandExecutionService;
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
 
     @Inject
     public DeviceService() {
@@ -82,7 +82,7 @@ public class DeviceService {
         commandExecutionService.executeSafely(new Command("delete " + device.getName()), context, new CommandExecutionService.SuccessfulResultListener() {
             @Override
             public void onResult(String result) {
-                Optional<RoomDeviceList> roomDeviceList = roomListService.getRoomDeviceList(Optional.<String>absent(), context);
+                Optional<RoomDeviceList> roomDeviceList = deviceListService.getRoomDeviceList(Optional.<String>absent(), context);
                 if (roomDeviceList.isPresent()) {
                     roomDeviceList.get().removeDevice(device, context);
                 }

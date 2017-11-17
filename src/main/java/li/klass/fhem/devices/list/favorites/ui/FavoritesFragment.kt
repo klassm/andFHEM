@@ -49,6 +49,6 @@ class FavoritesFragment : DeviceListFragment() {
     override fun getRoomDeviceListForUpdate(context: Context) = favoritesService.getFavorites(context)
 
     override fun executeRemoteUpdate(context: Context) {
-        roomListUpdateService.updateAllDevices(Optional.absent(), context)
+        deviceListUpdateService.updateAllDevices(Optional.absent(), context)
     }
 }

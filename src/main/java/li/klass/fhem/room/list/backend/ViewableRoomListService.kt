@@ -26,14 +26,14 @@ package li.klass.fhem.room.list.backend
 
 import android.content.Context
 import com.google.common.base.Optional
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import javax.inject.Inject
 
-class ViewableRoomListService @Inject constructor(private val roomListService: RoomListService,
+class ViewableRoomListService @Inject constructor(private val deviceListService: DeviceListService,
                                                   private val fhemWebConfigurationService: FhemWebConfigurationService) {
     fun sortedRoomNameList(connectionId: String? = null, context: Context): List<String> {
-        val allRooms = roomListService.getRoomNameList(
+        val allRooms = deviceListService.getRoomNameList(
                 connectionId = Optional.fromNullable(connectionId),
                 context = context
         )

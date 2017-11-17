@@ -60,7 +60,7 @@ import li.klass.fhem.graph.backend.GraphEntry
 import li.klass.fhem.graph.backend.GraphService
 import li.klass.fhem.graph.backend.gplot.GPlotSeries
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
 import li.klass.fhem.util.DisplayUtil
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -77,7 +77,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
     private var connectionId: String? = null
 
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
 
     @Inject
     lateinit var graphService: GraphService
@@ -111,7 +111,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         val activityAsContext: Context = this
         async(UI) {
             val device = bg {
-                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), activityAsContext)
+                deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), activityAsContext)
             }.await()
             if (device.isPresent) {
                 readDataAndCreateChart(device.get())

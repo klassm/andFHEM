@@ -38,13 +38,14 @@ import java.io.BufferedOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
-class RoomListCache(private val connectionId: String, internal var applicationProperties: ApplicationProperties, internal var connectionService: ConnectionService, private val sharedPreferencesService: SharedPreferencesService) {
+class DeviceListCache(private val connectionId: String, internal var applicationProperties: ApplicationProperties, internal var connectionService: ConnectionService, private val sharedPreferencesService: SharedPreferencesService) {
     @Volatile private var cachedRoomList: RoomDeviceList? = null
     @Volatile private var fileStoreNotFilled = false
     @Volatile private var excptionDuringLoad = false
     private val lastUpdateProperty = LAST_UPDATE_PROPERTY + "_" + this.connectionId
 
-    @Synchronized fun storeDeviceListMap(roomDeviceList: RoomDeviceList?, context: Context): Boolean {
+    @Synchronized
+    fun storeDeviceListMap(roomDeviceList: RoomDeviceList?, context: Context): Boolean {
         if (roomDeviceList == null) {
             LOG.info("storeDeviceListMap() : won't store device list, as empty")
             return false
@@ -125,12 +126,12 @@ class RoomListCache(private val connectionId: String, internal var applicationPr
     }
 
     private fun getPreferences(context: Context): SharedPreferences =
-            sharedPreferencesService.getPreferences(RoomListService.PREFERENCES_NAME, context)
+            sharedPreferencesService.getPreferences(DeviceListService.PREFERENCES_NAME, context)
 
     fun isCorrupted() = excptionDuringLoad
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(RoomListCache::class.java)
+        private val LOG = LoggerFactory.getLogger(DeviceListCache::class.java)
         val LAST_UPDATE_PROPERTY = "LAST_UPDATE"
     }
 }

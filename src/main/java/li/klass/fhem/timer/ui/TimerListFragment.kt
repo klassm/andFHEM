@@ -45,8 +45,8 @@ import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.update.backend.RoomListService
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUtil
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
@@ -58,9 +58,9 @@ class TimerListFragment : BaseFragment() {
     private var createNewDeviceCalled = false
 
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
@@ -137,9 +137,9 @@ class TimerListFragment : BaseFragment() {
         async(UI) {
             val allRoomsDeviceList = bg {
                 if (refresh) {
-                    roomListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
                 }
-                roomListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
+                deviceListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
 
             }.await()
             adapter?.updateData(allRoomsDeviceList.getDevicesOfType(DeviceType.AT))

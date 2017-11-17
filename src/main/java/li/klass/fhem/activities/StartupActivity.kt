@@ -47,8 +47,8 @@ import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_APPLICATION_START
-import li.klass.fhem.update.backend.RoomListService
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.FhemResultReceiver
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -59,9 +59,9 @@ class StartupActivity : Activity() {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
     @Inject
     lateinit var favoritesService: FavoritesService
     @Inject
@@ -93,7 +93,7 @@ class StartupActivity : Activity() {
 
         async(UI) {
             bg {
-                roomListService.resetUpdateProgress(this@StartupActivity)
+                deviceListService.resetUpdateProgress(this@StartupActivity)
             }.await()
         }
 
@@ -166,11 +166,11 @@ class StartupActivity : Activity() {
         val activityAsContext: Context = this
         async(UI) {
             val result = bg {
-                roomListUpdateService.updateAllDevices(Optional.absent(), activityAsContext)
+                deviceListUpdateService.updateAllDevices(Optional.absent(), activityAsContext)
             }.await()
 
             when (result) {
-                is RoomListUpdateService.UpdateResult.Success -> {
+                is DeviceListUpdateService.UpdateResult.Success -> {
                     Log.d(TAG, "loadDeviceList() : device list was loaded")
                     loadFavorites()
                 }

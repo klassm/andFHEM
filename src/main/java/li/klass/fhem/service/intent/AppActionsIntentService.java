@@ -45,7 +45,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.devices.backend.GenericDeviceService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class AppActionsIntentService extends ConvenientIntentService {
@@ -56,7 +56,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
     ApplicationProperties applicationProperties;
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
 
     @Inject
     GenericDeviceService deviceService;
@@ -78,7 +78,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
             applicationProperties.load();
             return State.SUCCESS;
         } else if (Actions.UPDATE_NEXT_ALARM_CLOCK.equals(action) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Optional<FhemDevice> nextAlarmClockReceiver = roomListService.getDeviceForName("nextAlarmClock", Optional.<String>absent(), this);
+            Optional<FhemDevice> nextAlarmClockReceiver = deviceListService.getDeviceForName("nextAlarmClock", Optional.<String>absent(), this);
             if (nextAlarmClockReceiver.isPresent()) {
                 AlarmManager.AlarmClockInfo nextAlarmClock = getAlarmManager().getNextAlarmClock();
                 if (nextAlarmClock != null) {

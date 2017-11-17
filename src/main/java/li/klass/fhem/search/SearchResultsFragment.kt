@@ -34,7 +34,7 @@ class SearchResultsFragment : DeviceListFragment() {
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList = searchResultsProvider.query(query)
 
     override fun executeRemoteUpdate(context: Context) {
-        roomListUpdateService.updateAllDevices(Optional.absent(), context)
+        deviceListUpdateService.updateAllDevices(Optional.absent(), context)
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {

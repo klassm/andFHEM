@@ -35,13 +35,13 @@ import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.fcm.receiver.data.FcmNotifyData
 import li.klass.fhem.service.NotificationService
 import li.klass.fhem.settings.SettingsKeys
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.Tasker
 import javax.inject.Inject
 
 class FcmNotifyHandler @Inject constructor(
-        private val roomListService: RoomListService,
+        private val deviceListService: DeviceListService,
         private val fcmHistoryService: FcmHistoryService,
         private val appWidgetUpdateService: AppWidgetUpdateService,
         private val applicationProperties: ApplicationProperties,
@@ -52,7 +52,7 @@ class FcmNotifyHandler @Inject constructor(
         val deviceName = data.deviceName ?: return
 
         val changes = extractChanges(deviceName, changesText, context)
-        roomListService.parseReceivedDeviceStateMap(deviceName, changes, context)
+        deviceListService.parseReceivedDeviceStateMap(deviceName, changes, context)
 
         fcmHistoryService.addChanges(deviceName, changes)
         updateWidgets()
@@ -97,7 +97,7 @@ class FcmNotifyHandler @Inject constructor(
     }
 
     private fun showNotification(deviceName: String, updates: Map<String, String>, vibrate: Boolean, context: Context) {
-        val device: Optional<FhemDevice> = roomListService.getDeviceForName(deviceName, Optional.absent(), context)
+        val device: Optional<FhemDevice> = deviceListService.getDeviceForName(deviceName, Optional.absent(), context)
         if (!device.isPresent) {
             return
         }

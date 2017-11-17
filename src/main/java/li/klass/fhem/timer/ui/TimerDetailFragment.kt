@@ -53,7 +53,7 @@ import li.klass.fhem.fragments.device.DeviceNameListFragment
 import li.klass.fhem.service.intent.DeviceIntentService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.ui.FragmentType.DEVICE_SELECTION
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
@@ -69,7 +69,7 @@ class TimerDetailFragment : BaseFragment() {
     private var savedTimerDeviceName: String? = null
 
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
@@ -285,7 +285,7 @@ class TimerDetailFragment : BaseFragment() {
 
         async(UI) {
             val device = bg {
-                roomListService.getDeviceForName<FhemDevice>(timerDeviceName, Optional.absent(), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(timerDeviceName, Optional.absent(), myActivity)
             }.await().orNull()
             if (device is AtDevice) {
                 setValuesForCurrentTimerDevice(device)
@@ -304,7 +304,7 @@ class TimerDetailFragment : BaseFragment() {
 
         async(UI) {
             val device = bg {
-                roomListService.getDeviceForName<FhemDevice>(atDevice.targetDevice, Optional.absent(), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(atDevice.targetDevice, Optional.absent(), myActivity)
             }.await()
             if (device.isPresent) {
                 updateTargetDevice(device.get(), this@TimerDetailFragment.view)

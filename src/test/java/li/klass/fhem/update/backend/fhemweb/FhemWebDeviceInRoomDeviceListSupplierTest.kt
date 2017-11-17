@@ -34,7 +34,7 @@ import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
 import org.assertj.core.api.Assertions.assertThat
@@ -50,7 +50,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val connectionService = mock<ConnectionService> {
             on { getSelectedId(context) } doReturn "123"
         }
-        val roomListService = mock<RoomListService> {
+        val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn emptyRoomDeviceList
         }
 
@@ -74,7 +74,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val connectionService = mock<ConnectionService> {
             on { getSelectedId(context) } doReturn "123"
         }
-        val roomListService = mock<RoomListService> {
+        val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
         }
 
@@ -100,7 +100,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(incorrectDevice, context)
                 .addDevice(correctDevice, context)
 
-        val roomListService = mock<RoomListService> {
+        val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
@@ -131,7 +131,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(device2, context)
                 .addDevice(device1, context)
 
-        val roomListService = mock<RoomListService> {
+        val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {
@@ -162,7 +162,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(device2, context)
                 .addDevice(device1, context)
 
-        val roomListService = mock<RoomListService> {
+        val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList(Optional.of("123"), context) } doReturn deviceList
         }
         val connectionService = mock<ConnectionService> {

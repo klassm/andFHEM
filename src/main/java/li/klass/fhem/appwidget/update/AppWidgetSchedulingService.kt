@@ -33,8 +33,8 @@ import com.google.common.base.Optional
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
-import li.klass.fhem.update.backend.RoomListService
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.DateFormatUtil
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -42,7 +42,7 @@ import javax.inject.Inject
 class AppWidgetSchedulingService @Inject constructor(
         private val application: Application,
         private val updateIntervalProvider: AppWidgetUpdateIntervalProvider,
-        private val roomListUpdateService: RoomListUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService
 ) {
 
     fun cancelUpdating(appWidgetId: Int) {
@@ -68,16 +68,16 @@ class AppWidgetSchedulingService @Inject constructor(
 
     fun shouldUpdateDeviceList(connectionId: Optional<String>): Boolean {
         val updatePeriod = updateIntervalProvider.getConnectionDependentUpdateInterval()
-        if (updatePeriod == RoomListService.ALWAYS_UPDATE_PERIOD) {
+        if (updatePeriod == DeviceListService.ALWAYS_UPDATE_PERIOD) {
             LOG.debug("shouldUpdateDeviceList() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
             return true
         }
-        if (updatePeriod == RoomListService.NEVER_UPDATE_PERIOD) {
+        if (updatePeriod == DeviceListService.NEVER_UPDATE_PERIOD) {
             LOG.debug("shouldUpdateDeviceList() : recommend no update, as updatePeriod is set to NEVER_UPDATE")
             return false
         }
 
-        val lastUpdate = roomListUpdateService.getLastUpdate(connectionId, applicationContext)
+        val lastUpdate = deviceListUpdateService.getLastUpdate(connectionId, applicationContext)
         val shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis()
 
         LOG.debug("shouldUpdateDeviceList() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", if (!shouldUpdate) "no " else "to", DateFormatUtil.toReadable(lastUpdate), updatePeriod / 1000 / 60)

@@ -44,8 +44,8 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.update.backend.RoomListService
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUtil
 import li.klass.fhem.widget.notification.NotificationSettingView
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -57,9 +57,9 @@ class DeviceDetailFragment : BaseFragment() {
     @Inject
     lateinit var advertisementService: AdvertisementService
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
     @Inject
     lateinit var graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
 
@@ -116,9 +116,9 @@ class DeviceDetailFragment : BaseFragment() {
         async(UI) {
             val device = bg {
                 if (refresh) {
-                    roomListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), myActivity)
+                    deviceListUpdateService.updateSingleDevice(deviceName!!, Optional.fromNullable(connectionId), myActivity)
                 }
-                roomListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), myActivity)
+                deviceListService.getDeviceForName<FhemDevice>(deviceName, Optional.fromNullable(connectionId), myActivity)
             }.await()
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             if (device.isPresent) {

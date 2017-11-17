@@ -30,15 +30,15 @@ import com.google.common.base.Optional
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.update.backend.RoomListUpdateService
-import li.klass.fhem.update.backend.RoomListUpdateService.UpdateResult
+import li.klass.fhem.update.backend.DeviceListUpdateService
+import li.klass.fhem.update.backend.DeviceListUpdateService.UpdateResult
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntentService::class.java.name) {
 
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
 
     override fun handleIntent(intent: Intent, updatePeriod: Long, resultReceiver: ResultReceiver?): ConvenientIntentService.State {
         val action = intent.action
@@ -57,9 +57,9 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
         LOG.info("doRemoteUpdate() - starting remote update")
 
         val result = when {
-            deviceName.isPresent -> roomListUpdateService.updateSingleDevice(deviceName.get(), connectionId, this)
-            roomName.isPresent -> roomListUpdateService.updateRoom(roomName.get(), connectionId, this)
-            else -> roomListUpdateService.updateAllDevices(connectionId, this)
+            deviceName.isPresent -> deviceListUpdateService.updateSingleDevice(deviceName.get(), connectionId, this)
+            roomName.isPresent -> deviceListUpdateService.updateRoom(roomName.get(), connectionId, this)
+            else -> deviceListUpdateService.updateAllDevices(connectionId, this)
         }
         handleResult(result)
         return ConvenientIntentService.State.DONE

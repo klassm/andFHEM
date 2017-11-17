@@ -31,12 +31,12 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_ROOM_OPEN
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import javax.inject.Inject
 
 class RoomDetailFragment : DeviceListFragment() {
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
 
     private var roomName: String? = null
 
@@ -72,11 +72,11 @@ class RoomDetailFragment : DeviceListFragment() {
         }
     }
 
-    override fun getRoomDeviceListForUpdate(context: Context) = roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), context)
+    override fun getRoomDeviceListForUpdate(context: Context) = deviceListService.getDeviceListForRoom(roomName!!, Optional.absent(), context)
 
     override fun executeRemoteUpdate(context: Context) {
         if (roomName != null) {
-            roomListUpdateService.updateRoom(roomName!!, Optional.absent(), context)
+            deviceListUpdateService.updateRoom(roomName!!, Optional.absent(), context)
         }
     }
 }

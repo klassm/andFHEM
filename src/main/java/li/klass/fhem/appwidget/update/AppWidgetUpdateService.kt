@@ -30,7 +30,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.settings.SettingsKeys
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
@@ -40,7 +40,7 @@ class AppWidgetUpdateService @Inject constructor(
         private val appWidgetInstanceManager: AppWidgetInstanceManager,
         private val appWidgetSchedulingService: AppWidgetSchedulingService,
         private val applicationProperties: ApplicationProperties,
-        private val roomListUpdateService: RoomListUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService
 ) {
 
     fun updateAllWidgets() {
@@ -69,9 +69,9 @@ class AppWidgetUpdateService @Inject constructor(
                 when {
                     configuration.widgetType.widgetView is DeviceAppWidgetView -> {
                         val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
-                        roomListUpdateService.updateSingleDevice(deviceName, connectionId, context, updateWidgets = false)
+                        deviceListUpdateService.updateSingleDevice(deviceName, connectionId, context, updateWidgets = false)
                     }
-                    appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) -> roomListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
+                    appWidgetSchedulingService.shouldUpdateDeviceList(connectionId) -> deviceListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
                     else -> {
                     }
                 }

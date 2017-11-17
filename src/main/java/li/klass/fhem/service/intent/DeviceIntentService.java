@@ -57,7 +57,7 @@ import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.graph.backend.GraphService;
 import li.klass.fhem.service.NotificationService;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.util.StateToSet;
@@ -111,7 +111,7 @@ import static li.klass.fhem.service.intent.ConvenientIntentService.State.SUCCESS
 public class DeviceIntentService extends ConvenientIntentService {
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
     @Inject
     HeatingService heatingService;
     @Inject
@@ -145,7 +145,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         String deviceName = intent.getStringExtra(DEVICE_NAME);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
 
-        Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName, connectionId, this);
+        Optional<FhemDevice> deviceOptional = deviceListService.getDeviceForName(deviceName, connectionId, this);
         if (!deviceOptional.isPresent()) {
             LOG.info("handleIntent() - cannot find device for {}", deviceName);
         }

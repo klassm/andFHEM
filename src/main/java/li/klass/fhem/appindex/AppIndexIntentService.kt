@@ -4,13 +4,13 @@ import android.app.IntentService
 import android.content.Intent
 import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class AppIndexIntentService : IntentService(AppIndexIntentService::class.java.name) {
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
     lateinit var indexableCreator: IndexableCreator
     lateinit var firebaseIndexWrapper: FirebaseIndexWrapper
 
@@ -26,8 +26,8 @@ class AppIndexIntentService : IntentService(AppIndexIntentService::class.java.na
     public override fun onHandleIntent(intent: Intent?) {
         LOGGER.info("onHandleIntent - updating index")
 
-        val deviceList = roomListService.getAllRoomsDeviceList(Optional.absent<String>(), this)
-        val roomNames = roomListService.getRoomNameList(Optional.absent<String>(), this)
+        val deviceList = deviceListService.getAllRoomsDeviceList(Optional.absent<String>(), this)
+        val roomNames = deviceListService.getRoomNameList(Optional.absent<String>(), this)
 
         val indexableRoomNames = roomNames.map { roomName -> indexableCreator.indexableFor(this, roomName) }
         val indexableDevices = deviceList.allDevices.map { device -> indexableCreator.indexableFor(this, device) }

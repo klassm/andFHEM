@@ -46,8 +46,8 @@ import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.update.backend.RoomListService
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -61,11 +61,11 @@ abstract class DeviceNameListFragment : BaseFragment() {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
     @Inject
     lateinit var viewableElementsCalculator: ViewableElementsCalculator
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
 
     private var roomName: String? = null
     private var deviceName: String? = null
@@ -116,12 +116,12 @@ abstract class DeviceNameListFragment : BaseFragment() {
                 myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
                 if (refresh && !isNavigation) {
-                    roomListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
                     myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }
                 val deviceList = when {
-                    roomName != null -> roomListService.getDeviceListForRoom(roomName!!, Optional.absent(), myActivity)
-                    else -> roomListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
+                    roomName != null -> deviceListService.getDeviceListForRoom(roomName!!, Optional.absent(), myActivity)
+                    else -> deviceListService.getAllRoomsDeviceList(Optional.absent(), myActivity)
                 }.filter(myActivity, deviceFilter::isSelectable)
 
                 val elements = viewableElementsCalculator.calculateElements(myActivity, deviceList)

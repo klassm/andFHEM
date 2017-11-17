@@ -5,7 +5,7 @@ import com.google.common.base.Optional
 import com.google.firebase.appindexing.Indexable
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
@@ -25,7 +25,7 @@ class AppIndexIntentServiceTest {
     @Mock
     lateinit var firebaseIndexWrapper: FirebaseIndexWrapper
     @Mock
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
 
     @Before
     fun setUp() {
@@ -38,7 +38,7 @@ class AppIndexIntentServiceTest {
         val indexableRoomA = mock(Indexable::class.java)
         val indexableRoomB = mock(Indexable::class.java)
         val indexableRoomC = mock(Indexable::class.java)
-        given(roomListService.getRoomNameList(Optional.absent(), appIndexIntentService))
+        given(deviceListService.getRoomNameList(Optional.absent(), appIndexIntentService))
                 .willReturn(setOf("a", "b", "c"))
         given(indexableCreator.indexableFor(appIndexIntentService, "a")).willReturn(indexableRoomA)
         given(indexableCreator.indexableFor(appIndexIntentService, "b")).willReturn(indexableRoomB)
@@ -50,7 +50,7 @@ class AppIndexIntentServiceTest {
         val indexableDevice1 = mock(Indexable::class.java)
         val indexableDevice2 = mock(Indexable::class.java)
         given(allRoomDeviceList.allDevices).willReturn(setOf(device1, device2))
-        given(roomListService.getAllRoomsDeviceList(Optional.absent(), appIndexIntentService))
+        given(deviceListService.getAllRoomsDeviceList(Optional.absent(), appIndexIntentService))
                 .willReturn(allRoomDeviceList)
         given(indexableCreator.indexableFor(appIndexIntentService, device1)).willReturn(indexableDevice1)
         given(indexableCreator.indexableFor(appIndexIntentService, device2)).willReturn(indexableDevice2)

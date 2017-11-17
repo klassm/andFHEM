@@ -31,14 +31,14 @@ import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.preferences.SharedPreferencesService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FavoritesService @Inject
-constructor(val roomListService: RoomListService,
+constructor(val deviceListService: DeviceListService,
             val connectionService: ConnectionService,
             val sharedPreferencesService: SharedPreferencesService) {
 
@@ -84,7 +84,7 @@ constructor(val roomListService: RoomListService,
      * @return favorite [RoomDeviceList]
      */
     fun getFavorites(context: Context): RoomDeviceList {
-        val allRoomsDeviceList = roomListService.getAllRoomsDeviceList(Optional.absent(), context)
+        val allRoomsDeviceList = deviceListService.getAllRoomsDeviceList(Optional.absent(), context)
         val favoritesList = RoomDeviceList("favorites")
 
         val favoriteDeviceNames = getPreferences(context).all.keys

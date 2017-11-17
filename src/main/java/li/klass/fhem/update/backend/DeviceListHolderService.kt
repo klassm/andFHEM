@@ -35,12 +35,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RoomListHolderService @Inject constructor(
+class DeviceListHolderService @Inject constructor(
         val applicationProperties: ApplicationProperties,
         val connectionService: ConnectionService,
         val sharedPreferencesService: SharedPreferencesService
 ) {
-    private val cache = HashMap<String, RoomListCache>()
+    private val cache = HashMap<String, DeviceListCache>()
 
     @Synchronized
     fun storeDeviceListMap(roomDeviceList: RoomDeviceList, connectionId: Optional<String>, context: Context): Boolean =
@@ -49,7 +49,7 @@ class RoomListHolderService @Inject constructor(
     fun getCachedRoomDeviceListMap(connectionId: Optional<String>, context: Context): Optional<RoomDeviceList> =
             getCacheFor(connectionId, context).getCachedRoomDeviceListMap(context)
 
-    private fun getCacheFor(connectionId: Optional<String>, context: Context): RoomListCache {
+    private fun getCacheFor(connectionId: Optional<String>, context: Context): DeviceListCache {
         val toLoad = if (connectionService.exists(connectionId, context)) connectionId else Optional.absent()
         return getCacheForConnectionId(toLoad, context)
     }
@@ -57,10 +57,10 @@ class RoomListHolderService @Inject constructor(
     fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
             getCacheFor(connectionId, context).getLastUpdate(context)
 
-    private fun getCacheForConnectionId(connectionId: Optional<String>, context: Context): RoomListCache {
+    private fun getCacheForConnectionId(connectionId: Optional<String>, context: Context): DeviceListCache {
         val id = connectionId.or(connectionService.getSelectedId(context))
         if (!cache.containsKey(id)) {
-            cache.put(id, RoomListCache(id, applicationProperties, connectionService, sharedPreferencesService))
+            cache.put(id, DeviceListCache(id, applicationProperties, connectionService, sharedPreferencesService))
         }
         return cache[id]!!
     }

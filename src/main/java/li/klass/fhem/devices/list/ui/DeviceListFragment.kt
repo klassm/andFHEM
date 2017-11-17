@@ -57,7 +57,7 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -76,7 +76,7 @@ abstract class DeviceListFragment : BaseFragment() {
     @Inject
     lateinit var advertisementService: AdvertisementService
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
     lateinit var favoritesService: FavoritesService
 

@@ -26,7 +26,7 @@ package li.klass.fhem.appwidget.update
 
 import android.app.Application
 import android.content.Context
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.NetworkState
 import org.slf4j.LoggerFactory
@@ -41,7 +41,7 @@ class AppWidgetUpdateIntervalProvider @Inject constructor(
 
         if (!NetworkState.isConnected(applicationContext)) {
             LOG.debug("getConnectionDependentUpdateInterval - no network connection")
-            updateInterval = RoomListService.Companion.NEVER_UPDATE_PERIOD
+            updateInterval = DeviceListService.Companion.NEVER_UPDATE_PERIOD
         } else if (NetworkState.isConnectedMobile(applicationContext)) {
             LOG.debug("getConnectionDependentUpdateInterval - mobile connection")
             updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE).toLong()

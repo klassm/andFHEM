@@ -34,7 +34,7 @@ import li.klass.fhem.R
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
 
     override fun onCreate() {
         super.onCreate()
@@ -63,7 +63,7 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
             }
             WIDGET_REQUEST_UPDATE == action -> {
                 Handler(mainLooper).post { Toast.makeText(this@AppWidgetUpdateIntentService, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show() }
-                roomListUpdateService.updateAllDevices(Optional.absent(), this, true)
+                deviceListUpdateService.updateAllDevices(Optional.absent(), this, true)
             }
         }
     }

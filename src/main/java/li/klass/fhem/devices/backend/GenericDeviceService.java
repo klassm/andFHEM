@@ -43,7 +43,7 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
-import li.klass.fhem.update.backend.RoomListUpdateService;
+import li.klass.fhem.update.backend.DeviceListUpdateService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
@@ -79,7 +79,7 @@ public class GenericDeviceService {
     CommandExecutionService commandExecutionService;
 
     @Inject
-    RoomListUpdateService roomListUpdateService;
+    DeviceListUpdateService deviceListUpdateService;
 
     @Inject
     public GenericDeviceService() {

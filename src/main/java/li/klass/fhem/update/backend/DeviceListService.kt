@@ -44,12 +44,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RoomListService @Inject
+class DeviceListService @Inject
 constructor(
         private val connectionService: ConnectionService,
         private val deviceListParser: DeviceListParser,
-        private val roomListHolderService: RoomListHolderService,
-        private val roomListUpdateService: RoomListUpdateService
+        private val deviceListHolderService: DeviceListHolderService,
+        private val deviceListUpdateService: DeviceListUpdateService
 ) : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
@@ -107,7 +107,7 @@ constructor(
      * @param context context
      */
     fun getRoomDeviceList(connectionId: Optional<String>, context: Context) =
-            roomListHolderService.getCachedRoomDeviceListMap(connectionId, context)
+            deviceListHolderService.getCachedRoomDeviceListMap(connectionId, context)
 
     fun resetUpdateProgress(context: Context) {
         LOG.debug("resetUpdateProgress()")
@@ -183,18 +183,18 @@ constructor(
                 .filter { it !is DummyServerSpec }
         connections.forEach { connection ->
             val connectionId = Optional.of(connection.id)
-            val corrupted = roomListHolderService.isCorrupted(connectionId, context)
+            val corrupted = deviceListHolderService.isCorrupted(connectionId, context)
             if (corrupted) {
-                roomListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
+                deviceListUpdateService.updateAllDevices(connectionId, context, updateWidgets = false)
             }
         }
     }
 
     companion object {
 
-        private val LOG = LoggerFactory.getLogger(RoomListService::class.java)
+        private val LOG = LoggerFactory.getLogger(DeviceListService::class.java)
 
-        val PREFERENCES_NAME = RoomListService::class.java.name!!
+        val PREFERENCES_NAME = DeviceListService::class.java.name!!
 
         val NEVER_UPDATE_PERIOD: Long = 0
         val ALWAYS_UPDATE_PERIOD: Long = -1

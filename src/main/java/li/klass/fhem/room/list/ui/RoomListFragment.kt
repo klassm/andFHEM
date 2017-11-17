@@ -46,7 +46,7 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.update.backend.RoomListUpdateService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.Reject
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.Serializable
@@ -58,7 +58,7 @@ open class RoomListFragment : BaseFragment() {
     @Inject
     lateinit var advertisementService: AdvertisementService
     @Inject
-    lateinit var roomListUpdateService: RoomListUpdateService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
     lateinit var roomListService: ViewableRoomListService
 
@@ -138,7 +138,7 @@ open class RoomListFragment : BaseFragment() {
         async(UI) {
             val roomNameList = bg {
                 if (refresh) {
-                    roomListUpdateService.updateAllDevices(Optional.absent(), myActivity)
+                    deviceListUpdateService.updateAllDevices(Optional.absent(), myActivity)
                 }
                 roomListService.sortedRoomNameList(context = myActivity)
             }.await()

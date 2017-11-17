@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
@@ -56,7 +56,7 @@ public class ExternalApiService extends Service {
     private final Messenger messenger;
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
 
     @Inject
     CommandExecutionService commandExecutionService;
@@ -114,7 +114,7 @@ public class ExternalApiService extends Service {
             final ExternalApiService externalApiService = externalApiServiceWeakReference.get();
             switch (msg.what) {
                 case ROOM_LIST:
-                    ArrayList<String> deviceNames = externalApiService.roomListService.getAvailableDeviceNames(Optional.<String>absent(), externalApiService);
+                    ArrayList<String> deviceNames = externalApiService.deviceListService.getAvailableDeviceNames(Optional.<String>absent(), externalApiService);
                     externalApiService.replyTo(msg, deviceNames);
 
                     break;

@@ -28,7 +28,7 @@ import android.content.Context
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import org.apache.commons.codec.binary.Hex
 import org.slf4j.LoggerFactory
 import javax.crypto.Cipher
@@ -37,7 +37,7 @@ import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
 class FcmDecryptor @Inject constructor(
-        val roomListService: RoomListService
+        val deviceListService: DeviceListService
 ) {
 
     fun decrypt(data: Map<String, String>, context: Context): Map<String, String> {
@@ -45,7 +45,7 @@ class FcmDecryptor @Inject constructor(
             return data
         }
 
-        val device = roomListService.getDeviceForName<FhemDevice>(data["gcmDeviceName"], Optional.absent<String>(), context)
+        val device = deviceListService.getDeviceForName<FhemDevice>(data["gcmDeviceName"], Optional.absent<String>(), context)
         if (!device.isPresent) {
             return data
         }

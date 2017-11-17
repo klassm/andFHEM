@@ -34,7 +34,7 @@ import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.ApplicationProperties
 import org.apache.commons.lang3.StringUtils.stripToNull
 import java.util.*
@@ -44,12 +44,12 @@ class FhemWebDeviceInRoomDeviceListSupplier
 @Inject constructor(
         private val applicationProperties: ApplicationProperties,
         private val connectionService: ConnectionService,
-        private val roomListService: RoomListService,
+        private val deviceListService: DeviceListService,
         private val application: Application) : Supplier<FHEMWEBDevice?> {
 
     override fun get(): FHEMWEBDevice? {
         val context = application.applicationContext
-        val deviceList = roomListService.getAllRoomsDeviceList(Optional.of(connectionService.getSelectedId(context)), context)
+        val deviceList = deviceListService.getAllRoomsDeviceList(Optional.of(connectionService.getSelectedId(context)), context)
         val fhemWebDevices = deviceList.getDevicesOfType<FhemDevice>(DeviceType.FHEMWEB)
         return getIn(fhemWebDevices)
     }

@@ -39,9 +39,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RoomListUpdateService @Inject constructor(val commandExecutionService: CommandExecutionService,
-                                                val deviceListParser: DeviceListParser,
-                                                private val roomListHolderService: RoomListHolderService) {
+class DeviceListUpdateService @Inject constructor(val commandExecutionService: CommandExecutionService,
+                                                  val deviceListParser: DeviceListParser,
+                                                  private val deviceListHolderService: DeviceListHolderService) {
 
     fun updateSingleDevice(deviceName: String, connectionId: Optional<String>, context: Context, updateWidgets: Boolean = true): UpdateResult =
             executeXmllistPartial(connectionId, context, deviceName, updateWidgets)
@@ -56,13 +56,13 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
     }
 
     fun getLastUpdate(connectionId: Optional<String>, context: Context): Long =
-            roomListHolderService.getLastUpdate(connectionId, context)
+            deviceListHolderService.getLastUpdate(connectionId, context)
 
 
     private fun update(context: Context, connectionId: Optional<String>, result: Optional<RoomDeviceList>): Boolean {
         var success = false
         if (result.isPresent) {
-            success = roomListHolderService.storeDeviceListMap(result.get(), connectionId, context)
+            success = deviceListHolderService.storeDeviceListMap(result.get(), connectionId, context)
             if (success) LOG.info("update - update was successful, sending result")
         } else {
             LOG.info("update - update was not successful, sending empty device list")
@@ -107,10 +107,10 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
 
     private fun parseResult(connectionId: Optional<String>, context: Context, result: String, updateHandler: UpdateHandler): Optional<RoomDeviceList> {
         val parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context))
-        val cached = roomListHolderService.getCachedRoomDeviceListMap(connectionId, context)
+        val cached = deviceListHolderService.getCachedRoomDeviceListMap(connectionId, context)
         if (parsed.isPresent) {
             val newDeviceList = updateHandler.handle(cached.or(parsed.get()), parsed.get())
-            roomListHolderService.storeDeviceListMap(newDeviceList, connectionId, context)
+            deviceListHolderService.storeDeviceListMap(newDeviceList, connectionId, context)
             return Optional.of(newDeviceList)
         }
         return Optional.absent<RoomDeviceList>()
@@ -126,6 +126,6 @@ class RoomListUpdateService @Inject constructor(val commandExecutionService: Com
     }
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(RoomListUpdateService::class.java)
+        private val LOG = LoggerFactory.getLogger(DeviceListUpdateService::class.java)
     }
 }

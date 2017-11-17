@@ -37,7 +37,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED;
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNSATISFIED;
@@ -47,7 +47,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
     public static final String TAG = ConditionQueryLocaleReceiver.class.getName();
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
 
     public ConditionQueryLocaleReceiver() {
         ApplicationComponent daggerComponent = AndFHEMApplication.Companion.getApplication().getDaggerComponent();
@@ -61,7 +61,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         final String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
 
-        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, Optional.<String>absent(), context);
+        Optional<FhemDevice> device = deviceListService.getDeviceForName(deviceName, Optional.<String>absent(), context);
         if (!device.isPresent()) {
             setResultCode(RESULT_CONDITION_UNSATISFIED);
             return;

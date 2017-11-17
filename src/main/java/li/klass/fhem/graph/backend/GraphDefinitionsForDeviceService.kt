@@ -30,18 +30,18 @@ import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.log.ConcernsDevicePredicate
 import li.klass.fhem.graph.backend.gplot.GPlotHolder
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
 class GraphDefinitionsForDeviceService @Inject constructor(
-        private val roomListService: RoomListService,
+        private val deviceListService: DeviceListService,
         private val gPlotHolder: GPlotHolder) {
 
     fun graphDefinitionsFor(context: Context, device: XmlListDevice, connectionId: Optional<String>): Set<SvgGraphDefinition> {
-        val allDevices = roomListService.getAllRoomsDeviceList(connectionId, context).allDevicesAsXmllistDevice
+        val allDevices = deviceListService.getAllRoomsDeviceList(connectionId, context).allDevicesAsXmllistDevice
 
         LOGGER.info("graphDefinitionsFor(name={},connection={})", device.name, connectionId.or("--"))
         val graphDefinitions = getGraphDefinitionsFor(allDevices, device, context)

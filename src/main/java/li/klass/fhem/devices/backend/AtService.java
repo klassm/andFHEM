@@ -38,7 +38,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.update.backend.RoomListService;
+import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
@@ -48,7 +48,7 @@ public class AtService {
     CommandExecutionService commandExecutionService;
 
     @Inject
-    RoomListService roomListService;
+    DeviceListService deviceListService;
     @Inject
     GenericDeviceService genericDeviceService;
 
@@ -91,7 +91,7 @@ public class AtService {
 
     public void modify(final String timerName, int hour, int minute, int second, String repetition, String type,
                        String targetDeviceName, String targetState, String targetStateAppendix, final boolean isActive, final Context context) {
-        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, Optional.<String>absent(), context);
+        Optional<AtDevice> deviceOptional = deviceListService.getDeviceForName(timerName, Optional.<String>absent(), context);
 
         if (!deviceOptional.isPresent()) {
             LOG.info("cannot find device for {}", timerName);

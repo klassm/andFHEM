@@ -30,12 +30,12 @@ import li.klass.fhem.R
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.update.backend.RoomListService
+import li.klass.fhem.update.backend.DeviceListService
 import javax.inject.Inject
 
 class AllDevicesFragment : DeviceListFragment() {
     @Inject
-    lateinit var roomListService: RoomListService
+    lateinit var deviceListService: DeviceListService
 
     override fun getTitle(context: Context): CharSequence = context.getString(R.string.alldevices)
 
@@ -45,9 +45,9 @@ class AllDevicesFragment : DeviceListFragment() {
 
     override fun executeRemoteUpdate(context: Context) {
         val myContext = context ?: return
-        roomListUpdateService.updateAllDevices(Optional.absent(), myContext)
+        deviceListUpdateService.updateAllDevices(Optional.absent(), myContext)
     }
 
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList =
-            roomListService.getAllRoomsDeviceList(Optional.absent(), context)
+            deviceListService.getAllRoomsDeviceList(Optional.absent(), context)
 }
