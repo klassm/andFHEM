@@ -106,13 +106,13 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
             @Override
             public void onStateSelected(FhemDevice device, String targetState) {
                 callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(context), ImmutableList.of(device.getName(), targetState)));
+                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.getName(), targetState)));
             }
 
             @Override
             public void onSubStateSelected(FhemDevice device, String state, String subState) {
                 callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(context), ImmutableList.of(device.getName(), state + " " + subState)));
+                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.getName(), state + " " + subState)));
             }
 
             @Override

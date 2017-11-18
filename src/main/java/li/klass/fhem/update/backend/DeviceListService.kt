@@ -26,7 +26,6 @@ package li.klass.fhem.update.backend
 
 import android.app.Application
 import android.content.Context
-import com.google.common.base.Optional
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.domain.core.DeviceType.AT
@@ -52,16 +51,10 @@ constructor(
     private val remoteUpdateInProgress = AtomicBoolean(false)
 
     fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>) {
-
-        val deviceOptional = getDeviceForName<FhemDevice>(deviceName)
-        if (!deviceOptional.isPresent) {
-            return
+        getDeviceForName<FhemDevice>(deviceName)?.let {
+            deviceListParser.fillDeviceWith(it, updateMap, applicationContext)
+            LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", it.name, updateMap.size)
         }
-
-        val device = deviceOptional.get()
-        deviceListParser.fillDeviceWith(device, updateMap, applicationContext)
-
-        LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.name, updateMap.size)
     }
 
     /**
@@ -72,12 +65,8 @@ constructor(
      * @return found device or null
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : FhemDevice> getDeviceForName(deviceName: String?, connectionId: String? = null): Optional<T> {
-        if (deviceName == null) {
-            return Optional.absent<T>()
-        }
-        return Optional.fromNullable(getAllRoomsDeviceList(connectionId).getDeviceFor<FhemDevice>(deviceName) as T?)
-    }
+    fun <T : FhemDevice> getDeviceForName(deviceName: String, connectionId: String? = null): T? =
+            getAllRoomsDeviceList(connectionId).getDeviceFor<FhemDevice>(deviceName) as T?
 
     /**
      * Retrieves a [RoomDeviceList] containing all devices, not only the devices of a specific room.

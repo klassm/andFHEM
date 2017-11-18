@@ -78,14 +78,14 @@ public class AppActionsIntentService extends ConvenientIntentService {
             applicationProperties.load();
             return State.SUCCESS;
         } else if (Actions.UPDATE_NEXT_ALARM_CLOCK.equals(action) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Optional<FhemDevice> nextAlarmClockReceiver = deviceListService.getDeviceForName("nextAlarmClock", null);
-            if (nextAlarmClockReceiver.isPresent()) {
+            FhemDevice nextAlarmClockReceiver = deviceListService.getDeviceForName("nextAlarmClock", null);
+            if (nextAlarmClockReceiver != null) {
                 AlarmManager.AlarmClockInfo nextAlarmClock = getAlarmManager().getNextAlarmClock();
                 if (nextAlarmClock != null) {
                     long triggerTime = nextAlarmClock.getTriggerTime();
                     String time = new DateTime(new Date(triggerTime)).toString("dd.MM.YYYY HH:mm");
-                    LOGGER.info("handleIntent() - notifying allarm clock receiver for time {}", time);
-                    deviceService.setState(nextAlarmClockReceiver.get(), time, Optional.<String>absent(), this);
+                    LOGGER.info("handleIntent() - notifying alarm clock receiver for time {}", time);
+                    deviceService.setState(nextAlarmClockReceiver, time, Optional.<String>absent(), this);
                 }
             } else {
                 LOGGER.info("handleIntent() - found no alarm clock receiver");

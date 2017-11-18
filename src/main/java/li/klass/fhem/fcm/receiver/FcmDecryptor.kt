@@ -43,18 +43,11 @@ class FcmDecryptor @Inject constructor(
         if (!data.containsKey("gcmDeviceName")) {
             return data
         }
+        val gcmDeviceName = data["gcmDeviceName"] ?: return data
+        val device = deviceListService.getDeviceForName<FhemDevice>(gcmDeviceName)
 
-        val device = deviceListService.getDeviceForName<FhemDevice>(data["gcmDeviceName"])
-        if (!device.isPresent) {
-            return data
-        }
-
-        val cryptKey = device.get().xmlListDevice.getAttribute("cryptKey")
-        if (!cryptKey.isPresent) {
-            return data
-        }
-
-        return decrypt(data, cryptKey.get())
+        return device?.xmlListDevice?.getAttribute("cryptKey")?.orNull()
+                ?.let { decrypt(data, it) } ?: data
     }
 
     private fun decrypt(data: Map<String, String>, cryptKey: String): Map<String, String> {

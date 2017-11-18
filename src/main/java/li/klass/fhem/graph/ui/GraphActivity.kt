@@ -108,12 +108,12 @@ class GraphActivity : AppCompatActivity(), Updateable {
     }
 
     override fun update(refresh: Boolean) {
+        val name = deviceName ?: return
         async(UI) {
-            val device = bg {
-                deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId)
-            }.await()
-            if (device.isPresent) {
-                readDataAndCreateChart(device.get())
+            bg {
+                deviceListService.getDeviceForName<FhemDevice>(name, connectionId)
+            }.await()?.let {
+                readDataAndCreateChart(it)
             }
         }
     }

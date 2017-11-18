@@ -60,7 +60,7 @@ public class ReflectionUtil {
         return getFieldValueAsString(object, fields.get(0));
     }
 
-    public static <T extends Annotation> String getValueAndDescriptionForAnnotation(Object object, Class<T> annotationCls, Context context) {
+    public static String getValueAndDescriptionForAnnotation(Object object, Class<? extends Annotation> annotationCls, Context context) {
         List<Field> fields = getFieldsWithAnnotation(object.getClass(), annotationCls);
         if (fields.size() == 0) return null;
 
@@ -70,7 +70,7 @@ public class ReflectionUtil {
         }
         Field field = fields.get(0);
         field.setAccessible(true);
-        T annotation = field.getAnnotation(annotationCls);
+        Annotation annotation = field.getAnnotation(annotationCls);
 
         String fieldValue = "";
         try {

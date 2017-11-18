@@ -129,14 +129,13 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     override fun update(refresh: Boolean) {
         activity ?: return
         async(UI) {
-            val device = bg {
+            bg {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName)
                 }
                 deviceListService.getDeviceForName<FhemDevice>(deviceName)
-            }.await()
-            if (device.isPresent) {
-                weekProfile = heatingConfiguration.fillWith(device.get().xmlListDevice)
+            }.await()?.let {
+                weekProfile = heatingConfiguration.fillWith(it.xmlListDevice)
                 updateChangeButtonsHolderVisibility(weekProfile)
             }
         }

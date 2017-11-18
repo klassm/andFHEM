@@ -73,15 +73,9 @@ class AppWidgetSchedulingService @Inject constructor(
         return if (lastUpdate == null) true else shouldUpdate(lastUpdate)
     }
 
-    fun shouldUpdateDevice(connectionId: String?, deviceName: String): Boolean {
-        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId)
-        if (!device.isPresent) {
-            return false
-        }
-
-        val lastUpdate = device.get().xmlListDevice.creationTime
-        return shouldUpdate(lastUpdate)
-    }
+    fun shouldUpdateDevice(connectionId: String?, deviceName: String): Boolean =
+            deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId)
+                    ?.xmlListDevice?.creationTime?.let { shouldUpdate(it) } ?: false
 
     private fun shouldUpdate(lastUpdate: DateTime): Boolean {
         val updatePeriod = updateIntervalProvider.getConnectionDependentUpdateInterval()

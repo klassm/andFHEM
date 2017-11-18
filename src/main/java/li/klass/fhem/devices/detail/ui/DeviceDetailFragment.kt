@@ -125,15 +125,15 @@ class DeviceDetailFragment : BaseFragment() {
                 deviceListService.getDeviceForName<FhemDevice>(name, connectionId)
             }.await()
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
-            if (device.isPresent) {
-                this@DeviceDetailFragment.device = device.get()
-                val adapter = DeviceType.getAdapterFor<FhemDevice>(device.get())
+            device?.let {
+                this@DeviceDetailFragment.device = it
+                val adapter = DeviceType.getAdapterFor<FhemDevice>(it)
                 if (adapter != null) {
                     myActivity.invalidateOptionsMenu()
                     val scrollView = findScrollView()
                     if (scrollView != null) {
                         scrollView.removeAllViews()
-                        scrollView.addView(adapter.createDetailView(myActivity, device.get(), emptySet(), connectionId))
+                        scrollView.addView(adapter.createDetailView(myActivity, it, emptySet(), connectionId))
                     }
                     loadGraphs()
                 }

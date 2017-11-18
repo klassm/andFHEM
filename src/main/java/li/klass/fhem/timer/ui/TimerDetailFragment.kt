@@ -284,15 +284,16 @@ class TimerDetailFragment : BaseFragment() {
         val myActivity = activity ?: return
 
         async(UI) {
-            val device = bg {
+            bg {
                 deviceListService.getDeviceForName<FhemDevice>(timerDeviceName)
-            }.await().orNull()
-            if (device is AtDevice) {
-                setValuesForCurrentTimerDevice(device)
+            }.await()?.let {
+                if (it is AtDevice) {
+                    setValuesForCurrentTimerDevice(it)
 
-                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
-            } else {
-                Log.e(TAG, "expected an AtDevice, but got " + device)
+                    myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+                } else {
+                    Log.e(TAG, "expected an AtDevice, but got " + it)
+                }
             }
         }
     }
@@ -302,11 +303,10 @@ class TimerDetailFragment : BaseFragment() {
         updateTimerInformation(timerDevice)
 
         async(UI) {
-            val device = bg {
+            bg {
                 deviceListService.getDeviceForName<FhemDevice>(atDevice.targetDevice)
-            }.await()
-            if (device.isPresent) {
-                updateTargetDevice(device.get(), this@TimerDetailFragment.view)
+            }.await()?.let {
+                updateTargetDevice(it, this@TimerDetailFragment.view)
             }
         }
     }

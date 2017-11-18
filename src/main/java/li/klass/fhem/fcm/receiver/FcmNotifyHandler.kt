@@ -26,7 +26,6 @@ package li.klass.fhem.fcm.receiver
 
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Optional
 import com.google.common.collect.Maps
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
@@ -97,11 +96,7 @@ class FcmNotifyHandler @Inject constructor(
     }
 
     private fun showNotification(deviceName: String, updates: Map<String, String>, vibrate: Boolean, context: Context) {
-        val device: Optional<FhemDevice> = deviceListService.getDeviceForName(deviceName)
-        if (!device.isPresent) {
-            return
-        }
-
-        notificationService.deviceNotification(updates, device.get(), vibrate, context)
+        val device: FhemDevice = deviceListService.getDeviceForName(deviceName) ?: return
+        notificationService.deviceNotification(updates, device, vibrate, context)
     }
 }
