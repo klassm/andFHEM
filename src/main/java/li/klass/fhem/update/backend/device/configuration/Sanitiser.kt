@@ -77,8 +77,7 @@ class Sanitiser @Inject constructor(
         val config = generalOptions.optJSONObject("addAttributeIfModelDoesNotMatch") ?: return
 
         val models = config.getJSONArray("models")
-        val modelNode = xmlListDevice.attributes["model"]
-        val model = modelNode?.value ?: return
+        val model = xmlListDevice.attributes["model"]?.value ?: ""
 
         if ((0 until models.length())
                 .map { models.getString(it) }
