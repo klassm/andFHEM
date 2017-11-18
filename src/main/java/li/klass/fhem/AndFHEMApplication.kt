@@ -45,7 +45,7 @@ import li.klass.fhem.devices.ui.DeviceNameSelectionActivity
 import li.klass.fhem.graph.ui.GraphActivity
 import li.klass.fhem.service.intent.AppActionsIntentService
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
-import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.InstalledApplications
 import javax.inject.Inject
@@ -54,7 +54,7 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     @Inject
-    lateinit var deviceListService: DeviceListService
+    lateinit var deviceListUpdateService: DeviceListUpdateService
 
     var isUpdate = false
         private set
@@ -97,7 +97,7 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     }
 
     override fun onUpdate(oldVersion: Int, newVersion: Int) {
-        deviceListService.checkForCorruptedDeviceList()
+        deviceListUpdateService.checkForCorruptedDeviceList()
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

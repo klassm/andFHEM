@@ -39,8 +39,9 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 public class XmlListDevice implements Serializable {
 
-    public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+    private String y = "bla";
     private String type;
 
     private DateTime creationTime = DateTime.now();

@@ -70,7 +70,7 @@ class AppWidgetSchedulingService @Inject constructor(
 
     fun shouldUpdateDeviceList(connectionId: String?): Boolean {
         val lastUpdate = deviceListUpdateService.getLastUpdate(connectionId)
-        return shouldUpdate(lastUpdate)
+        return if (lastUpdate == null) true else shouldUpdate(lastUpdate)
     }
 
     fun shouldUpdateDevice(connectionId: String?, deviceName: String): Boolean {

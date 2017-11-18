@@ -88,11 +88,11 @@ public class SendCommandServiceTest {
     @Test
     @UseDataProvider("recentCommandsProvider")
     public void should_get_recent_commands(String jsonInput, List<String> expectedCommands) {
-        given(sharedPreferencesService.getPreferences(Companion.getPREFERENCES_NAME(), context))
+        given(sharedPreferencesService.getPreferences(Companion.getPREFERENCES_NAME()))
                 .willReturn(sharedPreferences);
         given(sharedPreferences.getString(Companion.getCOMMANDS_PROPERTY(), null)).willReturn(jsonInput);
 
-        ArrayList<String> result = intentService.getRecentCommands(context);
+        ArrayList<String> result = intentService.getRecentCommands();
 
         assertThat(result).containsExactlyElementsOf(expectedCommands);
         verifyZeroInteractions(commandExecutionService);

@@ -61,27 +61,27 @@ class GenericDeviceService @Inject constructor(
     }
 
     fun setSubState(device: FhemDevice, subStateName: String, value: String, connectionId: Optional<String>, context: Context, invokeDeviceUpdate: Boolean) {
-        var subStateName = subStateName
-        var value = value
+        var stateName = subStateName
+        var myValue = value
         if (device.deviceConfiguration.isPresent) {
             val configuration = device.deviceConfiguration.get()
-            val toReplace = configuration.getCommandReplaceFor(subStateName)
+            val toReplace = configuration.getCommandReplaceFor(stateName)
             for ((key, value1) in toReplace) {
-                value = value
+                myValue = myValue
                         .replace(("([ ,])" + key).toRegex(), "$1$value1")
                         .replace(("^" + key).toRegex(), value1)
             }
-            val subStateReplaceForSubState = configuration.getSubStateReplaceFor(subStateName)
+            val subStateReplaceForSubState = configuration.getSubStateReplaceFor(stateName)
             if (subStateReplaceForSubState.isPresent) {
-                subStateName = subStateReplaceForSubState.get()
+                stateName = subStateReplaceForSubState.get()
             }
 
-            device.xmlListDevice.setState(subStateName, value)
+            device.xmlListDevice.setState(stateName, myValue)
         }
 
-        val command = Command("set " + device.name + " " + subStateName + " " + value, connectionId)
+        val command = Command("set " + device.name + " " + stateName + " " + myValue, connectionId)
         commandExecutionService.executeSafely(command, context,
-                invokePostCommandActions(device, context, invokeDeviceUpdate, subStateName, value, connectionId))
+                invokePostCommandActions(device, context, invokeDeviceUpdate, stateName, myValue, connectionId))
     }
 
     private fun invokePostCommandActions(device: FhemDevice, context: Context, invokeUpdate: Boolean, stateName: String, toSet: String, connectionId: Optional<String>): CommandExecutionService.ResultListener {

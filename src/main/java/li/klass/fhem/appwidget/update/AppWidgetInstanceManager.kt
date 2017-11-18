@@ -85,7 +85,7 @@ class AppWidgetInstanceManager @Inject constructor(
     }
 
     private fun getSavedPreferences(): SharedPreferences =
-            sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, applicationContext)
+            sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME)
 
     private val applicationContext: Context get() = application.applicationContext
 

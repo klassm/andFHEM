@@ -112,11 +112,11 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
                         if (SHOW_FRAGMENT == action) {
                             val bundle = intent.extras ?: throw IllegalArgumentException("need a content fragment")
                             val fragmentType: FragmentType?
-                            if (bundle.containsKey(FRAGMENT)) {
-                                fragmentType = bundle.getSerializable(FRAGMENT) as FragmentType
+                            fragmentType = if (bundle.containsKey(FRAGMENT)) {
+                                bundle.getSerializable(FRAGMENT) as FragmentType
                             } else {
                                 val fragmentName = bundle.getString(FRAGMENT_NAME)
-                                fragmentType = getFragmentFor(fragmentName)
+                                getFragmentFor(fragmentName)
                             }
                             drawer_layout.closeDrawer(GravityCompat.START)
                             switchToFragment(fragmentType, intent.extras)
@@ -289,12 +289,12 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
                 return true
             }
             R.id.menu_about -> {
-                var version: String
-                try {
+                val version: String
+                version = try {
                     val pkg = packageName
-                    version = packageManager.getPackageInfo(pkg, 0).versionName
+                    packageManager.getPackageInfo(pkg, 0).versionName
                 } catch (e: PackageManager.NameNotFoundException) {
-                    version = "?"
+                    "?"
                 }
 
                 DialogUtil.showAlertDialog(this, R.string.about,
@@ -662,12 +662,12 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
             sendBroadcast(Intent(REDRAW))
             return null
         }
-        try {
+        return try {
             val fragmentClass = fragmentType.contentClass
-            return createFragmentForClass(data, fragmentClass)
+            createFragmentForClass(data, fragmentClass)
         } catch (e: Exception) {
             Log.e(TAG, "cannot instantiate fragment", e)
-            return null
+            null
         }
 
     }

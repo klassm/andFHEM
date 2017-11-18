@@ -154,6 +154,13 @@ class RoomDeviceList(val roomName: String) : Serializable {
                     .none { it.isSupported }
         }
 
+    fun <T : FhemDevice> add(devices: Collection<T?>, context: Context): RoomDeviceList {
+        devices.forEach {
+            addDevice(it, context)
+        }
+        return this
+    }
+
     fun <T : FhemDevice> addDevice(device: T?, context: Context): RoomDeviceList {
         if (device == null || !device.isSupported) {
             return this

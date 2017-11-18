@@ -27,7 +27,6 @@ package li.klass.fhem.appwidget.ui.selection
 import android.app.Activity
 import android.app.AlertDialog
 import android.appwidget.AppWidgetManager.*
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -110,7 +109,6 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         type.createWidgetConfiguration(this, widgetId, WidgetConfigurationCreatedCallback { widgetConfiguration ->
             appWidgetInstanceManager.save(widgetConfiguration)
 
-            val activityAsContext: Context = this
             async(UI) {
                 bg {
                     appWidgetUpdateService.updateWidget(widgetId)

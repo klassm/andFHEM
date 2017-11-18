@@ -169,10 +169,9 @@ class DeviceDetailFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        val myActivity = activity ?: return
         if (device != null) {
             inflater!!.inflate(R.menu.device_menu, menu)
-            if (favoritesService.isFavorite(deviceName ?: "", myActivity)) {
+            if (favoritesService.isFavorite(deviceName ?: "")) {
                 menu!!.removeItem(R.id.menu_favorites_add)
             } else {
                 menu!!.removeItem(R.id.menu_favorites_remove)
@@ -199,12 +198,11 @@ class DeviceDetailFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun callUpdating(actionToCall: (Context, String) -> Unit, toastStringId: Int) {
+    private fun callUpdating(actionToCall: (String) -> Unit, toastStringId: Int) {
         deviceName ?: return
-        val myActivity = activity ?: return
         async(UI) {
             bg {
-                actionToCall(myActivity, deviceName!!)
+                actionToCall(deviceName!!)
             }.await()
             showToast(toastStringId)
             update(false)

@@ -631,6 +631,7 @@
     <string name="currentStatus_loadingFavorites">Loading favorites …</string>
     <string name="currentStatus_billingInitError">Cannot initialize connection to Google billing!</string>
     <string name="currentStatus_deleteFcmHistory">Delete old FCM history entries …</string>
+    <string name="currentStatus_checkForCorruptedDeviceList">Check for corrupted device lists …</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deactivated</string>
     <string name="androidBugDialogDatePickerContent">Android 5.0 contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled in this version.</string>

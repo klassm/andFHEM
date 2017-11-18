@@ -173,7 +173,6 @@ class ConnectionListFragment : BaseFragment() {
         super.onContextItemSelected(item)
 
         if (clickedConnectionId == null) return false
-        val myActivity = activity ?: return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
                 async(UI) {

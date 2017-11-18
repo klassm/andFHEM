@@ -80,7 +80,6 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
     }
 
     fun doLoad() {
-        val myContext = context
         async(UI) {
             val (all, selected) = bg {
                 Pair(connectionService.listAll(), connectionService.getSelectedId())

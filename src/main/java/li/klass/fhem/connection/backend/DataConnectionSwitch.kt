@@ -22,13 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend
+package li.klass.fhem.connection.backend
 
-import li.klass.fhem.domain.core.RoomDeviceList
-import org.joda.time.DateTime
+import li.klass.fhem.util.ApplicationProperties
+import javax.inject.Inject
+import javax.inject.Singleton
 
-data class DeviceListCache(
-        val corrupted: Boolean,
-        val deviceList: RoomDeviceList?,
-        val lastUpdate: DateTime?
-)
+@Singleton
+class DataConnectionSwitch @Inject
+constructor(
+        private val connectionService: ConnectionService,
+        private val applicationProperties: ApplicationProperties
+) {
+
+    fun getProviderFor(connectionId: String?): FHEMConnection {
+        val serverSpec = getSpecFor(connectionId) ?: getSpecFor(null)
+        return serverSpec!!.serverType.getConnectionFor(serverSpec, applicationProperties)
+    }
+
+    private fun getSpecFor(connectionId: String?): FHEMServerSpec? =
+            connectionService.getServerFor(connectionId)
+
+    fun getProviderFor(): FHEMConnection =
+            getProviderFor(null)
+
+    fun isDummyDataActive(): Boolean = getSpecFor(null) is DummyServerSpec
+}

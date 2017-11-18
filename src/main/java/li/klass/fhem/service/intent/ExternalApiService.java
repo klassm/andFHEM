@@ -35,8 +35,6 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.google.common.base.Optional;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -114,7 +112,7 @@ public class ExternalApiService extends Service {
             final ExternalApiService externalApiService = externalApiServiceWeakReference.get();
             switch (msg.what) {
                 case ROOM_LIST:
-                    ArrayList<String> deviceNames = externalApiService.deviceListService.getAvailableDeviceNames(Optional.<String>absent());
+                    ArrayList<String> deviceNames = new ArrayList<>(externalApiService.deviceListService.getAvailableDeviceNames(null));
                     externalApiService.replyTo(msg, deviceNames);
 
                     break;

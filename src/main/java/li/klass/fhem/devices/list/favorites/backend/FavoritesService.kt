@@ -37,30 +37,30 @@ import javax.inject.Singleton
 
 @Singleton
 class FavoritesService @Inject
-constructor(val deviceListService: DeviceListService,
-            val connectionService: ConnectionService,
-            val sharedPreferencesService: SharedPreferencesService) {
+constructor(private val deviceListService: DeviceListService,
+            private val connectionService: ConnectionService,
+            private val sharedPreferencesService: SharedPreferencesService) {
 
     /**
      * Adds a new favorite device.
      *
      * @param deviceName name of the device to add
      */
-    fun addFavorite(context: Context, deviceName: String) {
-        val editor = getPreferences(context).edit()
+    fun addFavorite(deviceName: String) {
+        val editor = getPreferences().edit()
         editor.putString(deviceName, deviceName).apply()
     }
 
     /**
      * @return the [android.content.SharedPreferences] object.
      */
-    private fun getPreferences(context: Context): SharedPreferences {
+    private fun getPreferences(): SharedPreferences {
         val name = preferenceNameFor(connectionService.getSelectedId())
-        return getPreferencesFor(context, name)
+        return getPreferencesFor(name)
     }
 
-    private fun getPreferencesFor(context: Context, name: String): SharedPreferences =
-            sharedPreferencesService.getPreferences(name, context)
+    private fun getPreferencesFor(name: String): SharedPreferences =
+            sharedPreferencesService.getPreferences(name)
 
     fun getPreferenceNames(): Set<String> =
             from(connectionService.listAll()).transform { input -> preferenceNameFor(input!!.id) }.toSet()
@@ -72,8 +72,8 @@ constructor(val deviceListService: DeviceListService,
      *
      * @param deviceName name of the device to remove
      */
-    fun removeFavorite(context: Context, deviceName: String) {
-        val editor = getPreferences(context).edit()
+    fun removeFavorite(deviceName: String) {
+        val editor = getPreferences().edit()
         editor.remove(deviceName).apply()
     }
 
@@ -86,7 +86,7 @@ constructor(val deviceListService: DeviceListService,
         val allRoomsDeviceList = deviceListService.getAllRoomsDeviceList()
         val favoritesList = RoomDeviceList("favorites")
 
-        val favoriteDeviceNames = getPreferences(context).all.keys
+        val favoriteDeviceNames = getPreferences().all.keys
         favoriteDeviceNames
                 .mapNotNull { allRoomsDeviceList.getDeviceFor<FhemDevice>(it) }
                 .forEach { favoritesList.addDevice(it, context) }
@@ -97,8 +97,8 @@ constructor(val deviceListService: DeviceListService,
     fun hasFavorites(context: Context): Boolean =
             !getFavorites(context).isEmptyOrOnlyContainsDoNotShowDevices
 
-    fun isFavorite(deviceName: String, context: Context): Boolean =
-            getPreferences(context).all.keys.contains(deviceName)
+    fun isFavorite(deviceName: String): Boolean =
+            getPreferences().all.keys.contains(deviceName)
 
     companion object {
         private val PREFERENCES_NAME = "favorites"

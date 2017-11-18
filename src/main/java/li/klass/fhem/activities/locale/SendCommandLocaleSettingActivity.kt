@@ -84,7 +84,6 @@ class SendCommandLocaleSettingActivity : Activity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        val context = this
         async(UI) {
             val connections = bg {
                 connectionService.listAll()

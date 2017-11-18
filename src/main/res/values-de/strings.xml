@@ -590,6 +590,7 @@
     <string name="currentStatus_loadingFavorites">Lade Favoriten …</string>
     <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen.</string>
     <string name="currentStatus_deleteFcmHistory">Lösche alte FCM Einträge …</string>
+    <string name="currentStatus_checkForCorruptedDeviceList">Prüfe auf veraltete Gerätelisten …</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
     <string name="androidBugDialogDatePickerContent">Android 5.0 beinhaltet einen Bug, der den nachfolgenden Dialog zum Absturz bringt, weshalb dieses Feature in dieser Android-Version nicht verwendet werden kann.</string>

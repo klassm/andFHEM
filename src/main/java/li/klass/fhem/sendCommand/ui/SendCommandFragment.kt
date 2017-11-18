@@ -108,7 +108,7 @@ class SendCommandFragment : BaseFragment() {
         myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         async(UI) {
             val recentCommands = bg {
-                sendCommandService.getRecentCommands(myActivity)
+                sendCommandService.getRecentCommands()
             }.await()
 
             if (view != null) {
@@ -142,14 +142,14 @@ class SendCommandFragment : BaseFragment() {
                 when (item.itemId) {
                     R.id.menu_delete -> async(UI) {
                         bg {
-                            sendCommandService.deleteCommand(command, myActivity)
+                            sendCommandService.deleteCommand(command)
                         }.await()
                         update(false)
                     }
                     R.id.menu_edit -> DialogUtil.showInputBox(context, getString(R.string.context_edit), command) { text ->
                         async(UI) {
                             bg {
-                                sendCommandService.editCommand(command, text, myActivity)
+                                sendCommandService.editCommand(command, text)
                             }.await()
                             update(false)
                         }

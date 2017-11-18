@@ -66,7 +66,7 @@ class DeviceListActionModeCallback constructor(
             R.id.menu_favorites_add -> {
                 async(UI) {
                     bg {
-                        favoritesService.addFavorite(activityContext, device.name)
+                        favoritesService.addFavorite(device.name)
                     }.await()
                     Toast.makeText(activityContext, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show()
                 }
@@ -74,7 +74,7 @@ class DeviceListActionModeCallback constructor(
             R.id.menu_favorites_remove -> {
                 async(UI) {
                     bg {
-                        favoritesService.removeFavorite(activityContext, device.name)
+                        favoritesService.removeFavorite(device.name)
                     }.await()
                     Toast.makeText(activityContext, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show()
                 }

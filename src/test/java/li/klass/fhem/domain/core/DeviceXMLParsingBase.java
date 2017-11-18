@@ -35,6 +35,7 @@ import com.google.common.io.Resources;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.experimental.categories.Category;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -106,7 +107,7 @@ public abstract class DeviceXMLParsingBase {
 
         mockStrings();
 
-        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class));
+        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class), ArgumentMatchers.<String>isNull());
 
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;

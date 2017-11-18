@@ -28,7 +28,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.FluentIterable.from
 import com.google.common.collect.ImmutableList
@@ -90,9 +89,6 @@ constructor(private val applicationProperties: ApplicationProperties,
         saveData.fillServer(server)
         saveToPreferences(server)
     }
-
-    fun exists(id: Optional<String>): Boolean =
-            !id.isPresent || exists(id.get())
 
     fun exists(id: String?): Boolean =
             mayShowDummyConnections(getAll()) && (DUMMY_DATA_ID == id
@@ -178,10 +174,9 @@ constructor(private val applicationProperties: ApplicationProperties,
         return builder.build()
     }
 
-    fun mayShowInCurrentConnectionType(deviceType: DeviceType): Boolean {
+    fun mayShowInCurrentConnectionType(deviceType: DeviceType, connectionId: String? = null): Boolean {
         val visibility = deviceType.visibility ?: return true
-
-        val serverType = getCurrentServer()!!.serverType
+        val serverType = getServerFor(connectionId)?.serverType ?: return false
         if (visibility == DeviceVisibility.NEVER) return false
 
         val showOnlyIn = visibility.showOnlyIn
@@ -189,10 +184,10 @@ constructor(private val applicationProperties: ApplicationProperties,
     }
 
     fun getCurrentServer(): FHEMServerSpec? =
-            getServerFor(Optional.absent())
+            getServerFor(null)
 
-    fun getServerFor(id: Optional<String>): FHEMServerSpec? =
-            forId(id.or(getSelectedId()))
+    fun getServerFor(id: String?): FHEMServerSpec? =
+            forId(id ?: getSelectedId())
 
     fun getSelectedId(): String {
         val id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID)

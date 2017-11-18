@@ -189,7 +189,7 @@ abstract class DeviceListFragment : BaseFragment() {
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
         val dummyConnectionNotification = view.findViewById<TextView>(R.id.dummyConnectionNotification)
-        if (!dataConnectionSwitch.isDummyDataActive(activity)) {
+        if (!dataConnectionSwitch.isDummyDataActive()) {
             dummyConnectionNotification.visibility = View.GONE
         } else {
             dummyConnectionNotification.visibility = View.VISIBLE
@@ -237,7 +237,7 @@ abstract class DeviceListFragment : BaseFragment() {
         val myActivity = activity ?: return false
         async(UI) {
             val isFavorite = bg {
-                favoritesService.isFavorite(device.name, myActivity)
+                favoritesService.isFavorite(device.name)
             }.await()
             val callback = DeviceListActionModeCallback(favoritesService, device, isFavorite, myActivity, updateListener = { update(false) })
             actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)

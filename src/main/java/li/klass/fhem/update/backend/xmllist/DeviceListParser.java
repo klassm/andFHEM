@@ -148,7 +148,7 @@ public class DeviceListParser {
                 continue;
             }
 
-            if (connectionService.mayShowInCurrentConnectionType(deviceType)) {
+            if (connectionService.mayShowInCurrentConnectionType(deviceType, null)) {
 
                 int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), xmlListDevices,
                         allDevices, context, deviceConfiguration);

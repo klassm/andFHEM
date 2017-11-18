@@ -27,10 +27,7 @@ package li.klass.fhem.update.backend
 import android.app.Application
 import android.content.Context
 import com.google.common.base.Optional
-import com.google.common.collect.Lists.newArrayList
-import com.google.common.collect.Sets
 import li.klass.fhem.connection.backend.ConnectionService
-import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.domain.core.DeviceType.AT
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
@@ -39,7 +36,6 @@ import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.service.AbstractService
 import li.klass.fhem.update.backend.xmllist.DeviceListParser
 import org.slf4j.LoggerFactory
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -49,8 +45,7 @@ class DeviceListService @Inject
 constructor(
         private val connectionService: ConnectionService,
         private val deviceListParser: DeviceListParser,
-        private val deviceListHolderService: DeviceListHolderService,
-        private val deviceListUpdateService: DeviceListUpdateService,
+        private val deviceListCacheService: DeviceListCacheService,
         private val application: Application
 ) : AbstractService() {
 
@@ -92,7 +87,7 @@ constructor(
      */
     fun getAllRoomsDeviceList(connectionId: String? = null): RoomDeviceList {
         val originalRoomDeviceList = getRoomDeviceList(connectionId)
-        return RoomDeviceList(originalRoomDeviceList.orNull(), applicationContext)
+        return RoomDeviceList(originalRoomDeviceList, applicationContext)
     }
 
     /**
@@ -106,8 +101,8 @@ constructor(
 
      * @return Currently cached [li.klass.fhem.domain.core.RoomDeviceList].
      */
-    fun getRoomDeviceList(connectionId: String? = null): Optional<RoomDeviceList> =
-            deviceListHolderService.getCachedRoomDeviceListMap(Optional.fromNullable(connectionId), applicationContext)
+    fun getRoomDeviceList(connectionId: String? = null): RoomDeviceList? =
+            deviceListCacheService.getCachedRoomDeviceListMap(connectionId)
 
     fun resetUpdateProgress(context: Context) {
         LOG.debug("resetUpdateProgress()")
@@ -115,17 +110,14 @@ constructor(
         sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context)
     }
 
-    fun getAvailableDeviceNames(connectionId: Optional<String>): ArrayList<String> {
-        val deviceNames = newArrayList<String>()
-        val allRoomsDeviceList = getAllRoomsDeviceList(connectionId.orNull())
-
-        for (device in allRoomsDeviceList.allDevices) {
-            deviceNames.add(device.name + "|" +
-                    emptyOrValue(device.alias) + "|" +
-                    emptyOrValue(device.widgetName))
-        }
-
-        return deviceNames
+    fun getAvailableDeviceNames(connectionId: String? = null): List<String> {
+        val allRoomsDeviceList = getAllRoomsDeviceList(connectionId)
+        return allRoomsDeviceList.allDevices
+                .map {
+                    it.name + "|" +
+                            emptyOrValue(it.alias) + "|" +
+                            emptyOrValue(it.widgetName)
+                }
     }
 
     private fun emptyOrValue(value: String?): String {
@@ -140,18 +132,14 @@ constructor(
      */
     fun getRoomNameList(connectionId: String? = null): Set<String> {
         val roomDeviceList = getRoomDeviceList(connectionId)
-        if (!roomDeviceList.isPresent) return emptySet()
-
-        val roomNames = Sets.newHashSet<String>()
-        for (device in roomDeviceList.get().allDevices) {
-            val type = getDeviceTypeFor(device) ?: continue
-            if (device.isSupported && connectionService.mayShowInCurrentConnectionType(type) && type != AT) {
-
-                roomNames.addAll(device.rooms)
-            }
-        }
-
-        return roomNames
+        return (roomDeviceList?.allDevices ?: emptySet())
+                .filter {
+                    val type = getDeviceTypeFor(it)
+                    type != null && connectionService.mayShowInCurrentConnectionType(type, connectionId) && type != AT
+                }
+                .filter { it.isSupported }
+                .flatMap { it.rooms }
+                .toSet()
     }
 
     /**
@@ -162,28 +150,10 @@ constructor(
      * @return found [RoomDeviceList] or null
      */
     fun getDeviceListForRoom(roomName: String, connectionId: String? = null): RoomDeviceList {
-        val roomDeviceList = RoomDeviceList(roomName)
-
-        val allRoomDeviceList = getRoomDeviceList(connectionId)
-        if (allRoomDeviceList.isPresent) {
-            allRoomDeviceList.get().allDevices
-                    .filter { it.isInRoom(roomName) }
-                    .forEach { roomDeviceList.addDevice(it, applicationContext) }
-        }
-
-        return roomDeviceList
-    }
-
-    fun checkForCorruptedDeviceList() {
-        val connections = connectionService.listAll()
-                .filter { it !is DummyServerSpec }
-        connections.forEach { connection ->
-            val connectionId = Optional.of(connection.id)
-            val corrupted = deviceListHolderService.isCorrupted(connectionId, applicationContext)
-            if (corrupted) {
-                deviceListUpdateService.updateAllDevices(connection.id)
-            }
-        }
+        val allDevices = (getRoomDeviceList(connectionId)
+                ?.allDevices ?: emptySet())
+                .filter { it.isInRoom(roomName) }
+        return RoomDeviceList(roomName).add(allDevices, applicationContext)
     }
 
     private val applicationContext: Context get() = application.applicationContext
@@ -191,8 +161,6 @@ constructor(
     companion object {
 
         private val LOG = LoggerFactory.getLogger(DeviceListService::class.java)
-
-        val PREFERENCES_NAME = DeviceListService::class.java.name!!
 
         val NEVER_UPDATE_PERIOD: Long = 0
         val ALWAYS_UPDATE_PERIOD: Long = -1

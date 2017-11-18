@@ -13,13 +13,13 @@ import org.joda.time.Minutes.minutes
 import javax.inject.Inject
 
 class LoginUIService @Inject constructor(
-        val applicationProperties: ApplicationProperties,
-        val sharedPreferencesService: SharedPreferencesService,
-        val dateTimeProvider: DateTimeProvider
+        private val applicationProperties: ApplicationProperties,
+        private val sharedPreferencesService: SharedPreferencesService,
+        private val dateTimeProvider: DateTimeProvider
 ) {
     fun doLoginIfRequired(context: Context, loginStrategy: LoginStrategy) {
         val requiredPassword = readPassword()
-        val lastLogin = readLastLogin(context)
+        val lastLogin = readLastLogin()
         val now = dateTimeProvider.now()
         val isStillLoggedIn = Minutes.minutesBetween(lastLogin, now).isLessThan(loginTime)
 
@@ -29,16 +29,16 @@ class LoginUIService @Inject constructor(
         }
 
         loginStrategy.requireLogin(context, { enteredPassword ->
-            checkPassword(enteredPassword, requiredPassword, loginStrategy, context)
+            checkPassword(enteredPassword, requiredPassword, loginStrategy)
         })
 
     }
 
-    private fun checkPassword(enteredPassword: String, requiredPassword: String, loginStrategy: LoginStrategy, context: Context) {
+    private fun checkPassword(enteredPassword: String, requiredPassword: String, loginStrategy: LoginStrategy) {
         val isCorrect = enteredPassword == requiredPassword
 
         if (isCorrect) {
-            sharedPreferencesService.getSharedPreferencesEditor(sharedPreferenceName, context)
+            sharedPreferencesService.getSharedPreferencesEditor(sharedPreferenceName)
                     .putLong(lastLogin, System.currentTimeMillis()).apply()
             loginStrategy.onLoginSuccess()
         } else {
@@ -46,7 +46,7 @@ class LoginUIService @Inject constructor(
         }
     }
 
-    private fun readLastLogin(context: Context) = DateTime(sharedPreferencesService.getPreferences(sharedPreferenceName, context).getLong(lastLogin, 0), DateTimeZone.UTC)
+    private fun readLastLogin() = DateTime(sharedPreferencesService.getPreferences(sharedPreferenceName).getLong(lastLogin, 0), DateTimeZone.UTC)
 
     private fun readPassword(): String? =
             StringUtils.trimToNull(applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null))
@@ -54,7 +54,7 @@ class LoginUIService @Inject constructor(
     companion object {
         val sharedPreferenceName = "login"
         val lastLogin = "lastLogin"
-        val loginTime = minutes(3)
+        val loginTime = minutes(3)!!
     }
 
     interface LoginStrategy {

@@ -46,27 +46,27 @@ class SendCommandService @Inject constructor(
 ) {
     fun executeCommand(command: String, connectionId: String? = null, context: Context): String? {
         val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)), context)
-        storeRecentCommand(command, context)
+        storeRecentCommand(command)
         return result
     }
 
-    fun editCommand(oldCommand: String, newCommand: String, context: Context) {
-        val commands = getRecentCommands(context)
+    fun editCommand(oldCommand: String, newCommand: String) {
+        val commands = getRecentCommands()
         val index = commands.indexOf(oldCommand)
         checkArgument(index != -1)
         commands.add(index, newCommand)
         commands.remove(oldCommand)
-        storeRecentCommands(commands, context)
+        storeRecentCommands(commands)
     }
 
-    fun deleteCommand(command: String, context: Context) {
-        val commands = getRecentCommands(context)
+    fun deleteCommand(command: String) {
+        val commands = getRecentCommands()
         commands.remove(command)
-        storeRecentCommands(commands, context)
+        storeRecentCommands(commands)
     }
 
-    fun getRecentCommands(context: Context): ArrayList<String> {
-        val recentCommandsValue = getRecentCommandsPreferences(context).getString(COMMANDS_PROPERTY, null)
+    fun getRecentCommands(): ArrayList<String> {
+        val recentCommandsValue = getRecentCommandsPreferences().getString(COMMANDS_PROPERTY, null)
         val commandsResult = ArrayList<String>()
         if (recentCommandsValue == null) {
             return commandsResult
@@ -84,17 +84,17 @@ class SendCommandService @Inject constructor(
 
     }
 
-    private fun storeRecentCommand(command: String, context: Context) {
-        val commands = getRecentCommands(context)
+    private fun storeRecentCommand(command: String) {
+        val commands = getRecentCommands()
         if (commands.contains(command)) {
             commands.remove(command)
         }
         commands.add(0, command)
 
-        storeRecentCommands(commands, context)
+        storeRecentCommands(commands)
     }
 
-    private fun storeRecentCommands(commands: List<String>, context: Context) {
+    private fun storeRecentCommands(commands: List<String>) {
         var mutableCommands = commands
         try {
             if (mutableCommands.size > MAX_NUMBER_OF_COMMANDS) {
@@ -104,15 +104,15 @@ class SendCommandService @Inject constructor(
             val commandsJsonArray = JSONArray(mutableCommands)
             json.put(COMMANDS_JSON_PROPERTY, commandsJsonArray)
 
-            getRecentCommandsPreferences(context).edit().putString(COMMANDS_PROPERTY, json.toString()).apply()
+            getRecentCommandsPreferences().edit().putString(COMMANDS_PROPERTY, json.toString()).apply()
         } catch (e: JSONException) {
             LOG.error("cannot store " + mutableCommands, e)
         }
 
     }
 
-    private fun getRecentCommandsPreferences(context: Context): SharedPreferences =
-            sharedPreferencesService.getPreferences(PREFERENCES_NAME, context)
+    private fun getRecentCommandsPreferences(): SharedPreferences =
+            sharedPreferencesService.getPreferences(PREFERENCES_NAME)
 
     companion object {
         val PREFERENCES_NAME = "SendCommandStorage"

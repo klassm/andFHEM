@@ -112,11 +112,8 @@ class CommandExecutionService @Inject constructor(
     }
 
     private fun execute(command: Command, currentTry: Int, context: Context, resultListener: ResultListener): RequestResult<String> {
-        val currentProvider = dataConnectionSwitch.getProviderFor(context, command.connectionId)
-        if (!currentProvider.isPresent) {
-            return RequestResult(HOST_CONNECTION_ERROR)
-        }
-        val result = currentProvider.get().executeCommand(command.command, context)
+        val currentProvider = dataConnectionSwitch.getProviderFor(command.connectionId.orNull())
+        val result = currentProvider.executeCommand(command.command, context)
 
         LOG.info("execute() - executing command={}, try={}", command, currentTry)
 
@@ -174,7 +171,7 @@ class CommandExecutionService @Inject constructor(
             } else {
                 showExecutingDialog(context)
 
-                val provider = dataConnectionSwitch.getProviderFor(context)
+                val provider = dataConnectionSwitch.getProviderFor()
                 val result = provider.requestBitmap(relativePath, context)
 
                 if (result.handleErrors(context)) return null
@@ -188,7 +185,7 @@ class CommandExecutionService @Inject constructor(
     }
 
     fun executeRequest(relativePath: String, context: Context): Optional<String> {
-        val provider = dataConnectionSwitch.getProviderFor(context) as? FHEMWEBConnection ?: return Optional.absent()
+        val provider = dataConnectionSwitch.getProviderFor() as? FHEMWEBConnection ?: return Optional.absent()
 
         val result = provider.executeRequest(relativePath, context)
         if (result.handleErrors(context)) {

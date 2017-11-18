@@ -165,7 +165,6 @@ class StartupActivity : Activity() {
     }
 
     private fun executeRemoteUpdate() {
-        val activityAsContext: Context = this
         async(UI) {
             val result = bg {
                 val result = deviceListUpdateService.updateAllDevices()
@@ -193,6 +192,16 @@ class StartupActivity : Activity() {
         async(UI) {
             bg {
                 fcmHistoryService.deleteContentOlderThan(retentionDays)
+            }.await()
+            checkForCorruptedDeviceList()
+        }
+    }
+
+    private fun checkForCorruptedDeviceList() {
+        setCurrentStatus(R.string.currentStatus_checkForCorruptedDeviceList)
+        async(UI) {
+            bg {
+                deviceListUpdateService.checkForCorruptedDeviceList()
             }.await()
             loadFavorites()
         }

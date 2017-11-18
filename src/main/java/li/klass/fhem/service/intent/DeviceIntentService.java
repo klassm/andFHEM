@@ -204,8 +204,8 @@ public class DeviceIntentService extends ConvenientIntentService {
             String newName = intent.getStringExtra(DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName, this);
             notificationService.rename(deviceName, newName, this);
-            favoritesService.removeFavorite(getBaseContext(), deviceName);
-            favoritesService.addFavorite(getBaseContext(), newName);
+            favoritesService.removeFavorite(deviceName);
+            favoritesService.addFavorite(newName);
 
         } else if (DEVICE_DELETE.equals(action)) {
             deviceService.deleteDevice(device, this);

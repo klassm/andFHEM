@@ -19,7 +19,7 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
     fun addDevStateIconIfRequired(context: Context, value: String?, device: FhemDevice, imageView: ImageView?) {
         imageView ?: return
 
-        val currentProvider = dataConnectionSwitch.getProviderFor(context)
+        val currentProvider = dataConnectionSwitch.getProviderFor()
         val isFhemweb = currentProvider is FHEMWEBConnection
         val icon = device.devStateIcons.iconFor(value ?: "")
         if (!isFhemweb || icon == null) {

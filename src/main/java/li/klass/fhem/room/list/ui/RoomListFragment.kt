@@ -135,7 +135,6 @@ open class RoomListFragment : BaseFragment() {
         if (refresh && !isNavigation)
             activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
-        val myActivity = activity ?: return
         async(UI) {
             val roomNameList = bg {
                 if (refresh) {
