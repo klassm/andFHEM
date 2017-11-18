@@ -138,7 +138,6 @@ class SendCommandFragment : BaseFragment() {
             override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean = false
 
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-                val myActivity = activity ?: return false
                 when (item.itemId) {
                     R.id.menu_delete -> async(UI) {
                         bg {

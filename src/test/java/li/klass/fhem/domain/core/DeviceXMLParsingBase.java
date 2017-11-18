@@ -25,7 +25,6 @@
 package li.klass.fhem.domain.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
@@ -36,7 +35,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.experimental.categories.Category;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.io.File;
@@ -60,12 +58,10 @@ import li.klass.fhem.update.backend.xmllist.DeviceListParser;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.util.CloseableUtil;
 
-import static li.klass.fhem.util.ReflectionUtil.setFieldValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Category(DeviceTestBase.class)
 public abstract class DeviceXMLParsingBase {
@@ -76,38 +72,29 @@ public abstract class DeviceXMLParsingBase {
     protected RoomDeviceList roomDeviceList;
 
     @Mock
-    protected ConnectionService connectionService;
-
-    @Mock
     protected Context context;
+    @Mock
+    private ConnectionService connectionService;
 
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
 
-    @InjectMocks
-    protected DeviceListParser deviceListParser;
-
-    @Mock
-    protected SharedPreferences sharedPreferences;
-
     @Before
     public void before() throws Exception {
-        AndFHEMApplication application = new AndFHEMApplication();
+        AndFHEMApplication application = mock(AndFHEMApplication.class);
+        when(application.getApplicationContext()).thenReturn(context);
         ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(application))
                 .databaseModule(new DatabaseModule(application)).build();
 
-        setFieldValue(deviceListParser, "parser", applicationComponent.getXmlListParser());
-        setFieldValue(deviceListParser, "gPlotHolder", applicationComponent.getGPlotHolder());
-        setFieldValue(deviceListParser, "deviceConfigurationProvider", applicationComponent.getDeviceConfigurationProvider());
-        setFieldValue(deviceListParser, "groupProvider", applicationComponent.getGroupProvider());
+        DeviceListParser deviceListParser = new DeviceListParser(
+                connectionService, applicationComponent.getDeviceConfigurationProvider(),
+                applicationComponent.getXmllistParser(), applicationComponent.getGPlotHolder(),
+                applicationComponent.getGroupProvider(), applicationComponent.getSanitiser()
+        );
 
-
-        given(context.getSharedPreferences(anyString(), anyInt())).willReturn(sharedPreferences);
-
+        when(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class), ArgumentMatchers.<String>eq(null))).thenReturn(true);
         mockStrings();
-
-        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class), ArgumentMatchers.<String>isNull());
 
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;

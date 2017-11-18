@@ -24,6 +24,8 @@
 
 package li.klass.fhem.dagger;
 
+import android.app.Application;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -130,6 +132,7 @@ import li.klass.fhem.timer.ui.TimerListFragment;
 import li.klass.fhem.ui.WebViewFragment;
 import li.klass.fhem.update.backend.DeviceListUpdateService;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
+import li.klass.fhem.update.backend.device.configuration.Sanitiser;
 import li.klass.fhem.update.backend.group.GroupProvider;
 import li.klass.fhem.update.backend.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
@@ -139,8 +142,19 @@ import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreferen
         DatabaseModule.class})
 public interface ApplicationComponent {
 
-    void inject(DeviceFunctionalityOrderPreference object);
+    DeviceConfigurationProvider getDeviceConfigurationProvider();
 
+    XmlListParser getXmllistParser();
+
+    GPlotHolder getGPlotHolder();
+
+    GroupProvider getGroupProvider();
+
+    Sanitiser getSanitiser();
+
+    Application getApplication();
+
+    void inject(DeviceFunctionalityOrderPreference object);
 
     void inject(AndFHEMMainActivity object);
 
@@ -330,15 +344,6 @@ public interface ApplicationComponent {
     void inject(ToggleableStrategy object);
 
     void inject(WebcmdStrategy object);
-
-
-    XmlListParser getXmlListParser();
-
-    GPlotHolder getGPlotHolder();
-
-    DeviceConfigurationProvider getDeviceConfigurationProvider();
-
-    GroupProvider getGroupProvider();
 
     void inject(ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
 

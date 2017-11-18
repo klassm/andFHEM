@@ -64,15 +64,15 @@ class DeviceListUpdateService @Inject constructor(
     fun getLastUpdate(connectionId: String?): DateTime? =
             deviceListCacheService.getLastUpdate(connectionId)
 
-    private fun update(connectionId: Optional<String>, result: Optional<RoomDeviceList>): Boolean {
-        var success = false
-        if (result.isPresent) {
-            success = deviceListCacheService.storeDeviceListMap(result.get(), connectionId.orNull())
+    private fun update(connectionId: Optional<String>, result: RoomDeviceList?): Boolean = when {
+        result != null -> {
+            val success = deviceListCacheService.storeDeviceListMap(result, connectionId.orNull())
             if (success) LOG.info("update - update was successful, sending result")
-        } else {
-            LOG.info("update - update was not successful, sending empty device list")
+            success
         }
-        return success
+        else -> {
+            LOG.info("update - update was not successful, sending empty device list"); false
+        }
     }
 
     private fun executeXmllistPartial(connectionId: String?, devSpec: String): UpdateResult {
@@ -97,21 +97,21 @@ class DeviceListUpdateService @Inject constructor(
             true -> {
                 applicationContext.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
                         .setClass(applicationContext, AppIndexIntentService::class.java))
-                UpdateResult.Success(roomDeviceList.orNull())
+                UpdateResult.Success(roomDeviceList)
             }
             else -> UpdateResult.Error()
         }
     }
 
-    private fun parseResult(connectionId: String?, context: Context, result: String, updateHandler: UpdateHandler): Optional<RoomDeviceList> {
+    private fun parseResult(connectionId: String?, context: Context, result: String, updateHandler: UpdateHandler): RoomDeviceList? {
         val parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context))
         val cached = deviceListCacheService.getCachedRoomDeviceListMap(connectionId)
         if (parsed.isPresent) {
             val newDeviceList = updateHandler.handle(cached ?: parsed.get(), parsed.get())
             deviceListCacheService.storeDeviceListMap(newDeviceList, connectionId)
-            return Optional.of(newDeviceList)
+            return newDeviceList
         }
-        return Optional.absent<RoomDeviceList>()
+        return null
     }
 
     fun checkForCorruptedDeviceList() {
