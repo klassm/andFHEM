@@ -25,16 +25,20 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/appwidget_medium">
+    style="@style/appwidget_medium">
 
     <LinearLayout style="@style/appwidget_content">
 
-        <TextView style="@style/appwidget_caption"/>
+        <TextView style="@style/appwidget_caption" />
 
-        <TextView style="@style/appwidget_item"
-                  android:textSize="12sp"
-                  android:id="@+id/status"
+        <TextView
+            android:id="@+id/status"
+            style="@style/appwidget_item"
+            android:textAlignment="center"
             android:text="@string/dummy_weather_state" />
     </LinearLayout>
-    <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
+
+    <ImageView
+        style="@style/appwidget_logo"
+        android:contentDescription="@string/app_name" />
 </RelativeLayout>
