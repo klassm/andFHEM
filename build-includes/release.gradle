@@ -23,7 +23,17 @@
  */
 
 release {
-    buildTasks = ['build']
+    buildTasks = ['build', 'uploadToPlayStore']
     versionPropertyFile = 'gradle.properties'
     versionProperties = ['version']
+}
+
+play {
+    track = 'production'
+    userFraction = 1.0
+}
+
+task uploadToPlayStore
+uploadToPlayStore.dependsOn {
+    tasks.findAll { it.name.startsWith('publishApk') && it.name.endsWith("Release")}
 }
