@@ -42,7 +42,7 @@ public class CULTXDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "temperature")).isEqualTo("16.5 (°C)");
         assertThat(device.getState()).isEqualTo("T: 16.5 H: 73.0");
 
-        assertThat(device.getSetList().getEntries()).isEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
     }
 
     @Override

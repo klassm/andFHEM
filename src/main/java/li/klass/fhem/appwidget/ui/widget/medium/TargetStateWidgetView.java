@@ -61,7 +61,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(@NonNull Context context, @NonNull RemoteViews view, @NonNull FhemDevice device, @NonNull WidgetConfiguration widgetConfiguration) {
         String payload = widgetConfiguration.payload.get(1);
         String state = device.getEventMapStateFor(payload);
 
@@ -93,9 +93,9 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
 
 
     @Override
-    protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
-                                                   final int appWidgetId, FhemDevice device,
-                                                   final WidgetConfigurationCreatedCallback callback) {
+    protected void createDeviceWidgetConfiguration(@NonNull Context context, @NonNull final WidgetType widgetType,
+                                                   final int appWidgetId, @NonNull FhemDevice device,
+                                                   @NonNull final WidgetConfigurationCreatedCallback callback) {
         //noinspection unchecked
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback, context));
     }
@@ -122,8 +122,8 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(FhemDevice device, Context context) {
-        return !device.getSetList().getEntries().isEmpty();
+    public boolean supports(@NonNull FhemDevice device, @NonNull Context context) {
+        return !device.getXmlListDevice().getSetList().getEntries().isEmpty();
     }
 
     @Override

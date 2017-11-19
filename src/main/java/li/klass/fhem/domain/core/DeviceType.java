@@ -34,7 +34,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
-import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
@@ -67,7 +66,6 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.LGTVDevice;
-import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PIDDevice;
@@ -117,7 +115,6 @@ public enum DeviceType {
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
-    MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),

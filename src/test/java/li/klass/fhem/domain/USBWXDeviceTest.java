@@ -44,7 +44,7 @@ public class USBWXDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState()).isEqualTo("T: 18.2  H: 60");
 
-        assertThat(device.getSetList().size()).isNotEqualTo(0);
+        assertThat(device.getXmlListDevice().getSetList().size()).isNotEqualTo(0);
     }
 
     @Override

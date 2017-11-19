@@ -38,7 +38,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton;
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.ModeStateOverwrite;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.FHTModeStateOverwrite;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -60,7 +60,7 @@ public class FHTDetailActionProvider extends DeviceDetailActionProvider {
 
     @Inject
     public FHTDetailActionProvider(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
-        addStateAttributeAction("mode", new ModeStateOverwrite(applicationProperties, dateTimeProvider));
+        addStateAttributeAction("mode", new FHTModeStateOverwrite(applicationProperties, dateTimeProvider));
     }
 
     @Override

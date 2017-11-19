@@ -43,11 +43,9 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
         }
 
 
-    operator fun get(key: String): SetListEntry {
-        return if (entries.containsKey(key))
-            entries[key]!!
-        else
-            NotFoundSetListEntry(key)
+    operator fun get(key: String, ignoreCase: Boolean = true): SetListEntry {
+        val matches = entries.filter { it.key.equals(key, ignoreCase) }
+        return if (matches.isEmpty()) NotFoundSetListEntry(key) else matches.iterator().next().value
     }
 
     fun contains(vararg keys: String): Boolean {

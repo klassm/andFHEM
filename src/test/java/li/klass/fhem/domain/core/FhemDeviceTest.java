@@ -34,9 +34,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.google.common.collect.FluentIterable.from;
@@ -88,7 +90,7 @@ public class FhemDeviceTest {
 
     private static FhemDevice deviceFor(String name, String alias, String sortBy) {
         GenericDevice device = new GenericDevice();
-        XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+        XmlListDevice xmlListDevice = new XmlListDevice("dummy", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", name);
         xmlListDevice.setAttribute("alias", alias);
         device.setXmlListDevice(xmlListDevice);

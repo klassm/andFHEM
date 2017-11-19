@@ -34,6 +34,7 @@ import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
 import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
 import org.assertj.core.api.Assertions.assertThat
@@ -179,7 +180,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
 
     private fun fhemwebDeviceFor(name: String): FHEMWEBDevice {
         val device = FHEMWEBDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB")
+        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
         device.xmlListDevice.setInternal(XmllistKey.Internal.name, name)
         device.xmlListDevice.setAttribute(XmllistKey.Attribute.group, "default")
         return device

@@ -80,6 +80,7 @@ import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition;
 import li.klass.fhem.graph.ui.GraphActivity;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.Optionals;
 
 import static com.google.common.collect.FluentIterable.from;
@@ -142,7 +143,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
     private void fillActionsCard(final GenericDevice genericDevice, final LinearLayout linearLayout, List<GenericDetailActionProvider> detailActionProviders, String connectionId, Context context) {
         CardView actionsCard = linearLayout.findViewById(R.id.actionsCard);
-        if (genericDevice.getSetList().size() == 0) {
+        if (genericDevice.getXmlListDevice().getSetList().size() == 0) {
             actionsCard.setVisibility(View.GONE);
             return;
         }
@@ -299,6 +300,11 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
     }
 
     private void addActionIfRequired(GenericDevice device, String connectionId, TableLayout table, final DeviceViewItem item, TableRow row, List<GenericDetailActionProvider> providers, Context context) {
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
+        if (xmlListDevice == null) {
+            return;
+        }
+
         List<StateAttributeAction> attributeActions = from(providers)
                 .transform(new Function<GenericDetailActionProvider, Optional<StateAttributeAction>>() {
                     @Override
@@ -311,8 +317,8 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
 
         if (!attributeActions.isEmpty()) {
             for (StateAttributeAction action : attributeActions) {
-                if (action.supports(device.getXmlListDevice())) {
-                    addRow(table, action.createRow(device.getXmlListDevice(), connectionId, item.getKey(), item.getValueFor(device), context, table));
+                if (action.supports(xmlListDevice)) {
+                    addRow(table, action.createRow(xmlListDevice, connectionId, item.getKey(), item.getValueFor(device), context, table));
                     return;
                 }
             }
@@ -330,7 +336,7 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
             return;
         }
 
-        SetListEntry setListEntry = device.getSetList().get(item.getKey());
+        SetListEntry setListEntry = device.getXmlListDevice().getSetList().get(item.getKey(), true);
 
         if (setListEntry instanceof SliderSetListEntry) {
             addRow(table, new StateChangingSeekBarFullWidth(
@@ -347,10 +353,10 @@ public class GenericOverviewDetailDeviceAdapter extends OverviewDeviceAdapter {
                         .createRow(device, context));
             } else {
                 addRow(table, new StateChangingSpinnerActionRow(context, null, item.getName(deviceDescMapping, context), groupStates, item.getValueFor(device), item.getKey())
-                        .createRow(device.getXmlListDevice(), connectionId, table));
+                        .createRow(xmlListDevice, connectionId, table));
             }
         } else if (setListEntry instanceof RGBSetListEntry) {
-            addRow(table, new StateChangingColorPickerRow(stateUiService, device.getXmlListDevice(), connectionId, (RGBSetListEntry) setListEntry)
+            addRow(table, new StateChangingColorPickerRow(stateUiService, xmlListDevice, connectionId, (RGBSetListEntry) setListEntry)
                     .createRow(context, LayoutInflater.from(context), table));
         }
     }

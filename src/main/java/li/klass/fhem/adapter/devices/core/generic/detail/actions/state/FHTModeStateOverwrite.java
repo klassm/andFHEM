@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.state;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -39,7 +39,7 @@ import java.util.Locale;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.HolidayShort;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
@@ -60,12 +60,12 @@ import static li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.
 import static li.klass.fhem.ui.AndroidBug.showMessageIfColorStateBugIsEncountered;
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class ModeStateOverwrite implements StateAttributeAction {
+public class FHTModeStateOverwrite implements StateAttributeAction {
 
     private final HolidayShort holidayShort;
     private final ApplicationProperties applicationProperties;
 
-    public ModeStateOverwrite(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
+    public FHTModeStateOverwrite(ApplicationProperties applicationProperties, DateTimeProvider dateTimeProvider) {
         this.applicationProperties = applicationProperties;
         this.holidayShort = new HolidayShort(applicationProperties, dateTimeProvider);
     }

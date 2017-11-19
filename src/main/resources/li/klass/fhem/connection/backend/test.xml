@@ -1,4 +1,3 @@
-
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -24,39 +23,106 @@
   -->
 
 <FHZINFO>
-    <THRESHOLD_LIST>
-        <THRESHOLD name="ThermostatWozi" state="active 18 off"
-            sets="desired active external deactivated hysteresis offset cmd1_gt cmd2_lt"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 loglevel:0,1,2,3,4,5,6 state_format state_cmd1_gt state_cmd2_lt devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fp_Wohnung icon sortby structexclude webCmd">
+    <MilightDevice_LIST>
+        <MilightDevice name="LEDBulb1" state="on 100"
+            sets="on off toggle dim:slider,0,4,100 dimup dimdown hsv rgb:colorpicker,RGB discoModeUp:noArg discoSpeedUp:noArg discoSpeedDown:noArg pair unpair restorePreviousState:noArg saveState:noArg restoreState:noArg blink on-for-timer on-till off-for-timer intervals off-till"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev dimStep defaultRampOn defaultRampOff event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude OffStateName OnStateName PullerTapsDisable PullerTapsDisable_map always_hidden:true,false building building_map devStateIcon devStateStyle do_not_notify icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 offDevice:true,false onDevice:true,false onOffDevice:true,false realtimePicker room_map setList sortby structexclude webCmd webcmdDevice:true,false widgetOverride widget_name lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 userattr">
+            <INT key="CFGFN" value="" />
+            <INT key="DEF" value="RGBW MilightDevice 6" />
+            <INT key="LEDTYPE" value="RGBW" />
+            <INT key="NAME" value="LEDBulb1" />
+            <INT key="NR" value="231" />
+            <INT key="NTFY_ORDER" value="50-LEDBulb1" />
+            <INT key="SLOT" value="6" />
+            <INT key="STATE" value="on 100" />
+            <INT key="TYPE" value="MilightDevice" />
+            <INT key="IODev" value="MilightBridge" />
+            <ATTR key="IODev" value="MilightBridge" />
+            <ATTR key="devStateIcon"
+                value="{(MilightDevice_devStateIcon($name),&quot;toggle&quot;)}" />
+            <ATTR key="event-on-change-reading" value="state,transitionInProgress" />
+            <ATTR key="group" value="Licht" />
+            <ATTR key="room" value="Wohnhöhle" />
+            <ATTR key="userattr"
+                value="lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0" />
+            <ATTR key="webCmd" value="rgb:on:off:dim" />
+            <STATE key="RGB" value="FFFFFF" measured="2015-01-05 12:23:45" />
+            <STATE key="brightness" value="100" measured="2015-01-05 12:23:45" />
+            <STATE key="brightness_on" value="66.6666666666667" measured="2015-01-05 02:13:56" />
+            <STATE key="discoMode" value="0" measured="2015-01-05 12:23:45" />
+            <STATE key="discoSpeed" value="0" measured="2015-01-05 12:23:45" />
+            <STATE key="hue" value="0" measured="2015-01-05 12:23:45" />
+            <STATE key="previousState" value="0,0,0" measured="2015-01-05 12:23:45" />
+            <STATE key="saturation" value="0" measured="2015-01-05 12:23:45" />
+            <STATE key="state" value="on 100" measured="2015-01-05 12:23:45" />
+            <STATE key="transitionInProgress" value="0" measured="2015-01-05 12:23:45" />
+        </MilightDevice>
+        <MilightDevice name="LEDStripTV" state="off"
+            sets="on off toggle dim:slider,0,4,100 dimup dimdown hsv rgb:colorpicker,RGB discoModeUp:noArg discoSpeedUp:noArg discoSpeedDown:noArg pair unpair restorePreviousState:noArg saveState:noArg restoreState:noArg blink on-for-timer on-till off-for-timer intervals off-till"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev dimStep defaultRampOn defaultRampOff event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude OffStateName OnStateName PullerTapsDisable PullerTapsDisable_map always_hidden:true,false building building_map devStateIcon devStateStyle do_not_notify icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 offDevice:true,false onDevice:true,false onOffDevice:true,false realtimePicker room_map setList sortby structexclude webCmd webcmdDevice:true,false widgetOverride widget_name lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 userattr">
+            <INT key="CFGFN" value="" />
             <INT key="CHANGED" value="" />
-            <INT key="DEF" value="Temp_Wozi HeizungWozi" />
-            <INT key="NAME" value="ThermostatWozi" />
-            <INT key="NR" value="60" />
-            <INT key="NTFY_ORDER" value="50-ThermostatWozi" />
-            <INT key="STATE" value="active 18 off" />
-            <INT key="TYPE" value="THRESHOLD" />
-            <INT key="cmd1_gt" value="set HeizungWozi off" />
-            <INT key="cmd2_lt" value="set HeizungWozi on" />
-            <INT key="cmd_default" value="2" />
-            <INT key="hysteresis" value="1" />
-            <INT key="offset" value="0" />
-            <INT key="sensor" value="Temp_Wozi" />
-            <INT key="sensor_reading" value="temperature" />
-            <ATTR key="group" value="Thermostate" />
-            <ATTR key="icon" value="temp_control" />
-            <ATTR key="room" value="Wohnzimmer" />
-            <ATTR key="state_cmd1_gt" value="off" />
-            <ATTR key="state_cmd2_lt" value="on" />
-            <ATTR key="state_format" value="_m _dv _sc" />
-            <ATTR key="webCmd" value="desired" />
-            <STATE key="cmd" value="cmd1_gt" measured="2014-04-01 19:02:32" />
-            <STATE key="desired_value" value="18" measured="2014-04-01 19:00:00" />
-            <STATE key="mode" value="active" measured="2014-04-01 19:00:00" />
-            <STATE key="sensor_value" value="21.8" measured="2014-04-14 06:05:12" />
-            <STATE key="state" value="active 18 off" measured="2014-04-01 19:02:32" />
-            <STATE key="threshold_max" value="18" measured="2014-04-01 19:00:00" />
-            <STATE key="threshold_min" value="17" measured="2014-04-01 19:00:00" />
-        </THRESHOLD>
-    </THRESHOLD_LIST>
+            <INT key="DEF" value="RGBW MilightDevice 5" />
+            <INT key="LEDTYPE" value="RGBW" />
+            <INT key="NAME" value="LEDStripTV" />
+            <INT key="NR" value="230" />
+            <INT key="NTFY_ORDER" value="50-LEDStripTV" />
+            <INT key="SLOT" value="5" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="MilightDevice" />
+            <INT key="IODev" value="MilightBridge" />
+            <ATTR key="IODev" value="MilightBridge" />
+            <ATTR key="devStateIcon"
+                value="{(MilightDevice_devStateIcon($name),&quot;toggle&quot;)}" />
+            <ATTR key="event-on-change-reading" value="state,transitionInProgress" />
+            <ATTR key="group" value="Licht" />
+            <ATTR key="room" value="Wohnhöhle" />
+            <ATTR key="userattr"
+                value="lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0" />
+            <ATTR key="webCmd" value="rgb:on:off:dim" />
+            <STATE key="RGB" value="000000" measured="2015-01-05 02:30:44" />
+            <STATE key="brightness" value="0" measured="2015-01-05 02:30:44" />
+            <STATE key="brightness_on" value="51.7647058823529" measured="2015-01-05 02:13:56" />
+            <STATE key="discoMode" value="0" measured="2015-01-05 02:30:44" />
+            <STATE key="discoSpeed" value="0" measured="2015-01-05 02:30:44" />
+            <STATE key="hue" value="15" measured="2015-01-05 02:30:44" />
+            <STATE key="previousState" value="15,100,51.7647058823529"
+                measured="2015-01-05 02:13:56" />
+            <STATE key="saturation" value="100" measured="2015-01-05 02:30:44" />
+            <STATE key="state" value="off" measured="2015-01-05 02:30:44" />
+            <STATE key="transitionInProgress" value="0" measured="2015-01-05 02:30:44" />
+        </MilightDevice>
+        <MilightDevice name="LEDstripSchreibtisch" state="on 40"
+            sets="on off toggle dim:slider,0,10,100 dimup dimdown colourTemperature:slider,1,1,10 pair unpair restorePreviousState:noArg saveState:noArg restoreState:noArg blink on-for-timer on-till off-for-timer intervals off-till"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev dimStep defaultRampOn defaultRampOff event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude OffStateName OnStateName PullerTapsDisable PullerTapsDisable_map always_hidden:true,false building building_map devStateIcon devStateStyle do_not_notify icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 offDevice:true,false onDevice:true,false onOffDevice:true,false realtimePicker room_map setList sortby structexclude webCmd webcmdDevice:true,false widgetOverride widget_name lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 userattr">
+            <INT key="CFGFN" value="" />
+            <INT key="DEF" value="White MilightDevice 1" />
+            <INT key="LEDTYPE" value="White" />
+            <INT key="NAME" value="LEDstripSchreibtisch" />
+            <INT key="NR" value="232" />
+            <INT key="NTFY_ORDER" value="50-LEDstripSchreibtisch" />
+            <INT key="SLOT" value="1" />
+            <INT key="STATE" value="on 40" />
+            <INT key="TYPE" value="MilightDevice" />
+            <INT key="IODev" value="MilightBridge" />
+            <ATTR key="IODev" value="MilightBridge" />
+            <ATTR key="alias" value="Schreibtisch indirekt" />
+            <ATTR key="devStateIcon"
+                value="{(MilightDevice_devStateIcon($name),&quot;toggle&quot;)}" />
+            <ATTR key="event-on-change-reading" value="state,transitionInProgress" />
+            <ATTR key="group" value="Licht" />
+            <ATTR key="room" value="Wohnhöhle" />
+            <ATTR key="userattr"
+                value="lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0" />
+            <ATTR key="webCmd" value="on:off:dim" />
+            <STATE key="brightness" value="40" measured="2015-01-05 12:23:30" />
+            <STATE key="brightness_on" value="40" measured="2015-01-05 02:13:57" />
+            <STATE key="colourTemperature" value="10" measured="2015-01-05 12:23:30" />
+            <STATE key="hue" value="10" measured="2015-01-05 12:23:30" />
+            <STATE key="previousState" value="10,0,0" measured="2015-01-05 12:23:30" />
+            <STATE key="saturation" value="0" measured="2015-01-05 12:23:30" />
+            <STATE key="state" value="on 40" measured="2015-01-05 12:23:30" />
+            <STATE key="transitionInProgress" value="0" measured="2015-01-05 12:23:30" />
+        </MilightDevice>
+    </MilightDevice_LIST>
 </FHZINFO>
-

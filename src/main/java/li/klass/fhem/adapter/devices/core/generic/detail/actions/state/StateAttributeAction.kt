@@ -22,36 +22,16 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.state
 
-import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
-import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.resources.ResourceIdMapper;
+import android.content.Context
+import android.view.ViewGroup
+import android.widget.TableRow
 
-import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
-public class MiLightDevice extends DimmableContinuousStatesDevice<MiLightDevice> {
+interface StateAttributeAction {
+    fun createRow(device: XmlListDevice, connectionId: String?, key: String, stateValue: String, context: Context, parent: ViewGroup): TableRow
 
-    @ShowField(description = ResourceIdMapper.color)
-    private String rgb;
-
-    @Override
-    protected String getSetListDimStateAttributeName() {
-        return "dim";
-    }
-
-    public String getRgb() {
-        return rgb;
-    }
-
-    public int getRgbColor() {
-        if (rgb == null) return 0;
-        return hexToDecimal(rgb);
-    }
-
-    @XmllistAttribute("RGB")
-    public void setRGB(String rgb) {
-        this.rgb = rgb;
-    }
+    fun supports(xmlListDevice: XmlListDevice): Boolean
 }

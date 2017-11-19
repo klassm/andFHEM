@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.setlist.SetList;
 
 import static li.klass.fhem.util.Equals.ignoreCaseEither;
 
@@ -70,8 +72,10 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
         }
     }
 
+    @NonNull
     @Override
     protected String getSetListDimStateAttributeName() {
+        SetList setList = getXmlListDevice().getSetList();
         if (setList.contains("position")) return "position";
         if (setList.contains("dim")) return "dim";
         return super.getSetListDimStateAttributeName();
@@ -89,14 +93,14 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
             }
         }
 
-        if (setList.contains("up", "down") || ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
+        if (getXmlListDevice().getSetList().contains("up", "down") || ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
             subType = SubType.SHUTTER;
         }
     }
 
     @Override
     public boolean supportsToggle() {
-        return setList.contains("on", "off") && subType == SubType.SWITCH;
+        return getXmlListDevice().getSetList().contains("on", "off") && subType == SubType.SWITCH;
     }
 
     @Override

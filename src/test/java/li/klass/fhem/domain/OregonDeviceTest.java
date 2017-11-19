@@ -53,7 +53,7 @@ public class OregonDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "uv_risk")).isEqualTo("high");
         assertThat(device.getState()).isEqualTo("T: 15.9  H: 46");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getXmlListDevice().getSetList().getEntries().size()).isEqualTo(0);
     }
 
     @Override

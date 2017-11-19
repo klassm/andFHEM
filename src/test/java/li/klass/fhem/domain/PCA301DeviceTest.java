@@ -38,7 +38,7 @@ public class PCA301DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getSetList().contains("on", "off")).isTrue();
+        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isTrue();
         assertThat(device.supportsToggle()).isTrue();
 
         assertThat(stateValueFor(device, "consumption")).isEqualTo("5.0 (kWh)");

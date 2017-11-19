@@ -63,7 +63,7 @@ public class HarmonyDeviceAdapter extends ExplicitOverviewDetailDeviceAdapterWit
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("activity");
+                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("activity", true);
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.activity, R.string.activity, inputSetList.getGroupStates(), ((HarmonyDevice) device).getActivity(), "activity")
                         .createRow(device.getXmlListDevice(), connectionId, tableLayout));

@@ -57,7 +57,7 @@ abstract class DimmableContinuousStatesDevice<D : FhemDevice> : DimmableDevice<D
 
     protected val stateSliderValue: SliderSetListEntry?
         get() {
-            val stateEntry = getSetList()[getSetListDimStateAttributeName()]
+            val stateEntry = xmlListDevice.setList[getSetListDimStateAttributeName()]
             if (stateEntry is SliderSetListEntry) {
                 return stateEntry
             }

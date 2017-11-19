@@ -61,7 +61,7 @@ public class STVDevice extends FhemDevice implements VolumeDevice {
 
     @Override
     public float getVolumeAsFloat() {
-        SliderSetListEntry setListSliderValue = (SliderSetListEntry) getSetList().get("volume");
+        SliderSetListEntry setListSliderValue = (SliderSetListEntry) getXmlListDevice().getSetList().get("volume", true);
         switch (volume) {
             case "on":
                 return setListSliderValue.getStop();

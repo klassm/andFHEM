@@ -265,7 +265,7 @@ public abstract class FhemDevice extends HookedDevice {
     public String getState() {
         XmlListDevice xmlListDevice = getXmlListDevice();
         Optional<String> state = xmlListDevice.getInternal("STATE");
-        return state.or(xmlListDevice.getState("state")).or("");
+        return state.or(xmlListDevice.getState("state", false)).or("");
     }
 
     public void setState(String state) {
@@ -315,17 +315,13 @@ public abstract class FhemDevice extends HookedDevice {
         return eventMap;
     }
 
-    public SetList getSetList() {
-        return setList;
-    }
-
     /**
      * Generate an array of available target states, but respect any set event maps.
      *
      * @return array of available target states
      */
     public String[] getAvailableTargetStatesEventMapTexts() {
-        if (setList == null) return new String[]{};
+        SetList setList = getXmlListDevice().getSetList();
 
         List<String> sortedKeys = setList.getSortedKeys();
         List<String> eventMapKeys = newArrayList();
@@ -384,7 +380,6 @@ public abstract class FhemDevice extends HookedDevice {
                 ", measured='" + measured + '\'' +
                 ", definition='" + definition + '\'' +
                 ", eventMap=" + eventMap +
-                ", setList=" + setList.toString() +
                 '}';
     }
 }

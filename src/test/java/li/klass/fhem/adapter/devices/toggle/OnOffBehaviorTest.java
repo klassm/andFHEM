@@ -34,12 +34,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.HashMap;
+
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.testutil.MockitoRule;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
@@ -75,7 +78,7 @@ public class OnOffBehaviorTest {
 
         //  given
         ToggleableDevice device = new EIBDevice();
-        device.setXmlListDevice(new XmlListDevice("BLUB"));
+        device.setXmlListDevice(new XmlListDevice("BLUB", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>()));
         device.setState(readState);
         when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
 
@@ -89,7 +92,7 @@ public class OnOffBehaviorTest {
     public void should_handle_invert_state_hook(String readState, boolean isOn) {
         //  given
         ToggleableDevice device = new EIBDevice();
-        XmlListDevice xmlListDevice = new XmlListDevice("BLUB");
+        XmlListDevice xmlListDevice = new XmlListDevice("BLUB", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", "Name");
         device.setXmlListDevice(xmlListDevice);
         device.setState(readState);
@@ -97,7 +100,7 @@ public class OnOffBehaviorTest {
         when(deviceHookProvider.invertState(device)).thenReturn(false);
 
         ToggleableDevice device2 = new EIBDevice();
-        XmlListDevice xmlListDevice2 = new XmlListDevice("BLA");
+        XmlListDevice xmlListDevice2 = new XmlListDevice("BLA", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", "name");
         device2.setXmlListDevice(xmlListDevice2);
         device2.setState(readState);
@@ -125,7 +128,7 @@ public class OnOffBehaviorTest {
     @UseDataProvider("hookProvider")
     public void isOnConsideringHooks(ButtonHook hook, boolean isOn, boolean expected) throws Exception {
         GenericDevice device = new GenericDevice();
-        device.setXmlListDevice(new XmlListDevice("GENERIC"));
+        device.setXmlListDevice(new XmlListDevice("GENERIC", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>()));
         when(deviceHookProvider.buttonHookFor(device)).thenReturn(hook);
         when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
         device.setState(isOn ? "on" : "off");

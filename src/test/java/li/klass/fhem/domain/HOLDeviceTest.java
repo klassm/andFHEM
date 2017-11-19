@@ -45,7 +45,7 @@ public class HOLDeviceTest extends DeviceXMLParsingBase {
         assertThat(internalValueFor(device, "lastTrigger")).isEqualTo("2012-09-09 20:05:17");
         assertThat(internalValueFor(device, "nextTrigger")).isEqualTo("2012-09-09 20:15:22");
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
 
         GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
         assertThat(device1.getState()).isEqualTo("on");

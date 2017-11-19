@@ -60,7 +60,7 @@ open class GenericDevice : DimmableContinuousStatesDevice<GenericDevice>() {
 
     override fun getSetListDimStateAttributeName(): String {
         val attribute = getDeviceConfiguration().transform { it!!.stateSliderKey }.or("dim")
-        val setList = getSetList()
+        val setList = xmlListDevice.setList
         if (setList.contains(attribute) && setList[attribute] is SliderSetListEntry) {
             return attribute
         }

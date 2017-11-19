@@ -74,7 +74,7 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(thirdForecast.getHighTemperature()).isEqualTo("19 (°C)");
         assertThat(thirdForecast.getLowTemperature()).isEqualTo("10 (°C)");
 
-        assertThat(device.getSetList().getEntries()).isEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
     }
 
     @Override

@@ -37,7 +37,7 @@ public class MySensorsDeviceTest extends DeviceXMLParsingBase {
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.supportsToggle()).isTrue();
-        assertThat(device.getSetList().contains("on", "off")).isTrue();
+        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isTrue();
     }
 
     @Override

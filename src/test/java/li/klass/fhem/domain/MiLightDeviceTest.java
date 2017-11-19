@@ -29,15 +29,15 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 public class MiLightDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device() {
-        MiLightDevice device = getDeviceFor("LEDBulb1", MiLightDevice.class);
+        GenericDevice device = getDeviceFor("LEDBulb1", GenericDevice.class);
         assertThat(device).isNotNull();
-        assertThat(device.getRgb()).isEqualTo("FFFFFF");
-        assertThat(device.getRgbColor()).isEqualTo(16777215);
+        assertThat(device.getXmlListDevice().getState("RGB", true)).contains("FFFFFF");
     }
 
     @Override

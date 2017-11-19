@@ -32,9 +32,12 @@ import org.assertj.core.data.Offset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.HashMap;
+
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
@@ -107,7 +110,7 @@ public class ContinuousDimmableBehaviorTest {
     public void should_handle_states_with_prefix(String state, float expectedPosition) {
         ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
         FhemDevice device = mock(FhemDevice.class);
-        XmlListDevice xmlListDevice = new XmlListDevice("BLA");
+        XmlListDevice xmlListDevice = new XmlListDevice("BLA", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setState("state", state);
         given(device.getXmlListDevice()).willReturn(xmlListDevice);
 

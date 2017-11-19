@@ -44,7 +44,7 @@ public class CULEMDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "total")).isEqualTo("1254.521 (kWh)");
         assertThat(device.getState()).isEqualTo("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000");
 
-        assertThat(device.getSetList().getEntries()).isEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
     }
 
     @Override

@@ -50,7 +50,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "desired-temp")).isEqualTo("6.5 (°C)");
         assertThat(device.getState()).isEqualTo("???");
 
-        assertThat(device.getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp")).isEqualTo(true);
+        assertThat(device.getXmlListDevice().getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp")).isEqualTo(true);
     }
 
     @Test

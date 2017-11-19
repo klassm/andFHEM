@@ -54,7 +54,7 @@ constructor(
 
     override fun supports(fhemDevice: FhemDevice): Boolean {
         return !toggleableStrategy.supports(fhemDevice) && !dimmableStrategy.supports(fhemDevice)
-                && fhemDevice.setList.contains("state")
+                && fhemDevice.xmlListDevice.setList.contains("state")
     }
 
 }

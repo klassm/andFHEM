@@ -22,31 +22,30 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.state
 
-import org.junit.Test;
+import android.content.Context
+import android.view.ViewGroup
+import android.widget.TableRow
+import li.klass.fhem.R
+import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
+import li.klass.fhem.util.EnumUtils.toStringList
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+abstract class HeatingModeDetailAction<M : Enum<M>> : StateAttributeAction {
 
-import static org.assertj.core.api.Assertions.assertThat;
+    protected abstract val availableModes: Array<M>
 
-public class CULWSDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+    override fun createRow(device: XmlListDevice, connectionId: String?, key: String, stateValue: String, context: Context, parent: ViewGroup): TableRow {
+        val mode = getCurrentModeFor(device)
+        val available = availableModes
 
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
-
-        assertThat(stateValueFor(device, "humidity")).isEqualTo("45.8 (%)");
-        assertThat(stateValueFor(device, "temperature")).isEqualTo("13.6 (°C)");
-        assertThat(device.getState()).isEqualTo("T: 13.6  H: 45.8");
-
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
+        return StateChangingSpinnerActionRow(context, null, context.getString(R.string.setMode), toStringList(available), mode.name, key).createRow(device, connectionId, parent)
     }
 
-    @Override
-    protected String getFileName() {
-        return "cul_ws.xml";
+    override fun supports(xmlListDevice: XmlListDevice): Boolean {
+        return true
     }
+
+    protected abstract fun getCurrentModeFor(device: XmlListDevice): M
 }

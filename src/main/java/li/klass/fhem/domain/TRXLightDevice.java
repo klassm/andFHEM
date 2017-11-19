@@ -68,7 +68,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
 
     @Override
     public boolean supportsDim() {
-        return getSetList().contains("all_level");
+        return getXmlListDevice().getSetList().contains("all_level");
     }
 
     @Override

@@ -42,7 +42,7 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
         assertThat(device.getState()).isEqualTo("T: 21.1 BAT: ok");
 
-        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getXmlListDevice().getSetList().getEntries().size()).isEqualTo(0);
     }
 
     @Test

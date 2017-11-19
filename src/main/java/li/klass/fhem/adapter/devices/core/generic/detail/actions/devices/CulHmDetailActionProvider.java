@@ -42,6 +42,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton;
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.HeatingModeDetailAction;
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
 import li.klass.fhem.adapter.uiservice.FragmentUiService;
@@ -93,7 +94,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
     }
 
     private static boolean supportsHeating(XmlListDevice xmlListDevice) {
-        Optional<String> controlMode = xmlListDevice.getState(MODE_STATE_NAME);
+        Optional<String> controlMode = xmlListDevice.getState(MODE_STATE_NAME, false);
         return controlMode.isPresent() && heatingModeFor(controlMode.get()).isPresent();
     }
 
@@ -101,7 +102,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
 
         @Override
         protected CulHmHeatingMode getCurrentModeFor(XmlListDevice device) {
-            return heatingModeFor(device.getState(MODE_STATE_NAME).get()).get();
+            return heatingModeFor(device.getState(MODE_STATE_NAME, false).get()).get();
         }
 
         @Override
@@ -134,7 +135,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
         private double determineContentPercentage(XmlListDevice device, String model) {
             double fillContentPercentage;
             if ("HM-Sen-Wa-Od".equals(model)) {
-                fillContentPercentage = extractLeadingDouble(device.getState("level").get()) / 100d;
+                fillContentPercentage = extractLeadingDouble(device.getState("level", false).get()) / 100d;
             } else {
                 String rawToReadable = device.getAttribute("rawToReadable").get();
                 double maximum = 0;
@@ -144,7 +145,7 @@ public class CulHmDetailActionProvider extends DeviceDetailActionProvider {
                     maximum = extractLeadingInt(parts[1]);
                 }
 
-                content = extractLeadingDouble(device.getState("content").get());
+                content = extractLeadingDouble(device.getState("content", false).get());
                 if (content > maximum) {
                     content = maximum;
                 }

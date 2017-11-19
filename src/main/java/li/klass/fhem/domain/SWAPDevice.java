@@ -52,7 +52,7 @@ public class SWAPDevice extends ToggleableDevice {
     }
 
     public boolean supportsRGB() {
-        return getSetList().contains("rgb");
+        return getXmlListDevice().getSetList().contains("rgb");
     }
 
     @Override

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices.hook;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -35,7 +36,6 @@ import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
@@ -50,18 +50,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DeviceHookProviderTest {
     @DataProvider
     public static Object[][] buttonHookProvider() {
-        deviceFor(Companion.getHOOK_OFF(), true);
+        deviceFor(Companion.getHOOK_OFF(), true, "");
         return new Object[][]{
-                {deviceFor(Companion.getHOOK_OFF(), true), ButtonHook.OFF_DEVICE},
-                {deviceFor(Companion.getHOOK_OFF(), false), ButtonHook.NORMAL},
-                {deviceFor(Companion.getHOOK_ON(), true), ButtonHook.ON_DEVICE},
-                {deviceFor(Companion.getHOOK_ON(), false), ButtonHook.NORMAL},
-                {deviceFor(Companion.getHOOK_ON_OFF(), true), ButtonHook.ON_OFF_DEVICE},
-                {deviceFor(Companion.getHOOK_ON_OFF(), false), ButtonHook.NORMAL},
-                {deviceFor(Companion.getHOOK_TOGGLE(), true), ButtonHook.TOGGLE_DEVICE},
-                {deviceFor(Companion.getHOOK_TOGGLE(), false), ButtonHook.NORMAL},
-                {deviceFor(Companion.getHOOK_WEBCMD(), true), ButtonHook.WEBCMD_DEVICE},
-                {deviceFor(Companion.getHOOK_WEBCMD(), false), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_OFF(), true, ""), ButtonHook.OFF_DEVICE},
+                {deviceFor(Companion.getHOOK_OFF(), false, ""), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_ON(), true, ""), ButtonHook.ON_DEVICE},
+                {deviceFor(Companion.getHOOK_ON(), false, ""), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_ON_OFF(), true, ""), ButtonHook.ON_OFF_DEVICE},
+                {deviceFor(Companion.getHOOK_ON_OFF(), false, ""), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_TOGGLE(), true, ""), ButtonHook.TOGGLE_DEVICE},
+                {deviceFor(Companion.getHOOK_TOGGLE(), false, ""), ButtonHook.NORMAL},
+                {deviceFor(Companion.getHOOK_WEBCMD(), true, ""), ButtonHook.WEBCMD_DEVICE},
+                {deviceFor(Companion.getHOOK_WEBCMD(), false, ""), ButtonHook.NORMAL},
         };
     }
 
@@ -75,14 +75,14 @@ public class DeviceHookProviderTest {
         assertThat(hook).isEqualTo(expectedHookType);
     }
 
-    private static GenericDevice deviceFor(String hookAttribute, boolean isActive) {
+    private static GenericDevice deviceFor(String hookAttribute, boolean isActive, String setList) {
         String value = isActive ? "true" : "false";
 
         XmlListDevice xmlListDevice = new XmlListDevice(GENERIC.getXmllistTag(),
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap(),
-                Maps.<String, DeviceNode>newHashMap());
+                ImmutableMap.of("sets", new DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, "")));
         xmlListDevice.getAttributes().put(hookAttribute, new DeviceNode(ATTR, hookAttribute, value, (DateTime) null));
         xmlListDevice.setInternal("NAME", "name");
         GenericDevice device = new GenericDevice();
@@ -104,8 +104,7 @@ public class DeviceHookProviderTest {
     @Test
     public void should_provide_off_state_name(String setList, String offStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
-        GenericDevice device = deviceFor(Companion.getHOOK_OFF(), true);
-        device.setSetList(SetList.Companion.parse(setList));
+        GenericDevice device = deviceFor(Companion.getHOOK_OFF(), true, setList);
         device.getXmlListDevice().setAttribute(Companion.getOFF_STATE_NAME(), offStateName);
 
         String stateName = provider.getOffStateName(device);
@@ -126,8 +125,7 @@ public class DeviceHookProviderTest {
     @Test
     public void should_provide_on_state_name(String setList, String onStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
-        GenericDevice device = deviceFor(Companion.getHOOK_ON(), true);
-        device.setSetList(SetList.Companion.parse(setList));
+        GenericDevice device = deviceFor(Companion.getHOOK_ON(), true, setList);
         device.getXmlListDevice().setAttribute(Companion.getON_STATE_NAME(), onStateName);
 
         String stateName = provider.getOnStateName(device);

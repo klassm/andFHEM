@@ -196,11 +196,11 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
 
     private void registerListenerFor(FhemDevice device, final DeviceViewItem xmlViewItem) {
         final String key = xmlViewItem.getSortKey();
-        if (device.getSetList().contains(key)) {
+        if (device.getXmlListDevice().getSetList().contains(key)) {
             registerFieldListener(key, new FieldNameAddedToDetailListener() {
                 @Override
                 protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                    SetListEntry setListEntry = device.getSetList().get(key);
+                    SetListEntry setListEntry = device.getXmlListDevice().getSetList().get(key, true);
                     if (setListEntry instanceof SliderSetListEntry) {
                         tableLayout.addView(
                                 new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key, connectionId).get(), fieldTableRow)

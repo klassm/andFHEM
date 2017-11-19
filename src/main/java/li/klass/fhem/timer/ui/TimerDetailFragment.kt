@@ -413,7 +413,7 @@ class TimerDetailFragment : BaseFragment() {
 
     companion object {
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {
-            override fun isSelectable(device: FhemDevice): Boolean = device.setList.size() > 0
+            override fun isSelectable(device: FhemDevice): Boolean = device.xmlListDevice.setList.size() > 0
         }
 
         private val TAG = TimerDetailFragment::class.java.name

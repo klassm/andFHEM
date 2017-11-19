@@ -48,7 +48,7 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "temperature")).isEqualTo("2.0 (°C)");
         assertThat(device.getState()).isEqualTo("T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no");
 
-        assertThat(device.getSetList().getEntries()).isEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
     }
 
     @Override

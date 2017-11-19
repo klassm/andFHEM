@@ -42,9 +42,7 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandler<D> {
     private var dimProgress = 0f
 
-    override fun canHandle(entry: SetListEntry): Boolean {
-        return entry is SliderSetListEntry
-    }
+    override fun canHandle(entry: SetListEntry): Boolean = entry is SliderSetListEntry
 
     override fun handle(entry: SetListEntry, context: Context, device: D, callback: OnTargetStateSelectedCallback<D>) {
         val sliderSetListEntry = entry as SliderSetListEntry

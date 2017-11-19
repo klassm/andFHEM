@@ -44,14 +44,14 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.supportsToggle()).isEqualTo(true);
 
-        assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
+        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isEqualTo(true);
     }
 
     @Test
     public void testDeviceWithSetList() {
         GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
 
-        assertThat((GroupSetListEntry) device.getSetList().get("state")).isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
+        assertThat((GroupSetListEntry) device.getXmlListDevice().getSetList().get("state", false)).isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
         GenericDevice device = getDeviceFor("slider", GenericDevice.class);
         assertThat(device).isNotNull();
 
-        SetListEntry value = device.getSetList().get("pct");
+        SetListEntry value = device.getXmlListDevice().getSetList().get("pct", false);
         assertThat(value).isInstanceOf(SliderSetListEntry.class);
         assertThat((SliderSetListEntry) value).isEqualTo(new SliderSetListEntry("pct", 10, 2, 110));
     }

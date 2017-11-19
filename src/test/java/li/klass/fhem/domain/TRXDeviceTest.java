@@ -39,7 +39,7 @@ public class TRXDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
         assertThat(device.getState()).isEqualTo("opened");
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
     }
 
     @Override

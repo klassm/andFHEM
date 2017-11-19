@@ -44,12 +44,12 @@ constructor() {
     }
 
     fun getOnStateName(device: FhemDevice): String {
-        val setListState = device.setList.getFirstPresentStateOf("on", "ON") ?: "on"
+        val setListState = device.xmlListDevice.setList.getFirstPresentStateOf("on", "ON") ?: "on"
         return device.xmlListDevice.attributeValueFor(ON_STATE_NAME).or(setListState)
     }
 
     fun getOffStateName(device: FhemDevice): String {
-        val setListState = device.setList.getFirstPresentStateOf("off", "OFF") ?: "off"
+        val setListState = device.xmlListDevice.setList.getFirstPresentStateOf("off", "OFF") ?: "off"
         return device.xmlListDevice.attributeValueFor(OFF_STATE_NAME).or(setListState)
     }
 

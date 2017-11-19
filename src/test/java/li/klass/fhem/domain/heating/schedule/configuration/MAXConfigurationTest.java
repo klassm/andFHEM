@@ -27,12 +27,14 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import li.klass.fhem.util.DayUtil;
 
@@ -79,7 +81,7 @@ public class MAXConfigurationTest {
         configuration.readNode(weekProfile, "weekprofile-6-Fri-time", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
         GenericDevice device = new GenericDevice();
-        XmlListDevice xmlListDevice = new XmlListDevice("dummy");
+        XmlListDevice xmlListDevice = new XmlListDevice("dummy", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", "name");
         device.setXmlListDevice(xmlListDevice);
 

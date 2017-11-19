@@ -82,7 +82,7 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
     @Override
     public boolean supportsToggle() {
         return !(model != null && model.equalsIgnoreCase("time")) &&
-                getSetList().contains("on", "off");
+                getXmlListDevice().getSetList().contains("on", "off");
     }
 
     @Override

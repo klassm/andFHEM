@@ -71,7 +71,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
                 tableLayout.addView(new MuteActionRow(connectionId)
                         .createRow(device, context));
 
-                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getSetList().get("input");
+                GroupSetListEntry inputSetList = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("input", true);
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.input, R.string.input, inputSetList.getGroupStates(), ((PioneerAvrDevice) device).getInput(), "input")
                         .createRow(device.getXmlListDevice(), connectionId, tableLayout));
@@ -89,7 +89,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapter {
         registerFieldListener("state", new FieldNameAddedToDetailListener() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                GroupSetListEntry listeningModeSetList = (GroupSetListEntry) device.getSetList().get("listeningMode");
+                GroupSetListEntry listeningModeSetList = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("listeningMode", true);
                 tableLayout.addView(new StateChangingSpinnerActionRow(context,
                         R.string.audioMode, R.string.audioMode, listeningModeSetList.getGroupStates(), ((PioneerAvrDevice) device).getListeningMode(), "listeningMode")
                         .createRow(device.getXmlListDevice(), connectionId, tableLayout));

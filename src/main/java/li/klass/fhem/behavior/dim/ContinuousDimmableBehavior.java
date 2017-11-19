@@ -90,9 +90,10 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
     @Override
     public String getDimStateForPosition(FhemDevice fhemDevice, float position) {
         if (setListAttribute.equalsIgnoreCase("state")) {
-            if (position == getDimLowerBound() && fhemDevice.getSetList().contains("off")) {
+            SetList setList = fhemDevice.getXmlListDevice().getSetList();
+            if (position == getDimLowerBound() && setList.contains("off")) {
                 return "off";
-            } else if (position == getDimUpperBound() && fhemDevice.getSetList().contains("on")) {
+            } else if (position == getDimUpperBound() && setList.contains("on")) {
                 return "on";
             }
         }
@@ -145,7 +146,7 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
             if (!setList.contains(dimAttribute)) {
                 continue;
             }
-            SetListEntry setListEntry = setList.get(dimAttribute);
+            SetListEntry setListEntry = setList.get(dimAttribute, true);
             if (setListEntry instanceof SliderSetListEntry) {
                 return Optional.of(new ContinuousDimmableBehavior((SliderSetListEntry) setListEntry, dimAttribute));
             }

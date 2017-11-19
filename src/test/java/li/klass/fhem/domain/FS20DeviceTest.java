@@ -45,7 +45,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEventMap().getValueFor("off")).isEqualTo("Ab");
         assertThat(device.getEventMap().getValueFor("on")).isEqualTo("Auf");
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
 
         assertThat(device.getSortBy()).isEqualTo("1");
     }
@@ -65,7 +65,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAlias()).isEqualTo("myAlias");
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
 
         assertThat(device.getInternalDeviceGroupOrGroupAttributes(context)).contains("dimmer", "switch", "temperature");
         assertThat(device.getInternalDeviceGroupOrGroupAttributes(context)).hasSize(3);

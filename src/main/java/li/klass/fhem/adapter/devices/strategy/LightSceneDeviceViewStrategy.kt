@@ -52,7 +52,7 @@ class LightSceneDeviceViewStrategy @Inject constructor(
                 HolderActionRow.LAYOUT_OVERVIEW) {
 
             override fun getItems(device: FhemDevice): List<String> {
-                val sceneEntry = device.setList.get("scene")
+                val sceneEntry = device.xmlListDevice.setList.get("scene")
                 return when (sceneEntry) {
                     is GroupSetListEntry -> sceneEntry.groupStates
                     else -> emptyList()

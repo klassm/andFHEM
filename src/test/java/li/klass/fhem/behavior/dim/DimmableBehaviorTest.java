@@ -24,6 +24,8 @@
 
 package li.klass.fhem.behavior.dim;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -33,6 +35,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.HashMap;
 
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.setlist.SetList;
@@ -48,8 +52,7 @@ public class DimmableBehaviorTest {
 
     @Test
     public void should_create_discrete_behavior() {
-        GenericDevice device = new GenericDevice();
-        device.setSetList(SetList.Companion.parse("dim10% dim20%"));
+        GenericDevice device = deviceFor("dim10% dim20%");
 
         DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
 
@@ -59,8 +62,7 @@ public class DimmableBehaviorTest {
 
     @Test
     public void should_create_continuous_behavior() {
-        GenericDevice device = new GenericDevice();
-        device.setSetList(SetList.Companion.parse("state:slider,0,1,100"));
+        GenericDevice device = deviceFor("state:slider,0,1,100");
 
         DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
 
@@ -70,8 +72,7 @@ public class DimmableBehaviorTest {
 
     @Test
     public void should_return_absent_if_neither_continuous_nor_discrete_behavior_applies() {
-        GenericDevice device = new GenericDevice();
-        device.setSetList(SetList.Companion.parse("on off"));
+        GenericDevice device = deviceFor("on off");
 
         Optional<DimmableBehavior> result = DimmableBehavior.behaviorFor(device, null);
 
@@ -92,13 +93,23 @@ public class DimmableBehaviorTest {
     public void should_calculate_dim_up_and_down_positions(int currentPosition, int expectedDimDownPosition, int expectedDimUpPosition) {
         XmlListDevice xmlListDevice = mock(XmlListDevice.class);
         given(xmlListDevice.getStates()).willReturn(ImmutableMap.of("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", currentPosition + "", (DateTime) null)));
+        given(xmlListDevice.getSetList()).willReturn(SetList.Companion.parse("state:slider,0,1,100"));
         GenericDevice device = new GenericDevice();
         device.setXmlListDevice(xmlListDevice);
-        device.setSetList(SetList.Companion.parse("state:slider,0,1,100"));
 
         DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
 
         assertThat(behavior.getDimUpPosition()).isEqualTo(expectedDimUpPosition);
         assertThat(behavior.getDimDownPosition()).isEqualTo(expectedDimDownPosition);
+    }
+
+    @NonNull
+    private GenericDevice deviceFor(String setList) {
+        GenericDevice device = new GenericDevice();
+        device.setXmlListDevice(new XmlListDevice(
+                "generic", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(),
+                ImmutableMap.of("sets", new DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, ""))
+        ));
+        return device;
     }
 }

@@ -60,7 +60,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
         XmlListDevice xmlListDevice = device.getXmlListDevice();
 
-        String warnings = xmlListDevice.getState("warnings").orNull();
+        String warnings = xmlListDevice.getState("warnings", false).orNull();
         Optional<String> temperature = xmlListDevice.getFirstStateOf(TEMPERATURE_STATES);
         Optional<String> desiredTemp = xmlListDevice.getFirstStateOf(DESIRED_TEMPERATURE_STATES);
 

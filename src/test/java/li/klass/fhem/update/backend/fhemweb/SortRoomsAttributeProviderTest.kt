@@ -26,6 +26,7 @@ package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.FHEMWEBDevice
+import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -36,7 +37,7 @@ class SortRoomsAttributeProviderTest {
     @Test
     fun should_provide_sortRooms_for_missing_attribute() {
         val device = FHEMWEBDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB")
+        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
 
         val result = provider.provideFor(device)
 
@@ -46,7 +47,7 @@ class SortRoomsAttributeProviderTest {
     @Test
     fun should_provide_sortRooms_for_empty_attribute() {
         val device = FHEMWEBDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB")
+        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
         device.xmlListDevice.setAttribute(XmllistKey.Attribute.FhemWeb.sortRooms, "")
 
         val result = provider.provideFor(device)
@@ -57,7 +58,7 @@ class SortRoomsAttributeProviderTest {
     @Test
     fun should_provide_sortRooms_for_attribute() {
         val device = FHEMWEBDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB")
+        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
         device.xmlListDevice.setAttribute(XmllistKey.Attribute.FhemWeb.sortRooms, "bla blub blö")
 
         val result = provider.provideFor(device)

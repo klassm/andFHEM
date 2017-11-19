@@ -44,7 +44,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("off");
         assertThat(device.getType()).isEqualTo("ARC");
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
 
         assertThat(device.supportsToggle()).isEqualTo(true);
         assertThat(device.supportsDim()).isEqualTo(false);

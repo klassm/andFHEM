@@ -40,7 +40,7 @@ public class DimmableBehavior {
     private final String connectionId;
     private DimmableTypeBehavior behavior;
 
-    public DimmableBehavior(FhemDevice fhemDevice, String connectionId, DimmableTypeBehavior dimmableTypeBehavior) {
+    private DimmableBehavior(FhemDevice fhemDevice, String connectionId, DimmableTypeBehavior dimmableTypeBehavior) {
         this.connectionId = connectionId;
         this.behavior = dimmableTypeBehavior;
         this.fhemDevice = fhemDevice;
@@ -50,7 +50,7 @@ public class DimmableBehavior {
         return behavior.getCurrentDimPosition(fhemDevice);
     }
 
-    public float getDimUpPosition() {
+    float getDimUpPosition() {
         float currentPosition = getCurrentDimPosition();
         if (currentPosition + getDimStep() > behavior.getDimUpperBound()) {
             return behavior.getDimUpperBound();
@@ -58,7 +58,7 @@ public class DimmableBehavior {
         return currentPosition + getDimStep();
     }
 
-    public float getDimDownPosition() {
+    float getDimDownPosition() {
         float currentPosition = getCurrentDimPosition();
         if (currentPosition - getDimStep() < behavior.getDimLowerBound()) {
             return behavior.getDimLowerBound();
@@ -100,7 +100,7 @@ public class DimmableBehavior {
     }
 
     public static Optional<DimmableBehavior> behaviorFor(FhemDevice fhemDevice, String connectionId) {
-        SetList setList = fhemDevice.getSetList();
+        SetList setList = fhemDevice.getXmlListDevice().getSetList();
 
         Optional<DiscreteDimmableBehavior> discrete = DiscreteDimmableBehavior.behaviorFor(setList);
         if (discrete.isPresent()) {
@@ -117,10 +117,11 @@ public class DimmableBehavior {
     }
 
     public static Optional<DimmableBehavior> continuousBehaviorFor(FhemDevice device, String attribute, String connectionId) {
-        if (!device.getSetList().contains(attribute)) {
+        SetList setList = device.getXmlListDevice().getSetList();
+        if (!setList.contains(attribute)) {
             return Optional.absent();
         }
-        SliderSetListEntry setListSliderValue = (SliderSetListEntry) device.getSetList().get(attribute);
+        SliderSetListEntry setListSliderValue = (SliderSetListEntry) setList.get(attribute, true);
         return Optional.of(new DimmableBehavior(device, connectionId, new ContinuousDimmableBehavior(setListSliderValue, attribute)));
     }
 

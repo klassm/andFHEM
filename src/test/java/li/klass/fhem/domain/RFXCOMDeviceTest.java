@@ -40,7 +40,7 @@ public class RFXCOMDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("Initialized");
 
 
-        assertThat(device.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
     }
 
     @Override

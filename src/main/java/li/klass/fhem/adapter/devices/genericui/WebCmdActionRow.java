@@ -36,6 +36,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.domain.setlist.SetList;
 
 public class WebCmdActionRow extends HolderActionRow<String> {
     public WebCmdActionRow(int layout, Context context) {
@@ -57,7 +58,7 @@ public class WebCmdActionRow extends HolderActionRow<String> {
                         final Context context, ViewGroup viewGroup, final String connectionId) {
 
         View container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false);
-        ToggleButton button = (ToggleButton) container.findViewById(R.id.toggleButton);
+        ToggleButton button = container.findViewById(R.id.toggleButton);
         assert button != null;
 
         button.setText(device.getEventMapStateFor(command));
@@ -67,7 +68,8 @@ public class WebCmdActionRow extends HolderActionRow<String> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, device.getSetList().get(command), new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
+                SetList setList = device.getXmlListDevice().getSetList();
+                boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, setList.get(command, true), new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
                 if (!result) {
                     new StateUiService().setState(device, command, context, connectionId);
                 }

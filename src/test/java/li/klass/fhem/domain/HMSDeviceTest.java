@@ -50,7 +50,7 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "switch_detect")).isEqualTo("on");
         assertThat(device.getState()).isEqualTo("T: 12.6  Bat: ok");
 
-        assertThat(device.getSetList().getEntries()).isEmpty();
+        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
     }
 
     @Test

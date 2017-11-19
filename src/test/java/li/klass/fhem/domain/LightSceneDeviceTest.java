@@ -36,7 +36,7 @@ public class LightSceneDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        GroupSetListEntry scene = (GroupSetListEntry) device.getSetList().get("scene");
+        GroupSetListEntry scene = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("scene", false);
         assertThat(scene.getGroupStates()).contains("on", "off");
     }
 
@@ -44,7 +44,7 @@ public class LightSceneDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithOnlyOneScene() {
         GenericDevice device = getDeviceFor("device1", GenericDevice.class);
 
-        GroupSetListEntry scene = (GroupSetListEntry) device.getSetList().get("scene");
+        GroupSetListEntry scene = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("scene", false);
         assertThat(scene.getGroupStates()).contains("absent");
     }
 

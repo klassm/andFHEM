@@ -43,7 +43,7 @@ public class LGTVDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getInput()).isEqualTo("HDMI1");
         assertThat(device.getPower()).isEqualTo("off");
 
-        assertThat(device.getSetList().contains("power", "input", "audio")).isEqualTo(true);
+        assertThat(device.getXmlListDevice().getSetList().contains("power", "input", "audio")).isEqualTo(true);
     }
 
     @Override

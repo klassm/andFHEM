@@ -26,6 +26,7 @@ package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.FHEMWEBDevice
+import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -60,7 +61,7 @@ class ColumnAttributeProviderTest {
 
     private fun deviceWithColumn(column: String): FHEMWEBDevice {
         val device = FHEMWEBDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB")
+        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
         device.xmlListDevice.setAttribute(XmllistKey.Attribute.FhemWeb.column, column)
         return device
     }

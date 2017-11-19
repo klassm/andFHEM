@@ -64,7 +64,7 @@ public class AvailableTargetStatesDialogUtil {
     private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
             new RGBTargetStateHandler<>(),
             new GroupSetListTargetStateHandler<>(),
-            new SliderSetListTargetStateHandler<>(),
+            new SliderSetListTargetStateHandler<FhemDevice>(),
             new TimeTargetStateHandler<>(),
             new TextFieldTargetStateHandler<>(),
             new MultipleSetListTargetStateHandler<>(),
@@ -79,7 +79,8 @@ public class AvailableTargetStatesDialogUtil {
     public static <D extends FhemDevice> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
-        final List<String> setOptions = device.getSetList().getSortedKeys();
+        final SetList setList = device.getXmlListDevice().getSetList();
+        final List<String> setOptions = setList.getSortedKeys();
         final String[] eventMapOptions = device.getAvailableTargetStatesEventMapTexts();
 
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
@@ -87,7 +88,7 @@ public class AvailableTargetStatesDialogUtil {
             public void onClick(final DialogInterface dialog, int position) {
                 final String option = setOptions.get(position);
 
-                handleSelectedOption(context, device, device.getSetList().get(option), callback);
+                handleSelectedOption(context, device, setList.get(option, true), callback);
 
                 dialog.dismiss();
             }
@@ -99,7 +100,7 @@ public class AvailableTargetStatesDialogUtil {
     }
 
     public static <D extends FhemDevice> void showSwitchOptionsMenuFor(final Context context, final D device, final OnTargetStateSelectedCallback callback, String key) {
-        SetListEntry entry = device.getSetList().get(key);
+        SetListEntry entry = device.getXmlListDevice().getSetList().get(key, true);
         handleSelectedOption(context, device, entry, callback);
     }
 
@@ -138,8 +139,8 @@ public class AvailableTargetStatesDialogUtil {
             textView.setText(getItem(position));
 
             String setOption = setOptions.get(position);
-            SetList setList = device.getSetList();
-            final SetListEntry setListEntry = setList.get(setOption);
+            SetList setList = device.getXmlListDevice().getSetList();
+            final SetListEntry setListEntry = setList.get(setOption, true);
 
             imageView.setVisibility(requiresAdditionalInformation(setListEntry) ? VISIBLE : GONE);
 

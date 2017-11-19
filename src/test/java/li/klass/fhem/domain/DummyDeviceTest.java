@@ -43,7 +43,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.supportsToggle()).isEqualTo(true);
 
-        assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
+        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isEqualTo(true);
         assertThat(device.supportsDim()).isEqualTo(false);
     }
 
@@ -63,7 +63,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithSetList() {
         GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
 
-        assertThat((GroupSetListEntry) device.getSetList().get("state"))
+        assertThat((GroupSetListEntry) device.getXmlListDevice().getSetList().get("state", false))
                 .isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
         assertThat(device.supportsDim()).isEqualTo(false);
     }
@@ -92,7 +92,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
         assertThat(eventMapStates).isNotNull();
 
-        SetList setList = device.getSetList();
+        SetList setList = device.getXmlListDevice().getSetList();
         assertThat(setList).isNotNull();
 
         assertThat(setList.size()).isEqualTo(eventMapStates.length);
