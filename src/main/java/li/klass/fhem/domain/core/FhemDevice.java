@@ -30,6 +30,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.Arrays;
@@ -154,8 +155,12 @@ public abstract class FhemDevice extends HookedDevice {
 
     @ShowField(description = ResourceIdMapper.deviceName, showAfter = ShowField.FIRST)
     public String getAliasOrName() {
+        String andFHEMAlias = getAndFHEMAlias();
+        if (andFHEMAlias != null) {
+            return andFHEMAlias;
+        }
         String alias = getAlias();
-        if (alias != null && alias.length() != 0) {
+        if (alias != null) {
             return alias;
         }
         return getName();
@@ -287,7 +292,11 @@ public abstract class FhemDevice extends HookedDevice {
     }
 
     public String getAlias() {
-        return getXmlListDevice().getAttribute("alias").orNull();
+        return StringUtils.trimToNull(getXmlListDevice().getAttribute("alias").orNull());
+    }
+
+    private String getAndFHEMAlias() {
+        return StringUtils.trimToNull(getXmlListDevice().getAttribute("andFHEM_alias").orNull());
     }
 
     public String getDefinition() {
