@@ -25,13 +25,11 @@
 package li.klass.fhem.devices.backend
 
 import android.content.Context
-import android.content.Intent
 import com.google.common.base.Optional
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import org.slf4j.LoggerFactory
@@ -42,66 +40,55 @@ import javax.inject.Singleton
 class AtService @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
         private val deviceListService: DeviceListService,
+        private val deviceListUpdateService: DeviceListUpdateService,
         private val genericDeviceService: GenericDeviceService
 ) {
 
-    fun createNew(timerName: String, hour: Int, minute: Int, second: Int, repetition: String, type: String,
-                  targetDeviceName: String, targetState: String, targetStateAppendix: String, isActive: Boolean,
+    fun createNew(timerDefinition: TimerDefinition,
                   context: Context) {
         val device = AtDevice()
 
-        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device)
+        setValues(device, timerDefinition)
 
         val definition = device.toFHEMDefinition()
-        val command = "define $timerName at $definition"
-        commandExecutionService.executeSafely(Command(command), context, object : CommandExecutionService.SuccessfulResultListener() {
-            override fun onResult(result: String) {
-                handleDisabled(timerName, isActive, context)
-
-                context.sendBroadcast(Intent(Actions.DO_UPDATE)
-                        .putExtra(BundleExtraKeys.DO_REFRESH, true))
-            }
-        })
+        val command = "define ${timerDefinition.timerName} at $definition"
+        commandExecutionService.executeSync(Command(command), context)
+        handleDisabled(timerDefinition.timerName, timerDefinition.isActive, context)
+        deviceListUpdateService.updateAllDevices()
     }
 
-    private fun setValues(hour: Int, minute: Int, second: Int, repetition: String, type: String, targetDeviceName: String, targetState: String, targetStateAppendix: String, device: AtDevice) {
-        device.setHour(hour)
-        device.setMinute(minute)
-        device.setSecond(second)
-        device.repetition = AtDevice.AtRepetition.valueOf(repetition)
-        device.timerType = AtDevice.TimerType.valueOf(type)
-        device.targetDevice = targetDeviceName
-        device.targetState = targetState
-        device.targetStateAddtionalInformation = targetStateAppendix
+    private fun setValues(device: AtDevice, timerDefinition: TimerDefinition) {
+        device.setHour(timerDefinition.hour)
+        device.setMinute(timerDefinition.minute)
+        device.setSecond(timerDefinition.second)
+        device.repetition = AtDevice.AtRepetition.valueOf(timerDefinition.repetition)
+        device.timerType = AtDevice.TimerType.valueOf(timerDefinition.type.trim())
+        device.targetDevice = timerDefinition.targetDeviceName.trim()
+        device.targetState = timerDefinition.targetState.trim()
+        device.targetStateAddtionalInformation = timerDefinition.targetStateAppendix.trim()
     }
 
-    fun modify(timerName: String, hour: Int, minute: Int, second: Int, repetition: String, type: String,
-               targetDeviceName: String, targetState: String, targetStateAppendix: String, isActive: Boolean, context: Context) {
-        val device = deviceListService.getDeviceForName<FhemDevice>(timerName)
+    fun modify(timerDefinition: TimerDefinition, context: Context) {
+        val device = deviceListService.getDeviceForName<FhemDevice>(timerDefinition.timerName)
 
         if (device == null || device !is AtDevice) {
-            LOG.info("cannot find device for {}", timerName)
+            LOG.info("cannot find device for {}", timerDefinition.timerName)
             return
         }
 
-        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device)
+        setValues(device, timerDefinition)
         val definition = device.toFHEMDefinition()
-        val command = "modify $timerName $definition"
+        val command = "modify ${timerDefinition.timerName} $definition"
 
-        commandExecutionService.executeSafely(Command(command), context, object : CommandExecutionService.SuccessfulResultListener() {
-            override fun onResult(result: String) {
-                handleDisabled(timerName, isActive, context)
-                genericDeviceService.update(device, context, Optional.absent())
-            }
-        })
-
+        commandExecutionService.executeSync(Command(command), context)
+        handleDisabled(timerDefinition.timerName, timerDefinition.isActive, context)
+        genericDeviceService.update(device, context, Optional.absent())
     }
 
     private fun handleDisabled(timerName: String, isActive: Boolean, context: Context): String? =
             commandExecutionService.executeSync(Command(String.format("attr %s %s %s", timerName, "disable", if (isActive) "0" else "1")), context)
 
     companion object {
-
         private val LOG = LoggerFactory.getLogger(AtService::class.java)
     }
 }

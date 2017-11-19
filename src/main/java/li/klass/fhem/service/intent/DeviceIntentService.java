@@ -25,7 +25,6 @@
 package li.klass.fhem.service.intent;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
@@ -77,8 +76,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_WEEK_PROFILE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
-import static li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY;
-import static li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW;
 import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
@@ -95,15 +92,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_HOUR;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_IS_ACTIVE;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_MINUTE;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_REPETITION;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_SECOND;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_DEVICE_NAME;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TYPE;
 import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
 import static li.klass.fhem.service.intent.ConvenientIntentService.State.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.State.SUCCESS;
@@ -220,13 +208,6 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
             result = toggleIntent(device, connectionId);
-
-        } else if (DEVICE_TIMER_MODIFY.equals(action)) {
-            processTimerIntent(intent, true);
-
-        } else if (DEVICE_TIMER_NEW.equals(action)) {
-            processTimerIntent(intent, false);
-
         } else if (DEVICE_SET_SUB_STATE.equals(action)) {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
@@ -302,32 +283,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             return State.SUCCESS;
         }
         return State.ERROR;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private State processTimerIntent(Intent intent, boolean isModify) {
-        Bundle extras = intent.getExtras();
-
-        assert extras != null;
-
-        String targetDeviceName = extras.getString(TIMER_TARGET_DEVICE_NAME);
-        String targetState = extras.getString(TIMER_TARGET_STATE);
-        int hour = extras.getInt(TIMER_HOUR, 0);
-        int minute = extras.getInt(TIMER_MINUTE, 0);
-        int second = extras.getInt(TIMER_SECOND, 0);
-        String repetition = extras.getString(TIMER_REPETITION);
-        String type = extras.getString(TIMER_TYPE);
-        String stateAppendix = extras.getString(TIMER_TARGET_STATE_APPENDIX);
-        String timerName = extras.getString(DEVICE_NAME);
-        boolean isActive = extras.getBoolean(TIMER_IS_ACTIVE);
-
-        if (isModify) {
-            atService.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive, this);
-        } else {
-            atService.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive, this);
-        }
-
-        return SUCCESS;
     }
 
     @Override

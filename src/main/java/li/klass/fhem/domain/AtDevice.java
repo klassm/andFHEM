@@ -29,6 +29,7 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -63,6 +64,7 @@ public class AtDevice extends FhemDevice implements Comparable<AtDevice> {
 
     @Override
     public void setDefinition(String value) {
+        value = StringUtils.trimToEmpty(value);
         super.setDefinition(value);
         definition = parseDefinition(value) ? value : "";
     }
@@ -113,7 +115,6 @@ public class AtDevice extends FhemDevice implements Comparable<AtDevice> {
         rest = rest.replaceAll("[{}]", "").trim();
         if (rest.startsWith("fhem")) {
             Matcher fhemMatcher = FHEM_PATTERN.matcher(rest);
-
             if (!fhemMatcher.matches()) return false;
 
             targetDevice = fhemMatcher.group(1);
@@ -194,7 +195,7 @@ public class AtDevice extends FhemDevice implements Comparable<AtDevice> {
     }
 
     public void setTargetStateAddtionalInformation(String targetStateAddtionalInformation) {
-        this.targetStateAddtionalInformation = targetStateAddtionalInformation;
+        this.targetStateAddtionalInformation = StringUtils.trimToNull(targetStateAddtionalInformation);
     }
 
     public AtRepetition getRepetition() {
@@ -267,7 +268,7 @@ public class AtDevice extends FhemDevice implements Comparable<AtDevice> {
 
         command += " }";
 
-        return command;
+        return command.trim();
     }
 
     public String getFormattedSwitchTime() {

@@ -53,9 +53,6 @@ public class Actions {
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
 
-    public static final String DEVICE_TIMER_NEW = prefix + "DEVICE_TIMER_NEW";
-    public static final String DEVICE_TIMER_MODIFY = prefix + "DEVICE_TIMER_MODIFY";
-
     public static final String DEVICE_SET_SUB_STATE = prefix + "DEVICE_SET_SUB_STATE";
     public static final String DEVICE_SET_SUB_STATES = prefix + "DEVICE_SET_SUB_STATES";
 
