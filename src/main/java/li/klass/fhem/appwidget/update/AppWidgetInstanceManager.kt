@@ -49,6 +49,7 @@ class AppWidgetInstanceManager @Inject constructor(
         val configuration = getConfigurationFor(widgetId)
         if (configuration == null) {
             LOG.error("cannot find configuration for widget id {}", widgetId)
+            appWidgetSchedulingService.cancelUpdating(widgetId)
             return
         }
 
