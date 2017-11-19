@@ -5,23 +5,9 @@ node {
     sh 'git checkout master'
     sh 'git rebase'
 
-
-
     stage 'Build'
     sh './gradlew clean release -Prelease.useAutomaticVersion=true --no-daemon'
 
     stage 'Archive Artifacts'
     step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])
-
-    stage 'Release Inapp'
-    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/inapp/release/workspace-inapp-release.apk', trackName: 'production'
-
-    stage 'Release Premium'
-    androidApkUpload googleCredentialsId: 'andfhemplayupload', apkFilesPattern: 'build/outputs/apk/premium/release/workspace-premium-release.apk', trackName: 'production'
-
-    stage 'Upload GitHub'
-    sh './gradlew githubRelease'
-
-    stage 'Generate JavaDoc'
-    sh './gradlew javadocinappDebug'
 }

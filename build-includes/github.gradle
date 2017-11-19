@@ -30,7 +30,7 @@ github {
     name = version
     body = "Release ${version}"
     assets = [
-            'build/outputs/apk/workspace-inapp-release.apk'
+            'build/outputs/apk/inapp/release/'
     ]
 }
 if (project.hasProperty('andFHEMGithubToken')) {

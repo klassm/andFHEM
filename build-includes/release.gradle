@@ -23,7 +23,7 @@
  */
 
 release {
-    buildTasks = ['build', 'uploadToPlayStore']
+    buildTasks = ['build', 'uploadToPlayStore', 'githubRelease']
     versionPropertyFile = 'gradle.properties'
     versionProperties = ['version']
 }
