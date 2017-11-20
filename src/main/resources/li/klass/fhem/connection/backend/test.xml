@@ -23,20 +23,71 @@
   -->
 
 <FHZINFO>
-    <STV_LIST>
-        <STV name="samsung"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings MAC fork:enable,disable setWhenOffline:execute,ignore event-on-change-reading event-on-update-reading event-min-interval stateFormat VIEW_CSS always_hidden building building_map custom_graph devStateIcon devStateStyle device_timeout fm_fav fm_groups fm_name fm_order fm_type fm_view fp_Grundriss icon mail_alert model onDevice onOffDevice room_map sortby structexclude sum_graph_division_factor webCmd webcmdDevice widgetOverride widget_name yaxisminmax userattr"
-            sets="mute:on,off volume:slider,0,1,100 call sms date" state="Initialized">
-            <INT key="DEF" value="192.168.10.25" />
-            <INT key="Host" value="192.168.10.25" />
-            <INT key="NAME" value="samsung" />
-            <INT key="NR" value="216" />
-            <INT key="Port" value="52235" />
-            <INT key="STATE" value="Initialized" />
-            <INT key="TYPE" value="STV" />
-            <ATTR key="icon" value="it_television" />
-            <ATTR key="room" value="Wohnzimmer" />
-            <ATTR key="verbose" value="5" />
-        </STV>
-    </STV_LIST>
+    <TRX_LIGHT_LIST>
+        <TRX_LIGHT name="device" state="off" sets="  all_off all_on chime off on"
+            attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="ARC C1 light" />
+            <INT key="NAME" value="device" />
+            <INT key="NR" value="38" />
+            <INT key="STATE" value="off" />
+            <INT key="TRX_LIGHT_deviceid" value="C1" />
+            <INT key="TRX_LIGHT_devicelog" value="light" />
+            <INT key="TRX_LIGHT_type" value="ARC" />
+            <INT key="TYPE" value="TRX_LIGHT" />
+            <INT key="IODev" value="TRX_0" />
+            <ATTR key="room" value="room" />
+            <STATE key="light" value="off" measured="2012-07-15 20:22:58" />
+            <STATE key="state" value="off" measured="2012-07-16 09:42:28" />
+        </TRX_LIGHT>
+        <TRX_LIGHT name="device1" state="on" sets="  all_off all_on chime off on"
+            attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="ARC C2 light" />
+            <INT key="NAME" value="device1" />
+            <INT key="NR" value="41" />
+            <INT key="STATE" value="on" />
+            <INT key="TIME" value="2012-07-17 20:10:46" />
+            <INT key="TRX_LIGHT_deviceid" value="C2" />
+            <INT key="TRX_LIGHT_devicelog" value="light" />
+            <INT key="TRX_LIGHT_type" value="ARC" />
+            <INT key="TYPE" value="TRX_LIGHT" />
+            <INT key="IODev" value="TRX_0" />
+            <ATTR key="room" value="room" />
+            <STATE key="light" value="on" measured="2012-07-17 20:10:46" />
+            <STATE key="state" value="on" measured="2012-07-16 23:12:23" />
+        </TRX_LIGHT>
+        <TRX_LIGHT name="device2" state="level 15"
+            sets="all_level all_off all_on level:slider,0,1,15 off on"
+            attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="AC 010A0B0C01 light" />
+            <INT key="NAME" value="device2" />
+            <INT key="NR" value="90" />
+            <INT key="STATE" value="level 15" />
+            <INT key="TRX_LIGHT_deviceid" value="010A0B0C01" />
+            <INT key="TRX_LIGHT_devicelog" value="light" />
+            <INT key="TRX_LIGHT_type" value="AC" />
+            <INT key="TYPE" value="TRX_LIGHT" />
+            <INT key="IODev" value="TRX_0" />
+            <ATTR key="room" value="room" />
+            <ATTR key="webCmd" value="level:on:off" />
+            <STATE key="state" value="level 15" measured="2012-08-15 17:59:21" />
+        </TRX_LIGHT>
+
+        <TRX_LIGHT name="device3" state="level 12"
+            sets="all_level all_off all_on level:slider,0,1,15 off on"
+            attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="AC 010A0B0C01 light" />
+            <INT key="NAME" value="device3" />
+            <INT key="NR" value="90" />
+            <INT key="STATE" value="level 12" />
+            <INT key="TRX_LIGHT_deviceid" value="010A0B0C01" />
+            <INT key="TRX_LIGHT_devicelog" value="light" />
+            <INT key="TRX_LIGHT_type" value="AC" />
+            <INT key="TYPE" value="TRX_LIGHT" />
+            <INT key="IODev" value="TRX_0" />
+            <ATTR key="room" value="room" />
+            <ATTR key="webCmd" value="level:on:off" />
+            <STATE key="state" value="level 12" measured="2012-08-15 17:59:21" />
+        </TRX_LIGHT>
+
+    </TRX_LIGHT_LIST>
 </FHZINFO>
