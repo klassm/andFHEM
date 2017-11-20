@@ -27,7 +27,6 @@ package li.klass.fhem.domain.core;
 import java.util.Locale;
 import java.util.Map;
 
-import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
@@ -49,7 +48,6 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
-import li.klass.fhem.domain.EnOceanDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FS20ZDRDevice;
@@ -81,7 +79,6 @@ public enum DeviceType {
     PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
     AT("at", AtDevice.class, null),
-    EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter()),
     HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),

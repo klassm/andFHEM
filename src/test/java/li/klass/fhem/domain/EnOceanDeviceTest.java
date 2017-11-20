@@ -34,45 +34,34 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        EnOceanDevice device = getDefaultDevice(EnOceanDevice.class);
-        assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SWITCH));
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo(("on"));
         assertThat(device.getEventMapStateFor("BI")).isEqualTo(("off"));
         assertThat(device.getEventMapStateFor("B0")).isEqualTo(("on"));
-        assertThat(device.getOffStateName()).isEqualTo(("BI"));
-        assertThat(device.getOnStateName()).isEqualTo(("B0"));
 
         device.setState("B0");
         assertThat(device.getState()).isEqualTo(("on"));
 
-        EnOceanDevice device1 = getDeviceFor("device1", EnOceanDevice.class);
-        assertThat(device1.getSubType()).isEqualTo((EnOceanDevice.SubType.SENSOR));
+        GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
+        assertThat(device).isNotNull();
         assertThat(device1.getState()).isEqualTo(("153"));
         assertThat(device1.getMeasured()).isEqualTo(("04.11.2012 23:55"));
 
-        EnOceanDevice device2 = getDeviceFor("device2", EnOceanDevice.class);
-        assertThat(device2.getOffStateName()).isEqualTo(("released"));
-        assertThat(device2.getOnStateName()).isEqualTo(("B0"));
-
-        device.setSubtype("");
+        GenericDevice device2 = getDeviceFor("device2", GenericDevice.class);
+        assertThat(device2).isNotNull();
     }
 
     @Test
     public void testGatewaySwitchDevice() {
-        EnOceanDevice device = getDeviceFor("device3", EnOceanDevice.class);
-        assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SWITCH));
+        GenericDevice device = getDeviceFor("device3", GenericDevice.class);
+        assertThat(device).isNotNull();
     }
 
     @Test
     public void testShutterDevice() {
-        EnOceanDevice device = getDeviceFor("shutter", EnOceanDevice.class);
-
+        GenericDevice device = getDeviceFor("shutter", GenericDevice.class);
         assertThat(device).isNotNull();
-
-        assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SHUTTER));
-
-        assertThat(device.getModel()).isEqualTo(("FSB14"));
-        assertThat(device.getManufacturerId()).isEqualTo(("00D"));
     }
 
     @Override
