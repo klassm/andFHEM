@@ -46,7 +46,6 @@ import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWit
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
@@ -89,7 +88,6 @@ public enum DeviceType {
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
-    EC3000("EC3000", EC3000Device.class),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),

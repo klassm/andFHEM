@@ -27,21 +27,23 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 public class EC3000DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_correctly() {
-        EC3000Device device = getDefaultDevice(EC3000Device.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getState()).isEqualTo("68 (W)");
-        assertThat(device.getConsumption()).isEqualTo("13.782 (kWh)");
-        assertThat(device.getPower()).isEqualTo("68 (W)");
         assertThat(device.getMeasured()).isEqualTo("04.05.2014 14:14");
-        assertThat(device.getPrice()).isEqualTo("3.29 (€)");
-        assertThat(device.getWidgetInfoLine()).isEqualTo("3.29 (€), 13.782 (kWh)");
+        assertThat(device.getState()).isEqualTo("68 (W)");
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
+        assertThat(xmlListDevice.getState("consumption", true)).contains("13.782 (kWh)");
+        assertThat(xmlListDevice.getState("power", true)).contains("68 (W)");
+        assertThat(xmlListDevice.getState("Euro", true)).contains("3.2929 (€)");
     }
 
     @Override

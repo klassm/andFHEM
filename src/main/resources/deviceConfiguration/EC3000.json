@@ -1,20 +1,48 @@
 {
-  "sensorDevice": true,
   "defaultGroup": "USAGE",
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "consumption",
+      "desc": "energy_consumption",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "power",
+      "desc": "energy_power",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "Euro",
+      "desc": "price",
+      "showInOverview": false
+    }
+  ],
   "sanitise": {
     "consumption": {
-      "append": "kWh"
+      "append": "kWh",
+      "extract": "double"
     },
     "power": {
-      "append": "W"
+      "append": "W",
+      "extract": "int"
     },
     "Euro": {
       "append": "€",
-      "extract": "double",
-      "extractDigits": 2
+      "extract": "double"
     },
     "STATE": {
-      "append": "W"
+      "append": "W",
+      "extract": "int"
     }
   }
 }
