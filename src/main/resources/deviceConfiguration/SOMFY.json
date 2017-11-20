@@ -1,0 +1,14 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "WINDOW",
+  "sanitise": {
+    "__general__": {
+      "addAttributesIfNotPresent": [
+        {
+          "key": "webCmd",
+          "value": "auf:stop:ab"
+        }
+      ]
+    }
+  }
+}

@@ -34,27 +34,8 @@ public class EnigmaDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        EnigmaDevice device = getDeviceFor("Wz.TvReceiver", EnigmaDevice.class);
+        GenericDevice device = getDeviceFor("Wz.TvReceiver", GenericDevice.class);
         assertThat(device).isNotNull();
-        assertThat(device.getChannel()).isEqualTo("a");
-        assertThat(device.getCurrentTitle()).isEqualTo("b");
-        assertThat(device.getPower()).isEqualTo("off");
-        assertThat(device.getServiceName()).isEqualTo("s");
-        assertThat(device.getEventDurationHour()).isEqualTo("edh");
-        assertThat(device.getEventDurationNextHour()).isEqualTo("ednh");
-        assertThat(device.getEventNameNext()).isEqualTo("enn");
-        assertThat(device.getEventRemainingHour()).isEqualTo("30");
-        assertThat(device.getEventStart()).isEqualTo("20:15");
-        assertThat(device.getEventStartNextHour()).isEqualTo("21:15");
-        assertThat(device.getHdd1Capacity()).isEqualTo("750.156");
-        assertThat(device.getHdd1Free()).isEqualTo("695.119");
-        assertThat(device.getInput()).isEqualTo("audio");
-        assertThat(device.getLanmac()).isEqualTo("53:15:ed:16:c0:75");
-        assertThat(device.getModel()).isEqualTo("duo2");
-        assertThat(device.getMute()).isEqualTo("-");
-        assertThat(device.getVideoSize()).isEqualTo("1024x768");
-        assertThat(device.getVolume()).isEqualTo("40");
-        assertThat(device.getDefinition()).isEqualTo("192.168.1.23");
     }
 
     @Override

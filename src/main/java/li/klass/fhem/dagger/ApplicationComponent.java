@@ -38,7 +38,6 @@ import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
-import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
@@ -185,8 +184,6 @@ public interface ApplicationComponent {
     void inject(WeatherAdapter object);
 
     void inject(WebLinkAdapter object);
-
-    void inject(EnigmaDeviceAdapter object);
 
     void inject(PioneerAvrDeviceAdapter object);
 

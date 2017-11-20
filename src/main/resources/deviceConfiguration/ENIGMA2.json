@@ -1,6 +1,80 @@
 {
   "sensorDevice": false,
   "defaultGroup": "REMOTE_CONTROL",
+  "states": [
+    {
+      "key": "channel",
+      "desc": "channel"
+    },
+    {
+      "key": "currentTitle",
+      "desc": "currentTitle"
+    },
+    {
+      "key": "power",
+      "desc": "power"
+    },
+    {
+      "key": "servicename",
+      "desc": "serviceName"
+    },
+    {
+      "key": "eventduration_hr",
+      "desc": "event_duration_current_title"
+    },
+    {
+      "key": "eventduration_next_hr",
+      "desc": "event_duration_next_title"
+    },
+    {
+      "key": "eventname_next",
+      "desc": "event_name_next_title"
+    },
+    {
+      "key": "eventremaining_hr",
+      "desc": "event_rest_current_title"
+    },
+    {
+      "key": "eventstart",
+      "desc": "event_starting_time"
+    },
+    {
+      "key": "eventstart_next_hr",
+      "desc": "event_starting_time_next_title"
+    },
+    {
+      "key": "hdd1_capacity",
+      "desc": "hdd_capacity"
+    },
+    {
+      "key": "hdd1_free",
+      "desc": "hdd_free"
+    },
+    {
+      "key": "input",
+      "desc": "input"
+    },
+    {
+      "key": "lanmac",
+      "desc": "mac"
+    },
+    {
+      "key": "model",
+      "desc": "model"
+    },
+    {
+      "key": "mute",
+      "desc": "musicMute"
+    },
+    {
+      "key": "servicevideosize",
+      "desc": "video_size"
+    },
+    {
+      "key": "volume",
+      "desc": "musicVolume"
+    }
+  ],
   "sanitise": {
     "DEF": {
       "replace": "([^ ]+).*",

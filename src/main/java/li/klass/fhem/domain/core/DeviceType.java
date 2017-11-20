@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
-import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
@@ -51,7 +50,6 @@ import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EnOceanDevice;
-import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FS20ZDRDevice;
@@ -97,7 +95,6 @@ public enum DeviceType {
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     EC3000("EC3000", EC3000Device.class),
-    ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
