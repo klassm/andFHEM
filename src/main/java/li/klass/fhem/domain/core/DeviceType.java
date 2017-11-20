@@ -68,7 +68,6 @@ import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.domain.STVDevice;
-import li.klass.fhem.domain.SomfyDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.WeatherDevice;
@@ -98,7 +97,6 @@ public enum DeviceType {
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     EC3000("EC3000", EC3000Device.class),
-    SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     STV("STV", STVDevice.class, new STVDeviceAdapter()),

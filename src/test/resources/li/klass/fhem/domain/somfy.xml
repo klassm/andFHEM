@@ -39,7 +39,6 @@
             <ATTR key="eventMap" value="off:auf on:ab"/>
             <ATTR key="model" value="somfyblinds"/>
             <ATTR key="room" value="Somfy_Rollos"/>
-            <ATTR key="webCmd" value="auf:stop:go-my:ab"/>
             <STATE key="enc_key" value="AF" measured="2014-09-12 21:23:54"/>
             <STATE key="rolling_code" value="001F" measured="2014-09-12 21:23:54"/>
             <STATE key="state" value="stop" measured="2014-09-12 21:23:54"/>

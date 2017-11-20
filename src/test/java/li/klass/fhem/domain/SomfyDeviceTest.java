@@ -34,16 +34,16 @@ public class SomfyDeviceTest extends DeviceXMLParsingBase {
     @Test
     @SuppressWarnings("unchecked")
     public void should_read_device() {
-        SomfyDevice device = getDeviceFor("SOMFY_WZ_EG_1", SomfyDevice.class);
+        GenericDevice device = getDeviceFor("SOMFY_WZ_EG_1", GenericDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("stop");
-        assertThat(device.getWebCmd()).containsExactly("auf", "stop", "go-my", "ab");
+        assertThat(device.getWebCmd()).containsExactly("auf", "stop", "ab");
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void should_add_auf_ab_and_stop_as_webcmd_even_if_not_present() {
-        SomfyDevice device = getDeviceFor("SOMFY1", SomfyDevice.class);
+        GenericDevice device = getDeviceFor("SOMFY1", GenericDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("stop");
         assertThat(device.getWebCmd()).containsExactly("auf", "stop", "go-my", "ab");
