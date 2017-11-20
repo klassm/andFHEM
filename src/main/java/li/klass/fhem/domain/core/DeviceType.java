@@ -45,7 +45,6 @@ import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWit
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FS20ZDRDevice;
@@ -74,7 +73,6 @@ public enum DeviceType {
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
     AT("at", AtDevice.class, null),
-    EIB("EIB", EIBDevice.class, new DimmableAdapter()),
     HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),

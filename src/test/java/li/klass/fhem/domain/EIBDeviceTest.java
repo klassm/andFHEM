@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EIBDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        EIBDevice device = getDefaultDevice(EIBDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -46,18 +46,16 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testTimeDevice() {
-        EIBDevice timeDevice = getDeviceFor("time", EIBDevice.class);
-        EIBDevice dpt10Device = getDeviceFor("dpt10", EIBDevice.class);
-
-        assertThat(timeDevice.getModel()).isEqualTo("time");
-        assertThat(dpt10Device.getModel()).isEqualTo("time");
+        GenericDevice timeDevice = getDeviceFor("time", GenericDevice.class);
+        GenericDevice dpt10Device = getDeviceFor("dpt10", GenericDevice.class);
+        assertThat(timeDevice).isNotNull();
+        assertThat(dpt10Device).isNotNull();
     }
 
     @Test
     public void testDimmerDevice() {
-        EIBDevice device = getDeviceFor("dimmer", EIBDevice.class);
+        GenericDevice device = getDeviceFor("dimmer", GenericDevice.class);
 
-        assertThat(device.supportsDim()).isEqualTo(true);
         assertThat(device.getDimPosition()).isEqualTo(20);
         assertThat(device.getState()).isEqualTo("20 (%)");
     }
@@ -66,16 +64,15 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
     public void testNonSwitchDeviceTypes() {
         assertDeviceState("speedsensor", "1.7 (m/s)");
         assertDeviceState("tempsensor", "0.9 (°C)");
-        assertDeviceState("lightsensor", "1158.4 (lux)");
-        assertDeviceState("brightness", "13338.0 (lux)");
+        assertDeviceState("lightsensor", "1158.4 (Lux)");
+        assertDeviceState("brightness", "13338 (lux)");
         assertDeviceState("time", "13:34:00");
         assertDeviceState("dpt10", "18:44:33");
     }
 
     private void assertDeviceState(String deviceName, String expectedState) {
-        EIBDevice device = getDeviceFor(deviceName, EIBDevice.class);
+        GenericDevice device = getDeviceFor(deviceName, GenericDevice.class);
         assertThat(device.getState()).isEqualTo(expectedState);
-        assertThat(device.supportsToggle()).isEqualTo(false);
     }
 
     @Override

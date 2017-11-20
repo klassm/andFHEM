@@ -38,7 +38,6 @@ import java.util.HashMap;
 
 import li.klass.fhem.adapter.devices.hook.ButtonHook;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
-import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.testutil.MockitoRule;
@@ -77,7 +76,7 @@ public class OnOffBehaviorTest {
     public void should_recognize_on_and_off_states_correctly(String readState, boolean isOn) {
 
         //  given
-        ToggleableDevice device = new EIBDevice();
+        ToggleableDevice device = new GenericDevice();
         device.setXmlListDevice(new XmlListDevice("BLUB", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>()));
         device.setState(readState);
         when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
@@ -91,7 +90,7 @@ public class OnOffBehaviorTest {
     @Test
     public void should_handle_invert_state_hook(String readState, boolean isOn) {
         //  given
-        ToggleableDevice device = new EIBDevice();
+        ToggleableDevice device = new GenericDevice();
         XmlListDevice xmlListDevice = new XmlListDevice("BLUB", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", "Name");
         device.setXmlListDevice(xmlListDevice);
@@ -99,7 +98,7 @@ public class OnOffBehaviorTest {
         when(deviceHookProvider.getOffStateName(device)).thenReturn("off");
         when(deviceHookProvider.invertState(device)).thenReturn(false);
 
-        ToggleableDevice device2 = new EIBDevice();
+        ToggleableDevice device2 = new GenericDevice();
         XmlListDevice xmlListDevice2 = new XmlListDevice("BLA", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", "name");
         device2.setXmlListDevice(xmlListDevice2);
