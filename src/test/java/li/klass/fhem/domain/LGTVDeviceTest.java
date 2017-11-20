@@ -33,16 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LGTVDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        LGTVDevice device = getDefaultDevice(LGTVDevice.class);
-
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
-
-        assertThat(device.getState()).isEqualTo("off");
-        assertThat(device.getAudio()).isEqualTo("mute");
-        assertThat(device.getInput()).isEqualTo("HDMI1");
-        assertThat(device.getPower()).isEqualTo("off");
-
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        assertThat(device).isNotNull();
         assertThat(device.getXmlListDevice().getSetList().contains("power", "input", "audio")).isEqualTo(true);
     }
 

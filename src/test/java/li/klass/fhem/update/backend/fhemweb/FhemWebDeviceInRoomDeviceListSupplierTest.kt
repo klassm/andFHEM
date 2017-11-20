@@ -24,8 +24,6 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import android.app.Application
-import android.content.Context
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import li.klass.fhem.connection.backend.ConnectionService
@@ -45,7 +43,6 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     fun should_find_no_fhemweb_device_if_none_is_present() {
         // given
         val applicationProperties = mock<ApplicationProperties>()
-        val context = mock<Context>()
         val emptyRoomDeviceList = RoomDeviceList("bla")
         val connectionService = mock<ConnectionService> {
             on { getSelectedId() } doReturn "123"
@@ -67,7 +64,6 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     fun should_find_one_fhemweb_device_if_one_is_present() {
         // given
         val applicationProperties = mock<ApplicationProperties>()
-        val context = mock<Context>()
         val device = fhemwebDeviceFor("device")
         val deviceList = RoomDeviceList("bla")
                 .addDevice(device)
@@ -91,7 +87,6 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     fun should_use_connection_port() {
         // given
         val applicationProperties = mock<ApplicationProperties>() // returns null as qualifier
-        val context = mock<Context>()
         val port = 123
         val incorrectDevice = fhemwebDeviceFor("incorrectDevice")
         val correctDevice = fhemwebDeviceFor("correctDevice")
@@ -121,7 +116,6 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     fun should_use_some_device_if_connection_port_does_not_match() {
         // given
         val applicationProperties = mock<ApplicationProperties>() // returns null as qualifier
-        val context = mock<Context>()
         val port = 123
         val device2 = fhemwebDeviceFor("device2")
         val device1 = fhemwebDeviceFor("device1")
@@ -152,7 +146,6 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     fun should_use_qualifier() {
         // given
         val qualifier = "myQualifier"
-        val context = mock<Context>()
         val applicationProperties = mock<ApplicationProperties> {
             on { getStringSharedPreference(FHEMWEB_DEVICE_NAME, null) } doReturn qualifier
         }
@@ -184,11 +177,5 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         device.xmlListDevice.setInternal(XmllistKey.Internal.name, name)
         device.xmlListDevice.setAttribute(XmllistKey.Attribute.group, "default")
         return device
-    }
-
-    private fun applicationFor(context: Context): Application {
-        return mock<Application> {
-            on { applicationContext } doReturn context
-        }
     }
 }

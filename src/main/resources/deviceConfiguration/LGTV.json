@@ -1,0 +1,21 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "sensorDevice": false,
+  "states": [
+    {
+      "key": "power",
+      "desc": "power",
+      "showInOverview": true
+    },
+    {
+      "key": "audio",
+      "desc": "audio",
+      "showInOverview": true
+    },
+    {
+      "key": "input",
+      "desc": "input",
+      "showInOverview": true
+    }
+  ]
+}
