@@ -21,75 +21,53 @@
   ~   51 Franklin Street, Fifth Floor
   ~   Boston, MA  02110-1301  USA
   -->
-
 <FHZINFO>
-    <readingsProxy_LIST>
-        <readingsProxy name="rgb" state="Initialized"
-            sets="rgb:colorpicker,RGB on off blink on-for-timer on-till off-for-timer intervals off-till"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="RGB1:state" />
-            <INT key="DEVICE" value="rgb" />
-            <INT key="NAME" value="rgb" />
-            <INT key="NR" value="400" />
-            <INT key="NTFY_ORDER" value="50-LED1a" />
-            <INT key="READING" value="state" />
+    <ArtNet_LIST>
+        <ArtNet name="ArtNet0" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:1,0 LichtEG L
+ichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
+            sets="" state="Initialized">
+            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
+            <INT key="DEF" value="192.168.10.90 0" />
+            <INT key="NAME" value="ArtNet0" />
+            <INT key="NR" value="196" />
             <INT key="STATE" value="Initialized" />
-            <INT key="TYPE" value="readingsProxy" />
-            <ATTR key="alias" value="Fenster 1" />
-            <ATTR key="devStateIcon"
-                value="{Color_devStateIcon (ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;))}" />
-            <ATTR key="fp_Groundfloor" value="1000,1000,5" />
-            <ATTR key="getFn"
-                value="{fhem (&quot;get RGB1 rgb&quot;);fhem (&quot;setreading LED1a RGB &quot;.ReadingsVal(&quot;RGB1&quot;,&quot;rgb&quot;,&quot;000000&quot;));(ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;),1) }" />
-            <ATTR key="getList" value="rgb" />
-            <ATTR key="group" value="LEDs" />
-            <ATTR key="lightSceneParamsToSave" value="RGB -> rgb" />
-            <ATTR key="room" value="room" />
-            <ATTR key="setFn"
-                value="{fhem (&quot;attr RGB1 DMX_R &quot;.hex(substr($ARGS,0,2)));fhem (&quot;attr RGB1 DMX_G &quot;.hex(substr($ARGS,2,2)));fhem (&quot;attr RGB1 DMX_B &quot;.hex(substr($ARGS,4,2)));fhem (&quot;set RGB1 rgb&quot;);fhem (&quot;setreading $name RGB $ARGS&quot;);fhem (&quot;setreading $name rgb $ARGS&quot;);return undef}" />
-            <ATTR key="setList" value="rgb:colorpicker,RGB on off" />
-            <ATTR key="webCmd" value="rgb:rgb FF0000:rgb C8FF12:rgb 0000FF:rgb 000000" />
-            <STATE key="RGB" value="FFFF00" measured="2013-12-12 13:57:55" />
-            <STATE key="rgb" value="FF0000" measured="2013-12-11 00:14:30" />
-        </readingsProxy>
-        <readingsProxy name="Bild" state="aus"
-            sets="an:noArg aus:noArg on off blink on-for-timer on-till off-for-timer intervals off-till"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon sortby webCmd">
-            <INT key="DEF" value="PCA9532:Port9" />
-            <INT key="DEVICE" value="PCA9532" />
-            <INT key="NAME" value="Bild" />
-            <INT key="NR" value="145" />
-            <INT key="NTFY_ORDER" value="50-Bild" />
-            <INT key="READING" value="Port9" />
-            <INT key="STATE" value="aus" />
-            <INT key="TYPE" value="readingsProxy" />
-            <ATTR key="alias" value="Beleuchtung Bild" />
-            <ATTR key="eventMap" value="on:an:noArg off:aus:noArg" />
-            <ATTR key="group" value="Schrankwand" />
-            <ATTR key="room" value="Wohnzimmer" />
-            <ATTR key="setList" value="on off" />
-            <STATE key="state" value="off" measured="2014-02-17 23:29:36" />
-        </readingsProxy>
-        <readingsProxy name="dimmable" state="100.0"
-            sets="an:noArg aus:noArg off:noArg on:noArg state:slider,4,1,105 blink on-for-timer on-till off-for-timer intervals off-till"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon sortby webCmd">
-            <INT key="DEF" value="PCA9532:PWM1" />
-            <INT key="DEVICE" value="PCA9532" />
-            <INT key="NAME" value="dimmable" />
-            <INT key="NR" value="145" />
-            <INT key="NTFY_ORDER" value="50-Regal" />
-            <INT key="READING" value="PWM1" />
-            <INT key="STATE" value="100.0" />
-            <INT key="TYPE" value="readingsProxy" />
-            <ATTR key="alias" value="Beleuchtung Regale" />
-            <ATTR key="devStateIcon"
-                value="0:off 100:on \d:dim06% 1\d.*:dim12% 2\d.*:dim25% 3\d.*:dim37% 4\d.*:dim43% 5\d.*:dim50% 6\d.*:dim62% 7\d.*:dim75% 8\d.*:dim87% 9\d.*:dim93%" />
-            <ATTR key="eventMap" value="on:an:noArg off:aus:noArg" />
-            <ATTR key="group" value="Schrankwand" />
-            <ATTR key="room" value="Wohnzimmer" />
-            <ATTR key="setList" value="off:noArg on:noArg state:slider,0,1,100" />
-            <ATTR key="webCmd" value="state" />
-            <STATE key="state" value="100.0" measured="2014-03-02 21:12:54" />
-        </readingsProxy>
-    </readingsProxy_LIST>
+            <INT key="TYPE" value="ArtNet" />
+            <ATTR key="room" value="14SZ" />
+        </ArtNet>
+    </ArtNet_LIST>
+
+    <DMXBridge_LIST>
+        <DMXBridge name="DMX0"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1  LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
+            sets="Usage: set DMX0 &lt;channel&gt; &lt;value&gt;" state="Initialized">
+            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
+            <INT key="INTERVAL" value="1" />
+            <INT key="NAME" value="DMX0" />
+            <INT key="NR" value="198" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="DMXBridge" />
+            <INT key="IODev" value="ArtNet0" />
+            <ATTR key="IODev" value="ArtNet0" />
+            <ATTR key="room" value="14SZ" />
+        </DMXBridge>
+    </DMXBridge_LIST>
+    <DMXDevice_LIST>
+        <DMXDevice name="LedBett"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 color-icons:1,2 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
+            sets="on toggle pct:slider,0,1,255 off rgb:colorpicker,RGB flash blink on-for-timer on-till off-for-timer intervals off-till"
+            state="Initialized">
+            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
+            <INT key="DEF" value="rgba 13,12,11,15" />
+            <INT key="NAME" value="LedBett" />
+            <INT key="NR" value="200" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="DMXDevice" />
+            <INT key="IODev" value="DMX0" />
+            <ATTR key="IODev" value="DMX0" />
+            <ATTR key="room" value="14SZ" />
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 00ff00:rgb 0000ff:rgb ffffff:on:off" />
+            <STATE key="pct" measured="2014-07-08 09:08:40" value="10" />
+            <STATE key="rgb" measured="2014-07-08 09:08:19" value="ffffff" />
+        </DMXDevice>
+    </DMXDevice_LIST>
 </FHZINFO>

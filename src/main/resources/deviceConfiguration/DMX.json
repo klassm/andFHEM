@@ -1,0 +1,16 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "SWITCH",
+  "states": [
+    {
+      "key": "pct",
+      "desc": "brightness",
+      "showInOverview": true
+    },
+    {
+      "key": "rgb",
+      "desc": "color",
+      "showInOverview": true
+    }
+  ]
+}

@@ -37,7 +37,6 @@ import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
-import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
@@ -167,8 +166,6 @@ public interface ApplicationComponent {
 
     void inject(PremiumActivity object);
 
-
-    void inject(DmxAdapter object);
 
     void inject(EnOceanAdapter object);
 

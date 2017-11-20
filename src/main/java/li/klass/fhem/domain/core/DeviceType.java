@@ -27,7 +27,6 @@ package li.klass.fhem.domain.core;
 import java.util.Locale;
 import java.util.Map;
 
-import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
@@ -50,7 +49,6 @@ import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWit
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.domain.DMXDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EnOceanDevice;
@@ -105,7 +103,6 @@ public enum DeviceType {
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     EC3000("EC3000", EC3000Device.class),
-    DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
