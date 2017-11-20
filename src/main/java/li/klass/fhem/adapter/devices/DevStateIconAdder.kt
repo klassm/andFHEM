@@ -3,9 +3,9 @@ package li.klass.fhem.adapter.devices
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
@@ -38,10 +38,9 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
                             .addHeader("Authorization", authHeader)
                             .build())
 
-                    Glide.with(context)
+                    GlideApp.with(imageView.context)
                             .load(glideUrl)
                             .error(R.drawable.empty)
-                            .crossFade()
                             .into(imageView)
                 }
             }

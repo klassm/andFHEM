@@ -32,7 +32,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.RelativeLayout
-import com.bumptech.glide.Glide
+import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter
@@ -57,10 +57,10 @@ class WeatherAdapter : ExplicitOverviewDetailDeviceAdapter() {
 
     private fun setWeatherIconIn(imageView: ImageView, weatherIcon: String?) {
         val imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon + ".png"
-        Glide.with(imageView.context)
+
+        GlideApp.with(imageView.context)
                 .load(imageURL)
                 .error(R.drawable.empty)
-                .crossFade()
                 .into(imageView)
     }
 
