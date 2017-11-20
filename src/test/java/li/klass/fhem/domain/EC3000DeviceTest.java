@@ -38,7 +38,6 @@ public class EC3000DeviceTest extends DeviceXMLParsingBase {
     public void should_read_device_correctly() {
         GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getMeasured()).isEqualTo("04.05.2014 14:14");
         assertThat(device.getState()).isEqualTo("68 (W)");
         XmlListDevice xmlListDevice = device.getXmlListDevice();
         assertThat(xmlListDevice.getState("consumption", true)).contains("13.782 (kWh)");

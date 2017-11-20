@@ -23,38 +23,79 @@
   -->
 
 <FHZINFO>
-    <EC3000_LIST>
-        <EC3000 name="device" state="68" sets=""
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_1_Start icon sortby webCmd">
-            <INT key="CFGFN" value="/opt/fhem/FHEM/EC3000.cfg" />
-            <INT key="CHANGED" value="" />
-            <INT key="DEF" value="626E" />
-            <INT key="EC3000_lastRcv" value="2014-05-04 14:14:37" />
-            <INT key="LASTInputDev" value="myJeeLink" />
-            <INT key="MSGCNT" value="391" />
+    <PID_LIST>
+        <PID name="device" state="16.8 (delta -0.800000000000001)" sets="factors desired"
+            attrs="room comment alias disable:0,1 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
+            <INT key="DEF" value="tempslaap:temperature:([\d\.]*) thermostaat_slaap" />
             <INT key="NAME" value="device" />
-            <INT key="NR" value="108" />
-            <INT key="STATE" value="68" />
-            <INT key="TYPE" value="EC3000" />
-            <INT key="addr" value="626E" />
-            <INT key="myJeeLink_MSGCNT" value="391" />
-            <INT key="myJeeLink_RAWMSG"
-                value="OK 22 98 110 0 78 108 102 0 78 90 65 0 0 53 214 2 168 4 49 1 1" />
-            <INT key="myJeeLink_TIME" value="2014-05-04 14:14:37" />
-            <INT key="reception" value="1" />
-            <INT key="resets" value="1" />
-            <INT key="secondsOn" value="5114945" />
-            <INT key="secondsTotal" value="5119590" />
-            <INT key="IODev" value="myJeeLink" />
-            <ATTR key="IODev" value="myJeeLink" />
-            <ATTR key="event-min-interval" value="*:60" />
+            <INT key="NR" value="91" />
+            <INT key="NTFY_ORDER" value="50-thermostaat_slaapkamer" />
+            <INT key="STATE" value="16.8 (delta -0.800000000000001)" />
+            <INT key="TYPE" value="PID" />
+            <INT key="actor" value="thermostaat_slaap" />
+            <INT key="command" value="valve" />
+            <INT key="dFactor" value="5.88235294117647" />
+            <INT key="iFactor" value="3.05882352941176" />
+            <INT key="pFactor" value="25.4901960784314" />
+            <INT key="reading" value="temperature" />
+            <INT key="regexp" value="([\d\.]*)" />
+            <INT key="satMax" value="100" />
+            <INT key="satMin" value="0" />
+            <INT key="sensor" value="tempslaap" />
             <ATTR key="room" value="room" />
-            <STATE key="Euro" value="3.2929 " measured="2014-04-26 18:44:26" />
-            <STATE key="Zeit" value="1235.32222222222 Stunden" measured="2014-04-26 18:44:26" />
-            <STATE key="consumption" value="13.782" measured="2014-05-04 14:14:37" />
-            <STATE key="power" value="68" measured="2014-05-04 14:14:37" />
-            <STATE key="powerMax" value="107.3" measured="2014-05-04 14:14:37" />
-            <STATE key="state" value="68" measured="2014-05-04 14:14:37" />
-        </EC3000>
-    </EC3000_LIST>
+            <STATE key="actuation" value="0" measured="2012-03-20 20:39:02" />
+            <STATE key="delta" value="-0.800000000000001" measured="2012-03-20 20:39:02" />
+            <STATE key="desired" value="16" measured="2012-03-20 18:00:00" />
+            <STATE key="integrator" value="0" measured="2012-03-20 20:39:02" />
+            <STATE key="state" value="desired 21.5" measured="2013-01-14 08:02:39" />
+        </PID>
+
+        <PID name="device1" state="initialized" sets="factors desired"
+            attrs="room group comment alias eventMap disable:0,1 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="FHT_462b:measured-temp:([\d\.]*)  8vBed" />
+            <INT key="NAME" value="device1" />
+            <INT key="NR" value="39" />
+            <INT key="NTFY_ORDER" value="50-TcBed" />
+            <INT key="STATE" value="initialized" />
+            <INT key="TYPE" value="PID" />
+            <INT key="actor" value="8vBed" />
+            <INT key="command" value="valve" />
+            <INT key="dFactor" value="5.88235294117647" />
+            <INT key="iFactor" value="3.05882352941176" />
+            <INT key="pFactor" value="25.4901960784314" />
+            <INT key="reading" value="measured-temp" />
+            <INT key="regexp" value="([\d\.]*)" />
+            <INT key="satMax" value="100" />
+            <INT key="satMin" value="0" />
+            <INT key="sensor" value="FHT_462b" />
+            <ATTR key="room" value="room" />
+            <STATE key="actuation" value="0" measured="2012-10-31 23:26:00" />
+            <STATE key="delta" value="0" measured="2012-10-31 23:26:00" />
+            <STATE key="desired" value="16.5" measured="2012-02-21 23:26:49" />
+            <STATE key="integrator" value="0" measured="2012-10-31 23:26:00" />
+        </PID>
+    </PID_LIST>
+    <PID20_LIST>
+        <PID20 name="eg.wohnen.pid" state="processing" sets="stop:noArg start:noArg restart desired"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings pidActorValueDecPlaces:0,1,2,3,4,5 pidActorInterval pidActorTreshold pidActorErrorAction:freeze,errorPos pidActorErrorPos pidActorKeepAlive pidActorLimitLower pidActorLimitUpper pidCalcInterval pidDeltaTreshold pidDesiredName pidFactor_P pidFactor_I pidFactor_D pidMeasuredName pidSensorTimeout pidReverseAction pidUpdateInterval pidDebugSensor:0,1 pidDebugActuation:0,1 pidDebugCalc:0,1 pidDebugDelta:0,1 pidDebugUpdate:0,1 pidDebugNotify:0,1 disable:0,1 event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle device_timeout fp_EG icon sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="eg.wohnen.gesense:T0:([\d\.]*) eg.wohnen.stellantrieb.01:valve" />
+            <INT key="NAME" value="eg.wohnen.pid" />
+            <INT key="NR" value="69" />
+            <INT key="NTFY_ORDER" value="50-eg.wohnen.pid" />
+            <INT key="STATE" value="processing" />
+            <INT key="TYPE" value="PID20" />
+            <ATTR key="alias" value="PID Regelung Wohnzimmer Fenster" />
+            <ATTR key="icon" value="icoTool" />
+            <ATTR key="room" value="Wohnzimmer" />
+            <STATE key="actuation" value="27" measured="2015-02-22 17:18:47" />
+            <STATE key="actuationCalc" value="26.8124999999982" measured="2015-02-22 17:20:47" />
+            <STATE key="delta" value="0.129999999999999" measured="2015-02-22 17:20:47" />
+            <STATE key="desired" value="21.5" measured="2015-02-22 17:18:47" />
+            <STATE key="measured" value="21.37" measured="2015-02-22 17:18:47" />
+            <STATE key="p_d" value="0" measured="2015-02-22 17:20:47" />
+            <STATE key="p_i" value="23.5624999999982" measured="2015-02-22 17:20:47" />
+            <STATE key="p_p" value="3.24999999999998" measured="2015-02-22 17:20:47" />
+            <STATE key="state" value="processing" measured="2015-02-22 17:20:47" />
+        </PID20>
+    </PID20_LIST>
 </FHZINFO>

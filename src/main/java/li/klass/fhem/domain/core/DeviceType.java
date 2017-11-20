@@ -31,7 +31,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
-import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
@@ -56,7 +55,6 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.OwDevice;
-import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
@@ -74,8 +72,6 @@ public enum DeviceType {
 
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    PID("PID", PIDDevice.class, new PIDDeviceAdapter()),
-    PID20("PID20", PIDDevice.class, new PIDDeviceAdapter()),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter()),
     AT("at", AtDevice.class, null),
     EIB("EIB", EIBDevice.class, new DimmableAdapter()),

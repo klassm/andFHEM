@@ -52,7 +52,6 @@ public class HourCounterDeviceTest extends DeviceXMLParsingBase {
         GenericDevice device = getDeviceFor(deviceName, GenericDevice.class);
         assertThat(device).isNotNull();
 
-        assertThat(device.getMeasured()).isEqualTo(measured);
         assertThat(stateValueFor(device, "Zaehlerstand")).isEqualTo(totalCounter);
         assertThat(stateValueFor(device, "verbrauchGesamtEuro")).isEqualTo(totalPrice);
         assertThat(stateValueFor(device, "verbrauchTagEuro")).isEqualTo(dayPrice);

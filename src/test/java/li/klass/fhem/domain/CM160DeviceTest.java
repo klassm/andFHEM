@@ -46,8 +46,6 @@ public class CM160DeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "cumYear")).isEqualTo("W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg");
 
         assertThat(device.getState()).isEqualTo("A: 3.92 A, W: 901.60 W, C: 0.2461 €/h, CO2: 0.4147 kg/h");
-
-        assertThat(device.getMeasured()).isEqualTo("23.03.2014 20:30");
     }
 
     @Override

@@ -54,7 +54,6 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType;
-import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.STATE;
 
 public abstract class FhemDevice extends HookedDevice {
 
@@ -206,11 +205,6 @@ public abstract class FhemDevice extends HookedDevice {
         return measured;
     }
 
-    @XmllistAttribute("MEASURED")
-    public void setMeasured(String measuredIn) {
-        this.measured = DateFormatUtil.formatTime(measuredIn);
-    }
-
     public void setMeasured(DateTime measuredIn) {
         measuredIn = measuredIn != null ? measuredIn : DateTime.now();
         this.measured = DateFormatUtil.formatTime(measuredIn);
@@ -225,13 +219,6 @@ public abstract class FhemDevice extends HookedDevice {
      * @param node  additional tag node
      */
     public void onChildItemRead(DeviceNodeType type, String key, String value, DeviceNode node) {
-        if (key.endsWith("_TIME") && !key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
-            setMeasured(value);
-        }
-
-        if (node.getType() == STATE && "STATE".equalsIgnoreCase(node.getKey()) && measured == null) {
-            setMeasured(node.getMeasured());
-        }
     }
 
     @Override
@@ -349,10 +336,6 @@ public abstract class FhemDevice extends HookedDevice {
             groups.add(deviceFunctionality);
         }
         return groups;
-    }
-
-    private boolean useTimeAndWeekAttributesForMeasureTime() {
-        return true;
     }
 
     public DevStateIcons getDevStateIcons() {

@@ -37,7 +37,6 @@ public class HarmonyDeviceTest extends DeviceXMLParsingBase {
         HarmonyDevice device = getDeviceFor("hub", HarmonyDevice.class);
 
         assertThat(device.getActivity()).isEqualTo("PowerOff");
-        assertThat(device.getMeasured()).isEqualTo("23.02.2015 21:30");
     }
 
     @Override

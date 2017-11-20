@@ -75,12 +75,4 @@ public class DateFormatUtil {
             return input;
         }
     }
-
-    public static long toMilliSeconds(String in) {
-        try {
-            return FHEM_DATE_FORMAT.parseDateTime(in).getMillis();
-        } catch (Exception e) {
-            return -1;
-        }
-    }
 }

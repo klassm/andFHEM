@@ -1,0 +1,54 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "HEATING",
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
+  "states": [
+    {
+      "key": "desired",
+      "desc": "desiredTemperature",
+      "showInOverview": true
+    },
+    {
+      "key": "measured",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "delta",
+      "desc": "delta",
+      "showInOverview": false,
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ]
+    },
+    {
+      "key": "actuation",
+      "desc": "actuator",
+      "showInOverview": false
+    }
+  ],
+  "sanitise": {
+    "sets": {
+      "replace": "desired",
+      "replaceBy": "desired:slider,0,1,40"
+    },
+    "desired": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "measured": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "actuation": {
+      "append": "%",
+      "extract": "int"
+    }
+  }
+}

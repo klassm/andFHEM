@@ -46,7 +46,6 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
         assertThat(device).isNotNull();
         assertThat(device1.getState()).isEqualTo(("153"));
-        assertThat(device1.getMeasured()).isEqualTo(("04.11.2012 23:55"));
 
         GenericDevice device2 = getDeviceFor("device2", GenericDevice.class);
         assertThat(device2).isNotNull();

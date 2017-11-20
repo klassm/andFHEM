@@ -27,35 +27,38 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.data.Offset.offset;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 public class PIDDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        PIDDevice device = getDefaultDevice(PIDDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getTemperature()).isEqualTo("16.8 (°C)");
-        assertThat(device.getDelta()).isEqualTo("-0.800000000000001");
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
         assertThat(device.getState()).isEqualTo("16.8 (delta -0.800000000000001)");
-        assertThat(device.getDesiredTemp()).isEqualTo(16, offset(0.001));
+        assertThat(xmlListDevice.getState("delta", true)).contains("-0.800000000000001");
+        assertThat(xmlListDevice.getState("desired", true)).contains("16.0 (°C)");
+        assertThat(xmlListDevice.getState("actuation", true)).contains("0 (%)");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
+        assertThat(xmlListDevice.getSetList().getEntries()).isNotEmpty();
     }
 
     @Test
     public void should_read_PID20_devices() {
-        PIDDevice device = getDeviceFor("eg.wohnen.pid", PIDDevice.class);
+        GenericDevice device = getDeviceFor("eg.wohnen.pid", GenericDevice.class);
         assertThat(device).isNotNull();
 
-        assertThat(device.getTemperature()).isEqualTo("21.37 (°C)");
-        assertThat(device.getDesiredTempDesc()).isEqualTo("21.5 (°C)");
-        assertThat(device.getDesiredTemp()).isEqualTo(21.5, offset(0.001));
-        assertThat(device.getActuator()).isEqualTo("27 (%)");
+        XmlListDevice xmlListDevice = device.getXmlListDevice();
+        assertThat(xmlListDevice.getState("delta", true)).contains("0.129999999999999");
+        assertThat(xmlListDevice.getState("desired", true)).contains("21.5 (°C)");
+        assertThat(xmlListDevice.getState("actuation", true)).contains("27 (%)");
+        assertThat(xmlListDevice.getState("measured", true)).contains("21.37 (°C)");
     }
 
     @Override
