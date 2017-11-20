@@ -28,17 +28,14 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 public class SWAPDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSwapDeviceWithExtendedXmllistTagAndRGB() {
-        SWAPDevice device = getDeviceFor("SWAP_05", SWAPDevice.class);
-        assertThat(device).isNotNull();
-        assertThat(device.supportsRGB()).isTrue();
-        assertThat(device.getRgb()).isEqualTo(hexToDecimal("FF00F0"));
+        GenericDevice device = getDeviceFor("SWAP_05", GenericDevice.class);
+        assertThat(device.getXmlListDevice().getState("rgb", true)).contains("FFFF00F0");
     }
 
     @Override

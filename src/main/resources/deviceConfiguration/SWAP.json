@@ -1,0 +1,21 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "REMOTE_CONTROL",
+  "states": [
+    {
+      "key": "rgb",
+      "desc": "color",
+      "showInOverview": true
+    }
+  ],
+  "sanitise": {
+    "__general__": {
+      "addStatesIfNotPresent": [
+        {
+          "key": "rgb",
+          "withValueOf": "0B-RGBlevel"
+        }
+      ]
+    }
+  }
+}

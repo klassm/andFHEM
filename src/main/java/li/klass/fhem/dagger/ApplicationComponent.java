@@ -50,7 +50,6 @@ import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
-import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
@@ -180,8 +179,6 @@ public interface ApplicationComponent {
     void inject(RemoteControlAdapter object);
 
     void inject(SonosPlayerAdapter object);
-
-    void inject(SwapDeviceAdapter object);
 
     void inject(ToggleableAdapter object);
 

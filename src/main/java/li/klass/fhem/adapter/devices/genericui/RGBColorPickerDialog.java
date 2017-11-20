@@ -48,7 +48,7 @@ public class RGBColorPickerDialog extends AlertDialog implements DialogInterface
     public RGBColorPickerDialog(Context context, String initialRGB, Callback callback) {
         super(context);
 
-        this.initialColor = ColorUtil.fromRgbString(initialRGB) | 0xFF000000;
+        this.initialColor = ColorUtil.INSTANCE.fromRgbString(initialRGB) | 0xFF000000;
         this.newColor = initialColor;
         this.callback = callback;
 
@@ -79,7 +79,7 @@ public class RGBColorPickerDialog extends AlertDialog implements DialogInterface
 
     public void onColorChange(int color) {
         if (newColor != initialColor) {
-            callback.onColorChanged(ColorUtil.toHexStringWithoutPrefix(color), RGBColorPickerDialog.this);
+            callback.onColorChanged(ColorUtil.INSTANCE.toHexStringWithoutPrefix(color), RGBColorPickerDialog.this);
         } else {
             callback.onColorUnchanged(RGBColorPickerDialog.this);
         }

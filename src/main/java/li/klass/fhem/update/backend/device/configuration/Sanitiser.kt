@@ -32,6 +32,7 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ValueDescriptionUtil
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingInt
+import org.apache.commons.lang3.StringUtils
 import org.joda.time.DateTime
 import org.json.JSONException
 import org.json.JSONObject
@@ -95,8 +96,7 @@ class Sanitiser @Inject constructor(
         for (i in 0 until attributes.length()) {
             val attribute = attributes.getJSONObject(i)
             val key = attribute.getString("key")
-            val value = attribute.getString("value")
-
+            val value = attribute.optString("value")
             if (!xmlListDevice.attributes.containsKey(key)) {
                 xmlListDevice.attributes.put(key, DeviceNode(ATTR, key, value, null as DateTime?))
             }
@@ -108,12 +108,14 @@ class Sanitiser @Inject constructor(
         val states = generalOptions.optJSONArray("addStatesIfNotPresent") ?: return
 
         for (i in 0 until states.length()) {
-            val `object` = states.getJSONObject(i)
-            val key = `object`.getString("key")
-            val value = `object`.getString("value")
+            val json = states.getJSONObject(i)
+            val key = json.getString("key")
+            val value = StringUtils.trimToNull(json.optString("value"))
+            val withValueOf = json.optString("withValueOf")
+            val toSet = value ?: xmlListDevice.getState(withValueOf).or("")
 
             if (!xmlListDevice.states.containsKey(key)) {
-                xmlListDevice.states.put(key, DeviceNode(STATE, key, value, null as DateTime?))
+                xmlListDevice.states.put(key, DeviceNode(STATE, key, toSet, null as DateTime?))
             }
         }
     }

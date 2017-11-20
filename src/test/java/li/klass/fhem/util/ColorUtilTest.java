@@ -24,11 +24,14 @@
 
 package li.klass.fhem.util;
 
-import com.tngtech.java.junit.dataprovider.*;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static li.klass.fhem.util.ColorUtil.*;
+import static li.klass.fhem.util.ColorUtil.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
@@ -41,16 +44,16 @@ public class ColorUtilTest {
     }
 
     private void assertBidirectionalConvert(int color) {
-        int red = extractRed(color);
-        int green = extractGreen(color);
-        int blue = extractBlue(color);
+        int red = INSTANCE.extractRed(color);
+        int green = INSTANCE.extractGreen(color);
+        int blue = INSTANCE.extractBlue(color);
 
-        ColorUtil.XYColor xyColor = rgbToXY(color);
-        int rgb = xyToRgb(xyColor.xy, xyColor.brightness);
+        ColorUtil.XYColor xyColor = INSTANCE.rgbToXY(color);
+        int rgb = INSTANCE.xyToRgb(xyColor.getXy(), xyColor.getBrightness());
 
-        assertThat(extractRed(rgb)).isBetween(red - 2, red + 2);
-        assertThat(extractBlue(rgb)).isBetween(blue - 2, blue + 2);
-        assertThat(extractGreen(rgb)).isBetween(green - 2, green + 2);
+        assertThat(INSTANCE.extractRed(rgb)).isBetween(red - 2, red + 2);
+        assertThat(INSTANCE.extractBlue(rgb)).isBetween(blue - 2, blue + 2);
+        assertThat(INSTANCE.extractGreen(rgb)).isBetween(green - 2, green + 2);
     }
 
     @DataProvider
@@ -62,12 +65,13 @@ public class ColorUtilTest {
                 {"0xAbCEFf", 0xABCEFF},
                 {"0x00AbCEFf", 0xABCEFF},
                 {"0x38fff8s", 0},
+                {"FFFF00F0", 0xFF00F0}
         };
     }
 
     @UseDataProvider("rgbProvider")
     @Test
     public void should_convert_rgb(String in, int expected) {
-        assertThat(ColorUtil.fromRgbString(in)).isEqualTo(expected);
+        assertThat(ColorUtil.INSTANCE.fromRgbString(in)).isEqualTo(expected);
     }
 }

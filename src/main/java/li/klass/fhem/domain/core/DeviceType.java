@@ -40,7 +40,6 @@ import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
-import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
@@ -69,7 +68,6 @@ import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.domain.STVDevice;
-import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SomfyDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.TRXLightDevice;
@@ -94,7 +92,6 @@ public enum DeviceType {
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
-    SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
