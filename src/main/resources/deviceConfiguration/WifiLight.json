@@ -1,0 +1,22 @@
+{
+  "sensorDevice": false,
+  "defaultGroup": "SWITCH",
+  "states": [
+    {
+      "key": "BRIGHTNESS",
+      "desc": "brightness",
+      "showInOverview": true
+    },
+    {
+      "key": "RGB",
+      "desc": "color",
+      "showInOverview": true
+    }
+  ],
+  "sanitise": {
+    "sets": {
+      "replace": "RGB",
+      "replaceBy": "rgb:colorpicker,RGB"
+    }
+  }
+}

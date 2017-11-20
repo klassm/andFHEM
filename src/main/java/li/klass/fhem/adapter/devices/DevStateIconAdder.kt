@@ -1,6 +1,5 @@
 package li.klass.fhem.adapter.devices
 
-import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.load.model.GlideUrl
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnectionSwitch, val licenseService: LicenseService) {
 
-    fun addDevStateIconIfRequired(context: Context, value: String?, device: FhemDevice, imageView: ImageView?) {
+    fun addDevStateIconIfRequired(value: String?, device: FhemDevice, imageView: ImageView?) {
         imageView ?: return
 
         val currentProvider = dataConnectionSwitch.getProviderFor()

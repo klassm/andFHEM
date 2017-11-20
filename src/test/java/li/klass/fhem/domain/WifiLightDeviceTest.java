@@ -28,17 +28,17 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 public class WifiLightDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        WifiLightDevice device = getDeviceFor("WZ_Stehlampen", WifiLightDevice.class);
+        GenericDevice device = getDeviceFor("WZ_Stehlampen", GenericDevice.class);
 
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.getRgb()).isEqualTo(hexToDecimal("00FFFF"));
+        assertThat(device.getXmlListDevice().getState("rgb", true)).contains("00FFFF");
     }
 
     @Override

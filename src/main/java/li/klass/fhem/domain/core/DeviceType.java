@@ -45,7 +45,6 @@ import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
-import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
@@ -81,7 +80,6 @@ import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
-import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -109,7 +107,6 @@ public enum DeviceType {
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
-    WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
     EC3000("EC3000", EC3000Device.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapter()),

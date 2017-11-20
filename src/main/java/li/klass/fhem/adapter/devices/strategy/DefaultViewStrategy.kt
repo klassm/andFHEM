@@ -65,9 +65,7 @@ constructor(
         return myView
     }
 
-    override fun supports(fhemDevice: FhemDevice): Boolean {
-        return true
-    }
+    override fun supports(fhemDevice: FhemDevice): Boolean = true
 
     private val overviewLayout: Int
         get() = R.layout.device_overview_generic
@@ -146,7 +144,7 @@ constructor(
             holder.row.visibility = View.VISIBLE
         }
 
-        devStateIconAdder.addDevStateIconIfRequired(context, value, device, holder.devStateIcon)
+        devStateIconAdder.addDevStateIconIfRequired(value, device, holder.devStateIcon)
     }
 
     companion object {

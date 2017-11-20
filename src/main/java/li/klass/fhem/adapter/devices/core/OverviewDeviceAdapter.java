@@ -168,7 +168,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         } else {
             holder.row.setVisibility(View.VISIBLE);
         }
-        devStateIconAdder.addDevStateIconIfRequired(context, value, device, holder.devStateIcon);
+        devStateIconAdder.addDevStateIconIfRequired(value, device, holder.devStateIcon);
     }
 
     List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device, Context context) {

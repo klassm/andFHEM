@@ -55,7 +55,6 @@ import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
-import li.klass.fhem.adapter.devices.WifiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
@@ -195,8 +194,6 @@ public interface ApplicationComponent {
     void inject(WeatherAdapter object);
 
     void inject(WebLinkAdapter object);
-
-    void inject(WifiLightDeviceAdapter object);
 
     void inject(EnigmaDeviceAdapter object);
 
