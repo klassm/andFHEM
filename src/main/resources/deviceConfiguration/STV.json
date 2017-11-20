@@ -1,0 +1,30 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "sensorDevice": false,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "volume",
+      "desc": "musicVolume",
+      "showInOverview": true
+    },
+    {
+      "key": "mute",
+      "desc": "musicMute"
+    }
+  ],
+  "sanitise": {
+    "__general__": {
+      "addStatesIfNotPresent": [
+        {
+          "key": "volume",
+          "value": "0"
+        },
+        {
+          "key": "mute",
+          "value": "off"
+        }
+      ]
+    }
+  }
+}

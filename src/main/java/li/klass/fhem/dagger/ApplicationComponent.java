@@ -45,7 +45,6 @@ import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
-import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
@@ -180,8 +179,6 @@ public interface ApplicationComponent {
     void inject(WebLinkAdapter object);
 
     void inject(PioneerAvrDeviceAdapter object);
-
-    void inject(STVDeviceAdapter object);
 
     void inject(PioneerAvrZoneDeviceAdapter object);
 
