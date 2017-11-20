@@ -84,12 +84,10 @@ public class OwDevice extends ToggleableDevice {
         } else if (eventMap.contains(getOnStateName()) && eventMap.contains(getOffStateName())) {
             subType = SWITCH;
         }
-    }
 
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        if (subType == null) return null;
-        return subType.functionality;
+        if (subType != null) {
+            deviceFunctionality = subType.functionality.getCaptionText(context);
+        }
     }
 
     @Override

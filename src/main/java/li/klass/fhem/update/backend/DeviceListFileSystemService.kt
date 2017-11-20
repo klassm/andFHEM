@@ -51,7 +51,7 @@ class DeviceListFileSystemService @Inject constructor(
         try {
             val fileOutput = fileOutputFor(connection)
             ObjectOutputStream(BufferedOutputStream(fileOutput)).use {
-                it.writeObject(RoomDeviceList(roomDeviceList, applicationContext))
+                it.writeObject(RoomDeviceList(roomDeviceList))
             }
             LOG.info("storeDeviceListMap() : storing device list to cache completed after {} ms",
                     System.currentTimeMillis() - startLoad)

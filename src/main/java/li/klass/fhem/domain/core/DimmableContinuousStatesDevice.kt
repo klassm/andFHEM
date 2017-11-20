@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.core
 
+import android.content.Context
 import li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.util.FloatUtils
@@ -84,11 +85,12 @@ abstract class DimmableContinuousStatesDevice<D : FhemDevice> : DimmableDevice<D
         return stateSliderValue.step
     }
 
-    override fun getDeviceGroup(): DeviceFunctionality {
-        if (!supportsToggle() && !supportsDim()) {
-            return super.getDeviceGroup()
+    override fun afterDeviceXMLRead(context: Context) {
+        super.afterDeviceXMLRead(context)
+
+        if (supportsToggle() || supportsDim()) {
+            deviceFunctionality = functionalityForDimmable(this).getCaptionText(context)
         }
-        return functionalityForDimmable(this)
     }
 
     private fun supportsOnOffDimMapping(): Boolean = true

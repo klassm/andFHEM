@@ -23,12 +23,16 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 
 public class FloorplanDevice extends FhemDevice {
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.FLOORPLAN;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.FLOORPLAN.getCaptionText(context);
     }
 }

@@ -125,7 +125,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
                 val deviceList = when {
                     roomName != null -> deviceListService.getDeviceListForRoom(roomName!!)
                     else -> deviceListService.getAllRoomsDeviceList()
-                }.filter(myActivity, deviceFilter::isSelectable)
+                }.filter(deviceFilter::isSelectable)
 
                 val elements = viewableElementsCalculator.calculateElements(myActivity, deviceList)
                 if (!isNavigation) {

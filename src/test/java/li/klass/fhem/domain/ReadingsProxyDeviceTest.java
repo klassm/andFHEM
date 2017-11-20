@@ -28,7 +28,6 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
@@ -39,7 +38,6 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         assertThat(device.getName()).isEqualTo("rgb");
-        assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
         assertThat(device.getRGBColor()).isEqualTo(16776960);
         assertThat(device.getRgbDesc()).isEqualTo("0xFFFF00");
     }
@@ -49,7 +47,6 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
         ReadingsProxyDevice device = getDeviceFor("Bild", ReadingsProxyDevice.class);
 
         assertThat(device).isNotNull();
-        assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
         assertThat(device.getRgbDesc()).isNull();
     }
 

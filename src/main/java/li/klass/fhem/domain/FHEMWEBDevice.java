@@ -24,17 +24,13 @@
 
 package li.klass.fhem.domain;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import android.content.Context;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
-
-import static li.klass.fhem.domain.core.DeviceFunctionality.FHEM;
 
 public class FHEMWEBDevice extends FhemDevice {
 
@@ -73,30 +69,16 @@ public class FHEMWEBDevice extends FhemDevice {
         return sortRooms;
     }
 
-    public List<String> getHiddenRooms() {
-        if (hiddenRoom == null) {
-            return Collections.emptyList();
-        } else {
-            return Arrays.asList(hiddenRoom.split(","));
-        }
-    }
-
     @Override
     public boolean isSupported() {
         return !temporary && super.isSupported();
     }
 
-    public List<String> getHiddenGroups() {
-        if (hiddenGroup == null) {
-            return Collections.emptyList();
-        } else {
-            return Arrays.asList(hiddenGroup.split(","));
-        }
-    }
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return FHEM;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.FHEM.getCaptionText(context);
     }
 
     public String getPort() {

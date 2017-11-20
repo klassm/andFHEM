@@ -122,6 +122,7 @@ public class FBCallmonitorDevice extends FhemDevice {
         }
 
         setState(description + " (" + eventString + ")");
+        deviceFunctionality = DeviceFunctionality.CALL_MONITOR.getCaptionText(context);
     }
 
     public String getExternalName() {
@@ -151,10 +152,5 @@ public class FBCallmonitorDevice extends FhemDevice {
     @Override
     public boolean triggerStateNotificationOnAttributeChange() {
         return true;
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.CALL_MONITOR;
     }
 }

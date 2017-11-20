@@ -79,7 +79,7 @@ class DeviceListUpdateService @Inject constructor(
         LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec)
         return executeXmllist(connectionId, " " + devSpec, object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
-                cached.addAllDevicesOf(parsed, applicationContext)
+                cached.addAllDevicesOf(parsed)
                 return cached
             }
         })

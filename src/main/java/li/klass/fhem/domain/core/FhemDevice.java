@@ -73,9 +73,8 @@ public abstract class FhemDevice extends HookedDevice {
     protected SetList setList = new SetList(Collections.<String, SetListEntry>emptyMap());
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
-    private long lastMeasureTime = -1;
 
-    private DeviceFunctionality deviceFunctionality;
+    protected String deviceFunctionality;
 
     private OverviewViewSettings overviewViewSettingsCache;
 
@@ -121,7 +120,9 @@ public abstract class FhemDevice extends HookedDevice {
         this.definition = getDefinition();
 
         if (deviceConfiguration.isPresent()) {
-            deviceFunctionality = deviceConfiguration.get().getDefaultGroup();
+            deviceFunctionality = deviceConfiguration.get().getDefaultGroup().getCaptionText(context);
+        } else {
+            deviceFunctionality = DeviceFunctionality.UNKNOWN.getCaptionText(context);
         }
 
         setList = SetList.Companion.parse(getXmlListDevice().getHeader("sets").or("")
@@ -138,11 +139,6 @@ public abstract class FhemDevice extends HookedDevice {
     }
 
     public void afterAllXMLRead() {
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return deviceFunctionality == null ? DeviceFunctionality.UNKNOWN : deviceFunctionality;
     }
 
     private void parseEventMap(String content) {
@@ -213,17 +209,11 @@ public abstract class FhemDevice extends HookedDevice {
     @XmllistAttribute("MEASURED")
     public void setMeasured(String measuredIn) {
         this.measured = DateFormatUtil.formatTime(measuredIn);
-        this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measuredIn);
     }
 
     public void setMeasured(DateTime measuredIn) {
         measuredIn = measuredIn != null ? measuredIn : DateTime.now();
         this.measured = DateFormatUtil.formatTime(measuredIn);
-        this.lastMeasureTime = measuredIn.getMillis();
-    }
-
-    public long getLastMeasureTime() {
-        return lastMeasureTime;
     }
 
     /**
@@ -350,13 +340,13 @@ public abstract class FhemDevice extends HookedDevice {
         return firstNonNull(widgetName, getAliasOrName());
     }
 
-    public List<String> getInternalDeviceGroupOrGroupAttributes(Context context) {
+    public List<String> getInternalDeviceGroupOrGroupAttributes() {
         List<String> groups = newArrayList();
         DeviceNode groupAttribute = getXmlListDevice().getAttributes().get("group");
         if (groupAttribute != null) {
             groups.addAll(asList(groupAttribute.getValue().split(",")));
         } else {
-            groups.add(getDeviceGroup().getCaptionText(context));
+            groups.add(deviceFunctionality);
         }
         return groups;
     }

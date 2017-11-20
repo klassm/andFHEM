@@ -212,7 +212,7 @@ class StartupActivity : Activity() {
 
         async(UI) {
             val hasFavorites = bg {
-                favoritesService.hasFavorites(this@StartupActivity)
+                favoritesService.hasFavorites()
             }.await()
             Log.d(TAG, "loadFavorites : favorites_present=" + hasFavorites)
             gotoMainActivity(hasFavorites)

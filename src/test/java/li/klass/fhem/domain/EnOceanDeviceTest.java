@@ -28,8 +28,6 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
-import static li.klass.fhem.domain.core.DeviceFunctionality.WINDOW;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EnOceanDeviceTest extends DeviceXMLParsingBase {
@@ -63,7 +61,6 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
     public void testGatewaySwitchDevice() {
         EnOceanDevice device = getDeviceFor("device3", EnOceanDevice.class);
         assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SWITCH));
-        assertThat(device.getDeviceGroup()).isEqualTo((SWITCH));
     }
 
     @Test
@@ -73,7 +70,6 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         assertThat(device).isNotNull();
 
         assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SHUTTER));
-        assertThat(device.getDeviceGroup()).isEqualTo((WINDOW));
 
         assertThat(device.getModel()).isEqualTo(("FSB14"));
         assertThat(device.getManufacturerId()).isEqualTo(("00D"));

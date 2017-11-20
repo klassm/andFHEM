@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.core
 
-import android.content.Context
 import android.util.Log
 import com.google.common.collect.FluentIterable.from
 import com.google.common.collect.ImmutableSet
@@ -46,11 +45,11 @@ class RoomDeviceList(val roomName: String) : Serializable {
      */
     private val deviceMap = newHashMap<String, MutableSet<FhemDevice>>()
 
-    constructor(roomDeviceList: RoomDeviceList?, context: Context) : this(roomDeviceList?.roomName ?: "") {
+    constructor(roomDeviceList: RoomDeviceList?) : this(roomDeviceList?.roomName ?: "") {
 
         if (roomDeviceList != null) {
             for (device in roomDeviceList.allDevices) {
-                addDevice(device, context)
+                addDevice(device)
             }
         }
     }
@@ -128,8 +127,8 @@ class RoomDeviceList(val roomName: String) : Serializable {
     val allDevicesAsXmllistDevice: ImmutableSet<XmlListDevice>
         get() = from(allDevices).transform(FhemDevice.TO_XMLLIST_DEVICE).toSet()
 
-    fun <T : FhemDevice> removeDevice(device: T, context: Context) {
-        val groups = device.getInternalDeviceGroupOrGroupAttributes(context)
+    fun <T : FhemDevice> removeDevice(device: T) {
+        val groups = device.getInternalDeviceGroupOrGroupAttributes()
         for (group in groups) {
             deviceMap[group]?.remove(device)
         }
@@ -154,19 +153,19 @@ class RoomDeviceList(val roomName: String) : Serializable {
                     .none { it.isSupported }
         }
 
-    fun <T : FhemDevice> add(devices: Collection<T?>, context: Context): RoomDeviceList {
+    fun <T : FhemDevice> add(devices: Collection<T?>): RoomDeviceList {
         devices.forEach {
-            addDevice(it, context)
+            addDevice(it)
         }
         return this
     }
 
-    fun <T : FhemDevice> addDevice(device: T?, context: Context): RoomDeviceList {
+    fun <T : FhemDevice> addDevice(device: T?): RoomDeviceList {
         if (device == null || !device.isSupported) {
             return this
         }
 
-        val groups = device.getInternalDeviceGroupOrGroupAttributes(context)
+        val groups = device.getInternalDeviceGroupOrGroupAttributes()
         for (group in groups) {
             val groupList = getOrCreateDeviceList<FhemDevice>(group)
             groupList.remove(device)
@@ -176,23 +175,23 @@ class RoomDeviceList(val roomName: String) : Serializable {
         return this
     }
 
-    fun addAllDevicesOf(roomDeviceList: RoomDeviceList, context: Context): RoomDeviceList {
+    fun addAllDevicesOf(roomDeviceList: RoomDeviceList): RoomDeviceList {
         val allDevices = roomDeviceList.allDevices
         for (device in allDevices) {
-            addDevice(device, context)
+            addDevice(device)
         }
         return this
     }
 
-    fun filter(context: Context, filter: (FhemDevice) -> Boolean): RoomDeviceList {
+    fun filter(filter: (FhemDevice) -> Boolean): RoomDeviceList {
         val newList = RoomDeviceList(roomName)
         allDevices.filter(filter)
-                .forEach { newList.addDevice(it, context) }
+                .forEach { newList.addDevice(it) }
         return newList
     }
 
-    fun getDeviceGroups(context: Context): Set<String> =
-            allDevices.flatMap { it.getInternalDeviceGroupOrGroupAttributes(context) as List<String> }.toSet()
+    fun getDeviceGroups(): Set<String> =
+            allDevices.flatMap { it.getInternalDeviceGroupOrGroupAttributes() as List<String> }.toSet()
 
     companion object {
 

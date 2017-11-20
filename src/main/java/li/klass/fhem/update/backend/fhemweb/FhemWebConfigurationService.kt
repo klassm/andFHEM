@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import android.content.Context
 import li.klass.fhem.domain.FHEMWEBDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import java.util.*
@@ -50,12 +49,12 @@ class FhemWebConfigurationService @Inject constructor(
         return roomNames.filter { it !in hiddenRooms }.toSet()
     }
 
-    fun filterHiddenGroupsFrom(roomDeviceList: RoomDeviceList, context: Context): RoomDeviceList {
+    fun filterHiddenGroupsFrom(roomDeviceList: RoomDeviceList): RoomDeviceList {
         val fhemwebDevice = findFhemWebDevice() ?: return roomDeviceList
         val hiddenGroups = hiddenGroupsAttributeProvider.provideFor(fhemwebDevice)
 
-        return roomDeviceList.filter(context, {
-            val groups = it.getInternalDeviceGroupOrGroupAttributes(context).map { it.toLowerCase(Locale.getDefault()) }
+        return roomDeviceList.filter({
+            val groups = it.getInternalDeviceGroupOrGroupAttributes().map { it.toLowerCase(Locale.getDefault()) }
             !hiddenGroups.containsAll(groups)
         })
     }

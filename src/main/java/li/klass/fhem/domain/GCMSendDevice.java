@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -54,8 +56,10 @@ public class GCMSendDevice extends FhemDevice {
         return apiKey;
     }
 
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.FHEM;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.FHEM.getCaptionText(context);
     }
 }

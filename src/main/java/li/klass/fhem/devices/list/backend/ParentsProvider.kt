@@ -42,7 +42,7 @@ class ParentsProvider @Inject constructor(private val groupHolder: DeviceGroupHo
         val invisibleParents = groupHolder.getInvisible(context)
                 .map { it.getCaptionText(context) }
                 .toList()
-        val customParents = roomDeviceList.getDeviceGroups(context).sorted()
+        val customParents = roomDeviceList.getDeviceGroups().sorted()
         val columnAttributeParents = fhemWebConfigurationService.getColumnAttributeFor(roomDeviceList.roomName)
 
         return columnAttributeParents.plus(visibleParents).plus(customParents).minus(invisibleParents).distinct()

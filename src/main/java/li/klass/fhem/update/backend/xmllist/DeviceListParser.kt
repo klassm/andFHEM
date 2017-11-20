@@ -131,7 +131,7 @@ constructor(
         }
 
         performAfterReadOperations(allDevices, errorHolder)
-        val roomDeviceList = buildRoomDeviceList(allDevices, context)
+        val roomDeviceList = buildRoomDeviceList(allDevices)
 
         handleErrors(errorHolder, context)
 
@@ -199,10 +199,10 @@ constructor(
         }
     }
 
-    private fun buildRoomDeviceList(allDevices: Map<String, FhemDevice>, context: Context): RoomDeviceList {
+    private fun buildRoomDeviceList(allDevices: Map<String, FhemDevice>): RoomDeviceList {
         val roomDeviceList = RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM)
         for (device in allDevices.values) {
-            roomDeviceList.addDevice(device, context)
+            roomDeviceList.addDevice(device)
         }
         return roomDeviceList
     }

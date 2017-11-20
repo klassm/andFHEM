@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -101,10 +103,10 @@ public class EnigmaDevice extends ToggleableDevice implements VolumeDevice {
     @XmllistAttribute("volume")
     @ShowField(description = ResourceIdMapper.musicVolume)
     private String volume;
-
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.REMOTE_CONTROL;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.REMOTE_CONTROL.getCaptionText(context);
     }
 
     @Override

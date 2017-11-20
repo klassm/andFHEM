@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -56,7 +58,8 @@ public class SWAPDevice extends ToggleableDevice {
     }
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.TEMPERATURE;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.REMOTE_CONTROL.getCaptionText(context);
     }
 }

@@ -95,14 +95,6 @@ public abstract class Device implements Serializable {
         return false;
     }
 
-
-    /**
-     * Functionality of the device.
-     *
-     * @return NEVER null!
-     */
-    public abstract DeviceFunctionality getDeviceGroup();
-
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return true;
     }

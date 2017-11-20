@@ -33,14 +33,10 @@ import li.klass.fhem.appwidget.ui.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 
-import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
-
-@OverviewViewSettings(showState = false)
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
 public class EC3000Device extends FhemDevice {
@@ -61,11 +57,6 @@ public class EC3000Device extends FhemDevice {
     private String price;
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return USAGE;
-    }
-
-    @Override
     public void onChildItemRead(DeviceNode.DeviceNodeType type, String key, String value, DeviceNode node) {
         super.onChildItemRead(type, key, value, node);
 
@@ -78,6 +69,7 @@ public class EC3000Device extends FhemDevice {
     public void afterDeviceXMLRead(Context context) {
         super.afterDeviceXMLRead(context);
         widgetInfoLine = price + ", " + consumption;
+        deviceFunctionality = DeviceFunctionality.USAGE.getCaptionText(context);
     }
 
     public String getConsumption() {

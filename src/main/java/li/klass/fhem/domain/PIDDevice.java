@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -119,9 +121,11 @@ public class PIDDevice extends FhemDevice implements DesiredTempDevice {
         return delta;
     }
 
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.HEATING;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.HEATING.getCaptionText(context);
     }
 
     @Override

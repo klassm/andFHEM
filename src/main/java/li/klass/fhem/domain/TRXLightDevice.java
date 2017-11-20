@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +54,9 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     private String type;
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.functionalityForDimmable(this);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.functionalityForDimmable(this).getCaptionText(context);
     }
 
     @Override

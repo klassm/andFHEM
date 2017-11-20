@@ -69,11 +69,8 @@ public class OwthermDevice extends FhemDevice {
         if (state.contains("temperature")) {
             setState(temperature);
         }
-    }
 
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.TEMPERATURE;
+        deviceFunctionality = DeviceFunctionality.TEMPERATURE.getCaptionText(context);
     }
 
     @Override

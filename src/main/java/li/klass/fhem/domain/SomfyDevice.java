@@ -43,10 +43,7 @@ public class SomfyDevice extends ToggleableDevice {
         if (!getWebCmd().contains("ab")) {
             getWebCmd().add("ab");
         }
-    }
 
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.WINDOW;
+        deviceFunctionality = DeviceFunctionality.WINDOW.getCaptionText(context);
     }
 }

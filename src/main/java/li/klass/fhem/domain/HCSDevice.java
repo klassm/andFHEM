@@ -107,11 +107,7 @@ public class HCSDevice extends FhemDevice {
     public void afterDeviceXMLRead(Context context) {
         super.afterDeviceXMLRead(context);
         sort(demandDevices);
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.HEATING;
+        deviceFunctionality = DeviceFunctionality.HEATING.getCaptionText(context);
     }
 
     public String getThermostatThresholdOn() {

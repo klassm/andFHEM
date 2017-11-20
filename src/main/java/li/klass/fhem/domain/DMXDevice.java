@@ -24,8 +24,11 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.Locale;
 
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -74,6 +77,12 @@ public class DMXDevice extends DimmableContinuousStatesDevice<DMXDevice> {
         } else {
             super.setState(state);
         }
+    }
+
+    @Override
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.REMOTE_CONTROL.getCaptionText(context);
     }
 
     @Override

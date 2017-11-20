@@ -60,7 +60,7 @@ class ParentsProviderTest {
 
         val roomDeviceList = mock<RoomDeviceList> {
             on { roomName } doReturn room
-            on { getDeviceGroups(context) } doReturn setOf("blub", "blö", "abc")
+            on { getDeviceGroups() } doReturn setOf("blub", "blö", "abc")
         }
 
         // when

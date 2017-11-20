@@ -95,6 +95,9 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
 
         if (getXmlListDevice().getSetList().contains("up", "down") || ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
             subType = SubType.SHUTTER;
+            deviceFunctionality = DeviceFunctionality.WINDOW.getCaptionText(context);
+        } else {
+            DeviceFunctionality.functionalityForDimmable(this).getCaptionText(context);
         }
     }
 
@@ -116,14 +119,6 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return !(appWidgetClass.equals(ToggleWidgetView.class) && subType != SubType.SWITCH)
                 && super.supportsWidget(appWidgetClass);
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        if (subType == SubType.SHUTTER) {
-            return DeviceFunctionality.WINDOW;
-        }
-        return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     @Override

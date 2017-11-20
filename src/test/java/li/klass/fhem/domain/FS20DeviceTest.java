@@ -67,8 +67,8 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
 
-        assertThat(device.getInternalDeviceGroupOrGroupAttributes(context)).contains("dimmer", "switch", "temperature");
-        assertThat(device.getInternalDeviceGroupOrGroupAttributes(context)).hasSize(3);
+        assertThat(device.getInternalDeviceGroupOrGroupAttributes()).contains("dimmer", "switch", "temperature");
+        assertThat(device.getInternalDeviceGroupOrGroupAttributes()).hasSize(3);
 
         assertThat(device.getWidgetName()).isEqualTo("myAlias");
     }

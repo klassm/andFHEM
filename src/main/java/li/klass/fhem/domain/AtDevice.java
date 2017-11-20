@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -299,8 +300,8 @@ public class AtDevice extends FhemDevice implements Comparable<AtDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.FHEM;
+    public void afterDeviceXMLRead(Context context) {
+        deviceFunctionality = DeviceFunctionality.FHEM.getCaptionText(context);
     }
 
     @Override

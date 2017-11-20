@@ -70,7 +70,7 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val context = mock<Context>()
         val device = fhemwebDeviceFor("device")
         val deviceList = RoomDeviceList("bla")
-                .addDevice(device, context)
+                .addDevice(device)
         val connectionService = mock<ConnectionService> {
             on { getSelectedId() } doReturn "123"
         }
@@ -97,8 +97,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val correctDevice = fhemwebDeviceFor("correctDevice")
         correctDevice.xmlListDevice.setInternal(XmllistKey.Internal.FhemWeb.port, port.toString())
         val deviceList = RoomDeviceList("bla")
-                .addDevice(incorrectDevice, context)
-                .addDevice(correctDevice, context)
+                .addDevice(incorrectDevice)
+                .addDevice(correctDevice)
 
         val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
@@ -128,8 +128,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         device1.xmlListDevice.setInternal(XmllistKey.Internal.FhemWeb.port, "124")
 
         val deviceList = RoomDeviceList("bla")
-                .addDevice(device2, context)
-                .addDevice(device1, context)
+                .addDevice(device2)
+                .addDevice(device1)
 
         val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList("123") } doReturn deviceList
@@ -159,8 +159,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val device1 = fhemwebDeviceFor("device1")
         val device2 = fhemwebDeviceFor("device2" + qualifier)
         val deviceList = RoomDeviceList("bla")
-                .addDevice(device2, context)
-                .addDevice(device1, context)
+                .addDevice(device2)
+                .addDevice(device1)
 
         val roomListService = mock<DeviceListService> {
             on { getAllRoomsDeviceList("123") } doReturn deviceList

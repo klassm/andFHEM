@@ -24,7 +24,6 @@
 
 package li.klass.fhem.devices.list.backend
 
-import android.content.Context
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
@@ -33,12 +32,12 @@ import javax.inject.Inject
 class HiddenRoomsDeviceFilter @Inject constructor(
         val applicationProperties: ApplicationProperties
 ) {
-    fun filterHiddenDevicesIfRequired(roomDeviceList: RoomDeviceList, context: Context): RoomDeviceList {
+    fun filterHiddenDevicesIfRequired(roomDeviceList: RoomDeviceList): RoomDeviceList {
         val showHiddenDevices = applicationProperties.getBooleanSharedPreference(SettingsKeys.SHOW_HIDDEN_DEVICES, false)
         if (showHiddenDevices) {
             return roomDeviceList
         }
 
-        return roomDeviceList.filter(context, { !it.isInRoom("hidden") })
+        return roomDeviceList.filter({ !it.isInRoom("hidden") })
     }
 }

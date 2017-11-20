@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.Locale;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -34,9 +36,11 @@ import li.klass.fhem.util.NumberSystemUtil;
 public class WifiLightDevice extends ToggleableDevice {
     private int rgb = 0;
 
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.SWITCH;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.SWITCH.getCaptionText(context);
     }
 
     @XmllistAttribute("RGB")

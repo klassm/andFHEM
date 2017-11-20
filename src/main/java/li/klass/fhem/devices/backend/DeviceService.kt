@@ -70,7 +70,7 @@ constructor(
         commandExecutionService.executeSafely(Command("delete " + device.name!!), context, object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 deviceListService.getRoomDeviceList()
-                        ?.removeDevice(device, context)
+                        ?.removeDevice(device)
             }
         })
     }

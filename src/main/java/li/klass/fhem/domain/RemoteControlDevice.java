@@ -121,11 +121,7 @@ public class RemoteControlDevice extends ToggleableDevice {
     public void afterDeviceXMLRead(Context context) {
         super.afterDeviceXMLRead(context);
         Collections.sort(rows);
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.REMOTE_CONTROL;
+        deviceFunctionality = DeviceFunctionality.REMOTE_CONTROL.getCaptionText(context);
     }
 
     public String getIconPath() {

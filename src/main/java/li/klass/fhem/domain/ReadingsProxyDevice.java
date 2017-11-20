@@ -24,7 +24,8 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -54,7 +55,8 @@ public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<Readings
     }
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return functionalityForDimmable(this);
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = functionalityForDimmable(this).getCaptionText(context);
     }
 }

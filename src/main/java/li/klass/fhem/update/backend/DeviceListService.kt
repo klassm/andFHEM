@@ -76,7 +76,7 @@ constructor(
      */
     fun getAllRoomsDeviceList(connectionId: String? = null): RoomDeviceList {
         val originalRoomDeviceList = getRoomDeviceList(connectionId)
-        return RoomDeviceList(originalRoomDeviceList, applicationContext)
+        return RoomDeviceList(originalRoomDeviceList)
     }
 
     /**
@@ -142,7 +142,7 @@ constructor(
         val allDevices = (getRoomDeviceList(connectionId)
                 ?.allDevices ?: emptySet())
                 .filter { it.isInRoom(roomName) }
-        return RoomDeviceList(roomName).add(allDevices, applicationContext)
+        return RoomDeviceList(roomName).add(allDevices)
     }
 
     private val applicationContext: Context get() = application.applicationContext

@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -40,9 +42,11 @@ public class STVDevice extends FhemDevice implements VolumeDevice {
 
     private boolean isMuted = false;
 
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.REMOTE_CONTROL;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.REMOTE_CONTROL.getCaptionText(context);
     }
 
     public String getVolume() {

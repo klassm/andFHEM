@@ -45,7 +45,7 @@ class FavoritesFragment : DeviceListFragment() {
 
     override fun getTitle(context: Context): CharSequence = context.getString(R.string.favorites)
 
-    override fun getRoomDeviceListForUpdate(context: Context) = favoritesService.getFavorites(context)
+    override fun getRoomDeviceListForUpdate(context: Context) = favoritesService.getFavorites()
 
     override fun executeRemoteUpdate(context: Context) {
         deviceListUpdateService.updateAllDevices()

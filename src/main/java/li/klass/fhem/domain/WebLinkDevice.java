@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -37,8 +39,10 @@ public class WebLinkDevice extends FhemDevice {
         return link;
     }
 
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.WEB_LINK;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.WEB_LINK.getCaptionText(context);
     }
 }

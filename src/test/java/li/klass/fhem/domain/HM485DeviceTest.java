@@ -28,8 +28,6 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static li.klass.fhem.domain.core.DeviceFunctionality.DIMMER;
-import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HM485DeviceTest extends DeviceXMLParsingBase {
@@ -39,7 +37,6 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
         GenericDevice device = getDeviceFor("dim", GenericDevice.class);
         assertThat(device.getDimPosition()).isEqualTo(5);
         assertThat(device.supportsDim()).isTrue();
-        assertThat(device.getDeviceGroup()).isEqualTo(DIMMER);
     }
 
     @Test
@@ -47,7 +44,6 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
         GenericDevice device = getDeviceFor("switch", GenericDevice.class);
         assertThat(device.supportsDim()).isFalse();
         assertThat(device.supportsToggle()).isTrue();
-        assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
     }
 
     @Test

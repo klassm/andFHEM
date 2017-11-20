@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
@@ -183,9 +184,11 @@ public class WeatherDevice extends FhemDevice {
         return result;
     }
 
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.WEATHER;
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
+        deviceFunctionality = DeviceFunctionality.WEATHER.getCaptionText(context);
     }
 
     @Override
