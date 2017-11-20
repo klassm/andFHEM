@@ -29,30 +29,30 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.guava.api.Assertions.assertThat;
 
 public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testRGBProxy() {
-        ReadingsProxyDevice device = getDeviceFor("rgb", ReadingsProxyDevice.class);
+        GenericDevice device = getDeviceFor("rgb", GenericDevice.class);
 
         assertThat(device).isNotNull();
         assertThat(device.getName()).isEqualTo("rgb");
-        assertThat(device.getRGBColor()).isEqualTo(16776960);
-        assertThat(device.getRgbDesc()).isEqualTo("0xFFFF00");
+        assertThat(device.getXmlListDevice().getState("rgb", true)).contains("FFFF00");
     }
 
     @Test
     public void testSwitchProxy() {
-        ReadingsProxyDevice device = getDeviceFor("Bild", ReadingsProxyDevice.class);
+        GenericDevice device = getDeviceFor("Bild", GenericDevice.class);
 
         assertThat(device).isNotNull();
-        assertThat(device.getRgbDesc()).isNull();
+        assertThat(device.getXmlListDevice().getState("rgb", true)).isAbsent();
     }
 
     @Test
     public void testDimmable() {
-        ReadingsProxyDevice device = getDeviceFor("dimmable", ReadingsProxyDevice.class);
+        GenericDevice device = getDeviceFor("dimmable", GenericDevice.class);
 
         assertThat(device).isNotNull();
         assertThat(device.supportsDim()).isTrue();

@@ -47,7 +47,6 @@ import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
-import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
@@ -180,8 +179,6 @@ public interface ApplicationComponent {
     void inject(GCMSendDeviceAdapter object);
 
     void inject(PIDDeviceAdapter object);
-
-    void inject(ReadingsProxyDeviceAdapter object);
 
     void inject(RemoteControlAdapter object);
 

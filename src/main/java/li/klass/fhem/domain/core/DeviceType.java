@@ -37,7 +37,6 @@ import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.PIDDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
-import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.STVDeviceAdapter;
@@ -70,7 +69,6 @@ import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
-import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
 import li.klass.fhem.domain.STVDevice;
@@ -104,7 +102,6 @@ public enum DeviceType {
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     EC3000("EC3000", EC3000Device.class),
