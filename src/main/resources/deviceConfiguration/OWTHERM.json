@@ -1,0 +1,48 @@
+{
+  "defaultGroup": "TEMPERATURE",
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "TemperatureWidgetView"
+  ],
+  "internals": [
+    {
+      "key": "PRESENT",
+      "desc": "present",
+      "showInOverview": true
+    }
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "tempLow",
+      "desc": "temperatureMinimum",
+      "showInOverview": false
+    },
+    {
+      "key": "tempHigh",
+      "desc": "temperatureMaximum",
+      "showInOverview": false
+    }
+  ],
+  "sanitise": {
+    "temperature": {
+      "extract": "double",
+      "append": "°C"
+    },
+    "tempLow": {
+      "extract": "double",
+      "append": "°C"
+    },
+    "tempHigh": {
+      "extract": "double",
+      "append": "°C"
+    }
+  }
+}

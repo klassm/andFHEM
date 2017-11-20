@@ -21,53 +21,31 @@
   ~   51 Franklin Street, Fifth Floor
   ~   Boston, MA  02110-1301  USA
   -->
-<FHZINFO>
-    <ArtNet_LIST>
-        <ArtNet name="ArtNet0" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:1,0 LichtEG L
-ichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
-            sets="" state="Initialized">
-            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
-            <INT key="DEF" value="192.168.10.90 0" />
-            <INT key="NAME" value="ArtNet0" />
-            <INT key="NR" value="196" />
-            <INT key="STATE" value="Initialized" />
-            <INT key="TYPE" value="ArtNet" />
-            <ATTR key="room" value="14SZ" />
-        </ArtNet>
-    </ArtNet_LIST>
 
-    <DMXBridge_LIST>
-        <DMXBridge name="DMX0"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1  LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
-            sets="Usage: set DMX0 &lt;channel&gt; &lt;value&gt;" state="Initialized">
-            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
-            <INT key="INTERVAL" value="1" />
-            <INT key="NAME" value="DMX0" />
-            <INT key="NR" value="198" />
-            <INT key="STATE" value="Initialized" />
-            <INT key="TYPE" value="DMXBridge" />
-            <INT key="IODev" value="ArtNet0" />
-            <ATTR key="IODev" value="ArtNet0" />
-            <ATTR key="room" value="14SZ" />
-        </DMXBridge>
-    </DMXBridge_LIST>
-    <DMXDevice_LIST>
-        <DMXDevice name="LedBett"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 color-icons:1,2 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
-            sets="on toggle pct:slider,0,1,255 off rgb:colorpicker,RGB flash blink on-for-timer on-till off-for-timer intervals off-till"
-            state="Initialized">
-            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
-            <INT key="DEF" value="rgba 13,12,11,15" />
-            <INT key="NAME" value="LedBett" />
-            <INT key="NR" value="200" />
-            <INT key="STATE" value="Initialized" />
-            <INT key="TYPE" value="DMXDevice" />
-            <INT key="IODev" value="DMX0" />
-            <ATTR key="IODev" value="DMX0" />
-            <ATTR key="room" value="14SZ" />
-            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 00ff00:rgb 0000ff:rgb ffffff:on:off" />
-            <STATE key="pct" measured="2014-07-08 09:08:40" value="10" />
-            <STATE key="rgb" measured="2014-07-08 09:08:19" value="ffffff" />
-        </DMXDevice>
-    </DMXDevice_LIST>
+<FHZINFO>
+    <OWTHERM_LIST>
+        <OWTHERM name="device" state="13.62 &amp;deg;C" sets="interval tempHigh tempLow"
+            attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5 event:on-update,on-change stateAL stateAH tempOffset tempUnit:C,Celsius,F,Fahrenheit,K,Kelvin tempLow tempHigh icon webCmd">
+            <INT key="ALARM" value="0" />
+            <INT key="DEF" value="DS18B20 970D56040000" />
+            <INT key="INTERVAL" value="300" />
+            <INT key="NAME" value="device" />
+            <INT key="NR" value="31" />
+            <INT key="OW_FAMILY" value="28" />
+            <INT key="OW_ID" value="970D56040000" />
+            <INT key="PRESENT" value="1" />
+            <INT key="ROM_ID" value="28.970D56040000.89" />
+            <INT key="STATE" value="temperature: 13.62 &amp;deg;C" />
+            <INT key="TYPE" value="OWTHERM" />
+            <INT key="IODev" value="OWio2" />
+            <ATTR key="IODev" value="OWio2" />
+            <ATTR key="alias" value="alias" />
+            <ATTR key="room" value="room" />
+            <ATTR key="stateAH" value="&lt;span style=&quot;color:red&quot;&gt;&amp;" />
+            <ATTR key="stateAL" value="&lt;span style=&quot;color:red&quot;&gt;&amp;" />
+            <STATE key="tempHigh" value="100" measured="2012-11-17 20:36:33" />
+            <STATE key="tempLow" value="0" measured="2012-11-17 20:36:33" />
+            <STATE key="temperature" value="13.625" measured="2012-11-17 20:36:33" />
+        </OWTHERM>
+    </OWTHERM_LIST>
 </FHZINFO>

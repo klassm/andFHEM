@@ -24,19 +24,20 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.assertj.guava.api.Assertions.assertThat;
+
 
 public class OwthermDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        OwthermDevice device = getDefaultDevice(OwthermDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
-        assertThat(device.getTemperature(), is("13.625 (°C)"));
-        assertThat(device.getPresent(), is("yes"));
+        assertThat(device.getXmlListDevice().getState("temperature", true)).contains("13.625 (°C)");
+        assertThat(device.getXmlListDevice().getInternal("PRESENT")).contains("1");
     }
 
     @Override
