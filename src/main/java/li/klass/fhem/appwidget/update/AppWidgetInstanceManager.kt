@@ -53,10 +53,9 @@ class AppWidgetInstanceManager @Inject constructor(
             return
         }
 
-        val widgetView = configuration.widgetType.widgetView
-        val content = widgetView.createView(applicationContext, configuration)
-
         try {
+            val widgetView = configuration.widgetType.widgetView
+            val content = widgetView.createView(applicationContext, configuration)
             appWidgetManager.updateAppWidget(widgetId, content)
         } catch (e: Exception) {
             LOG.error("updateWidgetAfterDeviceListReload() - something strange happened during appwidget update", e)
