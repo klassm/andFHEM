@@ -34,6 +34,7 @@ import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.dagger.ApplicationComponent
 import org.jetbrains.anko.coroutines.experimental.bg
+import java.util.logging.Logger
 import javax.inject.Inject
 
 abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvider() {
@@ -51,6 +52,7 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
+        logger.info("onUpdate - request update for ids=$appWidgetIds")
         async(UI) {
             bg {
                 appWidgetIds.forEach {
@@ -65,5 +67,9 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
         appWidgetIds.forEach { appWidgetId -> appWidgetInstanceManager.delete(appWidgetId) }
+    }
+
+    companion object {
+        val logger = Logger.getLogger(AndFHEMAppWidgetProvider::class.java.name)!!
     }
 }

@@ -64,7 +64,19 @@ class AppWidgetInstanceManager @Inject constructor(
         appWidgetSchedulingService.scheduleUpdate(configuration)
     }
 
-    fun getAllAppWidgetIds(): Set<Int> = getSavedPreferences()
+    fun getExistingWidgetIds(): Set<Int> {
+        val all = getAllAppWidgetIds()
+        val withInfo = all.map { it to appWidgetManager.getAppWidgetInfo(it) }
+
+        withInfo.filter { it.second == null }
+                .forEach { delete(it.first) }
+
+        return withInfo
+                .filter { it.second != null }
+                .map { it.first }.toSet()
+    }
+
+    private fun getAllAppWidgetIds(): Set<Int> = getSavedPreferences()
             .all.keys
             .map(Integer::valueOf)
             .toSet()

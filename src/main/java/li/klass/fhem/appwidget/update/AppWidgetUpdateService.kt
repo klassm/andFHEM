@@ -42,11 +42,13 @@ class AppWidgetUpdateService @Inject constructor(
 ) {
 
     fun updateAllWidgets() {
-        appWidgetInstanceManager.getAllAppWidgetIds()
+        LOG.info("updateAllWidgets")
+        appWidgetInstanceManager.getExistingWidgetIds()
                 .forEach { updateWidget(it) }
     }
 
     fun updateWidget(appWidgetId: Int) {
+        LOG.info("updateWidget - appWidgetId=$appWidgetId")
         appWidgetInstanceManager.update(appWidgetId)
     }
 
