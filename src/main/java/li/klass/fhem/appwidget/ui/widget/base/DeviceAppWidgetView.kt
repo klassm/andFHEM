@@ -81,11 +81,9 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         val deviceConfiguration = device.deviceConfiguration
         if (deviceConfiguration.isPresent) {
             val supportedWidgets = deviceConfiguration.get().supportedWidgets
-            for (supportedWidget in supportedWidgets) {
-                if (javaClass.simpleName.equals(supportedWidget, ignoreCase = true)) {
-                    return true
-                }
-            }
+            supportedWidgets
+                    .filter { javaClass.simpleName.equals(it, ignoreCase = true) }
+                    .forEach { return true }
         }
         return false
     }
@@ -98,8 +96,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
             val deviceName = deviceNameFrom(widgetConfiguration)
 
             val device = getDeviceFor(deviceName, widgetConfiguration.connectionId)
-                    ?: throw IllegalArgumentException("device cannot be found, device name = $deviceName")
-            views.setTextViewText(R.id.deviceName, device.widgetName)
+            views.setTextViewText(R.id.deviceName, device?.widgetName ?: "????")
         }
 
         return views
@@ -125,7 +122,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                 PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    protected fun createOpenDeviceDetailPageIntent(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): Intent {
+    private fun createOpenDeviceDetailPageIntent(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): Intent {
         return Intent(context, AndFHEMMainActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
@@ -148,11 +145,9 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         if (configuration.isPresent) {
             val states = configuration.get().states
-            for (state in states) {
-                if (state.markers.contains(annotationCls.simpleName)) {
-                    return device.xmlListDevice.stateValueFor(state.key).orNull()
-                }
-            }
+            states
+                    .filter { it.markers.contains(annotationCls.simpleName) }
+                    .forEach { return device.xmlListDevice.stateValueFor(it.key).orNull() }
         }
         return getValueAndDescriptionForAnnotation(device, annotationCls, context)
     }
