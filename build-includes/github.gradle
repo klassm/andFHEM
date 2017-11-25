@@ -1,3 +1,6 @@
+import com.google.common.base.Charsets
+import com.google.common.io.Resources
+
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
@@ -22,13 +25,21 @@
  *   Boston, MA  02110-1301  USA
  */
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.guava:guava:22.0'
+    }
+}
+
+
 github {
     owner = 'klassm'
     repo = 'andFHEM'
-    tagName = version
     targetCommitish = 'master'
-    name = version
-    body = "Release ${version}"
     assets = [
             'build/outputs/apk/inapp/release/'
     ]
@@ -36,3 +47,15 @@ github {
 if (project.hasProperty('andFHEMGithubToken')) {
     github.token = andFHEMGithubToken
 }
+
+def getReleaseNotes() {
+    def changesFile = file("whatsnew-en.txt")
+    return Resources.toString(changesFile.getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
+}
+
+task updateGithubConfiguration {
+    github.name = version
+    github.tagName = version
+    github.body = getReleaseNotes()
+}
+githubRelease.dependsOn updateGithubConfiguration

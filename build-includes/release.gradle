@@ -23,7 +23,7 @@
  */
 
 release {
-    buildTasks = ['build', 'uploadToPlayStore', 'githubRelease']
+    buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
     versionPropertyFile = 'gradle.properties'
     versionProperties = ['version']
 
@@ -42,3 +42,4 @@ task uploadToPlayStore
 uploadToPlayStore.dependsOn {
     tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release")}
 }
+afterReleaseBuild.dependsOn("resetWhatsNew")

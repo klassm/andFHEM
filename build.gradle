@@ -161,6 +161,7 @@ dependencies {
 
 apply from: 'build-includes/resource-id-mapper-generator.gradle'
 apply from: 'build-includes/device-configuration-generator.gradle'
+apply from: 'build-includes/update-whatsnew.gradle'
 apply from: 'build-includes/github.gradle'
 apply from: 'build-includes/android.gradle'
 apply from: 'build-includes/release.gradle'
