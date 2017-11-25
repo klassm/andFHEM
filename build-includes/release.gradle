@@ -26,6 +26,11 @@ release {
     buildTasks = ['build', 'uploadToPlayStore', 'githubRelease']
     versionPropertyFile = 'gradle.properties'
     versionProperties = ['version']
+
+    git {
+        requireBranch = 'master'
+        pushToRemote = 'origin'
+    }
 }
 
 play {
