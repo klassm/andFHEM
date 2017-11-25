@@ -32,8 +32,6 @@ RUN gem install jekyll-redirect-from -v 0.10.0
 RUN gem install jemoji -v 0.6.2
 RUN gem install github-pages -v 82
 
-
-
 RUN mkdir -p /app
 ADD ./ /app
 

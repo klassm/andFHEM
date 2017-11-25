@@ -2,8 +2,10 @@
 
 # url is the full website URL
 # baseurl is the website's URL without the hostname
+encoding: utf-8
 
 # If you are building a simple GitHub user page (http://username.github.io) then use these settings:
+
 url: "http://andFHEM.klass.li"
 baseurl: ""
 
@@ -176,8 +178,9 @@ prose:
           label: "Publish"
           help: "Check to publish post, uncheck to hide."
 
-gems:
+plugins:
   - jekyll-paginate
 
+repository: klassm/andFHEM
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
