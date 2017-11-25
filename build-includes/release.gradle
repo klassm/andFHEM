@@ -40,5 +40,5 @@ play {
 
 task uploadToPlayStore
 uploadToPlayStore.dependsOn {
-    tasks.findAll { it.name.startsWith('publishApk') && it.name.endsWith("Release")}
+    tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release")}
 }
