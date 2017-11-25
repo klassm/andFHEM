@@ -5,6 +5,35 @@ bigimg: /images/changelog.jpg
 ---
 
 <div id="home">
+    <h3><a href="https://github.com/klassm/andFHEM/milestones/4.7.9">4.7.9</a> (25.11.2017)</h3>
+    <div>
+        <ul>
+            <li>More widget changes:<ul>
+                <li>In some cases widget configurations remain within andFHEM even though they
+                don't exist any more. AndFHEM still tries to update them, loads the device list and tries
+                to update a device that cannot be found. This consumes loads of battery and is useless,
+                which is why this behaviour changed in 4.7.9.</li>
+                <li>When updating a single widget fails, all other widgets will still be updated by now</li>
+            </ul></li>
+            <li>Migrate more devices as generic devices: (15 device types still left to be migrated ...)<ul>
+                <li>TRX_LIGHT</li>
+                <li>STV</li>
+                <li>EIB</li>
+                <li>PID/PID20</li>
+                <li>EC3000</li>
+                <li>EnOcean</li>
+                <li>LGTV</li>
+                <li>ENIGMA2</li>
+                <li>SOMFY</li>
+                <li>SWAP</li>
+                <li>OWTHERM</li>
+                <li>DMX</li>
+                <li>ReadingsProxy</li>
+                <li>WiFiLight</li>
+            </ul></li>
+        </ul>
+    </div>
+
     <h3><a href="https://github.com/klassm/andFHEM/milestones/4.7.8">4.7.8</a> (19.11.2017)</h3>
     <div>
         <ul>
