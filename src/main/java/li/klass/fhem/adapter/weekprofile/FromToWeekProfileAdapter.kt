@@ -49,8 +49,8 @@ class FromToWeekProfileAdapter(context: Context) : BaseWeekProfileAdapter<FromTo
                               child: FromToHeatingInterval, view: View?, viewGroup: ViewGroup, relativeChildPosition: Int): View {
         val myView = layoutInflater.inflate(R.layout.weekprofile_from_to_item, viewGroup, false)
 
-        setDetailTextView(myView, R.id.from, child.changedFromTime, child.fromTime, false)
-        setDetailTextView(myView, R.id.to, child.changedToTime, child.toTime, false)
+        setDetailTextView(myView, R.id.from, child.changedFromTime, child.fromTime, child.isNew)
+        setDetailTextView(myView, R.id.to, child.changedToTime, child.toTime, child.isNew)
 
         setChangeTimeButton(myView, R.id.fromSet, child.changedFromTime, object : OnTimeChangedListener {
             override fun onTimeChanged(newTime: String) {
