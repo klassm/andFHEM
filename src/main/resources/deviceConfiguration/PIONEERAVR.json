@@ -1,0 +1,23 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "sensorDevice": false,
+  "states": [
+    {
+      "key": "input",
+      "desc": "input"
+    },
+    {
+      "key": "listeningMode",
+      "desc": "mode"
+    },
+    {
+      "key": "volume",
+      "desc": "musicVolume",
+      "showInOverview": true
+    },
+    {
+      "key": "mute",
+      "desc": "musicMute"
+    }
+  ]
+}

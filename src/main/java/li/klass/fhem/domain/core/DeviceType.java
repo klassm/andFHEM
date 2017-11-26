@@ -31,7 +31,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
-import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
@@ -52,7 +51,6 @@ import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.OwDevice;
-import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PioneerAvrZoneDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SBPlayerDevice;
@@ -77,7 +75,6 @@ public enum DeviceType {
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
-    PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     PIONEERAVRZONE("PIONEERAVRZONE", PioneerAvrZoneDevice.class, new PioneerAvrZoneDeviceAdapter()),
     SB_PLAYER("SB_PLAYER", SBPlayerDevice.class, new SBPlayerDeviceAdapter()),
     HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
