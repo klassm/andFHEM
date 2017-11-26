@@ -1,28 +1,34 @@
 {
   "sensorDevice": true,
   "defaultGroup": "HEATING",
-  "sanitise": {
-    "thermostatThresholdOn": {
-      "append": "°C",
-      "extract": "double"
+  "attributes": [
+    {
+      "key": "thermostatThresholdOn",
+      "desc": "thermostatThresholdOn"
     },
-    "thermostatThresholdOff": {
-      "append": "°C",
-      "extract": "double"
+    {
+      "key": "thermostatThresholdOff",
+      "desc": "thermostatThresholdOff"
     },
-    "valveThresholdOn": {
-      "append": "%"
+    {
+      "key": "valveThresholdOff",
+      "desc": "valveThresholdOff"
     },
-    "valveThresholdOff": {
-      "append": "%"
+    {
+      "key": "valveThresholdOn",
+      "desc": "valveThresholdOn"
     },
-    "ecoTemperatureOn": {
-      "append": "°C",
-      "extract": "double"
+    {
+      "key": "ecoTemperatureOff",
+      "desc": "ecoThresholdOff"
     },
-    "ecoTemperatureOff": {
-      "append": "°C",
-      "extract": "double"
+    {
+      "key": "ecoTemperatureOn",
+      "desc": "ecoThresholdOn"
+    },
+    {
+      "key": "mode",
+      "desc": "mode"
     }
-  }
+  ]
 }

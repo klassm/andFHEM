@@ -47,7 +47,6 @@ import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.domain.HCSDevice;
 import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
@@ -64,7 +63,6 @@ public enum DeviceType {
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     AT("at", AtDevice.class, null),
-    HCS("HCS", HCSDevice.class, new ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow()),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),

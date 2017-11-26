@@ -5,3 +5,4 @@
 * Migrate more devices as generic device
   * PIONEERAVR
   * PIONEERAVRZONE
+  * HCS

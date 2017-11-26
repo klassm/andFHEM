@@ -34,27 +34,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HCSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        HCSDevice device = getDefaultDevice(HCSDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("demand");
 
-        assertThat(device.getEcoTemperatureOff()).isEqualTo("23.0 (°C)");
-        assertThat(device.getEcoTemperatureOn()).isEqualTo("12.0 (°C)");
-        assertThat(device.getThermostatThresholdOff()).isEqualTo("0.5 (°C)");
-        assertThat(device.getThermostatThresholdOn()).isEqualTo("0.5 (°C)");
-        assertThat(device.getValveThresholdOff()).isEqualTo("25 (%)");
-        assertThat(device.getValveThresholdOn()).isEqualTo("30 (%)");
+        assertThat(attributeValueFor(device, "ecoTemperatureOff")).isEqualTo("23.0 (°C)");
+        assertThat(attributeValueFor(device, "ecoTemperatureOn")).isEqualTo("12.0 (°C)");
+        assertThat(attributeValueFor(device, "thermostatThresholdOff")).isEqualTo("0.5 (°C)");
+        assertThat(attributeValueFor(device, "thermostatThresholdOn")).isEqualTo("0.5 (°C)");
+        assertThat(attributeValueFor(device, "valveThresholdOff")).isEqualTo("25 (%)");
+        assertThat(attributeValueFor(device, "valveThresholdOn")).isEqualTo("30 (%)");
 
-        assertThat(device.getMode()).isEqualTo("valve");
-
-        assertThat(device.getNumberOfDemandDevices()).isEqualTo(2);
-        assertThat(device.getNumberOfExcludedDevices()).isEqualTo(3);
-        assertThat(device.getNumberOfIdleDevices()).isEqualTo(3);
-
-        assertThat(device.getCommaSeparatedDemandDevices()).isEqualTo("FHT_Wohnzimmer, FHT_Wohnzimmer1");
+        assertThat(attributeValueFor(device, "mode")).isEqualTo("valve");
     }
 
     @Override

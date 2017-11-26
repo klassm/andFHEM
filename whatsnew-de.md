@@ -5,3 +5,4 @@
 * Migriere weitere Geräte als generische Geräte
   * PIONEERAVR
   * PIONEERAVRZONE
+  * HCS
