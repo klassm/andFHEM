@@ -28,6 +28,7 @@ import android.content.Context
 import com.google.common.base.Strings
 import li.klass.fhem.fcm.receiver.data.FcmMessageData
 import li.klass.fhem.fcm.receiver.data.FcmNotifyData
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class FcmService @Inject constructor(
         private val fcmDecryptor: FcmDecryptor
 ) {
 
-    fun onMessageReceived(data: Map<String, String>, context: Context) {
+    fun onMessageReceived(data: Map<String, String>, sentTime: DateTime, context: Context) {
         if (!data.containsKey("type") || !data.containsKey("source")) {
             LOG.info("onMessage - received GCM message, but doesn't fit required fields")
             return
@@ -47,9 +48,9 @@ class FcmService @Inject constructor(
 
         val type = decrypted["type"]
         if ("message".equals(type!!, ignoreCase = true)) {
-            fcmMessageHandler.handleMessage(FcmMessageData(decrypted), context)
+            fcmMessageHandler.handleMessage(FcmMessageData(decrypted, sentTime), context)
         } else if ("notify".equals(type, ignoreCase = true) || Strings.isNullOrEmpty(type)) {
-            fcmNotifyHandler.handleNotify(FcmNotifyData(decrypted), context)
+            fcmNotifyHandler.handleNotify(FcmNotifyData(decrypted, sentTime), context)
         } else {
             LOG.error("onMessage - unknown type: {}", type)
         }

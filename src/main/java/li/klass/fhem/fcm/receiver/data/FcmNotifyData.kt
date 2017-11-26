@@ -24,7 +24,9 @@
 
 package li.klass.fhem.fcm.receiver.data
 
-class FcmNotifyData(data: Map<String, String>) : FcmData(data) {
+import org.joda.time.DateTime
+
+class FcmNotifyData(data: Map<String, String>, val sentTime: DateTime) : FcmData(data) {
     val changes get() = data["changes"]
     val deviceName get() = data["deviceName"]
 }

@@ -27,6 +27,7 @@ package li.klass.fhem.fcm.receiver
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import li.klass.fhem.AndFHEMApplication
+import org.joda.time.DateTime
 import javax.inject.Inject
 
 class FcmIntentService : FirebaseMessagingService() {
@@ -42,7 +43,8 @@ class FcmIntentService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage?) {
         super.onMessageReceived(message)
 
+        val sentTime = message?.sentTime?.let { DateTime(it) } ?: DateTime.now()
         val data = message?.data?.toMap() ?: return
-        fcmService.onMessageReceived(data, this)
+        fcmService.onMessageReceived(data, sentTime, this)
     }
 }

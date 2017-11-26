@@ -24,7 +24,9 @@
 
 package li.klass.fhem.fcm.receiver.data
 
-class FcmMessageData(data: Map<String, String>) : FcmData(data) {
+import org.joda.time.DateTime
+
+class FcmMessageData(data: Map<String, String>, val sentTime: DateTime) : FcmData(data) {
     val title get() = data["contentTitle"]
     val text get() = data["contentText"]
     val ticker get() = data["tickerText"]

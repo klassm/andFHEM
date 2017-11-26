@@ -53,7 +53,7 @@ class FcmNotifyHandler @Inject constructor(
         val changes = extractChanges(deviceName, changesText, context)
         deviceListService.parseReceivedDeviceStateMap(deviceName, changes)
 
-        fcmHistoryService.addChanges(deviceName, changes)
+        fcmHistoryService.addChanges(deviceName, changes, data.sentTime)
         updateWidgets()
         updateUI(context)
         showNotification(deviceName, changes, data.shouldVibrate(), context)

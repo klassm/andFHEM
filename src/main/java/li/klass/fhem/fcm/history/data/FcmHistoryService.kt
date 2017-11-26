@@ -7,7 +7,6 @@ import li.klass.fhem.fcm.history.data.message.FcmHistoryMessageEntity
 import li.klass.fhem.util.DateTimeProvider
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
-import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import org.json.JSONArray
 import org.json.JSONObject
@@ -18,10 +17,9 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                                             private val fcmHistoryMessageDao: FcmHistoryMessageDao,
                                             private val fcmHistoryChangeDao: FcmHistoryChangeDao) {
     fun addMessage(message: ReceivedMessage) {
-        val now = LocalDateTime.now()
         val id = fcmHistoryMessageDao.insertMessage(FcmHistoryMessageEntity(
-                datetime = now.toString(datetimeFormat),
-                date = dateFormat.print(now),
+                datetime = message.sentTime.toString(datetimeFormat),
+                date = dateFormat.print(message.sentTime),
                 text = message.contentText,
                 ticker = message.tickerText,
                 title = message.contentTitle
@@ -41,15 +39,13 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                 }
     }
 
-    fun addChanges(device: String, changes: Map<String, String>) {
+    fun addChanges(device: String, changes: Map<String, String>, sentTime: DateTime) {
         val changesAsObjects = changes.entries.map { val o = JSONObject(); o.put(it.key, it.value); o }
         val changesAsString = JSONArray(changesAsObjects).toString()
 
-        val now = LocalDateTime.now()
-
         val id = fcmHistoryChangeDao.insertChange(FcmHistoryChangeEntity(
-                datetime = now.toString(datetimeFormat),
-                date = dateFormat.print(now),
+                datetime = sentTime.toString(datetimeFormat),
+                date = dateFormat.print(sentTime),
                 device = device,
                 changes = changesAsString
         ))
@@ -100,7 +96,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
 
     class ReceivedMessage(val contentTitle: String,
                           val contentText: String,
-                          val tickerText: String)
+                          val tickerText: String,
+                          val sentTime: DateTime)
 
     class SavedMessage(
             val time: DateTime,

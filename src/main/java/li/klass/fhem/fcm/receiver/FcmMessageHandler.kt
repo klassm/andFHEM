@@ -48,7 +48,10 @@ class FcmMessageHandler @Inject constructor(
 
         NotificationUtil.notify(context, notifyId, pendingIntent, data.title, data.text, data.ticker, data.shouldVibrate())
         fcmHistoryService.addMessage(FcmHistoryService.ReceivedMessage(
-                data.title ?: "", data.text ?: "", data.ticker ?: ""
+                contentTitle = data.title ?: "",
+                contentText = data.text ?: "",
+                tickerText = data.ticker ?: "",
+                sentTime = data.sentTime
         ))
     }
 }
