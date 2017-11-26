@@ -28,9 +28,11 @@
     }
   ],
   "sanitise": {
-    "taupunkttemp": {
-      "append": "°C",
-      "extract": "double"
+    "deviceValues": {
+      "taupunkttemp": {
+        "append": "°C",
+        "extract": "double"
+      }
     }
   }
 }

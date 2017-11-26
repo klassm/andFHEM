@@ -25,13 +25,15 @@
     }
   ],
   "sanitise": {
-    "Zählerstand-Bezug-Total": {
-      "append": "kWh",
-      "extract": "double"
-    },
-    "Momentanleistung": {
-      "append": "W",
-      "extract": "double"
+    "deviceValues": {
+      "Zählerstand-Bezug-Total": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "Momentanleistung": {
+        "append": "W",
+        "extract": "double"
+      }
     }
   }
 }

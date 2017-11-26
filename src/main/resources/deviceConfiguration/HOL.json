@@ -23,8 +23,10 @@
     }
   ],
   "sanitise": {
-    "currentSwitchTime": {
-      "append": "s"
+    "deviceValues": {
+      "currentSwitchTime": {
+        "append": "s"
+      }
     }
   }
 }

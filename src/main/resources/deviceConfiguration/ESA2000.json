@@ -28,30 +28,32 @@
     }
   ],
   "sanitise": {
-    "actual": {
-      "append": "kW",
-      "extract": "double",
-      "extractDigits": 4
-    },
-    "year": {
-      "extract": "double",
-      "extractDigits": 2,
-      "append": "kWh"
-    },
-    "month": {
-      "extract": "double",
-      "extractDigits": 2,
-      "append": "kWh"
-    },
-    "day": {
-      "extract": "double",
-      "extractDigits": 2,
-      "append": "kWh"
-    },
-    "day_last": {
-      "extract": "double",
-      "extractDigits": 2,
-      "append": "kWh"
+    "deviceValues": {
+      "actual": {
+        "append": "kW",
+        "extract": "double",
+        "extractDigits": 4
+      },
+      "year": {
+        "extract": "double",
+        "extractDigits": 2,
+        "append": "kWh"
+      },
+      "month": {
+        "extract": "double",
+        "extractDigits": 2,
+        "append": "kWh"
+      },
+      "day": {
+        "extract": "double",
+        "extractDigits": 2,
+        "append": "kWh"
+      },
+      "day_last": {
+        "extract": "double",
+        "extractDigits": 2,
+        "append": "kWh"
+      }
     }
   }
 }

@@ -2,15 +2,22 @@
   "sensorDevice": true,
   "defaultGroup": "WEATHER",
   "sanitise": {
-    "temp_c": {
-      "append": "°C",
-      "extract": "double"
-    },
-    "wind_chill": {
-      "append": "°C"
-    },
-    "wind_condition": {
-      "replace": "Wind: "
+    "deviceValues": {
+      "temp_c": {
+        "append": "°C",
+        "extract": "double"
+      },
+      "wind_chill": {
+        "append": "°C"
+      },
+      "wind_condition": {
+        "replaceAll": [
+          {
+            "search": "Wind: ",
+            "replaceBy": ""
+          }
+        ]
+      }
     }
   }
 }

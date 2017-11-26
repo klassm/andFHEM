@@ -1,4 +1,5 @@
 {
+  "defaultGroup": "UNKNOWN",
   "states": [
     {
       "key": "state",
@@ -30,52 +31,54 @@
     }
   ],
   "sanitise": {
-    "temperature": {
-      "append": "°C",
-      "extract": "double"
-    },
-    "humidity": {
-      "append": "%",
-      "extract": "double"
-    },
-    "dewpoint": {
-      "append": "°C",
-      "extract": "double"
-    },
-    "measured-temp": {
-      "append": "°C",
-      "extract": "double"
-    },
-    "wind": {
-      "append": "km/h",
-      "extract": "double"
-    },
-    "pressure": {
-      "append": "hPa",
-      "extract": "double"
-    },
-    "pressure-nn": {
-      "append": "hPa",
-      "extract": "double"
-    },
-    "wind_speed": {
-      "append": "km/h",
-      "extract": "double"
-    },
-    "wind_avspeed": {
-      "append": "km/h",
-      "extract": "double"
-    },
-    "co2": {
-      "append": "ppm"
-    },
-    "voltage": {
-      "append": "V",
-      "extract": "double"
-    },
-    "luminance": {
-      "append": "Lux",
-      "extract": "double"
+    "deviceValues": {
+      "temperature": {
+        "append": "°C",
+        "extract": "double"
+      },
+      "humidity": {
+        "append": "%",
+        "extract": "double"
+      },
+      "dewpoint": {
+        "append": "°C",
+        "extract": "double"
+      },
+      "measured-temp": {
+        "append": "°C",
+        "extract": "double"
+      },
+      "wind": {
+        "append": "km/h",
+        "extract": "double"
+      },
+      "pressure": {
+        "append": "hPa",
+        "extract": "double"
+      },
+      "pressure-nn": {
+        "append": "hPa",
+        "extract": "double"
+      },
+      "wind_speed": {
+        "append": "km/h",
+        "extract": "double"
+      },
+      "wind_avspeed": {
+        "append": "km/h",
+        "extract": "double"
+      },
+      "co2": {
+        "append": "ppm"
+      },
+      "voltage": {
+        "append": "V",
+        "extract": "double"
+      },
+      "luminance": {
+        "append": "Lux",
+        "extract": "double"
+      }
     }
   }
 }

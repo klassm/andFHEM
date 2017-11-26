@@ -1,13 +1,23 @@
 {
   "defaultGroup": "SWITCH",
   "sanitise": {
-    "STATE": {
-      "replace": "ok",
-      "replaceBy": ""
-    },
-    "sets": {
-      "replace": "RGB",
-      "replaceBy": "RGB:colorpicker,RGB"
+    "deviceValues": {
+      "STATE": {
+        "replaceAll": [
+          {
+            "search": "ok",
+            "replaceBy": ""
+          }
+        ]
+      },
+      "sets": {
+        "replaceAll": [
+          {
+            "search": "RGB",
+            "replaceBy": "RGB:colorpicker,RGB"
+          }
+        ]
+      }
     }
   }
 }

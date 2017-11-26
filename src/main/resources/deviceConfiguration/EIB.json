@@ -2,9 +2,15 @@
   "sensorDevice": false,
   "defaultGroup": "SWITCH",
   "sanitise": {
-    "STATE": {
-      "replace": "([0-9\\.]+) ([^0-9]+)",
-      "replaceBy": "$1 ($2)"
+    "deviceValues": {
+      "STATE": {
+        "replaceAll": [
+          {
+            "search": "([0-9\\.]+) ([^0-9]+)",
+            "replaceBy": "$1 ($2)"
+          }
+        ]
+      }
     }
   }
 }

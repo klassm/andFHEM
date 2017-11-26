@@ -63,11 +63,13 @@
     }
   ],
   "sanitise": {
-    "rain_total": {
-      "append": "l/m²"
-    },
-    "windchill": {
-      "append": "°C"
+    "deviceValues": {
+      "rain_total": {
+        "append": "l/m²"
+      },
+      "windchill": {
+        "append": "°C"
+      }
     }
   }
 }

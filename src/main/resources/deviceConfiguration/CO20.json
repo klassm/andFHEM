@@ -14,9 +14,11 @@
     }
   ],
   "sanitise": {
-    "voc": {
-      "extract": "int",
-      "append": "ppm"
+    "deviceValues": {
+      "voc": {
+        "extract": "int",
+        "append": "ppm"
+      }
     }
   }
 }

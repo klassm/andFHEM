@@ -119,7 +119,7 @@ public abstract class FhemDevice extends HookedDevice {
         this.definition = getDefinition();
 
         if (deviceConfiguration.isPresent()) {
-            deviceFunctionality = deviceConfiguration.get().getDefaultGroup().getCaptionText(context);
+            deviceFunctionality = DeviceFunctionality.valueOf(deviceConfiguration.get().getDefaultGroup()).getCaptionText(context);
         } else {
             deviceFunctionality = DeviceFunctionality.UNKNOWN.getCaptionText(context);
         }

@@ -1,4 +1,5 @@
 {
+  "defaultGroup": "UNKNOWN",
   "sensorDevice": false,
   "states": [
     {
@@ -7,9 +8,15 @@
     }
   ],
   "sanitise": {
-    "sets": {
-      "replace": "desired",
-      "replaceBy": "desired:slider,4,1,30"
+    "deviceValues": {
+      "sets": {
+        "replaceAll": [
+          {
+            "search": "desired",
+            "replaceBy": "desired:slider,4,1,30"
+          }
+        ]
+      }
     }
   }
 }

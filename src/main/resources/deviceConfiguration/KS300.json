@@ -53,9 +53,11 @@
     }
   ],
   "sanitise": {
-    "rain": {
-      "append": "l/m²",
-      "extract": "double"
+    "deviceValues": {
+      "rain": {
+        "append": "l/m²",
+        "extract": "double"
+      }
     }
   }
 }

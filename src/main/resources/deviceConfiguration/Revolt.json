@@ -25,21 +25,23 @@
     }
   ],
   "sanitise": {
-    "power": {
-      "append": "W",
-      "extract": "double"
-    },
-    "energy": {
-      "append": "kWh",
-      "extract": "double"
-    },
-    "voltage": {
-      "append": "V",
-      "extract": "double"
-    },
-    "frequency": {
-      "append": "Hz",
-      "extract": "double"
+    "deviceValues": {
+      "power": {
+        "append": "W",
+        "extract": "double"
+      },
+      "energy": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "voltage": {
+        "append": "V",
+        "extract": "double"
+      },
+      "frequency": {
+        "append": "Hz",
+        "extract": "double"
+      }
     }
   }
 }

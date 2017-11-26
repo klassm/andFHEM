@@ -21,17 +21,19 @@
     }
   ],
   "sanitise": {
-    "cum_kWh": {
-      "append": "kWh"
-    },
-    "energy": {
-      "append": "Wh"
-    },
-    "power": {
-      "append": "W"
-    },
-    "price_CF": {
-      "append": "EUR/W"
+    "deviceValues": {
+      "cum_kWh": {
+        "append": "kWh"
+      },
+      "energy": {
+        "append": "Wh"
+      },
+      "power": {
+        "append": "W"
+      },
+      "price_CF": {
+        "append": "EUR/W"
+      }
     }
   }
 }

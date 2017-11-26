@@ -28,21 +28,23 @@
     }
   ],
   "sanitise": {
-    "consumption": {
-      "append": "kWh",
-      "extract": "double"
-    },
-    "power": {
-      "append": "W",
-      "extract": "int"
-    },
-    "Euro": {
-      "append": "€",
-      "extract": "double"
-    },
-    "STATE": {
-      "append": "W",
-      "extract": "int"
+    "deviceValues": {
+      "consumption": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "power": {
+        "append": "W",
+        "extract": "int"
+      },
+      "Euro": {
+        "append": "€",
+        "extract": "double"
+      },
+      "STATE": {
+        "append": "W",
+        "extract": "int"
+      }
     }
   }
 }

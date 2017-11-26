@@ -49,32 +49,34 @@
     }
   ],
   "sanitise": {
-    "fatFreeMass": {
-      "extract": "double",
-      "append": "kg"
-    },
-    "fatMassWeight": {
-      "extract": "double",
-      "append": "kg"
-    },
-    "fatRatio": {
-      "extract": "double",
-      "append": "%"
-    },
-    "height": {
-      "extract": "double",
-      "append": "m"
-    },
-    "weight": {
-      "extract": "double",
-      "append": "kg"
-    },
-    "batteryLevel": {
-      "extract": "int",
-      "append": "%"
-    },
-    "heartPulse": {
-      "extract": "int"
+    "deviceValues": {
+      "fatFreeMass": {
+        "extract": "double",
+        "append": "kg"
+      },
+      "fatMassWeight": {
+        "extract": "double",
+        "append": "kg"
+      },
+      "fatRatio": {
+        "extract": "double",
+        "append": "%"
+      },
+      "height": {
+        "extract": "double",
+        "append": "m"
+      },
+      "weight": {
+        "extract": "double",
+        "append": "kg"
+      },
+      "batteryLevel": {
+        "extract": "int",
+        "append": "%"
+      },
+      "heartPulse": {
+        "extract": "int"
+      }
     }
   }
 }

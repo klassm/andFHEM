@@ -35,6 +35,7 @@
     <string name="humidity">Luftfeuchtigkeit</string>
     <string name="actuator">Regler</string>
     <string name="state">Zustand</string>
+    <string name="reportedState">Gemeldeter Zustand</string>
     <string name="battery">Batterie</string>
     <string name="batteryVoltage">Batterie-Spannung</string>
     <string name="measured">Messzeit</string>

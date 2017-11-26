@@ -3,18 +3,22 @@
   "states": [
     {
       "key": "temperature",
+      "desc": "temperature",
       "showInOverview": true
     },
     {
       "key": "humidity",
+      "desc": "humidity",
       "showInOverview": true
     },
     {
       "key": "luminance",
+      "desc": "brightness",
       "showInOverview": true
     },
     {
-      "key": "reportedState"
+      "key": "reportedState",
+      "desc": "reportedState"
     },
     {
       "key": "power",
@@ -38,13 +42,15 @@
     }
   ],
   "sanitise": {
-    "power": {
-      "append": "W",
-      "extract": "double"
-    },
-    "energy": {
-      "append": "kWh",
-      "extract": "double"
+    "deviceValues": {
+      "power": {
+        "append": "W",
+        "extract": "double"
+      },
+      "energy": {
+        "append": "kWh",
+        "extract": "double"
+      }
     }
   }
 }

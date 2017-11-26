@@ -80,7 +80,7 @@ public class GroupProvider {
         } else if (OnOffBehavior.Companion.supports(device)) {
             functionality = DeviceFunctionality.SWITCH;
         } else if (device.getDeviceConfiguration().isPresent()) {
-            functionality = device.getDeviceConfiguration().get().getDefaultGroup();
+            functionality = DeviceFunctionality.valueOf(device.getDeviceConfiguration().get().getDefaultGroup());
         }
 
         return functionality.getCaptionText(context);

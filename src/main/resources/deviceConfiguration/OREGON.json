@@ -64,15 +64,17 @@
     }
   ],
   "sanitise": {
-    "rain_rate": {
-      "append": "mm/h"
-    },
-    "rain_total": {
-      "append": "l/m²",
-      "extract": "double"
-    },
-    "battery": {
-      "append": "%"
+    "deviceValues": {
+      "rain_rate": {
+        "append": "mm/h"
+      },
+      "rain_total": {
+        "append": "l/m²",
+        "extract": "double"
+      },
+      "battery": {
+        "append": "%"
+      }
     }
   }
 }

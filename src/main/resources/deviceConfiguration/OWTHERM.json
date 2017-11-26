@@ -32,17 +32,19 @@
     }
   ],
   "sanitise": {
-    "temperature": {
-      "extract": "double",
-      "append": "°C"
-    },
-    "tempLow": {
-      "extract": "double",
-      "append": "°C"
-    },
-    "tempHigh": {
-      "extract": "double",
-      "append": "°C"
+    "deviceValues": {
+      "temperature": {
+        "extract": "double",
+        "append": "°C"
+      },
+      "tempLow": {
+        "extract": "double",
+        "append": "°C"
+      },
+      "tempHigh": {
+        "extract": "double",
+        "append": "°C"
+      }
     }
   }
 }

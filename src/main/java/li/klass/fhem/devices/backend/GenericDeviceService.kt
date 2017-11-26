@@ -35,10 +35,8 @@ import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
 import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.intent.RoomListUpdateIntentService
-import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
-import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration.TO_DELAY_FOR_UPDATE_AFTER_COMMAND
 import li.klass.fhem.util.StateToSet
 import li.klass.fhem.util.Tasker
 import javax.inject.Inject
@@ -46,42 +44,32 @@ import javax.inject.Singleton
 
 @Singleton
 class GenericDeviceService @Inject constructor(
-        private val commandExecutionService: CommandExecutionService,
-        private val deviceListUpdateService: DeviceListUpdateService
+        private val commandExecutionService: CommandExecutionService
 ) {
 
     @JvmOverloads
     fun setState(device: FhemDevice, targetState: String, connectionId: Optional<String>, context: Context, invokeUpdate: Boolean = true) {
         val toSet = device.formatTargetState(targetState)
 
-        commandExecutionService.executeSafely(Command("set " + device.name + " " + toSet, connectionId), context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId))
+        commandExecutionService.executeSafely(Command("set ${device.name} $toSet", connectionId), context, invokePostCommandActions(device, context, invokeUpdate, "state", toSet, connectionId))
 
         device.xmlListDevice.setState("STATE", targetState)
         device.xmlListDevice.setInternal("STATE", targetState)
     }
 
     fun setSubState(device: FhemDevice, subStateName: String, value: String, connectionId: Optional<String>, context: Context, invokeDeviceUpdate: Boolean) {
-        var stateName = subStateName
-        var myValue = value
-        if (device.deviceConfiguration.isPresent) {
-            val configuration = device.deviceConfiguration.get()
-            val toReplace = configuration.getCommandReplaceFor(stateName)
-            for ((key, value1) in toReplace) {
-                myValue = myValue
-                        .replace(("([ ,])" + key).toRegex(), "$1$value1")
-                        .replace(("^" + key).toRegex(), value1)
-            }
-            val subStateReplaceForSubState = configuration.getSubStateReplaceFor(stateName)
-            if (subStateReplaceForSubState.isPresent) {
-                stateName = subStateReplaceForSubState.get()
-            }
+        val commandReplacements = device.deviceConfiguration.orNull()
+                ?.stateConfigFor(subStateName)
+                ?.beforeCommandReplacement ?: emptySet()
 
-            device.xmlListDevice.setState(stateName, myValue)
-        }
+        val valueToSet = commandReplacements.fold(value, { v: String, replacement ->
+            v.replace(("([ ,])" + replacement.search).toRegex(), "$1${replacement.replaceBy}")
+                    .replace(("^" + replacement.search).toRegex(), replacement.replaceBy)
+        })
 
-        val command = Command("set " + device.name + " " + stateName + " " + myValue, connectionId)
+        val command = Command("set " + device.name + " " + subStateName + " " + valueToSet, connectionId)
         commandExecutionService.executeSafely(command, context,
-                invokePostCommandActions(device, context, invokeDeviceUpdate, stateName, myValue, connectionId))
+                invokePostCommandActions(device, context, invokeDeviceUpdate, subStateName, valueToSet, connectionId))
     }
 
     private fun invokePostCommandActions(device: FhemDevice, context: Context, invokeUpdate: Boolean, stateName: String, toSet: String, connectionId: Optional<String>): CommandExecutionService.ResultListener {
@@ -121,14 +109,14 @@ class GenericDeviceService @Inject constructor(
                     .joinToString(separator = " ") { it.key + " " + it.value }
 
     fun update(device: FhemDevice, context: Context, connectionId: Optional<String>) {
-        val delay = device.deviceConfiguration.transform(TO_DELAY_FOR_UPDATE_AFTER_COMMAND).or(0)
+        val delay = device.deviceConfiguration.orNull()?.delayForUpdateAfterCommand ?: 0
         val updateIntent = Intent(DO_REMOTE_UPDATE)
                 .putExtra(DEVICE_NAME, device.name)
                 .putExtra(CONNECTION_ID, connectionId.orNull())
                 .setClass(context, RoomListUpdateIntentService::class.java)
         if (delay > 0) {
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.set(AlarmManager.RTC, (delay!! * 1000).toLong(), PendingIntent.getService(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+            alarmManager.set(AlarmManager.RTC, (delay * 1000).toLong(), PendingIntent.getService(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT))
         } else {
             context.startService(updateIntent)
         }

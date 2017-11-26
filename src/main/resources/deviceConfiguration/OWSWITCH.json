@@ -5,56 +5,54 @@
     {
       "key": "A",
       "desc": "A",
-      "showInOverview": true,
-      "subStateReplace": "output A"
+      "showInOverview": true
     },
     {
       "key": "B",
       "desc": "B",
-      "showInOverview": true,
-      "subStateReplace": "output B"
+      "showInOverview": true
     },
     {
       "key": "C",
       "desc": "C",
-      "showInOverview": true,
-      "subStateReplace": "output C"
+      "showInOverview": true
     },
     {
       "key": "D",
       "desc": "D",
-      "showInOverview": true,
-      "subStateReplace": "output D"
+      "showInOverview": true
     },
     {
       "key": "E",
       "desc": "E",
-      "showInOverview": true,
-      "subStateReplace": "output E"
+      "showInOverview": true
     },
     {
       "key": "F",
       "desc": "F",
-      "showInOverview": true,
-      "subStateReplace": "output F"
+      "showInOverview": true
     },
     {
       "key": "G",
       "desc": "G",
-      "showInOverview": true,
-      "subStateReplace": "output G"
+      "showInOverview": true
     },
     {
       "key": "H",
       "desc": "H",
-      "showInOverview": true,
-      "subStateReplace": "output H"
+      "showInOverview": true
     }
   ],
   "sanitise": {
-    "sets": {
-      "replace": ".*",
-      "replaceBy": "A:on,off B:on,off C:on,off D:on,off E:on,off F:on,off G:on,off H:on,off"
+    "deviceValues": {
+      "sets": {
+        "replaceAll": [
+          {
+            "search": ".*",
+            "replaceBy": "A:on,off B:on,off C:on,off D:on,off E:on,off F:on,off G:on,off H:on,off"
+          }
+        ]
+      }
     }
   }
 }

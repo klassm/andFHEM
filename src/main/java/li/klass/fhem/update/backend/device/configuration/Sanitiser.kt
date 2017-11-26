@@ -25,9 +25,12 @@
 package li.klass.fhem.update.backend.device.configuration
 
 import com.google.common.base.Strings.isNullOrEmpty
+import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseConfiguration
+import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseGeneral
+import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseToAdd
+import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseValue
 import li.klass.fhem.update.backend.xmllist.DeviceNode
-import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.ATTR
-import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.STATE
+import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.*
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ValueDescriptionUtil
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble
@@ -35,7 +38,6 @@ import li.klass.fhem.util.ValueExtractUtil.extractLeadingInt
 import org.apache.commons.lang3.StringUtils
 import org.joda.time.DateTime
 import org.json.JSONException
-import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -46,19 +48,18 @@ class Sanitiser @Inject constructor(
 ) {
     fun sanitise(deviceType: String, deviceNode: DeviceNode): DeviceNode {
         return try {
-            val deviceOptions = optionsFor(deviceType)
-            sanitise(deviceNode, deviceOptions)
+            val sanitiseConfiguration = sanitiseConfigurationFor(deviceType) ?: return deviceNode
+            sanitise(deviceNode, sanitiseConfiguration)
         } catch (e: Exception) {
             LOGGER.error("cannot sanitise {}", deviceNode)
             deviceNode
         }
-
     }
 
     fun sanitise(deviceType: String, xmlListDevice: XmlListDevice) {
         try {
-            val typeOptions = optionsFor(deviceType) ?: return
-            val generalOptions = typeOptions.optJSONObject("__general__") ?: return
+            val typeOptions = sanitiseConfigurationFor(deviceType) ?: return
+            val generalOptions = typeOptions.general ?: return
 
             handleGeneral(xmlListDevice, generalOptions)
         } catch (e: JSONException) {
@@ -66,127 +67,76 @@ class Sanitiser @Inject constructor(
         }
     }
 
-    @Throws(JSONException::class)
-    private fun handleGeneral(xmlListDevice: XmlListDevice, generalOptions: JSONObject) {
-        handleGeneralAttributesIfNotPresent(generalOptions, xmlListDevice)
-        handleGeneralStatesIfNotPresent(generalOptions, xmlListDevice)
+    private fun handleGeneral(xmlListDevice: XmlListDevice, generalOptions: SanitiseGeneral) {
+        addValueIfNotPresent(generalOptions.addAttributesIfNotPresent, ATTR, xmlListDevice.attributes)
+        addValueIfNotPresent(generalOptions.addStatesIfNotPresent, STATE, xmlListDevice.states)
+        addValueIfNotPresent(generalOptions.addInternalsIfNotPresent, INT, xmlListDevice.internals)
         handleGeneralAttributeAddIfModelDoesNotMatch(xmlListDevice, generalOptions)
     }
 
-    @Throws(JSONException::class)
-    private fun handleGeneralAttributeAddIfModelDoesNotMatch(xmlListDevice: XmlListDevice, generalOptions: JSONObject) {
-        val config = generalOptions.optJSONObject("addAttributeIfModelDoesNotMatch") ?: return
+    private fun handleGeneralAttributeAddIfModelDoesNotMatch(xmlListDevice: XmlListDevice, generalOptions: SanitiseGeneral) {
+        val config = generalOptions.addAttributeIfModelDoesNotMatch ?: return
 
-        val models = config.getJSONArray("models")
+        val models = config.models
         val model = xmlListDevice.attributes["model"]?.value ?: ""
 
-        if ((0 until models.length())
-                .map { models.getString(it) }
-                .filter { it != null }
-                .any { it.equals(model, ignoreCase = true) }) {
+        if (models.any { it.equals(model, ignoreCase = true) }) {
             return
         }
-        xmlListDevice.setAttribute(config.getString("key"), config.getString("value"))
+        xmlListDevice.setAttribute(config.key, config.value)
     }
 
-    @Throws(JSONException::class)
-    private fun handleGeneralAttributesIfNotPresent(generalOptions: JSONObject, xmlListDevice: XmlListDevice) {
-        val attributes = generalOptions.optJSONArray("addAttributesIfNotPresent") ?: return
-
-        for (i in 0 until attributes.length()) {
-            val attribute = attributes.getJSONObject(i)
-            val key = attribute.getString("key")
-            val value = attribute.optString("value")
-            if (!xmlListDevice.attributes.containsKey(key)) {
-                xmlListDevice.attributes.put(key, DeviceNode(ATTR, key, value, null as DateTime?))
-            }
-        }
+    private fun addValueIfNotPresent(options: Set<SanitiseToAdd>, nodeType: DeviceNode.DeviceNodeType, deviceValues: MutableMap<String, DeviceNode>) {
+        options
+                .filter { !deviceValues.containsKey(it.key) }
+                .forEach { config ->
+                    val toSet = config.value ?: config.withValueOf?.let { deviceValues[it]?.value } ?: ""
+                    deviceValues.put(config.key, DeviceNode(nodeType, config.key, toSet, null as DateTime?))
+                }
     }
 
-    @Throws(JSONException::class)
-    private fun handleGeneralStatesIfNotPresent(generalOptions: JSONObject, xmlListDevice: XmlListDevice) {
-        val states = generalOptions.optJSONArray("addStatesIfNotPresent") ?: return
-
-        for (i in 0 until states.length()) {
-            val json = states.getJSONObject(i)
-            val key = json.getString("key")
-            val value = StringUtils.trimToNull(json.optString("value"))
-            val withValueOf = json.optString("withValueOf")
-            val toSet = value ?: xmlListDevice.getState(withValueOf).or("")
-
-            if (!xmlListDevice.states.containsKey(key)) {
-                xmlListDevice.states.put(key, DeviceNode(STATE, key, toSet, null as DateTime?))
-            }
-        }
-    }
-
-    private fun sanitise(deviceNode: DeviceNode, deviceOptions: JSONObject?): DeviceNode {
-        val attributeOptions = deviceOptions!!.optJSONObject(deviceNode.key) ?: return deviceNode
+    private fun sanitise(deviceNode: DeviceNode, deviceOptions: SanitiseConfiguration): DeviceNode {
 
         val key = deviceNode.key
         var value = deviceNode.value
         val measured = deviceNode.measured
         val type = deviceNode.type
 
+        val attributeOptions = deviceOptions.values[key]
+        attributeOptions ?: return deviceNode
+
         value = value.replace("&deg;".toRegex(), "°")
 
         value = handleReplaceAll(attributeOptions, value)
-        value = handleReplace(attributeOptions, value)
         value = handleExtract(attributeOptions, value)
         value = handleAppend(attributeOptions, value)
 
         return DeviceNode(type, key, value, measured)
     }
 
-    private fun handleReplaceAll(attributeOptions: JSONObject, value: String): String {
-        var toReplace = value
-        val replaceAll = attributeOptions.optJSONArray("replaceAll")
-        if (replaceAll != null) {
-            for (i in 0 until replaceAll.length()) {
-                val conf = replaceAll.optJSONObject(i)
-                val toSearch = conf.optString("search")
-                val searchReplace = conf.optString("replace")
-
-                toReplace = toReplace.replace(toSearch.toRegex(), searchReplace)
-            }
-        }
-        return toReplace.trim { it <= ' ' }
+    private fun handleReplaceAll(attributeOptions: SanitiseValue, value: String): String {
+        return attributeOptions.replaceAll.fold(value, { acc, replacement ->
+            acc.replace(replacement.search.toRegex(), replacement.replaceBy)
+        }).trim { it <= ' ' }
     }
 
-    private fun handleReplace(attributeOptions: JSONObject, value: String): String {
-        var toReplace = value
-        val replace = attributeOptions.optString("replace")
-        var replaceBy: String? = attributeOptions.optString("replaceBy")
-        replaceBy = if (replaceBy == null) "" else replaceBy
-
-        if (!isNullOrEmpty(replace)) {
-            toReplace = toReplace.replace(replace.toRegex(), replaceBy)
-        }
-
-
-        return toReplace.trim { it <= ' ' }
+    private fun handleAppend(attributeOptions: SanitiseValue, value: String): String {
+        return StringUtils.trimToNull(attributeOptions.append)
+                ?.let { ValueDescriptionUtil.append(value, attributeOptions.append) }
+                ?: value
     }
 
-    private fun handleAppend(attributeOptions: JSONObject, value: String): String {
-        var toReplace = value
-        val append = attributeOptions.optString("append")
-        if (!isNullOrEmpty(append)) {
-            toReplace = ValueDescriptionUtil.append(toReplace, append)
-        }
-        return toReplace
-    }
-
-    private fun handleExtract(attributeOptions: JSONObject, value: String): String {
-        val extract = attributeOptions.optString("extract")
+    private fun handleExtract(attributeOptions: SanitiseValue, value: String): String {
+        val extract = attributeOptions.extract
         if (!isNullOrEmpty(extract)) {
             when (extract) {
                 "double" -> {
-                    val extractDigits = attributeOptions.optInt("extractDigits", 0)
+                    val extractDigits = attributeOptions.extractDigits ?: 0
                     var result = if (extractDigits != 0)
                         extractLeadingDouble(value, extractDigits)
                     else
                         extractLeadingDouble(value)
-                    val divFactor = attributeOptions.optInt("extractDivideBy", 0)
+                    val divFactor = attributeOptions.extractDivideBy ?: 0
                     if (divFactor != 0) {
                         result = Math.round(result / 1000.0).toDouble()
                     }
@@ -198,8 +148,11 @@ class Sanitiser @Inject constructor(
         return value
     }
 
-    private fun optionsFor(type: String): JSONObject? =
-            deviceConfigurationProvider.sanitiseConfigurationFor(type).or(JSONObject())
+    private fun sanitiseConfigurationFor(type: String): SanitiseConfiguration? {
+        val forDevice = deviceConfigurationProvider.configurationFor(type).orNull()?.sanitiseConfiguration
+        val forDefaults = deviceConfigurationProvider.configurationFor("defaults").orNull()?.sanitiseConfiguration!!
+        return forDefaults + forDevice
+    }
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(Sanitiser::class.java)

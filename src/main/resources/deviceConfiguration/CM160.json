@@ -39,21 +39,23 @@
     }
   ],
   "sanitise": {
-    "A": {
-      "extract": "double",
-      "append": "A"
-    },
-    "W": {
-      "extract": "double",
-      "append": "W"
-    },
-    "C": {
-      "extract": "double",
-      "append": "€/h"
-    },
-    "CO2": {
-      "extract": "double",
-      "append": "kg/h"
+    "deviceValues": {
+      "A": {
+        "extract": "double",
+        "append": "A"
+      },
+      "W": {
+        "extract": "double",
+        "append": "W"
+      },
+      "C": {
+        "extract": "double",
+        "append": "€/h"
+      },
+      "CO2": {
+        "extract": "double",
+        "append": "kg/h"
+      }
     }
   }
 }

@@ -17,13 +17,15 @@
     }
   ],
   "sanitise": {
-    "consumption": {
-      "append": "kWh",
-      "extract": "double"
-    },
-    "power": {
-      "append": "W",
-      "extract": "double"
+    "deviceValues": {
+      "consumption": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "power": {
+        "append": "W",
+        "extract": "double"
+      }
     }
   }
 }

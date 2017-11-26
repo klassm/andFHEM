@@ -18,9 +18,15 @@
     }
   ],
   "sanitise": {
-    "sets": {
-      "replace": "volume",
-      "replaceBy": "volume_level"
+    "deviceValues": {
+      "sets": {
+        "replaceAll": [
+          {
+            "search": "volume",
+            "replaceBy": "volume_level"
+          }
+        ]
+      }
     }
   }
 }

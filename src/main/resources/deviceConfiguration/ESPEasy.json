@@ -1,4 +1,5 @@
 {
+  "defaultGroup": "UNKNOWN",
   "sensorDevice": true,
   "showStateInOverview": true,
   "delayForUpdateAfterCommand": 2,

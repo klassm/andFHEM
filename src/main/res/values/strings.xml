@@ -35,6 +35,7 @@
     <string name="humidity">Humidity</string>
     <string name="actuator">Actuator</string>
     <string name="state">State</string>
+    <string name="reportedState">Reported State</string>
     <string name="battery">Battery</string>
     <string name="batteryVoltage">Battery voltage</string>
     <string name="measured">Measured</string>

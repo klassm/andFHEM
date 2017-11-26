@@ -34,21 +34,27 @@
     }
   ],
   "sanitise": {
-    "sets": {
-      "replace": "desired",
-      "replaceBy": "desired:slider,0,1,40"
-    },
-    "desired": {
-      "append": "°C",
-      "extract": "double"
-    },
-    "measured": {
-      "append": "°C",
-      "extract": "double"
-    },
-    "actuation": {
-      "append": "%",
-      "extract": "int"
+    "deviceValues": {
+      "sets": {
+        "replaceAll": [
+          {
+            "search": "desired",
+            "replaceBy": "desired:slider,0,1,40"
+          }
+        ]
+      },
+      "desired": {
+        "append": "°C",
+        "extract": "double"
+      },
+      "measured": {
+        "append": "°C",
+        "extract": "double"
+      },
+      "actuation": {
+        "append": "%",
+        "extract": "int"
+      }
     }
   }
 }

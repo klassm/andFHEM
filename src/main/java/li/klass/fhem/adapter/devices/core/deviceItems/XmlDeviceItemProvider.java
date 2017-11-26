@@ -44,8 +44,8 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping;
+import li.klass.fhem.update.backend.device.configuration.ViewItemConfig;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
-import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static com.google.common.collect.Sets.newHashSet;

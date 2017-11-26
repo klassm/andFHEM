@@ -76,9 +76,15 @@
     }
   ],
   "sanitise": {
-    "DEF": {
-      "replace": "([^ ]+).*",
-      "replaceBy": "$1"
+    "deviceValues": {
+      "DEF": {
+        "replaceAll": [
+          {
+            "search": "([^ ]+).*",
+            "replaceBy": "$1"
+          }
+        ]
+      }
     }
   }
 }

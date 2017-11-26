@@ -42,14 +42,14 @@ import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration;
+import li.klass.fhem.update.backend.device.configuration.ViewItemConfig;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
-import li.klass.fhem.update.backend.xmllist.ViewItemConfig;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat;
 
 public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
-    public static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
+    private static final ImmutableList<String> DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value");
     private static final ImmutableList<String> UPPER_BOUND_STATES = ImmutableList.of("on", "close", "closed");
     private static final ImmutableList<String> LOWER_BOUND_STATES = ImmutableList.of("off", "open", "opened");
     private SliderSetListEntry slider;
@@ -134,7 +134,7 @@ public class ContinuousDimmableBehavior implements DimmableTypeBehavior {
 
         Optional<DeviceConfiguration> deviceConfiguration = fhemDevice.getDeviceConfiguration();
         if (deviceConfiguration.isPresent()) {
-            Optional<ViewItemConfig> stateConfig = deviceConfiguration.get().stateConfigFor(slider.getKey());
+            Optional<ViewItemConfig> stateConfig = Optional.fromNullable(deviceConfiguration.get().stateConfigFor(slider.getKey()));
             if (stateConfig.isPresent() && stateConfig.get().isShowDelayNotificationOnSwitch()) {
                 DialogUtil.showAlertDialog(context, fhemDevice.getName(), context.getString(R.string.switchDelayNotification));
             }

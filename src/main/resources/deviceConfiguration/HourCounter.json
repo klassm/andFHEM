@@ -23,21 +23,27 @@
     }
   ],
   "sanitise": {
-    "verbrauchTagkWh": {
-      "append": "kWh",
-      "extract": "double"
-    },
-    "verbrauchGesamtEuro": {
-      "append": "€",
-      "extract": "double"
-    },
-    "verbrauchTagEuro": {
-      "append": "€",
-      "extract": "double"
-    },
-    "Zaehlerstand": {
-      "replace": "([^ ]+) ([\\w\\d³]+)",
-      "replaceBy": "$1 ($2)"
+    "deviceValues": {
+      "verbrauchTagkWh": {
+        "append": "kWh",
+        "extract": "double"
+      },
+      "verbrauchGesamtEuro": {
+        "append": "€",
+        "extract": "double"
+      },
+      "verbrauchTagEuro": {
+        "append": "€",
+        "extract": "double"
+      },
+      "Zaehlerstand": {
+        "replaceAll": [
+          {
+            "search": "([^ ]+) ([\\w\\d³]+)",
+            "replaceBy": "$1 ($2)"
+          }
+        ]
+      }
     }
   }
 }
