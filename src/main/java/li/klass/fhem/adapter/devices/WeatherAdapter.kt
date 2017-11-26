@@ -126,8 +126,6 @@ class WeatherAdapter : ExplicitOverviewDetailDeviceAdapter() {
         return weatherForecastList
     }
 
-    override fun getOverviewViewHolderClass(): Class<*>? = null
-
     override fun fillOverviewStrategies(overviewStrategies: MutableList<ViewStrategy>) {
         super.fillOverviewStrategies(overviewStrategies)
         overviewStrategies.add(weatherDeviceOverviewStrategy)

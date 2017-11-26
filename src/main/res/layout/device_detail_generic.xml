@@ -23,31 +23,10 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:clickable="true"
-    android:id="@+id/detailLayout"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/statesCard"
-        layout="@layout/device_detail_card_table" />
-
-    <include
-        android:id="@+id/plotsCard"
-        layout="@layout/device_detail_card_plots" />
-    <include
-        android:id="@+id/actionsCard"
-        layout="@layout/device_detail_card_actions" />
-
-    <include
-        android:id="@+id/attributesCard"
-        layout="@layout/device_detail_card_table" />
-
-    <include
-        android:id="@+id/internalsCard"
-        layout="@layout/device_detail_card_table" />
-
-
-</LinearLayout>
+    android:focusable="true"
+    android:orientation="vertical" />

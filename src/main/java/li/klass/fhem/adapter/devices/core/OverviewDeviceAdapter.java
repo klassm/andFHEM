@@ -224,8 +224,4 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
         fieldNameAddedListeners.get(fieldName).add(listener);
     }
 
-    @Override
-    public Class getOverviewViewHolderClass() {
-        return GenericDeviceOverviewViewHolder.class;
-    }
 }

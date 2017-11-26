@@ -115,11 +115,6 @@ public class DimmableAdapter extends ToggleableAdapter {
     }
 
     @Override
-    public Class getOverviewViewHolderClass() {
-        return GenericDeviceOverviewViewHolder.class;
-    }
-
-    @Override
     protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(dimmableStrategy);

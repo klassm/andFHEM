@@ -107,11 +107,6 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
     }
 
     @Override
-    public Class getOverviewViewHolderClass() {
-        return GenericDeviceOverviewViewHolder.class;
-    }
-
-    @Override
     protected void fillOverviewStrategies(List<ViewStrategy> overviewStrategies) {
         super.fillOverviewStrategies(overviewStrategies);
         overviewStrategies.add(toggleableOverviewStrategy);

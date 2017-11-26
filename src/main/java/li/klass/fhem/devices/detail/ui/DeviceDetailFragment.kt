@@ -143,16 +143,15 @@ class DeviceDetailFragment : BaseFragment() {
 
     private fun loadGraphs() {
         device ?: return
-        val myContext = context ?: return
-
         async(UI) {
-            val graphs = bg {
-                graphDefinitionsForDeviceService.graphDefinitionsFor(myContext, device!!.xmlListDevice, Optional.absent())
-            }.await()
-
             val detailView = findScrollView()!!.getChildAt(0)
             val adapter = DeviceType.getAdapterFor<FhemDevice>(device)
-            adapter?.attachGraphs(activity, detailView, graphs, connectionId, device)
+            if (adapter.loadGraphs()) {
+                val graphs = bg {
+                    graphDefinitionsForDeviceService.graphDefinitionsFor(device!!.xmlListDevice, Optional.absent())
+                }.await()
+                adapter?.attachGraphs(activity, detailView, graphs, connectionId, device)
+            }
             detailView.invalidate()
         }
     }

@@ -24,11 +24,13 @@
 
 package li.klass.fhem.graph.backend.gplot;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -49,21 +51,29 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class GPlotHolderTest {
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
 
     @InjectMocks
-    GPlotHolder gPlotHolder;
+    private GPlotHolder gPlotHolder;
 
     @Mock
-    GPlotParser gPlotParser;
+    private GPlotParser gPlotParser;
     @Mock
-    Context context;
+    private Application application;
+    @Mock
+    private Context context;
 
     @Mock
-    CommandExecutionService commandExecutionService;
+    private CommandExecutionService commandExecutionService;
+
+    @Before
+    public void setUp() throws Exception {
+        when(application.getApplicationContext()).thenReturn(context);
+    }
 
     @Test
     public void should_get_default_definition_for_name() {
@@ -72,7 +82,7 @@ public class GPlotHolderTest {
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(ImmutableMap.of("abc", definition));
 
         // when
-        Optional<GPlotDefinition> foundDefinition = gPlotHolder.definitionFor("abc", false, context);
+        Optional<GPlotDefinition> foundDefinition = gPlotHolder.definitionFor("abc", false);
 
         // then
         assertThat(foundDefinition).isEqualTo(Optional.of(definition));
@@ -88,7 +98,7 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false, context);
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
 
         // then
         assertThat(garden).isEqualTo(Optional.of(definition));
@@ -101,7 +111,7 @@ public class GPlotHolderTest {
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false, context);
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
 
         // then
         assertThat(garden).isEqualTo(Optional.absent());
@@ -117,10 +127,10 @@ public class GPlotHolderTest {
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
         given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
-        gPlotHolder.definitionFor("garden", false, context);
+        gPlotHolder.definitionFor("garden", false);
 
         // when
-        gPlotHolder.definitionFor("garden", false, context);
+        gPlotHolder.definitionFor("garden", false);
 
         // then
         verify(gPlotParser, times(1)).parseSafe(anyString());
@@ -136,7 +146,7 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        assertThat(gPlotHolder.definitionFor("garden", false, context).isPresent()).isFalse();
+        assertThat(gPlotHolder.definitionFor("garden", false).isPresent()).isFalse();
 
         // then
         verify(commandExecutionService, times(1)).executeRequest(anyString(), any(Context.class));
@@ -153,10 +163,9 @@ public class GPlotHolderTest {
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
-        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", true, context);
+        Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", true);
 
         // then
         assertThat(garden).isEqualTo(Optional.of(definition));
-
     }
 }

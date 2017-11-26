@@ -64,5 +64,5 @@ data class DeviceConfiguration(
 
 ) : Serializable {
     fun stateConfigFor(key: String): ViewItemConfig? =
-            states.first { it.key.equals(key, ignoreCase = true) }
+            states.firstOrNull { it.key.equals(key, ignoreCase = true) }
 }

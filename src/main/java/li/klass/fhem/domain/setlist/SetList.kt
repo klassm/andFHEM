@@ -55,6 +55,8 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
 
     fun size(): Int = entries.size
 
+    fun isEmpty(): Boolean = size() == 0
+
     override fun toString(): String {
         val keys = sortedKeys
 
