@@ -49,7 +49,7 @@ if (project.hasProperty('andFHEMGithubToken')) {
 }
 
 def getReleaseNotes() {
-    def changesFile = file("whatsnew-en.txt")
+    def changesFile = file("whatsnew-en.md")
     return Resources.toString(changesFile.getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
 }
 

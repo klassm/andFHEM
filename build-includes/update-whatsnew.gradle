@@ -97,12 +97,12 @@ class WhatsNewTask extends DefaultTask {
 }
 
 task generateWhatsNew(type: WhatsNewTask) {
-    whatsnewFileDe = file('whatsnew-de.txt')
-    whatsnewFileEn = file('whatsnew-en.txt')
+    whatsnewFileDe = file('whatsnew-de.md')
+    whatsnewFileEn = file('whatsnew-en.md')
     toUpdate = [file('src/inapp/play'), file('src/premium/play')]
 }
 
 task resetWhatsNew(type: ResetWhatsNewTask) {
-    whatsnewFileDe = file('whatsnew-de.txt')
-    whatsnewFileEn = file('whatsnew-en.txt')
+    whatsnewFileDe = file('whatsnew-de.md')
+    whatsnewFileEn = file('whatsnew-en.md')
 }
