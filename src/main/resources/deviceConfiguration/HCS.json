@@ -30,5 +30,31 @@
       "key": "mode",
       "desc": "mode"
     }
-  ]
+  ],
+  "sanitise": {
+    "thermostatThresholdOn": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "thermostatThresholdOff": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "valveThresholdOff": {
+      "append": "%",
+      "extract": "int"
+    },
+    "valveThresholdOn": {
+      "append": "%",
+      "extract": "int"
+    },
+    "ecoTemperatureOff": {
+      "append": "°C",
+      "extract": "double"
+    },
+    "ecoTemperatureOn": {
+      "append": "°C",
+      "extract": "double"
+    }
+  }
 }
