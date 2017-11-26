@@ -72,9 +72,9 @@ class ToggleableStrategy
         return myView
     }
 
-    override fun supports(fhemDevice: FhemDevice): Boolean {
-        return hookProvider.buttonHookFor(fhemDevice) != WEBCMD_DEVICE && OnOffBehavior.supports(fhemDevice)
-    }
+    override fun supports(fhemDevice: FhemDevice): Boolean =
+            hookProvider.buttonHookFor(fhemDevice) != WEBCMD_DEVICE && OnOffBehavior.supports(fhemDevice)
+                    && !fhemDevice.devStateIcons.anyNoFhemwebLinkOf(onOffBehavior.getOnOffStateNames(fhemDevice))
 
     protected fun addOverviewSwitchActionRow(holder: GenericDeviceOverviewViewHolder, device: ToggleableDevice, layoutInflater: LayoutInflater, connectionId: String?) {
         val stopWatch = StopWatch()

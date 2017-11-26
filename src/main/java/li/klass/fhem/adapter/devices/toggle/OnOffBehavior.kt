@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.toggle
 
-import com.google.common.collect.Lists.newArrayList
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
@@ -69,23 +68,35 @@ class OnOffBehavior
                 else -> isOn(device)
             }
 
-    private fun getOffStateNames(device: FhemDevice): List<String> {
-        val offStateNames = newArrayList("off", "OFF")
-        val offStateName = hookProvider.getOffStateName(device)
-        offStateNames.add(offStateName.toLowerCase(Locale.getDefault()))
+    private fun getOffStateNames(device: FhemDevice): Set<String> {
+        val offStateNameByHook = hookProvider.getOffStateName(device)
+        val offStateNames = setOf("off", "OFF") + offStateNameByHook.toLowerCase(Locale.getDefault())
 
-        for (state in newArrayList(offStateNames)) {
-            val reverseEventMapState = device.getReverseEventMapStateFor(state)
-            if (!state.equals(reverseEventMapState, ignoreCase = true)) {
-                offStateNames.add(reverseEventMapState)
-            }
-        }
+        return offStateNames + reverseEventMapNamesFor(offStateNames, device)
+    }
 
-        return offStateNames
+    private fun getOnStateNames(device: FhemDevice): Set<String> {
+        val onStateNameByHook = hookProvider.getOnStateName(device)
+        val onStateNames = setOf("on", "ON") + onStateNameByHook.toLowerCase(Locale.getDefault())
+
+        return onStateNames + reverseEventMapNamesFor(onStateNames, device)
+    }
+
+    fun getOnOffStateNames(device: FhemDevice): Set<String> =
+            getOnStateNames(device) + getOffStateNames(device)
+
+    private fun reverseEventMapNamesFor(stateNames: Set<String>, device: FhemDevice): List<String> {
+        val reverseEventMapNames = stateNames
+                .map { it to device.getReverseEventMapStateFor(it) }
+                .filter { !it.first.equals(it.second, ignoreCase = true) && it.second != null }
+                .map { it.second!! }
+        return reverseEventMapNames
     }
 
     companion object {
         fun supports(device: FhemDevice): Boolean =
-                device.xmlListDevice.setList.contains("on", "off") || device.xmlListDevice.setList.contains("ON", "OFF") || device.webCmd.containsAll(listOf("on", "off"))
+                device.xmlListDevice.setList.contains("on", "off")
+                        || device.xmlListDevice.setList.contains("ON", "OFF")
+                        || device.webCmd.containsAll(listOf("on", "off"))
     }
 }

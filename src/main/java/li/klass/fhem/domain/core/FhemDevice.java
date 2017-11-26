@@ -339,8 +339,7 @@ public abstract class FhemDevice extends HookedDevice {
     }
 
     public DevStateIcons getDevStateIcons() {
-        Optional<String> attribute = getXmlListDevice().getAttribute("devStateIcon");
-        return DevStateIcons.Companion.parse(attribute.orNull());
+        return getXmlListDevice().getDevStateIcons();
     }
 
     @Override

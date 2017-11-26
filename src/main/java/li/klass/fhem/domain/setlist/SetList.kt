@@ -48,18 +48,12 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
         return if (matches.isEmpty()) NotFoundSetListEntry(key) else matches.iterator().next().value
     }
 
-    fun contains(vararg keys: String): Boolean {
-        for (key in keys) {
-            if (!entries.containsKey(key)) {
-                return false
-            }
-        }
-        return true
-    }
+    fun contains(vararg keys: String): Boolean = contains(keys.toList())
 
-    fun size(): Int {
-        return entries.size
-    }
+    fun contains(keys: Iterable<String>): Boolean =
+            keys.any { entries.containsKey(it) }
+
+    fun size(): Int = entries.size
 
     override fun toString(): String {
         val keys = sortedKeys

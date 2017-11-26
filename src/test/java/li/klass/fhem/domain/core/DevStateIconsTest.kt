@@ -8,7 +8,7 @@ class DevStateIconsTest {
     fun should_get_mapping_for_regex() {
         val result = DevStateIcons.parse("connected:10px-kreis-gelb .*disconnect:10px-kreis-rot .*done:10px-kreis-gruen ")
 
-        assertThat(result.iconFor("bladisconnect")).isEqualTo("10px-kreis-rot")
+        assertThat(result.iconFor("bladisconnect")).isEqualTo(DevStateIcons.DevStateIcon("10px-kreis-rot", false))
         assertThat(result.iconFor("blaconnect")).isNull()
     }
 
@@ -16,7 +16,14 @@ class DevStateIconsTest {
     fun should_get_mapping_for_non_regex() {
         val result = DevStateIcons.parse("connected:10px-kreis-gelb .*disconnect:10px-kreis-rot .*done:10px-kreis-gruen ")
 
-        assertThat(result.iconFor("connected")).isEqualTo("10px-kreis-gelb")
+        assertThat(result.iconFor("connected")).isEqualTo(DevStateIcons.DevStateIcon("10px-kreis-gelb", false))
+    }
+
+    @Test
+    fun should_get_mapping_for_noFhemwebLink() {
+        val result = DevStateIcons.parse("connected:10px-kreis-gelb:noFhemwebLink")
+
+        assertThat(result.iconFor("connected")).isEqualTo(DevStateIcons.DevStateIcon("10px-kreis-gelb", true))
     }
 
     @Test
@@ -24,5 +31,17 @@ class DevStateIconsTest {
         val result = DevStateIcons.parse(null)
 
         assertThat(result.definitions).isEmpty()
+    }
+
+    @Test
+    fun should_find_out_whether_a_noFhemwebLinkRow_concerns_states() {
+        val result = DevStateIcons.parse("on:green:noFhemwebLink o.*:red:noFhemwebLink unknown:yellow")
+
+        assertThat(result.anyNoFhemwebLinkOf(listOf("on"))).isTrue()
+        assertThat(result.anyNoFhemwebLinkOf(listOf("off"))).isTrue()
+        assertThat(result.anyNoFhemwebLinkOf(listOf("on", "off"))).isTrue()
+        assertThat(result.anyNoFhemwebLinkOf(listOf("on", "blub"))).isTrue()
+        assertThat(result.anyNoFhemwebLinkOf(listOf("unknown", "blub"))).isFalse()
+        assertThat(result.anyNoFhemwebLinkOf(listOf("unknown"))).isFalse()
     }
 }
