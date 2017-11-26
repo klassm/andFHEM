@@ -41,7 +41,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
-import li.klass.fhem.adapter.devices.PioneerAvrZoneDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
@@ -176,8 +175,6 @@ public interface ApplicationComponent {
     void inject(WeatherAdapter object);
 
     void inject(WebLinkAdapter object);
-
-    void inject(PioneerAvrZoneDeviceAdapter object);
 
     void inject(SBPlayerDeviceAdapter object);
 

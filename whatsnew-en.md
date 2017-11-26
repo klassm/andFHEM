@@ -4,3 +4,4 @@
 * Update correct connection device list when receiving a GCM/FCM notify
 * Migrate more devices as generic device
   * PIONEERAVR
+  * PIONEERAVRZONE

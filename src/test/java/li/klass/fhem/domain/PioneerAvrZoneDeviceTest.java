@@ -34,17 +34,12 @@ public class PioneerAvrZoneDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        PioneerAvrZoneDevice device = getDeviceFor("PIONEERAVRZONE_zone2", PioneerAvrZoneDevice.class);
+        GenericDevice device = getDeviceFor("PIONEERAVRZONE_zone2", GenericDevice.class);
 
-        assertThat(device).isNotNull();
-        assertThat(device.getName()).isEqualTo("PIONEERAVRZONE_zone2");
-        assertThat(device.getVolume()).isEqualTo("68");
-        assertThat(device.getVolumeAsFloat()).isEqualTo(68);
-        assertThat(device.getPower()).isEqualTo("on");
-        assertThat(device.getState()).isEqualTo("off");
-        assertThat(device.getMute()).isEqualTo("off");
-        assertThat(device.isMuted()).isFalse();
-        assertThat(device.getInput()).isEqualTo("tuner");
+        assertThat(stateValueFor(device, "volume")).isEqualTo("68");
+        assertThat(stateValueFor(device, "power")).isEqualTo("on");
+        assertThat(stateValueFor(device, "mute")).isEqualTo("off");
+        assertThat(stateValueFor(device, "input")).isEqualTo("tuner");
     }
 
     @Override

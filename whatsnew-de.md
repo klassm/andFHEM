@@ -4,3 +4,4 @@
 * Aktualisiere die richtige Verbindungs-Geräteliste wenn ein GCM/FCM notify empfangen wird
 * Migriere weitere Geräte als generische Geräte
   * PIONEERAVR
+  * PIONEERAVRZONE
