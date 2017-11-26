@@ -27,5 +27,4 @@ package li.klass.fhem.fcm.receiver.data
 open class FcmData(val data: Map<String, String>) {
     fun shouldVibrate(): Boolean =
             data.containsKey("vibrate") && "true".equals(data["vibrate"]!!, ignoreCase = true)
-
 }

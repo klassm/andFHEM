@@ -50,8 +50,8 @@ constructor(
 
     private val remoteUpdateInProgress = AtomicBoolean(false)
 
-    fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>) {
-        getDeviceForName<FhemDevice>(deviceName)?.let {
+    fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>, connectionId: String) {
+        getDeviceForName<FhemDevice>(deviceName, connectionId)?.let {
             deviceListParser.fillDeviceWith(it, updateMap, applicationContext)
             LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", it.name, updateMap.size)
         }

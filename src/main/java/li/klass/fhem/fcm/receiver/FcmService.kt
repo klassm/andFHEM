@@ -26,8 +26,11 @@ package li.klass.fhem.fcm.receiver
 
 import android.content.Context
 import com.google.common.base.Strings
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.receiver.data.FcmMessageData
 import li.klass.fhem.fcm.receiver.data.FcmNotifyData
+import li.klass.fhem.update.backend.DeviceListService
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -35,6 +38,8 @@ import javax.inject.Inject
 class FcmService @Inject constructor(
         private val fcmNotifyHandler: FcmNotifyHandler,
         private val fcmMessageHandler: FcmMessageHandler,
+        private val connectionService: ConnectionService,
+        private val deviceListService: DeviceListService,
         private val fcmDecryptor: FcmDecryptor
 ) {
 
@@ -44,16 +49,34 @@ class FcmService @Inject constructor(
             return
         }
 
-        val decrypted = fcmDecryptor.decrypt(data)
+        val gcmDeviceConnection = data["gcmDeviceName"]
+                ?.let { findFirstConnectionContaining(it) }
+        if (gcmDeviceConnection == null) {
+            LOG.error("onMessage - cannot find gcm gcmDevice (${data["gcmDeviceName"]})")
+            return
+        }
+        val (connection, gcmDevice) = gcmDeviceConnection
+        val decrypted = gcmDeviceConnection.let { fcmDecryptor.decrypt(data, gcmDevice) }
 
         val type = decrypted["type"]
         if ("message".equals(type!!, ignoreCase = true)) {
             fcmMessageHandler.handleMessage(FcmMessageData(decrypted, sentTime), context)
         } else if ("notify".equals(type, ignoreCase = true) || Strings.isNullOrEmpty(type)) {
-            fcmNotifyHandler.handleNotify(FcmNotifyData(decrypted, sentTime), context)
+            fcmNotifyHandler.handleNotify(FcmNotifyData(decrypted, sentTime, connection), context)
         } else {
             LOG.error("onMessage - unknown type: {}", type)
         }
+    }
+
+
+    private fun findFirstConnectionContaining(deviceName: String): Pair<String, FhemDevice>? {
+        return connectionService.listAll().asSequence()
+                .map { connection ->
+                    val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, connection.id)
+                    if (device == null) null else connection.id to device
+                }
+                .filterNotNull()
+                .firstOrNull()
     }
 
     companion object {

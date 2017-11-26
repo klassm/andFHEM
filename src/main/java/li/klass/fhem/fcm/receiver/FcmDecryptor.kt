@@ -27,7 +27,6 @@ package li.klass.fhem.fcm.receiver
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.update.backend.DeviceListService
 import org.apache.commons.codec.binary.Hex
 import org.slf4j.LoggerFactory
 import javax.crypto.Cipher
@@ -35,18 +34,10 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
-class FcmDecryptor @Inject constructor(
-        val deviceListService: DeviceListService
-) {
+class FcmDecryptor @Inject constructor() {
 
-    fun decrypt(data: Map<String, String>): Map<String, String> {
-        if (!data.containsKey("gcmDeviceName")) {
-            return data
-        }
-        val gcmDeviceName = data["gcmDeviceName"] ?: return data
-        val device = deviceListService.getDeviceForName<FhemDevice>(gcmDeviceName)
-
-        return device?.xmlListDevice?.getAttribute("cryptKey")?.orNull()
+    fun decrypt(data: Map<String, String>, gcmDevice: FhemDevice): Map<String, String> {
+        return gcmDevice.xmlListDevice.getAttribute("cryptKey").orNull()
                 ?.let { decrypt(data, it) } ?: data
     }
 
