@@ -124,8 +124,7 @@ class SendCommandLocaleSettingActivity : Activity() {
         val nonDummyConnections = connectionList.filterNot { it.serverType == ServerType.DUMMY }
                 .toMutableList()
 
-        val current = FHEMServerSpec(ConnectionChangeLocaleSettingActivity.CURRENT_CONNECTION_ID)
-        current.name = resources.getString(R.string.connectionCurrent)
+        val current = FHEMServerSpec(ConnectionChangeLocaleSettingActivity.CURRENT_CONNECTION_ID, ServerType.DUMMY, resources.getString(R.string.connectionCurrent))
         nonDummyConnections.add(0, current)
 
         connectionListAdapter.updateData(nonDummyConnections, selectedId)

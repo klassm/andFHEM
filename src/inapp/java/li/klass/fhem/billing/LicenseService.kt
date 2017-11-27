@@ -28,7 +28,6 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.util.ApplicationProperties
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,7 +36,6 @@ import javax.security.cert.X509Certificate
 @Singleton
 class LicenseService @Inject constructor(
         private val billingService: BillingService,
-        private val applicationProperties: ApplicationProperties,
         private val application: Application
 ) {
 
@@ -51,12 +49,7 @@ class LicenseService @Inject constructor(
     private fun isPremiumInternal(loadSuccessful: Boolean): Boolean {
         var isPremium = false
 
-        // careful: We need an application context here, as LicenseIntentService (this?!) is null
-        // when invoking getPackageName!
-        if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
-            LOGGER.info("found IS_PREMIUM application property to be true => premium")
-            isPremium = true
-        } else if (applicationContext.packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
+        if (applicationContext.packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
             LOGGER.info("found package name to be " + AndFHEMApplication.PREMIUM_PACKAGE + " => premium")
             isPremium = true
         } else if (isDebug()) {

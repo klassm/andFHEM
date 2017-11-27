@@ -40,16 +40,14 @@ import java.util.ArrayList;
 
 import li.klass.fhem.R;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunctionalityPreferenceWrapper> {
 
     private OrderActionListener listener;
 
     private static final Logger LOG = LoggerFactory.getLogger(DeviceFunctionalityOrderAdapter.class);
 
-    public DeviceFunctionalityOrderAdapter(Context context, int resource,
-                                           ArrayList<DeviceFunctionalityPreferenceWrapper> data) {
+    DeviceFunctionalityOrderAdapter(Context context, int resource,
+                                    ArrayList<DeviceFunctionalityPreferenceWrapper> data) {
         super(context, resource, data);
     }
 
@@ -75,11 +73,10 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
 
     private void setOnClickAction(final OrderAction action,
                                   final DeviceFunctionalityPreferenceWrapper item, final View convertView) {
-        ImageButton button = (ImageButton) convertView.findViewById(R.id.change_visibility);
+        ImageButton button = convertView.findViewById(R.id.change_visibility);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkNotNull(view);
                 listener.deviceTypeReordered(item, action);
                 notifyDataSetChanged();
             }
@@ -87,12 +84,12 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
     }
 
     private void updateContent(DeviceFunctionalityPreferenceWrapper item, View view) {
-        TextView nameView = (TextView) view.findViewById(R.id.name);
+        TextView nameView = view.findViewById(R.id.name);
         nameView.setText(item.getDeviceFunctionality().getCaptionText(context));
 
-        ImageButton visibilityButton = (ImageButton) view.findViewById(R.id.change_visibility);
+        ImageButton visibilityButton = view.findViewById(R.id.change_visibility);
 
-        LOG.debug("updateContent() - drawing content for {}, visiblity is {}", item.getDeviceFunctionality().name(), item.isVisible());
+        LOG.debug("updateContent() - drawing content for {}, visibility is {}", item.getDeviceFunctionality().name(), item.isVisible());
 
         if (!item.isVisible()) {
             nameView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);

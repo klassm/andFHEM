@@ -174,6 +174,10 @@ class XmlListParser @Inject constructor(
         val value = nodeValueToString(attributes.getNamedItem("value"))
         val measured = nodeValueToString(attributes.getNamedItem("measured"))
 
+        if (key == null || value == null) {
+            return null
+        }
+
         return sanitiser.sanitise(deviceType, DeviceNode(nodeType, key, value, measured))
     }
 

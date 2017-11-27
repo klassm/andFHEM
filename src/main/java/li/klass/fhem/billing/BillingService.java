@@ -40,8 +40,6 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 @Singleton
 public class BillingService {
 
@@ -145,15 +143,12 @@ public class BillingService {
     }
 
     synchronized void setup(final SetupFinishedListener listener, Context context) {
-        checkNotNull(listener);
-
         try {
             LOG.debug("setup() - Starting setup " + this);
             iabHelper = createIabHelper(context);
             iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
-                    checkNotNull(iabHelper, "setup() - iabHelper may not be null after setup");
                     try {
                         if (result.isSuccess()) {
                             LOG.debug("setup() : setup was successful, setupIsDone=" + iabHelper.isSetupDone());
@@ -179,7 +174,6 @@ public class BillingService {
     }
 
     private synchronized void loadInternal(final OnLoadInventoryFinishedListener listener) {
-        checkNotNull(iabHelper);
 
         boolean success = false;
         try {

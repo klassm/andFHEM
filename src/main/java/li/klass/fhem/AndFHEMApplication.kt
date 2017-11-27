@@ -141,7 +141,7 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
 
         if (currentApplicationVersion != savedVersion) {
             isUpdate = true
-            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion)
+            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion!!)
         }
     }
 

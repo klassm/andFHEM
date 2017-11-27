@@ -33,6 +33,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.connection.backend.ConnectionService.Companion.DUMMY_DATA_ID
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
 import li.klass.fhem.testutil.mock
 import li.klass.fhem.util.ApplicationProperties
@@ -44,16 +45,15 @@ import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 
 @RunWith(DataProviderRunner::class)
 class ConnectionServiceTest {
-    val licenseService: LicenseService = mock()
-    val applicationProperties: ApplicationProperties = mock()
-    val applicationContext: Context = mock()
-    lateinit var connectionService: ConnectionService
+    private val licenseService: LicenseService = mock()
+    private val applicationProperties: ApplicationProperties = mock()
+    private val applicationContext: Context = mock()
+    private lateinit var connectionService: ConnectionService
 
     @Before
     fun setUp() {
@@ -65,14 +65,12 @@ class ConnectionServiceTest {
 
     @Test
     fun testFHEMServerSpecSerializeDeserialize() {
-        val serverSpec = FHEMServerSpec("test")
+        val serverSpec = FHEMServerSpec("test", ServerType.FHEMWEB, "MyServer")
         serverSpec.url = "http://test.com"
         serverSpec.username = "hallowelt"
         serverSpec.password = "myPassword"
-        serverSpec.name = "MyServer"
         serverSpec.ip = "192.168.0.1"
         serverSpec.port = 7072
-        serverSpec.serverType = ServerType.FHEMWEB
 
         val json = ConnectionService.serialize(serverSpec)
         assertThat(json, `is`(not(nullValue())))
@@ -93,7 +91,7 @@ class ConnectionServiceTest {
     fun should_extract_port(spec: FHEMServerSpec, expectedPort: Int) {
         // given
         val sharedPreferences = mock(SharedPreferences::class.java)
-        given(applicationProperties.getStringSharedPreference(ArgumentMatchers.eq(SELECTED_CONNECTION), ArgumentMatchers.anyString())).willReturn("a")
+        given(applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID)).willReturn("a")
         given(applicationContext.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE)).willReturn(sharedPreferences)
         given(sharedPreferences.contains("a")).willReturn(true)
         given(sharedPreferences.getString("a", null)).willReturn(ConnectionService.serialize(spec))
@@ -122,23 +120,17 @@ class ConnectionServiceTest {
                 )
 
         private fun telnetSpecFor(port: Int): FHEMServerSpec {
-            val spec = FHEMServerSpec("a")
-            spec.serverType = ServerType.TELNET
+            val spec = FHEMServerSpec("a", ServerType.TELNET, "bla")
             spec.port = port
             return spec
         }
 
         private fun fhemwebSpecFor(url: String): FHEMServerSpec {
-            val spec = FHEMServerSpec("a")
-            spec.serverType = ServerType.FHEMWEB
+            val spec = FHEMServerSpec("a", ServerType.FHEMWEB, "bla")
             spec.url = url
             return spec
         }
 
-        private fun dummySpec(): FHEMServerSpec {
-            val spec = FHEMServerSpec("a")
-            spec.serverType = ServerType.DUMMY
-            return spec
-        }
+        private fun dummySpec(): FHEMServerSpec = FHEMServerSpec("a", ServerType.DUMMY, "bla")
     }
 }

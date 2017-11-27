@@ -41,6 +41,7 @@ import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys
@@ -106,17 +107,19 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
     }
 
     private fun createWidget(type: WidgetType, vararg payload: String) {
-        type.createWidgetConfiguration(this, widgetId, WidgetConfigurationCreatedCallback { widgetConfiguration ->
-            appWidgetInstanceManager.save(widgetConfiguration)
+        type.createWidgetConfiguration(this, widgetId, object : WidgetConfigurationCreatedCallback {
+            override fun widgetConfigurationCreated(widgetConfiguration: WidgetConfiguration) {
+                appWidgetInstanceManager.save(widgetConfiguration)
 
-            async(UI) {
-                bg {
-                    appWidgetUpdateService.updateWidget(widgetId)
+                async(UI) {
+                    bg {
+                        appWidgetUpdateService.updateWidget(widgetId)
+                    }
                 }
-            }
 
-            setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_APPWIDGET_ID, widgetId))
-            finish()
+                setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_APPWIDGET_ID, widgetId))
+                finish()
+            }
         }, *payload)
     }
 

@@ -97,7 +97,7 @@ class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
             public boolean isSelectable(FhemDevice device) {
-                return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device, context).isEmpty();
+                return !WidgetType.Companion.getSupportedDeviceWidgetsFor(widgetSize, device, context).isEmpty();
             }
         });
 
@@ -125,7 +125,7 @@ class AppWidgetSelectionFragmentAdapter extends FragmentPagerAdapter {
         bundle.putSerializable(ROOM_SELECTABLE_CALLBACK, new RoomListFragment.RoomSelectableCallback() {
             @Override
             public boolean isRoomSelectable(String roomName) {
-                return !WidgetType.getSupportedRoomWidgetsFor(widgetSize).isEmpty();
+                return !WidgetType.Companion.getSupportedRoomWidgetsFor(widgetSize).isEmpty();
             }
         });
         bundle.putSerializable(ON_CLICKED_CALLBACK, new RoomListFragment.RoomClickedCallback() {

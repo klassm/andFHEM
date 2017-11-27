@@ -125,8 +125,7 @@ import li.klass.fhem.update.backend.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, DeviceGroupProviderModule.class,
-        DatabaseModule.class})
+@Component(modules = {ApplicationModule.class, DatabaseModule.class})
 public interface ApplicationComponent {
 
     DeviceConfigurationProvider getDeviceConfigurationProvider();

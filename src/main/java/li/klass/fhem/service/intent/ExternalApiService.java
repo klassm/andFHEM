@@ -45,8 +45,6 @@ import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class ExternalApiService extends Service {
 
     public static final int ROOM_LIST = 1;
@@ -103,7 +101,7 @@ public class ExternalApiService extends Service {
 
         private final WeakReference<ExternalApiService> externalApiServiceWeakReference;
 
-        public IncomingHandler(WeakReference<ExternalApiService> externalApiService) {
+        IncomingHandler(WeakReference<ExternalApiService> externalApiService) {
             this.externalApiServiceWeakReference = externalApiService;
         }
 
@@ -153,7 +151,7 @@ public class ExternalApiService extends Service {
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            ArrayList<String> readingsVal = newArrayList();
+                                            ArrayList<String> readingsVal = new ArrayList<>();
                                             readingsVal.add(result);
                                             externalApiService.replyTo(readingsVal);
                                         }

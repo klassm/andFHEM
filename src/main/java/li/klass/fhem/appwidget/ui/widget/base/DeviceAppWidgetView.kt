@@ -29,7 +29,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import android.widget.RemoteViews
-import com.google.common.base.Optional
 import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
@@ -90,7 +89,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     override fun createView(context: Context, widgetConfiguration: WidgetConfiguration): RemoteViews {
         val views = super.createView(context, widgetConfiguration)
-        LOG.info("creating appwidget view for " + widgetConfiguration)
+        logger.info("creating appwidget view for " + widgetConfiguration)
 
         if (shouldSetDeviceName()) {
             val deviceName = deviceNameFrom(widgetConfiguration)
@@ -107,8 +106,8 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     open fun shouldSetDeviceName(): Boolean = true
 
-    private fun getDeviceFor(deviceName: String, connectionId: Optional<String>): FhemDevice? =
-            deviceListService.getDeviceForName(deviceName, connectionId.orNull())
+    private fun getDeviceFor(deviceName: String, connectionId: String?): FhemDevice? =
+            deviceListService.getDeviceForName(deviceName, connectionId)
 
     protected fun openDeviceDetailPageWhenClicking(viewId: Int, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context) {
         val pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration, context)
@@ -127,7 +126,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                 .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
                 .putExtra(DEVICE_NAME, device.name)
-                .putExtra(CONNECTION_ID, widgetConfiguration.connectionId.orNull())
+                .putExtra(CONNECTION_ID, widgetConfiguration.connectionId)
                 .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
     }
 
@@ -137,7 +136,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         if (device != null) {
             createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device, callback)
         } else {
-            LOG.info("cannot find device for " + payload[0])
+            logger.info("cannot find device for " + payload[0])
         }
     }
 
@@ -154,12 +153,12 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     protected open fun createDeviceWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int,
                                                        device: FhemDevice, callback: WidgetConfigurationCreatedCallback) {
-        val connectionId = getCurrentConnectionId()
+        val connectionId = connectionService.getSelectedId()
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, ImmutableList.of(device.name!!)))
     }
 
-    protected fun getCurrentConnectionId(): Optional<String> =
-            Optional.of(connectionService.getSelectedId())
+    protected fun getCurrentConnectionId(): String =
+            connectionService.getSelectedId()
 
     override fun fillWidgetView(context: Context, view: RemoteViews,
                                 widgetConfiguration: WidgetConfiguration) {
@@ -168,7 +167,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
             view.setTextViewText(R.id.deviceName, device.widgetName)
             fillWidgetView(context, view, device, widgetConfiguration)
         } else {
-            LOG.info("cannot find device for " + deviceNameFrom(widgetConfiguration))
+            logger.info("cannot find device for " + deviceNameFrom(widgetConfiguration))
         }
     }
 
@@ -176,6 +175,6 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                                           widgetConfiguration: WidgetConfiguration)
 
     companion object {
-        val LOG = LoggerFactory.getLogger(DeviceAppWidgetView::class.java)!!
+        val logger = LoggerFactory.getLogger(DeviceAppWidgetView::class.java)!!
     }
 }

@@ -85,7 +85,7 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
             else -> Intent(Actions.DEVICE_WIDGET_TOGGLE)
                     .putExtra(APP_WIDGET_ID, widgetConfiguration.widgetId)
                     .putExtra(DEVICE_NAME, device.name)
-                    .putExtra(CONNECTION_ID, widgetConfiguration.connectionId.orNull())
+                    .putExtra(CONNECTION_ID, widgetConfiguration.connectionId)
         }
         return actionIntent
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -95,7 +95,7 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
     private fun actionIntentForOnOffDevice(device: FhemDevice, widgetConfiguration: WidgetConfiguration): Intent =
             Intent(Actions.DEVICE_SET_STATE)
                     .putExtra(DEVICE_NAME, device.name)
-                    .putExtra(CONNECTION_ID, widgetConfiguration.connectionId.orNull())
+                    .putExtra(CONNECTION_ID, widgetConfiguration.connectionId)
 
     override fun supports(device: FhemDevice, context: Context): Boolean =
             device is ToggleableDevice && device.supportsToggle()

@@ -29,14 +29,13 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.common.base.Preconditions.checkArgument
-import com.google.common.collect.FluentIterable.from
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists.newArrayList
 import com.google.gson.Gson
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
-import li.klass.fhem.connection.backend.ServerType.FHEMWEB
+import li.klass.fhem.connection.backend.ServerType.*
 import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.DeviceVisibility
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
@@ -54,18 +53,14 @@ constructor(private val applicationProperties: ApplicationProperties,
 
     private val dummyData: FHEMServerSpec
         get() {
-            val dummyData = DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml")
-            dummyData.name = "DummyData"
-            dummyData.serverType = ServerType.DUMMY
+            val dummyData = DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml", "DummyData")
             return dummyData
         }
 
     private fun getTestData(): FHEMServerSpec? {
         var testData: FHEMServerSpec? = null
         if (licenseService.isDebug()) {
-            testData = DummyServerSpec(TEST_DATA_ID, "test.xml")
-            testData.name = "TestData"
-            testData.serverType = ServerType.DUMMY
+            testData = DummyServerSpec(TEST_DATA_ID, "test.xml", "TestData")
         }
         return testData
     }
@@ -76,7 +71,7 @@ constructor(private val applicationProperties: ApplicationProperties,
             override fun isPremium(isPremium: Boolean) {
                 if (isPremium || getCountWithoutDummy() < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-                    val server = FHEMServerSpec(newUniqueId())
+                    val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
                     saveData.fillServer(server)
                     saveToPreferences(server)
                 }
@@ -96,8 +91,7 @@ constructor(private val applicationProperties: ApplicationProperties,
                     || getPreferences()!!.contains(id)
 
     private fun mayShowDummyConnections(all: List<FHEMServerSpec>): Boolean {
-        val nonDummies = from(all)
-                .filter(FHEMServerSpec.notInstanceOf(DummyServerSpec::class.java))
+        val nonDummies = all.filter { it !is DummyServerSpec }
                 .toList()
         return nonDummies.isEmpty() || licenseService.isDebug()
     }
@@ -118,7 +112,7 @@ constructor(private val applicationProperties: ApplicationProperties,
     }
 
     private fun saveToPreferences(server: FHEMServerSpec) {
-        if (server.serverType == ServerType.DUMMY) return
+        if (server.serverType == DUMMY) return
 
         getPreferences()!!.edit().putString(server.id, serialize(server)).apply()
     }
@@ -212,11 +206,9 @@ constructor(private val applicationProperties: ApplicationProperties,
         val serverType = spec!!.serverType
 
         return when (serverType) {
-            ServerType.TELNET -> spec.port
-            ServerType.DUMMY -> 0
+            TELNET -> spec.port
+            DUMMY -> 0
             FHEMWEB -> getPortOfFHEMWEBSpec(spec)
-
-            else -> throw IllegalArgumentException("unknown spec type: " + spec.serverType)
         }
     }
 
@@ -229,13 +221,8 @@ constructor(private val applicationProperties: ApplicationProperties,
             return Integer.valueOf(matcher.group(1))!!
         }
 
-        if (url.startsWith("https://")) {
-            return 443
-        }
-
-        return if (url.startsWith("http://")) {
-            80
-        } else 0
+        if (url?.startsWith("https://") == true) return 443
+        return if (url?.startsWith("http://") == true) 80 else 0
     }
 
     private val applicationContext: Context get() = application.applicationContext

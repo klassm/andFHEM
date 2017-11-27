@@ -25,7 +25,8 @@
 package li.klass.fhem.connection.backend
 
 sealed class SaveData(val name: String,
-                      val password: String?) {
+                      val password: String?,
+                      val serverType: ServerType) {
 
     open fun fillServer(server: FHEMServerSpec) {
         server.name = name
@@ -38,7 +39,7 @@ sealed class SaveData(val name: String,
                           val clientCertificatePath: String?,
                           val clientCertificatePassword: String?,
                           val username: String?,
-                          password: String?) : SaveData(name, password) {
+                          password: String?) : SaveData(name, password, ServerType.FHEMWEB) {
 
         override fun fillServer(server: FHEMServerSpec) {
             super.fillServer(server)
@@ -47,19 +48,17 @@ sealed class SaveData(val name: String,
             server.clientCertificatePath = clientCertificatePath
             server.clientCertificatePassword = clientCertificatePassword
             server.username = username
-            server.serverType = ServerType.FHEMWEB
         }
     }
 
     class TelnetSaveData(name: String,
                          val ip: String,
                          val port: Int,
-                         password: String?) : SaveData(name, password) {
+                         password: String?) : SaveData(name, password, ServerType.TELNET) {
         override fun fillServer(server: FHEMServerSpec) {
             super.fillServer(server)
             server.ip = ip
             server.port = port
-            server.serverType = ServerType.TELNET
         }
     }
 }

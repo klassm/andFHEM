@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -52,8 +53,6 @@ import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
-import static com.google.common.collect.Maps.newHashMap;
-
 public enum DeviceType {
 
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
@@ -70,8 +69,8 @@ public enum DeviceType {
 
     GENERIC("__generic__", GenericDevice.class, new GenericOverviewDetailDeviceAdapter());
 
-    private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = newHashMap();
-    private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = newHashMap();
+    private static final Map<Class<?>, DeviceType> DEVICE_TO_DEVICE_TYPE = new HashMap<>();
+    private static final Map<String, DeviceType> TAG_TO_DEVICE_TYPE = new HashMap<>();
 
     static {
         for (DeviceType deviceType : values()) {

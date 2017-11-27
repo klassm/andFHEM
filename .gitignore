@@ -1,4 +1,5 @@
 gen
+_site
 bin
 bin/*
 gen/*

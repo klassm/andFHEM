@@ -63,7 +63,7 @@ public class DummyDataConnection extends FHEMConnection {
         try {
             LOG.info("xmllist() - loading xmllist");
             final DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
-            URL url = Resources.getResource(DummyDataConnection.class, dummyServerSpec.fileName);
+            URL url = Resources.getResource(DummyDataConnection.class, dummyServerSpec.getFileName());
             String content = Resources.toString(url, Charsets.UTF_8);
             content = content.replaceAll("  ", "");
 

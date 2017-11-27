@@ -74,10 +74,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
     @Override
     protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
-        if (Actions.LOAD_PROPERTIES.equals(action)) {
-            applicationProperties.load();
-            return State.SUCCESS;
-        } else if (Actions.UPDATE_NEXT_ALARM_CLOCK.equals(action) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Actions.UPDATE_NEXT_ALARM_CLOCK.equals(action) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             FhemDevice nextAlarmClockReceiver = deviceListService.getDeviceForName("nextAlarmClock", null);
             if (nextAlarmClockReceiver != null) {
                 AlarmManager.AlarmClockInfo nextAlarmClock = getAlarmManager().getNextAlarmClock();

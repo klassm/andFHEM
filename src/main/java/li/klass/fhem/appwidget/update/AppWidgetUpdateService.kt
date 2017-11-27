@@ -55,7 +55,7 @@ class AppWidgetUpdateService @Inject constructor(
     fun doRemoteUpdate(appWidgetId: Int, callback: () -> Unit) {
         val configuration = appWidgetInstanceManager.getConfigurationFor(appWidgetId)
         val allowRemoteUpdates = applicationProperties.getBooleanSharedPreference(SettingsKeys.ALLOW_REMOTE_UPDATE, true)
-        val connectionId = configuration?.connectionId?.orNull()
+        val connectionId = configuration?.connectionId
         if (configuration == null || !allowRemoteUpdates) {
             callback()
             return

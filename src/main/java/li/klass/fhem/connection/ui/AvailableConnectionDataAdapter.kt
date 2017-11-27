@@ -36,6 +36,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
+import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.ui.FragmentType
@@ -50,11 +51,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
     : ListDataAdapter<FHEMServerSpec>(parent.context, R.layout.connection_spinner_item, ArrayList()), AdapterView.OnItemSelectedListener {
     private var currentlySelectedPosition = -1
 
-    class ManagementPill : FHEMServerSpec(ConnectionService.MANAGEMENT_DATA_ID) {
-        init {
-            name = "managementDummy"
-        }
-
+    class ManagementPill : FHEMServerSpec(ConnectionService.MANAGEMENT_DATA_ID, ServerType.DUMMY, "") {
         override fun compareTo(other: FHEMServerSpec): Int = 1
     }
 

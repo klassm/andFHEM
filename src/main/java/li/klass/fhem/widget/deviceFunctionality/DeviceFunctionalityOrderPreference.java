@@ -57,7 +57,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
     @Inject
     ApplicationProperties applicationProperties;
-    private ArrayList<DeviceFunctionalityPreferenceWrapper> wrappedDevices = newArrayList();
+    private ArrayList<DeviceFunctionalityPreferenceWrapper> wrappedDevices = new ArrayList<>();
 
     @SuppressWarnings("unused")
     public DeviceFunctionalityOrderPreference(Context context, AttributeSet attrs, int defStyle) {

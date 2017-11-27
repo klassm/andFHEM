@@ -88,7 +88,7 @@ open class RoomListFragment : BaseFragment() {
         if (superView != null) return superView
         val myActivity = activity ?: return superView
 
-        val adapter = RoomListAdapter(activity, R.layout.room_list_name, ArrayList<String>())
+        val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList<String>())
         val layout = inflater.inflate(R.layout.room_list, container, false)
         advertisementService.addAd(layout, myActivity)
 
@@ -192,7 +192,7 @@ open class RoomListFragment : BaseFragment() {
             showEmptyView()
             adapter.updateData(selectableRooms)
         } else {
-            adapter.updateData(selectableRooms, roomName)
+            adapter.updateData(selectableRooms.toMutableList(), roomName)
             scrollToSelectedRoom(roomName, adapter.data)
         }
     }

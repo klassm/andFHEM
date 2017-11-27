@@ -28,24 +28,18 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashMap;
 
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @RunWith(DataProviderRunner.class)
 public class DimmableBehaviorTest {
@@ -77,30 +71,6 @@ public class DimmableBehaviorTest {
         Optional<DimmableBehavior> result = DimmableBehavior.behaviorFor(device, null);
 
         assertThat(result).isEqualTo(Optional.absent());
-    }
-
-    @DataProvider
-    public static Object[][] dimUpDownPositionProvider() {
-        return new Object[][]{
-                {50, 49, 51},
-                {100, 99, 100},
-                {0, 0, 1},
-        };
-    }
-
-    @Test
-    @UseDataProvider("dimUpDownPositionProvider")
-    public void should_calculate_dim_up_and_down_positions(int currentPosition, int expectedDimDownPosition, int expectedDimUpPosition) {
-        XmlListDevice xmlListDevice = mock(XmlListDevice.class);
-        given(xmlListDevice.getStates()).willReturn(ImmutableMap.of("state", new DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", currentPosition + "", (DateTime) null)));
-        given(xmlListDevice.getSetList()).willReturn(SetList.Companion.parse("state:slider,0,1,100"));
-        GenericDevice device = new GenericDevice();
-        device.setXmlListDevice(xmlListDevice);
-
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
-
-        assertThat(behavior.getDimUpPosition()).isEqualTo(expectedDimUpPosition);
-        assertThat(behavior.getDimDownPosition()).isEqualTo(expectedDimDownPosition);
     }
 
     @NonNull

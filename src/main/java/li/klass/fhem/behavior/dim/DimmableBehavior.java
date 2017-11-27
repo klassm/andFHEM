@@ -50,29 +50,9 @@ public class DimmableBehavior {
         return behavior.getCurrentDimPosition(fhemDevice);
     }
 
-    float getDimUpPosition() {
-        float currentPosition = getCurrentDimPosition();
-        if (currentPosition + getDimStep() > behavior.getDimUpperBound()) {
-            return behavior.getDimUpperBound();
-        }
-        return currentPosition + getDimStep();
-    }
-
-    float getDimDownPosition() {
-        float currentPosition = getCurrentDimPosition();
-        if (currentPosition - getDimStep() < behavior.getDimLowerBound()) {
-            return behavior.getDimLowerBound();
-        }
-        return currentPosition - getDimStep();
-    }
-
 
     public String getDimStateForPosition(float position) {
         return behavior.getDimStateForPosition(fhemDevice, position);
-    }
-
-    public float getPositionForDimState(String dimState) {
-        return behavior.getPositionForDimState(dimState);
     }
 
     public float getDimLowerBound() {

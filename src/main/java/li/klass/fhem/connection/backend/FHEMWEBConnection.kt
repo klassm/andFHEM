@@ -59,7 +59,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         }
 
     val password: String
-        get() = serverSpec.password
+        get() = serverSpec?.password ?: ""
 
     override fun executeCommand(command: String, context: Context): RequestResult<String> {
         LOG.info("executeTask command " + command)
@@ -90,7 +90,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         }
     }
 
-    protected fun generateUrlSuffix(command: String): String? {
+    private fun generateUrlSuffix(command: String): String? {
         var urlSuffix: String? = null
         try {
             urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8")
@@ -102,7 +102,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     fun executeRequest(urlSuffix: String?, context: Context): RequestResult<InputStream> =
-            executeRequest(serverSpec.url, urlSuffix, false, context)
+            executeRequest(serverSpec!!.url!!, urlSuffix, false, context)
 
     private fun executeRequest(serverUrl: String, urlSuffix: String?, isRetry: Boolean, context: Context): RequestResult<InputStream> {
         var url: String? = null
@@ -110,7 +110,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         try {
             initSslContext(context)
 
-            url = serverUrl + if (urlSuffix?.contains("cmd=") ?: false) {
+            url = serverUrl + if (urlSuffix?.contains("cmd=") == true) {
                 val csrfToken = findCsrfToken(serverUrl) ?: ""
                 urlSuffix + "&fwcsrf=" + csrfToken
             } else urlSuffix
@@ -130,7 +130,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             return RequestResult(BufferedInputStream(response.content) as InputStream)
         } catch (e: HttpResponseException) {
             val errorResult = handleHttpStatusCode(e.statusCode)
-            val msg = "found error " + errorResult!!.error.declaringClass.getSimpleName() + " for " +
+            val msg = "found error " + errorResult!!.error.declaringClass.simpleName + " for " +
                     "status code " + e.statusCode
             LOG.debug(msg)
             ErrorHolder.setError(null, msg)
@@ -176,14 +176,14 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     private fun handleRetryIfRequired(isCurrentRequestRetry: Boolean, previousResult: RequestResult<InputStream>,
                                       urlSuffix: String, context: Context): RequestResult<InputStream> {
-        return if (!serverSpec.canRetry() || isCurrentRequestRetry) {
+        return if (!serverSpec.canRetry() || isCurrentRequestRetry || serverSpec.alternateUrl == null) {
             previousResult
         } else retryRequest(urlSuffix, context)
     }
 
     private fun retryRequest(urlSuffix: String, context: Context): RequestResult<InputStream> {
         LOG.info("retrying request for alternate URL")
-        return executeRequest(serverSpec.alternateUrl, urlSuffix, true, context)
+        return executeRequest(serverSpec.alternateUrl!!, urlSuffix, true, context)
     }
 
     override fun requestBitmap(relativePath: String, context: Context): RequestResult<Bitmap> {
@@ -224,13 +224,13 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     @Throws(Exception::class)
-    private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String): KeyStore? {
+    private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String?): KeyStore? {
         val keyStore: KeyStore?
         var fileInputStream: FileInputStream? = null
         try {
             keyStore = KeyStore.getInstance("PKCS12")
             fileInputStream = FileInputStream(certificateFile)
-            keyStore!!.load(fileInputStream, clientCertPassword.toCharArray())
+            keyStore!!.load(fileInputStream, clientCertPassword!!.toCharArray())
         } finally {
             close(fileInputStream)
         }
@@ -241,7 +241,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
         val SOCKET_TIMEOUT = 20000
         private val LOG = LoggerFactory.getLogger(FHEMWEBConnection::class.java)
-        val STATUS_CODE_MAP: Map<Int, RequestResultError> = ImmutableMap.builder<Int, RequestResultError>()
+        private val STATUS_CODE_MAP: Map<Int, RequestResultError> = ImmutableMap.builder<Int, RequestResultError>()
                 .put(400, BAD_REQUEST)
                 .put(401, AUTHENTICATION_ERROR)
                 .put(403, AUTHENTICATION_ERROR)
