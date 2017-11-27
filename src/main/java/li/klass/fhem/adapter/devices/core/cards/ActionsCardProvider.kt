@@ -22,13 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.cards.device.values
+package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
 import android.support.v7.widget.CardView
 import kotlinx.android.synthetic.main.device_detail_card_actions.view.*
 import li.klass.fhem.R
-import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
 import li.klass.fhem.domain.GenericDevice

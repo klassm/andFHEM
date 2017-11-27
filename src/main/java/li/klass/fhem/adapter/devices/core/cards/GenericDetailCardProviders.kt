@@ -24,7 +24,9 @@
 
 package li.klass.fhem.adapter.devices.core.cards
 
-import li.klass.fhem.adapter.devices.core.cards.device.values.*
+import li.klass.fhem.adapter.devices.core.cards.device.values.AttributesCardProvider
+import li.klass.fhem.adapter.devices.core.cards.device.values.InternalsCardProvider
+import li.klass.fhem.adapter.devices.core.cards.device.values.StateCardProvider
 import javax.inject.Inject
 
 class GenericDetailCardProviders @Inject constructor(
