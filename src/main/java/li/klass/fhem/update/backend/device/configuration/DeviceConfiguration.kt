@@ -59,6 +59,9 @@ data class DeviceConfiguration(
         @JsonProperty("stateSliderKey")
         val stateSliderKey: String = "state",
 
+        @JsonProperty("player")
+        val playerConfiguration: PlayerConfiguration?,
+
         @JsonProperty("sanitise")
         val sanitiseConfiguration: SanitiseConfiguration?
 

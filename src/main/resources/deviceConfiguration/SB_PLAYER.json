@@ -1,0 +1,36 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "sensorDevice": false,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "volume",
+      "desc": "musicVolume",
+      "showInOverview": false
+    },
+    {
+      "key": "currentTitle",
+      "desc": "currentTitle",
+      "showInOverview": false
+    }
+  ],
+  "player": {
+    "previousCommand": "previous",
+    "pauseCommand": "pause",
+    "stopCommand": "stop",
+    "playCommand": "play",
+    "nextCommand": "next"
+  },
+  "sanitise": {
+    "deviceValues": {
+      "volume": {
+        "replaceAll": [
+          {
+            "search": "muted",
+            "replaceBy": "0"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -22,28 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.cards
+package li.klass.fhem.update.backend.device.configuration
 
-import li.klass.fhem.adapter.devices.core.cards.device.values.AttributesCardProvider
-import li.klass.fhem.adapter.devices.core.cards.device.values.InternalsCardProvider
-import li.klass.fhem.adapter.devices.core.cards.device.values.StateCardProvider
-import javax.inject.Inject
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
-class GenericDetailCardProviders @Inject constructor(
-        attributesCardProvider: AttributesCardProvider,
-        stateCardProvider: StateCardProvider,
-        internalsCardProvider: InternalsCardProvider,
-        plotsCardProvider: PlotsCardProvider,
-        actionsCardProvider: ActionsCardProvider,
-        playerCardProvider: PlayerCardProvider
-) {
-    val providers: Set<GenericDetailCardProvider> =
-            setOf(
-                    attributesCardProvider,
-                    stateCardProvider,
-                    internalsCardProvider,
-                    plotsCardProvider,
-                    actionsCardProvider,
-                    playerCardProvider
-            )
+data class PlayerConfiguration(
+        @JsonProperty("previousCommand") val previousCommand: String?,
+        @JsonProperty("pauseCommand") val pauseCommand: String?,
+        @JsonProperty("stopCommand") val stopCommand: String?,
+        @JsonProperty("playCommand") val playCommand: String?,
+        @JsonProperty("nextCommand") val nextCommand: String?
+) : Serializable {
+    val hasAny = listOf(previousCommand, pauseCommand, stopCommand, playCommand, nextCommand)
+            .any { it != null }
 }

@@ -42,7 +42,6 @@ import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
-import li.klass.fhem.adapter.devices.SBPlayerDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
@@ -175,8 +174,6 @@ public interface ApplicationComponent {
     void inject(WeatherAdapter object);
 
     void inject(WebLinkAdapter object);
-
-    void inject(SBPlayerDeviceAdapter object);
 
     void inject(HarmonyDeviceAdapter object);
 

@@ -23,46 +23,59 @@
   -->
 
 <FHZINFO>
-    <HCS_LIST>
-        <HCS name="device" state="demand" sets="eco interval mode off on"
-            attrs="room group comment alias eventMap deviceCmdOn deviceCmdOff exclude ecoTemperatureOn ecoTemperatureOff interval idleperiod mode:thermostat,valve sensor sensorThresholdOn sensorThresholdOff sensorReading thermostatThresholdOn thermostatThresholdOff valveThresholdOn valveThresholdOff do_not_notify:1,0 event-on-update-reading event-on-change-reading loglevel:0,1,2,3,4,5,6 disable:0,1 _map building building_map devStateIcon fp_Grundriss_Browser fp_Touchpad_Grundriss icon room_map structexclude webCmd">
-            <INT key="CHANGED" value="" />
-            <INT key="DEF" value="Heizung_Sperre 15 30 20" />
-            <INT key="NAME" value="device" />
-            <INT key="NEXTCHECK" value="23:26:52" />
-            <INT key="NR" value="96" />
-            <INT key="STATE" value="demand" />
-            <INT key="TYPE" value="HCS" />
-            <ATTR key="deviceCmdOff" value="off" />
-            <ATTR key="deviceCmdOn" value="on" />
-            <ATTR key="ecoTemperatureOff" value="23" />
-            <ATTR key="ecoTemperatureOn" value="12" />
-            <ATTR key="event-on-change-reading" value="state,devicestate,eco,overdrive" />
-            <ATTR key="exclude" value="FHT_Badezimmer,FHT_Flur,FHT_Kueche" />
-            <ATTR key="fp_Touchpad_Grundriss" value="280,650,3,state,Heizung" />
-            <ATTR key="idleperiod" value="15" />
-            <ATTR key="interval" value="5" />
-            <ATTR key="loglevel" value="5" />
-            <ATTR key="mode" value="valve" />
-            <ATTR key="room" value="room" />
-            <ATTR key="thermostatThresholdOff" value="0.5" />
-            <ATTR key="thermostatThresholdOn" value="0.5" />
-            <ATTR key="valveThresholdOff" value="25" />
-            <ATTR key="valveThresholdOn" value="30" />
-            <STATE key="FHT_Badezimmer" value="excluded" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Buero" value="idle" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Flur" value="excluded" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Kinderzimmer" value="idle" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Kueche" value="excluded" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Schlafzimmer" value="idle" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Wohnzimmer" value="demand" measured="2013-01-14 23:21:52" />
-            <STATE key="FHT_Wohnzimmer1" value="demand" measured="2013-01-14 23:21:52" />
-            <STATE key="device" value="Heizung_Sperre" measured="2013-01-14 22:03:38" />
-            <STATE key="devicestate" value="on" measured="2013-01-14 13:03:08" />
-            <STATE key="eco" value="off" measured="2013-01-14 23:21:52" />
-            <STATE key="locked" value="00:00:00" measured="2013-01-14 23:21:52" />
-            <STATE key="overdrive" value="off" measured="2013-01-14 23:21:52" />
-            <STATE key="state" value="demand" measured="2013-01-14 23:21:52" />
-        </HCS>
-    </HCS_LIST>
+    <SB_PLAYER_LIST>
+        <SB_PLAYER name="Unten" state="off"
+            sets="on off stop:noArg play:noArg pause:noArg volume:slider,0,1,100 volumeUp:noArg volumeDown:noArg mute:noArg repeat:off,one,all show statusRequest:noArg shuffle:on,off next:noArg prev:noArg playlist sleep alarm1 alarm2 allalarms:enable,disable cliraw talk favorites:,RockAntenneAlternatvie,RockAntenneClassicPerlen,RockAntenne "
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings volumeStep ttslanguage:de,en,fr ttslink donotnotify:true,false idismac:true,false serverautoon:true,false fadeinsecs event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_henno icon sortby webCmd widgetOverride userattr">
+            <INT key="ALARMSCOUNT" value="2" />
+            <INT key="ALARMSFADEIN" value="?" />
+            <INT key="CANPOWEROFF" value="1" />
+            <INT key="DEF" value="00:04:20:xx:xx:xx" />
+            <INT key="DISPLAYTYPE" value="?" />
+            <INT key="FAVREF" value=" " />
+            <INT key="FAVSET" value="favorites" />
+            <INT key="FAVSTR"
+                value=",RockAntenneAlternatvie,RockAntenneClassicPerlen,RockAntenne" />
+            <INT key="FHEMUID" value="0004202xxxxxx" />
+            <INT key="LASTALARM" value="1" />
+            <INT key="LASTANSWER" value="signalstrength ?" />
+            <INT key="LASTInputDev" value="squeezbox" />
+            <INT key="MODEL" value="baby" />
+            <INT key="MSGCNT" value="3219" />
+            <INT key="NAME" value="Unten" />
+            <INT key="NR" value="411" />
+            <INT key="PLAYERIP" value="xxx.xxx.xxx.xxx:51956" />
+            <INT key="PLAYERMAC" value="00:04:20:2d:77:53" />
+            <INT key="PLAYERNAME" value="unten" />
+            <INT key="STATE" value="off" />
+            <INT key="TYPE" value="SB_PLAYER" />
+            <INT key="squeezbox_MSGCNT" value="3219" />
+            <INT key="squeezbox_TIME" value="2015-02-23 21:34:01" />
+            <INT key="IODev" value="squeezbox" />
+            <ATTR key="donotnotify" value="true" />
+            <ATTR key="fadeInsecs" value="10" />
+            <ATTR key="idismac" value="true" />
+            <ATTR key="room" value="Wohnzimmer" />
+            <ATTR key="serverautoon" value="true" />
+            <ATTR key="ttslanguage" value="de" />
+            <ATTR key="ttslink" value="http://translate.google.com/translate_tts?" />
+            <ATTR key="volumeStep" value="10" />
+            <STATE key="alarmid1" value="none" measured="2015-02-22 08:33:48" />
+            <STATE key="alarmid2" value="none" measured="2015-02-22 08:33:48" />
+            <STATE key="connected" value="1" measured="2015-02-22 08:33:58" />
+            <STATE key="currentAlbum" value="?" measured="2015-02-23 21:34:01" />
+            <STATE key="currentArtist" value="?" measured="2015-02-23 21:34:01" />
+            <STATE key="currentMedia" value="?" measured="2015-02-22 08:33:48" />
+            <STATE key="currentTitle" value="?" measured="2015-02-23 21:34:01" />
+            <STATE key="lastir" value="?" measured="2015-02-22 08:33:48" />
+            <STATE key="lastunkowncmd" value="clientforget" measured="2015-02-22 15:18:28" />
+            <STATE key="playStatus" value="?" measured="2015-02-23 21:34:01" />
+            <STATE key="power" value="true" measured="2015-02-22 14:52:57" />
+            <STATE key="presence" value="absent" measured="2015-02-22 14:52:57" />
+            <STATE key="signalstrength" value="?" measured="2015-02-23 21:34:01" />
+            <STATE key="state" value="off" measured="2015-02-22 14:52:57" />
+            <STATE key="volume" value="muted" measured="2015-02-23 21:34:01" />
+            <STATE key="volumeStraight" value="?" measured="2015-02-23 21:34:01" />
+        </SB_PLAYER>
+    </SB_PLAYER_LIST>
 </FHZINFO>

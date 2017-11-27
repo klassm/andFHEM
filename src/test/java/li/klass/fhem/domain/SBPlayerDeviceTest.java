@@ -34,10 +34,8 @@ public class SBPlayerDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        SBPlayerDevice device = getDeviceFor("Unten", SBPlayerDevice.class);
-        assertThat(device).isNotNull();
-        assertThat(device.isMuted()).isTrue();
-        assertThat(device.getVolumeAsFloat()).isEqualTo(0);
+        GenericDevice device = getDeviceFor("Unten", GenericDevice.class);
+        assertThat(stateValueFor(device, "volume")).isEqualTo("0");
     }
 
     @Override
