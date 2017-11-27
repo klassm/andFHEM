@@ -30,7 +30,6 @@ import java.util.Map;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
-import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
@@ -46,7 +45,6 @@ import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GenericDevice;
-import li.klass.fhem.domain.HarmonyDevice;
 import li.klass.fhem.domain.OwDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
@@ -69,7 +67,6 @@ public enum DeviceType {
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
-    HARMONY("harmony", HarmonyDevice.class, new HarmonyDeviceAdapter()),
 
     GENERIC("__generic__", GenericDevice.class, new GenericOverviewDetailDeviceAdapter());
 

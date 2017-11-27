@@ -7,3 +7,4 @@
   * PIONEERAVRZONE
   * HCS
   * SB_PLAYER
+  * HARMONY

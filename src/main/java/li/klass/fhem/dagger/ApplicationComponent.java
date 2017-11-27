@@ -40,7 +40,6 @@ import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
-import li.klass.fhem.adapter.devices.HarmonyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
@@ -174,8 +173,6 @@ public interface ApplicationComponent {
     void inject(WeatherAdapter object);
 
     void inject(WebLinkAdapter object);
-
-    void inject(HarmonyDeviceAdapter object);
 
     void inject(GenericOverviewDetailDeviceAdapter object);
 

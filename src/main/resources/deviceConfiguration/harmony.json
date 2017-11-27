@@ -1,0 +1,18 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "sensorDevice": false,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "activity",
+      "desc": "activity",
+      "showInOverview": true
+    }
+  ],
+  "player": {
+    "previousCommand": "special previousTrack",
+    "stopCommand": "special stop",
+    "playCommand": "special playPause",
+    "nextCommand": "special nextTrack"
+  }
+}

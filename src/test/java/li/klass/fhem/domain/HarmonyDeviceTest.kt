@@ -22,25 +22,20 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain
 
-import org.junit.Test;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class HarmonyDeviceTest extends DeviceXMLParsingBase {
+class HarmonyDeviceTest : DeviceXMLParsingBase() {
 
     @Test
-    public void should_read_device() {
-        HarmonyDevice device = getDeviceFor("hub", HarmonyDevice.class);
+    fun should_read_device() {
+        val device = getDeviceFor("hub", GenericDevice::class.java)
 
-        assertThat(device.getActivity()).isEqualTo("PowerOff");
+        assertThat(stateValueFor(device, "activity")).isEqualTo("PowerOff")
     }
 
-    @Override
-    protected String getFileName() {
-        return "harmony.xml";
-    }
+    override fun getFileName(): String = "harmony.xml"
 }

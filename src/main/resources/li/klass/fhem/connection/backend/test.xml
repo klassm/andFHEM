@@ -23,59 +23,33 @@
   -->
 
 <FHZINFO>
-    <SB_PLAYER_LIST>
-        <SB_PLAYER name="Unten" state="off"
-            sets="on off stop:noArg play:noArg pause:noArg volume:slider,0,1,100 volumeUp:noArg volumeDown:noArg mute:noArg repeat:off,one,all show statusRequest:noArg shuffle:on,off next:noArg prev:noArg playlist sleep alarm1 alarm2 allalarms:enable,disable cliraw talk favorites:,RockAntenneAlternatvie,RockAntenneClassicPerlen,RockAntenne "
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings volumeStep ttslanguage:de,en,fr ttslink donotnotify:true,false idismac:true,false serverautoon:true,false fadeinsecs event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_henno icon sortby webCmd widgetOverride userattr">
-            <INT key="ALARMSCOUNT" value="2" />
-            <INT key="ALARMSFADEIN" value="?" />
-            <INT key="CANPOWEROFF" value="1" />
-            <INT key="DEF" value="00:04:20:xx:xx:xx" />
-            <INT key="DISPLAYTYPE" value="?" />
-            <INT key="FAVREF" value=" " />
-            <INT key="FAVSET" value="favorites" />
-            <INT key="FAVSTR"
-                value=",RockAntenneAlternatvie,RockAntenneClassicPerlen,RockAntenne" />
-            <INT key="FHEMUID" value="0004202xxxxxx" />
-            <INT key="LASTALARM" value="1" />
-            <INT key="LASTANSWER" value="signalstrength ?" />
-            <INT key="LASTInputDev" value="squeezbox" />
-            <INT key="MODEL" value="baby" />
-            <INT key="MSGCNT" value="3219" />
-            <INT key="NAME" value="Unten" />
-            <INT key="NR" value="411" />
-            <INT key="PLAYERIP" value="xxx.xxx.xxx.xxx:51956" />
-            <INT key="PLAYERMAC" value="00:04:20:2d:77:53" />
-            <INT key="PLAYERNAME" value="unten" />
-            <INT key="STATE" value="off" />
-            <INT key="TYPE" value="SB_PLAYER" />
-            <INT key="squeezbox_MSGCNT" value="3219" />
-            <INT key="squeezbox_TIME" value="2015-02-23 21:34:01" />
-            <INT key="IODev" value="squeezbox" />
-            <ATTR key="donotnotify" value="true" />
-            <ATTR key="fadeInsecs" value="10" />
-            <ATTR key="idismac" value="true" />
+    <harmony_LIST>
+        <harmony name="hub"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 nossl:1 event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat devStateIcon devStateStyle fp_henno icon sortby webCmd widgetOverride userattr"
+            sets=" activity:Fernsehen,Rock.Antenne,Zocken,PowerOff autocreate:Panasonic-Fernseher,Sony.PS3,Vu+-DVR,Onkyo-AV-Receiver, command getConfig:noArg getCurrentActivity:noArg off:noArg reconnect:noArg sleeptimer sync:noArg text cursor:up,down,left,right,pageUp,pageDown,home,end special:previousTrack,nextTrack,stop,playPause,volumeUp,volumeDown,mute update:noArg"
+            state="Connected">
+            <INT key="CONNECTS" value="1" />
+            <INT key="ConnectionState" value="LoggedIn" />
+            <INT key="DEF" value="192.168.178.xxx" />
+            <INT key="FD" value="35" />
+            <INT key="LAST_CONNECT" value="2015-02-22 08:33:52" />
+            <INT key="NAME" value="hub" />
+            <INT key="NR" value="376" />
+            <INT key="NTFY_ORDER" value="50-hub" />
+            <INT key="STATE" value="Connected" />
+            <INT key="TYPE" value="harmony" />
+            <INT key="activityStatus" value="0" />
+            <INT key="currentActivityID" value="-1" />
+            <INT key="hubSwVersion" value="3.12.9" />
+            <INT key="hubUpdate" value="1" />
+            <INT key="ip" value="192.168.178.xxx" />
+            <INT key="previousActivityID" value="7900682" />
+            <INT key="syncStatus" value="0" />
             <ATTR key="room" value="Wohnzimmer" />
-            <ATTR key="serverautoon" value="true" />
-            <ATTR key="ttslanguage" value="de" />
-            <ATTR key="ttslink" value="http://translate.google.com/translate_tts?" />
-            <ATTR key="volumeStep" value="10" />
-            <STATE key="alarmid1" value="none" measured="2015-02-22 08:33:48" />
-            <STATE key="alarmid2" value="none" measured="2015-02-22 08:33:48" />
-            <STATE key="connected" value="1" measured="2015-02-22 08:33:58" />
-            <STATE key="currentAlbum" value="?" measured="2015-02-23 21:34:01" />
-            <STATE key="currentArtist" value="?" measured="2015-02-23 21:34:01" />
-            <STATE key="currentMedia" value="?" measured="2015-02-22 08:33:48" />
-            <STATE key="currentTitle" value="?" measured="2015-02-23 21:34:01" />
-            <STATE key="lastir" value="?" measured="2015-02-22 08:33:48" />
-            <STATE key="lastunkowncmd" value="clientforget" measured="2015-02-22 15:18:28" />
-            <STATE key="playStatus" value="?" measured="2015-02-23 21:34:01" />
-            <STATE key="power" value="true" measured="2015-02-22 14:52:57" />
-            <STATE key="presence" value="absent" measured="2015-02-22 14:52:57" />
-            <STATE key="signalstrength" value="?" measured="2015-02-23 21:34:01" />
-            <STATE key="state" value="off" measured="2015-02-22 14:52:57" />
-            <STATE key="volume" value="muted" measured="2015-02-23 21:34:01" />
-            <STATE key="volumeStraight" value="?" measured="2015-02-23 21:34:01" />
-        </SB_PLAYER>
-    </SB_PLAYER_LIST>
+            <STATE key="activity" measured="2015-02-23 21:30:39" value="PowerOff" />
+            <STATE key="currentActivity" measured="2015-02-23 21:30:39" value="PowerOff" />
+            <STATE key="previousActivity" measured="2015-02-23 21:30:39" value="Fernsehen" />
+            <STATE key="state" measured="2015-02-22 08:33:52" value="Connected" />
+        </harmony>
+    </harmony_LIST>
 </FHZINFO>
