@@ -36,7 +36,6 @@ import android.widget.TextView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.cards.item.provider.ItemProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider

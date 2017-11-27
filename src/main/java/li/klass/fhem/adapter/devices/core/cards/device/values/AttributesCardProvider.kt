@@ -28,7 +28,6 @@ import android.content.Context
 import android.support.v7.widget.CardView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProvider
-import li.klass.fhem.adapter.devices.core.cards.item.provider.ItemProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
 import li.klass.fhem.domain.GenericDevice

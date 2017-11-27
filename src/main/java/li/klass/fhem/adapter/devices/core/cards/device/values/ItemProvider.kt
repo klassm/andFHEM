@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.cards.item.provider
+package li.klass.fhem.adapter.devices.core.cards.device.values
 
 import android.content.Context
 
@@ -30,7 +30,6 @@ import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
 import li.klass.fhem.domain.core.FhemDevice
 
-class AttributeItemProvider : ItemProvider {
-    override fun itemsFor(provider: XmlDeviceItemProvider, device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> =
-            provider.getAttributesFor(device, showUnknown, context)
+interface ItemProvider {
+    fun itemsFor(provider: XmlDeviceItemProvider, device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem>
 }

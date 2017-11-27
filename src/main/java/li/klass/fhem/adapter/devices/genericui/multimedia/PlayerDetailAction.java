@@ -73,7 +73,7 @@ public class PlayerDetailAction extends DeviceDetailViewAction {
 
     private void fillImageButtonWithAction(final Context context, View view, final FhemDevice device,
                                            int id, final Optional<String> action, final String connectionId) {
-        ImageButton button = (ImageButton) view.findViewById(id);
+        ImageButton button = view.findViewById(id);
         if (!action.isPresent()) {
             button.setVisibility(View.GONE);
             return;
