@@ -1,6 +1,6 @@
 {
-  "sensorDevice": true,
   "defaultGroup": "WEATHER",
+  "sensorDevice": true,
   "supportedWidgets": [
     "TemperatureWidgetView"
   ],
@@ -8,73 +8,149 @@
     {
       "key": "humidity",
       "desc": "humidity",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
       "showInOverview": true,
+      "showInDetail": false,
       "markers": [
         "WidgetTemperatureAdditionalField"
-      ]
+      ],
+      "beforeCommandReplace": []
     },
     {
       "key": "temperature",
       "desc": "temperature",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
       "showInOverview": true,
+      "showInDetail": false,
       "markers": [
         "WidgetTemperatureField"
-      ]
+      ],
+      "beforeCommandReplace": []
     },
     {
       "key": "forecast",
       "desc": "forecast",
-      "showInOverview": true
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": true,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "dewpoint",
-      "desc": "dewpoint"
+      "desc": "dewpoint",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "rain_rate",
-      "desc": "rainRate"
+      "desc": "rainRate",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "rain_total",
-      "desc": "rainTotal"
+      "desc": "rainTotal",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "wind_avspeed",
-      "desc": "windAvgSpeed"
+      "desc": "windAvgSpeed",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "wind_dir",
-      "desc": "windDirection"
-    },
-    {
-      "key": "rain_rate",
-      "desc": "rainRate"
+      "desc": "windDirection",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "wind_speed",
-      "desc": "windSpeed"
+      "desc": "windSpeed",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "uv_val",
-      "desc": "uvValue"
+      "desc": "uvValue",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     },
     {
       "key": "uv_risk",
-      "desc": "uvRisk"
+      "desc": "uvRisk",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": false,
+      "showInDetail": false,
+      "markers": [],
+      "beforeCommandReplace": []
     }
   ],
+  "attributes": [],
+  "internals": [],
+  "showStateInOverview": true,
+  "showMeasuredInOverview": true,
+  "delayForUpdateAfterCommand": 0,
+  "stateSliderKey": "state",
+  "player": null,
   "sanitise": {
     "deviceValues": {
       "rain_rate": {
-        "append": "mm/h"
+        "extract": null,
+        "append": "mm\/h",
+        "replaceAll": [],
+        "extractDigits": null,
+        "extractDivideBy": null
       },
       "rain_total": {
-        "append": "l/m²",
-        "extract": "double"
+        "extract": "double",
+        "append": "l\/m²",
+        "replaceAll": [],
+        "extractDigits": null,
+        "extractDivideBy": null
       },
       "battery": {
-        "append": "%"
+        "extract": null,
+        "append": "%",
+        "replaceAll": [],
+        "extractDigits": null,
+        "extractDivideBy": null
       }
-    }
+    },
+    "__general__": null
   }
 }

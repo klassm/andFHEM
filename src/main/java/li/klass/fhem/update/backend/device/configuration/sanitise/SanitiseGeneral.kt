@@ -24,18 +24,27 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Optional
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class SanitiseGeneral(
-        @JsonProperty("addAttributesIfNotPresent")
+        @SerialName("addAttributesIfNotPresent")
+        @Optional
         val addAttributesIfNotPresent: Set<SanitiseToAdd> = emptySet(),
-        @JsonProperty("addStatesIfNotPresent")
+
+        @SerialName("addStatesIfNotPresent")
+        @Optional
         val addStatesIfNotPresent: Set<SanitiseToAdd> = emptySet(),
-        @JsonProperty("addInternalsIfNotPresent")
+
+        @SerialName("addInternalsIfNotPresent")
+        @Optional
         val addInternalsIfNotPresent: Set<SanitiseToAdd> = emptySet(),
-        @JsonProperty("addAttributeIfModelDoesNotMatch")
-        val addAttributeIfModelDoesNotMatch: AddAttributeIfModelDoesNotMatch?
+
+        @SerialName("addAttributeIfModelDoesNotMatch")
+        @Optional
+        val addAttributeIfModelDoesNotMatch: AddAttributeIfModelDoesNotMatch? = null
 ) : Serializable {
     operator fun plus(toAdd: SanitiseGeneral?): SanitiseGeneral {
         return SanitiseGeneral(

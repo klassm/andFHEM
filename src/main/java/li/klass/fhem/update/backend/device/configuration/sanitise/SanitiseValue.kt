@@ -24,19 +24,30 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Optional
+import kotlinx.serialization.SerialName
 import li.klass.fhem.update.backend.device.configuration.Replacement
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class SanitiseValue(
-        @JsonProperty("extract")
-        val extract: String?,
-        @JsonProperty("append")
-        val append: String?,
-        @JsonProperty("replaceAll")
+        @SerialName("extract")
+        @Optional
+        val extract: String? = null,
+
+        @SerialName("append")
+        @Optional
+        val append: String? = null,
+
+        @SerialName("replaceAll")
+        @Optional
         val replaceAll: Set<Replacement> = emptySet(),
-        @JsonProperty("extractDigits")
-        val extractDigits: Int?,
-        @JsonProperty("extractDivideBy")
-        val extractDivideBy: Int?
+
+        @SerialName("extractDigits")
+        @Optional
+        val extractDigits: Int? = null,
+
+        @SerialName("extractDivideBy")
+        @Optional
+        val extractDivideBy: Int? = null
 ) : Serializable

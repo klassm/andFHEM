@@ -59,7 +59,7 @@ class DeviceConfigurationTask extends DefaultTask {
             def type = file.name.replace(".json", "")
             "\"" + type + "\":" + Resources.toString(file.absoluteFile.toURI().toURL(), Charsets.UTF_8) + ""
         }
-        def content = "{" + inputDir.listFiles().collect(fileContentToString).join(",") + "}"
+        def content = "{\"configurations\":{" + inputDir.listFiles().collect(fileContentToString).join(",") + "}}"
 
         def outputFile = new File(outputDir.getAbsolutePath() + "/deviceConfiguration.json");
         outputFile.getParentFile().mkdirs()
@@ -67,6 +67,7 @@ class DeviceConfigurationTask extends DefaultTask {
         Files.write(content.getBytes(Charsets.UTF_8), outputFile);
     }
 }
+// {"configurations":{"bla":{"defaultGroup":"bla","sensorDevice":false,"supportedWidgets":[],"states":[],"attributes":[],"internals":[],"showStateInOverview":true,"showMeasuredInOverview":true,"delayForUpdateAfterCommand":0,"stateSliderKey":"state","player":null,"sanitise":null}}}
 
 task buildDeviceConfigurationJson(type: DeviceConfigurationTask) {
     inputDir = file('src/main/resources/deviceConfiguration')

@@ -24,16 +24,32 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Optional
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class PlayerConfiguration(
-        @JsonProperty("previousCommand") val previousCommand: String?,
-        @JsonProperty("pauseCommand") val pauseCommand: String?,
-        @JsonProperty("stopCommand") val stopCommand: String?,
-        @JsonProperty("playCommand") val playCommand: String?,
-        @JsonProperty("nextCommand") val nextCommand: String?
+        @Optional
+        @SerialName("previousCommand")
+        val previousCommand: String? = null,
+
+        @Optional
+        @SerialName("pauseCommand")
+        val pauseCommand: String? = null,
+
+        @Optional
+        @SerialName("stopCommand")
+        val stopCommand: String? = null,
+
+        @Optional
+        @SerialName("playCommand")
+        val playCommand: String? = null,
+
+        @Optional
+        @SerialName("nextCommand")
+        val nextCommand: String? = null
 ) : Serializable {
-    val hasAny = listOf(previousCommand, pauseCommand, stopCommand, playCommand, nextCommand)
+    fun hasAny(): Boolean = listOf(previousCommand, pauseCommand, stopCommand, playCommand, nextCommand)
             .any { it != null }
 }

@@ -24,10 +24,11 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class Replacement(
-        @JsonProperty("search", required = true) val search: String,
-        @JsonProperty("replaceBy", required = true) val replaceBy: String
+        @SerialName("search") val search: String,
+        @SerialName("replaceBy") val replaceBy: String
 ) : Serializable

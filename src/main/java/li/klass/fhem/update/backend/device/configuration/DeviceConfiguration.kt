@@ -24,46 +24,59 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Optional
+import kotlinx.serialization.SerialName
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseConfiguration
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class DeviceConfiguration(
-        @JsonProperty("defaultGroup")
+        @SerialName("defaultGroup")
         val defaultGroup: String,
 
-        @JsonProperty("sensorDevice")
+        @SerialName("sensorDevice")
+        @Optional
         val isSensorDevice: Boolean = false,
 
-        @JsonProperty("supportedWidgets")
+        @SerialName("supportedWidgets")
+        @Optional
         val supportedWidgets: Set<String> = emptySet(),
 
-        @JsonProperty("states") val states:
-        Set<ViewItemConfig> = emptySet(),
+        @SerialName("states")
+        @Optional
+        val states: Set<ViewItemConfig> = emptySet(),
 
-        @JsonProperty("attributes") val attributes:
-        Set<ViewItemConfig> = emptySet(),
+        @SerialName("attributes")
+        @Optional
+        val attributes: Set<ViewItemConfig> = emptySet(),
 
-        @JsonProperty("internals") val internals:
-        Set<ViewItemConfig> = emptySet(),
+        @SerialName("internals")
+        @Optional
+        val internals: Set<ViewItemConfig> = emptySet(),
 
-        @JsonProperty("showStateInOverview")
+        @SerialName("showStateInOverview")
+        @Optional
         val isShowStateInOverview: Boolean = true,
 
-        @JsonProperty("showMeasuredInOverview")
+        @SerialName("showMeasuredInOverview")
+        @Optional
         val isShowMeasuredInOverview: Boolean = true,
 
-        @JsonProperty("delayForUpdateAfterCommand")
+        @SerialName("delayForUpdateAfterCommand")
+        @Optional
         val delayForUpdateAfterCommand: Int = 0,
 
-        @JsonProperty("stateSliderKey")
+        @SerialName("stateSliderKey")
+        @Optional
         val stateSliderKey: String = "state",
 
-        @JsonProperty("player")
-        val playerConfiguration: PlayerConfiguration?,
+        @SerialName("player")
+        @Optional
+        val playerConfiguration: PlayerConfiguration? = null,
 
-        @JsonProperty("sanitise")
-        val sanitiseConfiguration: SanitiseConfiguration?
+        @SerialName("sanitise")
+        @Optional
+        val sanitiseConfiguration: SanitiseConfiguration? = null
 
 ) : Serializable {
     fun stateConfigFor(key: String): ViewItemConfig? =
