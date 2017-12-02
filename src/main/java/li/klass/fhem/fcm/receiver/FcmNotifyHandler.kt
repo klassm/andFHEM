@@ -37,6 +37,7 @@ import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.Tasker
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class FcmNotifyHandler @Inject constructor(
@@ -50,6 +51,7 @@ class FcmNotifyHandler @Inject constructor(
         val changesText = data.changes ?: return
         val deviceName = data.deviceName ?: return
 
+        logger.info("handleNotify - handling notify for deviceName=$deviceName, changes=$changesText")
         val changes = extractChanges(deviceName, changesText, context)
 
         deviceListService.parseReceivedDeviceStateMap(deviceName, changes, data.connection)
@@ -98,5 +100,9 @@ class FcmNotifyHandler @Inject constructor(
     private fun showNotification(deviceName: String, updates: Map<String, String>, vibrate: Boolean, context: Context) {
         val device: FhemDevice = deviceListService.getDeviceForName(deviceName) ?: return
         notificationService.deviceNotification(updates, device, vibrate, context)
+    }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(FcmNotifyHandler::class.java)!!
     }
 }
