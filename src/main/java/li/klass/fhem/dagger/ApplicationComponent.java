@@ -41,7 +41,6 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
-import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
@@ -164,8 +163,6 @@ public interface ApplicationComponent {
     void inject(GCMSendDeviceAdapter object);
 
     void inject(RemoteControlAdapter object);
-
-    void inject(SonosPlayerAdapter object);
 
     void inject(ToggleableAdapter object);
 

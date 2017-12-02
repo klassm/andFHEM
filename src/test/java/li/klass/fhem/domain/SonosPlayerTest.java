@@ -33,24 +33,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SonosPlayerTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        SonosPlayerDevice device = getDefaultDevice(SonosPlayerDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getCurrentAlbum()).isNullOrEmpty();
-        assertThat(device.getCurrentTitle()).isNullOrEmpty();
-        assertThat(device.getCurrentTitle()).isNullOrEmpty();
-        assertThat(device.getCurrentTrackDuration()).isEqualTo("0:00:00");
-        assertThat(device.getInfoSummarize1()).isEqualTo("WDR 2 Rhein und Ruhr:");
-        assertThat(device.getInfoSummarize2()).isEqualTo("STOPPED => WDR 2 Rhein und Ruhr:");
-        assertThat(device.getInfoSummarize3()).isEqualTo("Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer");
-        assertThat(device.getMute()).isEqualTo("no");
-        assertThat(device.getNumberOfTracks()).isEqualTo("2");
-        assertThat(device.getRepeat()).isEqualTo("no");
-        assertThat(device.getShuffle()).isEqualTo("no");
-        assertThat(device.getVolume()).isEqualTo("24");
-        assertThat(device.getCurrentSender()).isEqualTo("WDR 2 Rhein und Ruhr");
+        assertThat(stateValueFor(device, "currentAlbum")).isNullOrEmpty();
+        assertThat(stateValueFor(device, "currentTitle")).isNullOrEmpty();
+        assertThat(stateValueFor(device, "currentTrackDuration")).isEqualTo("0:00:00");
+        assertThat(stateValueFor(device, "infoSummarize1")).isEqualTo("WDR 2 Rhein und Ruhr:");
+        assertThat(stateValueFor(device, "infoSummarize2")).isEqualTo("STOPPED => WDR 2 Rhein und Ruhr:");
+        assertThat(stateValueFor(device, "infoSummarize3")).isEqualTo("Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer");
+        assertThat(stateValueFor(device, "Mute")).isEqualTo("0");
+        assertThat(stateValueFor(device, "numberOfTracks")).isEqualTo("2");
+        assertThat(stateValueFor(device, "Repeat")).isEqualTo("0");
+        assertThat(stateValueFor(device, "Shuffle")).isEqualTo("0");
+        assertThat(stateValueFor(device, "Volume")).isEqualTo("24");
+        assertThat(stateValueFor(device, "currentSender")).isEqualTo("WDR 2 Rhein und Ruhr");
     }
 
     @Override

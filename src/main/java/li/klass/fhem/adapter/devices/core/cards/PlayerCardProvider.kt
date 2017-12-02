@@ -29,7 +29,7 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.ImageButton
 import com.google.common.base.Optional
-import kotlinx.android.synthetic.main.player_action.view.*
+import kotlinx.android.synthetic.main.device_detail_card_player.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R

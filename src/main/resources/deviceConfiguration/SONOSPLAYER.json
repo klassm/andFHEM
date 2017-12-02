@@ -1,0 +1,90 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "sensorDevice": false,
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "Volume",
+      "desc": "musicVolume",
+      "showInOverview": false
+    },
+    {
+      "key": "Mute",
+      "desc": "musicMute",
+      "showInOverview": false
+    },
+    {
+      "key": "Repeat",
+      "desc": "musicRepeat",
+      "showInOverview": false
+    },
+    {
+      "key": "Shuffle",
+      "desc": "musicShuffle",
+      "showInOverview": false
+    },
+    {
+      "key": "currentAlbum",
+      "desc": "musicAlbum",
+      "showInOverview": false
+    },
+    {
+      "key": "currentSender",
+      "desc": "musicSender",
+      "showInOverview": false
+    },
+    {
+      "key": "currentTitle",
+      "desc": "musicTitle",
+      "showInOverview": false
+    },
+    {
+      "key": "currentTrackDuration",
+      "desc": "musicDuration",
+      "showInOverview": false
+    }
+  ],
+  "player": {
+    "previousCommand": "Previous",
+    "pauseCommand": "Pause",
+    "stopCommand": "Stop",
+    "playCommand": "Play",
+    "nextCommand": "Next"
+  },
+  "sanitise": {
+    "__general__": {
+      "addStatesIfNotPresent": [
+        {
+          "key": "Mute",
+          "value": "0"
+        },
+        {
+          "key": "Shuffle",
+          "value": "0"
+        },
+        {
+          "key": "Repeat",
+          "value": "0"
+        }
+      ]
+    },
+    "deviceValues": {
+      "sets": {
+        "replaceAll": [
+          {
+            "search": "Mute ",
+            "replaceBy": "Mute:0,1 "
+          },
+          {
+            "search": "Shuffle ",
+            "replaceBy": "Shuffle:0,1 "
+          },
+          {
+            "search": "Repeat ",
+            "replaceBy": "Repeat:0,1 "
+          }
+        ]
+      }
+    }
+  }
+}
