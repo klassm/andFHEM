@@ -100,6 +100,9 @@ class RoomDeviceList(val roomName: String) : Serializable {
         return deviceMap[group] as MutableSet<T>
     }
 
+    fun getDevicesOfType(deviceType: String): List<FhemDevice> =
+            allDevices.filter { it.xmlListDevice?.type == deviceType }.sortedWith(FhemDevice.BY_NAME)
+
     fun <T : FhemDevice> getDevicesOfType(deviceType: DeviceType): List<T> {
         val allDevices = allDevices
         val deviceList = newArrayList<T>()

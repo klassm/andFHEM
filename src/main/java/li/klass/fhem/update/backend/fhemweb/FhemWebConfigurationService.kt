@@ -24,7 +24,7 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import li.klass.fhem.domain.FHEMWEBDevice
+import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import java.util.*
 import javax.inject.Inject
@@ -64,5 +64,5 @@ class FhemWebConfigurationService @Inject constructor(
         return columnAttributeProvider.getFor(fhemwebDevice, room)
     }
 
-    private fun findFhemWebDevice(): FHEMWEBDevice? = fhemWebDeviceInRoomDeviceListSupplier.get()
+    private fun findFhemWebDevice(): GenericDevice? = fhemWebDeviceInRoomDeviceListSupplier.get()
 }

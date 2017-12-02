@@ -25,8 +25,7 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
-import li.klass.fhem.domain.FHEMWEBDevice
-import li.klass.fhem.update.backend.xmllist.DeviceNode
+import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -59,10 +58,12 @@ class ColumnAttributeProviderTest {
         assertThat(provider.getFor(device, "Blub")).containsExactly("FS20", "notify", "FHZ", "IT")
     }
 
-    private fun deviceWithColumn(column: String): FHEMWEBDevice {
-        val device = FHEMWEBDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
-        device.xmlListDevice.setAttribute(XmllistKey.Attribute.FhemWeb.column, column)
-        return device
+    private fun deviceWithColumn(column: String): GenericDevice {
+        val xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf(), mutableMapOf(), mutableMapOf(), mutableMapOf())
+        xmlListDevice.setAttribute(XmllistKey.Attribute.FhemWeb.column, column)
+        return GenericDevice()
+                .apply {
+                    this.xmlListDevice = xmlListDevice
+                }
     }
 }

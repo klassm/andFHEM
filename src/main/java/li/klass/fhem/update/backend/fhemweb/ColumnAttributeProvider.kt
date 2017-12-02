@@ -25,11 +25,11 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
-import li.klass.fhem.domain.FHEMWEBDevice
+import li.klass.fhem.domain.GenericDevice
 import javax.inject.Inject
 
 class ColumnAttributeProvider @Inject constructor() {
-    fun getFor(fhemwebDevice: FHEMWEBDevice, room: String): List<String> {
+    fun getFor(fhemwebDevice: GenericDevice, room: String): List<String> {
 
         val attribute = fhemwebDevice.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.column).or("")
         return attribute.split(" ")

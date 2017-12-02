@@ -40,7 +40,6 @@ import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
-import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
@@ -62,7 +61,6 @@ public enum DeviceType {
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
 
     GENERIC("__generic__", GenericDevice.class, new GenericOverviewDetailDeviceAdapter());
 

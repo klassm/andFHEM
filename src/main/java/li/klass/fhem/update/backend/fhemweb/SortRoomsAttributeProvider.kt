@@ -25,11 +25,11 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
-import li.klass.fhem.domain.FHEMWEBDevice
+import li.klass.fhem.domain.GenericDevice
 import javax.inject.Inject
 
 class SortRoomsAttributeProvider @Inject constructor() {
-    fun provideFor(device: FHEMWEBDevice): List<String> {
+    fun provideFor(device: GenericDevice): List<String> {
         return device.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.sortRooms)
                 .or("")
                 .split(sortRoomsDelimiter)

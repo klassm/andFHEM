@@ -8,3 +8,4 @@
   * HCS
   * HARMONY
   * SONOSPLAYER
+  * FHEMWEB

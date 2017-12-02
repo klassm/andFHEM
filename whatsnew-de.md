@@ -9,3 +9,4 @@
   * SB_PLAYER
   * HARMONY
   * SONOSPLAYER
+  * FHEMWEB

@@ -25,11 +25,11 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
-import li.klass.fhem.domain.FHEMWEBDevice
+import li.klass.fhem.domain.GenericDevice
 import javax.inject.Inject
 
 class HiddenRoomsAttributeProvider @Inject constructor() {
-    fun provideFor(fhemWebDevice: FHEMWEBDevice): Set<String> {
+    fun provideFor(fhemWebDevice: GenericDevice): Set<String> {
         return fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenRoom)
                 .or("")
                 .split(",")

@@ -28,8 +28,7 @@ import com.google.common.base.Predicate
 import com.google.common.base.Supplier
 import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.connection.backend.ConnectionService
-import li.klass.fhem.domain.FHEMWEBDevice
-import li.klass.fhem.domain.core.DeviceType
+import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
 import li.klass.fhem.update.backend.DeviceListService
@@ -43,17 +42,17 @@ class FhemWebDeviceInRoomDeviceListSupplier
         private val applicationProperties: ApplicationProperties,
         private val connectionService: ConnectionService,
         private val deviceListService: DeviceListService
-) : Supplier<FHEMWEBDevice?> {
+) : Supplier<GenericDevice?> {
 
-    override fun get(): FHEMWEBDevice? {
+    override fun get(): GenericDevice? {
         val deviceList = deviceListService.getAllRoomsDeviceList(connectionService.getSelectedId())
-        val fhemWebDevices = deviceList.getDevicesOfType<FhemDevice>(DeviceType.FHEMWEB)
+        val fhemWebDevices = deviceList.getDevicesOfType("FHEMWEB")
         return getIn(fhemWebDevices)
     }
 
-    private fun getIn(devices: List<FhemDevice>): FHEMWEBDevice? {
+    private fun getIn(devices: List<FhemDevice>): GenericDevice? {
         if (devices.isEmpty()) return null
-        if (devices.size == 1) return devices[0] as FHEMWEBDevice
+        if (devices.size == 1) return devices[0] as GenericDevice
 
         val qualifierFromPreferences: String? =
                 stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null))
@@ -62,7 +61,7 @@ class FhemWebDeviceInRoomDeviceListSupplier
             val port = connectionService.getPortOfSelectedConnection()
             val match = from(devices).filter(predicateFHEMWEBDeviceForPort(port)).first()
             if (match.isPresent) {
-                return match.get() as FHEMWEBDevice
+                return match.get() as GenericDevice
             }
         }
 
@@ -70,22 +69,21 @@ class FhemWebDeviceInRoomDeviceListSupplier
 
         val match = from(devices).filter(predicateFHEMWEBDeviceForQualifier(qualifier)).first()
         return if (match.isPresent) {
-            match.get() as FHEMWEBDevice
-        } else devices[0] as FHEMWEBDevice
+            match.get() as GenericDevice
+        } else devices[0] as GenericDevice
     }
 
     private fun predicateFHEMWEBDeviceForQualifier(qualifier: String): Predicate<FhemDevice> {
         return Predicate { device ->
-            (device is FHEMWEBDevice && device.name != null
-                    && device.name.toUpperCase(Locale.getDefault()).contains(qualifier))
+            (device?.name?.toUpperCase(Locale.getDefault()) ?: "").contains(qualifier)
         }
     }
 
     private fun predicateFHEMWEBDeviceForPort(port: Int): Predicate<FhemDevice> {
         return Predicate { device ->
-            if (device !is FHEMWEBDevice) return@Predicate false
-            val fhemwebDevice = device as FHEMWEBDevice?
-            fhemwebDevice!!.port == port.toString() + ""
+            return@Predicate device?.xmlListDevice?.let {
+                it.type == "FHEMWEB" && it.attributeValueFor("port").orNull() == port.toString()
+            } == true
         }
     }
 
