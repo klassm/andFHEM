@@ -19,7 +19,7 @@
         "replaceAll": [
           {
             "search": "RGB",
-            "replaceBy": "rgb:colorpicker,RGB"
+            "replaceBy": "RGB:colorpicker,RGB"
           }
         ]
       }
