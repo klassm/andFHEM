@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
@@ -40,7 +39,6 @@ import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
-import li.klass.fhem.domain.FS20ZDRDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GenericDevice;
@@ -58,7 +56,6 @@ public enum DeviceType {
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapter()),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
-    FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
 

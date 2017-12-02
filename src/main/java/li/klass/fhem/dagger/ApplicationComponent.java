@@ -37,7 +37,6 @@ import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
-import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
@@ -157,8 +156,6 @@ public interface ApplicationComponent {
 
 
     void inject(FloorplanAdapter object);
-
-    void inject(FS20ZDRDeviceAdapter object);
 
     void inject(GCMSendDeviceAdapter object);
 

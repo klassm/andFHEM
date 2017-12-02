@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FS20ZDRDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testPropertiesSet() {
-        FS20ZDRDevice device = getDefaultDevice(FS20ZDRDevice.class);
+        GenericDevice device = getDefaultDevice(GenericDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.supportsToggle()).isTrue();
