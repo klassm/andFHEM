@@ -8,3 +8,4 @@
   * HCS
   * SB_PLAYER
   * HARMONY
+  * SONOSPLAYER
