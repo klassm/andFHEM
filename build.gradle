@@ -65,7 +65,7 @@ repositories {
 }
 
 ext {
-    supportLibVersion = '27.0.1'
+    supportLibVersion = '27.0.2'
     firebaseVersion = '11.6.0'
     anko_version = '0.10.1'
     architectureComponentsVersion = '1.0.0'
@@ -113,7 +113,7 @@ dependencies {
     compile project(':external-dep')
     compile 'net.lingala.zip4j:zip4j:1.3.2'
     compile 'com.android.support:multidex:1.0.2'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"

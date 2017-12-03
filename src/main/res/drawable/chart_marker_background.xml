@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -22,31 +22,12 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="45dp"
-    android:background="@drawable/chart_marker_background"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="10:23:00"
-        android:maxLines="1"
-        android:textColor="@android:color/white"
-        tools:ignore="HardcodedText" />
-
-    <TextView
-        android:id="@+id/value"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="20"
-        android:maxLines="1"
-        android:textColor="@android:color/white"
-        tools:ignore="HardcodedText" />
-</LinearLayout>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/darkerGrey" />
+    <corners android:radius="10dp" />
+    <padding
+        android:left="3dp"
+        android:top="3dp"
+        android:right="3dp"
+        android:bottom="3dp" />
+</shape>

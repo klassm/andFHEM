@@ -22,39 +22,33 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.devices.ui;
+package li.klass.fhem.devices.ui
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.widget.TextView;
-
-import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
-
-import li.klass.fhem.R;
-
-import static li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT;
+import android.annotation.SuppressLint
+import android.content.Context
+import com.github.mikephil.charting.components.MarkerView
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import kotlinx.android.synthetic.main.chart_marker.view.*
+import li.klass.fhem.R
+import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
 
 @SuppressLint("ViewConstructor")
-public class ChartMarkerView extends MarkerView {
+class ChartMarkerView(context: Context) : MarkerView(context, R.layout.chart_marker) {
 
-    public ChartMarkerView(Context context) {
-        super(context, R.layout.chart_marker);
-        setOffset(getXOffset(), getYOffset());
+    private val xOffset: Int
+        get() = -width
+
+    private val yOffset: Int
+        get() = -height
+
+    init {
+        setOffset(xOffset.toFloat(), yOffset.toFloat())
     }
 
-    @Override
-    public void refreshContent(Entry e, Highlight highlight) {
-        ((TextView) findViewById(R.id.time)).setText(ANDFHEM_DATE_TIME_FORMAT.print((long) e.getX()));
-        ((TextView) findViewById(R.id.value)).setText(String.valueOf(e.getY()));
-    }
-
-    private int getXOffset() {
-        return -(getWidth() / 2);
-    }
-
-    private int getYOffset() {
-        return -getHeight();
+    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+        e ?: return
+        this.time.text = ANDFHEM_DATE_TIME_FORMAT.print(e.x.toLong())
+        this.value.text = e.y.toString()
     }
 }
