@@ -24,24 +24,19 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import kotlinx.serialization.Optional
-import kotlinx.serialization.SerialName
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
-@kotlinx.serialization.Serializable
 data class SanitiseConfiguration(
-        @SerialName("deviceValues")
-        @Optional
-        val values: Map<String, SanitiseValue> = emptyMap(),
-
-        @SerialName("__general__")
-        @Optional
-        val general: SanitiseGeneral? = null
+        @JsonProperty("deviceValues")
+        val values: Map<String, SanitiseValue>? = emptyMap(),
+        @JsonProperty("__general__")
+        val general: SanitiseGeneral?
 ) : Serializable {
     operator fun plus(toAdd: SanitiseConfiguration?): SanitiseConfiguration {
         toAdd ?: return this
 
-        val mergedValues = values + toAdd.values
+        val mergedValues = (values ?: emptyMap()) + (toAdd.values ?: emptyMap())
         val mergedGeneral = general?.let { it + toAdd.general } ?: toAdd.general
 
         return SanitiseConfiguration(

@@ -88,6 +88,16 @@
     public *;
 }
 
-# kotlinx.serialization
+# Proguard
+-keep class com.fasterxml.jackson.databind.ObjectMapper {
+    public <methods>;
+    protected <methods>;
+}
+-keep class com.fasterxml.jackson.databind.ObjectWriter {
+    public ** writeValueAsString(**);
+}
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+-keepattributes *Annotation*
 -keep class kotlin.reflect.** { *; }
 -dontwarn kotlin.reflect.**

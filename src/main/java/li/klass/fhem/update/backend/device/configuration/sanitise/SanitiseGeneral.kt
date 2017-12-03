@@ -24,33 +24,24 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import kotlinx.serialization.Optional
-import kotlinx.serialization.SerialName
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
-@kotlinx.serialization.Serializable
 data class SanitiseGeneral(
-        @SerialName("addAttributesIfNotPresent")
-        @Optional
-        val addAttributesIfNotPresent: Set<SanitiseToAdd> = emptySet(),
-
-        @SerialName("addStatesIfNotPresent")
-        @Optional
-        val addStatesIfNotPresent: Set<SanitiseToAdd> = emptySet(),
-
-        @SerialName("addInternalsIfNotPresent")
-        @Optional
-        val addInternalsIfNotPresent: Set<SanitiseToAdd> = emptySet(),
-
-        @SerialName("addAttributeIfModelDoesNotMatch")
-        @Optional
-        val addAttributeIfModelDoesNotMatch: AddAttributeIfModelDoesNotMatch? = null
+        @JsonProperty("addAttributesIfNotPresent")
+        val addAttributesIfNotPresent: Set<SanitiseToAdd>? = emptySet(),
+        @JsonProperty("addStatesIfNotPresent")
+        val addStatesIfNotPresent: Set<SanitiseToAdd>? = emptySet(),
+        @JsonProperty("addInternalsIfNotPresent")
+        val addInternalsIfNotPresent: Set<SanitiseToAdd>? = emptySet(),
+        @JsonProperty("addAttributeIfModelDoesNotMatch")
+        val addAttributeIfModelDoesNotMatch: AddAttributeIfModelDoesNotMatch?
 ) : Serializable {
     operator fun plus(toAdd: SanitiseGeneral?): SanitiseGeneral {
         return SanitiseGeneral(
-                addAttributesIfNotPresent = addAttributesIfNotPresent + (toAdd?.addAttributesIfNotPresent ?: emptySet()),
-                addStatesIfNotPresent = addStatesIfNotPresent + (toAdd?.addStatesIfNotPresent ?: emptySet()),
-                addInternalsIfNotPresent = addInternalsIfNotPresent + (toAdd?.addInternalsIfNotPresent ?: emptySet()),
+                addAttributesIfNotPresent = (addAttributesIfNotPresent ?: emptySet()) + (toAdd?.addAttributesIfNotPresent ?: emptySet()),
+                addStatesIfNotPresent = (addStatesIfNotPresent ?: emptySet()) + (toAdd?.addStatesIfNotPresent ?: emptySet()),
+                addInternalsIfNotPresent = (addInternalsIfNotPresent ?: emptySet()) + (toAdd?.addInternalsIfNotPresent ?: emptySet()),
                 addAttributeIfModelDoesNotMatch = addAttributeIfModelDoesNotMatch ?: toAdd?.addAttributeIfModelDoesNotMatch
         )
     }

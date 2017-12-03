@@ -68,9 +68,9 @@ class Sanitiser @Inject constructor(
     }
 
     private fun handleGeneral(xmlListDevice: XmlListDevice, generalOptions: SanitiseGeneral) {
-        addValueIfNotPresent(generalOptions.addAttributesIfNotPresent, ATTR, xmlListDevice.attributes)
-        addValueIfNotPresent(generalOptions.addStatesIfNotPresent, STATE, xmlListDevice.states)
-        addValueIfNotPresent(generalOptions.addInternalsIfNotPresent, INT, xmlListDevice.internals)
+        addValueIfNotPresent(generalOptions.addAttributesIfNotPresent ?: emptySet(), ATTR, xmlListDevice.attributes)
+        addValueIfNotPresent(generalOptions.addStatesIfNotPresent ?: emptySet(), STATE, xmlListDevice.states)
+        addValueIfNotPresent(generalOptions.addInternalsIfNotPresent ?: emptySet(), INT, xmlListDevice.internals)
         handleGeneralAttributeAddIfModelDoesNotMatch(xmlListDevice, generalOptions)
     }
 
@@ -102,7 +102,7 @@ class Sanitiser @Inject constructor(
         val measured = deviceNode.measured
         val type = deviceNode.type
 
-        val attributeOptions = deviceOptions.values[key]
+        val attributeOptions = deviceOptions.values?.get(key)
         attributeOptions ?: return deviceNode
 
         value = value.replace("&deg;".toRegex(), "°")
@@ -115,7 +115,7 @@ class Sanitiser @Inject constructor(
     }
 
     private fun handleReplaceAll(attributeOptions: SanitiseValue, value: String): String {
-        return attributeOptions.replaceAll.fold(value, { acc, replacement ->
+        return (attributeOptions.replaceAll ?: emptySet()).fold(value, { acc, replacement ->
             acc.replace(replacement.search.toRegex(), replacement.replaceBy)
         }).trim { it <= ' ' }
     }

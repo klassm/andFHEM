@@ -188,7 +188,9 @@ public class ImportExportService {
             importReader = new InputStreamReader(new FileInputStream(new File(fileSystemService.getCacheDir(context), SHARED_PREFERENCES_FILE_NAME)));
             Map<String, Map<String, String>> content = new Gson().fromJson(importReader, Map.class);
             for (Map.Entry<String, Map<String, String>> entry : content.entrySet()) {
-                sharedPreferencesService.writeAllIn(getSharedPreferencesExportKeys(context).get(entry.getKey()), toImportValues(entry.getValue()));
+                if (entry.getKey() != null) {
+                    sharedPreferencesService.writeAllIn(getSharedPreferencesExportKeys(context).get(entry.getKey()), toImportValues(entry.getValue()));
+                }
             }
             return ImportStatus.SUCCESS;
 

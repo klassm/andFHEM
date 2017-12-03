@@ -24,39 +24,31 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.Optional
-import kotlinx.serialization.SerialName
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
-@kotlinx.serialization.Serializable
 data class ViewItemConfig(
-        @SerialName("key")
+        @JsonProperty("key", required = true)
         val key: String,
 
-        @SerialName("desc")
+        @JsonProperty("desc", required = true)
         val desc: String,
 
-        @SerialName("showAfter")
-        @Optional
-        val showAfter: String? = null,
+        @JsonProperty("showAfter")
+        val showAfter: String?,
 
-        @SerialName("showDelayNotificationOnSwitch")
-        @Optional
+        @JsonProperty("showDelayNotificationOnSwitch")
         val isShowDelayNotificationOnSwitch: Boolean = false,
 
-        @SerialName("showInOverview")
-        @Optional
+        @JsonProperty("showInOverview")
         val isShowInOverview: Boolean = false,
 
-        @SerialName("showInDetail")
-        @Optional
+        @JsonProperty("showInDetail")
         val isShowInDetail: Boolean = false,
 
-        @SerialName("markers")
-        @Optional
-        val markers: Set<String> = emptySet(),
+        @JsonProperty("markers")
+        val markers: Set<String>? = emptySet(),
 
-        @SerialName("beforeCommandReplace")
-        @Optional
-        val beforeCommandReplacement: Set<Replacement> = emptySet()
+        @JsonProperty("beforeCommandReplace")
+        val beforeCommandReplacement: Set<Replacement>? = emptySet()
 ) : Serializable
