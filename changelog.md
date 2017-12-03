@@ -7,8 +7,7 @@ bigimg: /images/changelog.jpg
 <div id="home">
 
 {% for release in site.github.releases %}
-<h3><a href="{{release.url}}">{{release.name}}</a> ({{release.published_at | date: '%d.%m.%Y'}})</h3>
-
+<h3><a href="https://github.com/klassm/andFHEM/milestones/{{release.name}}">{{release.name}}</a> ({{release.published_at | date: '%d.%m.%Y'}})</h3>
 <div markdown="1">{{release.body}}</div>
 {% endfor %}
 
