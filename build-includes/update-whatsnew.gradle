@@ -88,7 +88,7 @@ class WhatsNewTask extends DefaultTask {
             throw new IllegalArgumentException("changelog must be filled, changedFile=" + changedFile.getAbsolutePath())
         }
         if (content.length() > 400) {
-            content = content.substring(400) + "...\r\n" + "see http://andfhem.klass.li/changelog/"
+            content = content.substring(0, 400) + "...\r\nhttp://andfhem.klass.li/changelog/"
         }
 
         toUpdate.each {
