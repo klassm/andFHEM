@@ -42,7 +42,6 @@ import android.widget.TextView
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
-import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.STRING
 import li.klass.fhem.constants.BundleExtraKeys.STRING_ID
@@ -241,7 +240,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     open fun getTitle(context: Context): CharSequence? = null
 
     protected fun back() {
-        val intent = Intent(Actions.BACK)
-        activity?.sendBroadcast(intent)
+        activity?.sendBroadcast(Intent(BACK))
     }
 }

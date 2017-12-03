@@ -36,7 +36,6 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ServerType.*
-import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.DeviceVisibility
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
 import li.klass.fhem.util.ApplicationProperties
@@ -52,10 +51,7 @@ constructor(private val applicationProperties: ApplicationProperties,
             private val application: Application) {
 
     private val dummyData: FHEMServerSpec
-        get() {
-            val dummyData = DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml", "DummyData")
-            return dummyData
-        }
+        get() = DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml", "DummyData")
 
     private fun getTestData(): FHEMServerSpec? {
         var testData: FHEMServerSpec? = null
@@ -168,8 +164,8 @@ constructor(private val applicationProperties: ApplicationProperties,
         return builder.build()
     }
 
-    fun mayShowInCurrentConnectionType(deviceType: DeviceType, connectionId: String? = null): Boolean {
-        val visibility = deviceType.visibility ?: return true
+    fun mayShowInCurrentConnectionType(deviceType: String, connectionId: String? = null): Boolean {
+        val visibility = deviceTypeVisibility[deviceType] ?: return true
         val serverType = getServerFor(connectionId)?.serverType ?: return false
         if (visibility == DeviceVisibility.NEVER) return false
 
@@ -228,15 +224,21 @@ constructor(private val applicationProperties: ApplicationProperties,
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
-        val DUMMY_DATA_ID = "-1"
         private val TEST_DATA_ID = "-2"
+        val DUMMY_DATA_ID = "-1"
         val MANAGEMENT_DATA_ID = "-3"
-        private val GSON = Gson()
         val PREFERENCES_NAME = "fhemConnections"
 
-        internal fun serialize(serverSpec: FHEMServerSpec): String = GSON.toJson(serverSpec)
+        private val deviceTypeVisibility = mapOf(
+                "FLOORPLAN" to DeviceVisibility.FHEMWEB_ONLY,
+                "remotecontrol" to DeviceVisibility.FHEMWEB_ONLY
+        )
+
+        internal fun serialize(serverSpec: FHEMServerSpec): String = Gson().toJson(serverSpec)
 
         internal fun deserialize(json: String): FHEMServerSpec =
-                GSON.fromJson(json, FHEMServerSpec::class.java)
+                Gson().fromJson(json, FHEMServerSpec::class.java)
+
+
     }
 }

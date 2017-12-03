@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Maps.newHashMap
 import com.google.common.collect.Sets.newHashSet
-import li.klass.fhem.domain.AtDevice
 import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import java.io.Serializable
@@ -81,7 +80,7 @@ class RoomDeviceList(val roomName: String) : Serializable {
                                           respectSupported: Boolean): List<FhemDevice> {
         val deviceSet = getOrCreateDeviceList<FhemDevice>(group)
         val deviceList = newArrayList<FhemDevice>()
-        deviceSet.filterTo(deviceList) { it !is AtDevice && (!respectSupported || it.isSupported) }
+        deviceSet.filterTo(deviceList) { !respectSupported || it.isSupported }
 
         try {
             Collections.sort(deviceList, FhemDevice.BY_NAME)

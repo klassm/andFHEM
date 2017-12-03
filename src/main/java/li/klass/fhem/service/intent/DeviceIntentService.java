@@ -39,12 +39,12 @@ import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.devices.backend.AtService;
 import li.klass.fhem.devices.backend.DeviceService;
 import li.klass.fhem.devices.backend.DimmableDeviceService;
 import li.klass.fhem.devices.backend.GenericDeviceService;
 import li.klass.fhem.devices.backend.HeatingService;
 import li.klass.fhem.devices.backend.ToggleableService;
+import li.klass.fhem.devices.backend.at.AtService;
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;

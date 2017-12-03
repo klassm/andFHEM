@@ -119,7 +119,7 @@ constructor(
                 continue
             }
 
-            if (connectionService.mayShowInCurrentConnectionType(deviceType)) {
+            if (connectionService.mayShowInCurrentConnectionType(key)) {
 
                 val localErrorCount = devicesFromDocument(deviceType.deviceClass, xmlListDevices,
                         allDevices, context, deviceConfiguration.orNull())
@@ -256,8 +256,6 @@ constructor(
         val children = concat(xmlListDevice.attributes.values, xmlListDevice.internals.values,
                 xmlListDevice.states.values, xmlListDevice.headers.values)
         for (child in newArrayList(children)) {
-            if (child.key == null) continue
-
             val sanitisedKey = child.key.trim { it <= ' ' }.replace("[-.]".toRegex(), "_")
             if (!device.acceptXmlKey(sanitisedKey)) {
                 continue

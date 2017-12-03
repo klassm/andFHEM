@@ -27,13 +27,11 @@ package li.klass.fhem.timer.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TableRow
 import com.google.common.base.Joiner
-import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkNotNull
 import com.google.common.base.Splitter
 import com.google.common.base.Strings
@@ -49,9 +47,7 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.devices.backend.AtService
-import li.klass.fhem.devices.backend.TimerDefinition
-import li.klass.fhem.domain.AtDevice
+import li.klass.fhem.devices.backend.at.*
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListFragment
@@ -64,10 +60,11 @@ import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
 import li.klass.fhem.widget.TimePickerWithSecondsDialog
 import org.apache.commons.lang3.StringUtils.isBlank
 import org.jetbrains.anko.coroutines.experimental.bg
+import org.joda.time.LocalTime
 import javax.inject.Inject
 
 class TimerDetailFragment : BaseFragment() {
-    private var timerDevice: AtDevice? = null
+    private var timerDevice: TimerDevice? = null
 
     @Transient private var targetDevice: FhemDevice? = null
     private var savedTimerDeviceName: String? = null
@@ -194,36 +191,34 @@ class TimerDetailFragment : BaseFragment() {
     private fun bindSwitchTimeButton(view: View) {
         val switchTimeChangeButton = view.findViewById<Button>(R.id.switchTimeSet)
         switchTimeChangeButton.setOnClickListener {
-            val switchTime = getSwitchTime(view).or(SwitchTime(0, 0, 0))
-            TimePickerWithSecondsDialog(activity, switchTime.hour, switchTime.minute, switchTime.second, TimePickerWithSecondsDialog.TimePickerWithSecondsListener { _, newHour, newMinute, newSecond, _ -> setSwitchTime(newHour, newMinute, newSecond, view) }).show()
+            val switchTime = getSwitchTime(view) ?: LocalTime.now()
+            TimePickerWithSecondsDialog(activity, switchTime.hourOfDay, switchTime.minuteOfHour, switchTime.secondOfMinute,
+                    TimePickerWithSecondsDialog.TimePickerWithSecondsListener { _, newHour, newMinute, newSecond, _ -> setSwitchTime(LocalTime(newHour, newMinute, newSecond), view) }).show()
         }
     }
 
     private fun bindTimerTypeSpinner(view: View) {
-        val typeSpinner = view.timerType
 
-        val timerTypeAdapter = ArrayAdapter<String>(activity, R.layout.spinnercontent)
-
-        for (type in AtDevice.TimerType.values()) {
-            timerTypeAdapter.add(view.context.getString(type.text))
+        view.timerType.adapter = ArrayAdapter<String>(activity, R.layout.spinnercontent).apply {
+            TimerType.values()
+                    .map { view.context.getString(it.text) }
+                    .forEach { this.add(it) }
         }
-        typeSpinner.adapter = timerTypeAdapter
     }
 
     private fun bindRepetitionSpinner(view: View) {
         val repetitionSpinner = view.timerRepetition
         val repetitionAdapter = ArrayAdapter<String>(activity, R.layout.spinnercontent)
-        for (atRepetition in AtDevice.AtRepetition.values()) {
-            repetitionAdapter.add(view.context.getString(atRepetition.text))
-        }
+        AtRepetition.values()
+                .forEach { repetitionAdapter.add(view.context.getString(it.stringId)) }
         repetitionSpinner.adapter = repetitionAdapter
     }
 
     private fun save() {
         val view = view ?: return
 
-        val switchTimeOptional = getSwitchTime(view)
-        if (targetDevice == null || isBlank(getTargetState(view)) || !switchTimeOptional.isPresent) {
+        val switchTime = getSwitchTime(view)
+        if (targetDevice == null || isBlank(getTargetState(view)) || switchTime == null) {
             activity?.sendBroadcast(Intent(SHOW_TOAST)
                     .putExtra(STRING_ID, R.string.incompleteConfigurationError))
             return
@@ -237,27 +232,27 @@ class TimerDetailFragment : BaseFragment() {
             }
         }
 
-        val switchTime = switchTimeOptional.get()
-        val timerDefinition = TimerDefinition(
-                timerName = timerDeviceName,
-                hour = switchTime.hour,
-                minute = switchTime.minute,
-                second = switchTime.second,
-                repetition = getRepetition(view).name,
-                type = getType(view).name,
+        val timerDevice = TimerDevice(
+                name = timerDeviceName,
                 isActive = view.isActive.isChecked,
-                targetDeviceName = targetDevice!!.name,
-                targetState = getTargetState(view),
-                targetStateAppendix = "" // TODO never set?
+                definition = TimerDefinition(
+                        switchTime = switchTime,
+                        repetition = getRepetition(view),
+                        type = getType(view),
+                        targetDeviceName = targetDevice!!.name,
+                        targetState = getTargetState(view),
+                        targetStateAppendix = "" // TODO never set?
+                ),
+                next = timerDevice?.next ?: ""
         )
 
         val context = activity as Context
         async(UI) {
             bg {
                 if (isModify) {
-                    atService.modify(timerDefinition, context)
+                    atService.modify(timerDevice, context)
                 } else {
-                    atService.createNew(timerDefinition, context)
+                    atService.createNew(timerDevice, context)
                 }
             }.await()
             back()
@@ -295,42 +290,39 @@ class TimerDetailFragment : BaseFragment() {
 
         async(UI) {
             bg {
-                deviceListService.getDeviceForName<FhemDevice>(timerDeviceName)
+                atService.getTimerDeviceFor(timerDeviceName)
             }.await()?.let {
-                if (it is AtDevice) {
-                    setValuesForCurrentTimerDevice(it)
-
-                    myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
-                } else {
-                    Log.e(TAG, "expected an AtDevice, but got " + it)
-                }
+                setValuesForCurrentTimerDevice(it)
+                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             }
         }
     }
 
-    private fun setValuesForCurrentTimerDevice(atDevice: AtDevice) {
-        this.timerDevice = atDevice
+    private fun setValuesForCurrentTimerDevice(device: TimerDevice) {
+        this.timerDevice = device
         updateTimerInformation(timerDevice)
 
         async(UI) {
             bg {
-                deviceListService.getDeviceForName<FhemDevice>(atDevice.targetDevice)
+                deviceListService.getDeviceForName<FhemDevice>(device.definition.targetDeviceName)
             }.await()?.let {
                 updateTargetDevice(it, this@TimerDetailFragment.view)
             }
         }
     }
 
-    private fun updateTimerInformation(timerDevice: AtDevice?) {
+    private fun updateTimerInformation(timerDevice: TimerDevice?) {
         val view = view
-        if (view != null && timerDevice != null) {
-            setType(timerDevice.timerType, view)
-            setRepetition(timerDevice.repetition, view)
-            view.isActive.isChecked = timerDevice.isActive
-            setSwitchTime(timerDevice.hours, timerDevice.minutes, timerDevice.seconds, view)
-            setTimerName(timerDevice.name, view)
-            setTargetState(Joiner.on(" ").skipNulls().join(timerDevice.targetState, timerDevice.targetStateAddtionalInformation), view)
-        }
+        view ?: return
+        timerDevice ?: return
+
+        val definition = timerDevice.definition
+        setType(definition.type, view)
+        setRepetition(definition.repetition, view)
+        view.isActive.isChecked = timerDevice.isActive
+        setSwitchTime(definition.switchTime, view)
+        setTimerName(timerDevice.name, view)
+        setTargetState(Joiner.on(" ").skipNulls().join(definition.targetState, definition.targetStateAppendix), view)
     }
 
     private fun setTimerName(timerDeviceName: String, view: View) {
@@ -345,36 +337,35 @@ class TimerDetailFragment : BaseFragment() {
 
     private fun getTargetState(view: View): String = view.targetState.text.toString()
 
-    private fun setSwitchTime(hour: Int, minute: Int, second: Int, view: View) {
-        view.switchTimeContent.text = getFormattedValue(hour, minute, second)
+    private fun setSwitchTime(switchTime: LocalTime, view: View) {
+        view.switchTimeContent.text = getFormattedValue(switchTime.hourOfDay, switchTime.minuteOfHour, switchTime.secondOfMinute)
     }
 
-    private fun getSwitchTime(view: View): Optional<SwitchTime> {
+    private fun getSwitchTime(view: View): LocalTime? {
         val text = view.switchTimeContent.text.toString()
         val parts = ImmutableList.copyOf(Splitter.on(":").split(text))
         if (parts.size != 3) {
-            return Optional.absent<SwitchTime>()
+            return null
         }
-        return Optional.of(SwitchTime(
+        return LocalTime(
                 Integer.parseInt(parts[0]),
                 Integer.parseInt(parts[1]),
-                Integer.parseInt(parts[2])
-        ))
+                Integer.parseInt(parts[2]))
     }
 
-    private fun setRepetition(repetition: AtDevice.AtRepetition, view: View) {
+    private fun setRepetition(repetition: AtRepetition, view: View) {
         view.timerRepetition.setSelection(repetition.ordinal)
     }
 
-    private fun getRepetition(view: View): AtDevice.AtRepetition =
-            AtDevice.AtRepetition.values()[view.timerRepetition.selectedItemPosition]
+    private fun getRepetition(view: View): AtRepetition =
+            AtRepetition.values()[view.timerRepetition.selectedItemPosition]
 
-    private fun setType(type: AtDevice.TimerType, view: View) {
+    private fun setType(type: TimerType, view: View) {
         view.timerType.setSelection(type.ordinal)
     }
 
-    private fun getType(view: View): AtDevice.TimerType =
-            AtDevice.TimerType.values()[view.timerType.selectedItemPosition]
+    private fun getType(view: View): TimerType =
+            TimerType.values()[view.timerType.selectedItemPosition]
 
     override fun update(refresh: Boolean) {}
 
@@ -383,13 +374,9 @@ class TimerDetailFragment : BaseFragment() {
     private val isModify: Boolean
         get() = !Strings.isNullOrEmpty(savedTimerDeviceName)
 
-    private class SwitchTime internal constructor(internal val hour: Int, internal val minute: Int, internal val second: Int)
-
     companion object {
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {
             override fun isSelectable(device: FhemDevice): Boolean = device.xmlListDevice.setList.size() > 0
         }
-
-        private val TAG = TimerDetailFragment::class.java.name
     }
 }

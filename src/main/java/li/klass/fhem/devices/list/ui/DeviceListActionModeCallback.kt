@@ -80,7 +80,7 @@ class DeviceListActionModeCallback constructor(
                 }
             }
             R.id.menu_rename -> DeviceActionUtil.renameDevice(activityContext, device)
-            R.id.menu_delete -> DeviceActionUtil.deleteDevice(activityContext, device)
+            R.id.menu_delete -> DeviceActionUtil.deleteDevice(activityContext, device.name)
             R.id.menu_room -> DeviceActionUtil.moveDevice(activityContext, device)
             R.id.menu_alias -> DeviceActionUtil.setAlias(activityContext, device)
             R.id.menu_notification -> handleNotifications(device.name)

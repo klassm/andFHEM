@@ -58,7 +58,7 @@ import li.klass.fhem.update.backend.xmllist.DeviceListParser;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.util.CloseableUtil;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -93,7 +93,7 @@ public abstract class DeviceXMLParsingBase {
                 applicationComponent.getGroupProvider(), applicationComponent.getSanitiser()
         );
 
-        when(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class), ArgumentMatchers.<String>eq(null))).thenReturn(true);
+        when(connectionService.mayShowInCurrentConnectionType(anyString(), ArgumentMatchers.<String>eq(null))).thenReturn(true);
         mockStrings();
 
         InputStream inputStream = null;

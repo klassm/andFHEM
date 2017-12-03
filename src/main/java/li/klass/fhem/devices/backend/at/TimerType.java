@@ -22,7 +22,20 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.devices.backend
+package li.klass.fhem.devices.backend.at;
 
-data class TimerDefinition(val timerName: String, val hour: Int, val minute: Int, val second: Int, val repetition: String, val type: String,
-                           val targetDeviceName: String, val targetState: String, val targetStateAppendix: String, val isActive: Boolean)
+import li.klass.fhem.R;
+
+public enum TimerType {
+    RELATIVE(R.string.timer_overview_every), ABSOLUTE(R.string.timer_overview_at);
+
+    private int stringId;
+
+    TimerType(int stringId) {
+        this.stringId = stringId;
+    }
+
+    public int getText() {
+        return stringId;
+    }
+}

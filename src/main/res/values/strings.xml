@@ -490,7 +490,7 @@
     <string name="timer_targetState">Target state</string>
     <string name="timer_time">Switch time</string>
     <string name="timer_overview_create_new">Create new timer</string>
-    <string name="timer_next_trigger">Next trigger</string>
+    <string name="timer_next_trigger">Next trigger %s</string>
 
     <string name="twilight_light">Light</string>
     <string name="twilight_next_event">Next event</string>

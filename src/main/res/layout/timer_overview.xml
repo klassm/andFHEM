@@ -31,7 +31,9 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
               style="@style/listView" />
-    <TextView android:id="@android:id/empty"
+
+    <TextView
+        android:id="@+id/empty"
               android:text="@string/deviceListEmpty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

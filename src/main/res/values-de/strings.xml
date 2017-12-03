@@ -486,7 +486,7 @@
     <string name="timer_targetState">Ziel-Zustand</string>
     <string name="timer_time">Schaltzeit</string>
     <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
-    <string name="timer_next_trigger">Nächster Schaltvorgang</string>
+    <string name="timer_next_trigger">Nächster Schaltvorgang: %s</string>
 
     <string name="twilight_light">Helligkeit</string>
     <string name="twilight_next_event">Nächstes Ereignis</string>

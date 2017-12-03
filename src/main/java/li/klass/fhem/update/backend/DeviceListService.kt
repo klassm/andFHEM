@@ -26,10 +26,7 @@ package li.klass.fhem.update.backend
 
 import android.app.Application
 import android.content.Context
-import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
-import li.klass.fhem.domain.core.DeviceType.AT
-import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.service.AbstractService
@@ -42,7 +39,6 @@ import javax.inject.Singleton
 @Singleton
 class DeviceListService @Inject
 constructor(
-        private val connectionService: ConnectionService,
         private val deviceListParser: DeviceListParser,
         private val deviceListCacheService: DeviceListCacheService,
         private val application: Application
@@ -122,10 +118,6 @@ constructor(
     fun getRoomNameList(connectionId: String? = null): Set<String> {
         val roomDeviceList = getRoomDeviceList(connectionId)
         return (roomDeviceList?.allDevices ?: emptySet())
-                .filter {
-                    val type = getDeviceTypeFor(it)
-                    type != null && connectionService.mayShowInCurrentConnectionType(type, connectionId) && type != AT
-                }
                 .filter { it.isSupported }
                 .flatMap { it.rooms }
                 .toSet()

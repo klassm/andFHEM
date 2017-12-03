@@ -61,13 +61,12 @@ public class DeviceActionUtil {
         }).show();
     }
 
-    public static void deleteDevice(final Context context, final FhemDevice device) {
-        final String deviceName = device.getName();
+    public static void deleteDevice(final Context context, final String device) {
         showConfirmation(context, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 context.startService(new Intent(Actions.DEVICE_DELETE)
                         .setClass(context, DeviceIntentService.class)
-                        .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device)
                         .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
             }
         }, context.getString(R.string.deleteConfirmation));

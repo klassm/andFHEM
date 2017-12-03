@@ -30,9 +30,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.TextView
-import com.google.common.collect.Lists
+import kotlinx.android.synthetic.main.timer_overview.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
@@ -41,24 +39,22 @@ import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.domain.AtDevice
-import li.klass.fhem.domain.core.DeviceType
+import li.klass.fhem.devices.backend.at.AtService
+import li.klass.fhem.devices.backend.at.TimerDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUtil
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class TimerListFragment : BaseFragment() {
-    private var contextMenuClickedDevice: AtDevice? = null
-    private var listView: ListView? = null
+    private var contextMenuClickedDevice: TimerDevice? = null
 
     private var createNewDeviceCalled = false
 
     @Inject
-    lateinit var deviceListService: DeviceListService
+    lateinit var atService: AtService
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
@@ -74,25 +70,16 @@ class TimerListFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        if (view != null) {
-            return view
-        }
-        val context = activity
-
-        val listAdapter = TimerListAdapter(context, Lists.newArrayList<AtDevice>())
+        val activity = activity ?: return null
+        val listAdapter = TimerListAdapter(activity, emptyList())
 
         val layout = inflater.inflate(R.layout.timer_overview, container, false)
-        val emptyView = layout.findViewById<TextView>(android.R.id.empty)
-        listView = layout.findViewById(R.id.list)
 
-        listView!!.emptyView = emptyView
-        listView!!.adapter = listAdapter
-        registerForContextMenu(listView!!)
-        listView!!.onItemClickListener = AdapterView.OnItemClickListener { _, myView, _, _ ->
-            val device = myView.tag as AtDevice
-
-            activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
+        layout.list.adapter = listAdapter
+        registerForContextMenu(layout.list)
+        layout.list.onItemClickListener = AdapterView.OnItemClickListener { _, myView, _, _ ->
+            val device = myView.tag as TimerDevice
+            activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                     .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
                     .putExtra(BundleExtraKeys.DEVICE_NAME, device.name))
         }
@@ -102,11 +89,12 @@ class TimerListFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.timers_menu, menu)
+        inflater?.inflate(R.menu.timers_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.timer_add) {
+        item ?: return false
+        if (item.itemId == R.id.timer_add) {
             createNewDeviceCalled = true
 
             val intent = Intent(Actions.SHOW_FRAGMENT)
@@ -128,7 +116,7 @@ class TimerListFragment : BaseFragment() {
     }
 
     override fun canChildScrollUp(): Boolean {
-        if (listView?.canScrollVertically(-1) == true) {
+        if (view?.list?.canScrollVertically(-1) == true) {
             return true
         }
         return super.canChildScrollUp()
@@ -137,31 +125,28 @@ class TimerListFragment : BaseFragment() {
     override fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         async(UI) {
-            val allRoomsDeviceList = bg {
+            val timerDevices = bg {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
-                deviceListService.getAllRoomsDeviceList()
+                atService.getTimerDevices()
 
             }.await()
-            adapter?.updateData(allRoomsDeviceList.getDevicesOfType(DeviceType.AT))
+            adapter?.updateData(timerDevices)
+            view?.empty?.visibility = if (timerDevices.isEmpty()) View.VISIBLE else View.GONE
             myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }
 
     private val adapter: TimerListAdapter?
-        get() {
-            if (view == null) return null
-            val listView = view!!.findViewById<ListView>(R.id.list)
-            return listView.adapter as TimerListAdapter
-        }
+        get() = view?.list?.let { it.adapter as TimerListAdapter? }
 
     override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo)
 
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val atDevice = info.targetView.tag as AtDevice
+        val atDevice = info.targetView.tag as TimerDevice
 
         Log.e(TAG, atDevice.name + " context menu")
 
@@ -171,9 +156,10 @@ class TimerListFragment : BaseFragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
+        val name = contextMenuClickedDevice?.name ?: return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
-                DeviceActionUtil.deleteDevice(activity, contextMenuClickedDevice)
+                DeviceActionUtil.deleteDevice(activity, name)
                 return true
             }
         }
