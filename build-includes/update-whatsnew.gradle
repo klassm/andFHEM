@@ -87,6 +87,9 @@ class WhatsNewTask extends DefaultTask {
         if (content.isEmpty() || content.contains("TODO")) {
             throw new IllegalArgumentException("changelog must be filled, changedFile=" + changedFile.getAbsolutePath())
         }
+        if (content.length() > 400) {
+            content = content.substring(400) + "...\r\n" + "see http://andfhem.klass.li/changelog/"
+        }
 
         toUpdate.each {
             def targetFile = new File(it.getAbsolutePath() + "/$locale/whatsnew")
