@@ -63,7 +63,7 @@ constructor(private val fragmentUiService: FragmentUiService) : DeviceDetailActi
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return ImmutableList.of<ActionCardAction>(
                 object : ActionCardButton(R.string.timetable, context) {
-                    override fun onClick(device: XmlListDevice, connectionId: String, context: Context) {
+                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
                         fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context, CULHMConfiguration())
                     }
 
