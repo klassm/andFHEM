@@ -78,7 +78,7 @@ class XmlListParser @Inject constructor(
                     // In case we have two LISTs for the same device type, we need to merge
                     // existing lists. FHEM will not send out those lists, but we replace
                     // i.e. SWAP_123_LIST by SWAP_LIST, resulting in two same list names.
-                    val existing = result[deviceType]
+                    val existing = result[deviceType] ?: emptySet<XmlListDevice>()
                     result.put(deviceType, ImmutableList.copyOf(Iterables.concat(existing, devices)))
                 } else {
                     result.put(deviceType, devices)

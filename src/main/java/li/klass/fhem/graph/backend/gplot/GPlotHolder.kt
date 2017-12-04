@@ -36,9 +36,9 @@ import javax.inject.Singleton
 
 @Singleton
 class GPlotHolder @Inject constructor(
-        val commandExecutionService: CommandExecutionService,
-        val gPlotParser: GPlotParser,
-        val application: Application
+        private val commandExecutionService: CommandExecutionService,
+        private val gPlotParser: GPlotParser,
+        private val application: Application
 ) {
 
     private val definitions = newHashMap<String, Optional<GPlotDefinition>>()
@@ -90,7 +90,7 @@ class GPlotHolder @Inject constructor(
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
-        private val TO_OPTIONAL_DEFINITION = EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>> { key, value -> Optional.of(value!!) }
+        private val TO_OPTIONAL_DEFINITION = EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>> { _, value -> Optional.of(value!!) }
 
         private val LOGGER = LoggerFactory.getLogger(GPlotHolder::class.java)
     }
