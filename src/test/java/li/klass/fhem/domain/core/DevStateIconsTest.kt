@@ -34,6 +34,15 @@ class DevStateIconsTest {
     }
 
     @Test
+    fun should_get_mapping_for_invalid_regex() {
+        val result = DevStateIcons.parse("[:10px-kreis-gelb .*disconnect:10px-kreis-rot .*done:10px-kreis-gruen ")
+
+        assertThat(result).isNotNull() // even if the first regexp is invalid!
+        assertThat(result.iconFor("bladisconnect")).isEqualTo(DevStateIcons.DevStateIcon("10px-kreis-rot", false))
+    }
+
+
+    @Test
     fun should_find_out_whether_a_noFhemwebLinkRow_concerns_states() {
         val result = DevStateIcons.parse("on:green:noFhemwebLink o.*:red:noFhemwebLink unknown:yellow")
 

@@ -117,12 +117,6 @@ public abstract class ConvenientIntentService extends IntentService {
         }
     }
 
-    protected void sendResult(ResultReceiver receiver, int resultCode, Bundle bundle) {
-        if (receiver != null) {
-            receiver.send(resultCode, bundle);
-        }
-    }
-
     protected void sendSingleExtraResult(ResultReceiver receiver, int resultCode, String bundleExtrasKey, Parcelable value) {
         if (receiver != null) {
             Bundle bundle = new Bundle();

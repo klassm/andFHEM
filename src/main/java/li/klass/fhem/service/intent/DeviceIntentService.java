@@ -133,7 +133,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         String deviceName = intent.getStringExtra(DEVICE_NAME);
         Optional<String> connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID));
 
-        FhemDevice device = deviceListService.getDeviceForName(deviceName, connectionId.orNull());
+        FhemDevice device = deviceName == null ? null : deviceListService.getDeviceForName(deviceName, connectionId.orNull());
         if (device == null) {
             LOG.info("handleIntent() - cannot find device for {}", deviceName);
             return State.ERROR;

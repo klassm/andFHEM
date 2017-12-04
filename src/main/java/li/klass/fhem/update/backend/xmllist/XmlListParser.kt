@@ -31,6 +31,7 @@ import com.google.common.collect.Maps
 import li.klass.fhem.update.backend.device.configuration.Sanitiser
 import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType
 import org.joda.time.DateTime
+import org.slf4j.LoggerFactory
 import org.w3c.dom.Document
 import org.w3c.dom.NamedNodeMap
 import org.w3c.dom.Node
@@ -111,9 +112,13 @@ class XmlListParser @Inject constructor(
 
         val childNodes = node.childNodes
         for (i in 0 until childNodes.length) {
-            val device = handleDeviceNode(childNodes.item(i))
-            if (device != null && device.internals.containsKey("NAME")) {
-                devices.add(device)
+            try {
+                val device = handleDeviceNode(childNodes.item(i))
+                if (device != null && device.internals.containsKey("NAME")) {
+                    devices.add(device)
+                }
+            } catch (e: Exception) {
+                logger.error("handleListNode - cannot parse node", e)
             }
         }
 
@@ -182,4 +187,8 @@ class XmlListParser @Inject constructor(
     }
 
     private fun nodeValueToString(value: Node?): String? = value?.nodeValue?.trim { it <= ' ' }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(XmlListParser::class.java)
+    }
 }
