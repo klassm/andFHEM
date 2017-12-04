@@ -1,6 +1,6 @@
 import com.google.common.base.Charsets
-import com.google.common.io.Resources
 import com.google.common.io.Files
+import com.google.common.io.Resources
 
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
@@ -42,6 +42,9 @@ class ResetWhatsNewTask extends DefaultTask {
     @InputFile
     File whatsnewFileDe
 
+    @OutputDirectories
+    List<File> toUpdate
+
 
     @TaskAction
     void execute(IncrementalTaskInputs inputs) {
@@ -52,6 +55,16 @@ class ResetWhatsNewTask extends DefaultTask {
     private def clear(file) {
         file.delete()
         Files.asCharSink(file, Charsets.UTF_8).write("TODO")
+
+        delete("de-DE")
+        delete("en-US")
+    }
+
+    private def delete(locale) {
+        toUpdate.each {
+            def targetFile = new File(it.getAbsolutePath() + "/$locale/whatsnew")
+            targetFile.delete()
+        }
     }
 }
 
@@ -108,4 +121,5 @@ task generateWhatsNew(type: WhatsNewTask) {
 task resetWhatsNew(type: ResetWhatsNewTask) {
     whatsnewFileDe = file('whatsnew-de.md')
     whatsnewFileEn = file('whatsnew-en.md')
+    toUpdate = [file('src/inapp/play'), file('src/premium/play')]
 }
