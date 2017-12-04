@@ -6,7 +6,9 @@
 -dontwarn dagger.**
 -keepattributes *Annotation*
 -keepattributes Signature
+-keepattributes Exceptions, InnerClasses
 -keep class li.klass.** { *; }
+-keep class li.klass.*$* { *; }
 -keep class android.** { *; }
 
 -keep public class com.google.android.gms.**
@@ -101,3 +103,4 @@
 -keepattributes *Annotation*
 -keep class kotlin.reflect.** { *; }
 -dontwarn kotlin.reflect.**
+-keep class org.jetbrains.** { *; }
