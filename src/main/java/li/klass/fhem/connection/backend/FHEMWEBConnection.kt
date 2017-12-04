@@ -33,12 +33,11 @@ import com.google.api.client.http.GenericUrl
 import com.google.api.client.http.HttpHeaders
 import com.google.api.client.http.HttpResponseException
 import com.google.common.base.Charsets
-import com.google.common.base.MoreObjects.firstNonNull
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableMap
 import com.google.common.io.CharStreams
-import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.connection.backend.RequestResultError.*
+import li.klass.fhem.connection.backend.ssl.MemorizingTrustManagerContextInitializer
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.CloseableUtil.close
@@ -46,8 +45,8 @@ import org.slf4j.LoggerFactory
 import java.io.*
 import java.net.SocketTimeoutException
 import java.net.URLEncoder
-import java.security.KeyStore
-import javax.net.ssl.*
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLHandshakeException
 
 class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: ApplicationProperties) : FHEMConnection(fhemServerSpec, applicationProperties) {
 
@@ -199,46 +198,14 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     private fun initSslContext(context: Context) {
-        try {
-            val sslContext = SSLContext.getInstance("TLS")
-            val memorizingTrustManager = MemorizingTrustManager(context)
-            var clientKeys: Array<KeyManager>? = null
-            if (serverSpec.clientCertificatePath != null) {
-                val clientCertificate = File(serverSpec.clientCertificatePath)
-                val clientCertificatePassword = serverSpec.clientCertificatePassword
-                if (clientCertificate.exists()) {
-                    val keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword)
-                    val keyManagerFactory = KeyManagerFactory.getInstance("X509")
-                    keyManagerFactory.init(keyStore, firstNonNull(clientCertificatePassword, "").toCharArray())
-                    clientKeys = keyManagerFactory.keyManagers
+        MemorizingTrustManagerContextInitializer().init(context, serverSpec)
+                ?.let {
+                    HttpsURLConnection.setDefaultSSLSocketFactory(it.socketFactory)
+                    HttpsURLConnection.setDefaultHostnameVerifier(it.hostnameVerifier)
                 }
-            }
-            sslContext.init(clientKeys, arrayOf<X509TrustManager>(memorizingTrustManager), java.security.SecureRandom())
-            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.socketFactory)
-            HttpsURLConnection.setDefaultHostnameVerifier(
-                    memorizingTrustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()))
-        } catch (e: Exception) {
-            LOG.error("Error initializing HttpsUrlConnection", e)
-        }
-
-    }
-
-    @Throws(Exception::class)
-    private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String?): KeyStore? {
-        val keyStore: KeyStore?
-        var fileInputStream: FileInputStream? = null
-        try {
-            keyStore = KeyStore.getInstance("PKCS12")
-            fileInputStream = FileInputStream(certificateFile)
-            keyStore!!.load(fileInputStream, clientCertPassword!!.toCharArray())
-        } finally {
-            close(fileInputStream)
-        }
-        return keyStore
     }
 
     companion object {
-
         val SOCKET_TIMEOUT = 20000
         private val LOG = LoggerFactory.getLogger(FHEMWEBConnection::class.java)
         private val STATUS_CODE_MAP: Map<Int, RequestResultError> = ImmutableMap.builder<Int, RequestResultError>()
@@ -254,7 +221,6 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         }
 
         private fun handleHttpStatusCode(statusCode: Int): RequestResult<InputStream>? {
-
             val error = STATUS_CODE_MAP[statusCode] ?: return null
 
             LOG.info("handleHttpStatusCode() : encountered http status code {}", statusCode)

@@ -29,10 +29,10 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
 
         licenseService.isPremium(object : IsPremiumListener {
             override fun isPremium(isPremium: Boolean) {
-                if (isPremium) {
-                    val connection = currentProvider as FHEMWEBConnection
+                val connection = currentProvider
+                if (isPremium && currentProvider is FHEMWEBConnection) {
                     val url = "${connection.server.url}/images/default/${icon.image}.png"
-                    val authHeader = connection.basicAuthHeaders.authorization
+                    val authHeader = (connection as FHEMWEBConnection).basicAuthHeaders.authorization
                     val glideUrl = GlideUrl(url, LazyHeaders.Builder()
                             .addHeader("Authorization", authHeader)
                             .build())

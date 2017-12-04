@@ -90,7 +90,7 @@
     public *;
 }
 
-# Proguard
+# Jackson
 -keep class com.fasterxml.jackson.databind.ObjectMapper {
     public <methods>;
     protected <methods>;

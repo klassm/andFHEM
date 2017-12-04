@@ -22,25 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem
+package li.klass.fhem.connection.backend.ssl
 
 import android.content.Context
-import com.bumptech.glide.Glide
-import com.bumptech.glide.Registry
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.module.AppGlideModule
-import li.klass.fhem.connection.backend.ssl.OkHttpClientForMemorizingTrustManagerSupplier
-import java.io.InputStream
+import com.google.common.base.Supplier
+import okhttp3.OkHttpClient
 
-@GlideModule
-class GlideModule : AppGlideModule() {
-    override fun registerComponents(context: Context?, glide: Glide?, registry: Registry?) {
-        super.registerComponents(context, glide, registry)
-        context ?: return
-        registry?.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(
-                OkHttpClientForMemorizingTrustManagerSupplier(context).get()
-        ))
+class OkHttpClientForMemorizingTrustManagerSupplier(val context: Context) : Supplier<OkHttpClient> {
+    override fun get(): OkHttpClient {
+        // Install the all-trusting trust manager
+        MemorizingTrustManagerContextInitializer().init(context)
+
+        val builder = OkHttpClient.Builder()
+
+        MemorizingTrustManagerContextInitializer().init(context)
+                ?.let {
+                    builder.sslSocketFactory(it.socketFactory, it.trustManager)
+                            .hostnameVerifier(it.hostnameVerifier)
+                }
+        return builder.build()
     }
 }
