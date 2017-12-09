@@ -113,13 +113,13 @@ class WhatsNewTask extends DefaultTask {
 }
 
 task generateWhatsNew(type: WhatsNewTask) {
-    whatsnewFileDe = file('app/whatsnew-de.md')
-    whatsnewFileEn = file('app/whatsnew-en.md')
-    toUpdate = [file('app/src/inapp/play'), file('app/src/premium/play')]
+    whatsnewFileDe = file('whatsnew-de.md')
+    whatsnewFileEn = file('whatsnew-en.md')
+    toUpdate = [file('src/inapp/play'), file('src/premium/play')]
 }
 
 task resetWhatsNew(type: ResetWhatsNewTask) {
-    whatsnewFileDe = file('app/whatsnew-de.md')
-    whatsnewFileEn = file('app/whatsnew-en.md')
-    toUpdate = [file('app/src/inapp/play'), file('app/src/premium/play')]
+    whatsnewFileDe = file('whatsnew-de.md')
+    whatsnewFileEn = file('whatsnew-en.md')
+    toUpdate = [file('src/inapp/play'), file('src/premium/play')]
 }
