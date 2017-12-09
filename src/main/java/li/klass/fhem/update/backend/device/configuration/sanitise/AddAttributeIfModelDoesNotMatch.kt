@@ -24,16 +24,17 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 
+@kotlinx.serialization.Serializable
 data class AddAttributeIfModelDoesNotMatch(
-        @JsonProperty("models")
+        @SerialName("models")
         val models: Set<String>,
 
-        @JsonProperty("key")
+        @SerialName("key")
         val key: String,
 
-        @JsonProperty("value")
+        @SerialName("value")
         val value: String
 ) : Serializable

@@ -1,15 +1,17 @@
 # all
-
+-optimizationpasses 3
 -dontwarn javax.**
 -dontwarn sun.misc.Unsafe
 -dontwarn com.actionbarsherlock.BuildConfig
 -dontwarn dagger.**
--keepattributes *Annotation*
+-keepattributes *Annotation*, InnerClasses
 -keepattributes Signature
--keepattributes Exceptions, InnerClasses
+-keepattributes Exceptions
 -keep class li.klass.** { *; }
--keep class li.klass.*$* { *; }
+-keep class li.klass.**.**$* { *; }
+-keep,includedescriptorclasses class li.klass.**$$serializer { *; }
 -keep class android.** { *; }
+-keep class li.klass.fhem.update.backend.device.configuration.DevicesConfiguration.**$* { *; }
 
 -keep public class com.google.android.gms.**
 -dontwarn com.google.android.gms.**
@@ -90,17 +92,7 @@
     public *;
 }
 
-# Jackson
--keep class com.fasterxml.jackson.databind.ObjectMapper {
-    public <methods>;
-    protected <methods>;
-}
--keep class com.fasterxml.jackson.databind.ObjectWriter {
-    public ** writeValueAsString(**);
-}
--keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
--keepattributes *Annotation*
+# kotlinx.serialization
 -keep class kotlin.reflect.** { *; }
 -dontwarn kotlin.reflect.**
 -keep class org.jetbrains.** { *; }

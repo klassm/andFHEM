@@ -22,31 +22,11 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend.device.configuration.sanitise
+package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
-data class SanitiseConfiguration(
-        @SerialName("deviceValues")
-        @Optional
-        val values: Map<String, SanitiseValue> = emptyMap(),
-
-        @SerialName("__general__")
-        @Optional
-        val general: SanitiseGeneral? = null
-) : Serializable {
-    operator fun plus(toAdd: SanitiseConfiguration?): SanitiseConfiguration {
-        toAdd ?: return this
-
-        val mergedValues = values + toAdd.values
-        val mergedGeneral = general?.let { it + toAdd.general } ?: toAdd.general
-
-        return SanitiseConfiguration(
-                values = mergedValues,
-                general = mergedGeneral
-        )
-    }
-}
+@Serializable
+data class DevicesConfiguration(@SerialName("configurations") val deviceConfigurations: Map<String, DeviceConfiguration>
+) : java.io.Serializable

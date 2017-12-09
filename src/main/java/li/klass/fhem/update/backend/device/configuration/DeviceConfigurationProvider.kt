@@ -24,49 +24,37 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.common.base.Charsets
 import com.google.common.base.Optional
 import com.google.common.io.Resources
+import kotlinx.serialization.json.JSON
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.json.JSONException
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DeviceConfigurationProvider @Inject
 constructor() {
-    private val configurations: Map<String, DeviceConfiguration>
+    private val configurations: Map<String, DeviceConfiguration> by lazy {
+        val jsonAsString = Resources.toString(Resources.getResource(
+                DeviceConfigurationProvider::class.java, "deviceConfiguration.json"), Charsets.UTF_8)
 
-    init {
-        try {
-            val jsonAsString = Resources.toString(Resources.getResource(
-                    DeviceConfigurationProvider::class.java, "deviceConfiguration.json"), Charsets.UTF_8)
-            val mapper = ObjectMapper().registerModule(KotlinModule())
-            val typeRef = object : TypeReference<HashMap<String, DeviceConfiguration>>() {}
-            configurations = mapper.readValue(jsonAsString, typeRef)
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
+        JSON.parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
     }
-
 
     fun configurationFor(device: FhemDevice): Optional<DeviceConfiguration> =
             configurationFor(device.xmlListDevice)
 
     private fun configurationFor(device: XmlListDevice): Optional<DeviceConfiguration> {
-        try {
-            return configurationFor(device.type)
+        return try {
+            configurationFor(device.type)
         } catch (e: JSONException) {
-            return Optional.absent()
+            Optional.absent()
         }
-
     }
 
-    @Throws(JSONException::class)
     fun configurationFor(type: String): Optional<DeviceConfiguration> = Optional.fromNullable(configurations[type])
+
 }

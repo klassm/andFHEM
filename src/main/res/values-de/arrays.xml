@@ -70,7 +70,7 @@
         <item>Räume</item>
     </string-array>
 
-    <string-array name="fcm_keep_messages_days" translatable="false">
+    <string-array name="fcm_keep_messages_days">
         <item>1 Tag</item>
         <item>7 Tage</item>
         <item>14 Tage</item>

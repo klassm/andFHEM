@@ -24,13 +24,20 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Optional
+import kotlinx.serialization.SerialName
 import java.io.Serializable
 
-data class SanitiseToAdd(@JsonProperty("key")
-                         val key: String,
-                         @JsonProperty("value")
-                         val value: String?,
-                         @JsonProperty("withValueOf")
-                         val withValueOf: String?
+@kotlinx.serialization.Serializable
+data class SanitiseToAdd(
+        @SerialName("key")
+        val key: String,
+
+        @SerialName("value")
+        @Optional
+        val value: String? = null,
+
+        @SerialName("withValueOf")
+        @Optional
+        val withValueOf: String? = null
 ) : Serializable
