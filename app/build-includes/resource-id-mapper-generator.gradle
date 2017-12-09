@@ -99,6 +99,8 @@ class ResourceIdMapperGeneratorTask extends DefaultTask {
         File mapperFile = new File("src/gen/java/li/klass/fhem/resources/ResourceIdMapper.java");
         mapperFile.getParentFile().mkdirs()
 
+        println("writing ResourceIdMapper.java to " + mapperFile.getAbsolutePath())
+
         Files.write(toWrite.getBytes(Charsets.UTF_8), mapperFile);
     }
 }
