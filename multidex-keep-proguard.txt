@@ -1,3 +1,0 @@
--keep class li.klass.fhem.update.backend.device.configuration.** { *; }
--keep class li.klass.fhem.update.backend.device.configuration.**.**$* { *; }
--keep,includedescriptorclasses class li.klass.fhem.update.backend.device.configuration.**$$serializer { *; }
