@@ -22,4 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
+
+rootProject.name = 'andFHEM'
 include ':external-dep'
+include ':app'

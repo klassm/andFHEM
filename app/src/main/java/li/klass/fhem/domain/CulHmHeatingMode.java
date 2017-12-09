@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
+
 import com.google.common.base.Optional;
 
 import java.util.Locale;

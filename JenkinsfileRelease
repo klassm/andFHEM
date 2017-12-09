@@ -6,7 +6,7 @@ node {
     sh 'git rebase'
 
     stage 'Build'
-    sh './gradlew clean release -Prelease.useAutomaticVersion=true --no-daemon'
+    sh './gradlew app:clean app:release -Prelease.useAutomaticVersion=true --no-daemon'
 
     stage 'Archive Artifacts'
     step([$class: 'ArtifactArchiver', artifacts: '**/build/**/*.apk', fingerprint: true])
