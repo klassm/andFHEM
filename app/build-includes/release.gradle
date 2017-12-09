@@ -23,11 +23,20 @@
  *   Boston, MA  02110-1301  USA
  */
 
+release {
+    buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
+    versionPropertyFile = '../gradle.properties'
+    versionProperties = ['version']
+    failOnSnapshotDependencies = false // this is a temporary workround until version 3.0 is released, so that the plugin can be moved to the root project
+
+    git {
+        requireBranch = 'master'
+        pushToRemote = 'origin'
+    }
+}
+
 task uploadToPlayStore
 uploadToPlayStore.dependsOn {
     tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release")}
 }
-
-task onRelease(dependsOn: ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease'])
-task afterRelease(dependsOn: ['resetWhatsNew'])
-
+afterReleaseBuild.dependsOn("resetWhatsNew")
