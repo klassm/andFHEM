@@ -22,3 +22,9 @@ tmp
 gradle-app.setting
 images/*/*.png
 src/main/resources/li/klass/fhem/connection/backend/test.xml
+_site
+.sass-cache
+.vagrant
+.DS_Store
+Thumbs.db
+ehthumbs.db

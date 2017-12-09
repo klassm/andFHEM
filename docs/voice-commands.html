@@ -1,0 +1,45 @@
+---
+layout: page
+title: Voice Commands
+bigimg: /images/voice.jpg
+---
+
+<div id="home">
+
+  <p>Voice commands allow to use Google Now "Ok, Google" commands to control your devices. Please note that this feature is premium only! As Google Now lacks an actual interface, the current implementation uses a workaround to make those voice commands possible. Actually, andFHEM uses the same procedure as <a href="https://play.google.com/store/apps/details?id=com.RSen.Commandr" target="_blank">Commandr for Google Now</a>.</p>
+
+  <p><span style='color:red; font-weight:bold'>Please Note:</span> Voice commands is a premium only feature!</p>
+
+  <h2>Installation</h2>
+
+  <p>Voice commands won't work out of the box. Actually, those commands have to be enabled by you, the user. To make this as easy as possible, you will find a link within the application preferences, linking to Android accessibility page. The link is titled "Voice Commands". To enable voice commands for andFHEM, you have to enable the andFHEM accessibility service. Google Now will afterwards notify andFHEM of every voice command it recognises. AndFHEM can act accordingly.</p>
+
+  <p>Please note that a nice UI integration is not possible using the current approach. However, I did my best to make this feature as usable as possible!</p>
+
+  <h2>Voice Commands</h2>
+
+  <h3>Simple "Set" Commands</h3>
+
+  <p>The most simple command you can use is a command like "set lamp on". AndFHEM will look for a device called lamp containing an available target state called "on". If it finds such a state, an appropriate switch command will be sent. German users may also want to use "schalte" as keyword. As device names are usually too complicated to speak, you can also define an alias and use that one for your voice commands. You may also use eventMaps to make your states more speakable. Please note
+  that device names and states may only consist of one word!</p>
+
+  <p>If andFHEM finds more than one matching device (or no matching device at all), the app will tell you. Actually, it will speak out loudly, as long as your speakers are enabled.</p>
+
+  <h3>Articles</h3>
+
+  <p>Google Now is much better in recognizing sentences instead of just plain words. This is why you can add articles for better voice recognition. As an example, you can say "switch the television on", which will result in "set television on". This also works for German articles.</p>
+
+  <h3>Shortcuts</h3>
+
+  <p>For starting and stopping devices, andFHEM defines some shortcuts.</p>
+  <p>For starting you might want to say "start television" (or "start the television"). This will result in  "set television on". For starting, you can also say "starte", "beginne", "start", "begin".</p>
+  <p>For stopping a device you can also say "stop television". The whole list of stop commands includes "stoppe", "stop", "beende", "end".
+
+  <h3>LightScene devices</h3>
+
+  <p>LightScene devices are some kind of special, as not providing access to scenes with normal setList commands. There's always a scene in between. To make andFHEM's voice commands use LightScene devices, you'll have to specify scenes with names on/off.</p>
+
+  <h3>Pronunciation hook</h3>
+
+  <p>See the hooks page for the pronunciation hook. AndFHEM will use that hook to find out the correct spelling. That way, you don't have to change your aliases to the correct pronunciation.</p>
+</div>
