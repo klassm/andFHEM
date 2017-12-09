@@ -41,7 +41,7 @@ github {
     repo = 'andFHEM'
     targetCommitish = 'master'
     assets = [
-            'app/build/outputs/apk/inapp/release/'
+            'app/build/outputs/apk/inapp/release/app-inapp-release.apk'
     ]
 }
 if (project.hasProperty('andFHEMGithubToken')) {
