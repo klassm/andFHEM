@@ -49,11 +49,11 @@ import java.util.regex.Pattern
 import static com.google.common.collect.FluentIterable.from
 
 class ResourceIdMapperGeneratorTask extends DefaultTask {
-    @InputDirectory
-    def File inputDir
+    @InputFile
+    File inputFile
 
-    @OutputDirectory
-    def File outputDir
+    @OutputFile
+    File outputFile
 
     @TaskAction
     void execute(IncrementalTaskInputs inputs) {
@@ -73,7 +73,7 @@ class ResourceIdMapperGeneratorTask extends DefaultTask {
         if (!project.buildDir.exists()) {
             project.buildDir.mkdir();
         }
-        String content = Resources.toString(new File(project.buildDir.getAbsolutePath() + "/../src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
+        String content = Resources.toString(inputFile.toURI().toURL(), Charsets.UTF_8);
 
         List<String> matches = Lists.newArrayList();
         Pattern pattern = Pattern.compile("<string name=\"([^\"]+)");
@@ -85,7 +85,7 @@ class ResourceIdMapperGeneratorTask extends DefaultTask {
 
         String toWrite = "package li.klass.fhem.resources;\n" + "import li.klass.fhem.R;\n" + "public enum ResourceIdMapper {" + from(matches).transform(new Function<String, String>() {
             @Override
-            public String apply(String input) {
+            String apply(String input) {
                 return input + "(R.string." + input + ")";
             }
         }).join(Joiner.on(",\n")) + ",none(-1);\n" +
@@ -96,17 +96,16 @@ class ResourceIdMapperGeneratorTask extends DefaultTask {
                 "public int getId() {\n" +
                 "return id;\n" +
                 "}}";
-        File mapperFile = new File("src/gen/java/li/klass/fhem/resources/ResourceIdMapper.java");
-        mapperFile.getParentFile().mkdirs()
+        outputFile.getParentFile().mkdirs()
 
-        println("writing ResourceIdMapper.java to " + mapperFile.getAbsolutePath())
+        println("writing ResourceIdMapper.java to " + outputFile.getAbsolutePath())
 
-        Files.write(toWrite.getBytes(Charsets.UTF_8), mapperFile);
+        Files.write(toWrite.getBytes(Charsets.UTF_8), outputFile)
     }
 }
 
 task generateResourceIdMapper(type: ResourceIdMapperGeneratorTask) {
-    inputDir = file('src/main/res/values')
-    outputDir = file('src/gen')
+    inputFile = file('src/main/res/values/strings.xml')
+    outputFile = file('src/gen/java/li/klass/fhem/resources/ResourceIdMapper.java')
 }
 tasks["preBuild"].dependsOn('generateResourceIdMapper')

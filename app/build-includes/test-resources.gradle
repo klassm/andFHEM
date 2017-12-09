@@ -48,7 +48,6 @@ gradle.projectsEvaluated {
                     productFlavorNames = [""]
                 }
                 def productFlavorName = productFlavorNames.join('')
-                def flavor = StringUtils.uncapitalize(productFlavorName)
 
                 def variationName = "${productFlavorName}${buildTypeName}"
 

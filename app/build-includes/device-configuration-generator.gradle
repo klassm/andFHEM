@@ -29,7 +29,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.guava:guava:18.0'
+        classpath 'com.google.guava:guava:22.0'
     }
 }
 
@@ -42,10 +42,10 @@ import com.google.common.io.Resources
 
 class DeviceConfigurationTask extends DefaultTask {
     @InputDirectory
-    def File inputDir
+    File inputDir
 
-    @OutputDirectory
-    def File outputDir
+    @OutputFile
+    File outputFile
 
     @TaskAction
     void execute(IncrementalTaskInputs inputs) {
@@ -61,9 +61,7 @@ class DeviceConfigurationTask extends DefaultTask {
         }
         def content = "{\"configurations\":{" + inputDir.listFiles().collect(fileContentToString).join(",") + "}}"
 
-        def outputFile = new File(outputDir.getAbsolutePath() + "/deviceConfiguration.json");
         outputFile.getParentFile().mkdirs()
-
         Files.write(content.getBytes(Charsets.UTF_8), outputFile);
     }
 }
@@ -71,6 +69,6 @@ class DeviceConfigurationTask extends DefaultTask {
 
 task buildDeviceConfigurationJson(type: DeviceConfigurationTask) {
     inputDir = file('src/main/resources/deviceConfiguration')
-    outputDir = file('src/gen/resources/li/klass/fhem/update/backend/device/configuration')
+    outputFile = file('src/gen/resources/li/klass/fhem/update/backend/device/configuration/deviceConfiguration.json')
 }
 tasks["preBuild"].dependsOn('buildDeviceConfigurationJson')
