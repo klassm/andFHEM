@@ -38,4 +38,4 @@ releaseBuild.dependsOn {
     tasks.findAll { it.name.endsWith('doRelease') }
 }
 
-afterReleaseBuild.dependsOn("afterRelease")
+afterReleaseBuild.dependsOn("app:afterRelease")
