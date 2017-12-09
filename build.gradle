@@ -1,4 +1,3 @@
-
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
@@ -23,11 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-task uploadToPlayStore
-uploadToPlayStore.dependsOn {
-    tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release")}
+plugins {
+    id 'net.researchgate.release' version '2.6.0'
 }
-
-task onRelease(dependsOn: ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease'])
-task afterRelease(dependsOn: ['resetWhatsNew'])
-
+apply from: 'build-includes/release.gradle'

@@ -1,4 +1,3 @@
-
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
@@ -23,11 +22,20 @@
  *   Boston, MA  02110-1301  USA
  */
 
-task uploadToPlayStore
-uploadToPlayStore.dependsOn {
-    tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release")}
+release {
+    buildTasks = ['releaseBuild']
+    versionPropertyFile = 'gradle.properties'
+    versionProperties = ['version']
+
+    git {
+        requireBranch = 'master'
+        pushToRemote = 'origin'
+    }
+}
+task releaseBuild
+releaseBuild.dependsOn {
+    // Workaround for https://github.com/researchgate/gradle-release/issues/186
+    tasks.findAll { it.name.endsWith('doRelease') }
 }
 
-task onRelease(dependsOn: ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease'])
-task afterRelease(dependsOn: ['resetWhatsNew'])
-
+afterReleaseBuild.dependsOn("afterRelease")
