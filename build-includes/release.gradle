@@ -32,10 +32,5 @@ release {
         pushToRemote = 'origin'
     }
 }
-task releaseBuild
-releaseBuild.dependsOn {
-    // Workaround for https://github.com/researchgate/gradle-release/issues/186
-    tasks.findAll { it.name.endsWith('doRelease') }
-}
-
+task releaseBuild(dependsOn: "app:doRelease")
 afterReleaseBuild.dependsOn("app:afterRelease")
