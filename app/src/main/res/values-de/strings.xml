@@ -620,6 +620,7 @@
     <string name="detailInternalsSection">Interna</string>
     <string name="selectValue">wählen …</string>
     <string name="customText">benutzerdefiniert</string>
+    <string name="device_type_order_column_attribute_note">Achtung: Die hier konfigurierte Reihenfolge wird eventuell durch ein gesetztes "column" Attribut auf einem FHEMWEB-Gerät überschrieben!</string>
 
     <string name="A">A</string>
     <string name="B">B</string>
@@ -641,4 +642,5 @@
     <string name="fcm_history_no_messages">Keine Nachrichten gefunden.</string>
     <string name="fcm_history_no_updates">Keine Aktualisierungen gefunden.</string>
     <string name="fcm_history_date_label">Daten vom</string>
+
 </resources>

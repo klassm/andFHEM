@@ -661,6 +661,7 @@
     <string name="detailInternalsSection">Internals</string>
     <string name="selectValue">select …</string>
     <string name="customText">custom</string>
+    <string name="device_type_order_column_attribute_note">Warning: This configuration may be overridden by a FHEMWEB device with a "column" attribute.</string>
 
     <string name="A">A</string>
     <string name="B">B</string>

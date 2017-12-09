@@ -84,7 +84,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
         assert view != null;
 
-        DragNDropListView deviceTypeListView = (DragNDropListView) view.findViewById(android.R.id.list);
+        DragNDropListView deviceTypeListView = view.findViewById(android.R.id.list);
 
         // dirty hack ... this should be called by Android automatically ...
         onSetInitialValue(true, "");
@@ -197,5 +197,4 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     protected boolean shouldPersist() {
         return true;
     }
-
 }
