@@ -58,7 +58,7 @@ class DeviceGroupAdapter(
                 val stopWatch = StopWatch()
                 stopWatch.start()
 
-                val layoutParams = itemView.getLayoutParams() as StaggeredGridLayoutManager.LayoutParams
+                val layoutParams = itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
                 layoutParams.isFullSpan = true
                 itemView.name.text = parent
                 LOGGER.info("bind - parent=$parent, took=${stopWatch.time}")

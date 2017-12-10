@@ -40,12 +40,15 @@ import java.io.IOException;
 import java.net.URL;
 
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DateFormatUtil;
+
+import static li.klass.fhem.util.DateFormatUtil.*;
 
 public class DummyDataConnection extends FHEMConnection {
     private static final Logger LOG = LoggerFactory.getLogger(DummyDataConnection.class);
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-    public DummyDataConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+    DummyDataConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
         super(fhemServerSpec, applicationProperties);
     }
 
@@ -55,6 +58,7 @@ public class DummyDataConnection extends FHEMConnection {
 
         if (command.startsWith("xmllist")) return xmllist();
         if (command.startsWith("get")) return fileLogData(command);
+        if (command.equals("{{ TimeNow() }}")) return new RequestResult<>(FHEM_DATE_FORMAT.print(DateTime.now()));
 
         return new RequestResult<>("I am a dummy. Do you expect me to answer you?");
     }
@@ -65,7 +69,7 @@ public class DummyDataConnection extends FHEMConnection {
             final DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
             URL url = Resources.getResource(DummyDataConnection.class, dummyServerSpec.getFileName());
             String content = Resources.toString(url, Charsets.UTF_8);
-            content = content.replaceAll("  ", "");
+            content = content.replaceAll(" {2}", "");
 
             return new RequestResult<>(content);
         } catch (IOException e) {
@@ -74,7 +78,7 @@ public class DummyDataConnection extends FHEMConnection {
         }
     }
 
-    public RequestResult<String> fileLogData(String command) {
+    private RequestResult<String> fileLogData(String command) {
         int lastSpace = command.lastIndexOf(" ");
         String columnSpec = command.substring(lastSpace + 1);
 

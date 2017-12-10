@@ -149,7 +149,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         handleDiscreteValues(graphData)
         val lineData = createLineDataFor(graphData)
 
-        val title: String = if (DisplayUtil.getWidthInDP(applicationContext) < 500) {
+        val title = if (DisplayUtil.getWidthInDP(applicationContext) < 500) {
             device.aliasOrName + "\n\r" +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate)
         } else {
