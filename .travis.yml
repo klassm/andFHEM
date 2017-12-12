@@ -31,17 +31,17 @@ android:
     - google-gdk-license-.+
 
 before_script:
-  - android list sdk --extended --no-ui --all
-  - android list targets
-  - echo no | android create avd --force -n test -t android-$EMULATOR_API_LEVEL --abi armeabi-v7a
-  - emulator -avd test -no-window &
-  - android-wait-for-emulator
-  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
-  - adb shell settings put global window_animation_scale 0 &
-  - adb shell settings put global transition_animation_scale 0 &
-  - adb shell settings put global animator_duration_scale 0 &
-  - adb shell input keyevent 82 &
+#  - android list sdk --extended --no-ui --all
+#  - android list targets
+#  - echo no | android create avd --force -n test -t android-$EMULATOR_API_LEVEL --abi armeabi-v7a
+#  - emulator -avd test -no-window &
+#  - android-wait-for-emulator
+#  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+#  - adb shell settings put global window_animation_scale 0 &
+#  - adb shell settings put global transition_animation_scale 0 &
+#  - adb shell settings put global animator_duration_scale 0 &
+#  - adb shell input keyevent 82 &
 
 script:
-  ./gradlew app:clean app:test app:connectedAndroidTest --no-daemon
+  ./gradlew app:clean app:test --no-daemon
 
