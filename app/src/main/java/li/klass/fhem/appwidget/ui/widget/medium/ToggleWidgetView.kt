@@ -60,11 +60,11 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
         if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE)
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE)
-            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(deviceHookProvider.getOnStateName(device)))
+            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(deviceHookProvider.getOnStateName(device) ?: onOffBehavior.getOnStateName(device)))
         } else {
             view.setViewVisibility(R.id.toggleOff, View.VISIBLE)
             view.setViewVisibility(R.id.toggleOn, View.GONE)
-            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(deviceHookProvider.getOffStateName(device)))
+            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(deviceHookProvider.getOffStateName(device) ?: onOffBehavior.getOffStateName(device)))
         }
 
         val pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -79,9 +79,9 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
 
         val actionIntent = when (hook) {
             ButtonHook.ON_DEVICE -> actionIntentForOnOffDevice(device, widgetConfiguration)
-                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOnStateName(device))
+                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOnStateName(device) ?: onOffBehavior.getOnStateName(device))
             ButtonHook.OFF_DEVICE -> actionIntentForOnOffDevice(device, widgetConfiguration)
-                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOffStateName(device))
+                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOffStateName(device) ?: onOffBehavior.getOffStateName(device))
             else -> Intent(Actions.DEVICE_WIDGET_TOGGLE)
                     .putExtra(APP_WIDGET_ID, widgetConfiguration.widgetId)
                     .putExtra(DEVICE_NAME, device.name)
@@ -98,7 +98,7 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
                     .putExtra(CONNECTION_ID, widgetConfiguration.connectionId)
 
     override fun supports(device: FhemDevice, context: Context): Boolean =
-            device is ToggleableDevice && device.supportsToggle()
+            onOffBehavior.supports(device)
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)

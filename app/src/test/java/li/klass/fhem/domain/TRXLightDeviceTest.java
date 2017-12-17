@@ -45,11 +45,8 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
 
-        assertThat(device.supportsToggle()).isEqualTo(true);
-        assertThat(device.supportsDim()).isEqualTo(false);
-
         GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
-        assertThat(device1.supportsDim()).isEqualTo(false);
+        assertThat(device1).isNotNull();
 
         GenericDevice device2 = getDeviceFor("device2", GenericDevice.class);
         assertThat(device2.getState()).isEqualTo("level 15");

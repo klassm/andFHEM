@@ -25,14 +25,13 @@
 package li.klass.fhem.domain
 
 import android.content.Context
-import li.klass.fhem.domain.core.DimmableContinuousStatesDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.genericview.OverviewViewSettings
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache
-import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.update.backend.xmllist.DeviceNode
 
 @OverviewViewSettings(showState = true, showMeasured = true)
-open class GenericDevice : DimmableContinuousStatesDevice<GenericDevice>() {
+open class GenericDevice : FhemDevice() {
     override fun afterDeviceXMLRead(context: Context) {
         super.afterDeviceXMLRead(context)
         val states = xmlListDevice.states
@@ -57,15 +56,6 @@ open class GenericDevice : DimmableContinuousStatesDevice<GenericDevice>() {
             }
             return mostRecent
         }
-
-    override fun getSetListDimStateAttributeName(): String {
-        val attribute = getDeviceConfiguration().transform { it!!.stateSliderKey }.or("dim")
-        val setList = xmlListDevice.setList
-        if (setList.contains(attribute) && setList[attribute] is SliderSetListEntry) {
-            return attribute
-        }
-        return super.getSetListDimStateAttributeName()
-    }
 
     override fun getExplicitOverviewSettings(): OverviewViewSettings {
         var showState = true

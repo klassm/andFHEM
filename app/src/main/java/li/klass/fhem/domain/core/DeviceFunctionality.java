@@ -58,16 +58,6 @@ public enum DeviceFunctionality {
         this.captionId = captionId;
     }
 
-    public static DeviceFunctionality functionalityForDimmable(DimmableDevice device) {
-        if (device.supportsDim()) {
-            return DIMMER;
-        }
-        if (device.supportsToggle()) {
-            return SWITCH;
-        }
-        return DUMMY;
-    }
-
     public int getCaptionId() {
         return captionId;
     }

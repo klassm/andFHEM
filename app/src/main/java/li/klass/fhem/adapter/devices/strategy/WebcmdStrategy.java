@@ -41,7 +41,6 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE;
 
@@ -56,8 +55,6 @@ public class WebcmdStrategy extends ViewStrategy {
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, List<DeviceViewItem> deviceItems, String connectionId) {
-        ToggleableDevice device = (ToggleableDevice) rawDevice;
-
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
             GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);
@@ -66,7 +63,7 @@ public class WebcmdStrategy extends ViewStrategy {
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
-        addOverviewSwitchActionRow(holder, device, connectionId);
+        addOverviewSwitchActionRow(holder, rawDevice, connectionId);
         return convertView;
     }
 
@@ -75,13 +72,13 @@ public class WebcmdStrategy extends ViewStrategy {
         return hookProvider.buttonHookFor(fhemDevice) == WEBCMD_DEVICE;
     }
 
-    private <T extends ToggleableDevice> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device, String connectionId) {
+    private void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, FhemDevice device, String connectionId) {
         TableLayout layout = holder.getTableLayout();
         addWebCmdOverviewActionRow(layout.getContext(), device, layout, connectionId);
     }
 
-    private <T extends ToggleableDevice> void addWebCmdOverviewActionRow(Context context, T device,
-                                                                         TableLayout tableLayout, String connectionId) {
+    private void addWebCmdOverviewActionRow(Context context, FhemDevice device,
+                                            TableLayout tableLayout, String connectionId) {
         tableLayout.addView(new WebCmdActionRow(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
                 .createRow(context, tableLayout, device, connectionId));
     }

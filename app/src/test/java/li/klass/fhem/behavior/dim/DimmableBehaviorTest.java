@@ -48,7 +48,7 @@ public class DimmableBehaviorTest {
     public void should_create_discrete_behavior() {
         GenericDevice device = deviceFor("dim10% dim20%");
 
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
+        DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
 
         assertThat(behavior.getBehavior()).isInstanceOf(DiscreteDimmableBehavior.class);
         assertThat(behavior.getFhemDevice()).isSameAs(device);
@@ -58,7 +58,7 @@ public class DimmableBehaviorTest {
     public void should_create_continuous_behavior() {
         GenericDevice device = deviceFor("state:slider,0,1,100");
 
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, null).get();
+        DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
 
         assertThat(behavior.getBehavior()).isInstanceOf(ContinuousDimmableBehavior.class);
         assertThat(behavior.getFhemDevice()).isSameAs(device);
@@ -68,7 +68,7 @@ public class DimmableBehaviorTest {
     public void should_return_absent_if_neither_continuous_nor_discrete_behavior_applies() {
         GenericDevice device = deviceFor("on off");
 
-        Optional<DimmableBehavior> result = DimmableBehavior.behaviorFor(device, null);
+        Optional<DimmableBehavior> result = DimmableBehavior.Companion.behaviorFor(device, null);
 
         assertThat(result).isEqualTo(Optional.absent());
     }

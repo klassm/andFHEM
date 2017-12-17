@@ -24,8 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import org.assertj.core.data.Offset;
 import org.junit.Test;
 
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,15 +37,14 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testDim() {
         GenericDevice device = getDeviceFor("dim", GenericDevice.class);
-        assertThat(device.getDimPosition()).isEqualTo(5);
-        assertThat(device.supportsDim()).isTrue();
+        DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
+        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(5, Offset.offset(0.01f));
     }
 
     @Test
     public void testSwitch() {
         GenericDevice device = getDeviceFor("switch", GenericDevice.class);
-        assertThat(device.supportsDim()).isFalse();
-        assertThat(device.supportsToggle()).isTrue();
+        assertThat(device).isNotNull();
     }
 
     @Test

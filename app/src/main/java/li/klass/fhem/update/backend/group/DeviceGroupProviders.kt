@@ -27,7 +27,8 @@ package li.klass.fhem.update.backend.group
 import javax.inject.Inject
 
 class DeviceGroupProviders @Inject constructor(
-        culHmDeviceGroupProvider: CulHmDeviceGroupProvider
+        culHmDeviceGroupProvider: CulHmDeviceGroupProvider,
+        owDeviceGroupProvider: OWDeviceGroupProvider
 ) {
-    val providers = setOf(culHmDeviceGroupProvider)
+    val providers = setOf(culHmDeviceGroupProvider, owDeviceGroupProvider)
 }

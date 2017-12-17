@@ -38,7 +38,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.domain.core.ToggleableDevice
 import li.klass.fhem.service.intent.DeviceIntentService
 import javax.inject.Inject
 
@@ -56,8 +55,8 @@ class OnOffWidgetView : DeviceAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
         val isOn = onOffBehavior.isOn(device)
 
-        val onStateName = deviceHookProvider.getOnStateName(device)
-        val offStateName = deviceHookProvider.getOffStateName(device)
+        val onStateName = deviceHookProvider.getOnStateName(device) ?: onOffBehavior.getOnStateName(device)
+        val offStateName = deviceHookProvider.getOffStateName(device) ?: onOffBehavior.getOffStateName(device)
 
         view.setTextViewText(R.id.widgetOnButton, device.getEventMapStateFor(onStateName))
         view.setTextViewText(R.id.widgetOffButton, device.getEventMapStateFor(offStateName))
@@ -87,7 +86,7 @@ class OnOffWidgetView : DeviceAppWidgetView() {
     }
 
     override fun supports(device: FhemDevice, context: Context): Boolean =
-            device is ToggleableDevice
+            onOffBehavior.supports(device)
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)

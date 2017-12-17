@@ -117,7 +117,7 @@ public abstract class DeviceXMLParsingBase {
 
     private void mockStrings() {
         try {
-            String content = Resources.toString(new File("src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
+            String content = Resources.toString(new File("app/src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
             Pattern pattern = Pattern.compile("<string name=\"([^\"]+)\">([^<]+)</string>");
             Matcher matcher = pattern.matcher(content);
 

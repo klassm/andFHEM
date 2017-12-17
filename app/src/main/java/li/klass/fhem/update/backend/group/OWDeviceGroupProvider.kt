@@ -22,42 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.devices.backend;
+package li.klass.fhem.update.backend.group
 
-import android.content.Context;
+import android.content.Context
+import li.klass.fhem.domain.core.DeviceFunctionality.TEMPERATURE
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
+import javax.inject.Inject
 
-import com.google.common.base.Optional;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import li.klass.fhem.domain.core.DimmableDevice;
-
-/**
- * Class accumulating dimmable device specific operations. Changes will be executed using FHEM.
- */
-@Singleton
-public class DimmableDeviceService {
-
-    @Inject
-    GenericDeviceService genericDeviceService;
-
-
-    @Inject
-    public DimmableDeviceService() {
-    }
-
-    /**
-     * Dims a device.
-     *
-     * @param device      concerned device
-     * @param dimProgress dim state to set. The progress will be matched against the available FS20 dim options.
-     * @param context context
-     */
-    public void dim(DimmableDevice device, float dimProgress, Context context) {
-        if (!device.supportsDim()) return;
-        String newState = device.getDimStateNameForDimStateValue(dimProgress).replace(".0", "");
-
-        genericDeviceService.setState(device, newState, Optional.<String>absent(), context);
+class OWDeviceGroupProvider @Inject constructor() : DeviceGroupProvider("OWDevice") {
+    override fun groupFor(xmlListDevice: XmlListDevice, context: Context): String? {
+        return when {
+            xmlListDevice.getInternal("STATE").or("").contains("°C") -> TEMPERATURE
+            else -> null
+        }?.getCaptionText(context)
     }
 }

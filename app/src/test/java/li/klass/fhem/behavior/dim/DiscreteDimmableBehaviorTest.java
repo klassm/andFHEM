@@ -54,7 +54,7 @@ public class DiscreteDimmableBehaviorTest {
     @Test
     @UseDataProvider("discreteBehaviorProvider")
     public void should_return_discrete_behavior(SetList setList, ImmutableList<String> expectedStates) {
-        Optional<DiscreteDimmableBehavior> result = DiscreteDimmableBehavior.behaviorFor(setList);
+        Optional<DiscreteDimmableBehavior> result = DiscreteDimmableBehavior.Companion.behaviorFor(setList);
 
         DiscreteDimmableBehavior behavior = result.get();
         assertThat(behavior.getFoundDimStates()).isEqualTo(expectedStates);
@@ -72,7 +72,7 @@ public class DiscreteDimmableBehaviorTest {
 
     @UseDataProvider("nonDiscreteBehaviorProvider")
     public void should_return_absent_if_the_set_list_does_not_contain_multiple_dim_states(SetList setList) {
-        assertThat(DiscreteDimmableBehavior.behaviorFor(setList).isPresent()).isFalse();
+        assertThat(DiscreteDimmableBehavior.Companion.behaviorFor(setList).isPresent()).isFalse();
     }
 
     @DataProvider
@@ -87,7 +87,7 @@ public class DiscreteDimmableBehaviorTest {
     @Test
     @UseDataProvider("upperBoundProvider")
     public void should_calculate_upper_bound(SetList setList, int expectedUpperBound) {
-        DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.behaviorFor(setList).get();
+        DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.Companion.behaviorFor(setList).get();
 
         assertThat(behavior.getDimUpperBound()).isEqualTo(expectedUpperBound);
     }
@@ -106,7 +106,7 @@ public class DiscreteDimmableBehaviorTest {
     @Test
     @UseDataProvider("positionProvider")
     public void should_calculate_position(SetList setList, String state, int position) {
-        DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.behaviorFor(setList).get();
+        DiscreteDimmableBehavior behavior = DiscreteDimmableBehavior.Companion.behaviorFor(setList).get();
 
         assertThat(behavior.getDimStateForPosition(mock(FhemDevice.class), position)).isEqualTo(state);
         assertThat(behavior.getPositionForDimState(state)).isEqualTo(position);

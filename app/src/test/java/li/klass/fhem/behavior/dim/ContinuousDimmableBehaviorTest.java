@@ -68,7 +68,7 @@ public class ContinuousDimmableBehaviorTest {
     @Test
     @UseDataProvider("continuousProvider")
     public void should_extract_dim_attribute(SetList setList, SliderSetListEntry expectedSlider) {
-        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(setList).get();
+        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.Companion.behaviorFor(setList).get();
 
         assertThat(behavior.getSlider()).isEqualToComparingFieldByField(expectedSlider);
         assertThat(behavior.getDimLowerBound()).isEqualTo(expectedSlider.getStart());
@@ -90,7 +90,7 @@ public class ContinuousDimmableBehaviorTest {
     @Test
     @UseDataProvider("stateProvider")
     public void should_calculate_dim_state_for_position_and_position_for_dim_state(int position, String text, String state) {
-        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
+        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.Companion.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
 
         assertThat(behavior.getPositionForDimState(text)).isEqualTo(position);
         assertThat(behavior.getDimStateForPosition(mock(FhemDevice.class), position)).isEqualTo(state);
@@ -108,7 +108,7 @@ public class ContinuousDimmableBehaviorTest {
     @Test
     @UseDataProvider("prefixDimProvider")
     public void should_handle_states_with_prefix(String state, float expectedPosition) {
-        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
+        ContinuousDimmableBehavior behavior = ContinuousDimmableBehavior.Companion.behaviorFor(SetList.Companion.parse("position:slider,0,5,100")).get();
         FhemDevice device = mock(FhemDevice.class);
         XmlListDevice xmlListDevice = new XmlListDevice("BLA", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setState("state", state);

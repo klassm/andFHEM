@@ -21,7 +21,7 @@ tmp
 *.*~
 gradle-app.setting
 images/*/*.png
-src/main/resources/li/klass/fhem/connection/backend/test.xml
+app/src/main/resources/li/klass/fhem/connection/backend/test.xml
 _site
 .sass-cache
 .vagrant

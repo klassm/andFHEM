@@ -32,7 +32,7 @@
 
         <TextView style="@style/appwidget_caption"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -40,31 +40,39 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_alignParentLeft="true"
                 android:id="@+id/dimDown"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/dim_down"
-                android:gravity="center_vertical|center_horizontal"/>
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_alignParentStart="true" />
 
             <TextView
+                android:layout_toLeftOf="@id/dimUp"
+                android:layout_toRightOf="@id/dimDown"
+                android:layout_toStartOf="@id/dimUp"
+                android:layout_toEndOf="@id/dimDown"
+                android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
                 android:id="@+id/state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|center_horizontal"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="@string/dummy_percentage"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
+                android:layout_alignParentRight="true"
                 android:id="@+id/dimUp"
-                android:layout_width="39dp"
+                android:layout_width="20dp"
                 android:layout_height="48dp"
                 android:background="@drawable/dim_up"
-                android:gravity="center_vertical|center_horizontal"/>
-        </LinearLayout>
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
 
 
     </LinearLayout>

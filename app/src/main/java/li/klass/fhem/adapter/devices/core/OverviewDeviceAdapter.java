@@ -203,7 +203,7 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
                     SetListEntry setListEntry = device.getXmlListDevice().getSetList().get(key, true);
                     if (setListEntry instanceof SliderSetListEntry) {
                         tableLayout.addView(
-                                new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, key, connectionId).get(), fieldTableRow)
+                                new StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, DimmableBehavior.Companion.continuousBehaviorFor(device, key, connectionId).get(), fieldTableRow)
                                         .createRow(LayoutInflater.from(context), device));
                     } else if (setListEntry instanceof GroupSetListEntry) {
                         GroupSetListEntry groupValue = (GroupSetListEntry) setListEntry;

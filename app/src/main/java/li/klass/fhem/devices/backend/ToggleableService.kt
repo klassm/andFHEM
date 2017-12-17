@@ -22,40 +22,45 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend.group
+package li.klass.fhem.devices.backend
 
 import android.content.Context
+import com.google.common.base.Optional
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
-import li.klass.fhem.behavior.dim.DimmableBehavior
-import li.klass.fhem.domain.core.DeviceFunctionality
+import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.domain.core.ToggleableDevice
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GroupProvider @Inject
-constructor(deviceGroupProviders: DeviceGroupProviders,
-            val onOffBehavior: OnOffBehavior) {
-    private val providerMap: Map<String, DeviceGroupProvider> = deviceGroupProviders.providers.associate { it.deviceType to it }
-
-    fun functionalityFor(device: FhemDevice, context: Context): String {
-        val xmlListDevice = device.xmlListDevice
-        val group = xmlListDevice.getAttribute("group")
-        if (group.isPresent) {
-            return group.get()
+class ToggleableService @Inject
+constructor(
+        val genericDeviceService: GenericDeviceService,
+        val onOffBehavior: OnOffBehavior
+) {
+    /**
+     * Toggles the state of a toggleable device.
+     *
+     * @param device       concerned device
+     * @param connectionId connectionId
+     * @param context      context
+     */
+    fun  toggleState(device: FhemDevice, connectionId: Optional<String>, context: Context) {
+        val targetState = when {
+            onOffBehavior.isOnByState(device) -> onOffBehavior.getOffStateName(device)
+            else -> onOffBehavior.getOnStateName(device)
         }
-
-        val providerGroup = providerMap[xmlListDevice.type]
-                ?.groupFor(xmlListDevice, context)
-        if (providerGroup != null) return providerGroup
-
-        var functionality = DeviceFunctionality.UNKNOWN
-        when {
-            DimmableBehavior.behaviorFor(device, null).isPresent -> functionality = DeviceFunctionality.DIMMER
-            onOffBehavior.supports(device) -> functionality = DeviceFunctionality.SWITCH
-            device.deviceConfiguration.isPresent -> functionality = DeviceFunctionality.valueOf(device.deviceConfiguration.get().defaultGroup)
+        if (targetState == null) {
+            logger.error("toggleState(device=${device.name}) - cannot toggle as state cannot be found for current state '${device.state}'")
+            return
         }
+        genericDeviceService.setState(device, targetState, connectionId, context)
+    }
 
-        return functionality.getCaptionText(context)
+    companion object {
+        private val logger = LoggerFactory.getLogger(ToggleableService::class.java)
     }
 }

@@ -33,7 +33,6 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.DimConversionUtil;
 
@@ -43,15 +42,15 @@ public class DimActionRow {
     private TextView updateView;
     private TextView description;
 
-    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
+    private static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
     public static final String HOLDER_KEY = "DimActionRow";
     private SeekBar seekBar;
     private TableRow tableRow;
 
     public DimActionRow(LayoutInflater inflater, StateUiService stateUiService, Context context) {
         tableRow = (TableRow) inflater.inflate(LAYOUT_OVERVIEW, null);
-        description = (TextView) tableRow.findViewById(R.id.description);
-        seekBar = (SeekBar) tableRow.findViewById(R.id.seekBar);
+        description = tableRow.findViewById(R.id.description);
+        seekBar = tableRow.findViewById(R.id.seekBar);
         this.stateUiService = stateUiService;
         this.context = context;
     }
@@ -61,22 +60,21 @@ public class DimActionRow {
     }
 
     public void fillWith(final FhemDevice device, TableRow updateRow, String connectionId) {
-        DimmableBehavior behavior = DimmableBehavior.behaviorFor(device, connectionId).get();
+        DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, connectionId).get();
 
-        DimmableDevice dimmableDevice = (DimmableDevice) device;
         seekBar.setOnSeekBarChangeListener(createListener(behavior));
         seekBar.setMax(DimConversionUtil.INSTANCE.toSeekbarProgress(behavior.getDimUpperBound(), behavior.getDimLowerBound(), behavior.getDimStep()));
         seekBar.setProgress(DimConversionUtil.INSTANCE.toSeekbarProgress(behavior.getCurrentDimPosition(), behavior.getDimLowerBound(), behavior.getDimStep()));
-        description.setText(dimmableDevice.getAliasOrName());
+        description.setText(device.getAliasOrName());
         if (updateRow != null) {
-            updateView = (TextView) updateRow.findViewById(R.id.value);
+            updateView = updateRow.findViewById(R.id.value);
         }
     }
 
     private SeekBar.OnSeekBarChangeListener createListener(final DimmableBehavior behavior) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public float progress = behavior.getCurrentDimPosition();
+            float progress = behavior.getCurrentDimPosition();
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {

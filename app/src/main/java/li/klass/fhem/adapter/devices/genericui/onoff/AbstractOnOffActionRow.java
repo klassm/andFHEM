@@ -54,7 +54,7 @@ public abstract class AbstractOnOffActionRow {
         this.connectionId = connectionId;
     }
 
-    public AbstractOnOffActionRow(int layoutId, int description, String connectionId) {
+    AbstractOnOffActionRow(int layoutId, int description, String connectionId) {
         this(layoutId, Optional.of(description), connectionId);
     }
 
@@ -62,7 +62,7 @@ public abstract class AbstractOnOffActionRow {
     public TableRow createRow(final FhemDevice device, Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         TableRow tableRow = (TableRow) inflater.inflate(layoutId, null);
-        TextView descriptionView = ((TextView) tableRow.findViewById(R.id.description));
+        TextView descriptionView = tableRow.findViewById(R.id.description);
         CheckableButton onButton = (CheckableButton) findOnButton(tableRow);
         CheckableButton offButton = (CheckableButton) findOffButton(tableRow);
 

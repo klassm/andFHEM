@@ -48,6 +48,7 @@ import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
+import li.klass.fhem.update.backend.xmllist.XmllistDeviceExtensionsKt;
 import li.klass.fhem.util.DateFormatUtil;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
@@ -63,8 +64,6 @@ public abstract class FhemDevice extends HookedDevice {
             return input == null ? null : input.getXmlListDevice();
         }
     };
-    protected List<String> webCmd = newArrayList();
-
 
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
@@ -98,11 +97,6 @@ public abstract class FhemDevice extends HookedDevice {
 
     protected OverviewViewSettings getExplicitOverviewSettings() {
         return null;
-    }
-
-    @XmllistAttribute("WEBCMD")
-    public void setWebcmd(String value) {
-        webCmd = newArrayList(value.split(":"));
     }
 
     @XmllistAttribute("DEF")
@@ -313,15 +307,9 @@ public abstract class FhemDevice extends HookedDevice {
         return targetState;
     }
 
-    public String formatStateTextToSet(String stateToSet) {
-        return stateToSet;
-    }
-
-
     public List<String> getWebCmd() {
-        return webCmd;
+        return XmllistDeviceExtensionsKt.getWebCmd(getXmlListDevice());
     }
-
 
     public String getWidgetName() {
         return firstNonNull(widgetName, getAliasOrName());

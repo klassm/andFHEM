@@ -94,7 +94,7 @@ public class DeviceHookProviderTest {
     @DataProvider
     public static Object[][] offStateNameProvider() {
         return $$(
-                $("", "", "off"),
+                $("", "", null),
                 $("on", "off", "off"),
                 $("off", "OFF", "OFF")
         );
@@ -115,7 +115,7 @@ public class DeviceHookProviderTest {
     @DataProvider
     public static Object[][] onStateNameProvider() {
         return $$(
-                $("", "", "on"),
+                $("", "", null),
                 $("off", "on", "on"),
                 $("on", "ON", "ON")
         );

@@ -24,8 +24,11 @@
 
 package li.klass.fhem.domain;
 
+import com.google.common.base.Optional;
+
 import org.junit.Test;
 
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
@@ -41,10 +44,8 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.supportsToggle()).isEqualTo(true);
 
         assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isEqualTo(true);
-        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
@@ -55,8 +56,6 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("??");
-        assertThat(device.supportsToggle()).isEqualTo(false);
-        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
@@ -65,24 +64,21 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat((GroupSetListEntry) device.getXmlListDevice().getSetList().get("state", false))
                 .isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
-        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
     public void testDeviceWithTimer() {
         GenericDevice device = getDeviceFor("timerDevice", GenericDevice.class);
-
-        assertThat(device.supportsDim()).isEqualTo(false);
+        assertThat(device).isNotNull();
     }
 
     @Test
     public void testSliderDevice() {
         GenericDevice device = getDeviceFor("sliderDevice", GenericDevice.class);
-        assertThat(device.supportsDim()).isEqualTo(true);
-
-        assertThat(device.getDimUpperBound()).isEqualTo(50);
-        assertThat(device.getDimLowerBound()).isEqualTo(10);
-        assertThat(device.getDimStep()).isEqualTo(2);
+        DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
+        assertThat(behavior.getDimUpperBound()).isEqualTo(50);
+        assertThat(behavior.getDimLowerBound()).isEqualTo(10);
+        assertThat(behavior.getDimStep()).isEqualTo(2);
     }
 
     @Test
@@ -100,13 +96,6 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(setList.contains("oben", "unten", "65", "40")).isEqualTo(true);
 
         assertThat(eventMapStates).contains("Oben", "Unten", "Halbschatten", "Vollschatten");
-    }
-
-    @Test
-    public void testOnOffEventMapDevice() {
-        GenericDevice device = getDeviceFor("onOffEventMap", GenericDevice.class);
-
-        assertThat(device.supportsToggle()).isEqualTo(true);
     }
 
     @Override

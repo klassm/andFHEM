@@ -40,7 +40,6 @@ import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.domain.core.ToggleableDevice
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -53,42 +52,42 @@ class ToggleableStrategy
 
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
         var myView = convertView
-        val device = rawDevice as ToggleableDevice
         val stopWatch = StopWatch()
         stopWatch.start()
         if (myView == null || myView.tag == null) {
             myView = layoutInflater.inflate(R.layout.device_overview_generic, null)
             val holder = GenericDeviceOverviewViewHolder(myView)
             myView!!.tag = holder
-            LOGGER.debug("createOverviewView - inflating layout, device=" + rawDevice.getName() + ", time=" + stopWatch.time)
+            LOGGER.debug("createOverviewView - inflating layout, device=" + rawDevice.name + ", time=" + stopWatch.time)
         } else {
-            LOGGER.debug("createOverviewView - reusing generic device overview view for device=" + rawDevice.getName())
+            LOGGER.debug("createOverviewView - reusing generic device overview view for device=" + rawDevice.name)
         }
         val holder = myView.tag as GenericDeviceOverviewViewHolder
         holder.resetHolder()
         holder.deviceName.visibility = View.GONE
-        addOverviewSwitchActionRow(holder, device, layoutInflater, null)
-        LOGGER.debug("createOverviewView - finished, device=" + rawDevice.getName() + ", time=" + stopWatch.time)
+        addOverviewSwitchActionRow(holder, rawDevice, layoutInflater, null)
+        LOGGER.debug("createOverviewView - finished, device=" + rawDevice.name + ", time=" + stopWatch.time)
         return myView
     }
 
     override fun supports(fhemDevice: FhemDevice): Boolean =
-            hookProvider.buttonHookFor(fhemDevice) != WEBCMD_DEVICE && OnOffBehavior.supports(fhemDevice)
+            hookProvider.buttonHookFor(fhemDevice) != WEBCMD_DEVICE && onOffBehavior.supports(fhemDevice)
                     && !fhemDevice.devStateIcons.anyNoFhemwebLinkOf(onOffBehavior.getOnOffStateNames(fhemDevice))
 
-    protected fun addOverviewSwitchActionRow(holder: GenericDeviceOverviewViewHolder, device: ToggleableDevice, layoutInflater: LayoutInflater, connectionId: String?) {
+    private fun addOverviewSwitchActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice,
+                                           layoutInflater: LayoutInflater, connectionId: String?) {
         val stopWatch = StopWatch()
         stopWatch.start()
         val hook = hookProvider.buttonHookFor(device)
         if (hook != NORMAL && hook != TOGGLE_DEVICE) {
-            addOnOffActionRow(holder, device, OnOffActionRowForToggleables.LAYOUT_OVERVIEW, Optional.absent<Int>(), connectionId)
+            addOnOffActionRow(holder, device, AbstractOnOffActionRow.LAYOUT_OVERVIEW, Optional.absent<Int>(), connectionId)
         } else {
             addToggleDeviceActionRow(holder, device, layoutInflater.context)
         }
         LOGGER.debug("addOverviewSwitchActionRow - finished, time=" + stopWatch.time)
     }
 
-    private fun addToggleDeviceActionRow(holder: GenericDeviceOverviewViewHolder, device: ToggleableDevice, context: Context) {
+    private fun addToggleDeviceActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice, context: Context) {
         val stopWatch = StopWatch()
         stopWatch.start()
 
@@ -104,11 +103,11 @@ class ToggleableStrategy
         LOGGER.debug("addToggleDeviceActionRow - finished, time=" + stopWatch.time)
     }
 
-    private fun addOnOffActionRow(holder: GenericDeviceOverviewViewHolder, device: ToggleableDevice, layoutId: Int, text: Optional<Int>, connectionId: String?) {
-        var onOffActionRow: OnOffActionRowForToggleables? = holder.getAdditionalHolderFor<OnOffActionRowForToggleables>(OnOffActionRowForToggleables.HOLDER_KEY)
+    private fun addOnOffActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice, layoutId: Int, text: Optional<Int>, connectionId: String?) {
+        var onOffActionRow: OnOffActionRowForToggleables? = holder.getAdditionalHolderFor<OnOffActionRowForToggleables>(AbstractOnOffActionRow.HOLDER_KEY)
         if (onOffActionRow == null) {
             onOffActionRow = OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior, text, connectionId)
-            holder.putAdditionalHolder(OnOffActionRowForToggleables.HOLDER_KEY, onOffActionRow)
+            holder.putAdditionalHolder(AbstractOnOffActionRow.HOLDER_KEY, onOffActionRow)
         }
         holder.tableLayout.addView(onOffActionRow
                 .createRow(device, holder.tableLayout.context))

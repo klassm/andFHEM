@@ -37,16 +37,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.devices.backend.DeviceService;
-import li.klass.fhem.devices.backend.DimmableDeviceService;
 import li.klass.fhem.devices.backend.GenericDeviceService;
 import li.klass.fhem.devices.backend.HeatingService;
 import li.klass.fhem.devices.backend.ToggleableService;
 import li.klass.fhem.devices.backend.at.AtService;
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService;
-import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
@@ -62,7 +61,6 @@ import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
 import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
-import static li.klass.fhem.constants.Actions.DEVICE_DIM;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
@@ -80,7 +78,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_MODE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
@@ -113,9 +110,9 @@ public class DeviceIntentService extends ConvenientIntentService {
     @Inject
     AtService atService;
     @Inject
-    DimmableDeviceService dimmableDeviceService;
-    @Inject
     ToggleableService toggleableService;
+    @Inject
+    OnOffBehavior onOffBehavior;
     @Inject
     GraphService graphService;
     @Inject
@@ -147,8 +144,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             result = toggleIntent(device, connectionId);
         } else if (DEVICE_SET_STATE.equals(action)) {
             result = setStateIntent(intent, device, connectionId);
-        } else if (DEVICE_DIM.equals(action)) {
-            result = dimIntent(intent, device);
         } else if (DEVICE_SET_MODE.equals(action)) {
             if (device instanceof HeatingDevice) {
                 Enum mode = (Enum) intent.getSerializableExtra(DEVICE_MODE);
@@ -242,8 +237,8 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private State toggleIntent(FhemDevice device, Optional<String> connectionId) {
-        if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
-            toggleableService.toggleState((ToggleableDevice) device, connectionId, this);
+        if (onOffBehavior.supports(device)) {
+            toggleableService.toggleState(device, connectionId, this);
             return SUCCESS;
         } else {
             return ERROR;
@@ -267,22 +262,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         }
 
         return State.SUCCESS;
-    }
-
-    /**
-     * Dim a device and notify the result receiver
-     *
-     * @param intent received intent
-     * @param device device to dim
-     * @return success?
-     */
-    private State dimIntent(Intent intent, FhemDevice device) {
-        float dimProgress = intent.getFloatExtra(DEVICE_DIM_PROGRESS, -1);
-        if (device instanceof DimmableDevice) {
-            dimmableDeviceService.dim((DimmableDevice) device, dimProgress, this);
-            return State.SUCCESS;
-        }
-        return State.ERROR;
     }
 
     @Override

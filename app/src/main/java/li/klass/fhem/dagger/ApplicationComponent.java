@@ -26,6 +26,8 @@ package li.klass.fhem.dagger;
 
 import android.app.Application;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -42,7 +44,6 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
-import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
@@ -50,6 +51,7 @@ import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.appindex.AppIndexIntentService;
+import li.klass.fhem.appwidget.action.AppWidgetActionIntentService;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.MediumAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.SmallAppWidgetProvider;
@@ -168,8 +170,6 @@ public interface ApplicationComponent {
     void inject(WebLinkAdapter object);
 
     void inject(GenericOverviewDetailDeviceAdapter object);
-
-    void inject(DimmableAdapter object);
 
     void inject(ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow object);
 
@@ -316,4 +316,6 @@ public interface ApplicationComponent {
     void inject(SettingsActivity settingsActivity);
 
     void inject(SettingsFragment settingsFragment);
+
+    void inject(@NotNull AppWidgetActionIntentService appWidgetActionIntentService);
 }

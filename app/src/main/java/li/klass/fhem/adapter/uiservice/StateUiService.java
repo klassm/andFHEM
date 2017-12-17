@@ -31,16 +31,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
-import static li.klass.fhem.constants.Actions.DEVICE_DIM;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_DIM_PROGRESS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
@@ -83,14 +80,6 @@ public class StateUiService {
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DEVICE_TARGET_STATE, value)
-                .putExtra(DEVICE_NAME, device.getName())
-                .putExtra(RESULT_RECEIVER, new UpdatingResultReceiver(context)));
-    }
-
-    public void setDim(DimmableDevice<?> device, float progress, Context context) {
-        context.startService(new Intent(DEVICE_DIM)
-                .setClass(context, DeviceIntentService.class)
-                .putExtra(DEVICE_DIM_PROGRESS, progress)
                 .putExtra(DEVICE_NAME, device.getName())
                 .putExtra(RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }

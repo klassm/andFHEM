@@ -89,7 +89,7 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         registerFieldListener("state", new FieldNameAddedToDetailListener(TOGGLEABLE_AND_NOT_DIMMABLE) {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow) {
-                if (!(device instanceof ToggleableDevice) || !((ToggleableDevice) device).supportsToggle()) {
+                if (!onOffBehavior.supports(device)) {
                     return;
                 }
                 addDetailSwitchActionRow(context, (ToggleableDevice) device, tableLayout, connectionId);
@@ -97,7 +97,7 @@ public class ToggleableAdapter extends ExplicitOverviewDetailDeviceAdapterWithSw
         });
     }
 
-    protected void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout, String connectionId) {
+    private void addDetailSwitchActionRow(Context context, ToggleableDevice device, TableLayout layout, String connectionId) {
         ButtonHook hook = deviceHookProvider.buttonHookFor(device);
         if (hook != ButtonHook.NORMAL && hook != ButtonHook.TOGGLE_DEVICE) {
             addOnOffActionRow(context, device, layout, OnOffActionRowForToggleables.LAYOUT_DETAIL, connectionId);

@@ -35,7 +35,6 @@ public class FHEMduinoPT2262DeviceTest extends DeviceXMLParsingBase {
     public void should_read_device_attributes() {
         GenericDevice device = getDeviceFor("Elro_FB1_B", GenericDevice.class);
         assertThat(device).isNotNull();
-        assertThat(device.supportsToggle()).isTrue();
     }
 
     @Override

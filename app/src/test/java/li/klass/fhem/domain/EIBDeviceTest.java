@@ -41,7 +41,6 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("on");
 
         assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
-        assertThat(device.supportsToggle()).isEqualTo(true);
     }
 
     @Test
@@ -56,7 +55,6 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
     public void testDimmerDevice() {
         GenericDevice device = getDeviceFor("dimmer", GenericDevice.class);
 
-        assertThat(device.getDimPosition()).isEqualTo(20);
         assertThat(device.getState()).isEqualTo("20 (%)");
     }
 

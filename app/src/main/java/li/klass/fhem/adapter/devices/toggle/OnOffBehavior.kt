@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices.toggle
 
+import com.google.common.base.Optional
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
@@ -44,12 +45,7 @@ class OnOffBehavior
             return true
         }
 
-        for (offState in getOffStateNames(device)) {
-            if (internalState.contains(offState.toLowerCase(Locale.getDefault()))) {
-                return true
-            }
-        }
-        return false
+        return getOffStateNames(device).any { internalState.contains(it.toLowerCase(Locale.getDefault())) }
     }
 
     fun isOn(device: FhemDevice): Boolean {
@@ -70,33 +66,36 @@ class OnOffBehavior
 
     private fun getOffStateNames(device: FhemDevice): Set<String> {
         val offStateNameByHook = hookProvider.getOffStateName(device)
-        val offStateNames = setOf("off", "OFF") + offStateNameByHook.toLowerCase(Locale.getDefault())
-
-        return offStateNames + reverseEventMapNamesFor(offStateNames, device)
+        val offStateNames = availableOffStateNames + reverseEventMapNamesFor(availableOffStateNames, device)
+        val existingOffStateNames = device.xmlListDevice.setList.existingStatesOf(offStateNames)
+        return Optional.fromNullable(offStateNameByHook).asSet() + existingOffStateNames
     }
+
+    fun getOffStateName(device: FhemDevice): String? = getOffStateNames(device).firstOrNull()
 
     private fun getOnStateNames(device: FhemDevice): Set<String> {
         val onStateNameByHook = hookProvider.getOnStateName(device)
-        val onStateNames = setOf("on", "ON") + onStateNameByHook.toLowerCase(Locale.getDefault())
-
-        return onStateNames + reverseEventMapNamesFor(onStateNames, device)
+        val onStateNames = availableOnStateNames + reverseEventMapNamesFor(availableOnStateNames, device)
+        val existingOnStateNames = device.xmlListDevice.setList.existingStatesOf(onStateNames)
+        return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames
     }
+
+    fun getOnStateName(device: FhemDevice): String? = getOnStateNames(device).firstOrNull()
 
     fun getOnOffStateNames(device: FhemDevice): Set<String> =
             getOnStateNames(device) + getOffStateNames(device)
 
     private fun reverseEventMapNamesFor(stateNames: Set<String>, device: FhemDevice): List<String> {
-        val reverseEventMapNames = stateNames
+        return stateNames
                 .map { it to device.getReverseEventMapStateFor(it) }
                 .filter { !it.first.equals(it.second, ignoreCase = true) && it.second != null }
                 .map { it.second!! }
-        return reverseEventMapNames
     }
 
+    fun supports(device: FhemDevice): Boolean = getOnStateName(device) != null && getOffStateName(device) != null
+
     companion object {
-        fun supports(device: FhemDevice): Boolean =
-                device.xmlListDevice.setList.contains("on", "off")
-                        || device.xmlListDevice.setList.contains("ON", "OFF")
-                        || device.webCmd.containsAll(listOf("on", "off"))
+        val availableOnStateNames = setOf("on", "ON", "ein")
+        val availableOffStateNames = setOf("off", "OFF", "aus")
     }
 }

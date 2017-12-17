@@ -37,7 +37,7 @@ public class OnOffStateActionRow extends AbstractOnOffActionRow {
         super(layoutId, description, connectionId);
     }
 
-    public OnOffStateActionRow(int layoutId, Optional<Integer> description, String connectionId) {
+    OnOffStateActionRow(int layoutId, Optional<Integer> description, String connectionId) {
         super(layoutId, description, connectionId);
     }
 

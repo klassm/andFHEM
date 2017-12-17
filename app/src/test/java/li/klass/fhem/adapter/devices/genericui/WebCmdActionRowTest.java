@@ -30,10 +30,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.testutil.MockitoRule;
+import li.klass.fhem.update.backend.xmllist.DeviceNode;
+import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,6 +53,7 @@ public class WebCmdActionRowTest {
         // given
         DummyWebCmdRow row = new DummyWebCmdRow("row", 0);
         GenericDevice dummyDevice = new GenericDevice();
+        dummyDevice.setXmlListDevice(new XmlListDevice("DUMMY", Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap()));
 
         // expect
         assertThat(dummyDevice.getWebCmd()).isEmpty();

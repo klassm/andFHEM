@@ -22,27 +22,27 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.behavior.dim;
+package li.klass.fhem.behavior.dim
 
-import android.content.Context;
+import android.content.Context
 
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.domain.core.FhemDevice
 
-interface DimmableTypeBehavior {
-    float getDimLowerBound();
+internal interface DimmableTypeBehavior {
+    fun getDimLowerBound(): Float
 
-    float getDimUpperBound();
+    fun getDimUpperBound(): Float
 
-    float getDimStep();
+    fun getDimStep(): Float
 
-    float getCurrentDimPosition(FhemDevice device);
+    fun getStateName(): String
 
-    String getDimStateForPosition(FhemDevice fhemDevice, float position);
+    fun getCurrentDimPosition(device: FhemDevice): Float
 
-    float getPositionForDimState(String dimState);
+    fun getDimStateForPosition(fhemDevice: FhemDevice, position: Float): String
 
-    String getStateName();
+    fun getPositionForDimState(dimState: String): Float
 
-    void switchTo(StateUiService stateUiService, Context context, FhemDevice fhemDevice, String connectionId, float state);
+    fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Float)
 }

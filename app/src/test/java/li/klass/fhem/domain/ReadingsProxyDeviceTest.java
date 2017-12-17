@@ -24,8 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import org.assertj.core.data.Offset;
 import org.junit.Test;
 
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,11 +57,11 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
         GenericDevice device = getDeviceFor("dimmable", GenericDevice.class);
 
         assertThat(device).isNotNull();
-        assertThat(device.supportsDim()).isTrue();
-        assertThat(device.getDimPosition()).isEqualTo(100);
-        assertThat(device.getDimLowerBound()).isEqualTo(4);
-        assertThat(device.getDimUpperBound()).isEqualTo(105);
-        assertThat(device.getDimStep()).isEqualTo(1);
+        DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
+        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(100, Offset.offset(0.01f));
+        assertThat(dimmableBehavior.getDimLowerBound()).isEqualTo(4);
+        assertThat(dimmableBehavior.getDimUpperBound()).isEqualTo(105);
+        assertThat(dimmableBehavior.getDimStep()).isEqualTo(1);
     }
 
     @Override

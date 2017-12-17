@@ -33,7 +33,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.DeviceDimActionRowFullWidth
-import li.klass.fhem.domain.core.DimmableDevice
+import li.klass.fhem.behavior.dim.DimmableBehavior
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
@@ -44,13 +44,11 @@ class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandle
 
     override fun canHandle(entry: SetListEntry): Boolean = entry is SliderSetListEntry
 
+    @SuppressLint("InflateParams")
     override fun handle(entry: SetListEntry, context: Context, device: D, callback: OnTargetStateSelectedCallback<D>) {
         val sliderSetListEntry = entry as SliderSetListEntry
 
-        var initialProgress = 0f
-        if (device is DimmableDevice<*>) {
-            initialProgress = device.getDimPosition()
-        }
+        val initialProgress = DimmableBehavior.behaviorFor(device, null).orNull() ?.currentDimPosition ?: 0f
 
         val inflater = LayoutInflater.from(context)
         @SuppressLint("InflateParams") val tableLayout = inflater.inflate(R.layout.availabletargetstates_action_with_seekbar, null, false) as TableLayout
@@ -67,9 +65,8 @@ class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandle
                 dimProgress = progress
             }
 
-            override fun toDimUpdateText(device: XmlListDevice, progress: Float): String {
-                return getFormattedDimProgress(progress)
-            }
+            override fun toDimUpdateText(device: XmlListDevice, progress: Float): String =
+                    getFormattedDimProgress(progress)
         }.createRow(inflater, device))
 
         AlertDialog.Builder(context)

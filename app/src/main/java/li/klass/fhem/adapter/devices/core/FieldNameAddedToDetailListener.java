@@ -28,13 +28,18 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import li.klass.fhem.domain.core.DimmableDevice;
+import javax.inject.Inject;
+
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
 
 public abstract class FieldNameAddedToDetailListener {
+    @Inject
+    OnOffBehavior onOffBehavior;
+
     protected enum NotificationDeviceType {
         ALL,
         TOGGLEABLE_AND_NOT_DIMMABLE,
@@ -51,19 +56,15 @@ public abstract class FieldNameAddedToDetailListener {
         this.notificationDeviceType = notificationDeviceType;
     }
 
-    void setNotificationDeviceType(NotificationDeviceType notificationDeviceType) {
-        this.notificationDeviceType = notificationDeviceType;
-    }
-
     protected abstract void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FhemDevice device, String connectionId, TableRow fieldTableRow);
 
     public boolean supportsDevice(FhemDevice device) {
         switch (notificationDeviceType) {
             case DIMMER:
-                return device instanceof DimmableDevice && ((DimmableDevice) device).supportsDim();
+                return DimmableBehavior.Companion.supports(device.getXmlListDevice());
             case TOGGLEABLE_AND_NOT_DIMMABLE:
-                return device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle() &&
-                        (!(device instanceof DimmableDevice) || !((DimmableDevice) device).supportsDim());
+                return onOffBehavior.supports(device) &&
+                        !DimmableBehavior.Companion.supports(device.getXmlListDevice());
             case ALL:
             default:
                 return true;

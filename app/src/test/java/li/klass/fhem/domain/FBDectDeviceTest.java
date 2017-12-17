@@ -41,7 +41,6 @@ public class FBDectDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "energy")).isEqualTo("13837 (Wh)");
         assertThat(stateValueFor(device, "power")).isEqualTo("13.08 (W)");
         assertThat(stateValueFor(device, "voltage")).isEqualTo("230.014 (V)");
-        assertThat(device.supportsToggle()).isTrue();
     }
 
     @Override
