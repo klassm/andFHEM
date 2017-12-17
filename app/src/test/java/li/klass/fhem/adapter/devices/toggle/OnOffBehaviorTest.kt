@@ -48,11 +48,11 @@ class OnOffBehaviorTest {
     @get:Rule
     val mockitoRule = MockitoRule()
 
-    @InjectMocks private
-    lateinit var onOffBehavior: OnOffBehavior
+    @InjectMocks
+    private lateinit var onOffBehavior: OnOffBehavior
 
     @Mock
-    lateinit var deviceHookProvider: DeviceHookProvider
+    private lateinit var deviceHookProvider: DeviceHookProvider
 
     @UseDataProvider("isOnProvider")
     @Test
@@ -118,8 +118,8 @@ class OnOffBehaviorTest {
         val headers = mapOf("sets" to DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", sets, DateTime.now()))
                 .toMutableMap()
         device.xmlListDevice = XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), headers)
-        `when`(deviceHookProvider.getOffStateName(device)).thenReturn(testCase.offStateNameHook ?: "off")
-        `when`(deviceHookProvider.getOnStateName(device)).thenReturn(testCase.onStateNameHook ?: "on")
+        `when`(deviceHookProvider.getOffStateName(device)).thenReturn(testCase.offStateNameHook)
+        `when`(deviceHookProvider.getOnStateName(device)).thenReturn(testCase.onStateNameHook)
 
         val supports = onOffBehavior.supports(device)
 
