@@ -45,7 +45,7 @@ class PlayerCardProvider @Inject constructor(
     override fun ordering(): Int = 29
 
     override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        val playerConfiguration = fhemDevice.deviceConfiguration.orNull()?.playerConfiguration
+        val playerConfiguration = fhemDevice.deviceConfiguration.playerConfiguration
         if (playerConfiguration == null || !playerConfiguration.hasAny()) {
             return null
         }

@@ -49,13 +49,10 @@ constructor(deviceGroupProviders: DeviceGroupProviders,
                 ?.groupFor(xmlListDevice, context)
         if (providerGroup != null) return providerGroup
 
-        var functionality = DeviceFunctionality.UNKNOWN
-        when {
-            DimmableBehavior.behaviorFor(device, null).isPresent -> functionality = DeviceFunctionality.DIMMER
-            onOffBehavior.supports(device) -> functionality = DeviceFunctionality.SWITCH
-            device.deviceConfiguration.isPresent -> functionality = DeviceFunctionality.valueOf(device.deviceConfiguration.get().defaultGroup)
-        }
-
-        return functionality.getCaptionText(context)
+        return when {
+            DimmableBehavior.behaviorFor(device, null).isPresent -> DeviceFunctionality.DIMMER
+            onOffBehavior.supports(device) -> DeviceFunctionality.SWITCH
+            else -> DeviceFunctionality.valueOf(device.deviceConfiguration.defaultGroup)
+        }.getCaptionText(context)
     }
 }

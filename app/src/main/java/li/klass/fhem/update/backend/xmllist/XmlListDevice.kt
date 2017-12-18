@@ -33,10 +33,10 @@ import java.io.Serializable
 
 class XmlListDevice(
         val type: String,
-        val attributes: MutableMap<String, DeviceNode>,
-        val states: MutableMap<String, DeviceNode>,
-        val internals: MutableMap<String, DeviceNode>,
-        val headers: MutableMap<String, DeviceNode>
+        val attributes: MutableMap<String, DeviceNode> = emptyMap<String, DeviceNode>().toMutableMap(),
+        val states: MutableMap<String, DeviceNode> = emptyMap<String, DeviceNode>().toMutableMap(),
+        val internals: MutableMap<String, DeviceNode> = emptyMap<String, DeviceNode>().toMutableMap(),
+        val headers: MutableMap<String, DeviceNode> = emptyMap<String, DeviceNode>().toMutableMap()
 
 ) : Serializable {
 

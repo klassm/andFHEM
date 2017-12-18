@@ -78,12 +78,10 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     private fun supportsFromJsonConfiguration(device: FhemDevice): Boolean {
         val deviceConfiguration = device.deviceConfiguration
-        if (deviceConfiguration.isPresent) {
-            val supportedWidgets = deviceConfiguration.get().supportedWidgets
-            supportedWidgets
-                    .filter { javaClass.simpleName.equals(it, ignoreCase = true) }
-                    .forEach { return true }
-        }
+        val supportedWidgets = deviceConfiguration.supportedWidgets
+        supportedWidgets
+                .filter { javaClass.simpleName.equals(it, ignoreCase = true) }
+                .forEach { return true }
         return false
     }
 
@@ -142,12 +140,10 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     protected fun valueForAnnotation(device: FhemDevice, annotationCls: Class<out Annotation>, context: Context): String? {
         val configuration = deviceConfigurationProvider.configurationFor(device)
-        if (configuration.isPresent) {
-            val states = configuration.get().states
-            states
-                    .filter { it.markers.contains(annotationCls.simpleName) }
-                    .forEach { return device.xmlListDevice.stateValueFor(it.key).orNull() }
-        }
+        val states = configuration.states
+        states
+                .filter { it.markers.contains(annotationCls.simpleName) }
+                .forEach { return device.xmlListDevice.stateValueFor(it.key).orNull() }
         return getValueAndDescriptionForAnnotation(device, annotationCls, context)
     }
 

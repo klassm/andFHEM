@@ -41,7 +41,6 @@ import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
-import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
@@ -160,8 +159,6 @@ public interface ApplicationComponent {
     void inject(FloorplanAdapter object);
 
     void inject(GCMSendDeviceAdapter object);
-
-    void inject(RemoteControlAdapter object);
 
     void inject(ToggleableAdapter object);
 

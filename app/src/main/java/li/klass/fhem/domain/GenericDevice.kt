@@ -37,7 +37,7 @@ open class GenericDevice : FhemDevice() {
         val states = xmlListDevice.states
 
 
-        val node = if (states.containsKey("state")) states["state"] else mostRecentlyMeasuredNode
+        val node = states.getOrElse("state", {mostRecentlyMeasuredNode})
         if (node != null) {
             setMeasured(node.measured)
         }
@@ -57,15 +57,6 @@ open class GenericDevice : FhemDevice() {
             return mostRecent
         }
 
-    override fun getExplicitOverviewSettings(): OverviewViewSettings {
-        var showState = true
-        var showMeasured = true
-
-        if (deviceConfiguration.isPresent) {
-            val conf = deviceConfiguration.get()
-            showState = conf.isShowStateInOverview
-            showMeasured = conf.isShowMeasuredInOverview
-        }
-        return OverviewViewSettingsCache(showState, showMeasured)
-    }
+    override fun getExplicitOverviewSettings(): OverviewViewSettings =
+            OverviewViewSettingsCache(deviceConfiguration.isShowStateInOverview, deviceConfiguration.isShowMeasuredInOverview)
 }

@@ -79,6 +79,19 @@ data class DeviceConfiguration(
         val sanitiseConfiguration: SanitiseConfiguration? = null
 
 ) : Serializable {
-        fun stateConfigFor(key: String): ViewItemConfig? =
-                states.firstOrNull { it.key.equals(key, ignoreCase = true) }
+    fun stateConfigFor(key: String): ViewItemConfig? =
+            states.firstOrNull { it.key.equals(key, ignoreCase = true) }
+
+    operator fun plus(configuration: DeviceConfiguration): DeviceConfiguration {
+        return copy(
+                supportedWidgets = supportedWidgets + configuration.supportedWidgets,
+                states = states + configuration.states,
+                attributes = attributes + configuration.attributes,
+                internals = internals + configuration.internals,
+                playerConfiguration = playerConfiguration ?: configuration.playerConfiguration,
+                sanitiseConfiguration = sanitiseConfiguration
+                        ?.plus(configuration.sanitiseConfiguration)
+                        ?: configuration.sanitiseConfiguration
+        )
+    }
 }

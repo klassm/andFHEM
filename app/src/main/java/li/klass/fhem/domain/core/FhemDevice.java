@@ -112,12 +112,7 @@ public abstract class FhemDevice extends HookedDevice {
     public void afterDeviceXMLRead(Context context) {
         this.definition = getDefinition();
 
-        if (deviceConfiguration.isPresent()) {
-            deviceFunctionality = DeviceFunctionality.valueOf(deviceConfiguration.get().getDefaultGroup()).getCaptionText(context);
-        } else {
-            deviceFunctionality = DeviceFunctionality.UNKNOWN.getCaptionText(context);
-        }
-
+        deviceFunctionality = DeviceFunctionality.valueOf(deviceConfiguration.getDefaultGroup()).getCaptionText(context);
         setList = SetList.Companion.parse(getXmlListDevice().getHeader("sets").or("")
                 .replaceAll("\\*", ""));
 

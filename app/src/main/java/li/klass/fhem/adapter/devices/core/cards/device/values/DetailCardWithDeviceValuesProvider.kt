@@ -35,7 +35,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.DevStateIconAdder
-import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
+import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
@@ -80,16 +80,15 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
                 .filter { it.supports(device.xmlListDevice) }
                 .toList()
 
-        val hasConfiguration = device.deviceConfiguration.isPresent
 
         val captionTextView = card.findViewById<TextView>(R.id.cardCaption)
         captionTextView.setText(caption)
 
         val table = card.findViewById<TableLayout>(R.id.table)
 
-        var showExpandButton = hasConfiguration
         var itemsToShow = getSortedClassItems(device, itemProvider, false, context)
         val allItems = getSortedClassItems(device, itemProvider, true, context)
+        var showExpandButton = true
         if (itemsToShow.isEmpty() || itemsToShow.size == allItems.size) {
             itemsToShow = allItems
             showExpandButton = false
@@ -103,7 +102,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
             button.visibility = View.GONE
         }
 
-        if (itemsToShow.isEmpty()) {
+        if (table.childCount == 0) {
             card.visibility = View.GONE
         }
 
@@ -111,16 +110,18 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
     }
 
     private fun fillTable(device: GenericDevice, connectionId: String?, table: TableLayout, items: List<DeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
+
         table.removeAllViews()
 
-        for (item in items) {
-            val holder = createTableRow(LayoutInflater.from(context), R.layout.device_detail_generic_table_row)
-            fillTableRow(holder, item, device, context)
-            addRow(table, holder.row)
-            addActionIfRequired(device, connectionId, table, item, holder.row, providers, context)
-        }
+        items.map { it to createHolderWithRow(it, device, context) }
+                .filter { it.second != null }
+                .map { it.first to it.second!! }
+                .forEach { (item, holder) ->
+                    addRow(table, holder.row)
+                    addActionIfRequired(device, connectionId, table, item, holder.row, providers, context)
+                }
 
-        table.visibility = if (items.isEmpty()) View.GONE else View.VISIBLE
+        table.visibility = if (table.childCount == 0) View.GONE else View.VISIBLE
     }
 
     private fun getSortedClassItems(device: FhemDevice, itemProvider: ItemProvider, showUnknown: Boolean, context: Context): List<DeviceViewItem> {
@@ -129,21 +130,23 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
     }
 
 
-    private fun fillTableRow(holder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder, item: DeviceViewItem, device: FhemDevice, context: Context) {
+    private fun createHolderWithRow(item: DeviceViewItem, device: FhemDevice, context: Context): GenericDeviceTableRowHolder? {
         val value = item.getValueFor(device)
+        if (value.isNullOrBlank()) {
+            return null
+        }
+
+        val holder = createEmptyRow(LayoutInflater.from(context), R.layout.device_detail_generic_table_row)
         val description = item.getName(deviceDescMapping, context)
         holder.description.text = description
         holder.value.text = value.toString()
-        if (value == null || value == "") {
-            holder.row.visibility = View.GONE
-        } else {
-            holder.row.visibility = View.VISIBLE
-        }
         devStateIconAdder.addDevStateIconIfRequired(value, device, holder.devStateIcon)
+
+        return holder
     }
 
-    private fun createTableRow(inflater: LayoutInflater, resource: Int): GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder {
-        val holder = GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder()
+    private fun createEmptyRow(inflater: LayoutInflater, resource: Int): GenericDeviceTableRowHolder {
+        val holder = GenericDeviceTableRowHolder()
         val tableRow = inflater.inflate(resource, null) as TableRow
         holder.row = tableRow
         holder.description = tableRow.findViewById(R.id.description)
@@ -169,12 +172,9 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
                 .toList()
 
         if (!attributeActions.isEmpty()) {
-            for (action in attributeActions) {
-                if (action.supports(xmlListDevice)) {
-                    addRow(table, action.createRow(xmlListDevice, connectionId, item.key, item.getValueFor(device), context, table))
-                    return
-                }
-            }
+            attributeActions
+                    .filter { it.supports(xmlListDevice) }
+                    .forEach { addRow(table, it.createRow(xmlListDevice, connectionId, item.key, item.getValueFor(device), context, table)) }
         }
 
         if (item.sortKey.equals("state", ignoreCase = true)) {

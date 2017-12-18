@@ -36,17 +36,17 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public abstract class Device implements Serializable {
 
-    protected Optional<DeviceConfiguration> deviceConfiguration = Optional.absent();
+    protected DeviceConfiguration deviceConfiguration;
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
 
     private XmlListDevice xmlListDevice;
 
-    public void setDeviceConfiguration(Optional<DeviceConfiguration> deviceConfiguration) {
+    public void setDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
         this.deviceConfiguration = deviceConfiguration;
     }
 
-    public Optional<DeviceConfiguration> getDeviceConfiguration() {
+    public DeviceConfiguration getDeviceConfiguration() {
         return deviceConfiguration;
     }
 

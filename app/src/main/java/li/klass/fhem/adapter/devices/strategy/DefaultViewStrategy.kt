@@ -94,15 +94,13 @@ constructor(
                         alwaysShow = true
                     }
                 }
-                if (config.isPresent) {
-                    val deviceConfiguration = config.get()
-                    if (name.equals("state", ignoreCase = true) && !deviceConfiguration.isShowStateInOverview) {
-                        continue
-                    }
-                    if (name.equals("measured", ignoreCase = true) && !deviceConfiguration.isShowMeasuredInOverview) {
-                        continue
-                    }
+                if (name.equals("state", ignoreCase = true) && !config.isShowStateInOverview) {
+                    continue
                 }
+                if (name.equals("measured", ignoreCase = true) && !config.isShowMeasuredInOverview) {
+                    continue
+                }
+
                 if (alwaysShow || item.isShowInOverview) {
                     currentGenericRow++
                     val rowHolder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder

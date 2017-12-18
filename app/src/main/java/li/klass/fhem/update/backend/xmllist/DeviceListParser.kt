@@ -122,7 +122,7 @@ constructor(
             if (connectionService.mayShowInCurrentConnectionType(key)) {
 
                 val localErrorCount = devicesFromDocument(deviceType.deviceClass, xmlListDevices,
-                        allDevices, context, deviceConfiguration.orNull())
+                        allDevices, context, deviceConfiguration)
 
                 if (localErrorCount > 0) {
                     errorHolder.addErrors(deviceType, localErrorCount)
@@ -141,7 +141,7 @@ constructor(
     }
 
     private fun devicesFromDocument(deviceClass: Class<out FhemDevice>, xmlListDevices: List<XmlListDevice>,
-                                    allDevices: MutableMap<String, FhemDevice>, context: Context, deviceConfiguration: DeviceConfiguration?): Int {
+                                    allDevices: MutableMap<String, FhemDevice>, context: Context, deviceConfiguration: DeviceConfiguration): Int {
 
         var errorCount = 0
         val errorText = StringBuilder()
@@ -220,7 +220,7 @@ constructor(
     }
 
     private fun deviceFromXmlListDevice(
-            deviceClass: Class<out FhemDevice>, xmlListDevice: XmlListDevice, allDevices: MutableMap<String, FhemDevice>, context: Context, deviceConfiguration: DeviceConfiguration?): Boolean {
+            deviceClass: Class<out FhemDevice>, xmlListDevice: XmlListDevice, allDevices: MutableMap<String, FhemDevice>, context: Context, deviceConfiguration: DeviceConfiguration): Boolean {
 
         try {
             val device = createAndFillDevice(deviceClass, xmlListDevice, deviceConfiguration, context) ?: return false
@@ -246,10 +246,10 @@ constructor(
     }
 
     @Throws(Exception::class)
-    private fun <T : FhemDevice> createAndFillDevice(deviceClass: Class<T>, xmlListDevice: XmlListDevice, deviceConfiguration: DeviceConfiguration?, context: Context): T? {
+    private fun <T : FhemDevice> createAndFillDevice(deviceClass: Class<T>, xmlListDevice: XmlListDevice, deviceConfiguration: DeviceConfiguration, context: Context): T? {
         val device = deviceClass.newInstance()
         device.xmlListDevice = xmlListDevice
-        device.deviceConfiguration = Optional.fromNullable(deviceConfiguration)
+        device.deviceConfiguration = deviceConfiguration
 
         val cache = getDeviceClassCacheEntriesFor(deviceClass)
 

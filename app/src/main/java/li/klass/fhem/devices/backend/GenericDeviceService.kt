@@ -58,8 +58,8 @@ class GenericDeviceService @Inject constructor(
     }
 
     fun setSubState(device: FhemDevice, subStateName: String, value: String, connectionId: Optional<String>, context: Context, invokeDeviceUpdate: Boolean) {
-        val commandReplacements = device.deviceConfiguration.orNull()
-                ?.stateConfigFor(subStateName)
+        val commandReplacements = device.deviceConfiguration
+                .stateConfigFor(subStateName)
                 ?.beforeCommandReplacement ?: emptySet()
 
         val valueToSet = commandReplacements.fold(value, { v: String, replacement ->
@@ -109,7 +109,7 @@ class GenericDeviceService @Inject constructor(
                     .joinToString(separator = " ") { it.key + " " + it.value }
 
     fun update(device: FhemDevice, context: Context, connectionId: Optional<String>) {
-        val delay = device.deviceConfiguration.orNull()?.delayForUpdateAfterCommand ?: 0
+        val delay = device.deviceConfiguration.delayForUpdateAfterCommand
         val updateIntent = Intent(DO_REMOTE_UPDATE)
                 .putExtra(DEVICE_NAME, device.name)
                 .putExtra(CONNECTION_ID, connectionId.orNull())

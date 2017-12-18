@@ -148,11 +148,8 @@ class Sanitiser @Inject constructor(
         return value
     }
 
-    private fun sanitiseConfigurationFor(type: String): SanitiseConfiguration? {
-        val forDevice = deviceConfigurationProvider.configurationFor(type).orNull()?.sanitiseConfiguration
-        val forDefaults = deviceConfigurationProvider.configurationFor("defaults").orNull()?.sanitiseConfiguration!!
-        return forDefaults + forDevice
-    }
+    private fun sanitiseConfigurationFor(type: String): SanitiseConfiguration? =
+            deviceConfigurationProvider.configurationFor(type).sanitiseConfiguration
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(Sanitiser::class.java)

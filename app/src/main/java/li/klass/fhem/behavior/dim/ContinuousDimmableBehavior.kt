@@ -94,11 +94,9 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
         stateUiService.setSubState(fhemDevice, connectionId, setListAttribute, getDimStateForPosition(fhemDevice, state), context)
 
         val deviceConfiguration = fhemDevice.deviceConfiguration
-        if (deviceConfiguration.isPresent) {
-            val stateConfig = Optional.fromNullable(deviceConfiguration.get().stateConfigFor(slider.key))
-            if (stateConfig.isPresent && stateConfig.get().isShowDelayNotificationOnSwitch) {
-                DialogUtil.showAlertDialog(context, fhemDevice.name, context.getString(R.string.switchDelayNotification))
-            }
+        val stateConfig = Optional.fromNullable(deviceConfiguration.stateConfigFor(slider.key))
+        if (stateConfig.isPresent && stateConfig.get().isShowDelayNotificationOnSwitch) {
+            DialogUtil.showAlertDialog(context, fhemDevice.name, context.getString(R.string.switchDelayNotification))
         }
     }
 

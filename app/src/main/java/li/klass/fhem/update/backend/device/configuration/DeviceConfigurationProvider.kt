@@ -44,17 +44,20 @@ constructor() {
         JSON.parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
     }
 
-    fun configurationFor(device: FhemDevice): Optional<DeviceConfiguration> =
+    fun configurationFor(device: FhemDevice): DeviceConfiguration =
             configurationFor(device.xmlListDevice)
 
-    private fun configurationFor(device: XmlListDevice): Optional<DeviceConfiguration> {
+    private fun configurationFor(device: XmlListDevice): DeviceConfiguration {
         return try {
             configurationFor(device.type)
         } catch (e: JSONException) {
-            Optional.absent()
+            throw RuntimeException(e)
         }
     }
 
-    fun configurationFor(type: String): Optional<DeviceConfiguration> = Optional.fromNullable(configurations[type])
-
+    fun configurationFor(type: String): DeviceConfiguration {
+        val default = configurations["defaults"]!!
+        val forType = configurations[type]
+        return forType?.plus(default) ?: default
+    }
 }

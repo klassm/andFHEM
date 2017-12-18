@@ -1,0 +1,13 @@
+{
+  "defaultGroup": "REMOTE_CONTROL",
+  "states": [
+    {
+      "key": "channel",
+      "desc": "channel"
+    },
+    {
+      "key": "currentTitle",
+      "desc": "currentTitle"
+    }
+  ]
+}
