@@ -47,7 +47,6 @@ import li.klass.fhem.devices.backend.ToggleableService;
 import li.klass.fhem.devices.backend.at.AtService;
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;

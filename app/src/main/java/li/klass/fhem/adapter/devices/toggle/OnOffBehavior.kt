@@ -71,7 +71,7 @@ class OnOffBehavior
         return Optional.fromNullable(offStateNameByHook).asSet() + existingOffStateNames
     }
 
-    fun getOffStateName(device: FhemDevice): String? = getOffStateNames(device).firstOrNull()
+    fun getOffStateName(device: FhemDevice): String? = hookProvider.getOffStateName(device) ?: getOffStateNames(device).firstOrNull()
 
     private fun getOnStateNames(device: FhemDevice): Set<String> {
         val onStateNameByHook = hookProvider.getOnStateName(device)
@@ -80,7 +80,7 @@ class OnOffBehavior
         return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames
     }
 
-    fun getOnStateName(device: FhemDevice): String? = getOnStateNames(device).firstOrNull()
+    fun getOnStateName(device: FhemDevice): String? = hookProvider.getOnStateName(device) ?: getOnStateNames(device).firstOrNull()
 
     fun getOnOffStateNames(device: FhemDevice): Set<String> =
             getOnStateNames(device) + getOffStateNames(device)

@@ -39,7 +39,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.domain.core.ToggleableDevice
 import li.klass.fhem.service.intent.DeviceIntentService
 import javax.inject.Inject
 
@@ -60,11 +59,11 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
         if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE)
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE)
-            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(deviceHookProvider.getOnStateName(device) ?: onOffBehavior.getOnStateName(device)))
+            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(onOffBehavior.getOnStateName(device)))
         } else {
             view.setViewVisibility(R.id.toggleOff, View.VISIBLE)
             view.setViewVisibility(R.id.toggleOn, View.GONE)
-            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(deviceHookProvider.getOffStateName(device) ?: onOffBehavior.getOffStateName(device)))
+            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(onOffBehavior.getOffStateName(device)))
         }
 
         val pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -79,9 +78,9 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
 
         val actionIntent = when (hook) {
             ButtonHook.ON_DEVICE -> actionIntentForOnOffDevice(device, widgetConfiguration)
-                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOnStateName(device) ?: onOffBehavior.getOnStateName(device))
+                    .putExtra(DEVICE_TARGET_STATE, onOffBehavior.getOnStateName(device))
             ButtonHook.OFF_DEVICE -> actionIntentForOnOffDevice(device, widgetConfiguration)
-                    .putExtra(DEVICE_TARGET_STATE, deviceHookProvider.getOffStateName(device) ?: onOffBehavior.getOffStateName(device))
+                    .putExtra(DEVICE_TARGET_STATE, onOffBehavior.getOffStateName(device))
             else -> Intent(Actions.DEVICE_WIDGET_TOGGLE)
                     .putExtra(APP_WIDGET_ID, widgetConfiguration.widgetId)
                     .putExtra(DEVICE_NAME, device.name)

@@ -74,7 +74,7 @@ class OnOffBehaviorTest {
     fun should_handle_invert_state_hook(testCase: IsOnTestCase) {
         //  given
         val device = GenericDevice()
-        val xmlListDevice = XmlListDevice("BLUB", HashMap(), HashMap(), HashMap(), HashMap())
+        val xmlListDevice = XmlListDevice("BLUB")
         xmlListDevice.setInternal("NAME", "Name")
         device.xmlListDevice = xmlListDevice
         device.state = testCase.state
@@ -82,7 +82,7 @@ class OnOffBehaviorTest {
         `when`(deviceHookProvider.invertState(device)).thenReturn(false)
 
         val device2 = GenericDevice()
-        val xmlListDevice2 = XmlListDevice("BLA", HashMap(), HashMap(), HashMap(), HashMap())
+        val xmlListDevice2 = XmlListDevice("BLA")
         xmlListDevice.setInternal("NAME", "name")
         device2.xmlListDevice = xmlListDevice2
         device2.state = testCase.state

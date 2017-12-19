@@ -26,11 +26,8 @@ package li.klass.fhem.devices.backend
 
 import android.content.Context
 import com.google.common.base.Optional
-import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.domain.core.ToggleableDevice
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton

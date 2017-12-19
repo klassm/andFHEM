@@ -83,14 +83,14 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
     private fun setToggleButtonText(device: FhemDevice, toggleButton: ToggleButton, context: Context) {
         val eventMap = device.eventMap
 
-        val onStateText = getOnStateText(eventMap)
+        val onStateText = getOnStateText(eventMap, device)
         if (onStateText.isPresent) {
             toggleButton.textOn = onStateText.get()
         } else {
             toggleButton.textOn = context.getString(R.string.on)
         }
 
-        val offStateText = getOffStateText(eventMap)
+        val offStateText = getOffStateText(eventMap, device)
         if (offStateText.isPresent) {
             toggleButton.textOff = offStateText.get()
         } else {
@@ -98,11 +98,11 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
         }
     }
 
-    private fun getOnStateText(eventMap: EventMap): Optional<String> =
-            Optional.fromNullable(eventMap.getValueFor("on"))
+    private fun getOnStateText(eventMap: EventMap, device: FhemDevice): Optional<String> =
+            Optional.fromNullable(eventMap.getValueFor(onOffBehavior.getOnStateName(device) ?: "on"))
 
-    private fun getOffStateText(eventMap: EventMap): Optional<String> =
-            Optional.fromNullable(eventMap.getValueFor("off"))
+    private fun getOffStateText(eventMap: EventMap, device: FhemDevice): Optional<String> =
+            Optional.fromNullable(eventMap.getValueFor(onOffBehavior.getOffStateName(device) ?: "off"))
 
     companion object {
         val HOLDER_KEY = ToggleDeviceActionRow::class.java.name!!

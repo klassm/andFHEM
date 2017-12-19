@@ -63,10 +63,10 @@ class OnOffActionRowForToggleables(layoutId: Int,
     }
 
     override fun getOnStateName(device: FhemDevice, context: Context): String? =
-            hookProvider.getOnStateName(device) ?: onOffBehavior.getOnStateName(device)
+            onOffBehavior.getOnStateName(device)
 
     override fun getOffStateName(device: FhemDevice, context: Context): String? =
-            hookProvider.getOffStateName(device) ?: onOffBehavior.getOffStateName(device)
+            onOffBehavior.getOffStateName(device)
 
     override fun isOn(device: FhemDevice, context: Context): Boolean = onOffBehavior.isOn(device)
 }

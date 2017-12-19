@@ -45,7 +45,6 @@ import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
-import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
@@ -159,8 +158,6 @@ public interface ApplicationComponent {
     void inject(FloorplanAdapter object);
 
     void inject(GCMSendDeviceAdapter object);
-
-    void inject(ToggleableAdapter object);
 
     void inject(WeatherAdapter object);
 
