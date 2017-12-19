@@ -1,0 +1,41 @@
+{
+  "defaultGroup": "CALL_MONITOR",
+  "states": [
+    {
+      "key": "event",
+      "desc": "callMonEvent",
+      "showInOverview": true
+    },
+    {
+      "key": "call_duration",
+      "desc": "callMonDuration",
+      "showInOverview": true
+    },
+    {
+      "key": "external_name",
+      "desc": "callMonExternalName",
+      "showInOverview": true
+    },
+    {
+      "key": "external_number",
+      "desc": "callMonExternalNumber",
+      "showInOverview": true
+    },
+    {
+      "key": "internal_number",
+      "desc": "internal_number"
+    },
+    {
+      "key": "missed_call",
+      "desc": "callMonMissedNumber"
+    }
+  ],
+  "sanitise": {
+    "deviceValues": {
+      "call_duration": {
+        "append": "s",
+        "extract": ""
+      }
+    }
+  }
+}

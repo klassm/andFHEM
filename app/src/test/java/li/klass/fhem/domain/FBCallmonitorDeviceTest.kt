@@ -22,31 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.junit.Test;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
-public class FBCallmonitorDeviceTest extends DeviceXMLParsingBase {
+class FBCallmonitorDeviceTest : DeviceXMLParsingBase() {
     @Test
-    public void testForCorrectlySetAttributes() {
-        FBCallmonitorDevice device = getDefaultDevice(FBCallmonitorDevice.class);
+    fun testForCorrectlySetAttributes() {
+        val device = getDefaultDevice(GenericDevice::class.java)
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.name).isEqualTo(DEFAULT_TEST_DEVICE_NAME)
+        assertThat(device.roomConcatenated).isEqualTo(DEFAULT_TEST_ROOM_NAME)
 
-        assertThat(device.getCallDuration(), is("20 (s)"));
-        assertThat(device.getEvent(), is("Disconnect"));
-        assertThat(device.getExternalName(), is("unknown"));
-        assertThat(device.getExternalNumber(), is("026094339657"));
-        assertThat(device.getInternalNumber(), is("4382910"));
+        assertThat(stateValueFor(device, "call_duration")).isEqualTo("20 (s)")
+        assertThat(stateValueFor(device, "event")).isEqualTo("disconnect")
+        assertThat(stateValueFor(device, "external_name")).isEqualTo("unknown")
+        assertThat(stateValueFor(device, "external_number")).isEqualTo("026094339657")
+        assertThat(stateValueFor(device, "internal_number")).isEqualTo("4382910")
     }
 
-    @Override
-    protected String getFileName() {
-        return "fb_callmonitor.xml";
-    }
+    override fun getFileName(): String = "fb_callmonitor.xml"
 }

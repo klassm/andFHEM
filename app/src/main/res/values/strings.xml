@@ -188,6 +188,7 @@
     <string name="callMonExternalName">Caller</string>
     <string name="callMonExternalNumber">Number external</string>
     <string name="callMonInternalNumber">Number internal</string>
+    <string name="callMonMissedNumber">Number missed</string>
     <string name="callMonDuration">Duration</string>
     <string name="callMonEvent">Event</string>
     <string name="callMonEventRing">Ringing</string>

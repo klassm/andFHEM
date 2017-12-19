@@ -188,6 +188,7 @@
     <string name="callMonExternalName">Anrufer</string>
     <string name="callMonExternalNumber">Nummer extern</string>
     <string name="callMonInternalNumber">Nummer intern</string>
+    <string name="callMonMissedNumber">Nummer verpasst</string>
     <string name="callMonDuration">Dauer</string>
     <string name="callMonEvent">Ereignis</string>
     <string name="callMonEventRing">Klingelnd</string>

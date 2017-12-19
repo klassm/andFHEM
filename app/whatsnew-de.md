@@ -1,0 +1,1 @@
+* Als generische Geräte migriert: FB_CALLMONITOR

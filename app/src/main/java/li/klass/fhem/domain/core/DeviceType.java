@@ -35,7 +35,6 @@ import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
-import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GenericDevice;
@@ -48,7 +47,6 @@ public enum DeviceType {
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
-    FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
 
     GENERIC("__generic__", GenericDevice.class, new GenericOverviewDetailDeviceAdapter());

@@ -1,0 +1,1 @@
+* Migrate as generic devices: FB_CALLMONITOR
