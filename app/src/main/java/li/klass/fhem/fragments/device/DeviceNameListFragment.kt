@@ -137,7 +137,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
         }
     }
 
-    protected fun deviceListReceived(elements: List<ViewableElementsCalculator.Element>) {
+    private fun deviceListReceived(elements: List<ViewableElementsCalculator.Element>) {
         val devicesView = view?.devices ?: return
         devicesView.adapter = DeviceGroupAdapter(elements, DeviceGroupAdapter.Configuration(
                 deviceResourceId = if (isNavigation) R.layout.device_name_selection_navigation else R.layout.device_name_selection,
@@ -148,10 +148,17 @@ abstract class DeviceNameListFragment : BaseFragment() {
                         true -> R.color.android_green
                         else -> android.R.color.transparent
                     })
+                    view.tag = device.name
                 }
         ))
         devicesView.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), StaggeredGridLayoutManager.VERTICAL)
         view?.invalidate()
+
+        val childViewToSelect = elements.indexOfFirst {
+            it is ViewableElementsCalculator.Element.Device
+                    && it.device.name == deviceName
+        }
+        devicesView.scrollToPosition(childViewToSelect)
 
         if (elements.isNotEmpty()) {
             hideEmptyView()

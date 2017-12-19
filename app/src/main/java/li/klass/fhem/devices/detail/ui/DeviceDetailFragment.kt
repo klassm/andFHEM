@@ -158,13 +158,9 @@ class DeviceDetailFragment : BaseFragment() {
 
     private fun findScrollView(): ScrollView? = view!!.findViewById(R.id.deviceDetailView)
 
-    override fun getTitle(context: Context): CharSequence? {
-        var name = arguments?.getString(DEVICE_DISPLAY_NAME)
-        if (name == null) {
-            name = arguments?.getString(DEVICE_NAME)
-        }
-        return name
-    }
+    override fun getTitle(context: Context): CharSequence? =
+            arguments?.getString(DEVICE_DISPLAY_NAME)
+                    ?: arguments?.getString(DEVICE_NAME)
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)

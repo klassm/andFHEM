@@ -133,10 +133,6 @@ public abstract class FhemDevice extends HookedDevice {
         eventMap = EventMapParser.INSTANCE.parseEventMap(content);
     }
 
-    protected void putEventToEventMap(String key, String value) {
-        eventMap = eventMap.put(key, value);
-    }
-
     @ShowField(description = ResourceIdMapper.deviceName, showAfter = ShowField.FIRST)
     public String getAliasOrName() {
         String andFHEMAlias = getAndFHEMAlias();

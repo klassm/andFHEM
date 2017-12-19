@@ -48,6 +48,7 @@ class DeviceNameListNavigationFragment : DeviceNameListFragment() {
         activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
                 .putExtra(DEVICE_NAME, child.name)
+                .putExtra(DEVICE_DISPLAY_NAME, child.aliasOrName)
                 .putExtra(CALLING_FRAGMENT, arguments?.getSerializable(CALLING_FRAGMENT))
                 .putExtra(ROOM_NAME, roomName))
     }
