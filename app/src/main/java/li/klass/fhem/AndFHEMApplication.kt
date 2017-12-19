@@ -48,6 +48,7 @@ import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.InstalledApplications
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
@@ -97,7 +98,9 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     }
 
     override fun onUpdate(oldVersion: Int, newVersion: Int) {
-        deviceListUpdateService.checkForCorruptedDeviceList()
+        doAsync {
+            deviceListUpdateService.checkForCorruptedDeviceList()
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

@@ -40,3 +40,9 @@ uploadToPlayStore.dependsOn {
     tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release")}
 }
 afterReleaseBuild.dependsOn("resetWhatsNew")
+
+task deleteGitTag(type: Exec) {
+    commandLine 'git', 'tag', '-d', "$version"
+    ignoreExitValue true
+}
+beforeReleaseBuild.dependsOn deleteGitTag
