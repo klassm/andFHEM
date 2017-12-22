@@ -57,7 +57,9 @@ class WeatherDeviceCardProvider @Inject constructor(
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_weather, null, false)
-        view.forecast.layoutManager = LinearLayoutManager(context)
+        view.forecast.layoutManager = object : LinearLayoutManager(context) {
+            override fun canScrollVertically() = false
+        }
         view.forecast.adapter = Adapter()
 
         async(UI) {
