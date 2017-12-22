@@ -38,10 +38,15 @@ import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.domain.WeatherDevice
+import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.util.DateFormatUtil
+import javax.inject.Inject
 
-class BigWeatherForecastWidget : DeviceListAppWidgetView() {
+class BigWeatherForecastWidget : DeviceListAppWidgetView<WeatherService.WeatherForecastInformation>() {
+    @Inject
+    lateinit var weatherService: WeatherService
+
     override fun getWidgetName(): Int = R.string.widget_weather_forecast
 
     override fun getContentView(): Int = R.layout.appwidget_forecast_big
@@ -69,34 +74,27 @@ class BigWeatherForecastWidget : DeviceListAppWidgetView() {
     }
 
     override fun supports(device: FhemDevice, context: Context): Boolean {
-        return if (AndFHEMApplication.androidSDKLevel < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            false
-        } else device is WeatherDevice
-    }
-
-    override fun getListItemCount(device: FhemDevice): Int {
-        val weatherDevice = device as WeatherDevice
-        return weatherDevice.forecasts.size
+        return AndFHEMApplication.androidSDKLevel >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
+                && device.xmlListDevice.type == "Weather"
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    override fun getRemoteViewAt(context: Context, device: FhemDevice, position: Int, widgetId: Int): RemoteViews {
-        val weatherDevice = device as WeatherDevice
-
+    override fun getRemoteViewAt(context: Context, item: WeatherService.WeatherForecastInformation, widgetId: Int): RemoteViews {
         val view = RemoteViews(context.packageName,
                 R.layout.appwidget_forecast_big_item)
 
-        val forecast = weatherDevice.forecasts[position]
+        view.setTextViewText(R.id.day_description, item.weekday + ", " + DateFormatUtil.ANDFHEM_DATE_FORMAT.print(item.date))
+        view.setTextViewText(R.id.day_condition, item.condition)
+        view.setTextViewText(R.id.day_temperature, item.temperature)
 
-        view.setTextViewText(R.id.day_description, forecast.dayOfWeek + ", " + forecast.date)
-        view.setTextViewText(R.id.day_condition, forecast.condition)
-        view.setTextViewText(R.id.day_temperature, forecast.lowTemperature + " - " + forecast.highTemperature)
-
-        loadImageAndSetIn(view, R.id.day_image, forecast.url, false)
+        loadImageAndSetIn(view, R.id.day_image, item.icon, false)
 
         view.setOnClickFillInIntent(R.id.forecastItem, Intent())
         return view
     }
+
+    override fun extractItemsFrom(device: FhemDevice): List<WeatherService.WeatherForecastInformation> =
+            weatherService.forecastsFor(device)
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)

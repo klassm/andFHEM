@@ -64,12 +64,11 @@ constructor(
         val holder = myView.tag as GenericDeviceOverviewViewHolder
         holder.resetHolder()
         holder.deviceName.visibility = View.GONE
-        val row = holder.getAdditionalHolderFor<DimActionRow>(DimActionRow.HOLDER_KEY)
-                ?: {
-                    val newRow = DimActionRow(layoutInflater, stateUiService, layoutInflater.context)
-                    holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, newRow)
-                    newRow
-                }()
+        val row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY) ?: {
+            val newRow = DimActionRow(layoutInflater, stateUiService, layoutInflater.context)
+            holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, newRow)
+            newRow
+        }()
         row.fillWith(rawDevice, null, null)
         holder.tableLayout.addView(row.view)
         return myView

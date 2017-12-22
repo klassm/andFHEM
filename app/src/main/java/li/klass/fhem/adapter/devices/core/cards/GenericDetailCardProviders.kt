@@ -37,7 +37,8 @@ class GenericDetailCardProviders @Inject constructor(
         actionsCardProvider: ActionsCardProvider,
         playerCardProvider: PlayerCardProvider,
         fS20ZdrPlayerCardProvider: FS20ZdrPlayerCardProvider,
-        remotecontrolDeviceCardProvider: RemotecontrolDeviceCardProvider
+        remotecontrolDeviceCardProvider: RemotecontrolDeviceCardProvider,
+        weatherDeviceCardProvider: WeatherDeviceCardProvider
 ) {
     val providers: Set<GenericDetailCardProvider> =
             setOf(
@@ -48,6 +49,7 @@ class GenericDetailCardProviders @Inject constructor(
                     actionsCardProvider,
                     playerCardProvider,
                     fS20ZdrPlayerCardProvider,
-                    remotecontrolDeviceCardProvider
+                    remotecontrolDeviceCardProvider,
+                    weatherDeviceCardProvider
             )
 }

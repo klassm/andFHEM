@@ -22,33 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.core;
+package li.klass.fhem.util.view
 
-public abstract class HookedDevice extends Device {
+import android.view.View
+import android.widget.TextView
 
-    /**
-     * Contains a name only used in widgets.
-     */
-    @XmllistAttribute("WIDGET_NAME")
-    protected String widgetName;
-
-    /**
-     * Hides or shows a devices everywhere within this application.
-     */
-    protected boolean alwaysHidden = false;
-
-    /**
-     * Optionally contains some sortBy attribute that is used for device ordering.
-     */
-    @XmllistAttribute("SORTBY")
-    protected String sortBy;
-
-    @XmllistAttribute("ALWAYS_HIDDEN")
-    public void setAlwaysHidden(String value) {
-        alwaysHidden = "true".equalsIgnoreCase(value);
-    }
-
-    public boolean isSupported() {
-        return !alwaysHidden;
+fun TextView.setTextOrHide(toSet: String?, toHide: View = this) {
+    val trimmed = toSet?.trim()
+    if (trimmed.isNullOrBlank()) {
+        toHide.visibility = View.GONE
+    } else {
+        text = trimmed
+        toHide.visibility = View.VISIBLE
     }
 }

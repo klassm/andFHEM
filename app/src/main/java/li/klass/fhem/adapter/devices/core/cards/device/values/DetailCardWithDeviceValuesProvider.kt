@@ -146,13 +146,13 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
     }
 
     private fun createEmptyRow(inflater: LayoutInflater, resource: Int): GenericDeviceTableRowHolder {
-        val holder = GenericDeviceTableRowHolder()
         val tableRow = inflater.inflate(resource, null) as TableRow
-        holder.row = tableRow
-        holder.description = tableRow.findViewById(R.id.description)
-        holder.value = tableRow.findViewById(R.id.value)
-        holder.devStateIcon = tableRow.findViewById(R.id.devStateIcon)
-        return holder
+        return GenericDeviceTableRowHolder(
+                tableRow,
+                tableRow.findViewById(R.id.description),
+                tableRow.findViewById(R.id.value),
+                tableRow.findViewById(R.id.devStateIcon)
+        )
     }
 
     private fun addRow(table: TableLayout, row: TableRow) {

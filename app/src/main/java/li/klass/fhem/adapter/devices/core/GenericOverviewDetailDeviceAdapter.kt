@@ -32,10 +32,8 @@ import android.widget.LinearLayout
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.adapter.devices.strategy.DimmableStrategy
-import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy
+import li.klass.fhem.adapter.devices.strategy.StrategyProvider
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy
-import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.GenericDevice
@@ -47,12 +45,7 @@ import javax.inject.Inject
 class GenericOverviewDetailDeviceAdapter : OverviewDeviceAdapter() {
 
     @Inject
-    lateinit var toggleableStrategy: ToggleableStrategy
-    @Inject
-    lateinit var dimmableStrategy: DimmableStrategy
-    @Inject
-    lateinit var webcmdStrategy: WebcmdStrategy
-    @Inject
+    lateinit var strategyProvider: StrategyProvider
     lateinit var onOffBehavior: OnOffBehavior
     @Inject
     lateinit var deviceHookProvider: DeviceHookProvider
@@ -88,8 +81,6 @@ class GenericOverviewDetailDeviceAdapter : OverviewDeviceAdapter() {
 
     override fun fillOverviewStrategies(overviewStrategies: MutableList<ViewStrategy>) {
         super.fillOverviewStrategies(overviewStrategies)
-        overviewStrategies.add(toggleableStrategy)
-        overviewStrategies.add(dimmableStrategy)
-        overviewStrategies.add(webcmdStrategy)
+        strategyProvider.strategies.forEach { overviewStrategies.add(it) }
     }
 }

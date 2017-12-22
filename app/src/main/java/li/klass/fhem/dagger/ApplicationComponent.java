@@ -41,12 +41,10 @@ import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
-import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
-import li.klass.fhem.adapter.devices.strategy.WebcmdStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.appindex.AppIndexIntentService;
 import li.klass.fhem.appwidget.action.AppWidgetActionIntentService;
@@ -158,8 +156,6 @@ public interface ApplicationComponent {
     void inject(FloorplanAdapter object);
 
     void inject(GCMSendDeviceAdapter object);
-
-    void inject(WeatherAdapter object);
 
     void inject(WebLinkAdapter object);
 
@@ -290,8 +286,6 @@ public interface ApplicationComponent {
     void inject(OnOffBehavior object);
 
     void inject(ToggleableStrategy object);
-
-    void inject(WebcmdStrategy object);
 
     void inject(ConnectionChangeLocaleSettingActivity connectionChangeLocaleSettingActivity);
 

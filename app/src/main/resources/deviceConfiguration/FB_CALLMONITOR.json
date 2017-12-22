@@ -23,7 +23,7 @@
     },
     {
       "key": "internal_number",
-      "desc": "internal_number"
+      "desc": "callMonInternalNumber"
     },
     {
       "key": "missed_call",

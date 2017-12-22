@@ -27,8 +27,10 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -148,27 +150,26 @@ public abstract class OverviewDeviceAdapter extends DeviceAdapter {
     }
 
     GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
-        GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder = new GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder();
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
-        assert tableRow != null;
-        holder.row = tableRow;
-        holder.description = tableRow.findViewById(R.id.description);
-        holder.value = tableRow.findViewById(R.id.value);
-        holder.devStateIcon = tableRow.findViewById(R.id.devStateIcon);
-        return holder;
+        return new GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder(
+                tableRow,
+                (TextView) tableRow.findViewById(R.id.description),
+                (TextView) tableRow.findViewById(R.id.value),
+                (ImageView) tableRow.findViewById(R.id.devStateIcon)
+        );
     }
 
     void fillTableRow(GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder holder, DeviceViewItem item, FhemDevice device, Context context) {
         String value = item.getValueFor(device);
         String description = item.getName(deviceDescMapping, context);
-        setTextView(holder.description, description);
-        setTextView(holder.value, String.valueOf(value));
+        setTextView(holder.getDescription(), description);
+        setTextView(holder.getValue(), String.valueOf(value));
         if (value == null || value.equals("")) {
-            holder.row.setVisibility(View.GONE);
+            holder.getRow().setVisibility(View.GONE);
         } else {
-            holder.row.setVisibility(View.VISIBLE);
+            holder.getRow().setVisibility(View.VISIBLE);
         }
-        devStateIconAdder.addDevStateIconIfRequired(value, device, holder.devStateIcon);
+        devStateIconAdder.addDevStateIconIfRequired(value, device, holder.getDevStateIcon());
     }
 
     List<DeviceViewItem> getSortedAnnotatedClassItems(FhemDevice device, Context context) {

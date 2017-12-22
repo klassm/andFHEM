@@ -28,6 +28,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.ResultReceiver
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -145,8 +146,8 @@ abstract class DeviceNameListFragment : BaseFragment() {
                     view.name.text = device.aliasOrName
                     view.onClick { onDeviceNameClick(device) }
                     view.setBackgroundColor(when (deviceName?.equals(device.name)) {
-                        true -> R.color.android_green
-                        else -> android.R.color.transparent
+                        true -> ContextCompat.getColor(devicesView.context, R.color.android_green)
+                        else -> ContextCompat.getColor(devicesView.context, android.R.color.transparent)
                     })
                     view.tag = device.name
                 }

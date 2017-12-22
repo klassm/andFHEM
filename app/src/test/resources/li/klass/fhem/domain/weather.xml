@@ -38,29 +38,34 @@
             <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
             <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
             <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
+            <STATE key="day_of_week" value="Di." measured="2012-05-01 14:56:22" />
+            <STATE key="fc1_date" value="01 May 2012" measured="2012-05-01 14:56:22" />
             <STATE key="fc1_condition" value="Klar" measured="2012-05-01 14:56:22"/>
             <STATE key="fc1_day_of_week" value="Di." measured="2012-05-01 14:56:22"/>
             <STATE key="fc1_high_c" value="22" measured="2012-05-01 14:56:22"/>
-            <STATE key="fc1_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc1_icon" value="sunny" measured="2012-05-01 14:56:22" />
             <STATE key="fc1_low_c" value="13" measured="2012-05-01 14:56:22"/>
             <STATE key="fc2_condition" value="Vereinzelt Regen" measured="2012-05-01 14:56:22"/>
             <STATE key="fc2_day_of_week" value="Mi." measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_date" value="02 May 2012" measured="2012-05-01 14:56:22" />
             <STATE key="fc2_high_c" value="20" measured="2012-05-01 14:56:22"/>
-            <STATE key="fc2_icon" value="/ig/images/weather/chance_of_rain.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_icon" value="chance_of_rain" measured="2012-05-01 14:56:22" />
             <STATE key="fc2_low_c" value="9" measured="2012-05-01 14:56:22"/>
             <STATE key="fc3_condition" value="Meist sonnig" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_date" value="03 May 2012" measured="2012-05-01 14:56:22" />
             <STATE key="fc3_day_of_week" value="Do." measured="2012-05-01 14:56:22"/>
             <STATE key="fc3_high_c" value="19" measured="2012-05-01 14:56:22"/>
-            <STATE key="fc3_icon" value="/ig/images/weather/mostly_sunny.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_icon" value="mostly_sunny" measured="2012-05-01 14:56:22" />
             <STATE key="fc3_low_c" value="8" measured="2012-05-01 14:56:22"/>
             <STATE key="fc4_condition" value="Klar" measured="2012-05-01 14:56:22"/>
             <STATE key="fc4_day_of_week" value="Fr." measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_date" value="04 May 2012" measured="2012-05-01 14:56:22" />
             <STATE key="fc4_high_c" value="19" measured="2012-05-01 14:56:22"/>
-            <STATE key="fc4_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_icon" value="sunny" measured="2012-05-01 14:56:22" />
             <STATE key="fc4_low_c" value="10" measured="2012-05-01 14:56:22"/>
             <STATE key="forecast_date" value="2012-05-01" measured="2012-05-01 14:56:22"/>
             <STATE key="humidity" value="43" measured="2012-05-01 14:56:22"/>
-            <STATE key="icon" value="/ig/images/weather/cloudy.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="icon" value="cloudy" measured="2012-05-01 14:56:22" />
             <STATE key="latitude_e6" value="" measured="2012-05-01 14:56:22"/>
             <STATE key="longitude_e6" value="" measured="2012-05-01 14:56:22"/>
             <STATE key="postal_code" value="Augsburg" measured="2012-05-01 14:56:22"/>

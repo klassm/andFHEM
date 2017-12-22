@@ -23,7 +23,7 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.0'
+    ext.kotlin_version = '1.2.10'
     ext.serialization_version = '0.3'
 
     repositories {
@@ -66,7 +66,7 @@ repositories {
 
 ext {
     supportLibVersion = '27.0.2'
-    firebaseVersion = '11.6.2'
+    firebaseVersion = '11.8.0'
     anko_version = '0.10.1'
     architectureComponentsVersion = '1.0.0'
 }
@@ -93,7 +93,7 @@ dependencies {
     compile "com.google.firebase:firebase-ads:${firebaseVersion}"
     compile 'commons-net:commons-net:3.3'
     compile 'commons-codec:commons-codec:1.11'
-    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.1'
     compile('com.google.guava:guava:23.4-android') {
         exclude group: 'com.google.code.findbugs'
     }
@@ -148,7 +148,7 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:${architectureComponentsVersion}"
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.8.9'
+    testCompile 'org.mockito:mockito-core:2.8.47'
     testCompile 'com.nhaarman:mockito-kotlin:1.5.0'
     testCompile 'com.tngtech.java:junit-dataprovider:1.12.0'
     testCompile 'org.assertj:assertj-core:3.8.0'

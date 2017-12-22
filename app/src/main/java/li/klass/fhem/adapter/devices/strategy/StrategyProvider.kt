@@ -22,25 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.strategy;
+package li.klass.fhem.adapter.devices.strategy
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
-public class StrategyProvider {
-    @Inject
-    DefaultViewStrategy defaultOverviewStrategy;
-
-    @Inject
-    DimmableStrategy dimmableStrategy;
-
-    @Inject
-    ToggleableStrategy toggleableOverviewStrategy;
-
-    @Inject
-    LightSceneDeviceViewStrategy lightSceneDeviceOverviewStrategy;
-
-    @Inject
-    WeatherDeviceViewStrategy weatherDeviceStrategy;
+class StrategyProvider @Inject constructor(defaultOverviewStrategy: DefaultViewStrategy,
+                                           dimmableStrategy: DimmableStrategy,
+                                           toggleableOverviewStrategy: ToggleableStrategy,
+                                           webcmdStrategy: WebcmdStrategy,
+                                           lightSceneDeviceOverviewStrategy: LightSceneDeviceViewStrategy,
+                                           weatherDeviceStrategy: WeatherDeviceViewStrategy) {
+    val strategies by lazy {
+        listOf(
+                defaultOverviewStrategy,
+                toggleableOverviewStrategy,
+                dimmableStrategy,
+                webcmdStrategy,
+                lightSceneDeviceOverviewStrategy,
+                weatherDeviceStrategy)
+    }
 }

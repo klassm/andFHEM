@@ -70,7 +70,7 @@ constructor(
     private val overviewLayout: Int
         get() = R.layout.device_overview_generic
 
-    protected open fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<DeviceViewItem>, layoutInflater: LayoutInflater) {
+    open fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<DeviceViewItem>, layoutInflater: LayoutInflater) {
         val context = layoutInflater.context
 
         viewHolder.resetHolder()
@@ -122,13 +122,13 @@ constructor(
     }
 
     private fun createTableRow(inflater: LayoutInflater, resource: Int): GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder {
-        val holder = GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder()
         val tableRow = inflater.inflate(resource, null) as TableRow
-        holder.row = tableRow
-        holder.description = tableRow.findViewById(R.id.description)
-        holder.value = tableRow.findViewById(R.id.value)
-        holder.devStateIcon = tableRow.findViewById(R.id.devStateIcon)
-        return holder
+        return GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder(
+                tableRow,
+                tableRow.findViewById(R.id.description),
+                tableRow.findViewById(R.id.value),
+                tableRow.findViewById(R.id.devStateIcon)
+        )
     }
 
     private fun fillTableRow(holder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder, item: DeviceViewItem, device: FhemDevice, context: Context) {

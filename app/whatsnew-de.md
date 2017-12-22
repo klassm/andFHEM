@@ -1,1 +1,1 @@
-* Als generische Geräte migriert: FB_CALLMONITOR
+* Als generische Geräte migriert: FB_CALLMONITOR, Weather

@@ -44,11 +44,11 @@ class LightSceneDeviceViewStrategy @Inject constructor(
         val stateUiService: StateUiService
 ) : ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, device: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
         val layout = layoutInflater.inflate(R.layout.device_overview_generic, null) as TableLayout
         layout.removeAllViews()
 
-        layout.addView(object : HolderActionRow<String>(device.aliasOrName,
+        layout.addView(object : HolderActionRow<String>(rawDevice.aliasOrName,
                 HolderActionRow.LAYOUT_OVERVIEW) {
 
             override fun getItems(device: FhemDevice): List<String> {
@@ -64,7 +64,7 @@ class LightSceneDeviceViewStrategy @Inject constructor(
                 setSceneButtonProperties(device, scene, button, context)
                 return button
             }
-        }.createRow(layout.context, layout, device, connectionId))
+        }.createRow(layout.context, layout, rawDevice, connectionId))
         return layout
     }
 

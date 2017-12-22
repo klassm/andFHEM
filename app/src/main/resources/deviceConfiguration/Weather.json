@@ -1,6 +1,30 @@
 {
   "sensorDevice": true,
   "defaultGroup": "WEATHER",
+  "showStateInOverview": false,
+  "states": [
+    {
+      "key": "temp_c",
+      "desc": "temperature",
+      "showInOverview": true
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true
+    },
+    {
+      "key": "wind_condition",
+      "desc": "wind",
+      "showInOverview": true
+    },
+    {
+      "key": "condition",
+      "desc": "weather",
+      "showInOverview": true
+    }
+  ],
+
   "sanitise": {
     "deviceValues": {
       "temp_c": {

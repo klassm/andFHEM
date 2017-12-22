@@ -46,8 +46,6 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEventMap().getValueFor("on")).isEqualTo("Auf");
 
         assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
-
-        assertThat(device.getSortBy()).isEqualTo("1");
     }
 
     @Test

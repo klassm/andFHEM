@@ -56,5 +56,4 @@ constructor(
         return !toggleableStrategy.supports(fhemDevice) && !dimmableStrategy.supports(fhemDevice)
                 && fhemDevice.xmlListDevice.setList.contains("state")
     }
-
 }

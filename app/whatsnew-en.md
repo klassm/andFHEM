@@ -1,1 +1,1 @@
-* Migrate as generic devices: FB_CALLMONITOR
+* Migrate as generic devices: FB_CALLMONITOR, Weather

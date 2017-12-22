@@ -67,7 +67,7 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
         }
 
         val view = widgetType.widgetView
-        if (view !is DeviceListAppWidgetView) {
+        if (view !is DeviceListAppWidgetView<*>) {
             LOG.error(
                     "can only handle list widget views, got " + view.javaClass.name)
 
