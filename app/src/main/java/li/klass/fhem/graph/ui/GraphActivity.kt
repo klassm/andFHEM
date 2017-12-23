@@ -89,10 +89,10 @@ class GraphActivity : AppCompatActivity(), Updateable {
         (application as AndFHEMApplication).daggerComponent.inject(this)
 
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
-            startDate = savedInstanceState.getSerializable(START_DATE) as DateTime
+            startDate = savedInstanceState.getSerializable(START_DATE) as DateTime?
         }
         if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
-            endDate = savedInstanceState.getSerializable(END_DATE) as DateTime
+            endDate = savedInstanceState.getSerializable(END_DATE) as DateTime?
         }
 
         val extras = intent.extras
