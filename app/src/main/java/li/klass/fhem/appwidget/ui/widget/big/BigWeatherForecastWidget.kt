@@ -31,6 +31,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.widget.RemoteViews
+import com.bumptech.glide.Glide
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView
@@ -86,9 +87,11 @@ class BigWeatherForecastWidget : DeviceListAppWidgetView<WeatherService.WeatherF
         view.setTextViewText(R.id.day_description, item.weekday + ", " + DateFormatUtil.ANDFHEM_DATE_FORMAT.print(item.date))
         view.setTextViewText(R.id.day_condition, item.condition)
         view.setTextViewText(R.id.day_temperature, item.temperature)
-
-        loadImageAndSetIn(view, R.id.day_image, item.icon, false)
-
+        val bitmap = Glide.with(context)
+                .asBitmap()
+                .load(item.icon)
+                .submit().get()
+        view.setImageViewBitmap(R.id.day_image, bitmap)
         view.setOnClickFillInIntent(R.id.forecastItem, Intent())
         return view
     }

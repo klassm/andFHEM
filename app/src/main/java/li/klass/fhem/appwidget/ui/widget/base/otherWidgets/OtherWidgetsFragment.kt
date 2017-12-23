@@ -87,7 +87,7 @@ class OtherWidgetsFragment : BaseFragment() {
         val adapter = listView.adapter as OtherWidgetsAdapter
 
         val widgets = WidgetType.getOtherWidgetsFor(widgetSize!!)
-        val values = newArrayList(transform(widgets, Function<WidgetType, Pair<WidgetType, String>> { widgetType -> Pair.of(widgetType, activity!!.getString(widgetType!!.widgetView.widgetName)) }))
+        val values = newArrayList(transform(widgets, Function<WidgetType, Pair<WidgetType, String>> { widgetType -> Pair.of(widgetType, activity!!.getString(widgetType!!.widgetView.getWidgetName())) }))
 
         if (values.isEmpty()) {
             showEmptyView()

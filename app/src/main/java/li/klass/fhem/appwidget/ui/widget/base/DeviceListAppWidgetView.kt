@@ -31,7 +31,10 @@ import li.klass.fhem.domain.core.FhemDevice
 
 abstract class DeviceListAppWidgetView<T> : DeviceAppWidgetView() {
 
-    private inner class ListRemoteViewsFactory internal constructor(private val context: Context, private val items: List<T>, private val widgetId: Int) : RemoteViewsService.RemoteViewsFactory {
+    private inner class ListRemoteViewsFactory internal constructor(private val context: Context,
+                                                                    private val items: List<T>,
+                                                                    private val widgetId: Int)
+        : RemoteViewsService.RemoteViewsFactory {
 
         override fun onCreate() {}
 

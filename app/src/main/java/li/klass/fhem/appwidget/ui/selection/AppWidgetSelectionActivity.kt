@@ -93,7 +93,7 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         val widgetNames = arrayOfNulls<String>(widgetTypes.size)
         widgetTypes.indices.forEach { i ->
             val widgetView = widgetTypes[i].widgetView
-            widgetNames[i] = getString(widgetView.widgetName)
+            widgetNames[i] = getString(widgetView.getWidgetName())
         }
 
         AlertDialog.Builder(this)
