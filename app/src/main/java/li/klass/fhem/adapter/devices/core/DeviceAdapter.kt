@@ -22,7 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.deviceItems;
+package li.klass.fhem.adapter.devices.core
 
-public interface TextualDeviceViewItem extends DeviceViewItem {
+import android.text.Html
+import android.widget.TextView
+import li.klass.fhem.AndFHEMApplication
+import li.klass.fhem.dagger.ApplicationComponent
+
+abstract class DeviceAdapter internal constructor() {
+
+    init {
+        val application = AndFHEMApplication.application
+        if (application != null) {
+            inject(application.daggerComponent)
+            onAfterInject()
+        }
+    }
+
+    protected open fun onAfterInject() {}
+
+    protected abstract fun inject(daggerComponent: ApplicationComponent)
+
+    protected fun setTextView(textView: TextView, value: String) {
+        val toSet = if (value.contains("<")) Html.fromHtml(value) else value
+        textView.text = toSet
+    }
 }

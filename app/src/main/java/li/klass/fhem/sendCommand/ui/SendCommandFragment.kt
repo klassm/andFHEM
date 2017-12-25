@@ -86,10 +86,9 @@ class SendCommandFragment : BaseFragment() {
     override fun mayPullToRefresh(): Boolean = false
 
     private fun sendCommandIntent(command: String) {
-        val myActivity = activity ?: return
         async(UI) {
             val result = bg {
-                sendCommandService.executeCommand(command, connectionId = null, context = myActivity)
+                sendCommandService.executeCommand(command, connectionId = null)
             }.await()
             if (!isEmpty(result?.replace("[\\r\\n]".toRegex(), ""))) {
                 AlertDialog.Builder(activity)

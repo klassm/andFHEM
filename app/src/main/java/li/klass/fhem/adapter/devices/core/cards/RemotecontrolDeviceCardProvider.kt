@@ -60,7 +60,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.remote_control_layout, null, false)
-        val actionProvider = actionProviderFor(fhemDevice, connectionId, context)
+        val actionProvider = actionProviderFor(fhemDevice, connectionId)
         async(UI) {
             val rows = bg {
                 remotecontrolDeviceService.getRowsFor(fhemDevice)
@@ -108,7 +108,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         return imageButton
     }
 
-    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?, context: Context): View.OnClickListener? {
+    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
             async(UI) {
@@ -119,9 +119,9 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: GenericDevice, connectionId: String?, context: Context): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: GenericDevice, connectionId: String?): (String?) -> View.OnClickListener? {
         return { command: String? ->
-            command?.let { actionFor(command, device, connectionId, context) }
+            command?.let { actionFor(command, device, connectionId) }
         }
     }
 }

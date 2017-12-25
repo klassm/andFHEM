@@ -24,7 +24,6 @@
 
 package li.klass.fhem.devices.backend.at
 
-import android.content.Context
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
@@ -44,23 +43,22 @@ class AtService @Inject constructor(
         private val atDefinitionParser: AtDefinitionParser
 ) {
 
-    fun createNew(device: TimerDevice,
-                  context: Context) {
+    fun createNew(device: TimerDevice) {
         val definition = atDefinitionParser.toFHEMDefinition(device.definition)
         val command = "define ${device.name} at $definition"
         commandExecutionService.executeSync(Command(command))
-        handleDisabled(device.name, device.isActive, context)
+        handleDisabled(device.name, device.isActive)
         deviceListUpdateService.updateAllDevices()
     }
 
-    fun modify(device: TimerDevice, context: Context) {
+    fun modify(device: TimerDevice) {
         val genericDevice = getFhemDeviceFor(device.name) ?: return
 
         val definition = atDefinitionParser.toFHEMDefinition(device.definition)
         val command = "modify ${device.name} $definition"
 
         commandExecutionService.executeSync(Command(command))
-        handleDisabled(device.name, device.isActive, context)
+        handleDisabled(device.name, device.isActive)
         genericDeviceService.update(genericDevice.xmlListDevice)
     }
 
@@ -100,7 +98,7 @@ class AtService @Inject constructor(
         return genericDevice
     }
 
-    private fun handleDisabled(timerName: String, isActive: Boolean, context: Context): String? =
+    private fun handleDisabled(timerName: String, isActive: Boolean): String? =
             commandExecutionService.executeSync(Command(String.format("attr %s %s %s", timerName, "disable", if (isActive) "0" else "1")))
 
     companion object {

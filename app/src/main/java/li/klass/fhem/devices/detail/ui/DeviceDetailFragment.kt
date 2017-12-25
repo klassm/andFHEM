@@ -30,17 +30,16 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
-import com.google.common.base.Optional
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
+import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
-import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
@@ -65,6 +64,8 @@ class DeviceDetailFragment : BaseFragment() {
     lateinit var graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+    @Inject
+    lateinit var genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter
 
     private var deviceName: String? = null
     private var device: FhemDevice? = null
@@ -127,32 +128,14 @@ class DeviceDetailFragment : BaseFragment() {
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             device?.let {
                 this@DeviceDetailFragment.device = it
-                val adapter = DeviceType.getAdapterFor<FhemDevice>(it)
-                if (adapter != null) {
-                    myActivity.invalidateOptionsMenu()
-                    val scrollView = findScrollView()
-                    if (scrollView != null) {
-                        scrollView.removeAllViews()
-                        scrollView.addView(adapter.createDetailView(myActivity, it, emptySet(), connectionId))
-                    }
-                    loadGraphs()
+                val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, connectionId)
+                myActivity.invalidateOptionsMenu()
+                val scrollView = findScrollView()
+                if (scrollView != null) {
+                    scrollView.removeAllViews()
+                    scrollView.addView(detailView)
                 }
             }
-        }
-    }
-
-    private fun loadGraphs() {
-        device ?: return
-        async(UI) {
-            val detailView = findScrollView()!!.getChildAt(0)
-            val adapter = DeviceType.getAdapterFor<FhemDevice>(device)
-            if (adapter.loadGraphs()) {
-                val graphs = bg {
-                    graphDefinitionsForDeviceService.graphDefinitionsFor(device!!.xmlListDevice, Optional.absent())
-                }.await()
-                adapter?.attachGraphs(activity, detailView, graphs, connectionId, device)
-            }
-            detailView.invalidate()
         }
     }
 

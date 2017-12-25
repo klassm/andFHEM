@@ -52,7 +52,7 @@ class PlayerCardProvider @Inject constructor(
 
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_player, null, false)
 
-        val provider = actionProviderFor(fhemDevice, connectionId, context)
+        val provider = actionProviderFor(fhemDevice, connectionId)
 
         attachActionTo(view.rewind, provider(playerConfiguration.previousCommand))
         attachActionTo(view.pause, provider(playerConfiguration.pauseCommand))
@@ -63,7 +63,7 @@ class PlayerCardProvider @Inject constructor(
         return view as CardView
     }
 
-    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?, context: Context): View.OnClickListener? {
+    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
             async(UI) {
@@ -74,9 +74,9 @@ class PlayerCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: GenericDevice, connectionId: String?, context: Context): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: GenericDevice, connectionId: String?): (String?) -> View.OnClickListener? {
         return { command: String? ->
-            command?.let { actionFor(command, device, connectionId, context) }
+            command?.let { actionFor(command, device, connectionId) }
         }
     }
 

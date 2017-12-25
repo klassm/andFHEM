@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Maps.newHashMap
 import com.google.common.collect.Sets.newHashSet
-import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import java.io.Serializable
 import java.util.*
@@ -101,20 +100,6 @@ class RoomDeviceList(val roomName: String) : Serializable {
 
     fun getDevicesOfType(deviceType: String): List<FhemDevice> =
             allDevices.filter { it.xmlListDevice?.type == deviceType }.sortedWith(FhemDevice.BY_NAME)
-
-    fun <T : FhemDevice> getDevicesOfType(deviceType: DeviceType): List<T> {
-        val allDevices = allDevices
-        val deviceList = newArrayList<T>()
-        newArrayList(allDevices)
-                .filter { it != null && getDeviceTypeFor(it) == deviceType && it.isSupported }
-                .forEach {
-                    @Suppress("UNCHECKED_CAST")
-                    deviceList.add(it as T)
-                }
-
-        Collections.sort(deviceList, FhemDevice.BY_NAME)
-        return deviceList
-    }
 
     val allDevices: Set<FhemDevice>
         get() {

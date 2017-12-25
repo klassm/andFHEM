@@ -42,7 +42,6 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 import static com.tngtech.java.junit.dataprovider.DataProviders.$;
 import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static li.klass.fhem.adapter.devices.hook.DeviceHookProvider.Companion;
-import static li.klass.fhem.domain.core.DeviceType.GENERIC;
 import static li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.ATTR;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -78,7 +77,7 @@ public class DeviceHookProviderTest {
     private static GenericDevice deviceFor(String hookAttribute, boolean isActive, String setList) {
         String value = isActive ? "true" : "false";
 
-        XmlListDevice xmlListDevice = new XmlListDevice(GENERIC.getXmllistTag(),
+        XmlListDevice xmlListDevice = new XmlListDevice("Bla",
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap(),
                 Maps.<String, DeviceNode>newHashMap(),

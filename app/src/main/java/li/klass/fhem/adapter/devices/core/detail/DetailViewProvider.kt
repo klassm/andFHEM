@@ -22,25 +22,11 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core
+package li.klass.fhem.adapter.devices.core.detail
 
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction
-import li.klass.fhem.dagger.ApplicationComponent
+import android.content.Intent
 import li.klass.fhem.domain.core.FhemDevice
 
-open class ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow : ExplicitOverviewDetailDeviceAdapter() {
-    override fun inject(daggerComponent: ApplicationComponent) {
-        daggerComponent.inject(this)
-    }
-
-    override fun getSupportedDeviceClass(): Class<out FhemDevice> {
-        return FhemDevice::class.java
-    }
-
-    override fun provideDetailActions(): MutableList<DeviceDetailViewAction> {
-        val actions = super.provideDetailActions()
-        actions.add(AvailableTargetStatesSwitchAction())
-        return actions
-    }
+interface DetailViewProvider {
+    fun getIntentFor(device: FhemDevice): Intent?
 }

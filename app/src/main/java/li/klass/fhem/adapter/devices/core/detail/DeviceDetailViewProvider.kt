@@ -22,28 +22,15 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.detail
 
-import org.junit.Test;
+import android.content.Intent
+import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
-public class WebLinkDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        WebLinkDevice device = getDefaultDevice(WebLinkDevice.class);
-
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-
-        assertThat(device.getLink(), is("http://www.sbazv.de/frames/termin_2013/hm4.php?ortnr=184&strnr=100"));
-    }
-
-    @Override
-    protected String getFileName() {
-        return "webLink.xml";
-    }
+class DeviceDetailViewProvider @Inject constructor(
+        val deviceDetailViews: DeviceDetailViews
+) {
+    fun detailIntentFor(fhemDevice: FhemDevice): Intent =
+            deviceDetailViews.ordered().mapNotNull { it.getIntentFor(fhemDevice) }.first()
 }

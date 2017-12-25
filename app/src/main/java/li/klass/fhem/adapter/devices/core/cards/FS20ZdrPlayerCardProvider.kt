@@ -50,7 +50,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         }
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_fs20_zdr_player, null, false)
 
-        val provider = actionProviderFor(fhemDevice, connectionId, context)
+        val provider = actionProviderFor(fhemDevice, connectionId)
 
         attachActionTo(view.button_vol_up, provider("volume_up"))
         attachActionTo(view.button_vol_down, provider("volume_down"))
@@ -70,7 +70,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         return view as CardView
     }
 
-    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?, context: Context): View.OnClickListener? {
+    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
             async(UI) {
@@ -81,9 +81,9 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: GenericDevice, connectionId: String?, context: Context): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: GenericDevice, connectionId: String?): (String?) -> View.OnClickListener? {
         return { command: String? ->
-            command?.let { actionFor(command, device, connectionId, context) }
+            command?.let { actionFor(command, device, connectionId) }
         }
     }
 

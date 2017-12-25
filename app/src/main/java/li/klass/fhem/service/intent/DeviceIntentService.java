@@ -184,13 +184,13 @@ public class DeviceIntentService extends ConvenientIntentService {
             heatingService.resetWeekProfile((HeatingDevice) device);
         } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(DEVICE_NEW_NAME);
-            deviceService.renameDevice(device, newName, this);
+            deviceService.renameDevice(device, newName);
             notificationService.rename(deviceName, newName, this);
             favoritesService.removeFavorite(deviceName);
             favoritesService.addFavorite(newName);
 
         } else if (DEVICE_DELETE.equals(action)) {
-            deviceService.deleteDevice(device, this);
+            deviceService.deleteDevice(device);
 
         } else if (DEVICE_MOVE_ROOM.equals(action)) {
             String newRoom = intent.getStringExtra(DEVICE_NEW_ROOM);
@@ -198,7 +198,7 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         } else if (DEVICE_SET_ALIAS.equals(action)) {
             String newAlias = intent.getStringExtra(DEVICE_NEW_ALIAS);
-            deviceService.setAlias(device, newAlias, this);
+            deviceService.setAlias(device, newAlias);
 
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
             result = toggleIntent(device, connectionId);
@@ -237,7 +237,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      */
     private State toggleIntent(FhemDevice device, Optional<String> connectionId) {
         if (onOffBehavior.supports(device)) {
-            toggleableService.toggleState(device, connectionId, this);
+            toggleableService.toggleState(device, connectionId);
             return SUCCESS;
         } else {
             return ERROR;

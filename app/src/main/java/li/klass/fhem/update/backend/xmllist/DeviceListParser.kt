@@ -26,8 +26,6 @@ package li.klass.fhem.update.backend.xmllist
 
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Joiner
-import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.Iterables.concat
 import com.google.common.collect.Lists.newArrayList
@@ -39,8 +37,6 @@ import li.klass.fhem.connection.backend.RequestResultError
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.GenericDevice
-import li.klass.fhem.domain.core.DeviceType
-import li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.domain.core.XmllistAttribute
@@ -111,7 +107,6 @@ constructor(
         val allDevices = newHashMap<String, FhemDevice>()
 
         for ((key) in parsedDevices) {
-            val deviceType = getDeviceTypeFor(key)
             val deviceConfiguration = deviceConfigurationProvider.configurationFor(key)
 
             val xmlListDevices = parsedDevices[key]
@@ -121,11 +116,11 @@ constructor(
 
             if (connectionService.mayShowInCurrentConnectionType(key)) {
 
-                val localErrorCount = devicesFromDocument(deviceType.deviceClass, xmlListDevices,
+                val localErrorCount = devicesFromDocument(GenericDevice::class.java, xmlListDevices,
                         allDevices, context, deviceConfiguration)
 
                 if (localErrorCount > 0) {
-                    errorHolder.addErrors(deviceType, localErrorCount)
+                    errorHolder.addErrors(localErrorCount)
                 }
             }
         }
@@ -172,7 +167,7 @@ constructor(
                 if (device.allDeviceReadCallback != null) allDevicesReadCallbacks.add(device)
             } catch (e: Exception) {
                 allDevices.remove(device.name)
-                errorHolder.addError(getDeviceTypeFor(device))
+                errorHolder.addError()
                 LOG.error("cannot perform after read operations", e)
             }
 
@@ -192,7 +187,7 @@ constructor(
                 }
             } catch (e: Exception) {
                 allDevices.remove(device.name)
-                errorHolder.addError(getDeviceTypeFor(device))
+                errorHolder.addError()
                 LOG.error("cannot handle associated devices callbacks", e)
             }
 
@@ -210,8 +205,7 @@ constructor(
     private fun handleErrors(errorHolder: ReadErrorHolder, context: Context) {
         if (errorHolder.hasErrors()) {
             var errorMessage = context.getString(R.string.errorDeviceListLoad)
-            val deviceTypesError = Joiner.on(",").join(errorHolder.errorDeviceTypeNames)
-            errorMessage = String.format(errorMessage, "" + errorHolder.errorCount, deviceTypesError)
+            errorMessage = String.format(errorMessage, "" + errorHolder.errorCount)
 
             val intent = Intent(Actions.SHOW_TOAST)
             intent.putExtra(BundleExtraKeys.CONTENT, errorMessage)
@@ -369,25 +363,14 @@ constructor(
     }
 
     private inner class ReadErrorHolder {
-        private val deviceTypeErrorCount = newHashMap<DeviceType, Int>()
+        var errorCount = 0
 
-        internal val errorCount: Int
-            get() = deviceTypeErrorCount.values.sumBy { it!! }
+        internal fun hasErrors(): Boolean = errorCount != 0
 
-        internal val errorDeviceTypeNames: List<String>
-            get() = deviceTypeErrorCount.keys.map { it.name }
+        internal fun addError() = addErrors(1)
 
-        internal fun hasErrors(): Boolean = deviceTypeErrorCount.size != 0
-
-        internal fun addError(deviceType: DeviceType?) {
-            if (deviceType != null) {
-                addErrors(deviceType, 1)
-            }
-        }
-
-        internal fun addErrors(deviceType: DeviceType, errorCount: Int) {
-            val count = deviceTypeErrorCount[deviceType] ?: 0
-            deviceTypeErrorCount.put(deviceType, count + errorCount)
+        internal fun addErrors(toAdd: Int) {
+            errorCount += toAdd
         }
     }
 

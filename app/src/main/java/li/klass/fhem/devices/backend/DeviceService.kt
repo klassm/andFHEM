@@ -50,9 +50,8 @@ constructor(
      *
      * @param device  concerned device
      * @param newName new device name
-     * @param context context
      */
-    fun renameDevice(device: FhemDevice, newName: String, context: Context) {
+    fun renameDevice(device: FhemDevice, newName: String) {
         commandExecutionService.executeSafely(Command("rename " + device.name + " " + newName), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 device.xmlListDevice.setInternal("NAME", newName)
@@ -66,7 +65,7 @@ constructor(
      *
      * @param device concerned device
      */
-    fun deleteDevice(device: FhemDevice, context: Context) {
+    fun deleteDevice(device: FhemDevice) {
         commandExecutionService.executeSafely(Command("delete " + device.name!!), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 deviceListService.getRoomDeviceList()
@@ -80,9 +79,8 @@ constructor(
      *
      * @param device  concerned device
      * @param alias   new alias to set
-     * @param context context
      */
-    fun setAlias(device: FhemDevice, alias: String, context: Context) {
+    fun setAlias(device: FhemDevice, alias: String) {
         val command = if (Strings.isNullOrEmpty(alias))
             "deleteattr " + device.name + " alias"
         else

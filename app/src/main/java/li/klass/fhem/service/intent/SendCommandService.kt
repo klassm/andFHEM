@@ -24,7 +24,6 @@
 
 package li.klass.fhem.service.intent
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.google.common.base.Optional
 import com.google.common.base.Preconditions.checkArgument
@@ -44,7 +43,7 @@ class SendCommandService @Inject constructor(
         val commandExecutionService: CommandExecutionService,
         val sharedPreferencesService: SharedPreferencesService
 ) {
-    fun executeCommand(command: String, connectionId: String? = null, context: Context): String? {
+    fun executeCommand(command: String, connectionId: String? = null): String? {
         val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
         storeRecentCommand(command)
         return result

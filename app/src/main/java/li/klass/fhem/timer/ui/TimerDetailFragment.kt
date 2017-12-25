@@ -246,13 +246,12 @@ class TimerDetailFragment : BaseFragment() {
                 next = timerDevice?.next ?: ""
         )
 
-        val context = activity as Context
         async(UI) {
             bg {
                 if (isModify) {
-                    atService.modify(timerDevice, context)
+                    atService.modify(timerDevice)
                 } else {
-                    atService.createNew(timerDevice, context)
+                    atService.createNew(timerDevice)
                 }
             }.await()
             back()

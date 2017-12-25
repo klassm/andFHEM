@@ -56,7 +56,7 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
 
         if (Actions.EXECUTE_COMMAND == action) {
             doAsync {
-                sendCommandService.executeCommand(command, connectionId, context)
+                sendCommandService.executeCommand(command, connectionId)
             }
         } else if (Actions.CONNECTION_UPDATE == action) {
             doAsync {

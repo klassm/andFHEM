@@ -22,30 +22,22 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices
+package li.klass.fhem.adapter.devices.core.detail
 
-import android.content.Context
 import android.content.Intent
-
-import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapter
+import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.domain.WebLinkDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.ui.FragmentType
+import javax.inject.Inject
 
-class WebLinkAdapter : ExplicitOverviewDetailDeviceAdapter() {
-    override fun getSupportedDeviceClass(): Class<out FhemDevice> {
-        return WebLinkDevice::class.java
-    }
-
-    override fun inject(daggerComponent: ApplicationComponent) {
-        daggerComponent.inject(this)
-    }
-
-    override fun onFillDeviceDetailIntent(context: Context, device: FhemDevice, intent: Intent): Intent {
-        return intent
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW)
-                .putExtra(BundleExtraKeys.LOAD_URL, (device as WebLinkDevice).link)
+class FloorplanDetailViewProvider @Inject constructor() : DetailViewProvider {
+    override fun getIntentFor(device: FhemDevice): Intent? {
+        if (device.xmlListDevice.type != "FLOORPLAN") {
+            return null
+        }
+        return Intent(Actions.SHOW_FRAGMENT)
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
     }
 }

@@ -39,9 +39,6 @@ import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
-import li.klass.fhem.adapter.devices.FloorplanAdapter;
-import li.klass.fhem.adapter.devices.WebLinkAdapter;
-import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
@@ -152,13 +149,7 @@ public interface ApplicationComponent {
     void inject(PremiumActivity object);
 
 
-    void inject(FloorplanAdapter object);
-
-    void inject(WebLinkAdapter object);
-
     void inject(GenericOverviewDetailDeviceAdapter object);
-
-    void inject(ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow object);
 
 
     void inject(TemperatureWidgetView object);

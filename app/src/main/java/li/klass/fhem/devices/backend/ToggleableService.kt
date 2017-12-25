@@ -24,7 +24,6 @@
 
 package li.klass.fhem.devices.backend
 
-import android.content.Context
 import com.google.common.base.Optional
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.FhemDevice
@@ -45,7 +44,7 @@ constructor(
      * @param connectionId connectionId
      * @param context      context
      */
-    fun  toggleState(device: FhemDevice, connectionId: Optional<String>, context: Context) {
+    fun toggleState(device: FhemDevice, connectionId: Optional<String>) {
         val targetState = when {
             onOffBehavior.isOnByState(device) -> onOffBehavior.getOffStateName(device)
             else -> onOffBehavior.getOnStateName(device)

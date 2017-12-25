@@ -26,42 +26,28 @@ package li.klass.fhem.adapter.devices.core
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
-import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.strategy.StrategyProvider
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
-class GenericOverviewDetailDeviceAdapter : OverviewDeviceAdapter() {
-
-    @Inject
-    lateinit var strategyProvider: StrategyProvider
-    lateinit var onOffBehavior: OnOffBehavior
-    @Inject
-    lateinit var deviceHookProvider: DeviceHookProvider
-    @Inject
-    lateinit var genericDetailCardProviders: GenericDetailCardProviders
-
+class GenericOverviewDetailDeviceAdapter @Inject constructor(
+        private val strategyProvider: StrategyProvider,
+        private val genericDetailCardProviders: GenericDetailCardProviders
+) : OverviewDeviceAdapter() {
     override fun inject(daggerComponent: ApplicationComponent) {
         daggerComponent.inject(this)
     }
 
-    override fun getSupportedDeviceClass(): Class<out FhemDevice> = GenericDevice::class.java
-
-    override fun supportsDetailView(device: FhemDevice): Boolean = true
-
     @SuppressLint("InflateParams")
-    override fun getDeviceDetailView(context: Context, device: FhemDevice, graphDefinitions: Set<SvgGraphDefinition>, connectionId: String?): View? {
+    fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?): View {
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
         genericDetailCardProviders.providers.sortedBy { it.ordering() }
@@ -71,13 +57,6 @@ class GenericOverviewDetailDeviceAdapter : OverviewDeviceAdapter() {
 
         return linearLayout
     }
-
-    override fun loadGraphs(): Boolean = false
-
-    override fun attachGraphs(context: Context, detailView: View, graphDefinitions: Set<SvgGraphDefinition>, connectionId: String, device: FhemDevice) {}
-
-    override fun onFillDeviceDetailIntent(context: Context, device: FhemDevice, intent: Intent): Intent =
-            intent
 
     override fun fillOverviewStrategies(overviewStrategies: MutableList<ViewStrategy>) {
         super.fillOverviewStrategies(overviewStrategies)

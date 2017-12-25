@@ -44,6 +44,8 @@ import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
+import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
+import li.klass.fhem.adapter.devices.core.detail.DeviceDetailViewProvider
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -51,7 +53,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
-import li.klass.fhem.domain.core.DeviceType
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.fragments.core.BaseFragment
@@ -82,6 +83,10 @@ abstract class DeviceListFragment : BaseFragment() {
     lateinit var favoritesService: FavoritesService
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+    @Inject
+    lateinit var deviceDetailViewProvider: DeviceDetailViewProvider
+    @Inject
+    lateinit var genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter
 
     private var actionMode: ActionMode? = null
 
@@ -206,11 +211,9 @@ abstract class DeviceListFragment : BaseFragment() {
         val stopWatch = StopWatch()
         stopWatch.start()
 
-        val adapter = DeviceType.getAdapterFor(device)
-
         LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
 
-        val contentView = adapter.createOverviewView(firstChildOf(view.card), device, view.context)
+        val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
 
         LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
 
@@ -226,11 +229,8 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun onClick(device: FhemDevice) {
-        val adapter = DeviceType.getAdapterFor(device)
-        if (adapter != null && adapter.supportsDetailView(device)) {
-            actionMode?.finish()
-            adapter.gotoDetailView(activity, device)
-        }
+        actionMode?.finish()
+        activity?.sendBroadcast(deviceDetailViewProvider.detailIntentFor(device))
     }
 
     private fun onLongClick(device: FhemDevice): Boolean {
