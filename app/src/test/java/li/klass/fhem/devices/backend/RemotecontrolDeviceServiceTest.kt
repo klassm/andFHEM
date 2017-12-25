@@ -26,7 +26,7 @@ package li.klass.fhem.devices.backend
 
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService.Entry
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService.Row
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
@@ -37,7 +37,6 @@ class RemotecontrolDeviceServiceTest {
     @Test
     fun should_create_rows() {
         // given
-        val device = GenericDevice()
         val iconPath = "myIconPath"
         val iconPrefix = "myIconPrefix"
         val attributes = mapOf(
@@ -47,7 +46,8 @@ class RemotecontrolDeviceServiceTest {
                 "rc_iconpath" to nodeOf(iconPath),
                 "rc_iconprefix" to nodeOf(iconPrefix)
         )
-        device.xmlListDevice = XmlListDevice("remotecontrol", attributes = attributes.toMutableMap())
+        val xmlListDevice = XmlListDevice("remotecontrol", attributes = attributes.toMutableMap())
+        val device = FhemDevice(xmlListDevice)
 
         // when
         val result = RemotecontrolDeviceService().getRowsFor(device)

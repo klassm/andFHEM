@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_Netatmo_DEVICE() {
-        GenericDevice device = getDeviceFor("netatmo_device", GenericDevice.class);
+        FhemDevice device = getDeviceFor("netatmo_device");
 
         assertThat(device.getAlias()).isEqualTo("Indoor");
         assertThat(stateValueFor(device, "co2")).isEqualTo("650 (ppm)");
@@ -42,19 +43,15 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "noise")).isEqualTo("52 (dB)");
         assertThat(stateValueFor(device, "pressure")).isEqualTo("960.2 (hPa)");
         assertThat(stateValueFor(device, "temperature")).isEqualTo("26.6 (°C)");
-
-        assertThat(device.isSupported()).isTrue();
     }
 
     @Test
     public void should_read_Netatmo_MODULE() {
-        GenericDevice device = getDeviceFor("netatmo_module", GenericDevice.class);
+        FhemDevice device = getDeviceFor("netatmo_module");
 
         assertThat(device.getAlias()).isEqualTo("Outdoor");
         assertThat(stateValueFor(device, "humidity")).isEqualTo("60.0 (%)");
         assertThat(stateValueFor(device, "temperature")).isEqualTo("28.2 (°C)");
-
-        assertThat(device.isSupported()).isTrue();
     }
 
     @Override

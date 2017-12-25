@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CO20DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_CO20_device() {
-        GenericDevice device = getDeviceFor("myCO20", GenericDevice.class);
+        FhemDevice device = getDeviceFor("myCO20");
 
         assertThat(device).isNotNull();
         assertThat(stateValueFor(device, "voc")).isEqualTo("1009 (ppm)");

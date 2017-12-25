@@ -3,6 +3,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.guava.api.Assertions.assertThat;
@@ -10,7 +11,7 @@ import static org.assertj.guava.api.Assertions.assertThat;
 public class DMXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void device_is_properly_read() {
-        GenericDevice device = getDeviceFor("LedBett", GenericDevice.class);
+        FhemDevice device = getDeviceFor("LedBett");
         assertThat(device).isNotNull();
 
         assertThat(device.getXmlListDevice().getState("rgb", true)).contains("ffffff");

@@ -40,8 +40,8 @@ import li.klass.fhem.util.FhemResultReceiver;
 
 public class NotificationSettingView {
     private static final int[] VALUES = new int[] {
-        NotificationService.ALL_UPDATES, NotificationService.STATE_UPDATES,
-        NotificationService.NO_UPDATES
+            NotificationService.Companion.getALL_UPDATES(), NotificationService.Companion.getSTATE_UPDATES(),
+            NotificationService.Companion.getNO_UPDATES()
     };
     private static final int[] DESCRIPTION_IDS = new int[] {
         R.string.notificationAllUpdates, R.string.notificationStateUpdates,

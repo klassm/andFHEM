@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,17 +35,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LightSceneDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
-        GroupSetListEntry scene = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("scene", false);
+        GroupSetListEntry scene = (GroupSetListEntry) device.getSetList().get("scene", false);
         assertThat(scene.getGroupStates()).contains("on", "off");
     }
 
     @Test
     public void testDeviceWithOnlyOneScene() {
-        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device1");
 
-        GroupSetListEntry scene = (GroupSetListEntry) device.getXmlListDevice().getSetList().get("scene", false);
+        GroupSetListEntry scene = (GroupSetListEntry) device.getSetList().get("scene", false);
         assertThat(scene.getGroupStates()).contains("absent");
     }
 

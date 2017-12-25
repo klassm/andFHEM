@@ -35,6 +35,6 @@ class GenericDetailViewProvider @Inject constructor() : DetailViewProvider {
     override fun getIntentFor(device: FhemDevice): Intent? = Intent(Actions.SHOW_FRAGMENT)
             .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
             .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-            .putExtra(BundleExtraKeys.ROOM_NAME, device.rooms[0])
+            .putExtra(BundleExtraKeys.ROOM_NAME, device.getRooms()[0])
             .putExtra(BundleExtraKeys.DEVICE_DISPLAY_NAME, device.aliasOrName)
 }

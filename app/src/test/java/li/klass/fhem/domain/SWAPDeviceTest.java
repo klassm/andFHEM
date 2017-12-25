@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.guava.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class SWAPDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSwapDeviceWithExtendedXmllistTagAndRGB() {
-        GenericDevice device = getDeviceFor("SWAP_05", GenericDevice.class);
+        FhemDevice device = getDeviceFor("SWAP_05");
         assertThat(device.getXmlListDevice().getState("rgb", true)).contains("FFFF00F0");
     }
 

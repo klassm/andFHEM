@@ -32,7 +32,6 @@ import android.content.Intent
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.DateFormatUtil
@@ -74,7 +73,7 @@ class AppWidgetSchedulingService @Inject constructor(
     }
 
     fun shouldUpdateDevice(connectionId: String?, deviceName: String): Boolean =
-            deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId)
+            deviceListService.getDeviceForName(deviceName, connectionId)
                     ?.xmlListDevice?.creationTime?.let { shouldUpdate(it) } ?: false
 
     private fun shouldUpdate(lastUpdate: DateTime): Boolean {

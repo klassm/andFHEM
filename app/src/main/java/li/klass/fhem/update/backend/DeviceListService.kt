@@ -47,8 +47,8 @@ constructor(
     private val remoteUpdateInProgress = AtomicBoolean(false)
 
     fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>, connectionId: String) {
-        getDeviceForName<FhemDevice>(deviceName, connectionId)?.let {
-            deviceListParser.fillDeviceWith(it, updateMap, applicationContext)
+        getDeviceForName(deviceName, connectionId)?.let {
+            deviceListParser.fillDeviceWith(it, updateMap)
             LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", it.name, updateMap.size)
         }
     }
@@ -61,8 +61,8 @@ constructor(
      * @return found device or null
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : FhemDevice> getDeviceForName(deviceName: String, connectionId: String? = null): T? =
-            getAllRoomsDeviceList(connectionId).getDeviceFor<FhemDevice>(deviceName) as T?
+    fun getDeviceForName(deviceName: String, connectionId: String? = null): FhemDevice? =
+            getAllRoomsDeviceList(connectionId).getDeviceFor(deviceName)
 
     /**
      * Retrieves a [RoomDeviceList] containing all devices, not only the devices of a specific room.
@@ -118,8 +118,7 @@ constructor(
     fun getRoomNameList(connectionId: String? = null): Set<String> {
         val roomDeviceList = getRoomDeviceList(connectionId)
         return (roomDeviceList?.allDevices ?: emptySet())
-                .filter { it.isSupported }
-                .flatMap { it.rooms }
+                .flatMap { it.getRooms() }
                 .toSet()
     }
 
@@ -136,8 +135,6 @@ constructor(
                 .filter { it.isInRoom(roomName) }
         return RoomDeviceList(roomName).add(allDevices)
     }
-
-    private val applicationContext: Context get() = application.applicationContext
 
     companion object {
 

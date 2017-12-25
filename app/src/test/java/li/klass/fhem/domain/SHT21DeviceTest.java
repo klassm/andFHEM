@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class SHT21DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        GenericDevice device = getDeviceFor("SHT21", GenericDevice.class);
+        FhemDevice device = getDeviceFor("SHT21");
         assertThat(device.getName()).isEqualTo("SHT21");
 
         assertThat(stateValueFor(device, "humidity")).isEqualTo("49.6 (%)");

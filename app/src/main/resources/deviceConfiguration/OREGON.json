@@ -125,7 +125,6 @@
   "showStateInOverview": true,
   "showMeasuredInOverview": true,
   "delayForUpdateAfterCommand": 0,
-  "stateSliderKey": "state",
   "player": null,
   "sanitise": {
     "deviceValues": {

@@ -33,7 +33,7 @@ import org.mockito.Mock;
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
@@ -52,8 +52,7 @@ public class WebCmdActionRowTest {
     public void should_handle_null_webcmds() {
         // given
         DummyWebCmdRow row = new DummyWebCmdRow("row", 0);
-        GenericDevice dummyDevice = new GenericDevice();
-        dummyDevice.setXmlListDevice(new XmlListDevice("DUMMY", Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap()));
+        FhemDevice dummyDevice = new FhemDevice(new XmlListDevice("DUMMY", Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap(), Collections.<String, DeviceNode>emptyMap()));
 
         // expect
         assertThat(dummyDevice.getWebCmd()).isEmpty();
@@ -66,7 +65,7 @@ public class WebCmdActionRowTest {
     }
 
     private class DummyWebCmdRow extends WebCmdActionRow {
-        public DummyWebCmdRow(String description, int layout) {
+        DummyWebCmdRow(String description, int layout) {
             super(description, layout);
         }
     }

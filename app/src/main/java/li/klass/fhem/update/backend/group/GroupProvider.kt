@@ -29,13 +29,16 @@ import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.behavior.dim.DimmableBehavior
 import li.klass.fhem.domain.core.DeviceFunctionality
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class GroupProvider @Inject
 constructor(deviceGroupProviders: DeviceGroupProviders,
-            val onOffBehavior: OnOffBehavior) {
+            private val onOffBehavior: OnOffBehavior,
+            private val deviceConfigurationProvider: DeviceConfigurationProvider
+) {
     private val providerMap: Map<String, DeviceGroupProvider> = deviceGroupProviders.providers.associate { it.deviceType to it }
 
     fun functionalityFor(device: FhemDevice, context: Context): String {
@@ -52,7 +55,7 @@ constructor(deviceGroupProviders: DeviceGroupProviders,
         return when {
             DimmableBehavior.behaviorFor(device, null).isPresent -> DeviceFunctionality.DIMMER
             onOffBehavior.supports(device) -> DeviceFunctionality.SWITCH
-            else -> DeviceFunctionality.valueOf(device.deviceConfiguration.defaultGroup)
+            else -> DeviceFunctionality.valueOf(deviceConfigurationProvider.configurationFor(device).defaultGroup)
         }.getCaptionText(context)
     }
 }

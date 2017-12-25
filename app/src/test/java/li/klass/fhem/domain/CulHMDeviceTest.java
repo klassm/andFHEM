@@ -34,37 +34,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CulHMDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testCanReadAllDevices() {
-        assertThat(getDeviceFor("device", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("device1", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heiz_IN_Fenster", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heiz_IN_Klima", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heiz_IN_Wetter", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heiz_Steuerung", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heiz_Team", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heiz_Fernbedienung", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Buero.Heizung", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicea", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviceb", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviceb", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicec", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviced", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicee", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("CUL_HM_HM_ES_PMSw1_Pl_24A7F1", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicef", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviceg", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicehh", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicei", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("device_relaxedEventMap", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicej", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicek", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicel", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviceWithPrefix", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviceWithMorePrefix", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicem", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("pressure", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("devicen", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("deviceo", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("oc3", GenericDevice.class)).isNotNull();
+        assertThat(getDeviceFor("device")).isNotNull();
+        assertThat(getDeviceFor("device1")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heiz_IN_Fenster")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heiz_IN_Klima")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heiz_IN_Wetter")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heiz_Steuerung")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heiz_Team")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heiz_Fernbedienung")).isNotNull();
+        assertThat(getDeviceFor("Buero.Heizung")).isNotNull();
+        assertThat(getDeviceFor("devicea")).isNotNull();
+        assertThat(getDeviceFor("deviceb")).isNotNull();
+        assertThat(getDeviceFor("deviceb")).isNotNull();
+        assertThat(getDeviceFor("devicec")).isNotNull();
+        assertThat(getDeviceFor("deviced")).isNotNull();
+        assertThat(getDeviceFor("devicee")).isNotNull();
+        assertThat(getDeviceFor("CUL_HM_HM_ES_PMSw1_Pl_24A7F1")).isNotNull();
+        assertThat(getDeviceFor("devicef")).isNotNull();
+        assertThat(getDeviceFor("deviceg")).isNotNull();
+        assertThat(getDeviceFor("devicehh")).isNotNull();
+        assertThat(getDeviceFor("devicei")).isNotNull();
+        assertThat(getDeviceFor("device_relaxedEventMap")).isNotNull();
+        assertThat(getDeviceFor("devicej")).isNotNull();
+        assertThat(getDeviceFor("devicek")).isNotNull();
+        assertThat(getDeviceFor("devicel")).isNotNull();
+        assertThat(getDeviceFor("deviceWithPrefix")).isNotNull();
+        assertThat(getDeviceFor("deviceWithMorePrefix")).isNotNull();
+        assertThat(getDeviceFor("devicem")).isNotNull();
+        assertThat(getDeviceFor("pressure")).isNotNull();
+        assertThat(getDeviceFor("devicen")).isNotNull();
+        assertThat(getDeviceFor("deviceo")).isNotNull();
+        assertThat(getDeviceFor("oc3")).isNotNull();
     }
 
     @Override

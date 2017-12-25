@@ -63,7 +63,7 @@ class AtService @Inject constructor(
     }
 
     fun getTimerDeviceFor(deviceName: String): TimerDevice? {
-        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName) ?: return null
+        val device = deviceListService.getDeviceForName(deviceName) ?: return null
         return toTimerDevice(device)
     }
 
@@ -89,7 +89,7 @@ class AtService @Inject constructor(
     }
 
     private fun getFhemDeviceFor(deviceName: String): FhemDevice? {
-        val genericDevice = deviceListService.getDeviceForName<FhemDevice>(deviceName)
+        val genericDevice = deviceListService.getDeviceForName(deviceName)
 
         if (genericDevice == null || genericDevice.xmlListDevice.type != "at") {
             LOG.info("cannot find device for {}", deviceName)

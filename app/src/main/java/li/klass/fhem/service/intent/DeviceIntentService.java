@@ -42,16 +42,10 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.devices.backend.DeviceService;
 import li.klass.fhem.devices.backend.GenericDeviceService;
-import li.klass.fhem.devices.backend.HeatingService;
 import li.klass.fhem.devices.backend.ToggleableService;
 import li.klass.fhem.devices.backend.at.AtService;
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.heating.ComfortTempDevice;
-import li.klass.fhem.domain.heating.DesiredTempDevice;
-import li.klass.fhem.domain.heating.EcoTempDevice;
-import li.klass.fhem.domain.heating.HeatingDevice;
-import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.graph.backend.GraphService;
 import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.update.backend.DeviceListService;
@@ -62,28 +56,19 @@ import li.klass.fhem.util.StateToSet;
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
-import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_COMFORT_TEMPERATURE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_ECO_TEMPERATURE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_MODE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_WEEK_PROFILE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
 import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_MODE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ROOM;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TEMPERATURE;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.STATES;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
@@ -96,8 +81,6 @@ public class DeviceIntentService extends ConvenientIntentService {
 
     @Inject
     DeviceListService deviceListService;
-    @Inject
-    HeatingService heatingService;
     @Inject
     DeviceService deviceService;
     @Inject
@@ -143,45 +126,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             result = toggleIntent(device, connectionId);
         } else if (DEVICE_SET_STATE.equals(action)) {
             result = setStateIntent(intent, device, connectionId);
-        } else if (DEVICE_SET_MODE.equals(action)) {
-            if (device instanceof HeatingDevice) {
-                Enum mode = (Enum) intent.getSerializableExtra(DEVICE_MODE);
-                HeatingDevice heatingDevice = (HeatingDevice) device;
-
-                heatingService.setMode(heatingDevice, mode, this);
-            }
-
-        } else if (DEVICE_SET_WEEK_PROFILE.equals(action)) {
-            if (!(device instanceof HeatingDevice)) return ERROR;
-            heatingService.setWeekProfileFor((HeatingDevice) device, this);
-
-        } else if (DEVICE_SET_WINDOW_OPEN_TEMPERATURE.equals(action)) {
-            if (!(device instanceof WindowOpenTempDevice)) return SUCCESS;
-
-            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
-            heatingService.setWindowOpenTemp((WindowOpenTempDevice) device, temperature, this);
-
-        } else if (DEVICE_SET_DESIRED_TEMPERATURE.equals(action)) {
-            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
-            if (device instanceof DesiredTempDevice) {
-                heatingService.setDesiredTemperature((DesiredTempDevice) device, temperature, this);
-            }
-
-        } else if (DEVICE_SET_COMFORT_TEMPERATURE.equals(action)) {
-            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
-            if (device instanceof DesiredTempDevice) {
-                heatingService.setComfortTemperature((ComfortTempDevice) device, temperature, this);
-            }
-
-        } else if (DEVICE_SET_ECO_TEMPERATURE.equals(action)) {
-            double temperature = intent.getDoubleExtra(DEVICE_TEMPERATURE, -1);
-            if (device instanceof DesiredTempDevice) {
-                heatingService.setEcoTemperature((EcoTempDevice) device, temperature, this);
-            }
-
-        } else if (DEVICE_RESET_WEEK_PROFILE.equals(action)) {
-            if (!(device instanceof HeatingDevice)) return ERROR;
-            heatingService.resetWeekProfile((HeatingDevice) device);
         } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName);
@@ -249,7 +193,6 @@ public class DeviceIntentService extends ConvenientIntentService {
      *
      * @param intent       received intent
      * @param device       device to set the state on
-     * @param connectionId
      * @return success ?
      */
     private State setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {

@@ -55,8 +55,8 @@ class OnOffWidgetView : DeviceAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
         val isOn = onOffBehavior.isOn(device)
 
-        val onStateName = onOffBehavior.getOnStateName(device)
-        val offStateName = onOffBehavior.getOffStateName(device)
+        val onStateName = onOffBehavior.getOnStateName(device)!!
+        val offStateName = onOffBehavior.getOffStateName(device)!!
 
         view.setTextViewText(R.id.widgetOnButton, device.getEventMapStateFor(onStateName))
         view.setTextViewText(R.id.widgetOffButton, device.getEventMapStateFor(offStateName))

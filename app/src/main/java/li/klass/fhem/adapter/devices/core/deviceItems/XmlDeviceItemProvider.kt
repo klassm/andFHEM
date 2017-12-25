@@ -26,37 +26,50 @@ package li.klass.fhem.adapter.devices.core.deviceItems
 
 import android.content.Context
 import com.google.common.base.Optional
+import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.resources.ResourceIdMapper
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import li.klass.fhem.update.backend.device.configuration.ViewItemConfig
 import li.klass.fhem.update.backend.xmllist.DeviceNode
+import li.klass.fhem.util.DateFormatUtil
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class XmlDeviceItemProvider @Inject
-constructor(val deviceDescMapping: DeviceDescMapping) {
+class XmlDeviceItemProvider @Inject constructor(
+        val deviceDescMapping: DeviceDescMapping,
+        val deviceConfigurationProvider: DeviceConfigurationProvider
+) {
 
-    fun getDeviceClassItems(fhemDevice: FhemDevice, context: Context): Set<DeviceViewItem> {
-        val xmlListDevice = fhemDevice.xmlListDevice ?: return emptySet()
+    fun getDeviceOverviewItems(fhemDevice: FhemDevice, context: Context): Set<DeviceViewItem> {
+        val xmlListDevice = fhemDevice.xmlListDevice
 
-        val configuration = fhemDevice.deviceConfiguration
-
+        val configuration = deviceConfigurationProvider.configurationFor(fhemDevice)
+        val measuredAsList = mostRecentlyMeasuredNode(fhemDevice, context)?.let { setOf(it) } ?: emptySet()
         return itemsFor(configuration.states, xmlListDevice.states, false, context) +
-                itemsFor(configuration.attributes, xmlListDevice.attributes, false, context)
+                itemsFor(configuration.attributes, xmlListDevice.attributes, false, context) +
+                measuredAsList
+
     }
 
-    fun getStatesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> =
-            itemsFor(device.deviceConfiguration.states, device.xmlListDevice.states, showUnknown, context)
+    fun getStatesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+        val configuration = deviceConfigurationProvider.configurationFor(device)
+        return itemsFor(configuration.states, device.xmlListDevice.states, showUnknown, context)
+    }
 
-    fun getAttributesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> =
-            itemsFor(device.deviceConfiguration.attributes, device.xmlListDevice.attributes, showUnknown, context)
+    fun getAttributesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+        val configuration = deviceConfigurationProvider.configurationFor(device)
+        return itemsFor(configuration.attributes, device.xmlListDevice.attributes, showUnknown, context)
+    }
 
-    fun getInternalsFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> =
-            itemsFor(device.deviceConfiguration.internals, device.xmlListDevice.internals, showUnknown, context)
+    fun getInternalsFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+        val configuration = deviceConfigurationProvider.configurationFor(device)
+        return itemsFor(configuration.internals, device.xmlListDevice.internals, showUnknown, context)
+    }
 
 
     private fun itemsFor(configs: Set<ViewItemConfig>, nodes: Map<String, DeviceNode>, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
@@ -99,16 +112,29 @@ constructor(val deviceDescMapping: DeviceDescMapping) {
     }
 
     private fun getResourceIdFor(jsonDesc: String?): Optional<ResourceIdMapper> {
-        try {
-            return if (jsonDesc == null) {
+        return try {
+            if (jsonDesc == null) {
                 Optional.absent()
             } else Optional.of(ResourceIdMapper.valueOf(jsonDesc))
         } catch (e: Exception) {
             LOGGER.error("getResourceIdFor(jsonDesc=$jsonDesc): cannot find jsonDesc", e)
-            return Optional.absent()
+            Optional.absent()
         }
-
     }
+
+    private fun mostRecentlyMeasuredNode(fhemDevice: FhemDevice, context: Context): DeviceViewItem? {
+        val states = fhemDevice.xmlListDevice.states
+        if (states.isEmpty()) return null
+
+        var mostRecent: DeviceNode? = null
+        for (node in states.values) {
+            if (mostRecent == null || node.measured != null && node.measured.isAfter(mostRecent.measured)) {
+                mostRecent = node
+            }
+        }
+        return mostRecent?.measured?.let { XmlDeviceViewItem("measured", context.getString(R.string.measured), DateFormatUtil.ANDFHEM_DATE_FORMAT.print(it), null, false, false) }
+    }
+
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(XmlDeviceItemProvider::class.java)

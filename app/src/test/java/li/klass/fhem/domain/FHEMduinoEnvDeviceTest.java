@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FHEMduinoEnvDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        GenericDevice device = getDeviceFor("Aussentemperatur", GenericDevice.class);
+        FhemDevice device = getDeviceFor("Aussentemperatur");
         assertThat(device).isNotNull();
         assertThat(stateValueFor(device, "temperature")).isEqualTo("1.4 (°C)");
         assertThat(stateValueFor(device, "humidity")).isEqualTo("81.0 (%)");

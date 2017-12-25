@@ -31,7 +31,6 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED
 import li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNSATISFIED
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -52,7 +51,7 @@ class ConditionQueryLocaleReceiver : BroadcastReceiver() {
         val deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME)
         val targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE)
 
-        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, null)
+        val device = deviceListService.getDeviceForName(deviceName, null)
         if (device == null) {
             resultCode = RESULT_CONDITION_UNSATISFIED
             return

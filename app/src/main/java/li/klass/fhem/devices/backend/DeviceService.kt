@@ -66,7 +66,7 @@ constructor(
      * @param device concerned device
      */
     fun deleteDevice(device: FhemDevice) {
-        commandExecutionService.executeSafely(Command("delete " + device.name!!), object : CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(Command("delete " + device.name), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 deviceListService.getRoomDeviceList()
                         ?.removeDevice(device)

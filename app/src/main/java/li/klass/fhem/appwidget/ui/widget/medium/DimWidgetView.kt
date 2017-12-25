@@ -65,7 +65,7 @@ class DimWidgetView : DeviceAppWidgetView() {
     }
 
     override fun supports(device: FhemDevice, context: Context): Boolean =
-            DimmableBehavior.supports(device.xmlListDevice)
+            DimmableBehavior.supports(device)
 
     private fun sendTargetDimState(context: Context, device: FhemDevice, targetState: String, connectionId: String?): Intent {
         return Intent(Actions.DEVICE_SET_STATE)

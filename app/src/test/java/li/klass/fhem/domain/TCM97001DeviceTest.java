@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class TCM97001DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() throws Exception {
-        GenericDevice device = getDeviceFor("CUL_TCM97001_102", GenericDevice.class);
+        FhemDevice device = getDeviceFor("CUL_TCM97001_102");
         assertThat(device).isNotNull();
         assertThat(stateValueFor(device, "temperature")).isEqualTo("4.1 (°C)");
         assertThat(stateValueFor(device, "Battery")).isEqualTo("Low");

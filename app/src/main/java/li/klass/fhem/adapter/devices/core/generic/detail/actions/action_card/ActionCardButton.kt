@@ -29,9 +29,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-
 import li.klass.fhem.R
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
 abstract class ActionCardButton(buttonText: Int, context: Context) : ActionCardAction {
@@ -48,7 +47,5 @@ abstract class ActionCardButton(buttonText: Int, context: Context) : ActionCardA
 
     protected abstract fun onClick(device: XmlListDevice, connectionId: String?, context: Context)
 
-    override fun supports(genericDevice: GenericDevice): Boolean {
-        return true
-    }
+    override fun supports(device: FhemDevice): Boolean = true
 }

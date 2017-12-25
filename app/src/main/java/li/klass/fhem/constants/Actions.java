@@ -39,14 +39,6 @@ public class Actions {
 
     public static final String DEVICE_TOGGLE_STATE = prefix + "TOGGLE_STATE";
     public static final String DEVICE_SET_STATE = prefix + "SET_STATE";
-    public static final String DEVICE_DIM = prefix + "DEVICE_DIM";
-    public static final String DEVICE_SET_MODE = prefix + "DEVICE_SET_MODE";
-    public static final String DEVICE_SET_WINDOW_OPEN_TEMPERATURE = prefix + "DEVICE_SET_WINDOW_OPEN_TEMPERATURE";
-    public static final String DEVICE_SET_COMFORT_TEMPERATURE = prefix + "DEVICE_SET_COMFORT_TEMPERATURE";
-    public static final String DEVICE_SET_ECO_TEMPERATURE = prefix + "DEVICE_SET_ECO_TEMPERATURE";
-    public static final String DEVICE_SET_WEEK_PROFILE = prefix + "DEVICE_SET_WEEK_PROFILE";
-    public static final String DEVICE_RESET_WEEK_PROFILE = prefix + "DEVICE_RESET_WEEK_PROFILE";
-    public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";
     public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";
     public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";

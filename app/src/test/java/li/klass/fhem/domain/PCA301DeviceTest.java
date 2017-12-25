@@ -27,18 +27,19 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PCA301DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isTrue();
+        assertThat(device.getSetList().contains("on", "off")).isTrue();
 
         assertThat(stateValueFor(device, "consumption")).isEqualTo("5.0 (kWh)");
         assertThat(stateValueFor(device, "power")).isEqualTo("3.7 (W)");

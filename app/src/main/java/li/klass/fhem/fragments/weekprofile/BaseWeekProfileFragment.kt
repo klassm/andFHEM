@@ -42,7 +42,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.constants.ResultCodes
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval
@@ -133,7 +132,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName)
                 }
-                deviceListService.getDeviceForName<FhemDevice>(deviceName)
+                deviceListService.getDeviceForName(deviceName)
             }.await()?.let {
                 weekProfile = heatingConfiguration.fillWith(it.xmlListDevice)
                 updateChangeButtonsHolderVisibility(weekProfile)

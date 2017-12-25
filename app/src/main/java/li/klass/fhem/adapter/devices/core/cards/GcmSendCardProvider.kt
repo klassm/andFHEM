@@ -34,7 +34,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.receiver.GCMSendDeviceService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -46,19 +46,19 @@ class GcmSendCardProvider @Inject constructor(
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        if (fhemDevice.xmlListDevice.type != getDeviceType()) {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_gcmsend, null) as CardView
         cardView.visibility = View.GONE
 
-        loadCardContent(fhemDevice, cardView)
+        loadCardContent(device, cardView)
 
         return cardView
     }
 
-    private fun loadCardContent(device: GenericDevice, cardView: CardView) {
+    private fun loadCardContent(device: FhemDevice, cardView: CardView) {
         async(UI) {
             val isRegistered = bg { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }.await()
             if (isRegistered) {
@@ -76,8 +76,8 @@ class GcmSendCardProvider @Inject constructor(
                 }
             }
 
-            override fun supports(genericDevice: GenericDevice): Boolean =
-                    !gcmSendDeviceService.isDeviceRegistered(genericDevice.xmlListDevice)
+            override fun supports(device: FhemDevice): Boolean =
+                    !gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice)
         })
     }
 

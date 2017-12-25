@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -35,7 +36,7 @@ public class LaCrosseDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceAttributesProperlySet() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(stateValueFor(device, "temperature"), is("22.0 (°C)"));
         assertThat(stateValueFor(device, "humidity"), is("41.0 (%)"));

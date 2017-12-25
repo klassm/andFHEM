@@ -31,7 +31,7 @@ import org.junit.Test
 class FBCallmonitorDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributes() {
-        val device = getDefaultDevice(GenericDevice::class.java)
+        val device = getDefaultDevice()
 
         assertThat(device.name).isEqualTo(DEFAULT_TEST_DEVICE_NAME)
         assertThat(device.roomConcatenated).isEqualTo(DEFAULT_TEST_ROOM_NAME)

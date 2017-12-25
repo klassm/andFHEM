@@ -27,7 +27,6 @@ package li.klass.fhem.update.backend.command.execution
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import com.google.common.base.Optional
 import com.google.common.io.CharStreams
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -41,7 +40,6 @@ import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.service.AbstractService
 import li.klass.fhem.settings.SettingsKeys.COMMAND_EXECUTION_RETRIES
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.Cache
 import li.klass.fhem.util.CloseableUtil
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -64,7 +62,6 @@ class CommandExecutionService @Inject constructor(
     @Transient
     var lastFailedCommand: Command? = null
         private set
-    @Transient private var imageCache: Cache<Bitmap>? = getImageCache()
 
     fun resendLastFailedCommand() {
         val last = lastFailedCommand
@@ -164,27 +161,6 @@ class CommandExecutionService @Inject constructor(
         )
     }
 
-    fun getBitmap(relativePath: String, context: Context): Bitmap? {
-        try {
-            val cache = getImageCache()
-            if (cache.containsKey(relativePath)) {
-                return cache.get(relativePath)
-            } else {
-                showExecutingDialog()
-
-                val provider = dataConnectionSwitch.getProviderFor()
-                val result = provider.requestBitmap(relativePath, context)
-
-                if (result.handleErrors(context)) return null
-                val bitmap = result.content
-                cache.put(relativePath, bitmap)
-                return bitmap
-            }
-        } finally {
-            hideExecutingDialog()
-        }
-    }
-
     fun executeRequest(relativePath: String, context: Context): Optional<String> {
         val provider = dataConnectionSwitch.getProviderFor() as? FHEMWEBConnection ?: return Optional.absent()
 
@@ -200,13 +176,6 @@ class CommandExecutionService @Inject constructor(
         } finally {
             CloseableUtil.close(result.content)
         }
-    }
-
-    private fun getImageCache(): Cache<Bitmap> {
-        if (imageCache == null) {
-            imageCache = Cache(IMAGE_CACHE_SIZE)
-        }
-        return imageCache!!
     }
 
     private class SyncResultListener : SuccessfulResultListener() {

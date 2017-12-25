@@ -39,16 +39,16 @@ import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
-class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandler<D> {
+class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     private var dimProgress = 0f
 
     override fun canHandle(entry: SetListEntry): Boolean = entry is SliderSetListEntry
 
     @SuppressLint("InflateParams")
-    override fun handle(entry: SetListEntry, context: Context, device: D, callback: OnTargetStateSelectedCallback<D>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
         val sliderSetListEntry = entry as SliderSetListEntry
 
-        val initialProgress = DimmableBehavior.behaviorFor(device, null).orNull() ?.currentDimPosition ?: 0f
+        val initialProgress = DimmableBehavior.behaviorFor(device, null).orNull()?.currentDimPosition ?: 0f
 
         val inflater = LayoutInflater.from(context)
         @SuppressLint("InflateParams") val tableLayout = inflater.inflate(R.layout.availabletargetstates_action_with_seekbar, null, false) as TableLayout
@@ -70,16 +70,16 @@ class SliderSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandle
         }.createRow(inflater, device))
 
         AlertDialog.Builder(context)
-                .setTitle(device.getAliasOrName() + " " + sliderSetListEntry.key)
+                .setTitle(device.aliasOrName + " " + sliderSetListEntry.key)
                 .setView(tableLayout)
-                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
+                .setNegativeButton(R.string.cancelButton, { dialog, _ ->
                     callback.onNothingSelected(device)
                     dialog.dismiss()
-                }
-                .setPositiveButton(R.string.okButton) { dialog, _ ->
+                })
+                .setPositiveButton(R.string.okButton, { dialog, _ ->
                     callback.onSubStateSelected(device, sliderSetListEntry.key, getFormattedDimProgress(dimProgress))
                     dialog.dismiss()
-                }
+                })
                 .show()
     }
 

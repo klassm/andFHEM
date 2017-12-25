@@ -40,7 +40,7 @@ import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.devices.backend.WeatherService.WeatherForecastInformation
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import li.klass.fhem.util.view.setTextOrHide
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -52,8 +52,8 @@ class WeatherDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 1
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        if (fhemDevice.xmlListDevice?.type != "Weather") {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        if (device.xmlListDevice.type != "Weather") {
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_weather, null, false)
@@ -63,7 +63,7 @@ class WeatherDeviceCardProvider @Inject constructor(
         view.forecast.adapter = Adapter()
 
         async(UI) {
-            val forecasts = bg { weatherService.forecastsFor(fhemDevice) }.await()
+            val forecasts = bg { weatherService.forecastsFor(device) }.await()
             updateListWith(view.forecast, forecasts)
             view.invalidate()
         }

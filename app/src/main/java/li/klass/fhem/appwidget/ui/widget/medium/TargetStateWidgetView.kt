@@ -92,12 +92,12 @@ class TargetStateWidgetView : DeviceAppWidgetView() {
         return object : OnTargetStateSelectedCallback<FhemDevice> {
             override fun onStateSelected(device: FhemDevice, targetState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name!!, targetState)))
+                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, targetState)))
             }
 
             override fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name!!, state + " " + subState)))
+                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, state + " " + subState)))
             }
 
             override fun onNothingSelected(device: FhemDevice) {}
@@ -105,7 +105,7 @@ class TargetStateWidgetView : DeviceAppWidgetView() {
     }
 
     override fun supports(device: FhemDevice, context: Context): Boolean =
-            !device.xmlListDevice.setList.entries.isEmpty()
+            !device.setList.entries.isEmpty()
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)

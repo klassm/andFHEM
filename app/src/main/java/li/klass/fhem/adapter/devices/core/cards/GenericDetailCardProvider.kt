@@ -26,10 +26,10 @@ package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
 import android.support.v7.widget.CardView
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 
 interface GenericDetailCardProvider {
     fun ordering(): Int
 
-    fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView?
+    fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView?
 }

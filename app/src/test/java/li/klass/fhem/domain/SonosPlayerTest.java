@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SonosPlayerTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

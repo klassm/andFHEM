@@ -1,7 +1,6 @@
 {
   "sensorDevice": false,
   "defaultGroup": "SWITCH",
-  "stateSliderKey": "level",
   "sanitise": {
     "deviceValues": {
       "STATE": {

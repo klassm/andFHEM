@@ -100,12 +100,12 @@ public abstract class AbstractOnOffActionRow {
     }
 
     protected String getOnStateName(FhemDevice device, Context context) {
-        String state = device.getXmlListDevice().getSetList().getFirstPresentStateOf("on", "ON");
+        String state = device.getSetList().getFirstPresentStateOf("on", "ON");
         return Objects.firstNonNull(state, "on");
     }
 
     protected String getOffStateName(FhemDevice device, Context context) {
-        String state = device.getXmlListDevice().getSetList().getFirstPresentStateOf("off", "OFF");
+        String state = device.getSetList().getFirstPresentStateOf("off", "OFF");
         return Objects.firstNonNull(state, "off");
     }
 

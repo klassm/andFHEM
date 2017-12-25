@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.core
 
-import android.util.Log
 import com.google.common.collect.FluentIterable.from
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists.newArrayList
@@ -61,45 +60,22 @@ class RoomDeviceList(val roomName: String) : Serializable {
      * *
      * @return list of devices matching the functionality.
      */
-    fun getDevicesOfFunctionality(functionality: String): List<FhemDevice> =
-            getDevicesOfFunctionality(functionality, true)
-
-    /**
-     * Gets devices of a certain group. At-devices are always excluded, as they are not shown
-     * in any kind of normal view.
-
-     * @param group            group to filter.
-     * *
-     * @param respectSupported set the parameter to false to also include devices that
-     * *                         are not supported
-     * *
-     * @return list of devices matching the group.
-     */
-    private fun getDevicesOfFunctionality(group: String,
-                                          respectSupported: Boolean): List<FhemDevice> {
-        val deviceSet = getOrCreateDeviceList<FhemDevice>(group)
-        val deviceList = newArrayList<FhemDevice>()
-        deviceSet.filterTo(deviceList) { !respectSupported || it.isSupported }
-
-        try {
-            Collections.sort(deviceList, FhemDevice.BY_NAME)
-        } catch (e: Exception) {
-            Log.e(RoomDeviceList::class.java.name, "cannot sort", e)
-        }
-
-        return deviceList
+    fun getDevicesOfFunctionality(functionality: String): List<FhemDevice> {
+        return allDevices
+                .filter { it.internalDeviceGroupOrGroupAttributes.contains(functionality) }
+                .sortedWith(FhemDevice.BY_NAME)
     }
 
-    private fun <T : FhemDevice> getOrCreateDeviceList(group: String): MutableSet<T> {
+    private fun getOrCreateDeviceList(group: String): MutableSet<FhemDevice> {
         if (!deviceMap.containsKey(group)) {
             deviceMap.put(group, HashSet())
         }
         @Suppress("UNCHECKED_CAST")
-        return deviceMap[group] as MutableSet<T>
+        return deviceMap[group] as MutableSet<FhemDevice>
     }
 
     fun getDevicesOfType(deviceType: String): List<FhemDevice> =
-            allDevices.filter { it.xmlListDevice?.type == deviceType }.sortedWith(FhemDevice.BY_NAME)
+            allDevices.filter { it.xmlListDevice.type == deviceType }.sortedWith(FhemDevice.BY_NAME)
 
     val allDevices: Set<FhemDevice>
         get() {
@@ -112,49 +88,40 @@ class RoomDeviceList(val roomName: String) : Serializable {
         }
 
     val allDevicesAsXmllistDevice: ImmutableSet<XmlListDevice>
-        get() = from(allDevices).transform(FhemDevice.TO_XMLLIST_DEVICE).toSet()
+        get() = from(allDevices).transform { it?.xmlListDevice }.toSet()
 
-    fun <T : FhemDevice> removeDevice(device: T) {
-        val groups = device.getInternalDeviceGroupOrGroupAttributes()
+    fun removeDevice(device: FhemDevice) {
+        val groups = device.internalDeviceGroupOrGroupAttributes
         for (group in groups) {
             deviceMap[group]?.remove(device)
         }
     }
 
-    fun <D : FhemDevice> getDeviceFor(deviceName: String): D? {
+    fun getDeviceFor(deviceName: String): FhemDevice? {
         val allDevices = allDevices
         allDevices
                 .filter { it.name == deviceName }
                 .forEach {
                     @Suppress("UNCHECKED_CAST")
-                    return it as D
+                    return it
                 }
         return null
     }
 
-    val isEmptyOrOnlyContainsDoNotShowDevices: Boolean
-        get() {
+    val isEmpty: Boolean
+        get() = deviceMap.values.isEmpty()
 
-            return deviceMap.values
-                    .flatMap { it }
-                    .none { it.isSupported }
-        }
-
-    fun <T : FhemDevice> add(devices: Collection<T?>): RoomDeviceList {
+    fun add(devices: Collection<FhemDevice>): RoomDeviceList {
         devices.forEach {
             addDevice(it)
         }
         return this
     }
 
-    fun <T : FhemDevice> addDevice(device: T?): RoomDeviceList {
-        if (device == null || !device.isSupported) {
-            return this
-        }
-
-        val groups = device.getInternalDeviceGroupOrGroupAttributes()
+    fun addDevice(device: FhemDevice): RoomDeviceList {
+        val groups = device.internalDeviceGroupOrGroupAttributes
         for (group in groups) {
-            val groupList = getOrCreateDeviceList<FhemDevice>(group)
+            val groupList = getOrCreateDeviceList(group)
             groupList.remove(device)
             groupList.add(device)
         }
@@ -178,7 +145,7 @@ class RoomDeviceList(val roomName: String) : Serializable {
     }
 
     fun getDeviceGroups(): Set<String> =
-            allDevices.flatMap { it.getInternalDeviceGroupOrGroupAttributes() as List<String> }.toSet()
+            allDevices.flatMap { it.internalDeviceGroupOrGroupAttributes }.toSet()
 
     companion object {
 

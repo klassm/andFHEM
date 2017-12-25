@@ -64,7 +64,7 @@ public class AvailableTargetStatesDialogUtil {
     private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
             new RGBTargetStateHandler<>(),
             new GroupSetListTargetStateHandler<>(),
-            new SliderSetListTargetStateHandler<FhemDevice>(),
+            new SliderSetListTargetStateHandler(),
             new TimeTargetStateHandler<>(),
             new TextFieldTargetStateHandler<>(),
             new MultipleSetListTargetStateHandler<>(),
@@ -79,7 +79,7 @@ public class AvailableTargetStatesDialogUtil {
     public static <D extends FhemDevice> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
-        final SetList setList = device.getXmlListDevice().getSetList();
+        final SetList setList = device.getSetList();
         final List<String> setOptions = setList.getSortedKeys();
         final String[] eventMapOptions = device.getAvailableTargetStatesEventMapTexts();
 
@@ -99,8 +99,8 @@ public class AvailableTargetStatesDialogUtil {
         contextMenu.show();
     }
 
-    public static <D extends FhemDevice> void showSwitchOptionsMenuFor(final Context context, final D device, final OnTargetStateSelectedCallback callback, String key) {
-        SetListEntry entry = device.getXmlListDevice().getSetList().get(key, true);
+    public static <D extends FhemDevice> void showSwitchOptionsMenuFor(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
+        SetListEntry entry = device.getSetList().get("state", true);
         handleSelectedOption(context, device, entry, callback);
     }
 
@@ -133,13 +133,13 @@ public class AvailableTargetStatesDialogUtil {
                 convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
             }
             assert convertView != null;
-            TextView textView = (TextView) convertView.findViewById(R.id.text);
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            TextView textView = convertView.findViewById(R.id.text);
+            ImageView imageView = convertView.findViewById(R.id.image);
 
             textView.setText(getItem(position));
 
             String setOption = setOptions.get(position);
-            SetList setList = device.getXmlListDevice().getSetList();
+            SetList setList = device.getSetList();
             final SetListEntry setListEntry = setList.get(setOption, true);
 
             imageView.setVisibility(requiresAdditionalInformation(setListEntry) ? VISIBLE : GONE);

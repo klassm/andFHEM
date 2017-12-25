@@ -59,11 +59,11 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
         if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE)
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE)
-            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(onOffBehavior.getOnStateName(device)))
+            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(onOffBehavior.getOnStateName(device)!!))
         } else {
             view.setViewVisibility(R.id.toggleOff, View.VISIBLE)
             view.setViewVisibility(R.id.toggleOn, View.GONE)
-            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(onOffBehavior.getOffStateName(device)))
+            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(onOffBehavior.getOffStateName(device)!!))
         }
 
         val pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)

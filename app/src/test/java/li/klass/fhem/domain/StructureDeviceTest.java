@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry;
@@ -36,29 +37,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StructureDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("on");
 
-        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isEqualTo(true);
+        assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
     }
 
     @Test
     public void testDeviceWithSetList() {
-        GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
+        FhemDevice device = getDeviceFor("deviceWithSetlist");
 
-        assertThat((GroupSetListEntry) device.getXmlListDevice().getSetList().get("state", false)).isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
+        assertThat((GroupSetListEntry) device.getSetList().get("state", false)).isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
     public void testSlider() {
-        GenericDevice device = getDeviceFor("slider", GenericDevice.class);
+        FhemDevice device = getDeviceFor("slider");
         assertThat(device).isNotNull();
 
-        SetListEntry value = device.getXmlListDevice().getSetList().get("pct", false);
+        SetListEntry value = device.getSetList().get("pct", false);
         assertThat(value).isInstanceOf(SliderSetListEntry.class);
         assertThat((SliderSetListEntry) value).isEqualTo(new SliderSetListEntry("pct", 10, 2, 110));
     }

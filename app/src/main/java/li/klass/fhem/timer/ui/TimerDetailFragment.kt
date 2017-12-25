@@ -303,7 +303,7 @@ class TimerDetailFragment : BaseFragment() {
 
         async(UI) {
             bg {
-                deviceListService.getDeviceForName<FhemDevice>(device.definition.targetDeviceName)
+                deviceListService.getDeviceForName(device.definition.targetDeviceName)
             }.await()?.let {
                 updateTargetDevice(it, this@TimerDetailFragment.view)
             }
@@ -375,7 +375,7 @@ class TimerDetailFragment : BaseFragment() {
 
     companion object {
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {
-            override fun isSelectable(device: FhemDevice): Boolean = device.xmlListDevice.setList.size() > 0
+            override fun isSelectable(device: FhemDevice): Boolean = device.setList.size() > 0
         }
     }
 }

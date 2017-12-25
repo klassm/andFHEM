@@ -32,7 +32,7 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -42,23 +42,23 @@ class ActionsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 30
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        if (fhemDevice.xmlListDevice.setList.isEmpty()) {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        if (device.setList.isEmpty()) {
             return null
         }
         val layoutInflater = context.layoutInflater
         val card = layoutInflater.inflate(R.layout.device_detail_card_actions, null) as CardView
 
         val actionsList = card.actionsList
-        actionsList.addView(AvailableTargetStatesSwitchAction().createView(context, layoutInflater, fhemDevice, actionsList, connectionId))
+        actionsList.addView(AvailableTargetStatesSwitchAction().createView(context, layoutInflater, device, actionsList, connectionId))
 
         async(UI) {
             bg {
                 detailActionProviders.providers
-                        .filter { it.supports(fhemDevice.xmlListDevice) }
+                        .filter { it.supports(device.xmlListDevice) }
                         .flatMap { it.actionsFor(context) }
-                        .filter { it.supports(fhemDevice) }
-                        .map { it.createView(fhemDevice.xmlListDevice, connectionId, context, layoutInflater, actionsList) }
+                        .filter { it.supports(device) }
+                        .map { it.createView(device.xmlListDevice, connectionId, context, layoutInflater, actionsList) }
             }.await().forEach { actionsList.addView(it) }
         }
         return card

@@ -99,7 +99,6 @@ import li.klass.fhem.sendCommand.ui.SendCommandFragment;
 import li.klass.fhem.service.intent.AppActionsIntentService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.ExternalApiService;
-import li.klass.fhem.service.intent.ImageIntentService;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
@@ -251,8 +250,6 @@ public interface ApplicationComponent {
     void inject(RoomListUpdateIntentService object);
 
     void inject(NotificationIntentService object);
-
-    void inject(ImageIntentService object);
 
     void inject(ExternalApiService object);
 

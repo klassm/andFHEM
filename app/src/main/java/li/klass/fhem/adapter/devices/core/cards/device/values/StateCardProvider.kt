@@ -30,7 +30,6 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
@@ -39,8 +38,8 @@ class StateCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 10
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        return detailCardWithDeviceValuesProvider.createCard(fhemDevice, connectionId,
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        return detailCardWithDeviceValuesProvider.createCard(device, connectionId,
                 R.string.detailStatesSection, StateItemProvider(), context)
     }
 

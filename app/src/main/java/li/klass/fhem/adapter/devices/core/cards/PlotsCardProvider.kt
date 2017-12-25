@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition.BY_NAME
@@ -49,16 +49,16 @@ class PlotsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 20
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 
-        loadGraphs(fhemDevice, cardView, connectionId, context)
+        loadGraphs(device, cardView, connectionId, context)
 
         return cardView
     }
 
-    private fun loadGraphs(device: GenericDevice, cardView: CardView, connectionId: String?, context: Context) {
+    private fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
         async(UI) {
             val graphs = bg {
                 graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, Optional.fromNullable(connectionId))
@@ -69,7 +69,7 @@ class PlotsCardProvider @Inject constructor(
         }
     }
 
-    private fun fillPlotsCard(plotsCard: CardView, device: GenericDevice,
+    private fun fillPlotsCard(plotsCard: CardView, device: FhemDevice,
                               graphDefinitions: Set<SvgGraphDefinition>,
                               connectionId: String?, context: Context) {
         val definitions = graphDefinitions.sortedWith(BY_NAME)
@@ -96,6 +96,6 @@ class PlotsCardProvider @Inject constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(PlotsCardProvider::class.java)
+        val logger = LoggerFactory.getLogger(PlotsCardProvider::class.java)!!
     }
 }

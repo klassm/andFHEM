@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RevoltDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        GenericDevice device = getDeviceFor("Revolt_Kueche", GenericDevice.class);
+        FhemDevice device = getDeviceFor("Revolt_Kueche");
         assertThat(device).isNotNull();
         assertThat(stateValueFor(device, "power")).isEqualTo("113.3 (W)");
         assertThat(stateValueFor(device, "energy")).isEqualTo("1.25 (kWh)");

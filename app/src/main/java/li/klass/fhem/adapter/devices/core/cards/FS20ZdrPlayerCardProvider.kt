@@ -34,7 +34,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -44,13 +44,13 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        if (fhemDevice.xmlListDevice?.type != "fs20_zdr") {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        if (device.xmlListDevice.type != "fs20_zdr") {
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_fs20_zdr_player, null, false)
 
-        val provider = actionProviderFor(fhemDevice, connectionId)
+        val provider = actionProviderFor(device, connectionId)
 
         attachActionTo(view.button_vol_up, provider("volume_up"))
         attachActionTo(view.button_vol_down, provider("volume_down"))
@@ -70,7 +70,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         return view as CardView
     }
 
-    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?): View.OnClickListener? {
+    private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
             async(UI) {
@@ -81,7 +81,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: GenericDevice, connectionId: String?): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: FhemDevice, connectionId: String?): (String?) -> View.OnClickListener? {
         return { command: String? ->
             command?.let { actionFor(command, device, connectionId) }
         }

@@ -34,7 +34,7 @@ import org.junit.Test
 class WeatherDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributes() {
-        val device = getDefaultDevice(GenericDevice::class.java)
+        val device = getDefaultDevice()
 
         assertThat(device.name).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME)
         assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
@@ -79,7 +79,7 @@ class WeatherDeviceTest : DeviceXMLParsingBase() {
                 )
         )
 
-        assertThat(device.xmlListDevice.setList.entries).isEmpty()
+        assertThat(device.setList.entries).isEmpty()
     }
 
     override fun getFileName(): String = "weather.xml"

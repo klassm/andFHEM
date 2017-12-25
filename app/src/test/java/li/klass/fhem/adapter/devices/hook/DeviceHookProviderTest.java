@@ -34,7 +34,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
@@ -74,7 +73,7 @@ public class DeviceHookProviderTest {
         assertThat(hook).isEqualTo(expectedHookType);
     }
 
-    private static GenericDevice deviceFor(String hookAttribute, boolean isActive, String setList) {
+    private static FhemDevice deviceFor(String hookAttribute, boolean isActive, String setList) {
         String value = isActive ? "true" : "false";
 
         XmlListDevice xmlListDevice = new XmlListDevice("Bla",
@@ -84,10 +83,8 @@ public class DeviceHookProviderTest {
                 ImmutableMap.of("sets", new DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, "")));
         xmlListDevice.getAttributes().put(hookAttribute, new DeviceNode(ATTR, hookAttribute, value, (DateTime) null));
         xmlListDevice.setInternal("NAME", "name");
-        GenericDevice device = new GenericDevice();
-        device.setXmlListDevice(xmlListDevice);
 
-        return device;
+        return new FhemDevice(xmlListDevice);
     }
 
     @DataProvider
@@ -103,7 +100,7 @@ public class DeviceHookProviderTest {
     @Test
     public void should_provide_off_state_name(String setList, String offStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
-        GenericDevice device = deviceFor(Companion.getHOOK_OFF(), true, setList);
+        FhemDevice device = deviceFor(Companion.getHOOK_OFF(), true, setList);
         device.getXmlListDevice().setAttribute(Companion.getOFF_STATE_NAME(), offStateName);
 
         String stateName = provider.getOffStateName(device);
@@ -124,7 +121,7 @@ public class DeviceHookProviderTest {
     @Test
     public void should_provide_on_state_name(String setList, String onStateName, String expectedState) throws Exception {
         DeviceHookProvider provider = new DeviceHookProvider();
-        GenericDevice device = deviceFor(Companion.getHOOK_ON(), true, setList);
+        FhemDevice device = deviceFor(Companion.getHOOK_ON(), true, setList);
         device.getXmlListDevice().setAttribute(Companion.getON_STATE_NAME(), onStateName);
 
         String stateName = provider.getOnStateName(device);

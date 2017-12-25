@@ -27,33 +27,34 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EIBDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("on");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
     }
 
     @Test
     public void testTimeDevice() {
-        GenericDevice timeDevice = getDeviceFor("time", GenericDevice.class);
-        GenericDevice dpt10Device = getDeviceFor("dpt10", GenericDevice.class);
+        FhemDevice timeDevice = getDeviceFor("time");
+        FhemDevice dpt10Device = getDeviceFor("dpt10");
         assertThat(timeDevice).isNotNull();
         assertThat(dpt10Device).isNotNull();
     }
 
     @Test
     public void testDimmerDevice() {
-        GenericDevice device = getDeviceFor("dimmer", GenericDevice.class);
+        FhemDevice device = getDeviceFor("dimmer");
 
         assertThat(device.getState()).isEqualTo("20 (%)");
     }
@@ -69,7 +70,7 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
     }
 
     private void assertDeviceState(String deviceName, String expectedState) {
-        GenericDevice device = getDeviceFor(deviceName, GenericDevice.class);
+        FhemDevice device = getDeviceFor(deviceName);
         assertThat(device.getState()).isEqualTo(expectedState);
     }
 

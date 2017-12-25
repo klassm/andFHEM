@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +39,7 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_temperature_humidity_device_correctly() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -50,12 +51,12 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "switch_detect")).isEqualTo("on");
         assertThat(device.getState()).isEqualTo("T: 12.6  Bat: ok");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isEmpty();
+        assertThat(device.getSetList().getEntries()).isEmpty();
     }
 
     @Test
     public void should_read_waterDetect_device_correctly() {
-        GenericDevice device = getDeviceFor("water", GenericDevice.class);
+        FhemDevice device = getDeviceFor("water");
 
         assertThat(stateValueFor(device, "temperature")).isNull();
         assertThat(stateValueFor(device, "humidity")).isNull();

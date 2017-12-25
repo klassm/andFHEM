@@ -248,15 +248,6 @@
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.SET_STATE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_MODE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ECO_TEMPERATURE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_COMFORT_TEMPERATURE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WEEK_PROFILE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM" />
@@ -275,13 +266,6 @@
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_SET_FOR_DEVICE" />
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".service.intent.ImageIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.LOAD_IMAGE" />
             </intent-filter>
         </service>
         <service

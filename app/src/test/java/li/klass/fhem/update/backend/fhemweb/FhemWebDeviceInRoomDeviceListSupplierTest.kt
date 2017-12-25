@@ -28,11 +28,10 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.XmllistKey
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
 import li.klass.fhem.update.backend.DeviceListService
-import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
 import org.assertj.core.api.Assertions.assertThat
@@ -171,11 +170,11 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         assertThat(result).isEqualTo(device2)
     }
 
-    private fun fhemwebDeviceFor(name: String): GenericDevice {
-        val device = GenericDevice()
-        device.xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>(), mutableMapOf<String, DeviceNode>())
-        device.xmlListDevice.setInternal(XmllistKey.Internal.name, name)
-        device.xmlListDevice.setAttribute(XmllistKey.Attribute.group, "default")
+    private fun fhemwebDeviceFor(name: String): FhemDevice {
+        val xmllistDevice = XmlListDevice("FHEMWEB")
+        val device = FhemDevice(xmllistDevice)
+        xmllistDevice.setInternal(XmllistKey.Internal.name, name)
+        xmllistDevice.setAttribute(XmllistKey.Attribute.group, "default")
         return device
     }
 }

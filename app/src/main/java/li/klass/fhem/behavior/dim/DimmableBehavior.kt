@@ -29,7 +29,6 @@ import com.google.common.base.Optional
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
-import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
 class DimmableBehavior private constructor(
         val fhemDevice: FhemDevice,
@@ -58,12 +57,12 @@ class DimmableBehavior private constructor(
 
     companion object {
 
-        fun supports(xmlListDevice: XmlListDevice) =
-                ContinuousDimmableBehavior.supports(xmlListDevice)
-                        || DiscreteDimmableBehavior.supports(xmlListDevice)
+        fun supports(device: FhemDevice) =
+                ContinuousDimmableBehavior.supports(device)
+                        || DiscreteDimmableBehavior.supports(device)
 
         fun behaviorFor(fhemDevice: FhemDevice, connectionId: String?): Optional<DimmableBehavior> {
-            val setList = fhemDevice.xmlListDevice.setList
+            val setList = fhemDevice.setList
             if (isDimDisabled(fhemDevice)) {
                 return Optional.absent()
             }
@@ -83,7 +82,7 @@ class DimmableBehavior private constructor(
         }
 
         fun continuousBehaviorFor(device: FhemDevice, attribute: String, connectionId: String?): Optional<DimmableBehavior> {
-            val setList = device.xmlListDevice.setList
+            val setList = device.setList
             if (!setList.contains(attribute)) {
                 return Optional.absent()
             }

@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class EnigmaDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        GenericDevice device = getDeviceFor("Wz.TvReceiver", GenericDevice.class);
+        FhemDevice device = getDeviceFor("Wz.TvReceiver");
         assertThat(device).isNotNull();
     }
 

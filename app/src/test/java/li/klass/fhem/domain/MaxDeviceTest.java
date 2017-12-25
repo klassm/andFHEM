@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MaxDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testShutterContactDevice() {
-        GenericDevice device = getDeviceFor("device", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device");
 
         assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
         assertThat(device.getState()).isEqualTo("closed");
@@ -41,21 +42,21 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testCubeDevice() {
-        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device1");
 
         assertThat(device.getState()).isEqualTo("connected");
     }
 
     @Test
     public void testPushButtonDevice() {
-        GenericDevice device = getDeviceFor("device2", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device2");
 
         assertThat(device.getState()).isEqualTo("waiting for data");
     }
 
     @Test
     public void testHeatingThermostatDevice() {
-        GenericDevice device = getDeviceFor("device3", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device3");
 
         assertThat(device.getState()).isEqualTo("17.0 °C");
         assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
@@ -66,7 +67,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testOnOffTemperatureDevice() {
-        GenericDevice device = getDeviceFor("on_off", GenericDevice.class);
+        FhemDevice device = getDeviceFor("on_off");
 
         assertThat(stateValueFor(device, "desiredTemperature")).isEqualTo("on");
         assertThat(stateValueFor(device, "windowOpenTemperature")).isEqualTo("4.5 (°C)");

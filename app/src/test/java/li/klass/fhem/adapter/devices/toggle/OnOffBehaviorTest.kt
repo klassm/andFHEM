@@ -30,7 +30,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.testutil.MockitoRule
 import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -59,9 +59,8 @@ class OnOffBehaviorTest {
     fun should_recognize_on_and_off_states_correctly(testCase: IsOnTestCase) {
 
         //  given
-        val device = GenericDevice()
-        device.xmlListDevice = XmlListDevice("BLUB", HashMap(), HashMap(), HashMap(), HashMap())
-        device.state = testCase.state
+        val device = FhemDevice(XmlListDevice("BLUB", HashMap(), HashMap(), HashMap(), HashMap()))
+        device.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
 
         // expect
@@ -73,19 +72,17 @@ class OnOffBehaviorTest {
     @Test
     fun should_handle_invert_state_hook(testCase: IsOnTestCase) {
         //  given
-        val device = GenericDevice()
         val xmlListDevice = XmlListDevice("BLUB")
         xmlListDevice.setInternal("NAME", "Name")
-        device.xmlListDevice = xmlListDevice
-        device.state = testCase.state
+        val device = FhemDevice(xmlListDevice)
+        device.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
         `when`(deviceHookProvider.invertState(device)).thenReturn(false)
 
-        val device2 = GenericDevice()
         val xmlListDevice2 = XmlListDevice("BLA")
         xmlListDevice.setInternal("NAME", "name")
-        device2.xmlListDevice = xmlListDevice2
-        device2.state = testCase.state
+        val device2 = FhemDevice(xmlListDevice2)
+        device2.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device2)).thenReturn("off")
         `when`(deviceHookProvider.invertState(device2)).thenReturn(true)
 
@@ -98,11 +95,10 @@ class OnOffBehaviorTest {
     @UseDataProvider("hookProvider")
     @Throws(Exception::class)
     fun isOnConsideringHooks(testCase: HookProviderTestCase) {
-        val device = GenericDevice()
-        device.xmlListDevice = XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), HashMap())
+        val device = FhemDevice(XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), HashMap()))
         `when`(deviceHookProvider.buttonHookFor(device)).thenReturn(testCase.hook)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
-        device.state = if (testCase.isOn) "on" else "off"
+        device.xmlListDevice.setInternal("STATE", if (testCase.isOn) "on" else "off")
 
         val result = onOffBehavior.isOnConsideringHooks(device)
 
@@ -112,12 +108,11 @@ class OnOffBehaviorTest {
     @Test
     @UseDataProvider("supportsProvider")
     fun calculateSupports(testCase: SupportsTestCase) {
-        val device = GenericDevice()
         val sets = testCase.setList.joinToString(" ")
-
         val headers = mapOf("sets" to DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", sets, DateTime.now()))
                 .toMutableMap()
-        device.xmlListDevice = XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), headers)
+        val device = FhemDevice(XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), headers))
+
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn(testCase.offStateNameHook)
         `when`(deviceHookProvider.getOnStateName(device)).thenReturn(testCase.onStateNameHook)
 

@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class SomfyDeviceTest extends DeviceXMLParsingBase {
     @Test
     @SuppressWarnings("unchecked")
     public void should_read_device() {
-        GenericDevice device = getDeviceFor("SOMFY_WZ_EG_1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("SOMFY_WZ_EG_1");
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("stop");
         assertThat(device.getWebCmd()).containsExactly("auf", "stop", "ab");
@@ -43,7 +44,7 @@ public class SomfyDeviceTest extends DeviceXMLParsingBase {
     @Test
     @SuppressWarnings("unchecked")
     public void should_add_auf_ab_and_stop_as_webcmd_even_if_not_present() {
-        GenericDevice device = getDeviceFor("SOMFY1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("SOMFY1");
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("stop");
         assertThat(device.getWebCmd()).containsExactly("auf", "stop", "go-my", "ab");

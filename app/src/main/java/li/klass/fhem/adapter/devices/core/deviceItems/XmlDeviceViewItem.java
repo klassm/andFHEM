@@ -64,11 +64,6 @@ public class XmlDeviceViewItem implements DeviceViewItem {
     }
 
     @Override
-    public boolean isShowInDetail() {
-        return isShowInDetail;
-    }
-
-    @Override
     public boolean isShowInOverview() {
         return isShowInOverview;
     }

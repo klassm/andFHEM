@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FHTDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
@@ -50,12 +51,12 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "desired-temp")).isEqualTo("6.5 (°C)");
         assertThat(device.getState()).isEqualTo("???");
 
-        assertThat(device.getXmlListDevice().getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp")).isEqualTo(true);
+        assertThat(device.getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp")).isEqualTo(true);
     }
 
     @Test
     public void testDeviceWithMultipleActors() {
-        GenericDevice device = getDeviceFor("fht_multi_actuators", GenericDevice.class);
+        FhemDevice device = getDeviceFor("fht_multi_actuators");
         assertThat(device).isNotNull();
     }
 

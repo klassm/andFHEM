@@ -57,9 +57,7 @@ class DeviceListActionModeCallback constructor(
         return true
     }
 
-    override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-        return false
-    }
+    override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean = false
 
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {

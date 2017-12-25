@@ -43,7 +43,7 @@ import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -55,15 +55,15 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        if (fhemDevice.xmlListDevice?.type != "remotecontrol") {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.remote_control_layout, null, false)
-        val actionProvider = actionProviderFor(fhemDevice, connectionId)
+        val actionProvider = actionProviderFor(device, connectionId)
         async(UI) {
             val rows = bg {
-                remotecontrolDeviceService.getRowsFor(fhemDevice)
+                remotecontrolDeviceService.getRowsFor(device)
             }.await()
             updateTableWith(view.content, rows, context, actionProvider)
         }
@@ -108,7 +108,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         return imageButton
     }
 
-    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?): View.OnClickListener? {
+    private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
             async(UI) {
@@ -119,7 +119,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: GenericDevice, connectionId: String?): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: FhemDevice, connectionId: String?): (String?) -> View.OnClickListener? {
         return { command: String? ->
             command?.let { actionFor(command, device, connectionId) }
         }

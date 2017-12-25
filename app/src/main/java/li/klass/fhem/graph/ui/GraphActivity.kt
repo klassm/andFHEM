@@ -111,7 +111,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         val name = deviceName ?: return
         async(UI) {
             bg {
-                deviceListService.getDeviceForName<FhemDevice>(name, connectionId)
+                deviceListService.getDeviceForName(name, connectionId)
             }.await()?.let {
                 readDataAndCreateChart(it)
             }

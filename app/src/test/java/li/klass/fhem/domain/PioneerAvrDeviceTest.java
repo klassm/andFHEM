@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class PioneerAvrDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_avr_device() {
-        GenericDevice device = getDeviceFor("VSX922", GenericDevice.class);
+        FhemDevice device = getDeviceFor("VSX922");
 
         assertThat(device).isNotNull();
         assertThat(stateValueFor(device, "state")).isEqualTo("off");

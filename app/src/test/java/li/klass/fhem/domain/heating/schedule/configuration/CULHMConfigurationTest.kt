@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration
 
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -77,10 +77,9 @@ class CULHMConfigurationTest {
     fun testGenerateCommand() {
         configuration.readNode(weekProfile!!, "tempListSat", "24:00 16.0 08:00 16.0 19:30 20")
 
-        val device = GenericDevice()
         val xmlListDevice = XmlListDevice("dummy", HashMap(), HashMap(), HashMap(), HashMap())
         xmlListDevice.setInternal("NAME", "name")
-        device.xmlListDevice = xmlListDevice
+        val device = FhemDevice(xmlListDevice)
 
         getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).changedTemperature = 23.0
 

@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OregonDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -53,7 +54,7 @@ public class OregonDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "uv_risk")).isEqualTo("high");
         assertThat(device.getState()).isEqualTo("T: 15.9  H: 46");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
     }
 
     @Override

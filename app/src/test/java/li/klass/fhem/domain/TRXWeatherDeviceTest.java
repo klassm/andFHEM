@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -42,12 +43,12 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(stateValueFor(device, "battery")).isEqualTo("ok");
         assertThat(device.getState()).isEqualTo("T: 21.1 BAT: ok");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries().size()).isEqualTo(0);
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
     }
 
     @Test
     public void testForCorrectlySetAttributesInHumidityDevice() {
-        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device1");
 
         assertThat(stateValueFor(device, "humidity")).isEqualTo("59.0 (%)");
         assertThat(stateValueFor(device, "dewpoint")).isEqualTo("11.1 (°C)");
@@ -55,13 +56,13 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testRainAttributes() {
-        GenericDevice device = getDeviceFor("rain", GenericDevice.class);
+        FhemDevice device = getDeviceFor("rain");
         assertThat(stateValueFor(device, "rain_total")).isEqualTo("343 (l/m²)");
     }
 
     @Test
     public void testWindAttributes() {
-        GenericDevice device = getDeviceFor("wind", GenericDevice.class);
+        FhemDevice device = getDeviceFor("wind");
         assertThat(stateValueFor(device, "wind_avspeed")).isEqualTo("3.0 (km/h)");
         assertThat(stateValueFor(device, "wind_dir")).isEqualTo("180 S");
         assertThat(stateValueFor(device, "wind_speed")).isEqualTo("0.0 (km/h)");

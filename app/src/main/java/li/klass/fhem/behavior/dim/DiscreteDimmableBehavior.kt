@@ -32,7 +32,6 @@ import com.google.common.collect.ImmutableList
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
-import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import java.util.*
 import java.util.regex.Pattern
 
@@ -86,7 +85,7 @@ class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : Dimm
             Integer.parseInt(leftToCompare).compareTo(Integer.parseInt(rightToCompare))
         }
 
-        fun supports(xmlListDevice: XmlListDevice) = behaviorFor(xmlListDevice.setList).isPresent
+        fun supports(device: FhemDevice) = behaviorFor(device.setList).isPresent
 
         fun behaviorFor(setList: SetList): Optional<DiscreteDimmableBehavior> {
 

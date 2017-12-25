@@ -92,7 +92,7 @@ public class ImportExportService {
     protected Map<String, String> getSharedPreferencesExportKeys(Context context) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.<String, String>builder()
                 .put("CONNECTIONS", ConnectionService.Companion.getPREFERENCES_NAME())
-                .put("NOTIFICATIONS", NotificationService.PREFERENCES_NAME)
+                .put("NOTIFICATIONS", NotificationService.Companion.getPREFERENCES_NAME())
                 .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context));
         for (String preferenceName : favoritesService.getPreferenceNames()) {
             builder.put("FAVORITE_" + preferenceName, preferenceName);

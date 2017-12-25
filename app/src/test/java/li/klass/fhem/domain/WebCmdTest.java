@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,12 +35,13 @@ public class WebCmdTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_handle_unset_webcmd_attribute_even_if_webcmddevice_hook_is_set() {
-        GenericDevice device = getDeviceFor("withoutWebcmds", GenericDevice.class);
+        FhemDevice device = getDeviceFor("withoutWebcmds");
         assertThat(device.getWebCmd()).isEmpty();
     }
 
+    @Test
     public void should_use_alias_as_name_even_if_webcmddevice_hook_is_set() {
-        GenericDevice device = getDeviceFor("withAlias", GenericDevice.class);
+        FhemDevice device = getDeviceFor("withAlias");
         assertThat(device.getAliasOrName()).isEqualTo("alias");
     }
 

@@ -32,7 +32,6 @@ import android.widget.RemoteViews
 import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
-import li.klass.fhem.appwidget.annotation.SupportsWidget
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.update.WidgetConfiguration
@@ -57,28 +56,12 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
     @Inject
     lateinit var connectionService: ConnectionService
 
-    open fun supports(device: FhemDevice, context: Context): Boolean {
-        val supportsFromJson = supportsFromJsonConfiguration(device)
-        val supportsFromAnnotation = supportsFromAnnotation(device)
-
-        return supportsFromJson || supportsFromAnnotation
-    }
-
-    private fun supportsFromAnnotation(device: FhemDevice): Boolean {
-        if (!device.javaClass.isAnnotationPresent(SupportsWidget::class.java)) return false
-
-        if (!device.supportsWidget(this.javaClass)) {
-            return false
-        }
-
-        val annotation = device.javaClass.getAnnotation(SupportsWidget::class.java)
-        val supportedWidgetViews = annotation.value.toList()
-        return supportedWidgetViews.any { it == javaClass }
-    }
+    open fun supports(device: FhemDevice, context: Context): Boolean =
+            supportsFromJsonConfiguration(device)
 
     private fun supportsFromJsonConfiguration(device: FhemDevice): Boolean {
-        val deviceConfiguration = device.deviceConfiguration
-        val supportedWidgets = deviceConfiguration.supportedWidgets
+        val configuration = deviceConfigurationProvider.configurationFor(device)
+        val supportedWidgets = configuration.supportedWidgets
         supportedWidgets
                 .filter { javaClass.simpleName.equals(it, ignoreCase = true) }
                 .forEach { return true }
@@ -130,7 +113,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     override fun createWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int,
                                            callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
-        val device = deviceListService.getDeviceForName<FhemDevice>(payload[0])
+        val device = deviceListService.getDeviceForName(payload[0])
         if (device != null) {
             createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device, callback)
         } else {
@@ -150,7 +133,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
     protected open fun createDeviceWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int,
                                                        device: FhemDevice, callback: WidgetConfigurationCreatedCallback) {
         val connectionId = connectionService.getSelectedId()
-        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, ImmutableList.of(device.name!!)))
+        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, ImmutableList.of(device.name)))
     }
 
     protected fun getCurrentConnectionId(): String =

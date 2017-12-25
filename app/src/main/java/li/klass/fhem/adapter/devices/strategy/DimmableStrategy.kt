@@ -37,7 +37,6 @@ import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.behavior.dim.DimmableBehavior
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.ApplicationProperties
 import javax.inject.Inject
@@ -82,7 +81,7 @@ constructor(
         return hook == ButtonHook.NORMAL && DimmableBehavior.behaviorFor(fhemDevice, null).isPresent
     }
 
-    fun createDetailView(device: GenericDevice, row: TableRow, context: Context, connectionId: String?): TableRow {
+    fun createDetailView(device: FhemDevice, row: TableRow, context: Context, connectionId: String?): TableRow {
         val dimmableBehaviorOpt = DimmableBehavior.behaviorFor(device, connectionId)
         val behavior = dimmableBehaviorOpt.get()
         return StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, behavior, row)

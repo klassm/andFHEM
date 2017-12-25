@@ -17,12 +17,12 @@ class IndexableCreator {
     fun indexableFor(context: Context, device: FhemDevice): Indexable {
         val roomsTranslated = context.resources.getString(R.string.rooms)
         val name = Joiner.on(" ").skipNulls().join(
-                device.getAliasOrName(),
-                if (device.getAliasOrName() != device.getName()) "(" + device.getName() + ")" else null,
-                roomsTranslated, device.getRoomConcatenated()
+                device.aliasOrName,
+                if (device.aliasOrName != device.name) "(" + device.name + ")" else null,
+                roomsTranslated, device.roomConcatenated
         )
 
-        return indexableFor(name, device.getAliasOrName(), "fhem://device=" + device.getName())
+        return indexableFor(name, device.aliasOrName, "fhem://device=" + device.name)
     }
 
     private fun indexableFor(text: String, name: String, url: String): Indexable {

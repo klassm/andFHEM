@@ -32,6 +32,7 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,8 +43,9 @@ constructor(
         deviceDescMapping: DeviceDescMapping,
         private val dimmableStrategy: DimmableStrategy,
         private val toggleableStrategy: ToggleableStrategy,
-        private val devStateIconAdder: DevStateIconAdder) :
-        DefaultViewStrategy(deviceDescMapping, devStateIconAdder) {
+        devStateIconAdder: DevStateIconAdder,
+        deviceConfigurationProvider: DeviceConfigurationProvider) :
+        DefaultViewStrategy(deviceDescMapping, devStateIconAdder, deviceConfigurationProvider) {
 
     override fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<DeviceViewItem>, layoutInflater: LayoutInflater) {
         super.fillDeviceOverviewView(view, device, viewHolder, items, layoutInflater)
@@ -54,6 +56,6 @@ constructor(
 
     override fun supports(fhemDevice: FhemDevice): Boolean {
         return !toggleableStrategy.supports(fhemDevice) && !dimmableStrategy.supports(fhemDevice)
-                && fhemDevice.xmlListDevice.setList.contains("state")
+                && fhemDevice.setList.contains("state")
     }
 }

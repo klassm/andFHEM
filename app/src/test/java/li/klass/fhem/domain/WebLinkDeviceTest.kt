@@ -32,7 +32,7 @@ import org.junit.Test
 class WebLinkDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributes() {
-        val device = getDefaultDevice(GenericDevice::class.java)
+        val device = getDefaultDevice()
 
         assertThat(device.name).isEqualTo((DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME))
         assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)

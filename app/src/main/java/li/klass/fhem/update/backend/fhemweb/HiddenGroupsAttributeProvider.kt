@@ -25,12 +25,12 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import java.util.*
 import javax.inject.Inject
 
 class HiddenGroupsAttributeProvider @Inject constructor() {
-    fun provideFor(fhemWebDevice: GenericDevice): Set<String> {
+    fun provideFor(fhemWebDevice: FhemDevice): Set<String> {
         return fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenGroup)
                 .or("")
                 .split(",")

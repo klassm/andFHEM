@@ -40,7 +40,7 @@ import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow
 import li.klass.fhem.adapter.uiservice.FragmentUiService
 import li.klass.fhem.domain.CulHmHeatingMode
 import li.klass.fhem.domain.CulHmHeatingMode.heatingModeFor
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble
@@ -67,8 +67,8 @@ constructor(private val fragmentUiService: FragmentUiService) : DeviceDetailActi
                         fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context, CULHMConfiguration())
                     }
 
-                    override fun supports(genericDevice: GenericDevice): Boolean =
-                            supportsHeating(genericDevice.xmlListDevice)
+                    override fun supports(device: FhemDevice): Boolean =
+                            supportsHeating(device.xmlListDevice)
                 }
         )
     }

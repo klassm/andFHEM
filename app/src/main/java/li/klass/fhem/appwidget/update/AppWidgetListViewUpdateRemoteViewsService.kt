@@ -34,7 +34,6 @@ import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView
 import li.klass.fhem.appwidget.ui.widget.base.EmptyRemoteViewsFactory
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -55,7 +54,7 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
         val widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME))
         val deviceName = intent.getStringExtra(DEVICE_NAME)
         val connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID))
-        val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, connectionId.orNull())
+        val device = deviceListService.getDeviceForName(deviceName, connectionId.orNull())
         if (device == null) {
             LOG.error("device is null, at least in the current connection")
             return null

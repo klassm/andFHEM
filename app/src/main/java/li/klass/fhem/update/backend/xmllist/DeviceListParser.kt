@@ -26,9 +26,6 @@ package li.klass.fhem.update.backend.xmllist
 
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Preconditions.checkArgument
-import com.google.common.collect.Iterables.concat
-import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Maps.newHashMap
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
@@ -36,44 +33,27 @@ import li.klass.fhem.connection.backend.RequestResult
 import li.klass.fhem.connection.backend.RequestResultError
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.domain.core.XmllistAttribute
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.graph.backend.gplot.GPlotHolder
-import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration
-import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.device.configuration.Sanitiser
 import li.klass.fhem.update.backend.group.GroupProvider
-import li.klass.fhem.util.ReflectionUtil.getAllDeclaredFields
-import li.klass.fhem.util.ReflectionUtil.getAllDeclaredMethods
-import li.klass.fhem.util.StringEscapeUtil
-import li.klass.fhem.util.ValueExtractUtil
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
-import java.io.Serializable
-import java.lang.reflect.Field
-import java.lang.reflect.Method
-import java.util.*
 import javax.inject.Inject
 
 
 /**
  * Class responsible for reading the current xml list from FHEM.
  */
-class DeviceListParser @Inject
-constructor(
+class DeviceListParser @Inject constructor(
         private val connectionService: ConnectionService,
-        private val deviceConfigurationProvider: DeviceConfigurationProvider,
         private val parser: XmlListParser,
         private val gPlotHolder: GPlotHolder,
         private val groupProvider: GroupProvider,
         private val sanitiser: Sanitiser
 ) {
-
-    private val deviceClassCache = newHashMap<Class<*>, Map<String, Set<DeviceClassCacheEntry>>>()
-
     fun parseAndWrapExceptions(xmlList: String, context: Context): RoomDeviceList? {
         return try {
             parseXMLListUnsafe(xmlList, context)
@@ -107,8 +87,6 @@ constructor(
         val allDevices = newHashMap<String, FhemDevice>()
 
         for ((key) in parsedDevices) {
-            val deviceConfiguration = deviceConfigurationProvider.configurationFor(key)
-
             val xmlListDevices = parsedDevices[key]
             if (xmlListDevices == null || xmlListDevices.isEmpty()) {
                 continue
@@ -116,8 +94,8 @@ constructor(
 
             if (connectionService.mayShowInCurrentConnectionType(key)) {
 
-                val localErrorCount = devicesFromDocument(GenericDevice::class.java, xmlListDevices,
-                        allDevices, context, deviceConfiguration)
+                val localErrorCount = devicesFromDocument(xmlListDevices, allDevices,
+                        context)
 
                 if (localErrorCount > 0) {
                     errorHolder.addErrors(localErrorCount)
@@ -125,7 +103,6 @@ constructor(
             }
         }
 
-        performAfterReadOperations(allDevices, errorHolder)
         val roomDeviceList = buildRoomDeviceList(allDevices)
 
         handleErrors(errorHolder, context)
@@ -135,14 +112,14 @@ constructor(
         return roomDeviceList
     }
 
-    private fun devicesFromDocument(deviceClass: Class<out FhemDevice>, xmlListDevices: List<XmlListDevice>,
-                                    allDevices: MutableMap<String, FhemDevice>, context: Context, deviceConfiguration: DeviceConfiguration): Int {
+    private fun devicesFromDocument(xmlListDevices: List<XmlListDevice>, allDevices: MutableMap<String, FhemDevice>,
+                                    context: Context): Int {
 
         var errorCount = 0
         val errorText = StringBuilder()
 
         for (xmlListDevice in xmlListDevices) {
-            if (!deviceFromXmlListDevice(deviceClass, xmlListDevice, allDevices, context, deviceConfiguration)) {
+            if (!deviceFromXmlListDevice(xmlListDevice, allDevices, context)) {
                 errorCount++
                 errorText.append(xmlListDevice.toString()).append("\r\n\r\n")
             }
@@ -153,45 +130,6 @@ constructor(
         }
 
         return errorCount
-    }
-
-    private fun performAfterReadOperations(allDevices: MutableMap<String, FhemDevice>, errorHolder: ReadErrorHolder) {
-
-        val allDevicesReadCallbacks = newArrayList<FhemDevice>()
-        val deviceReadCallbacks = newArrayList<FhemDevice>()
-
-        for (device in allDevices.values) {
-            try {
-                device.afterAllXMLRead()
-                if (device.deviceReadCallback != null) deviceReadCallbacks.add(device)
-                if (device.allDeviceReadCallback != null) allDevicesReadCallbacks.add(device)
-            } catch (e: Exception) {
-                allDevices.remove(device.name)
-                errorHolder.addError()
-                LOG.error("cannot perform after read operations", e)
-            }
-
-        }
-
-        val callbackDevices = newArrayList<FhemDevice>()
-        callbackDevices.addAll(deviceReadCallbacks)
-        callbackDevices.addAll(allDevicesReadCallbacks)
-
-        for (device in callbackDevices) {
-            try {
-                if (device.deviceReadCallback != null) {
-                    device.deviceReadCallback.devicesRead(allDevices)
-                }
-                if (device.allDeviceReadCallback != null) {
-                    device.allDeviceReadCallback.devicesRead(allDevices)
-                }
-            } catch (e: Exception) {
-                allDevices.remove(device.name)
-                errorHolder.addError()
-                LOG.error("cannot handle associated devices callbacks", e)
-            }
-
-        }
     }
 
     private fun buildRoomDeviceList(allDevices: Map<String, FhemDevice>): RoomDeviceList {
@@ -213,21 +151,20 @@ constructor(
         }
     }
 
-    private fun deviceFromXmlListDevice(
-            deviceClass: Class<out FhemDevice>, xmlListDevice: XmlListDevice, allDevices: MutableMap<String, FhemDevice>, context: Context, deviceConfiguration: DeviceConfiguration): Boolean {
+    private fun deviceFromXmlListDevice(xmlListDevice: XmlListDevice,
+                                        allDevices: MutableMap<String, FhemDevice>,
+                                        context: Context): Boolean {
 
         try {
-            val device = createAndFillDevice(deviceClass, xmlListDevice, deviceConfiguration, context) ?: return false
-
-            device.xmlListDevice = xmlListDevice
-            device.afterDeviceXMLRead(context)
-
-            LOG.debug("loaded device with name " + device.name!!)
-
-
-            if (device is GenericDevice) {
-                xmlListDevice.setAttribute("group", groupProvider.functionalityFor(device, context))
+            if (xmlListDevice.getAttribute("always_hidden").orNull() == "true") {
+                return true
             }
+
+            val device = FhemDevice(xmlListDevice)
+
+            LOG.debug("loaded device with name " + device.name)
+
+            xmlListDevice.setAttribute("group", groupProvider.functionalityFor(device, context))
 
             allDevices.put(device.name, device)
 
@@ -239,107 +176,9 @@ constructor(
 
     }
 
-    @Throws(Exception::class)
-    private fun <T : FhemDevice> createAndFillDevice(deviceClass: Class<T>, xmlListDevice: XmlListDevice, deviceConfiguration: DeviceConfiguration, context: Context): T? {
-        val device = deviceClass.newInstance()
-        device.xmlListDevice = xmlListDevice
-        device.deviceConfiguration = deviceConfiguration
-
-        val cache = getDeviceClassCacheEntriesFor(deviceClass)
-
-        val children = concat(xmlListDevice.attributes.values, xmlListDevice.internals.values,
-                xmlListDevice.states.values, xmlListDevice.headers.values)
-        for (child in newArrayList(children)) {
-            val sanitisedKey = child.key.trim { it <= ' ' }.replace("[-.]".toRegex(), "_")
-            if (!device.acceptXmlKey(sanitisedKey)) {
-                continue
-            }
-
-            val nodeContent = StringEscapeUtil.unescape(child.value)
-
-            if (nodeContent.isEmpty()) {
-                continue
-            }
-
-            invokeDeviceAttributeMethod(cache, device, sanitisedKey, nodeContent, child, child.type, context)
-        }
-
-        return if (device.name == null) {
-            null // just to be sure we don't catch invalid devices ...
-        } else device
-
-    }
-
-    private fun <T : FhemDevice> getDeviceClassCacheEntriesFor(deviceClass: Class<T>): Map<String, Set<DeviceClassCacheEntry>>? {
-        val clazz = deviceClass as Class<*>
-        if (!deviceClassCache.containsKey(clazz)) {
-            deviceClassCache.put(clazz, initDeviceCacheEntries(deviceClass))
-        }
-
-        return deviceClassCache[clazz]
-    }
-
-    @Throws(Exception::class)
-    private fun <T : FhemDevice> invokeDeviceAttributeMethod(cache: Map<String, Set<DeviceClassCacheEntry>>?, device: T, key: String,
-                                                             value: String, deviceNode: DeviceNode, tagName: DeviceNode.DeviceNodeType, context: Context) {
-
-        device.onChildItemRead(tagName, key, value, deviceNode)
-        if (cache != null) {
-            handleCacheEntryFor(cache, device, key, value, deviceNode, context)
-        }
-    }
-
-    @Throws(Exception::class)
-    private fun <T : FhemDevice> handleCacheEntryFor(cache: Map<String, Set<DeviceClassCacheEntry>>, device: T,
-                                                     key: String, value: String, deviceNode: DeviceNode, context: Context) {
-        val lowercaseKey = key.toLowerCase(Locale.getDefault())
-        (cache[lowercaseKey] ?: emptySet())
-                .forEach { it.apply(device, deviceNode, value, context) }
-    }
-
-    private fun <T : FhemDevice> initDeviceCacheEntries(deviceClass: Class<T>): Map<String, Set<DeviceClassCacheEntry>> {
-        val cache = newHashMap<String, Set<DeviceClassCacheEntry>>()
-
-        for (method in getAllDeclaredMethods(deviceClass)) {
-            if (method.isAnnotationPresent(XmllistAttribute::class.java)) {
-                val annotation = method.getAnnotation(XmllistAttribute::class.java)
-                for (value in annotation.value) {
-                    addToCache(cache, method, value.toLowerCase(Locale.getDefault()))
-                }
-            }
-        }
-
-        for (field in getAllDeclaredFields(deviceClass)) {
-            if (field.isAnnotationPresent(XmllistAttribute::class.java)) {
-                val annotation = field.getAnnotation(XmllistAttribute::class.java)
-                checkArgument(annotation.value.isNotEmpty())
-
-                for (value in annotation.value) {
-                    addToCache(cache, DeviceClassFieldEntry(field, value.toLowerCase(Locale.getDefault())))
-                }
-            }
-        }
-
-        return cache
-    }
-
-    private fun addToCache(cache: MutableMap<String, Set<DeviceClassCacheEntry>>, method: Method, attribute: String) {
-        addToCache(cache, DeviceClassMethodEntry(method, attribute))
-    }
-
-    private fun addToCache(cache: MutableMap<String, Set<DeviceClassCacheEntry>>, entry: DeviceClassCacheEntry) {
-        val cacheValue = (cache[entry.attribute] ?: emptySet()) + entry
-        cache.put(entry.attribute, cacheValue)
-    }
-
-    fun fillDeviceWith(device: FhemDevice, updates: Map<String, String>, context: Context) {
-        val cache = getDeviceClassCacheEntriesFor(device.javaClass) ?: return
-
+    fun fillDeviceWith(device: FhemDevice, updates: Map<String, String>) {
         for (entry in updates.entries) {
             try {
-                handleCacheEntryFor(cache, device, entry.key, entry.value,
-                        DeviceNode(DeviceNode.DeviceNodeType.GCM_UPDATE, entry.key, entry.value, DateTime.now()), context)
-
                 device.xmlListDevice.states.put(entry.key,
                         sanitiser.sanitise(device.xmlListDevice.type,
                                 DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.key, entry.value, DateTime.now())
@@ -358,8 +197,6 @@ constructor(
             }
 
         }
-
-        device.afterDeviceXMLRead(context)
     }
 
     private inner class ReadErrorHolder {
@@ -367,70 +204,8 @@ constructor(
 
         internal fun hasErrors(): Boolean = errorCount != 0
 
-        internal fun addError() = addErrors(1)
-
         internal fun addErrors(toAdd: Int) {
             errorCount += toAdd
-        }
-    }
-
-    private abstract inner class DeviceClassCacheEntry internal constructor(val attribute: String) : Serializable {
-
-        @Throws(Exception::class)
-        abstract fun apply(obj: Any, node: DeviceNode, value: String, context: Context)
-    }
-
-    private inner class DeviceClassMethodEntry internal constructor(private val method: Method, attribute: String) : DeviceClassCacheEntry(attribute) {
-
-        init {
-            method.isAccessible = true
-        }
-
-        @Throws(Exception::class)
-        override fun apply(obj: Any, node: DeviceNode, value: String, context: Context) {
-            val parameterTypes = method.parameterTypes
-
-            if (parameterTypes.size == 1) {
-
-                if (parameterTypes[0] == String::class.java) {
-                    method.invoke(obj, value)
-                }
-
-                if (parameterTypes[0] == Double::class.javaPrimitiveType || parameterTypes[0] == Double::class.java) {
-                    method.invoke(obj, ValueExtractUtil.extractLeadingDouble(value))
-                }
-
-                if (parameterTypes[0] == Int::class.javaPrimitiveType || parameterTypes[0] == Int::class.java) {
-                    method.invoke(obj, ValueExtractUtil.extractLeadingInt(value))
-                }
-
-            } else if (parameterTypes.size == 2 && parameterTypes[0] == String::class.java && parameterTypes[1] == DeviceNode::class.java) {
-                method.invoke(obj, value, node)
-            } else if (parameterTypes.size == 2
-                    && parameterTypes[0] == String::class.java
-                    && parameterTypes[1] == Context::class.java) {
-                method.invoke(obj, value, context)
-            }
-        }
-    }
-
-    private inner class DeviceClassFieldEntry internal constructor(private val field: Field, attribute: String) : DeviceClassCacheEntry(attribute) {
-
-        init {
-            field.isAccessible = true
-        }
-
-        @Throws(Exception::class)
-        override fun apply(obj: Any, node: DeviceNode, value: String, context: Context) {
-            LOG.debug("setting {} to {}", field.name, value)
-
-            if (field.type.isAssignableFrom(Double::class.java) || field.type.isAssignableFrom(Double::class.javaPrimitiveType!!)) {
-                field.set(obj, ValueExtractUtil.extractLeadingDouble(value))
-            } else if (field.type.isAssignableFrom(Int::class.java) || field.type.isAssignableFrom(Int::class.javaPrimitiveType!!)) {
-                field.set(obj, ValueExtractUtil.extractLeadingInt(value))
-            } else {
-                field.set(obj, value)
-            }
         }
     }
 

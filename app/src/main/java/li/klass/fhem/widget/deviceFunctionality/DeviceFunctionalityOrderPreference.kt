@@ -37,12 +37,10 @@ import li.klass.fhem.R
 import li.klass.fhem.domain.core.DeviceFunctionality
 import li.klass.fhem.settings.SettingsKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.ArrayListUtil
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderAdapter.OrderAction
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderAdapter.OrderActionListener
 import org.apache.pig.impl.util.ObjectSerializer
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class DeviceFunctionalityOrderPreference : DialogPreference {
 
@@ -95,7 +93,7 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
         val visible = deviceTypeHolder.getVisible(context)
         val invisible = deviceTypeHolder.getInvisible(context)
 
-        this.wrappedDevices = ArrayList( wrapList(visible, true) + wrapList(invisible, false))
+        this.wrappedDevices = ArrayList(wrapList(visible, true) + wrapList(invisible, false))
     }
 
     private fun wrapList(
@@ -114,14 +112,14 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
     }
 
     private fun saveVisibleDevices() {
-        val visibleDevices = ArrayListUtil.filter(wrappedDevices) { it.isVisible }
+        val visibleDevices = wrappedDevices.filter { it.isVisible }
         val toPersist = unwrapDeviceTypes(visibleDevices)
         if (shouldPersist()) persistString(ObjectSerializer.serialize(toPersist))
 
     }
 
     private fun saveInvisibleDevices() {
-        val invisibleDevices = ArrayListUtil.filter(wrappedDevices) { !it.isVisible }
+        val invisibleDevices = wrappedDevices.filter { !it.isVisible }
         val toPersist = unwrapDeviceTypes(invisibleDevices)
         if (shouldPersist()) {
             sharedPreferences.edit()
@@ -130,7 +128,7 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
         }
     }
 
-    private fun unwrapDeviceTypes(toUnwrap: ArrayList<DeviceFunctionalityPreferenceWrapper>): Array<DeviceFunctionality> =
+    private fun unwrapDeviceTypes(toUnwrap: List<DeviceFunctionalityPreferenceWrapper>): Array<DeviceFunctionality> =
             toUnwrap.map { it.deviceFunctionality }.toTypedArray()
 
     override fun shouldPersist(): Boolean = true

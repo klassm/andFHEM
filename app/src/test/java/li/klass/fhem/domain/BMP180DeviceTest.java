@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class BMP180DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        GenericDevice device = getDeviceFor("BMP180", GenericDevice.class);
+        FhemDevice device = getDeviceFor("BMP180");
         assertThat(device.getName()).isEqualTo("BMP180");
         assertThat(device.getAlias()).isEqualTo("Luftdruck");
 

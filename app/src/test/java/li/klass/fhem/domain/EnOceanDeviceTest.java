@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,32 +35,32 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo(("on"));
         assertThat(device.getEventMapStateFor("BI")).isEqualTo(("off"));
         assertThat(device.getEventMapStateFor("B0")).isEqualTo(("on"));
 
-        device.setState("B0");
+        device.getXmlListDevice().setState("STATE", "B0");
         assertThat(device.getState()).isEqualTo(("on"));
 
-        GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device1 = getDeviceFor("device1");
         assertThat(device).isNotNull();
         assertThat(device1.getState()).isEqualTo(("153"));
 
-        GenericDevice device2 = getDeviceFor("device2", GenericDevice.class);
+        FhemDevice device2 = getDeviceFor("device2");
         assertThat(device2).isNotNull();
     }
 
     @Test
     public void testGatewaySwitchDevice() {
-        GenericDevice device = getDeviceFor("device3", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device3");
         assertThat(device).isNotNull();
     }
 
     @Test
     public void testShutterDevice() {
-        GenericDevice device = getDeviceFor("shutter", GenericDevice.class);
+        FhemDevice device = getDeviceFor("shutter");
         assertThat(device).isNotNull();
     }
 

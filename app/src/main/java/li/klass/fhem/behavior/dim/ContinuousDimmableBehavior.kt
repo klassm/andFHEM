@@ -28,14 +28,11 @@ import android.content.Context
 import com.google.common.base.Joiner
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableList
-import li.klass.fhem.R
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.update.backend.xmllist.DeviceNode
-import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat
 import org.joda.time.DateTime
 import java.util.*
@@ -61,7 +58,7 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
 
     override fun getDimStateForPosition(fhemDevice: FhemDevice, position: Float): String {
         if (setListAttribute.equals("state", ignoreCase = true)) {
-            val setList = fhemDevice.xmlListDevice.setList
+            val setList = fhemDevice.setList
             if (position == getDimLowerBound() && setList.contains("off")) {
                 return "off"
             } else if (position == getDimUpperBound() && setList.contains("on")) {
@@ -92,12 +89,6 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
 
     override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Float) {
         stateUiService.setSubState(fhemDevice, connectionId, setListAttribute, getDimStateForPosition(fhemDevice, state), context)
-
-        val deviceConfiguration = fhemDevice.deviceConfiguration
-        val stateConfig = Optional.fromNullable(deviceConfiguration.stateConfigFor(slider.key))
-        if (stateConfig.isPresent && stateConfig.get().isShowDelayNotificationOnSwitch) {
-            DialogUtil.showAlertDialog(context, fhemDevice.name, context.getString(R.string.switchDelayNotification))
-        }
     }
 
     companion object {
@@ -105,7 +96,7 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
         private val UPPER_BOUND_STATES = ImmutableList.of("on", "close", "closed")
         private val LOWER_BOUND_STATES = ImmutableList.of("off", "open", "opened")
 
-        fun supports(xmlListDevice: XmlListDevice) = behaviorFor(xmlListDevice.setList).isPresent
+        fun supports(device: FhemDevice) = behaviorFor(device.setList).isPresent
 
         fun behaviorFor(setList: SetList): Optional<ContinuousDimmableBehavior> {
             return Optional.fromNullable(DIM_ATTRIBUTES

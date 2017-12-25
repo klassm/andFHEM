@@ -51,7 +51,6 @@ import li.klass.fhem.adapter.devices.strategy.DimmableStrategy
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.behavior.dim.DimmableBehavior
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
@@ -72,7 +71,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         private val applicationProperties: ApplicationProperties,
         private val detailActionProviders: GenericDetailActionProviders) {
 
-    fun createCard(device: GenericDevice, connectionId: String?, caption: Int,
+    fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
                    itemProvider: ItemProvider, context: Context): CardView {
         val card = context.layoutInflater.inflate(R.layout.device_detail_card_table, null)
 
@@ -109,7 +108,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         return card as CardView
     }
 
-    private fun fillTable(device: GenericDevice, connectionId: String?, table: TableLayout, items: List<DeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
+    private fun fillTable(device: FhemDevice, connectionId: String?, table: TableLayout, items: List<DeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
 
         table.removeAllViews()
 
@@ -161,9 +160,9 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
     }
 
 
-    private fun addActionIfRequired(device: GenericDevice, connectionId: String?, table: TableLayout,
+    private fun addActionIfRequired(device: FhemDevice, connectionId: String?, table: TableLayout,
                                     item: DeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
-        val xmlListDevice = device.xmlListDevice ?: return
+        val xmlListDevice = device.xmlListDevice
 
         val attributeActions = providers
                 .map { it.stateAttributeActionFor(item) }
@@ -189,7 +188,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
             return
         }
 
-        val setListEntry = device.xmlListDevice.setList[item.key, true]
+        val setListEntry = device.setList[item.key, true]
 
         if (setListEntry is SliderSetListEntry) {
             addRow(table, StateChangingSeekBarFullWidth(

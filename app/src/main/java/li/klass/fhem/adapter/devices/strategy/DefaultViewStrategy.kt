@@ -33,6 +33,7 @@ import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
@@ -44,7 +45,9 @@ import javax.inject.Singleton
 open class DefaultViewStrategy @Inject
 constructor(
         private val deviceDescMapping: DeviceDescMapping,
-        private val devStateIconAdder: DevStateIconAdder) : ViewStrategy() {
+        private val devStateIconAdder: DevStateIconAdder,
+        private val deviceConfigurationProvider: DeviceConfigurationProvider
+) : ViewStrategy() {
 
 
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
@@ -77,31 +80,16 @@ constructor(
         setTextView(viewHolder.deviceName, device.aliasOrName)
 
         try {
-            val annotation = device.overviewViewSettingsCache
-            val config = device.deviceConfiguration
+            val config = deviceConfigurationProvider.configurationFor(device)
             var currentGenericRow = 0
             for (item in items) {
                 val name = item.sortKey
-                var alwaysShow = false
-                if (annotation != null) {
-                    if (name.equals("state", ignoreCase = true)) {
-                        if (!annotation.showState) continue
-                        alwaysShow = true
-                    }
 
-                    if (name.equals("measured", ignoreCase = true)) {
-                        if (!annotation.showMeasured) continue
-                        alwaysShow = true
-                    }
-                }
-                if (name.equals("state", ignoreCase = true) && !config.isShowStateInOverview) {
-                    continue
-                }
-                if (name.equals("measured", ignoreCase = true) && !config.isShowMeasuredInOverview) {
-                    continue
-                }
+                val isShowInOverview = (name == "state" && config.isShowStateInOverview)
+                        || (name == "measured") && config.isShowMeasuredInOverview
+                        || item.isShowInOverview
 
-                if (alwaysShow || item.isShowInOverview) {
+                if (isShowInOverview) {
                     currentGenericRow++
                     val rowHolder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder
                     if (currentGenericRow <= viewHolder.tableRowCount) {

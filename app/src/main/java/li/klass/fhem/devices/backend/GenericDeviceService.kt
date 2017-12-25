@@ -64,7 +64,7 @@ class GenericDeviceService @Inject constructor(
     }
 
     fun setSubState(device: FhemDevice, subStateName: String, value: String, connectionId: Optional<String>, invokeDeviceUpdate: Boolean) {
-        val commandReplacements = device.deviceConfiguration
+        val commandReplacements = deviceConfigurationProvider.configurationFor(device)
                 .stateConfigFor(subStateName)
                 ?.beforeCommandReplacement ?: emptySet()
 

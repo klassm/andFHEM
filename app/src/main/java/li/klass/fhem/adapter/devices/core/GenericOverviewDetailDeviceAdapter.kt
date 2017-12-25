@@ -33,7 +33,6 @@ import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
 import li.klass.fhem.adapter.devices.strategy.StrategyProvider
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -51,7 +50,7 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
         genericDetailCardProviders.providers.sortedBy { it.ordering() }
-                .map { it.provideCard(device as GenericDevice, context, connectionId) }
+                .map { it.provideCard(device, context, connectionId) }
                 .filter { it != null }
                 .forEach { linearLayout.addView(it) }
 

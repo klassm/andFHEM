@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,20 +37,20 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDim() {
-        GenericDevice device = getDeviceFor("dim", GenericDevice.class);
+        FhemDevice device = getDeviceFor("dim");
         DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
         assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(5, Offset.offset(0.01f));
     }
 
     @Test
     public void testSwitch() {
-        GenericDevice device = getDeviceFor("switch", GenericDevice.class);
+        FhemDevice device = getDeviceFor("switch");
         assertThat(device).isNotNull();
     }
 
     @Test
     public void testDeviceWithState() throws Exception {
-        GenericDevice device = getDeviceFor("WZ.Terrassentuer_links", GenericDevice.class);
+        FhemDevice device = getDeviceFor("WZ.Terrassentuer_links");
         assertThat(device.getState()).isEqualTo("closed");
     }
 

@@ -66,10 +66,6 @@ data class DeviceConfiguration(
         @Optional
         val delayForUpdateAfterCommand: Int = 0,
 
-        @SerialName("stateSliderKey")
-        @Optional
-        val stateSliderKey: String = "state",
-
         @SerialName("player")
         @Optional
         val playerConfiguration: PlayerConfiguration? = null,

@@ -27,17 +27,18 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
-import static org.assertj.guava.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 public class OwthermDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
-        assertThat(device.getXmlListDevice().getState("temperature", true)).contains("13.625 (°C)");
-        assertThat(device.getXmlListDevice().getInternal("PRESENT")).contains("1");
+        assertThat(device.getXmlListDevice().getState("temperature", true).get()).contains("13.625 (°C)");
+        assertThat(device.getXmlListDevice().getInternal("PRESENT").get()).contains("1");
     }
 
     @Override

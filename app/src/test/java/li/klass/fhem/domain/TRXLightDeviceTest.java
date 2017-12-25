@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,44 +37,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TRXLightDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("off");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
 
-        GenericDevice device1 = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device1 = getDeviceFor("device1");
         assertThat(device1).isNotNull();
 
-        GenericDevice device2 = getDeviceFor("device2", GenericDevice.class);
+        FhemDevice device2 = getDeviceFor("device2");
         assertThat(device2.getState()).isEqualTo("level 15");
 
-        GenericDevice device3 = getDeviceFor("device3", GenericDevice.class);
+        FhemDevice device3 = getDeviceFor("device3");
         assertThat(device3.getState()).isEqualTo("level 12");
     }
 
     @Test
     public void testFormatTargetState() {
-        GenericDevice device3 = getDeviceFor("device3", GenericDevice.class);
+        FhemDevice device3 = getDeviceFor("device3");
 
-        device3.setState("off");
+        device3.getXmlListDevice().setState("STATE", "off");
         assertThat(device3.formatTargetState("level 13")).isEqualTo("level 13");
         assertThat(device3.formatTargetState("on")).isEqualTo("on");
         assertThat(device3.formatTargetState("off")).isEqualTo("off");
 
-        device3.setState("level 13");
+        device3.getXmlListDevice().setState("STATE", "level 13");
         assertThat(device3.formatTargetState("level 12")).isEqualTo("level 12");
-    }
-
-    @Test
-    public void testSetState() {
-        GenericDevice device3 = getDeviceFor("device3", GenericDevice.class);
-
-        device3.setState("level 5");
-        assertThat(device3.getState()).isEqualTo("level 5");
     }
 
     @Override

@@ -24,12 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import com.google.common.base.Optional;
-
 import org.junit.Test;
 
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
 
@@ -38,19 +37,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DummyDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
         assertThat(device.getState()).isEqualTo("on");
 
-        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isEqualTo(true);
+        assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
     }
 
     @Test
     public void testForCorrectlySetAttributesInCommonDummy() {
-        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device1");
 
         assertThat(device.getName()).isEqualTo("device1");
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -60,21 +59,21 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithSetList() {
-        GenericDevice device = getDeviceFor("deviceWithSetlist", GenericDevice.class);
+        FhemDevice device = getDeviceFor("deviceWithSetlist");
 
-        assertThat((GroupSetListEntry) device.getXmlListDevice().getSetList().get("state", false))
+        assertThat((GroupSetListEntry) device.getSetList().get("state", false))
                 .isEqualTo(new GroupSetListEntry("state", "17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
     public void testDeviceWithTimer() {
-        GenericDevice device = getDeviceFor("timerDevice", GenericDevice.class);
+        FhemDevice device = getDeviceFor("timerDevice");
         assertThat(device).isNotNull();
     }
 
     @Test
     public void testSliderDevice() {
-        GenericDevice device = getDeviceFor("sliderDevice", GenericDevice.class);
+        FhemDevice device = getDeviceFor("sliderDevice");
         DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
         assertThat(behavior.getDimUpperBound()).isEqualTo(50);
         assertThat(behavior.getDimLowerBound()).isEqualTo(10);
@@ -83,12 +82,12 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testEventMapDevice() {
-        GenericDevice device = getDeviceFor("eventMapDevice", GenericDevice.class);
+        FhemDevice device = getDeviceFor("eventMapDevice");
 
         String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
         assertThat(eventMapStates).isNotNull();
 
-        SetList setList = device.getXmlListDevice().getSetList();
+        SetList setList = device.getSetList();
         assertThat(setList).isNotNull();
 
         assertThat(setList.size()).isEqualTo(eventMapStates.length);

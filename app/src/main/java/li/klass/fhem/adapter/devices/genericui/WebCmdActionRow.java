@@ -68,7 +68,7 @@ public class WebCmdActionRow extends HolderActionRow<String> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SetList setList = device.getXmlListDevice().getSetList();
+                SetList setList = device.getSetList();
                 boolean result = AvailableTargetStatesDialogUtil.handleSelectedOption(context, device, setList.get(command, true), new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
                 if (!result) {
                     new StateUiService().setState(device, command, context, connectionId);

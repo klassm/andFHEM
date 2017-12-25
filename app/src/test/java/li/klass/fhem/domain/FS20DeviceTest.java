@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FS20DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInFirstDevice() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -45,12 +46,12 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEventMap().getValueFor("off")).isEqualTo("Ab");
         assertThat(device.getEventMap().getValueFor("on")).isEqualTo("Auf");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
     }
 
     @Test
     public void testForCorrectlySetAttributesInSecondDevice() {
-        GenericDevice device = getDeviceFor("device1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device1");
 
         assertThat(device.getName()).isEqualTo("device1");
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -63,7 +64,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAlias()).isEqualTo("myAlias");
 
-        assertThat(device.getXmlListDevice().getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
 
         assertThat(device.getInternalDeviceGroupOrGroupAttributes()).contains("dimmer", "switch", "temperature");
         assertThat(device.getInternalDeviceGroupOrGroupAttributes()).hasSize(3);
@@ -73,26 +74,14 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInThirdDevice() {
-        GenericDevice device = getDeviceFor("device2", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device2");
 
         assertThat(device.getWidgetName()).isEqualTo("widget_name");
     }
 
     @Test
-    public void testAlwaysHiddenHook() {
-        GenericDevice device = new GenericDevice();
-        assertThat(device.isSupported()).isEqualTo(true);
-
-        device.setAlwaysHidden("true");
-        assertThat(device.isSupported()).isEqualTo(false);
-
-        device.setAlwaysHidden("false");
-        assertThat(device.isSupported()).isEqualTo(true);
-    }
-
-    @Test
     public void testAlwaysHiddenDevice() {
-        GenericDevice device = getDeviceFor("device3", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device3");
         assertThat(device).isNull();
     }
 

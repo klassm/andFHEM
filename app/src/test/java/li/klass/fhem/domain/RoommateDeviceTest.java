@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoommateDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes_correctly() {
-        GenericDevice device = getDeviceFor("rr_Elena", GenericDevice.class);
+        FhemDevice device = getDeviceFor("rr_Elena");
 
         assertThat(stateValueFor(device, "location")).isEqualTo("home");
         assertThat(stateValueFor(device, "mood")).isEqualTo("calm");

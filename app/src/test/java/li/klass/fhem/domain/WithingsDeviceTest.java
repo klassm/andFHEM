@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WithingsDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void body_device_is_read_correctly() {
-        GenericDevice device = getDeviceFor("body", GenericDevice.class);
+        FhemDevice device = getDeviceFor("body");
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("body");
@@ -48,7 +49,7 @@ public class WithingsDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void scale_device_is_read_correctly() {
-        GenericDevice device = getDeviceFor("scale", GenericDevice.class);
+        FhemDevice device = getDeviceFor("scale");
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("scale");

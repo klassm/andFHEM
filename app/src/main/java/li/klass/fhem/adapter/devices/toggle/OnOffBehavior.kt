@@ -67,7 +67,7 @@ class OnOffBehavior
     private fun getOffStateNames(device: FhemDevice): Set<String> {
         val offStateNameByHook = hookProvider.getOffStateName(device)
         val offStateNames = availableOffStateNames + reverseEventMapNamesFor(availableOffStateNames, device)
-        val existingOffStateNames = device.xmlListDevice.setList.existingStatesOf(offStateNames)
+        val existingOffStateNames = device.setList.existingStatesOf(offStateNames)
         return Optional.fromNullable(offStateNameByHook).asSet() + existingOffStateNames
     }
 
@@ -76,7 +76,7 @@ class OnOffBehavior
     private fun getOnStateNames(device: FhemDevice): Set<String> {
         val onStateNameByHook = hookProvider.getOnStateName(device)
         val onStateNames = availableOnStateNames + reverseEventMapNamesFor(availableOnStateNames, device)
-        val existingOnStateNames = device.xmlListDevice.setList.existingStatesOf(onStateNames)
+        val existingOnStateNames = device.setList.existingStatesOf(onStateNames)
         return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames
     }
 

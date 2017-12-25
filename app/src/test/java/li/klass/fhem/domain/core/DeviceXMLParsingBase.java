@@ -88,9 +88,9 @@ public abstract class DeviceXMLParsingBase {
                 .databaseModule(new DatabaseModule(application)).build();
 
         DeviceListParser deviceListParser = new DeviceListParser(
-                connectionService, applicationComponent.getDeviceConfigurationProvider(),
-                applicationComponent.getXmllistParser(), applicationComponent.getGPlotHolder(),
-                applicationComponent.getGroupProvider(), applicationComponent.getSanitiser()
+                connectionService, applicationComponent.getXmllistParser(),
+                applicationComponent.getGPlotHolder(), applicationComponent.getGroupProvider(),
+                applicationComponent.getSanitiser()
         );
 
         when(connectionService.mayShowInCurrentConnectionType(anyString(), ArgumentMatchers.<String>eq(null))).thenReturn(true);
@@ -146,24 +146,24 @@ public abstract class DeviceXMLParsingBase {
 
     protected abstract String getFileName();
 
-    protected <T extends FhemDevice> T getDefaultDevice(Class<T> clazz) {
-        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME, clazz);
+    protected FhemDevice getDefaultDevice() {
+        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
     }
 
     // Careful: The Java-Compiler needs some class instance of <T> here to infer the type correctly!
-    protected <T extends FhemDevice> T getDeviceFor(String deviceName, @SuppressWarnings("unused") Class<T> clazz) {
+    protected FhemDevice getDeviceFor(String deviceName) {
         return roomDeviceList.getDeviceFor(deviceName);
     }
 
-    protected String stateValueFor(Device device, String key) {
+    protected String stateValueFor(FhemDevice device, String key) {
         return xmllistValueFor(key, device.getXmlListDevice().getStates());
     }
 
-    protected String attributeValueFor(Device device, String key) {
+    protected String attributeValueFor(FhemDevice device, String key) {
         return xmllistValueFor(key, device.getXmlListDevice().getAttributes());
     }
 
-    protected String internalValueFor(Device device, String key) {
+    protected String internalValueFor(FhemDevice device, String key) {
         return xmllistValueFor(key, device.getXmlListDevice().getInternals());
     }
 

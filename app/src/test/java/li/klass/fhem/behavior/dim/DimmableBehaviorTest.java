@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 
 import java.util.HashMap;
 
-import li.klass.fhem.domain.GenericDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
@@ -46,7 +46,7 @@ public class DimmableBehaviorTest {
 
     @Test
     public void should_create_discrete_behavior() {
-        GenericDevice device = deviceFor("dim10% dim20%");
+        FhemDevice device = deviceFor("dim10% dim20%");
 
         DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
 
@@ -56,7 +56,7 @@ public class DimmableBehaviorTest {
 
     @Test
     public void should_create_continuous_behavior() {
-        GenericDevice device = deviceFor("state:slider,0,1,100");
+        FhemDevice device = deviceFor("state:slider,0,1,100");
 
         DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
 
@@ -66,7 +66,7 @@ public class DimmableBehaviorTest {
 
     @Test
     public void should_return_absent_if_neither_continuous_nor_discrete_behavior_applies() {
-        GenericDevice device = deviceFor("on off");
+        FhemDevice device = deviceFor("on off");
 
         Optional<DimmableBehavior> result = DimmableBehavior.Companion.behaviorFor(device, null);
 
@@ -74,12 +74,10 @@ public class DimmableBehaviorTest {
     }
 
     @NonNull
-    private GenericDevice deviceFor(String setList) {
-        GenericDevice device = new GenericDevice();
-        device.setXmlListDevice(new XmlListDevice(
+    private FhemDevice deviceFor(String setList) {
+        return new FhemDevice(new XmlListDevice(
                 "generic", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(),
                 ImmutableMap.of("sets", new DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, ""))
         ));
-        return device;
     }
 }

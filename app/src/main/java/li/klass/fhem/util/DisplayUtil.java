@@ -30,15 +30,6 @@ import android.util.TypedValue;
 import android.view.WindowManager;
 
 public class DisplayUtil {
-    public static int getLargestDimensionInDP(Context context) {
-        return (int) dpToPx(getLargestDimensionInPx(context), context);
-    }
-
-    public static int getLargestDimensionInPx(Context context) {
-        DisplayMetrics metrics = getDisplayMetrics(context);
-
-        return metrics.heightPixels > metrics.widthPixels ? metrics.heightPixels : metrics.widthPixels;
-    }
 
     public static int getSmallestDimensionInPx(Context context) {
         DisplayMetrics metrics = getDisplayMetrics(context);

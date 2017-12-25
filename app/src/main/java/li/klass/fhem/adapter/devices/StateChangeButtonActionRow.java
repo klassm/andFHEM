@@ -26,6 +26,6 @@ public class StateChangeButtonActionRow extends ButtonActionRow {
     @Override
     protected void onButtonClick() {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenuFor(
-                context, device, new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId), "state");
+                context, device, new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
     }
 }

@@ -27,13 +27,14 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GPIO4DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDeviceFor("temp", GenericDevice.class);
+        FhemDevice device = getDeviceFor("temp");
 
         assertThat(stateValueFor(device, "temperature")).isEqualTo("22.937 (°C)");
         assertThat(device.getState()).isEqualTo("22.937 °C (Mittelwert: 22.7 °C)");
@@ -41,20 +42,18 @@ public class GPIO4DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDS18B20Device() {
-        GenericDevice device = getDeviceFor("DS18B20", GenericDevice.class);
+        FhemDevice device = getDeviceFor("DS18B20");
         assertThat(device).isNotNull();
-
-        assertThat(device.isSupported()).isEqualTo(true);
         assertThat(stateValueFor(device, "temperature")).isEqualTo("20.437 (°C)");
     }
 
     @Test
     public void testOtherModelsCanBeRead() {
-        assertThat(getDeviceFor("Sensor_5", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_4", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_3", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_2", GenericDevice.class)).isNotNull();
-        assertThat(getDeviceFor("Sensor_1", GenericDevice.class)).isNotNull();
+        assertThat(getDeviceFor("Sensor_5")).isNotNull();
+        assertThat(getDeviceFor("Sensor_4")).isNotNull();
+        assertThat(getDeviceFor("Sensor_3")).isNotNull();
+        assertThat(getDeviceFor("Sensor_2")).isNotNull();
+        assertThat(getDeviceFor("Sensor_1")).isNotNull();
     }
 
     @Override

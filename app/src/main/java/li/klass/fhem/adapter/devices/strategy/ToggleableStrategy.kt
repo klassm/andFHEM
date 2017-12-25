@@ -38,7 +38,6 @@ import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleable
 import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
-import li.klass.fhem.domain.GenericDevice
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
@@ -113,7 +112,7 @@ class ToggleableStrategy
                 .createRow(device, holder.tableLayout.context))
     }
 
-    fun createDetailView(device: GenericDevice, context: Context, connectionId: String?): TableRow {
+    fun createDetailView(device: FhemDevice, context: Context, connectionId: String?): TableRow {
         return OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
                 .createRow(device, context)
     }

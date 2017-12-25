@@ -34,25 +34,27 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
-import li.klass.fhem.domain.GenericDevice
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class PlayerCardProvider @Inject constructor(
-        private val genericDeviceService: GenericDeviceService
+        private val genericDeviceService: GenericDeviceService,
+        private val deviceConfigurationProvider: DeviceConfigurationProvider
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override fun provideCard(fhemDevice: GenericDevice, context: Context, connectionId: String?): CardView? {
-        val playerConfiguration = fhemDevice.deviceConfiguration.playerConfiguration
-        if (playerConfiguration == null || !playerConfiguration.hasAny()) {
+    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+        val playerConfiguration = deviceConfigurationProvider.configurationFor(device).playerConfiguration
+        if (playerConfiguration == null || playerConfiguration.hasAny()) {
             return null
         }
 
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_player, null, false)
 
-        val provider = actionProviderFor(fhemDevice, connectionId)
+        val provider = actionProviderFor(device, connectionId)
 
         attachActionTo(view.rewind, provider(playerConfiguration.previousCommand))
         attachActionTo(view.pause, provider(playerConfiguration.pauseCommand))
@@ -63,7 +65,7 @@ class PlayerCardProvider @Inject constructor(
         return view as CardView
     }
 
-    private fun actionFor(command: String?, device: GenericDevice, connectionId: String?): View.OnClickListener? {
+    private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
             async(UI) {
@@ -74,7 +76,7 @@ class PlayerCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: GenericDevice, connectionId: String?): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: FhemDevice, connectionId: String?): (String?) -> View.OnClickListener? {
         return { command: String? ->
             command?.let { actionFor(command, device, connectionId) }
         }

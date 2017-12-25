@@ -25,17 +25,15 @@
 package li.klass.fhem.domain
 
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService
-import org.junit.Test
-
 import li.klass.fhem.domain.core.DeviceXMLParsingBase
-
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
 class RemoteControlDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testAttributesDefaultDevice() {
-        val device = getDefaultDevice(GenericDevice::class.java)
+        val device = getDefaultDevice()
 
         assertThat(device).isNotNull()
 

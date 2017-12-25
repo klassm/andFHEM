@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import li.klass.fhem.behavior.dim.DimmableBehavior;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.guava.api.Assertions.assertThat;
@@ -37,7 +38,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testRGBProxy() {
-        GenericDevice device = getDeviceFor("rgb", GenericDevice.class);
+        FhemDevice device = getDeviceFor("rgb");
 
         assertThat(device).isNotNull();
         assertThat(device.getName()).isEqualTo("rgb");
@@ -46,7 +47,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSwitchProxy() {
-        GenericDevice device = getDeviceFor("Bild", GenericDevice.class);
+        FhemDevice device = getDeviceFor("Bild");
 
         assertThat(device).isNotNull();
         assertThat(device.getXmlListDevice().getState("rgb", true)).isAbsent();
@@ -54,7 +55,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDimmable() {
-        GenericDevice device = getDeviceFor("dimmable", GenericDevice.class);
+        FhemDevice device = getDeviceFor("dimmable");
 
         assertThat(device).isNotNull();
         DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();

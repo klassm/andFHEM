@@ -72,7 +72,7 @@ class FcmService @Inject constructor(
     private fun findFirstConnectionContaining(deviceName: String): Pair<String, FhemDevice>? {
         return connectionService.listAll().asSequence()
                 .map { connection ->
-                    val device = deviceListService.getDeviceForName<FhemDevice>(deviceName, connection.id)
+                    val device = deviceListService.getDeviceForName(deviceName, connection.id)
                     if (device == null) null else connection.id to device
                 }
                 .filterNotNull()

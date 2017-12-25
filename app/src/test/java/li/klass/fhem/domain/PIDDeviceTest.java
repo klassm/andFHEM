@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +36,7 @@ import static org.assertj.guava.api.Assertions.assertThat;
 public class PIDDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDefaultDevice(GenericDevice.class);
+        FhemDevice device = getDefaultDevice();
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -46,12 +47,12 @@ public class PIDDeviceTest extends DeviceXMLParsingBase {
         assertThat(xmlListDevice.getState("desired", true)).contains("16.0 (°C)");
         assertThat(xmlListDevice.getState("actuation", true)).contains("0 (%)");
 
-        assertThat(xmlListDevice.getSetList().getEntries()).isNotEmpty();
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
     }
 
     @Test
     public void should_read_PID20_devices() {
-        GenericDevice device = getDeviceFor("eg.wohnen.pid", GenericDevice.class);
+        FhemDevice device = getDeviceFor("eg.wohnen.pid");
         assertThat(device).isNotNull();
 
         XmlListDevice xmlListDevice = device.getXmlListDevice();

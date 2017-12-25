@@ -37,8 +37,6 @@ public interface DeviceViewItem {
 
     String getShowAfterValue();
 
-    boolean isShowInDetail();
-
     boolean isShowInOverview();
 
     String getSortKey();

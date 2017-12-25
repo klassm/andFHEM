@@ -30,7 +30,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.List;
 
-import li.klass.fhem.domain.GenericDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.update.backend.xmllist.DeviceNode;
@@ -65,10 +64,8 @@ public class FHTConfigurationTest {
 
     @Test
     public void testGenerateCommandParts() {
-        GenericDevice device = new GenericDevice();
         XmlListDevice xmlListDevice = new XmlListDevice("dummy", new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>(), new HashMap<String, DeviceNode>());
         xmlListDevice.setInternal("NAME", "name");
-        device.setXmlListDevice(xmlListDevice);
 
         WeekProfile<FromToHeatingInterval, FHTConfiguration> weekProfile = new WeekProfile<>(configuration);
         weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).setChangedFromTime("03:25");

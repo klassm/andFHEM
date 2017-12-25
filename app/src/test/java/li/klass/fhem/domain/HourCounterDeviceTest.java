@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +50,7 @@ public class HourCounterDeviceTest extends DeviceXMLParsingBase {
     @UseDataProvider("PROVIDER")
     public void should_read_device_attributes(String deviceName, String totalCounter, String totalPrice,
                                               String dayPrice, String dayCounter, String measured) {
-        GenericDevice device = getDeviceFor(deviceName, GenericDevice.class);
+        FhemDevice device = getDeviceFor(deviceName);
         assertThat(device).isNotNull();
 
         assertThat(stateValueFor(device, "Zaehlerstand")).isEqualTo(totalCounter);

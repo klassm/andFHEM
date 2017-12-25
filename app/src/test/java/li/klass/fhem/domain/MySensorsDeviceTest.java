@@ -27,16 +27,17 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MySensorsDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        GenericDevice device = getDeviceFor("MYSENSOR_10_4", GenericDevice.class);
+        FhemDevice device = getDeviceFor("MYSENSOR_10_4");
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.getXmlListDevice().getSetList().contains("on", "off")).isTrue();
+        assertThat(device.getSetList().contains("on", "off")).isTrue();
     }
 
     @Override

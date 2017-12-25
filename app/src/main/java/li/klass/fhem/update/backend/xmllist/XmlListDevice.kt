@@ -25,8 +25,6 @@
 package li.klass.fhem.update.backend.xmllist
 
 import com.google.common.base.Optional
-import li.klass.fhem.domain.core.DevStateIcons
-import li.klass.fhem.domain.setlist.SetList
 import org.apache.commons.lang3.StringUtils.trimToNull
 import org.joda.time.DateTime
 import java.io.Serializable
@@ -41,9 +39,6 @@ class XmlListDevice(
 ) : Serializable {
 
     val creationTime = DateTime.now()!!
-    val setList: SetList = SetList.Companion.parse(getHeader("sets").or(""))
-    val devStateIcons = DevStateIcons.parse(getAttribute("devStateIcon").orNull())
-
     val name: String get() = internals["NAME"]?.value ?: "??"
 
     private fun containsInternal(key: String): Boolean = internals.containsKey(key)

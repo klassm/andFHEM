@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,13 +35,13 @@ public class EMCDDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_recognize_device_as_on() {
-        GenericDevice device = getDeviceFor("Relais1", GenericDevice.class);
+        FhemDevice device = getDeviceFor("Relais1");
         assertThat(device.getState()).isEqualTo("on");
     }
 
     @Test
     public void should_recognize_device_as_off() {
-        GenericDevice device = getDeviceFor("Relais2", GenericDevice.class);
+        FhemDevice device = getDeviceFor("Relais2");
         assertThat(device.getState()).isEqualTo("off");
     }
 

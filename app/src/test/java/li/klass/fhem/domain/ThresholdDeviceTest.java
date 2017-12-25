@@ -27,16 +27,16 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThresholdDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GenericDevice device = getDeviceFor("ThermostatWozi", GenericDevice.class);
+        FhemDevice device = getDeviceFor("ThermostatWozi");
 
-        assertThat(device.getState(), is("active 18 off"));
+        assertThat(device.getState()).isEqualTo("active 18 off");
     }
 
     @Override

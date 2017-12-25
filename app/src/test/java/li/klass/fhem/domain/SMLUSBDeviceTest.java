@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +35,7 @@ public class SMLUSBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_all_device_properties() {
-        GenericDevice device = getDeviceFor("device", GenericDevice.class);
+        FhemDevice device = getDeviceFor("device");
 
         assertThat(device).isNotNull();
 
