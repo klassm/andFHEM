@@ -25,7 +25,6 @@
 package li.klass.fhem.update.backend.device.configuration
 
 import com.google.common.base.Charsets
-import com.google.common.base.Optional
 import com.google.common.io.Resources
 import kotlinx.serialization.json.JSON
 import li.klass.fhem.domain.core.FhemDevice
@@ -47,7 +46,7 @@ constructor() {
     fun configurationFor(device: FhemDevice): DeviceConfiguration =
             configurationFor(device.xmlListDevice)
 
-    private fun configurationFor(device: XmlListDevice): DeviceConfiguration {
+    fun configurationFor(device: XmlListDevice): DeviceConfiguration {
         return try {
             configurationFor(device.type)
         } catch (e: JSONException) {

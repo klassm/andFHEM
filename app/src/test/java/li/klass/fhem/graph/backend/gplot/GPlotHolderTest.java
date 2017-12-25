@@ -159,7 +159,7 @@ public class GPlotHolderTest {
         GPlotDefinition definition = defaultGPlotDefinition();
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeSync(eq(new Command("configdb fileshow ./www/gplot/garden.gplot")), any(Context.class))).willReturn(gplotRawDefinition);
+        given(commandExecutionService.executeSync(eq(new Command("configdb fileshow ./www/gplot/garden.gplot")))).willReturn(gplotRawDefinition);
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when

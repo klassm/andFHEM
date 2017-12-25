@@ -40,7 +40,6 @@ import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
 import li.klass.fhem.activities.locale.FireSettingLocaleReceiver;
 import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
-import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.WebLinkAdapter;
 import li.klass.fhem.adapter.devices.core.ExplicitOverviewDetailDeviceAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
@@ -154,8 +153,6 @@ public interface ApplicationComponent {
 
 
     void inject(FloorplanAdapter object);
-
-    void inject(GCMSendDeviceAdapter object);
 
     void inject(WebLinkAdapter object);
 

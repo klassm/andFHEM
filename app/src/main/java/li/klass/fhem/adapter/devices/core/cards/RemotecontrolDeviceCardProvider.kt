@@ -113,7 +113,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         return View.OnClickListener {
             async(UI) {
                 bg {
-                    genericDeviceService.setState(device, command, Optional.fromNullable(connectionId), context)
+                    genericDeviceService.setState(device, command, Optional.fromNullable(connectionId))
                 }
             }
         }

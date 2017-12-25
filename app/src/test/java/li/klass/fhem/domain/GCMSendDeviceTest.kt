@@ -22,27 +22,22 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain
 
-import org.junit.Test;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class GCMSendDeviceTest extends DeviceXMLParsingBase {
+class GCMSendDeviceTest : DeviceXMLParsingBase() {
 
     @Test
-    public void testAttributesProperlySet() {
-        GCMSendDevice device = getDeviceFor("gcm", GCMSendDevice.class);
-        assertThat(device.getApiKey()).isEqualTo("AIzaSyCs7OxUcPp5");
-        assertThat(device.getRegIds())
+    fun testAttributesProperlySet() {
+        val device = getDeviceFor("gcm", GenericDevice::class.java)
+        assertThat(attributeValueFor(device, "apiKey")).isEqualTo("AIzaSyCs7OxUcPp5")
+        assertThat(attributeValueFor(device, "regIds"))
                 .contains("APA91bHTAy8Xp4uE4FyCJuMnAn")
-                .contains("BAPA91bHTGy8Xp5uE4FyCJuMnAn");
+                .contains("BAPA91bHTGy8Xp5uE4FyCJuMnAn")
     }
 
-    @Override
-    protected String getFileName() {
-        return "gcmsend.xml";
-    }
+    override fun getFileName(): String = "gcmsend.xml"
 }

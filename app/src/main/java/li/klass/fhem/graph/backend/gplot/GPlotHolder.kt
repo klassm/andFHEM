@@ -67,7 +67,7 @@ class GPlotHolder @Inject constructor(
         LOGGER.info("definitionFor(name={}, isConfigDb={}) - loading definition from remote", name, isConfigDb)
 
         val result = if (isConfigDb)
-            Optional.fromNullable(commandExecutionService.executeSync(Command("configdb fileshow ./www/gplot/$name.gplot"), applicationContext))
+            Optional.fromNullable(commandExecutionService.executeSync(Command("configdb fileshow ./www/gplot/$name.gplot")))
         else
             commandExecutionService.executeRequest("/gplot/$name.gplot", applicationContext)
 

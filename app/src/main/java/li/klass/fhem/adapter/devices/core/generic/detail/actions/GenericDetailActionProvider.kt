@@ -22,44 +22,27 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.generic.detail.actions
 
-import android.content.Context;
+import android.content.Context
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.core.XmllistAttribute;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.resources.ResourceIdMapper;
+import com.google.common.base.Optional
 
-@OverviewViewSettings(showState = true)
-public class GCMSendDevice extends FhemDevice {
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
-    @ShowField(description = ResourceIdMapper.apiKey)
-    @XmllistAttribute("apiKey")
-    private String apiKey;
+interface GenericDetailActionProvider {
+    fun supports(xmlListDevice: XmlListDevice): Boolean
 
-    private String[] regIds;
+    /**
+     * Actions that show up within the actions view.
+     *
+     * @param context context
+     * @return list of actions
+     */
+    fun actionsFor(context: Context): List<ActionCardAction>
 
-
-    @XmllistAttribute("regIds")
-    public void setRegIds(String value) {
-        regIds = value.split("\\|");
-    }
-
-    public String[] getRegIds() {
-        return regIds;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-
-    @Override
-    public void afterDeviceXMLRead(Context context) {
-        super.afterDeviceXMLRead(context);
-        deviceFunctionality = DeviceFunctionality.FHEM.getCaptionText(context);
-    }
+    fun stateAttributeActionFor(item: DeviceViewItem): Optional<StateAttributeAction>
 }

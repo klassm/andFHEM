@@ -206,13 +206,13 @@ public class DeviceIntentService extends ConvenientIntentService {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
-            genericDeviceService.setSubState(device, name, value, connectionId, this, true);
+            genericDeviceService.setSubState(device, name, value, connectionId, true);
 
         } else if (DEVICE_SET_SUB_STATES.equals(action)) {
             @SuppressWarnings("unchecked")
             List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
 
-            genericDeviceService.setSubStates(device, statesToSet, connectionId, this);
+            genericDeviceService.setSubStates(device, statesToSet, connectionId);
 
         } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
 
@@ -221,7 +221,7 @@ public class DeviceIntentService extends ConvenientIntentService {
                 sendBroadcast(new Intent(Actions.DO_UPDATE)
                         .putExtra(DO_REFRESH, true));
             } else {
-                commandExecutionService.resendLastFailedCommand(this);
+                commandExecutionService.resendLastFailedCommand();
             }
         }
 
@@ -257,7 +257,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         int timesToSend = intent.getIntExtra(TIMES_TO_SEND, 1);
 
         for (int i = 0; i < timesToSend; i++) {
-            genericDeviceService.setState(device, targetState, connectionId, this);
+            genericDeviceService.setState(device, targetState, connectionId, true);
         }
 
         return State.SUCCESS;

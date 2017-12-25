@@ -24,6 +24,7 @@
 
 package li.klass.fhem.update.backend.command.execution
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -55,7 +56,8 @@ import javax.inject.Singleton
 @Singleton
 class CommandExecutionService @Inject constructor(
         val dataConnectionSwitch: DataConnectionSwitch,
-        val applicationProperties: ApplicationProperties
+        val applicationProperties: ApplicationProperties,
+        val application: Application
 ) : AbstractService() {
 
     @Transient private var scheduledExecutorService: ScheduledExecutorService? = null
@@ -64,30 +66,30 @@ class CommandExecutionService @Inject constructor(
         private set
     @Transient private var imageCache: Cache<Bitmap>? = getImageCache()
 
-    fun resendLastFailedCommand(context: Context) {
+    fun resendLastFailedCommand() {
         val last = lastFailedCommand
         last ?: return
         lastFailedCommand = null
-        executeSafely(last, context, DO_NOTHING)
+        executeSafely(last, DO_NOTHING)
     }
 
-    fun executeSync(command: Command, context: Context): String? {
+    fun executeSync(command: Command): String? {
         val resultListener = SyncResultListener()
-        executeSafely(command, 0, context, resultListener)
+        executeSafely(command, 0, resultListener)
         return resultListener.getResult()
     }
 
 
-    fun executeSafely(command: Command, context: Context, resultListener: ResultListener) {
-        executeSafely(command, 0, context, resultListener)
+    fun executeSafely(command: Command, resultListener: ResultListener) {
+        executeSafely(command, 0, resultListener)
     }
 
-    private fun executeSafely(command: Command, delay: Int, context: Context, resultListener: ResultListener) {
+    private fun executeSafely(command: Command, delay: Int, resultListener: ResultListener) {
         LOG.info("executeSafely(command={}, delay={})", command, delay)
         if (delay == 0) {
-            executeImmediately(command, 0, context, resultListener)
+            executeImmediately(command, 0, applicationContext, resultListener)
         } else {
-            executeDelayed(command, delay, context, resultListener)
+            executeDelayed(command, delay, applicationContext, resultListener)
         }
     }
 
@@ -96,9 +98,9 @@ class CommandExecutionService @Inject constructor(
     }
 
     private fun executeImmediately(command: Command, currentTry: Int, context: Context, resultListener: ResultListener) {
-        showExecutingDialog(context)
+        showExecutingDialog()
 
-        val result = execute(command, currentTry, context, resultListener)
+        val result = execute(command, currentTry, resultListener)
         if (result.handleErrors(context)) {
             lastFailedCommand = command
             resultListener.onError()
@@ -107,27 +109,27 @@ class CommandExecutionService @Inject constructor(
         }
     }
 
-    private fun showExecutingDialog(context: Context) {
-        context.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
+    private fun showExecutingDialog() {
+        applicationContext.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
     }
 
-    private fun execute(command: Command, currentTry: Int, context: Context, resultListener: ResultListener): RequestResult<String> {
+    private fun execute(command: Command, currentTry: Int, resultListener: ResultListener): RequestResult<String> {
         val currentProvider = dataConnectionSwitch.getProviderFor(command.connectionId.orNull())
-        val result = currentProvider.executeCommand(command.command, context)
+        val result = currentProvider.executeCommand(command.command, applicationContext)
 
         LOG.info("execute() - executing command={}, try={}", command, currentTry)
 
         try {
             if (result.error == null) {
-                sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE, context)
+                sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE, applicationContext)
             } else if (shouldTryResend(command.command, result, currentTry)) {
                 val timeoutForNextTry = secondsForTry(currentTry)
 
-                val resendCommand = ResendCommand(command, currentTry + 1, context, resultListener)
+                val resendCommand = ResendCommand(command, currentTry + 1, applicationContext, resultListener)
                 schedule(timeoutForNextTry, resendCommand)
             }
         } finally {
-            hideExecutingDialog(context)
+            hideExecutingDialog()
         }
         return result
     }
@@ -143,7 +145,6 @@ class CommandExecutionService @Inject constructor(
         if (result.error != CONNECTION_TIMEOUT && result.error != HOST_CONNECTION_ERROR)
             return false
         return currentTry <= getNumberOfRetries()
-
     }
 
     private fun getScheduledExecutorService(): ScheduledExecutorService {
@@ -153,8 +154,8 @@ class CommandExecutionService @Inject constructor(
         return scheduledExecutorService!!
     }
 
-    private fun hideExecutingDialog(context: Context) {
-        context.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+    private fun hideExecutingDialog() {
+        applicationContext.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
     }
 
     private fun getNumberOfRetries(): Int {
@@ -169,7 +170,7 @@ class CommandExecutionService @Inject constructor(
             if (cache.containsKey(relativePath)) {
                 return cache.get(relativePath)
             } else {
-                showExecutingDialog(context)
+                showExecutingDialog()
 
                 val provider = dataConnectionSwitch.getProviderFor()
                 val result = provider.requestBitmap(relativePath, context)
@@ -180,7 +181,7 @@ class CommandExecutionService @Inject constructor(
                 return bitmap
             }
         } finally {
-            hideExecutingDialog(context)
+            hideExecutingDialog()
         }
     }
 
@@ -243,6 +244,8 @@ class CommandExecutionService @Inject constructor(
         override fun onError() {}
     }
 
+    private val applicationContext get() = application.applicationContext
+
     companion object {
 
         val DEFAULT_NUMBER_OF_RETRIES = 3
@@ -255,5 +258,4 @@ class CommandExecutionService @Inject constructor(
 
         fun secondsForTry(executionTry: Int): Int = Math.pow(3.0, executionTry.toDouble()).toInt()
     }
-
 }

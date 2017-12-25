@@ -89,7 +89,7 @@ class DeviceListUpdateService @Inject constructor(
             UpdateResult {
         val connection = Optional.fromNullable(connectionId)
         val command = Command("xmllist" + xmllistSuffix, connection)
-        val result = commandExecutionService.executeSync(command, applicationContext) ?: ""
+        val result = commandExecutionService.executeSync(command) ?: ""
         val roomDeviceList = parseResult(connectionId, applicationContext, result, updateHandler)
         val success = update(connection, roomDeviceList)
 

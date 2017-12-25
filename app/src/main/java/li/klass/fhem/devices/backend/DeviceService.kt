@@ -53,7 +53,7 @@ constructor(
      * @param context context
      */
     fun renameDevice(device: FhemDevice, newName: String, context: Context) {
-        commandExecutionService.executeSafely(Command("rename " + device.name + " " + newName), context, object : CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(Command("rename " + device.name + " " + newName), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 device.xmlListDevice.setInternal("NAME", newName)
             }
@@ -67,7 +67,7 @@ constructor(
      * @param device concerned device
      */
     fun deleteDevice(device: FhemDevice, context: Context) {
-        commandExecutionService.executeSafely(Command("delete " + device.name!!), context, object : CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(Command("delete " + device.name!!), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 deviceListService.getRoomDeviceList()
                         ?.removeDevice(device)
@@ -87,7 +87,7 @@ constructor(
             "deleteattr " + device.name + " alias"
         else
             "attr " + device.name + " alias " + alias
-        commandExecutionService.executeSafely(Command(command), context, object : CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(Command(command), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 device.xmlListDevice.setAttribute("alias", alias)
             }
@@ -102,7 +102,7 @@ constructor(
      * @param context             context
      */
     fun moveDevice(device: FhemDevice, newRoomConcatenated: String, context: Context) {
-        commandExecutionService.executeSafely(Command("attr " + device.name + " room " + newRoomConcatenated), context, object : CommandExecutionService.SuccessfulResultListener() {
+        commandExecutionService.executeSafely(Command("attr " + device.name + " room " + newRoomConcatenated), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 device.roomConcatenated = newRoomConcatenated
                 context.sendBroadcast(Intent(Actions.DO_UPDATE))

@@ -24,17 +24,27 @@
 
 package li.klass.fhem.adapter.devices.core.generic.detail.actions
 
-import li.klass.fhem.adapter.devices.core.cards.GcmSendCardProvider
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.CulHmDetailActionProvider
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.MAXDetailActionProvider
-import javax.inject.Inject
+import com.google.common.base.Optional
+import com.google.common.collect.Maps
+import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
+import java.util.*
 
-class GenericDetailActionProviders @Inject constructor(
-        private val culHmDetailActionProvider: CulHmDetailActionProvider,
-        private val maxDetailActionProvider: MAXDetailActionProvider,
-        private val fhtDetailActionProvider: FHTDetailActionProvider,
-        private val gcmSendCardProvider: GcmSendCardProvider
-) {
-    val providers: Set<GenericDetailActionProvider> get() = setOf(culHmDetailActionProvider, maxDetailActionProvider, fhtDetailActionProvider, gcmSendCardProvider)
+abstract class DeviceDetailActionProvider : GenericDetailActionProvider {
+    private val stateAttributeActionMap = Maps.newHashMap<String, StateAttributeAction>()
+
+    protected abstract fun getDeviceType(): String
+
+    override fun supports(xmlListDevice: XmlListDevice): Boolean =
+            xmlListDevice.type.equals(getDeviceType(), ignoreCase = true)
+
+    override fun stateAttributeActionFor(item: DeviceViewItem): Optional<StateAttributeAction> {
+        val key = item.sortKey.toLowerCase(Locale.getDefault())
+        return Optional.fromNullable(stateAttributeActionMap[key])
+    }
+
+    protected fun addStateAttributeAction(key: String, stateAttributeAction: StateAttributeAction) {
+        stateAttributeActionMap.put(key, stateAttributeAction)
+    }
 }

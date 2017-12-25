@@ -27,10 +27,13 @@ package li.klass.fhem.adapter.devices.core.cards
 import android.content.Context
 import android.support.v7.widget.CardView
 import kotlinx.android.synthetic.main.device_detail_card_actions.view.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
 import li.klass.fhem.domain.GenericDevice
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
@@ -49,13 +52,15 @@ class ActionsCardProvider @Inject constructor(
         val actionsList = card.actionsList
         actionsList.addView(AvailableTargetStatesSwitchAction().createView(context, layoutInflater, fhemDevice, actionsList, connectionId))
 
-        detailActionProviders.providers
-                .filter { it.supports(fhemDevice.xmlListDevice) }
-                .flatMap { it.actionsFor(context) }
-                .filter { it.supports(fhemDevice) }
-                .map { it.createView(fhemDevice.getXmlListDevice(), connectionId, context, layoutInflater, actionsList) }
-                .forEach { actionsList.addView(it) }
-
+        async(UI) {
+            bg {
+                detailActionProviders.providers
+                        .filter { it.supports(fhemDevice.xmlListDevice) }
+                        .flatMap { it.actionsFor(context) }
+                        .filter { it.supports(fhemDevice) }
+                        .map { it.createView(fhemDevice.xmlListDevice, connectionId, context, layoutInflater, actionsList) }
+            }.await().forEach { actionsList.addView(it) }
+        }
         return card
     }
 }

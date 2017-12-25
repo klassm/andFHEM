@@ -121,7 +121,7 @@ public class GraphServiceTest {
 
         String command = String.format(GraphService.COMMAND_TEMPLATE, logDeviceName, fromDateFormatted, toDateFormatted, series.getLogDef());
         String response = valueProvider.lowercaseString(20);
-        given(commandExecutionService.executeSync(new Command(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent()), context)).willReturn(response);
+        given(commandExecutionService.executeSync(new Command(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent()))).willReturn(response);
 
         // when
         String result = graphService.loadLogData(logDeviceName, Optional.<String>absent(), new Interval(from, to), series, context, plotfunction);

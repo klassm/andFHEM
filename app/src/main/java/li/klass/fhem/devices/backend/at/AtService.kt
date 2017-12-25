@@ -25,7 +25,6 @@
 package li.klass.fhem.devices.backend.at
 
 import android.content.Context
-import com.google.common.base.Optional
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
@@ -49,7 +48,7 @@ class AtService @Inject constructor(
                   context: Context) {
         val definition = atDefinitionParser.toFHEMDefinition(device.definition)
         val command = "define ${device.name} at $definition"
-        commandExecutionService.executeSync(Command(command), context)
+        commandExecutionService.executeSync(Command(command))
         handleDisabled(device.name, device.isActive, context)
         deviceListUpdateService.updateAllDevices()
     }
@@ -60,9 +59,9 @@ class AtService @Inject constructor(
         val definition = atDefinitionParser.toFHEMDefinition(device.definition)
         val command = "modify ${device.name} $definition"
 
-        commandExecutionService.executeSync(Command(command), context)
+        commandExecutionService.executeSync(Command(command))
         handleDisabled(device.name, device.isActive, context)
-        genericDeviceService.update(genericDevice, context, Optional.absent())
+        genericDeviceService.update(genericDevice.xmlListDevice)
     }
 
     fun getTimerDeviceFor(deviceName: String): TimerDevice? {
@@ -102,7 +101,7 @@ class AtService @Inject constructor(
     }
 
     private fun handleDisabled(timerName: String, isActive: Boolean, context: Context): String? =
-            commandExecutionService.executeSync(Command(String.format("attr %s %s %s", timerName, "disable", if (isActive) "0" else "1")), context)
+            commandExecutionService.executeSync(Command(String.format("attr %s %s %s", timerName, "disable", if (isActive) "0" else "1")))
 
     companion object {
         private val LOG = LoggerFactory.getLogger(AtService::class.java)

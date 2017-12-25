@@ -138,7 +138,7 @@ public class GraphService {
             command = command.replaceAll("<SPEC" + (i + 1) + ">", plotfunction.get(i));
         }
 
-        String data = commandExecutionService.executeSync(new Command(command, connectionId), context);
+        String data = commandExecutionService.executeSync(new Command(command, connectionId));
         if (data != null) {
             result.append("\n\r").append(data.replaceAll("#[^\\\\]*\\\\[rn]", ""));
         }

@@ -45,7 +45,7 @@ class SendCommandService @Inject constructor(
         val sharedPreferencesService: SharedPreferencesService
 ) {
     fun executeCommand(command: String, connectionId: String? = null, context: Context): String? {
-        val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)), context)
+        val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
         storeRecentCommand(command)
         return result
     }

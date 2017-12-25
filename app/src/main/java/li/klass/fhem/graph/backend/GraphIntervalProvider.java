@@ -53,7 +53,7 @@ class GraphIntervalProvider {
     }
 
     private Interval getDefaultInterval(Context context) {
-        String result = commandExecutionService.executeSync(new Command("{{ TimeNow() }}"), context);
+        String result = commandExecutionService.executeSync(new Command("{{ TimeNow() }}"));
         if (result == null) {
             return getIntervalForTimespan(context, DateTime.now());
         }

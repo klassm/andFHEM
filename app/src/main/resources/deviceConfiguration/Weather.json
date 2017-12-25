@@ -2,16 +2,28 @@
   "sensorDevice": true,
   "defaultGroup": "WEATHER",
   "showStateInOverview": false,
+  "supportedWidgets": [
+    "TemperatureWidgetView",
+    "MediumInformationWidgetView"
+  ],
   "states": [
     {
       "key": "temp_c",
       "desc": "temperature",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField",
+        "WidgetMediumLine1"
+      ]
     },
     {
       "key": "humidity",
       "desc": "humidity",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureAdditionalField",
+        "WidgetMediumLine2"
+      ]
     },
     {
       "key": "wind_condition",
@@ -21,7 +33,10 @@
     {
       "key": "condition",
       "desc": "weather",
-      "showInOverview": true
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine3"
+      ]
     }
   ],
 

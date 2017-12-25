@@ -82,7 +82,7 @@ public class AppActionsIntentService extends ConvenientIntentService {
                     long triggerTime = nextAlarmClock.getTriggerTime();
                     String time = new DateTime(new Date(triggerTime)).toString("dd.MM.YYYY HH:mm");
                     LOGGER.info("handleIntent() - notifying alarm clock receiver for time {}", time);
-                    deviceService.setState(nextAlarmClockReceiver, time, Optional.<String>absent(), this);
+                    deviceService.setState(nextAlarmClockReceiver, time, Optional.<String>absent(), true);
                 }
             } else {
                 LOGGER.info("handleIntent() - found no alarm clock receiver");

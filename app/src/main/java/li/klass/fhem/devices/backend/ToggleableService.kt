@@ -54,7 +54,7 @@ constructor(
             logger.error("toggleState(device=${device.name}) - cannot toggle as state cannot be found for current state '${device.state}'")
             return
         }
-        genericDeviceService.setState(device, targetState, connectionId, context)
+        genericDeviceService.setState(device, targetState, connectionId)
     }
 
     companion object {

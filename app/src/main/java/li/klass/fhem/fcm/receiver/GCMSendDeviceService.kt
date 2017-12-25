@@ -24,23 +24,19 @@
 
 package li.klass.fhem.fcm.receiver
 
-import android.content.Context
-import com.google.common.base.Strings.isNullOrEmpty
 import com.google.firebase.iid.FirebaseInstanceId
-import li.klass.fhem.domain.GCMSendDevice
+import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.fcm.AddSelfResult
 import li.klass.fhem.settings.SettingsKeys
-import li.klass.fhem.update.backend.command.execution.Command
-import li.klass.fhem.update.backend.command.execution.CommandExecutionService
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.ArrayUtil
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class GCMSendDeviceService @Inject
-constructor(val commandExecutionService: CommandExecutionService,
+constructor(val genericDeviceService: GenericDeviceService,
             val applicationProperties: ApplicationProperties) {
 
     private fun getRegistrationId(): String? {
@@ -50,40 +46,36 @@ constructor(val commandExecutionService: CommandExecutionService,
             return null
         }
         LOGGER.debug("getRegistrationId - senderId=$senderId")
-        return FirebaseInstanceId.getInstance().getToken(senderId, "FCM")
+        return FirebaseInstanceId.getInstance().getToken(senderId, "FCM")?.trim()
     }
 
-    fun addSelf(device: GCMSendDevice, context: Context): AddSelfResult {
+    fun addSelf(device: XmlListDevice): AddSelfResult {
 
-        val registrationId = getRegistrationId()
-        if (isNullOrEmpty(registrationId)) {
-            return AddSelfResult.FCM_NOT_ACTIVE
-        }
+        val registrationId = getRegistrationId() ?: return AddSelfResult.FCM_NOT_ACTIVE
 
-        if (ArrayUtil.contains<String>(device.regIds, registrationId)) {
+        if (isDeviceRegistered(device)) {
             return AddSelfResult.ALREADY_REGISTERED
         }
 
-        val newRegIds = ArrayUtil.addToArray(device.regIds, registrationId)
-        setRegIdsAttributeFor(device, newRegIds, context)
+        val newRegIds = getRegistrationIdsOf(device) + registrationId
+        setRegIdsAttributeFor(device, newRegIds)
         return AddSelfResult.SUCCESS
     }
 
-    private fun setRegIdsAttributeFor(device: GCMSendDevice, newRegIds: Array<String>, context: Context) {
-        val regIdsAttribute = ArrayUtil.join(newRegIds, "|")
+    private fun setRegIdsAttributeFor(device: XmlListDevice, newRegIds: Collection<String>) {
+        val regIdsAttribute = newRegIds.joinToString(separator = "|")
 
-        commandExecutionService.executeSync(Command(String.format(ATTR_REG_IDS_COMMAND, device.name, regIdsAttribute)), context)
-        device.setRegIds(regIdsAttribute)
+        genericDeviceService.setAttribute(device, "regIds", regIdsAttribute)
     }
 
-    fun isDeviceRegistered(device: GCMSendDevice): Boolean {
-        val registrationId = getRegistrationId()
+    fun isDeviceRegistered(device: XmlListDevice): Boolean =
+            getRegistrationIdsOf(device).contains(getRegistrationId())
 
-        return registrationId != null && ArrayUtil.contains(device.regIds, registrationId)
-    }
+    private fun getRegistrationIdsOf(device: XmlListDevice): List<String> =
+            device.getAttribute("regIds").or("")
+                    .split("|")
 
     companion object {
-        private val ATTR_REG_IDS_COMMAND = "attr %s regIds %s"
         private val LOGGER = LoggerFactory.getLogger(GCMSendDeviceService::class.java)
     }
 }

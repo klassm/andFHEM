@@ -775,13 +775,33 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
             refreshItem.actionView = null
         }
 
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.menu_search)?.actionView as SearchView?
-        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-
+        attachSearchView(menu)
         this.optionsMenu = menu
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun attachSearchView(menu: Menu) {
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchMenuItem = menu.findItem(R.id.menu_search)
+        val searchView = searchMenuItem?.actionView as SearchView?
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView?.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+            override fun onSuggestionSelect(position: Int): Boolean = false
+
+            override fun onSuggestionClick(position: Int): Boolean {
+                searchMenuItem?.collapseActionView()
+                return false
+            }
+        })
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchMenuItem?.collapseActionView()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+        })
     }
 
     companion object {
