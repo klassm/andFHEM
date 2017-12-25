@@ -247,6 +247,6 @@ abstract class DeviceListFragment : BaseFragment() {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DeviceListFragment::class.java)
-        val DEFAULT_COLUMN_WIDTH = 300
+        val DEFAULT_COLUMN_WIDTH = 350
     }
 }
