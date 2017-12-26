@@ -48,7 +48,6 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
     private int valueStringId;
     private Context context;
     private boolean sendIntents = true;
-    private ApplicationProperties applicationProperties;
 
     public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                      double minTemperature, double maxTemperature,
@@ -58,18 +57,17 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
         sendIntents = false;
     }
 
-    public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
-                                     String intentAction, int valueStringId, double minTemperature,
-                                     double maxTemperature, ApplicationProperties applicationProperties) {
-        super(context, (float) initialTemperature, 0.5f, (float) minTemperature, (float) maxTemperature, updateTableRow);
+    private TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
+                                      String intentAction, int valueStringId, double minTemperature,
+                                      double maxTemperature, ApplicationProperties applicationProperties) {
+        super(context, (float) initialTemperature, 0.5f, (float) minTemperature, (float) maxTemperature, updateTableRow, applicationProperties);
 
         this.intentAction = intentAction;
         this.valueStringId = valueStringId;
         this.context = context;
-        this.applicationProperties = applicationProperties;
-        this.newTemperature = initialProgress;
+        this.newTemperature = getInitialProgress();
 
-        updateView.setText(appendTemperature(initialTemperature));
+        getUpdateView().setText(appendTemperature(initialTemperature));
     }
 
     @Override
@@ -81,9 +79,9 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
     @Override
     public void onStopTrackingTouch(final Context seekBarContext, final XmlListDevice device, float progress) {
         if (!sendIntents) return;
-        if (progress == initialProgress) return;
+        if (progress == getInitialProgress()) return;
 
-        initialProgress = progress;
+        setInitialProgress(progress);
 
         String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
@@ -113,17 +111,12 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
 
         context.startService(intent);
 
-        updateView.setText(appendTemperature(newValue));
+        getUpdateView().setText(appendTemperature(newValue));
     }
 
     @Override
     public void onButtonSetValue(XmlListDevice device, float value) {
         setValue(device, value);
-    }
-
-    @Override
-    protected ApplicationProperties getApplicationProperties() {
-        return applicationProperties;
     }
 
     public double getTemperature() {

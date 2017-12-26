@@ -24,8 +24,10 @@
 
 package li.klass.fhem.adapter.weekprofile
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -39,6 +41,7 @@ import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.ValueDescriptionUtil.appendTemperature
 import li.klass.fhem.widget.FallbackTimePicker
+import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 
 class IntervalWeekProfileAdapter(context: Context, private val applicationProperties: ApplicationProperties) : BaseWeekProfileAdapter<FilledTemperatureInterval>(context) {
@@ -137,7 +140,39 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
         }
 
         fun showDialog(context: Context, viewGroup: ViewGroup) {
-            val contentView = AndroidBug.handleColorStateBug(object : AndroidBug.BugHandler {
+            val builder = AlertDialog.Builder(context)
+            val layoutInflater = builder.context.layoutInflater
+
+            val contentView = createContentViewWith(layoutInflater, viewGroup)
+
+            val tableLayout = contentView.findViewById<TableLayout>(R.id.tableLayout)
+            val updateRow = contentView.findViewById<TableRow>(R.id.updateRow)
+            val temperatureChangeTableRow = object : TemperatureChangeTableRow(context, interval.changedTemperature,
+                    updateRow, 5.5, 30.0, applicationProperties) {
+                override fun showButton(): Boolean = false
+            }
+            tableLayout.addView(temperatureChangeTableRow.createRow(layoutInflater, null))
+
+            val dialog = builder.setView(contentView).show()
+            contentView.findViewById<Button>(R.id.okButton)
+                    .setOnClickListener {
+                        dialog.dismiss()
+                        val temperature = temperatureChangeTableRow.temperature
+
+                        val time = timeToTimeString(hours, minutes)
+
+                        if (listener != null) {
+                            LOGGER.debug("showDialog() - notifying listener")
+                            listener.onIntervalTemperatureChanged(time, temperature)
+                        } else {
+                            LOGGER.error("showDialog() - no listener")
+                        }
+                        notifyWeekProfileChangedListener()
+                    }
+        }
+
+        private fun createContentViewWith(layoutInflater: LayoutInflater, viewGroup: ViewGroup): View {
+            return AndroidBug.handleColorStateBug(object : AndroidBug.BugHandler {
                 override fun bugEncountered(): View {
                     val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector_android_bug, viewGroup, false)
                     val timePicker = contentView.findViewById<FallbackTimePicker>(R.id.timePicker)
@@ -167,8 +202,8 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
                     }
 
                     timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
-                        this@IntervalEditHolder.hours = hourOfDay
-                        this@IntervalEditHolder.minutes = minute
+                        hours = hourOfDay
+                        minutes = minute
                     }
 
                     timePicker.isEnabled = !interval.isTimeFixed
@@ -176,34 +211,6 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
                     return contentView
                 }
             })
-
-            val layout = contentView.findViewById<LinearLayout>(R.id.tableLayout)
-
-            val updateRow = contentView.findViewById<TableRow>(R.id.updateRow)
-            val appProperties = applicationProperties
-            val temperatureChangeTableRow = object : TemperatureChangeTableRow(context, interval.changedTemperature,
-                    updateRow, 5.5, 30.0, applicationProperties) {
-                override fun getApplicationProperties(): ApplicationProperties = appProperties
-
-                override fun showButton(): Boolean = false
-            }
-
-
-            layout.addView(temperatureChangeTableRow.createRow(layoutInflater, null, 8))
-
-            DialogUtil.showContentDialog(context, null, contentView) {
-                val temperature = temperatureChangeTableRow.temperature
-
-                val time = timeToTimeString(hours, minutes)
-
-                if (listener != null) {
-                    LOGGER.debug("showDialog() - notifying listener")
-                    listener.onIntervalTemperatureChanged(time, temperature)
-                } else {
-                    LOGGER.error("showDialog() - no listener")
-                }
-                notifyWeekProfileChangedListener()
-            }
         }
     }
 

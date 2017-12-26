@@ -25,30 +25,35 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="0">
 
-    <TableLayout
+    <RelativeLayout
         android:id="@+id/seekBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_span="2"
-        android:stretchColumns="0"
+        android:layout_span="8"
         tools:ignore="UselessParent">
 
-        <TableRow tools:ignore="UselessParent">
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            style="@style/deviceDetailContentSeek"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/button"
+            android:layout_toStartOf="@id/button" />
 
-            <SeekBar
-                android:id="@+id/seekBar"
-                style="@style/deviceDetailContentSeek"/>
+        <Button
+            android:id="@+id/button"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-            <Button
-                android:id="@+id/button"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/set"/>
-        </TableRow>
-    </TableLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/set" />
+    </RelativeLayout>
 </TableRow>

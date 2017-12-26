@@ -24,50 +24,65 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableLayout
-    android:id="@+id/tableLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="@color/whitegrey"
-    android:orientation="vertical"
-    tools:ignore="Overdraw">
+    android:layout_height="match_parent">
 
-    <TableRow>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/deviceDetailSectionCaption"
-            android:layout_column="0"
-            android:text="@string/time"/>
-    </TableRow>
-
-    <TableRow>
-        <li.klass.fhem.widget.FallbackTimePicker
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/timePicker"
-            android:layout_column="0"
-            android:layout_gravity="center_horizontal"/>
-    </TableRow>
-
-    <TableRow>
-
-        <TextView
-            style="@style/deviceDetailSectionCaption"
-            android:paddingTop="10dp"
-            android:text="@string/temperature"/>
-
-    </TableRow>
-
-    <TableRow android:id="@+id/updateRow">
-
-        <TextView
-            android:id="@id/value"
+        <TableLayout
+            android:id="@+id/tableLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:minWidth="400dp"
-            android:text="@string/dummy_temperature"/>
-    </TableRow>
-</TableLayout>
+            android:background="@color/whitegrey"
+            android:orientation="vertical">
+
+            <TableRow>
+
+                <TextView
+                    style="@style/deviceDetailSectionCaption"
+                    android:layout_column="0"
+                    android:text="@string/time" />
+            </TableRow>
+
+            <TableRow>
+
+                <li.klass.fhem.widget.FallbackTimePicker
+                    android:id="@+id/timePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/deviceDetailSectionCaption"
+                    android:paddingTop="10dp"
+                    android:text="@string/temperature" />
+
+            </TableRow>
+
+            <TableRow android:id="@+id/updateRow">
+
+                <TextView
+                    android:id="@id/value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:minWidth="400dp"
+                    android:text="@string/dummy_temperature" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/okButton"
+            style="@style/button"
+            android:text="@string/okButton" />
+    </LinearLayout>
+</ScrollView>

@@ -24,56 +24,67 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/whitegrey"
-        android:orientation="vertical"
-        tools:ignore="Overdraw">
+        android:orientation="vertical">
 
-        <TableRow>
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whitegrey"
+            android:orientation="vertical"
+            tools:ignore="Overdraw">
 
-            <TextView
-                style="@style/deviceDetailSectionCaption"
-                android:layout_column="0"
-                android:text="@string/time" />
-        </TableRow>
+            <TableRow>
 
-        <TableRow>
+                <TextView
+                    style="@style/deviceDetailSectionCaption"
+                    android:layout_column="0"
+                    android:text="@string/time" />
+            </TableRow>
 
-            <TimePicker
-                android:id="@+id/timePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_gravity="center_horizontal" />
-        </TableRow>
+            <TableRow>
 
-        <TableRow>
+                <TimePicker
+                    android:id="@+id/timePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="center_horizontal" />
+            </TableRow>
 
-            <TextView
-                style="@style/deviceDetailSectionCaption"
-                android:paddingTop="10dp"
-                android:text="@string/temperature" />
+            <TableRow>
 
-        </TableRow>
+                <TextView
+                    style="@style/deviceDetailSectionCaption"
+                    android:paddingTop="10dp"
+                    android:text="@string/temperature" />
 
-        <TableRow android:id="@+id/updateRow">
+            </TableRow>
 
-            <TextView
-                android:id="@id/value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:minWidth="400dp"
-                android:text="@string/dummy_temperature" />
-        </TableRow>
-    </TableLayout>
+            <TableRow android:id="@+id/updateRow">
+
+                <TextView
+                    android:id="@id/value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:minWidth="400dp"
+                    android:text="@string/dummy_temperature" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/okButton"
+            style="@style/button"
+            android:text="@string/okButton" />
+    </LinearLayout>
 </ScrollView>
