@@ -42,6 +42,7 @@ import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
+import li.klass.fhem.alarm.clock.update.AlarmClockIntentService;
 import li.klass.fhem.appindex.AppIndexIntentService;
 import li.klass.fhem.appwidget.action.AppWidgetActionIntentService;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
@@ -96,7 +97,6 @@ import li.klass.fhem.room.list.ui.RoomListFragment;
 import li.klass.fhem.search.MySearchSuggestionsProvider;
 import li.klass.fhem.search.SearchResultsFragment;
 import li.klass.fhem.sendCommand.ui.SendCommandFragment;
-import li.klass.fhem.service.intent.AppActionsIntentService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.ExternalApiService;
 import li.klass.fhem.service.intent.LicenseIntentService;
@@ -259,7 +259,7 @@ public interface ApplicationComponent {
 
     void inject(LicenseIntentService object);
 
-    void inject(AppActionsIntentService object);
+    void inject(AlarmClockIntentService object);
 
     void inject(ImportExportService object);
 

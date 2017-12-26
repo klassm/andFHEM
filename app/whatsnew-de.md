@@ -2,3 +2,4 @@
 * Repariere Absturz bei Drehen des Gerätes während dem Laden von Graphen
 * Schließe Suchen-Ansicht wenn Suche abgeschickt wird
 * Slider in Detailansicht hat wieder die volle Tabellengröße
+* Repariere nextAlarmClock Update für Android Versionen >= Nougat

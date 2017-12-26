@@ -221,7 +221,7 @@
             android:name=".appwidget.update.AppWidgetListViewUpdateRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
-            android:name=".service.intent.AppActionsIntentService"
+            android:name=".alarm.clock.update.AlarmClockIntentService"
             android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.NEXT_ALARM_CLOCK" />

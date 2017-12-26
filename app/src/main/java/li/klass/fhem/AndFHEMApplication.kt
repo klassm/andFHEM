@@ -26,7 +26,6 @@ package li.klass.fhem
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.StrictMode
@@ -36,14 +35,13 @@ import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
-import li.klass.fhem.constants.Actions
+import li.klass.fhem.alarm.clock.update.AlarmClockUpdateService
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.ApplicationModule
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
 import li.klass.fhem.devices.ui.DeviceNameSelectionActivity
 import li.klass.fhem.graph.ui.GraphActivity
-import li.klass.fhem.service.intent.AppActionsIntentService
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
@@ -56,6 +54,8 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     lateinit var applicationProperties: ApplicationProperties
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
+    @Inject
+    lateinit var alarmClockUpdateService: AlarmClockUpdateService
 
     var isUpdate = false
         private set
@@ -94,7 +94,9 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
 
         setApplicationInformation()
 
-        startService(Intent(Actions.SCHEDULE_ALARM_CLOCK_UPDATE).setClass(this, AppActionsIntentService::class.java))
+        doAsync {
+            alarmClockUpdateService.scheduleUpdate()
+        }
     }
 
     override fun onUpdate(oldVersion: Int, newVersion: Int) {
