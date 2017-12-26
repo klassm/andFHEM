@@ -50,10 +50,18 @@ class DeviceListUpdateService @Inject constructor(
 ) {
 
     fun updateSingleDevice(deviceName: String, connectionId: String? = null): UpdateResult =
-            executeXmllistPartial(connectionId, deviceName)
+            executeXmllistPartial(connectionId, deviceName, object : BeforeRoomListUpdateModifier {
+                override fun update(cached: RoomDeviceList) {
+                    cached.getDeviceFor(deviceName)?.let { cached.removeDevice(it) }
+                }
+            })
 
     fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult =
-            executeXmllistPartial(connectionId, "room=" + roomName)
+            executeXmllistPartial(connectionId, "room=" + roomName, object : BeforeRoomListUpdateModifier {
+                override fun update(cached: RoomDeviceList) {
+                    cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
+                }
+            })
 
     fun updateAllDevices(connectionId: String? = null): UpdateResult {
         return executeXmllist(connectionId, "", object : UpdateHandler {
@@ -75,10 +83,12 @@ class DeviceListUpdateService @Inject constructor(
         }
     }
 
-    private fun executeXmllistPartial(connectionId: String?, devSpec: String): UpdateResult {
+    private fun executeXmllistPartial(connectionId: String?, devSpec: String,
+                                      beforeRoomListUpdateModifier: BeforeRoomListUpdateModifier): UpdateResult {
         LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec)
         return executeXmllist(connectionId, " " + devSpec, object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
+                beforeRoomListUpdateModifier.update(cached)
                 cached.addAllDevicesOf(parsed)
                 return cached
             }
@@ -131,6 +141,11 @@ class DeviceListUpdateService @Inject constructor(
 
     private interface UpdateHandler {
         fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList
+    }
+
+    @FunctionalInterface
+    private interface BeforeRoomListUpdateModifier {
+        fun update(cached: RoomDeviceList)
     }
 
     sealed class UpdateResult {

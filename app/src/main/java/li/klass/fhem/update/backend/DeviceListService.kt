@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend
 
-import android.app.Application
 import android.content.Context
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.domain.core.FhemDevice
@@ -40,8 +39,7 @@ import javax.inject.Singleton
 class DeviceListService @Inject
 constructor(
         private val deviceListParser: DeviceListParser,
-        private val deviceListCacheService: DeviceListCacheService,
-        private val application: Application
+        private val deviceListCacheService: DeviceListCacheService
 ) : AbstractService() {
 
     private val remoteUpdateInProgress = AtomicBoolean(false)

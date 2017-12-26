@@ -3,3 +3,4 @@
 * Close search view when submitting a search
 * Slider in detail view has full table width
 * Repair nextAlarmClock update for Android versions >= Nougat
+* Handle device renaming in FHEM correctly, so that devices are not shown twice in andFHEM
