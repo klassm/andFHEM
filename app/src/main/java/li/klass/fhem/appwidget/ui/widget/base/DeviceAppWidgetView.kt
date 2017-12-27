@@ -70,13 +70,17 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     override fun createView(context: Context, widgetConfiguration: WidgetConfiguration): RemoteViews {
         val views = super.createView(context, widgetConfiguration)
-        logger.info("creating appwidget view for " + widgetConfiguration)
+        logger.info("createView - creating appwidget view for " + widgetConfiguration)
 
         if (shouldSetDeviceName()) {
             val deviceName = deviceNameFrom(widgetConfiguration)
 
             val device = getDeviceFor(deviceName, widgetConfiguration.connectionId)
-            views.setTextViewText(R.id.deviceName, device?.widgetName ?: "????")
+            if (device == null) {
+                logger.info("createView - device is null, ignoring update", device)
+            } else {
+                views.setTextViewText(R.id.deviceName, device.widgetName)
+            }
         }
 
         return views
