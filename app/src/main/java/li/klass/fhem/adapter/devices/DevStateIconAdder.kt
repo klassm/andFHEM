@@ -11,6 +11,7 @@ import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
 import li.klass.fhem.domain.core.FhemDevice
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnectionSwitch, val licenseService: LicenseService) {
@@ -25,6 +26,7 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
             imageView.visibility = View.GONE
             return
         }
+        logger.info("addDevStateIconIfRequired(icon=$icon, device=${device.name})")
         imageView.visibility = View.VISIBLE
 
         licenseService.isPremium(object : IsPremiumListener {
@@ -36,6 +38,7 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
                             .addHeader("Authorization", authHeader)
                             .build())
 
+                    logger.info("addDevStateIconIfRequired - loading icon from $url")
                     GlideApp.with(imageView.context)
                             .load(glideUrl)
                             .error(R.drawable.empty)
@@ -43,5 +46,9 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
                 }
             }
         })
+    }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(DevStateIconAdder::class.java)!!
     }
 }
