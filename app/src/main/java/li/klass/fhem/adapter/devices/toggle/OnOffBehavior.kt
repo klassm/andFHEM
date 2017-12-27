@@ -71,7 +71,9 @@ class OnOffBehavior
         return Optional.fromNullable(offStateNameByHook).asSet() + existingOffStateNames
     }
 
-    fun getOffStateName(device: FhemDevice): String? = hookProvider.getOffStateName(device) ?: getOffStateNames(device).firstOrNull()
+    fun getOffStateName(device: FhemDevice): String? = hookProvider.getOffStateName(device)
+            ?: getOffStateNames(device).firstOrNull()
+            ?: if (device.webCmd.contains("off")) "off" else null
 
     private fun getOnStateNames(device: FhemDevice): Set<String> {
         val onStateNameByHook = hookProvider.getOnStateName(device)
@@ -80,7 +82,9 @@ class OnOffBehavior
         return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames
     }
 
-    fun getOnStateName(device: FhemDevice): String? = hookProvider.getOnStateName(device) ?: getOnStateNames(device).firstOrNull()
+    fun getOnStateName(device: FhemDevice): String? = hookProvider.getOnStateName(device)
+            ?: getOnStateNames(device).firstOrNull()
+            ?: if (device.webCmd.contains("on")) "on" else null
 
     fun getOnOffStateNames(device: FhemDevice): Set<String> =
             getOnStateNames(device) + getOffStateNames(device)
