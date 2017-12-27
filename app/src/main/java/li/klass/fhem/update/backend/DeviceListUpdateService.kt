@@ -95,6 +95,7 @@ class DeviceListUpdateService @Inject constructor(
         })
     }
 
+    @Synchronized
     private fun executeXmllist(connectionId: String?, xmllistSuffix: String, updateHandler: UpdateHandler):
             UpdateResult {
         val connection = Optional.fromNullable(connectionId)
