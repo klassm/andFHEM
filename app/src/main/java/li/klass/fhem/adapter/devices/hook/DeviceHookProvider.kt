@@ -35,7 +35,9 @@ constructor() {
 
     fun buttonHookFor(device: FhemDevice): ButtonHook {
         val attributes = device.xmlListDevice.attributes
-
+        if (attributes[WIDGET_OVERRIDE]?.value == WIDGET_OVERRIDE_NOARG) {
+            return ButtonHook.DEVICE_VALUES
+        }
         return HOOK_MAPPING
                 .filterKeys { attributes.containsKey(it) }
                 .filterKeys { "true".equals(attributes[it]?.value, ignoreCase = true) }
@@ -59,6 +61,8 @@ constructor() {
         val HOOK_ON = "onDevice"
         val HOOK_OFF = "offDevice"
         val HOOK_WEBCMD = "webcmdDevice"
+        val WIDGET_OVERRIDE = "widgetOverride"
+        val WIDGET_OVERRIDE_NOARG = ":noArg"
         val HOOK_TOGGLE = "toggleDevice"
         val ON_STATE_NAME = "onStateName"
         val OFF_STATE_NAME = "offStateName"

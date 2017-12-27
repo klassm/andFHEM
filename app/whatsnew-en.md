@@ -6,3 +6,4 @@
 * Handle device renaming in FHEM correctly, so that devices are not shown twice in andFHEM
 * Devices with setList on:off could no longer be switched (for appwidgets and within the app)
 * When encountering partial updates on a locally broken device list (a device list that cannot be read from the internal cache) update all devices instead
+* Evaluate widgetOverride :noArg attribute to disable toggleable / dimmable behaviours

@@ -22,8 +22,14 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.hook;
+package li.klass.fhem.adapter.devices.hook
 
-public enum ButtonHook {
-    NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE, WEBCMD_DEVICE
+enum class ButtonHook {
+    NORMAL,
+    ON_OFF_DEVICE,
+    ON_DEVICE,
+    OFF_DEVICE,
+    TOGGLE_DEVICE,
+    WEBCMD_DEVICE,
+    DEVICE_VALUES
 }

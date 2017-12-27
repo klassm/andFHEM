@@ -96,7 +96,7 @@ class OnOffBehavior
                 .map { it.second!! }
     }
 
-    fun supports(device: FhemDevice): Boolean = getOnStateName(device) != null && getOffStateName(device) != null
+    fun supports(device: FhemDevice): Boolean = hookProvider.buttonHookFor(device) != ButtonHook.DEVICE_VALUES && getOnStateName(device) != null && getOffStateName(device) != null
 
     companion object {
         val availableOnStateNames = setOf("on", "ON", "ein")
