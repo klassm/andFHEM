@@ -60,7 +60,7 @@ class DeviceListCacheService @Inject constructor(
     fun getLastUpdate(connectionId: String?): DateTime? =
             getCacheFor(connectionFor(connectionId))?.lastUpdate
 
-    fun isCorrupted(connection: String): Boolean =
+    fun isCorrupted(connection: String = connectionService.getSelectedId()): Boolean =
             getCacheFor(connection)?.corrupted ?: true
 
     private fun connectionFor(connectionId: String?) =

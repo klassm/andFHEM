@@ -85,7 +85,11 @@ class DeviceListUpdateService @Inject constructor(
 
     private fun executeXmllistPartial(connectionId: String?, devSpec: String,
                                       beforeRoomListUpdateModifier: BeforeRoomListUpdateModifier): UpdateResult {
-        LOG.info("executeXmllist(devSpec={}) - fetching xmllist from remote", devSpec)
+        LOG.info("executeXmllistPartial(connection={}, devSpec={}) - fetching xmllist from remote", connectionId, devSpec)
+        if (deviceListCacheService.isCorrupted()) {
+            LOG.error("executeXmllistPartial - ignoring partial update as device list is broken, updating all devices instead")
+            return updateAllDevices(connectionId)
+        }
         return executeXmllist(connectionId, " " + devSpec, object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
                 beforeRoomListUpdateModifier.update(cached)
