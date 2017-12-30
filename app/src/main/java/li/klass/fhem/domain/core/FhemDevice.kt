@@ -129,7 +129,7 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
         return name.hashCode()
     }
 
-    fun getEventMapStateFor(state: String): String = eventMap.getOr(state, state)
+    fun getEventMapStateFor(state: String): String = eventMap.getValueOr(state, state)
 
     fun getReverseEventMapStateFor(state: String): String? = eventMap.getKeyOr(state, state)
 

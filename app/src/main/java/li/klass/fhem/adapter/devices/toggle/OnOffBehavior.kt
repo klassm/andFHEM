@@ -45,7 +45,7 @@ class OnOffBehavior
             return true
         }
 
-        return getOffStateNames(device).any { internalState.contains(it.toLowerCase(Locale.getDefault())) }
+        return (getOffStateNames(device) + "off").any { internalState.contains(it.toLowerCase(Locale.getDefault())) }
     }
 
     fun isOn(device: FhemDevice): Boolean {
@@ -73,17 +73,19 @@ class OnOffBehavior
 
     fun getOffStateName(device: FhemDevice): String? = hookProvider.getOffStateName(device)
             ?: getOffStateNames(device).firstOrNull()
+            ?: device.eventMap.getFirstResolvingTo(device.webCmd, "off")
             ?: if (device.webCmd.contains("off")) "off" else null
 
     private fun getOnStateNames(device: FhemDevice): Set<String> {
         val onStateNameByHook = hookProvider.getOnStateName(device)
         val onStateNames = availableOnStateNames + reverseEventMapNamesFor(availableOnStateNames, device)
         val existingOnStateNames = device.setList.existingStatesOf(onStateNames)
-        return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames
+        return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames + "on"
     }
 
     fun getOnStateName(device: FhemDevice): String? = hookProvider.getOnStateName(device)
             ?: getOnStateNames(device).firstOrNull()
+            ?: device.eventMap.getFirstResolvingTo(device.webCmd, "on")
             ?: if (device.webCmd.contains("on")) "on" else null
 
     fun getOnOffStateNames(device: FhemDevice): Set<String> =

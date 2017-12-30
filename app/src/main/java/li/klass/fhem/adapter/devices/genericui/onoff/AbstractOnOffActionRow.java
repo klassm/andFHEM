@@ -115,7 +115,7 @@ public abstract class AbstractOnOffActionRow {
 
         String onStateName = getOnStateName(device, context);
         if (onStateName == null) onStateName = "on";
-        return eventMap.getOr(onStateName, "on");
+        return eventMap.getValueOr(onStateName, "on");
     }
 
     protected String getOffStateText(FhemDevice device, Context context) {
@@ -124,7 +124,7 @@ public abstract class AbstractOnOffActionRow {
 
         String offStateName = getOffStateName(device, context);
         if (offStateName == null) offStateName = "off";
-        return eventMap.getOr(offStateName, "off");
+        return eventMap.getValueOr(offStateName, "off");
     }
 
     protected boolean isOn(FhemDevice device, Context context) {

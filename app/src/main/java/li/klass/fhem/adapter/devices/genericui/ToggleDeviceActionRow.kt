@@ -30,7 +30,6 @@ import android.view.LayoutInflater
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.ToggleButton
-import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
@@ -54,8 +53,8 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
         this.view = LayoutInflater.from(context).inflate(LAYOUT_OVERVIEW, null) as TableRow
         LOGGER.debug("inflation complete, time=" + stopWatch.time)
 
-        this.descriptionView = this.view.findViewById<TextView>(R.id.description)
-        this.toggleButton = this.view.findViewById<ToggleButton>(R.id.toggleButton)
+        this.descriptionView = this.view.findViewById(R.id.description)
+        this.toggleButton = this.view.findViewById(R.id.toggleButton)
         LOGGER.debug("finished, time=" + stopWatch.time)
     }
 
@@ -84,25 +83,27 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
         val eventMap = device.eventMap
 
         val onStateText = getOnStateText(eventMap, device)
-        if (onStateText.isPresent) {
-            toggleButton.textOn = onStateText.get()
-        } else {
-            toggleButton.textOn = context.getString(R.string.on)
+        when {
+            onStateText != "on" -> toggleButton.textOn = onStateText
+            else -> toggleButton.textOn = context.getString(R.string.on)
         }
 
         val offStateText = getOffStateText(eventMap, device)
-        if (offStateText.isPresent) {
-            toggleButton.textOff = offStateText.get()
-        } else {
-            toggleButton.textOff = context.getString(R.string.off)
+        when {
+            offStateText != "off" -> toggleButton.textOff = offStateText
+            else -> toggleButton.textOff = context.getString(R.string.off)
         }
     }
 
-    private fun getOnStateText(eventMap: EventMap, device: FhemDevice): Optional<String> =
-            Optional.fromNullable(eventMap.getValueFor(onOffBehavior.getOnStateName(device) ?: "on"))
+    private fun getOnStateText(eventMap: EventMap, device: FhemDevice): String {
+        val onStateName = onOffBehavior.getOnStateName(device) ?: "on"
+        return eventMap.getValueOr(onStateName, onStateName)
+    }
 
-    private fun getOffStateText(eventMap: EventMap, device: FhemDevice): Optional<String> =
-            Optional.fromNullable(eventMap.getValueFor(onOffBehavior.getOffStateName(device) ?: "off"))
+    private fun getOffStateText(eventMap: EventMap, device: FhemDevice): String {
+        val offStateName = onOffBehavior.getOffStateName(device) ?: "off"
+        return eventMap.getValueOr(offStateName, offStateName)
+    }
 
     companion object {
         val HOLDER_KEY = ToggleDeviceActionRow::class.java.name!!
