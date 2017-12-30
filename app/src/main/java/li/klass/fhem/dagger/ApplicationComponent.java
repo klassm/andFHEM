@@ -45,6 +45,7 @@ import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.alarm.clock.update.AlarmClockIntentService;
 import li.klass.fhem.appindex.AppIndexIntentService;
 import li.klass.fhem.appwidget.action.AppWidgetActionIntentService;
+import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.MediumAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.SmallAppWidgetProvider;
@@ -291,4 +292,6 @@ public interface ApplicationComponent {
     void inject(SettingsFragment settingsFragment);
 
     void inject(@NotNull AppWidgetActionIntentService appWidgetActionIntentService);
+
+    void inject(@NotNull AppWidgetBroadcastReceiver appWidgetBroadcastReceiver);
 }

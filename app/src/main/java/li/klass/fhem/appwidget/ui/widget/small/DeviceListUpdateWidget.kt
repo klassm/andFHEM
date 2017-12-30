@@ -30,11 +30,13 @@ import android.content.Intent
 import android.os.SystemClock
 import android.widget.RemoteViews
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.OtherAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 
 class DeviceListUpdateWidget : OtherAppWidgetView() {
@@ -49,10 +51,12 @@ class DeviceListUpdateWidget : OtherAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, widgetConfiguration: WidgetConfiguration) {
         view.setImageViewResource(R.id.icon, R.drawable.launcher_refresh)
 
-        val updateIntent = Intent(WIDGET_REQUEST_UPDATE)
-        updateIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
+        val updateIntent = Intent(context, AppWidgetBroadcastReceiver::class.java)
+                .setAction(WIDGET_REQUEST_UPDATE)
+                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
+                .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
 
-        view.setOnClickPendingIntent(R.id.layout, PendingIntent.getService(context,
+        view.setOnClickPendingIntent(R.id.layout, PendingIntent.getBroadcast(context,
                 widgetConfiguration.widgetId, updateIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }

@@ -26,11 +26,9 @@ package li.klass.fhem.appwidget.update
 
 import android.app.IntentService
 import android.content.Intent
-import android.os.Handler
-import android.widget.Toast
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.R
-import li.klass.fhem.constants.Actions.*
+import li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS
+import li.klass.fhem.constants.Actions.REDRAW_WIDGET
 import li.klass.fhem.constants.BundleExtraKeys.ALLOW_REMOTE_UPDATES
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -53,16 +51,11 @@ class AppWidgetUpdateIntentService : IntentService(AppWidgetUpdateIntentService:
     override fun onHandleIntent(intent: Intent?) {
         val action = intent!!.action
         val allowRemoteUpdates = intent.getBooleanExtra(ALLOW_REMOTE_UPDATES, false)
-
         when {
             REDRAW_WIDGET == action -> handleRedrawWidget(intent, allowRemoteUpdates)
             REDRAW_ALL_WIDGETS == action -> {
                 LOG.info("onHandleIntent() - updating all widgets (received REDRAW_ALL_WIDGETS)")
                 appWidgetUpdateService.updateAllWidgets()
-            }
-            WIDGET_REQUEST_UPDATE == action -> {
-                Handler(mainLooper).post { Toast.makeText(this@AppWidgetUpdateIntentService, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show() }
-                deviceListUpdateService.updateAllDevices()
             }
         }
     }

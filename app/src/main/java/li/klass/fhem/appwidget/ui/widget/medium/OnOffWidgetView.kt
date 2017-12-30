@@ -32,13 +32,13 @@ import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
+import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.service.intent.DeviceIntentService
 import javax.inject.Inject
 
 class OnOffWidgetView : DeviceAppWidgetView() {
@@ -64,25 +64,23 @@ class OnOffWidgetView : DeviceAppWidgetView() {
         val backgroundColor = if (isOn) R.color.android_green else android.R.color.white
         view.setInt(R.id.widgetOnButton, "setBackgroundColor", ContextCompat.getColor(context, backgroundColor))
 
-        val onIntent = Intent(Actions.DEVICE_SET_STATE)
-                .setClass(context, DeviceIntentService::class.java)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, onStateName)
-                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
-        val onPendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId,
-                onIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val onPendingIntent = targetStatePendingIntent(context, device, onStateName, widgetConfiguration, widgetConfiguration.widgetId)
         view.setOnClickPendingIntent(R.id.widgetOnButton, onPendingIntent)
 
-        val offIntent = Intent(Actions.DEVICE_SET_STATE)
-                .setClass(context, DeviceIntentService::class.java)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, offStateName)
-                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
-        val offPendingIntent = PendingIntent.getService(context, -1 * widgetConfiguration.widgetId,
-                offIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val offPendingIntent = targetStatePendingIntent(context, device, offStateName, widgetConfiguration, -widgetConfiguration.widgetId)
         view.setOnClickPendingIntent(R.id.widgetOffButton, offPendingIntent)
 
         openDeviceDetailPageWhenClicking(R.id.deviceName, view, device, widgetConfiguration, context)
+    }
+
+    private fun targetStatePendingIntent(context: Context, device: FhemDevice, targetState: String, widgetConfiguration: WidgetConfiguration, requestCode: Int): PendingIntent? {
+        val intent = Intent(context, AppWidgetBroadcastReceiver::class.java)
+                .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
+                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
+        return PendingIntent.getBroadcast(context, requestCode,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     override fun supports(device: FhemDevice, context: Context): Boolean =

@@ -36,6 +36,7 @@ import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
 import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.intent.RoomListUpdateIntentService
+import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
@@ -49,7 +50,8 @@ import javax.inject.Singleton
 class GenericDeviceService @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
         private val application: Application,
-        private val deviceConfigurationProvider: DeviceConfigurationProvider
+        private val deviceConfigurationProvider: DeviceConfigurationProvider,
+        private val deviceListUpdateService: DeviceListUpdateService
 ) {
     private val applicationContext get() = application.applicationContext
 
@@ -129,15 +131,15 @@ class GenericDeviceService @Inject constructor(
     fun update(device: XmlListDevice, connectionId: String? = null) {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         val delay = configuration.delayForUpdateAfterCommand
-        val updateIntent = Intent(DO_REMOTE_UPDATE)
-                .putExtra(DEVICE_NAME, device.name)
-                .putExtra(CONNECTION_ID, connectionId)
-                .setClass(applicationContext, RoomListUpdateIntentService::class.java)
         if (delay > 0) {
+            val updateIntent = Intent(DO_REMOTE_UPDATE)
+                    .putExtra(DEVICE_NAME, device.name)
+                    .putExtra(CONNECTION_ID, connectionId)
+                    .setClass(applicationContext, RoomListUpdateIntentService::class.java)
             val alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.set(AlarmManager.RTC, (delay * 1000).toLong(), PendingIntent.getService(applicationContext, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT))
         } else {
-            applicationContext.startService(updateIntent)
+            deviceListUpdateService.updateSingleDevice(device.name, connectionId)
         }
     }
 }

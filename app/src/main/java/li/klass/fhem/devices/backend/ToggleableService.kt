@@ -44,7 +44,7 @@ constructor(
      * @param connectionId connectionId
      * @param context      context
      */
-    fun toggleState(device: FhemDevice, connectionId: Optional<String>) {
+    fun toggleState(device: FhemDevice, connectionId: String?) {
         val targetState = when {
             onOffBehavior.isOnByState(device) -> onOffBehavior.getOffStateName(device)
             else -> onOffBehavior.getOnStateName(device)
@@ -53,7 +53,7 @@ constructor(
             logger.error("toggleState(device=${device.name}) - cannot toggle as state cannot be found for current state '${device.state}'")
             return
         }
-        genericDeviceService.setState(device, targetState, connectionId)
+        genericDeviceService.setState(device, targetState, Optional.fromNullable(connectionId))
     }
 
     companion object {

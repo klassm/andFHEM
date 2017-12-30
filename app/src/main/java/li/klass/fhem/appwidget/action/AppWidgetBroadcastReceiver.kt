@@ -22,22 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.ui.widget.small
+package li.klass.fhem.appwidget.action
 
-import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.ui.FragmentType
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import li.klass.fhem.AndFHEMApplication
+import javax.inject.Inject
 
-class SendCommandLinkWidget : SmallIconWidget() {
-    override val fragment: FragmentType
-        get() = FragmentType.SEND_COMMAND
+class AppWidgetBroadcastReceiver : BroadcastReceiver() {
+    @Inject
+    lateinit var appWidgetActionHandler: AppWidgetActionHandler
 
-    override val iconResource: Int
-        get() = R.drawable.send_command
+    init {
+        AndFHEMApplication.application?.daggerComponent?.inject(this)
+    }
 
-    override fun getWidgetName(): Int = R.string.widget_send_command_link
+    override fun onReceive(context: Context?, intent: Intent?) {
+        intent ?: return
+        context ?: return
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
+        appWidgetActionHandler.handle(context, intent.extras, intent.action)
     }
 }

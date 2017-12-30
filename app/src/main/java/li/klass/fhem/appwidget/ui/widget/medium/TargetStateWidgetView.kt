@@ -33,6 +33,7 @@ import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
+import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity
@@ -43,7 +44,6 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.service.intent.DeviceIntentService
 
 class TargetStateWidgetView : DeviceAppWidgetView() {
     override fun getWidgetName(): Int = R.string.widget_targetstate
@@ -65,13 +65,13 @@ class TargetStateWidgetView : DeviceAppWidgetView() {
             pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId,
                     actionIntent, FLAG_UPDATE_CURRENT)
         } else {
-            val actionIntent = Intent(Actions.DEVICE_SET_STATE)
-                    .setClass(context, DeviceIntentService::class.java)
+            val actionIntent = Intent(context, AppWidgetBroadcastReceiver::class.java)
+                    .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
                     .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
                     .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
                     .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
 
-            pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
+            pendingIntent = PendingIntent.getBroadcast(context, widgetConfiguration.widgetId, actionIntent,
                     FLAG_UPDATE_CURRENT)
         }
 

@@ -61,7 +61,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES;
 import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
-import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
@@ -144,21 +143,23 @@ public class DeviceIntentService extends ConvenientIntentService {
             String newAlias = intent.getStringExtra(DEVICE_NEW_ALIAS);
             deviceService.setAlias(device, newAlias);
 
-        } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
-            result = toggleIntent(device, connectionId);
         } else if (DEVICE_SET_SUB_STATE.equals(action)) {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
             genericDeviceService.setSubState(device, name, value, connectionId, true);
 
-        } else if (DEVICE_SET_SUB_STATES.equals(action)) {
+        } else if (DEVICE_SET_SUB_STATES.equals(action))
+
+        {
             @SuppressWarnings("unchecked")
             List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
 
             genericDeviceService.setSubStates(device, statesToSet, connectionId);
 
-        } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
+        } else if (RESEND_LAST_FAILED_COMMAND.equals(action))
+
+        {
 
             Command lastFailedCommand = commandExecutionService.getLastFailedCommand();
             if (lastFailedCommand != null && "xmllist".equalsIgnoreCase(lastFailedCommand.getCommand())) {
@@ -181,7 +182,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      */
     private State toggleIntent(FhemDevice device, Optional<String> connectionId) {
         if (onOffBehavior.supports(device)) {
-            toggleableService.toggleState(device, connectionId);
+            toggleableService.toggleState(device, connectionId.orNull());
             return SUCCESS;
         } else {
             return ERROR;
@@ -191,8 +192,8 @@ public class DeviceIntentService extends ConvenientIntentService {
     /**
      * Set the state of a device and notify the result receiver
      *
-     * @param intent       received intent
-     * @param device       device to set the state on
+     * @param intent received intent
+     * @param device device to set the state on
      * @return success ?
      */
     private State setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {

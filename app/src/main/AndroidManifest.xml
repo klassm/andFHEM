@@ -81,9 +81,9 @@
             android:value="li.klass.fhem.search.SearchResultsActivity" />
 
         <provider
-            android:exported="false"
             android:name=".search.MySearchSuggestionsProvider"
-            android:authorities="li.klass.fhem.search.MySearchSuggestionsProvider" />
+            android:authorities="li.klass.fhem.search.MySearchSuggestionsProvider"
+            android:exported="false" />
 
         <activity android:name=".activities.DuplicateInstallActivity" />
         <activity
@@ -156,6 +156,16 @@
             android:theme="@style/Theme.Dialog.Light" />
 
         <receiver
+            android:name=".appwidget.action.AppWidgetBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TARGET_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
             android:name=".appwidget.provider.SmallAppWidgetProvider"
             android:exported="true"
             android:label="@string/widget_small">
@@ -191,8 +201,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/andfhem_appwidget_big" />
         </receiver>
+
         <service
             android:name=".appwidget.update.AppWidgetUpdateIntentService"
+            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET" />
@@ -254,7 +266,6 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES" />
                 <action android:name="li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND" />
@@ -326,8 +337,8 @@
 
         <service
             android:name=".fcm.receiver.FcmIntentService"
-            android:exported="false"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

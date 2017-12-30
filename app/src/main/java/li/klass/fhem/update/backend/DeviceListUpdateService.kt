@@ -110,11 +110,19 @@ class DeviceListUpdateService @Inject constructor(
 
         return when (success) {
             true -> {
-                applicationContext.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
-                        .setClass(applicationContext, AppIndexIntentService::class.java))
+                updateIndex()
                 UpdateResult.Success(roomDeviceList)
             }
             else -> UpdateResult.Error()
+        }
+    }
+
+    private fun updateIndex() {
+        try {
+            applicationContext.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
+                    .setClass(applicationContext, AppIndexIntentService::class.java))
+        } catch (e: Exception) {
+            LOG.debug("cannot update app index, probably because we are in background", e)
         }
     }
 

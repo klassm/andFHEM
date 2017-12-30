@@ -44,11 +44,10 @@ public class Actions {
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
+    public static final String DEVICE_WIDGET_TARGET_STATE = prefix + "DEVICE_WIDGET_TARGET_STATE";
 
     public static final String DEVICE_SET_SUB_STATE = prefix + "DEVICE_SET_SUB_STATE";
     public static final String DEVICE_SET_SUB_STATES = prefix + "DEVICE_SET_SUB_STATES";
-
-    public static final String LOAD_IMAGE = prefix + "LOAD_IMAGE";
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
     public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";
@@ -78,5 +77,4 @@ public class Actions {
     public static final String IS_PREMIUM = prefix + "IS_PREMIUM";
 
     public static final String UPDATE_NEXT_ALARM_CLOCK = prefix + "NEXT_ALARM_CLOCK";
-    public static final String SCHEDULE_ALARM_CLOCK_UPDATE = prefix + "SCHEDULE_ALARM_CLOCK_UPDATE";
 }
