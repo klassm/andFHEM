@@ -22,13 +22,30 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.cards.device.values
+package li.klass.fhem.adapter.devices.core.deviceItems
 
-import android.content.Context
-import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
-import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
-import li.klass.fhem.domain.core.FhemDevice
+import java.util.*
 
-interface ItemProvider {
-    fun itemsFor(provider: XmlDeviceItemProvider, device: FhemDevice, showUnknown: Boolean, context: Context): Set<XmlDeviceViewItem>
+data class XmlDeviceViewItem(val key: String,
+                             val desc: String,
+                             val value: String,
+                             val showAfter: String?,
+                             val isShowInDetail: Boolean,
+                             val isShowInOverview: Boolean) {
+
+    val sortKey = key.toLowerCase(Locale.getDefault())
+
+    override fun toString(): String {
+        return "XmlDeviceViewItem{" +
+                "key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                ", showAfter='" + showAfter + '\'' +
+                ", isShowInDetail=" + isShowInDetail +
+                ", isShowInOverview=" + isShowInOverview +
+                '}'
+    }
+
+    companion object {
+        val FIRST = "__first__"
+    }
 }

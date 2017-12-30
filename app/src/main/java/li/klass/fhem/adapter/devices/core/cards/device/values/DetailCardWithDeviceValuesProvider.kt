@@ -36,9 +36,9 @@ import android.widget.TextView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.StateChangingColorPickerRow
@@ -55,7 +55,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
-import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import li.klass.fhem.util.ApplicationProperties
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -63,7 +62,6 @@ import javax.inject.Inject
 class DetailCardWithDeviceValuesProvider @Inject constructor(
         private val deviceViewItemSorter: DeviceViewItemSorter,
         private val xmlDeviceItemProvider: XmlDeviceItemProvider,
-        private val deviceDescMapping: DeviceDescMapping,
         private val devStateIconAdder: DevStateIconAdder,
         private val toggleableStrategy: ToggleableStrategy,
         private val dimmableStrategy: DimmableStrategy,
@@ -108,7 +106,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         return card as CardView
     }
 
-    private fun fillTable(device: FhemDevice, connectionId: String?, table: TableLayout, items: List<DeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
+    private fun fillTable(device: FhemDevice, connectionId: String?, table: TableLayout, items: List<XmlDeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
 
         table.removeAllViews()
 
@@ -123,22 +121,21 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         table.visibility = if (table.childCount == 0) View.GONE else View.VISIBLE
     }
 
-    private fun getSortedClassItems(device: FhemDevice, itemProvider: ItemProvider, showUnknown: Boolean, context: Context): List<DeviceViewItem> {
+    private fun getSortedClassItems(device: FhemDevice, itemProvider: ItemProvider, showUnknown: Boolean, context: Context): List<XmlDeviceViewItem> {
         val xmlViewItems = itemProvider.itemsFor(xmlDeviceItemProvider, device, showUnknown, context)
         return deviceViewItemSorter.sortedViewItemsFrom(xmlViewItems)
     }
 
 
-    private fun createHolderWithRow(item: DeviceViewItem, device: FhemDevice, context: Context): GenericDeviceTableRowHolder? {
-        val value = item.getValueFor(device)
-        if (value.isNullOrBlank()) {
+    private fun createHolderWithRow(item: XmlDeviceViewItem, device: FhemDevice, context: Context): GenericDeviceTableRowHolder? {
+        val value = item.value
+        if (value.isBlank()) {
             return null
         }
 
         val holder = createEmptyRow(LayoutInflater.from(context), R.layout.device_detail_generic_table_row)
-        val description = item.getName(deviceDescMapping, context)
-        holder.description.text = description
-        holder.value.text = value.toString()
+        holder.description.text = item.desc
+        holder.value.text = value
         devStateIconAdder.addDevStateIconIfRequired(value, device, holder.devStateIcon)
 
         return holder
@@ -161,7 +158,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
 
 
     private fun addActionIfRequired(device: FhemDevice, connectionId: String?, table: TableLayout,
-                                    item: DeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
+                                    item: XmlDeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
         val xmlListDevice = device.xmlListDevice
 
         val attributeActions = providers
@@ -173,7 +170,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         if (!attributeActions.isEmpty()) {
             attributeActions
                     .filter { it.supports(xmlListDevice) }
-                    .forEach { addRow(table, it.createRow(xmlListDevice, connectionId, item.key, item.getValueFor(device), context, table)) }
+                    .forEach { addRow(table, it.createRow(xmlListDevice, connectionId, item.key, item.value, context, table)) }
         }
 
         if (item.sortKey.equals("state", ignoreCase = true)) {
@@ -202,7 +199,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
                 addRow(table, OnOffSubStateActionRow(AbstractOnOffActionRow.LAYOUT_DETAIL, setListEntry.key, connectionId)
                         .createRow(device, context))
             } else {
-                addRow(table, StateChangingSpinnerActionRow(context, null, item.getName(deviceDescMapping, context), groupStates, item.getValueFor(device), item.key)
+                addRow(table, StateChangingSpinnerActionRow(context, null, item.desc, groupStates, item.value, item.key)
                         .createRow(xmlListDevice, connectionId, table))
             }
         } else if (setListEntry is RGBSetListEntry) {

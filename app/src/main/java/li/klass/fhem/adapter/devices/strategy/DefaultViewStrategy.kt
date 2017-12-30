@@ -31,7 +31,7 @@ import android.widget.TableRow
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
@@ -50,7 +50,7 @@ constructor(
 ) : ViewStrategy() {
 
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
         val stopWatch = StopWatch()
         stopWatch.start()
@@ -73,7 +73,7 @@ constructor(
     private val overviewLayout: Int
         get() = R.layout.device_overview_generic
 
-    open fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<DeviceViewItem>, layoutInflater: LayoutInflater) {
+    open fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<XmlDeviceViewItem>, layoutInflater: LayoutInflater) {
         val context = layoutInflater.context
 
         viewHolder.resetHolder()
@@ -83,10 +83,9 @@ constructor(
             val config = deviceConfigurationProvider.configurationFor(device)
             var currentGenericRow = 0
             for (item in items) {
-                val name = item.sortKey
-
-                val isShowInOverview = (name == "state" && config.isShowStateInOverview)
-                        || (name == "measured") && config.isShowMeasuredInOverview
+                // STATE as this refers to the internal "STATE", for which the stateFormat attribute is evaluated
+                val isShowInOverview = (item.key == "STATE" && config.isShowStateInOverview)
+                        || (item.sortKey == "measured") && config.isShowMeasuredInOverview
                         || item.isShowInOverview
 
                 if (isShowInOverview) {
@@ -119,18 +118,16 @@ constructor(
         )
     }
 
-    private fun fillTableRow(holder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder, item: DeviceViewItem, device: FhemDevice, context: Context) {
-        val value: String? = item.getValueFor(device)
-        val description: String? = item.getName(deviceDescMapping, context)
-        setTextView(holder.description, description)
-        setTextView(holder.value, value)
-        if (value == null || value == "") {
+    private fun fillTableRow(holder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder, item: XmlDeviceViewItem, device: FhemDevice, context: Context) {
+        setTextView(holder.description, item.desc)
+        setTextView(holder.value, item.value)
+        if (item.value == "") {
             holder.row.visibility = View.GONE
         } else {
             holder.row.visibility = View.VISIBLE
         }
 
-        devStateIconAdder.addDevStateIconIfRequired(value, device, holder.devStateIcon)
+        devStateIconAdder.addDevStateIconIfRequired(item.value, device, holder.devStateIcon)
     }
 
     companion object {

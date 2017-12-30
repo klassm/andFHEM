@@ -28,8 +28,8 @@ import android.content.Context
 import android.support.v7.widget.CardView
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProvider
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class AttributesCardProvider @Inject constructor(
     }
 
     class AttributesItemProvider : ItemProvider {
-        override fun itemsFor(provider: XmlDeviceItemProvider, device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> =
+        override fun itemsFor(provider: XmlDeviceItemProvider, device: FhemDevice, showUnknown: Boolean, context: Context): Set<XmlDeviceViewItem> =
                 provider.getAttributesFor(device, showUnknown, context)
     }
 }

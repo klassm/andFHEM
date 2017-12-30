@@ -31,7 +31,7 @@ import android.widget.TableRow
 import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow
 import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleables
@@ -49,7 +49,7 @@ class ToggleableStrategy
 @Inject constructor(val hookProvider: DeviceHookProvider,
                     val onOffBehavior: OnOffBehavior) : ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
         val stopWatch = StopWatch()
         stopWatch.start()

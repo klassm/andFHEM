@@ -30,7 +30,7 @@ import android.view.View
 import android.widget.TableRow
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.DimActionRow
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth
 import li.klass.fhem.adapter.devices.hook.ButtonHook
@@ -50,7 +50,7 @@ constructor(
         val applicationProperties: ApplicationProperties
 ) : ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val myView = when {
             convertView == null || convertView.tag == null -> {
                 val v = layoutInflater.inflate(R.layout.device_overview_generic, null)

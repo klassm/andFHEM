@@ -27,9 +27,9 @@ package li.klass.fhem.adapter.devices.core
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.strategy.DefaultViewStrategy
 import li.klass.fhem.adapter.devices.strategy.LightSceneDeviceViewStrategy
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy
@@ -99,7 +99,7 @@ abstract class OverviewDeviceAdapter : DeviceAdapter() {
         return view
     }
 
-    private fun getSortedAnnotatedClassItems(device: FhemDevice, context: Context): List<DeviceViewItem> {
+    private fun getSortedAnnotatedClassItems(device: FhemDevice, context: Context): List<XmlDeviceViewItem> {
 
         val xmlViewItems = xmlDeviceItemProvider.getDeviceOverviewItems(device, context)
         return deviceViewItemSorter.sortedViewItemsFrom(xmlViewItems)

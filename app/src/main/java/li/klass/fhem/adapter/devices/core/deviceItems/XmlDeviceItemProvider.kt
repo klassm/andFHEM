@@ -45,34 +45,35 @@ class XmlDeviceItemProvider @Inject constructor(
         val deviceConfigurationProvider: DeviceConfigurationProvider
 ) {
 
-    fun getDeviceOverviewItems(fhemDevice: FhemDevice, context: Context): Set<DeviceViewItem> {
+    fun getDeviceOverviewItems(fhemDevice: FhemDevice, context: Context): Set<XmlDeviceViewItem> {
         val xmlListDevice = fhemDevice.xmlListDevice
 
         val configuration = deviceConfigurationProvider.configurationFor(fhemDevice)
         val measuredAsList = mostRecentlyMeasuredNode(fhemDevice, context)?.let { setOf(it) } ?: emptySet()
         return itemsFor(configuration.states, xmlListDevice.states, false, context) +
                 itemsFor(configuration.attributes, xmlListDevice.attributes, false, context) +
+                itemsFor(configuration.internals, xmlListDevice.internals, false, context) +
                 measuredAsList
 
     }
 
-    fun getStatesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+    fun getStatesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<XmlDeviceViewItem> {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         return itemsFor(configuration.states, device.xmlListDevice.states, showUnknown, context)
     }
 
-    fun getAttributesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+    fun getAttributesFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<XmlDeviceViewItem> {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         return itemsFor(configuration.attributes, device.xmlListDevice.attributes, showUnknown, context)
     }
 
-    fun getInternalsFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+    fun getInternalsFor(device: FhemDevice, showUnknown: Boolean, context: Context): Set<XmlDeviceViewItem> {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         return itemsFor(configuration.internals, device.xmlListDevice.internals, showUnknown, context)
     }
 
 
-    private fun itemsFor(configs: Set<ViewItemConfig>, nodes: Map<String, DeviceNode>, showUnknown: Boolean, context: Context): Set<DeviceViewItem> {
+    private fun itemsFor(configs: Set<ViewItemConfig>, nodes: Map<String, DeviceNode>, showUnknown: Boolean, context: Context): Set<XmlDeviceViewItem> {
         if (showUnknown) {
             return nodes.map { genericItemFor(it.value, context) }.toSet()
         }
@@ -91,14 +92,14 @@ class XmlDeviceItemProvider @Inject constructor(
                 .firstOrNull { it.key.equals(key, ignoreCase = true) }
     }
 
-    private fun genericItemFor(deviceNode: DeviceNode, context: Context): DeviceViewItem {
+    private fun genericItemFor(deviceNode: DeviceNode, context: Context): XmlDeviceViewItem {
         val desc = deviceDescMapping.descFor(deviceNode.key, context)
 
         return XmlDeviceViewItem(deviceNode.key, desc,
                 deviceNode.value, null, true, false)
     }
 
-    private fun itemFor(config: ViewItemConfig, deviceNode: DeviceNode, context: Context): DeviceViewItem {
+    private fun itemFor(config: ViewItemConfig, deviceNode: DeviceNode, context: Context): XmlDeviceViewItem {
         val jsonDesc = StringUtils.trimToNull(config.desc)
         val resource = getResourceIdFor(jsonDesc)
         val desc = when {
@@ -106,7 +107,7 @@ class XmlDeviceItemProvider @Inject constructor(
             else -> deviceDescMapping.descFor(deviceNode.key, context)
         }
 
-        val showAfter = config.showAfter ?: DeviceViewItem.FIRST
+        val showAfter = config.showAfter ?: XmlDeviceViewItem.FIRST
         return XmlDeviceViewItem(config.key, desc,
                 deviceNode.value, showAfter, config.isShowInDetail, config.isShowInOverview)
     }
@@ -122,7 +123,7 @@ class XmlDeviceItemProvider @Inject constructor(
         }
     }
 
-    private fun mostRecentlyMeasuredNode(fhemDevice: FhemDevice, context: Context): DeviceViewItem? {
+    private fun mostRecentlyMeasuredNode(fhemDevice: FhemDevice, context: Context): XmlDeviceViewItem? {
         val states = fhemDevice.xmlListDevice.states
         if (states.isEmpty()) return null
 

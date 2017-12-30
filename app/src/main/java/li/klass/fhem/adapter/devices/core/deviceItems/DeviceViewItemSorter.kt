@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems
 
-import com.google.common.base.Strings.isNullOrEmpty
 import com.google.common.collect.Lists.newArrayList
 import java.util.*
 import javax.inject.Inject
@@ -34,20 +33,20 @@ import kotlin.collections.HashMap
 @Singleton
 class DeviceViewItemSorter @Inject constructor() {
 
-    fun sortedViewItemsFrom(items: Iterable<DeviceViewItem>): List<DeviceViewItem> {
+    fun sortedViewItemsFrom(items: Iterable<XmlDeviceViewItem>): List<XmlDeviceViewItem> {
         val result = newArrayList(items)
 
         val fieldNameMapping = HashMap<String, String>()
         for (item in items) {
-            val showAfterValue = item.showAfterValue
-            if (!isNullOrEmpty(showAfterValue)) {
+            val showAfterValue = item.showAfter
+            if (!showAfterValue.isNullOrEmpty()) {
                 val lowerCaseName = item.sortKey.toLowerCase(Locale.getDefault())
-                if (DeviceViewItem.FIRST == showAfterValue) {
+                if (XmlDeviceViewItem.FIRST == showAfterValue) {
                     // make sure we are the first one!
                     fieldNameMapping.put(lowerCaseName, "___" + lowerCaseName)
                 } else {
                     fieldNameMapping.put(lowerCaseName,
-                            showAfterValue.toLowerCase(Locale.getDefault()))
+                            showAfterValue!!.toLowerCase(Locale.getDefault()))
                 }
             }
         }

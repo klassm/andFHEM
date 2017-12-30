@@ -1,1 +1,1 @@
-TODO
+* Werte stateFormat für STATE in Übersicht aus

@@ -29,7 +29,7 @@ import android.view.View
 import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.StateChangeButtonActionRow
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
@@ -47,7 +47,7 @@ constructor(
         deviceConfigurationProvider: DeviceConfigurationProvider) :
         DefaultViewStrategy(deviceDescMapping, devStateIconAdder, deviceConfigurationProvider) {
 
-    override fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<DeviceViewItem>, layoutInflater: LayoutInflater) {
+    override fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<XmlDeviceViewItem>, layoutInflater: LayoutInflater) {
         super.fillDeviceOverviewView(view, device, viewHolder, items, layoutInflater)
 
         val row = StateChangeButtonActionRow(layoutInflater.context, device, ButtonActionRow.LAYOUT_OVERVIEW, null)

@@ -30,7 +30,7 @@ import android.view.View
 import android.widget.TableLayout
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow
 import li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE
@@ -43,7 +43,7 @@ import javax.inject.Singleton
 class WebcmdStrategy @Inject
 constructor(val hookProvider: DeviceHookProvider) : ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
         if (myView == null || myView.tag == null) {
             myView = layoutInflater.inflate(R.layout.device_overview_generic, null)

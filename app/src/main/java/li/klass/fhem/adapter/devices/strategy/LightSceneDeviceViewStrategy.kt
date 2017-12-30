@@ -31,7 +31,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TableLayout
 import li.klass.fhem.R
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
@@ -44,7 +44,7 @@ class LightSceneDeviceViewStrategy @Inject constructor(
         val stateUiService: StateUiService
 ) : ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val layout = layoutInflater.inflate(R.layout.device_overview_generic, null) as TableLayout
         layout.removeAllViews()
 

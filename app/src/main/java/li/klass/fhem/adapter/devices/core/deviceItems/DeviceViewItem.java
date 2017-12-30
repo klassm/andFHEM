@@ -29,13 +29,13 @@ import android.content.Context;
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping;
 
 public interface DeviceViewItem {
-    String FIRST = "__first__";
+
 
     String getName(DeviceDescMapping deviceDescMapping, Context context);
 
     String getValueFor(Object object);
 
-    String getShowAfterValue();
+    String getShowAfter();
 
     boolean isShowInOverview();
 

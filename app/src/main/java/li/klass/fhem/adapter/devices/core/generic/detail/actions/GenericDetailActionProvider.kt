@@ -25,10 +25,8 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions
 
 import android.content.Context
-
 import com.google.common.base.Optional
-
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -44,5 +42,5 @@ interface GenericDetailActionProvider {
      */
     fun actionsFor(context: Context): List<ActionCardAction>
 
-    fun stateAttributeActionFor(item: DeviceViewItem): Optional<StateAttributeAction>
+    fun stateAttributeActionFor(item: XmlDeviceViewItem): Optional<StateAttributeAction>
 }

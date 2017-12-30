@@ -34,7 +34,7 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
-import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItem
+import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -48,7 +48,7 @@ class WeatherDeviceViewStrategy @Inject constructor(
 ) : ViewStrategy() {
 
     @SuppressLint("InflateParams")
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<DeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val view = layoutInflater.inflate(R.layout.device_overview_weather, null)
         defaultViewStrategy.fillDeviceOverviewView(view, rawDevice, GenericDeviceOverviewViewHolder(view), deviceItems, layoutInflater)
 
