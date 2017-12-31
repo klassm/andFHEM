@@ -1,1 +1,1 @@
-TODO
+* Zeige Messdatum als Datum mit Zeit an

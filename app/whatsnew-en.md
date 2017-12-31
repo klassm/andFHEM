@@ -1,1 +1,1 @@
-TODO
+* Show measured as date with time

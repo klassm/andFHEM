@@ -133,7 +133,7 @@ class XmlDeviceItemProvider @Inject constructor(
                 mostRecent = node
             }
         }
-        return mostRecent?.measured?.let { XmlDeviceViewItem("measured", context.getString(R.string.measured), DateFormatUtil.ANDFHEM_DATE_FORMAT.print(it), null, false, false) }
+        return mostRecent?.measured?.let { XmlDeviceViewItem("measured", context.getString(R.string.measured), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(it), null, false, false) }
     }
 
 
