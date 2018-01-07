@@ -119,7 +119,7 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:percent:${supportLibVersion}"
     compile "com.android.support:support-annotations:${supportLibVersion}"
-    compile 'com.google.errorprone:error_prone_annotations:2.0.18'
+    compile 'com.google.errorprone:error_prone_annotations:2.1.3'
     compile 'com.google.j2objc:j2objc-annotations:1.3'
     compile 'com.squareup.picasso:picasso:2.5.1'
     compile 'com.github.alexfu:Phoenix:1.0.0'

@@ -226,9 +226,11 @@ class GraphActivity : AppCompatActivity(), Updateable {
         return lineType == GPlotSeries.LineType.STEPS || lineType == GPlotSeries.LineType.FSTEPS || lineType == GPlotSeries.LineType.HISTEPS
     }
 
-    private fun createLineDataFor(graphData: Map<GPlotSeries, MutableList<GraphEntry>>): LineData {
-        val lineDataItems = graphData.map { lineDataSetFrom(it) }.toList()
-        return LineData(lineDataItems)
+    private fun createLineDataFor(graphData: Map<GPlotSeries, MutableList<GraphEntry>>): LineData? {
+        val lineDataItems = graphData
+                .filter { it.value.isNotEmpty() }
+                .map { lineDataSetFrom(it) }.toList()
+        return if (lineDataItems.isEmpty()) null else LineData(lineDataItems)
     }
 
     private fun lineDataSetFrom(entry: Map.Entry<GPlotSeries, MutableList<GraphEntry>>): ILineDataSet {

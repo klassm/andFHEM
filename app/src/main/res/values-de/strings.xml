@@ -160,9 +160,7 @@
     <string name="idleDevices">Leerlauf-Geräte</string>
     <string name="demandDevices">Abruf-Geräte</string>
     <string name="target">Ziel</string>
-    <string name="noGraphEntries">Keine Graph-Einträge gefunden, die entsprechend zum ausgewählten Zeitraum passen!
-        Sind im FileLog Daten vorhanden?
-    </string>
+    <string name="noGraphEntries">Keine Daten gefunden.</string>
     <string name="showGraph">Zeige Graph</string>
     <string name="delete">Löschen</string>
     <string name="deleteConfirmIntervalText">Möchten Sie das Intervall wirklich löschen?</string>
