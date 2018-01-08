@@ -641,5 +641,6 @@
     <string name="fcm_history_no_messages">Keine Nachrichten gefunden.</string>
     <string name="fcm_history_no_updates">Keine Aktualisierungen gefunden.</string>
     <string name="fcm_history_date_label">Daten vom</string>
+    <string name="fcm_history_received">(Empfangen: %s)</string>
 
 </resources>

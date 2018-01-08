@@ -33,7 +33,15 @@ class FcmMessagesAdapter(elements: List<FcmHistoryService.SavedMessage>) : Recyc
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(message: FcmHistoryService.SavedMessage) {
             view.apply {
-                time.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.time)
+                sendTime.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.time)
+                receiveTime.apply {
+                    if (message.receiveTime != null) {
+                        visibility = View.VISIBLE
+                        text = String.format(context.getString(R.string.fcm_history_received), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.receiveTime))
+                    } else {
+                        visibility = View.GONE
+                    }
+                }
                 if (message.ticker == message.title) {
                     ticker.visibility = View.GONE
                 } else {

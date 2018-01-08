@@ -17,7 +17,7 @@ class FcmHistoryChangeEntity : FcmHistoryEntity {
     constructor() : super()
 
     @Ignore
-    constructor(datetime: String, date: String, device: String?, changes: String?) : super(datetime, date) {
+    constructor(datetime: String, date: String, device: String?, changes: String?, saveDatetime: String) : super(datetime, date, saveDatetime) {
         this.device = device
         this.changes = changes
     }

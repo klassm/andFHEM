@@ -10,14 +10,29 @@
         android:orientation="vertical"
         android:padding="3dp">
 
-        <TextView
-            android:id="@+id/time"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
-            android:textStyle="bold"
-            android:text="@string/dummy_date" />
+            android:id="@+id/time">
+
+            <TextView
+                android:id="@+id/sendTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_marginRight="3dp"
+                android:text="@string/dummy_date"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/receiveTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:text="@string/dummy_date"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/ticker"
@@ -30,14 +45,14 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:layout_below="@+id/ticker" />
+            android:layout_below="@+id/ticker"
+            android:text="@string/app_name" />
 
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:layout_below="@+id/title" />
+            android:layout_below="@+id/title"
+            android:text="@string/app_name" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

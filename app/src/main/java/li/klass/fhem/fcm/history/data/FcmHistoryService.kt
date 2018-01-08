@@ -22,7 +22,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                 date = dateFormat.print(message.sentTime),
                 text = message.contentText,
                 ticker = message.tickerText,
-                title = message.contentTitle
+                title = message.contentTitle,
+                saveDatetime = DateTime.now().toString(datetimeFormat)
         ))
         logger.info("addMessage - success, id=$id")
     }
@@ -34,7 +35,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                             time = DateTime.parse(it.datetime, datetimeFormat),
                             title = it.title ?: "",
                             ticker = it.ticker ?: "",
-                            text = it.text ?: ""
+                            text = it.text ?: "",
+                            receiveTime = it.saveDatetime?.let { DateTime.parse(it, datetimeFormat) }
                     )
                 }
     }
@@ -47,7 +49,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                 datetime = sentTime.toString(datetimeFormat),
                 date = dateFormat.print(sentTime),
                 device = device,
-                changes = changesAsString
+                changes = changesAsString,
+                saveDatetime = DateTime.now().toString(datetimeFormat)
         ))
         logger.info("addChange - success, id=$id")
     }
@@ -68,7 +71,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
                     SavedChange(
                             time = DateTime.parse(it.datetime, datetimeFormat),
                             changes = changesAsPairs,
-                            deviceName = it.device ?: ""
+                            deviceName = it.device ?: "",
+                            receiveTime = it.saveDatetime?.let { DateTime.parse(it, datetimeFormat) }
                     )
                 }
     }
@@ -103,12 +107,14 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
             val time: DateTime,
             val title: String,
             val text: String,
-            val ticker: String)
+            val ticker: String,
+            val receiveTime: DateTime?)
 
     class SavedChange(
             val time: DateTime,
             val deviceName: String,
-            val changes: List<Pair<String, String>>
+            val changes: List<Pair<String, String>>,
+            val receiveTime: DateTime?
     )
 
     companion object {

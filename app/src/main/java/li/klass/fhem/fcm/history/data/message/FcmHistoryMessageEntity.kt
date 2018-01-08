@@ -19,8 +19,8 @@ class FcmHistoryMessageEntity : FcmHistoryEntity {
     constructor()
 
     @Ignore
-    constructor(datetime: String, date: String, title: String, text: String, ticker: String)
-            : super(datetime, date) {
+    constructor(datetime: String, date: String, title: String, text: String, ticker: String, saveDatetime: String)
+            : super(datetime, date, saveDatetime) {
         this.title = title
         this.ticker = ticker
         this.text = text

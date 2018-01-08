@@ -10,14 +10,30 @@
         android:orientation="vertical"
         android:padding="3dp">
 
-        <TextView
-            android:id="@+id/time"
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
-            android:text="2017-10-20 10:33:33"
-            android:textStyle="bold" />
+            android:id="@+id/time">
+
+            <TextView
+                android:id="@+id/sendTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_marginRight="3dp"
+                android:text="@string/dummy_date"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/receiveTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:text="@string/dummy_date"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/deviceLabel"

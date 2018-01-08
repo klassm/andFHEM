@@ -682,4 +682,5 @@
     <string name="fcm_history_no_messages">No messages found.</string>
     <string name="fcm_history_no_updates">No updates found.</string>
     <string name="fcm_history_date_label">Data from</string>
+    <string name="fcm_history_received">(Received: %s)</string>
 </resources>

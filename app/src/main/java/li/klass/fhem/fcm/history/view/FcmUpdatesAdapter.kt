@@ -35,8 +35,17 @@ class FcmUpdatesAdapter(elements: List<FcmHistoryService.SavedChange>) : Recycle
         fun bind(change: FcmHistoryService.SavedChange) {
             val inflater = LayoutInflater.from(view.context)
             view.apply {
-                time.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(change.time)
+                sendTime.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(change.time)
                 device.text = change.deviceName
+                receiveTime.apply {
+                    if (change.receiveTime != null) {
+                        visibility = View.VISIBLE
+                        text = String.format(context.getString(R.string.fcm_history_received), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(change.receiveTime))
+                    } else {
+                        visibility = View.GONE
+                    }
+                }
+
                 changes.removeAllViews()
 
                 change.changes.sortedBy { it.first }
