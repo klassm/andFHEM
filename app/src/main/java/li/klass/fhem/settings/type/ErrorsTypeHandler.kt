@@ -14,12 +14,12 @@ class ErrorsTypeHandler @Inject constructor()
     override fun initWith(sharedPreferences: SharedPreferences, preferenceFinder: (String) -> Preference, activity: Activity) {
 
         preferenceFinder(SettingsKeys.SEND_LAST_ERROR).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            ErrorHolder.sendLastErrorAsMail(it.context)
+            ErrorHolder.sendLastErrorAsMail(activity)
             true
         }
 
         preferenceFinder(SettingsKeys.SEND_APP_LOG).onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            ErrorHolder.sendApplicationLogAsMail(it.context)
+            ErrorHolder.sendApplicationLogAsMail(activity)
             true
         }
     }

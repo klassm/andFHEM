@@ -24,6 +24,7 @@
 
 package li.klass.fhem.error;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.api.client.repackaged.com.google.common.base.Objects;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.io.CharStreams;
@@ -57,7 +59,7 @@ public class ErrorHolder {
     private volatile transient Exception errorException;
     private volatile transient String errorMessage;
 
-    public static ErrorHolder ERROR_HOLDER = new ErrorHolder();
+    private static ErrorHolder ERROR_HOLDER = new ErrorHolder();
 
     private ErrorHolder() {
     }
@@ -89,27 +91,27 @@ public class ErrorHolder {
         return text;
     }
 
-    public static void sendLastErrorAsMail(final Context context) {
-        DialogUtil.showConfirmBox(context, R.string.error_send,
+    public static void sendLastErrorAsMail(final Activity activity) {
+        DialogUtil.showConfirmBox(activity, R.string.error_send,
                 R.string.error_send_content, new DialogUtil.AlertOnClickListener() {
                     @Override
                     public void onClick() {
-                        handleSendLastError(context);
+                        handleSendLastError(activity);
                     }
                 });
     }
 
-    private static void handleSendLastError(Context context) {
-        if (!handleExternalStorageState(context)) return;
+    private static void handleSendLastError(Activity activity) {
+        if (!handleExternalStorageState(activity)) return;
         try {
             String lastError = ErrorHolder.getText();
             if (lastError == null) {
-                DialogUtil.showAlertDialog(context, R.string.error_send, R.string.error_send_no_error);
+                DialogUtil.showAlertDialog(activity, R.string.error_send, R.string.error_send_no_error);
                 return;
             }
 
-            File attachment = writeToDisk(context, lastError);
-            sendMail(context, "Send last error", "Error encountered!", deviceInformation(), Uri.fromFile(attachment));
+            File attachment = writeToDisk(activity, lastError);
+            sendMail(activity, "Send last error", "Error encountered!", deviceInformation(), Uri.fromFile(attachment));
 
         } catch (Exception e) {
             Log.e(TAG, "error while sending last error");
@@ -117,46 +119,45 @@ public class ErrorHolder {
     }
 
     @SuppressWarnings("unchecked")
-    public static void sendApplicationLogAsMail(Context context) {
-        if (!handleExternalStorageState(context)) return;
+    public static void sendApplicationLogAsMail(Activity activity) {
+        if (!handleExternalStorageState(activity)) return;
         try {
-            File file = writeApplicationLogToDisk(context);
+            File file = writeApplicationLogToDisk(activity);
 
-            sendMail(context, context.getString(R.string.application_log_send), "Send app log",
+            sendMail(activity, activity.getString(R.string.application_log_send), "Send app log",
                     deviceInformation(), Uri.fromFile(file));
         } catch (Exception e) {
             Log.e(TAG, "Error while reading application log", e);
         }
     }
 
-    private static void sendMail(Context context, String chooserText, String subject, String text,
+    private static void sendMail(Activity activity, String chooserText, String subject, String text,
                                  Uri attachment) throws IOException {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{AndFHEMApplication.Companion.getANDFHEM_MAIL()});
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, text);
+        Intent intent = new Intent(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_EMAIL, new String[]{AndFHEMApplication.Companion.getANDFHEM_MAIL()})
+                .putExtra(Intent.EXTRA_SUBJECT, subject)
+                .putExtra(Intent.EXTRA_TEXT, text)
+                .putExtra(android.content.Intent.EXTRA_STREAM, attachment);
 
-        intent.putExtra(android.content.Intent.EXTRA_STREAM, attachment);
+        if (activity == null) return;
 
-        if (context == null) return;
-
-        context.startActivity(Intent.createChooser(intent, chooserText));
+        activity.startActivityForResult(Intent.createChooser(intent, chooserText), 0);
     }
 
     private static File writeApplicationLogToDisk(Context context) throws IOException {
         InputStreamReader reader = null;
         try {
-            File outputDir = context.getCacheDir();
-            File outputFile = File.createTempFile("andFHEM-", "log", outputDir);
+            File outputFile = File.createTempFile("andFHEM-", ".log", Objects.firstNonNull(context.getExternalCacheDir(), context.getCacheDir()));
+            outputFile.setReadable(true, false);
             outputFile.deleteOnExit();
 
-            Process process = Runtime.getRuntime().exec("logcat -d");
+            Process process = Runtime.getRuntime().exec("logcat -d -n 8 -r 32 -D -f " + outputFile.getAbsolutePath());
             reader = new InputStreamReader(process.getInputStream(), Charsets.UTF_8);
 
             List<String> logLines = CharStreams.readLines(reader);
             String log = Joiner.on("\r\n").join(logLines);
-            return writeToDisk(context, log);
+            return outputFile;
         } finally {
             CloseableUtil.close(reader);
         }
@@ -168,7 +169,7 @@ public class ErrorHolder {
         outputFile.setReadable(true, true);
         outputFile.deleteOnExit();
 
-        Files.write(content, outputFile, Charsets.UTF_8);
+        Files.asCharSink(outputFile, Charsets.UTF_8).write(content);
 
         return outputFile;
     }
