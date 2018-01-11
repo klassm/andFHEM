@@ -449,6 +449,7 @@
     <string name="widget_type_selection">Widget Typ</string>
     <string name="widget_temperature">Temperatur</string>
     <string name="widget_toggle">Umschalter</string>
+    <string name="widget_presence">Anwesenheit</string>
     <string name="widget_status">Status</string>
     <string name="widget_information">Informationen</string>
     <string name="widget_weather_forecast">Wettervorhersage</string>

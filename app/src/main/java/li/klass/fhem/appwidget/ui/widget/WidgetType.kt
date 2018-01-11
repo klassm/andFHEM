@@ -54,7 +54,8 @@ enum class WidgetType(val widgetView: AppWidgetView, val widgetSize: WidgetSize)
     CONVERSION_LINK(ConversionLinkWidget(), WidgetSize.SMALL),
     TIMERS_LINK(TimersLinkWidget(), WidgetSize.SMALL),
     SEND_COMMAND_LINK(SendCommandLinkWidget(), WidgetSize.SMALL),
-    UPDATE_WIDGET(DeviceListUpdateWidget(), WidgetSize.SMALL);
+    UPDATE_WIDGET(DeviceListUpdateWidget(), WidgetSize.SMALL),
+    PRESENCE(SmallPresenceWidget(), WidgetSize.SMALL);
 
     fun createWidgetConfiguration(context: Context, appWidgetId: Int,
                                   callback: WidgetConfigurationCreatedCallback,

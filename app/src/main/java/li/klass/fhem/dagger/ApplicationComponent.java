@@ -70,6 +70,7 @@ import li.klass.fhem.appwidget.ui.widget.small.DeviceListUpdateWidget;
 import li.klass.fhem.appwidget.ui.widget.small.FavoritesLinkWidget;
 import li.klass.fhem.appwidget.ui.widget.small.RoomsLinkWidget;
 import li.klass.fhem.appwidget.ui.widget.small.SendCommandLinkWidget;
+import li.klass.fhem.appwidget.ui.widget.small.SmallPresenceWidget;
 import li.klass.fhem.appwidget.ui.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
@@ -155,6 +156,8 @@ public interface ApplicationComponent {
     void inject(TemperatureWidgetView object);
 
     void inject(ToggleWidgetView object);
+
+    void inject(SmallPresenceWidget object);
 
     void inject(SmallToggleWidget object);
 

@@ -1,1 +1,1 @@
-TODO
+* Small presence widget (showing only present or absent in green or white)
