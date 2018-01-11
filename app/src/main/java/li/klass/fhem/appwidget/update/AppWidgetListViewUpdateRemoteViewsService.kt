@@ -31,6 +31,7 @@ import android.widget.RemoteViewsService
 import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appwidget.ui.widget.WidgetType
+import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView
 import li.klass.fhem.appwidget.ui.widget.base.EmptyRemoteViewsFactory
 import li.klass.fhem.constants.BundleExtraKeys.*
@@ -43,6 +44,8 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
 
     @Inject
     lateinit var deviceListService: DeviceListService
+    @Inject
+    lateinit var widgetTypeProvider: WidgetTypeProvider
 
     override fun onCreate() {
         super.onCreate()
@@ -65,7 +68,7 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
             return null
         }
 
-        val view = widgetType.widgetView
+        val view = widgetTypeProvider.widgetFor(widgetType)
         if (view !is DeviceListAppWidgetView<*>) {
             LOG.error(
                     "can only handle list widget views, got " + view.javaClass.name)

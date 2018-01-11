@@ -24,65 +24,25 @@
 
 package li.klass.fhem.appwidget.ui.widget
 
-import android.content.Context
-import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
-import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
-import li.klass.fhem.appwidget.ui.widget.base.OtherAppWidgetView
-import li.klass.fhem.appwidget.ui.widget.base.RoomAppWidgetView
-import li.klass.fhem.appwidget.ui.widget.big.BigWeatherForecastWidget
-import li.klass.fhem.appwidget.ui.widget.medium.*
-import li.klass.fhem.appwidget.ui.widget.small.*
-import li.klass.fhem.domain.core.FhemDevice
-
-enum class WidgetType(val widgetView: AppWidgetView, val widgetSize: WidgetSize) {
-
-    TEMPERATURE(TemperatureWidgetView(), WidgetSize.MEDIUM),
-    TOGGLE(ToggleWidgetView(), WidgetSize.MEDIUM),
-    TOGGLE_SMALL(SmallToggleWidget(), WidgetSize.SMALL),
-    STATUS(StatusWidgetView(), WidgetSize.MEDIUM),
-    INFORMATION(MediumInformationWidgetView(), WidgetSize.MEDIUM),
-    HEATING(HeatingWidgetView(), WidgetSize.MEDIUM),
-    WEATHER_FORECAST(MediumWeatherForecastWidget(), WidgetSize.MEDIUM),
-    WEATHER_FORECAST_BIG(BigWeatherForecastWidget(), WidgetSize.BIG),
-    DIM(DimWidgetView(), WidgetSize.MEDIUM),
-    TARGET_STATE(TargetStateWidgetView(), WidgetSize.MEDIUM),
-    ON_OFF(OnOffWidgetView(), WidgetSize.MEDIUM),
-    ROOM_DETAIL_LINK(RoomDetailLinkWidget(), WidgetSize.MEDIUM),
-    FAVORITES_LINK(FavoritesLinkWidget(), WidgetSize.SMALL),
-    ROOMS_LINK(RoomsLinkWidget(), WidgetSize.SMALL),
-    ALL_DEVICES_LINK(AllDevicesLinkWidget(), WidgetSize.SMALL),
-    CONVERSION_LINK(ConversionLinkWidget(), WidgetSize.SMALL),
-    TIMERS_LINK(TimersLinkWidget(), WidgetSize.SMALL),
-    SEND_COMMAND_LINK(SendCommandLinkWidget(), WidgetSize.SMALL),
-    UPDATE_WIDGET(DeviceListUpdateWidget(), WidgetSize.SMALL),
-    PRESENCE(SmallPresenceWidget(), WidgetSize.SMALL);
-
-    fun createWidgetConfiguration(context: Context, appWidgetId: Int,
-                                  callback: WidgetConfigurationCreatedCallback,
-                                  vararg payload: String) {
-        widgetView.createWidgetConfiguration(context, this, appWidgetId, callback, *payload)
-    }
-
-    companion object {
-
-        fun getSupportedDeviceWidgetsFor(size: WidgetSize, device: FhemDevice, context: Context): List<WidgetType> {
-            return WidgetType.values()
-                    .filter {
-                        it.widgetSize == size &&
-                                it.widgetView is DeviceAppWidgetView &&
-                                it.widgetView.supports(device, context)
-                    }
-                    .toList()
-        }
-
-        fun getSupportedRoomWidgetsFor(size: WidgetSize): List<WidgetType> =
-                WidgetType.values()
-                        .filter { it.widgetSize == size && it.widgetView is RoomAppWidgetView }
-                        .toList()
-
-        fun getOtherWidgetsFor(size: WidgetSize): List<WidgetType> =
-                WidgetType.values()
-                        .filter { it.widgetSize == size && it.widgetView is OtherAppWidgetView }
-                        .toList()
-    }
+enum class WidgetType {
+    TEMPERATURE,
+    TOGGLE,
+    TOGGLE_SMALL,
+    STATUS,
+    INFORMATION,
+    HEATING,
+    WEATHER_FORECAST,
+    WEATHER_FORECAST_BIG,
+    DIM,
+    TARGET_STATE,
+    ON_OFF,
+    ROOM_DETAIL_LINK,
+    FAVORITES_LINK,
+    ROOMS_LINK,
+    ALL_DEVICES_LINK,
+    CONVERSION_LINK,
+    TIMERS_LINK,
+    SEND_COMMAND_LINK,
+    UPDATE_WIDGET,
+    PRESENCE
 }

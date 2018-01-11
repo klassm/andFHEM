@@ -32,15 +32,16 @@ import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.RoomAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.ui.FragmentType
+import javax.inject.Inject
 
-class RoomDetailLinkWidget : RoomAppWidgetView() {
-    override fun createWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
+class RoomDetailLinkWidget @Inject constructor() : RoomAppWidgetView() {
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
     }
 
@@ -64,7 +65,7 @@ class RoomDetailLinkWidget : RoomAppWidgetView() {
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.MEDIUM
+
+    override val widgetType = WidgetType.ROOM_DETAIL_LINK
 }

@@ -22,15 +22,15 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.ui.selection;
+package li.klass.fhem.appwidget.ui.selection
 
-import li.klass.fhem.appwidget.ui.widget.WidgetType;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
+import li.klass.fhem.domain.core.FhemDevice
 
-public interface SelectionCompletedCallback {
-    void onRoomSelect(String roomName);
+interface SelectionCompletedCallback {
+    fun onRoomSelect(roomName: String)
 
-    void onDeviceSelect(FhemDevice clickedDevice);
+    fun onDeviceSelect(clickedDevice: FhemDevice)
 
-    void onOtherWidgetSelect(WidgetType widgetType);
+    fun onOtherWidgetSelect(widgetType: AppWidgetView)
 }

@@ -93,11 +93,11 @@ data class WidgetConfiguration(val widgetId: Int, val widgetType: WidgetType, va
         }
 
         private fun getWidgetTypeFromName(widgetTypeName: String): WidgetType? {
-            try {
-                return WidgetType.valueOf(widgetTypeName)
+            return try {
+                WidgetType.valueOf(widgetTypeName)
             } catch (e: Exception) {
                 Log.v(WidgetConfiguration::class.java.name, "cannot find widget type for name " + widgetTypeName, e)
-                return null
+                null
             }
         }
 

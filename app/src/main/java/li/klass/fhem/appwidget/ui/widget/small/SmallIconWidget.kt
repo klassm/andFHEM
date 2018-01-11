@@ -32,7 +32,6 @@ import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
-import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.OtherAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.BundleExtraKeys
@@ -43,7 +42,7 @@ abstract class SmallIconWidget : OtherAppWidgetView() {
     protected abstract val fragment: FragmentType
 
     protected abstract val iconResource: Int
-    override fun createWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
     }
 

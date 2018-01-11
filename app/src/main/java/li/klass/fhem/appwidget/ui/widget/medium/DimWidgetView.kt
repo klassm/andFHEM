@@ -30,15 +30,17 @@ import android.content.Intent
 import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.behavior.dim.DimmableBehavior
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-class DimWidgetView : DeviceAppWidgetView() {
+class DimWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun getWidgetName(): Int = R.string.widget_dim
 
     override fun getContentView(): Int = R.layout.appwidget_dim
@@ -64,7 +66,7 @@ class DimWidgetView : DeviceAppWidgetView() {
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean =
+    override fun supports(device: FhemDevice): Boolean =
             DimmableBehavior.supports(device)
 
     private fun sendTargetDimState(context: Context, device: FhemDevice, targetState: String, connectionId: String?): Intent {
@@ -75,7 +77,6 @@ class DimWidgetView : DeviceAppWidgetView() {
                 .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId)
     }
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetType = WidgetType.DIM
+    override val widgetSize = WidgetSize.MEDIUM
 }

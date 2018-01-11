@@ -38,7 +38,8 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
-import li.klass.fhem.appwidget.ui.widget.WidgetType
+import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
+import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
@@ -48,16 +49,17 @@ import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import org.jetbrains.anko.coroutines.experimental.bg
-import java.io.Serializable
 import javax.inject.Inject
 
-abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : AppCompatActivity(), SelectionCompletedCallback, Serializable {
+abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : AppCompatActivity(), SelectionCompletedCallback {
     @Inject
     lateinit var appWidgetInstanceManager: AppWidgetInstanceManager
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+    @Inject
+    lateinit var widgetTypeProvider: WidgetTypeProvider
 
     private var widgetId: Int = 0
 
@@ -82,32 +84,27 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         } else {
             setContentView(R.layout.appwidget_selection)
             val viewPager = findViewById<ViewPager>(R.id.viewpager)!!
-            viewPager.adapter = AppWidgetSelectionFragmentAdapter(supportFragmentManager, this, widgetSize, this)
+            viewPager.adapter = AppWidgetSelectionFragmentAdapter(supportFragmentManager, widgetTypeProvider, this, widgetSize, this)
 
             val tabLayout = findViewById<TabLayout>(R.id.sliding_tabs)!!
             tabLayout.setupWithViewPager(viewPager)
         }
     }
 
-    private fun openWidgetTypeSelection(widgetTypes: List<WidgetType>, vararg payload: String) {
-        val widgetNames = arrayOfNulls<String>(widgetTypes.size)
-        widgetTypes.indices.forEach { i ->
-            val widgetView = widgetTypes[i].widgetView
-            widgetNames[i] = getString(widgetView.getWidgetName())
-        }
-
+    private fun openWidgetSelection(widgets: List<AppWidgetView>, vararg payload: String) {
+        val widgetNames = widgets.map { getString(it.getWidgetName()) }.toTypedArray()
         AlertDialog.Builder(this)
                 .setTitle(R.string.widget_type_selection)
                 .setItems(widgetNames) { dialogInterface, position ->
                     dialogInterface.dismiss()
 
-                    val type = widgetTypes[position]
-                    createWidget(type, *payload)
+                    val widget = widgets[position]
+                    createWidget(widget, *payload)
                 }.show()
     }
 
-    private fun createWidget(type: WidgetType, vararg payload: String) {
-        type.createWidgetConfiguration(this, widgetId, object : WidgetConfigurationCreatedCallback {
+    private fun createWidget(widget: AppWidgetView, vararg payload: String) {
+        widget.createWidgetConfiguration(this, widgetId, object : WidgetConfigurationCreatedCallback {
             override fun widgetConfigurationCreated(widgetConfiguration: WidgetConfiguration) {
                 appWidgetInstanceManager.save(widgetConfiguration)
 
@@ -124,17 +121,22 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
     }
 
     override fun onRoomSelect(roomName: String) {
-        val widgetTypes = WidgetType.getSupportedRoomWidgetsFor(widgetSize)
-        openWidgetTypeSelection(widgetTypes, roomName)
+        val widgets = widgetTypeProvider.getSupportedRoomWidgetsFor(widgetSize)
+        openWidgetSelection(widgets, roomName)
     }
 
     override fun onDeviceSelect(clickedDevice: FhemDevice) {
-        val widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, clickedDevice, applicationContext)
-        openWidgetTypeSelection(widgetTypes, clickedDevice.name)
+        val widgetTypes = widgetTypeProvider.getSupportedDeviceWidgetsFor(widgetSize, clickedDevice)
+        openWidgetSelection(widgetTypes, clickedDevice.name)
     }
 
-    override fun onOtherWidgetSelect(widgetType: WidgetType) {
+    override fun onOtherWidgetSelect(widgetType: AppWidgetView) {
         createWidget(widgetType)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        finish()
     }
 
     protected abstract fun inject(applicationComponent: ApplicationComponent)

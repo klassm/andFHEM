@@ -28,12 +28,14 @@ import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-class SmallPresenceWidget : DeviceAppWidgetView() {
+class SmallPresenceWidget @Inject constructor() : DeviceAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
         view.setTextViewText(R.id.present, device.widgetName)
         view.setTextViewText(R.id.absent, device.widgetName)
@@ -53,7 +55,7 @@ class SmallPresenceWidget : DeviceAppWidgetView() {
 
     override fun shouldSetDeviceName(): Boolean = false
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.SMALL
+    override val widgetType = WidgetType.PRESENCE
+
 }

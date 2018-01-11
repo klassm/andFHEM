@@ -34,21 +34,21 @@ import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
-open class ToggleWidgetView : DeviceAppWidgetView() {
-    @Inject
-    lateinit var deviceHookProvider: DeviceHookProvider
-    @Inject
-    lateinit var onOffBehavior: OnOffBehavior
+open class ToggleWidgetView @Inject constructor(
+        val deviceHookProvider: DeviceHookProvider,
+        val onOffBehavior: OnOffBehavior
+) : DeviceAppWidgetView() {
 
-    override fun getWidgetName(): Int = R.string.widget_toggle
+    override fun getWidgetName() = R.string.widget_toggle
 
     override fun getContentView(): Int = R.layout.appwidget_toggle
 
@@ -92,10 +92,10 @@ open class ToggleWidgetView : DeviceAppWidgetView() {
                 }
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean =
+    override fun supports(device: FhemDevice): Boolean =
             onOffBehavior.supports(device)
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize: WidgetSize = WidgetSize.MEDIUM
+
+    override val widgetType = WidgetType.TOGGLE
 }

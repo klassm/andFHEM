@@ -25,10 +25,12 @@
 package li.klass.fhem.appwidget.ui.widget.small
 
 import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.ui.FragmentType
+import javax.inject.Inject
 
-class ConversionLinkWidget : SmallIconWidget() {
+class ConversionLinkWidget @Inject constructor() : SmallIconWidget() {
     override val fragment: FragmentType
         get() = FragmentType.CONVERSION
 
@@ -37,7 +39,7 @@ class ConversionLinkWidget : SmallIconWidget() {
 
     override fun getWidgetName(): Int = R.string.widget_conversion_link
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.SMALL
+
+    override val widgetType = WidgetType.CONVERSION_LINK
 }

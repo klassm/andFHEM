@@ -28,12 +28,14 @@ import android.content.Context
 import android.widget.RemoteViews
 
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-class StatusWidgetView : DeviceAppWidgetView() {
+class StatusWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun getWidgetName(): Int = R.string.widget_status
 
     override fun getContentView(): Int = R.layout.appwidget_state
@@ -43,9 +45,8 @@ class StatusWidgetView : DeviceAppWidgetView() {
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean = true
+    override fun supports(device: FhemDevice): Boolean = true
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetType = WidgetType.STATUS
+    override val widgetSize = WidgetSize.MEDIUM
 }

@@ -31,12 +31,14 @@ import li.klass.fhem.R
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-class MediumInformationWidgetView : DeviceAppWidgetView() {
+class MediumInformationWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun getWidgetName(): Int = R.string.widget_information
 
     override fun getContentView(): Int = R.layout.appwidget_information_medium
@@ -53,7 +55,6 @@ class MediumInformationWidgetView : DeviceAppWidgetView() {
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetType = WidgetType.INFORMATION
+    override val widgetSize = WidgetSize.MEDIUM
 }

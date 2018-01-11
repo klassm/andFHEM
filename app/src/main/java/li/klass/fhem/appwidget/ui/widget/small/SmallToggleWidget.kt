@@ -28,12 +28,19 @@ import android.content.Context
 import android.widget.RemoteViews
 
 import li.klass.fhem.R
+import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
+import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.medium.ToggleWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-class SmallToggleWidget : ToggleWidgetView() {
+class SmallToggleWidget @Inject constructor(
+        deviceHookProvider: DeviceHookProvider,
+        onOffBehavior: OnOffBehavior
+) : ToggleWidgetView(deviceHookProvider, onOffBehavior) {
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
         super.fillWidgetView(context, view, device, widgetConfiguration)
 
@@ -45,7 +52,6 @@ class SmallToggleWidget : ToggleWidgetView() {
 
     override fun shouldSetDeviceName(): Boolean = false
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.SMALL
+    override val widgetType = WidgetType.TOGGLE_SMALL
 }

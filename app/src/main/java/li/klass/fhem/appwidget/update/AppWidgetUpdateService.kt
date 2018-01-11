@@ -26,6 +26,7 @@ package li.klass.fhem.appwidget.update
 
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -38,7 +39,8 @@ class AppWidgetUpdateService @Inject constructor(
         private val appWidgetInstanceManager: AppWidgetInstanceManager,
         private val appWidgetSchedulingService: AppWidgetSchedulingService,
         private val applicationProperties: ApplicationProperties,
-        private val deviceListUpdateService: DeviceListUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val widgetTypeProvider: WidgetTypeProvider
 ) {
 
     fun updateAllWidgets() {
@@ -65,8 +67,9 @@ class AppWidgetUpdateService @Inject constructor(
 
         async(UI) {
             bg {
-                if (configuration.widgetType.widgetView is DeviceAppWidgetView) {
-                    val deviceName = configuration.widgetType.widgetView.deviceNameFrom(configuration)
+                val widgetView = widgetTypeProvider.widgetFor(configuration.widgetType)
+                if (widgetView is DeviceAppWidgetView) {
+                    val deviceName = widgetView.deviceNameFrom(configuration)
                     handleDeviceUpdate(deviceName, connectionId)
                 } else {
                     handleOtherUpdate(connectionId)

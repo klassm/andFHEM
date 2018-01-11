@@ -33,7 +33,6 @@ import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
-import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.BundleExtraKeys.*
@@ -56,7 +55,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
     @Inject
     lateinit var connectionService: ConnectionService
 
-    open fun supports(device: FhemDevice, context: Context): Boolean =
+    open fun supports(device: FhemDevice): Boolean =
             supportsFromJsonConfiguration(device)
 
     private fun supportsFromJsonConfiguration(device: FhemDevice): Boolean {
@@ -115,11 +114,11 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                 .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
     }
 
-    override fun createWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int,
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int,
                                            callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
         val device = deviceListService.getDeviceForName(payload[0])
         if (device != null) {
-            createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device, callback)
+            createDeviceWidgetConfiguration(context, appWidgetId, device, callback)
         } else {
             logger.info("cannot find device for " + payload[0])
         }
@@ -134,8 +133,8 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         return getValueAndDescriptionForAnnotation(device, annotationCls, context)
     }
 
-    protected open fun createDeviceWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int,
-                                                       device: FhemDevice, callback: WidgetConfigurationCreatedCallback) {
+    protected open fun createDeviceWidgetConfiguration(context: Context, appWidgetId: Int, device: FhemDevice,
+                                                       callback: WidgetConfigurationCreatedCallback) {
         val connectionId = connectionService.getSelectedId()
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, ImmutableList.of(device.name)))
     }

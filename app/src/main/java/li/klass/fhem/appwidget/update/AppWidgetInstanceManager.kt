@@ -28,6 +28,7 @@ import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.SharedPreferences
+import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.util.preferences.SharedPreferencesService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -35,7 +36,8 @@ import javax.inject.Inject
 class AppWidgetInstanceManager @Inject constructor(
         private val sharedPreferencesService: SharedPreferencesService,
         private val appWidgetSchedulingService: AppWidgetSchedulingService,
-        private val application: Application
+        private val application: Application,
+        private val widgetProvider: WidgetTypeProvider
 ) {
     fun delete(widgetId: Int) {
         val preferences = getSavedPreferences()
@@ -54,7 +56,7 @@ class AppWidgetInstanceManager @Inject constructor(
         }
 
         try {
-            val widgetView = configuration.widgetType.widgetView
+            val widgetView = widgetProvider.widgetFor(configuration.widgetType)
             val content = widgetView.createView(applicationContext, configuration)
             appWidgetManager.updateAppWidget(widgetId, content)
         } catch (e: Exception) {

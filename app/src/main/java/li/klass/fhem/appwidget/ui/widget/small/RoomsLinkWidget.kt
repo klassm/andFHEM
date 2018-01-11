@@ -22,30 +22,22 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.ui.widget.small;
+package li.klass.fhem.appwidget.ui.widget.small
 
-import li.klass.fhem.R;
-import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.ui.FragmentType;
+import li.klass.fhem.R
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
+import li.klass.fhem.ui.FragmentType
+import javax.inject.Inject
 
-public class RoomsLinkWidget extends SmallIconWidget {
-    @Override
-    protected FragmentType getFragment() {
-        return FragmentType.ROOM_LIST;
-    }
+class RoomsLinkWidget @Inject constructor() : SmallIconWidget() {
+    override val fragment = FragmentType.ROOM_LIST
 
-    @Override
-    protected int getIconResource() {
-        return R.drawable.room_list;
-    }
+    override val iconResource = R.drawable.room_list
 
-    @Override
-    public int getWidgetName() {
-        return R.string.widget_room_link;
-    }
+    override val widgetSize = WidgetSize.SMALL
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
-    }
+    override fun getWidgetName() = R.string.widget_room_link
+
+    override val widgetType = WidgetType.ROOMS_LINK
 }

@@ -27,11 +27,10 @@ package li.klass.fhem.appwidget.ui.widget.base
 import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
 import org.slf4j.LoggerFactory
 
 abstract class AppWidgetView {
@@ -39,17 +38,7 @@ abstract class AppWidgetView {
     protected abstract fun getContentView(): Int
     abstract fun getWidgetName(): Int
 
-    init {
-        val application = AndFHEMApplication.application
-        if (application != null) {
-            @Suppress("LeakingThis")
-            inject(application.daggerComponent)
-        }
-    }
-
-    protected abstract fun inject(applicationComponent: ApplicationComponent)
-
-    abstract fun createWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int,
+    abstract fun createWidgetConfiguration(context: Context, appWidgetId: Int,
                                            callback: WidgetConfigurationCreatedCallback, vararg payload: String)
 
     open fun createView(context: Context, widgetConfiguration: WidgetConfiguration): RemoteViews {
@@ -73,6 +62,9 @@ abstract class AppWidgetView {
             view.setViewVisibility(viewId, View.GONE)
         }
     }
+
+    abstract val widgetSize: WidgetSize
+    abstract val widgetType: WidgetType
 
     companion object {
         val logger = LoggerFactory.getLogger(AppWidgetView::class.java)!!

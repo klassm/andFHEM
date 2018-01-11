@@ -34,19 +34,18 @@ import android.widget.RemoteViews
 import com.bumptech.glide.Glide
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import javax.inject.Inject
 
-class BigWeatherForecastWidget : DeviceListAppWidgetView<WeatherService.WeatherForecastInformation>() {
-    @Inject
-    lateinit var weatherService: WeatherService
+class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherService) : DeviceListAppWidgetView<WeatherService.WeatherForecastInformation>() {
 
     override fun getWidgetName(): Int = R.string.widget_weather_forecast
 
@@ -74,7 +73,7 @@ class BigWeatherForecastWidget : DeviceListAppWidgetView<WeatherService.WeatherF
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetConfiguration.widgetId, R.id.forecastList)
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean {
+    override fun supports(device: FhemDevice): Boolean {
         return AndFHEMApplication.androidSDKLevel >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
                 && device.xmlListDevice.type == "Weather"
     }
@@ -99,7 +98,7 @@ class BigWeatherForecastWidget : DeviceListAppWidgetView<WeatherService.WeatherF
     override fun extractItemsFrom(device: FhemDevice): List<WeatherService.WeatherForecastInformation> =
             weatherService.forecastsFor(device)
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.BIG
+
+    override val widgetType = WidgetType.WEATHER_FORECAST_BIG
 }

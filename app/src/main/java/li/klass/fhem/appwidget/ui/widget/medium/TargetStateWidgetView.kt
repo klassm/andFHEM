@@ -35,17 +35,18 @@ import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
 import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation
 import li.klass.fhem.domain.core.FhemDevice
+import javax.inject.Inject
 
-class TargetStateWidgetView : DeviceAppWidgetView() {
+class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun getWidgetName(): Int = R.string.widget_targetstate
 
     override fun getContentView(): Int = R.layout.appwidget_targetstate
@@ -81,7 +82,7 @@ class TargetStateWidgetView : DeviceAppWidgetView() {
     }
 
 
-    override fun createDeviceWidgetConfiguration(context: Context, widgetType: WidgetType,
+    override fun createDeviceWidgetConfiguration(context: Context,
                                                  appWidgetId: Int, device: FhemDevice,
                                                  callback: WidgetConfigurationCreatedCallback) {
 
@@ -104,10 +105,9 @@ class TargetStateWidgetView : DeviceAppWidgetView() {
         }
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean =
+    override fun supports(device: FhemDevice): Boolean =
             !device.setList.entries.isEmpty()
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetType = WidgetType.TARGET_STATE
+    override val widgetSize = WidgetSize.MEDIUM
 }

@@ -25,29 +25,30 @@
 package li.klass.fhem.appwidget.ui.widget.base.otherWidgets
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.LinearLayout
-import android.widget.ListView
-import com.google.common.base.Function
-import com.google.common.collect.Iterables.transform
-import com.google.common.collect.Lists.newArrayList
+import kotlinx.android.synthetic.main.other_widgets_list.view.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
-import li.klass.fhem.appwidget.ui.widget.WidgetType
+import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
+import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
 import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_SIZE
 import li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
-import org.apache.commons.lang3.tuple.Pair
 import java.io.Serializable
+import javax.inject.Inject
 
 class OtherWidgetsFragment : BaseFragment() {
 
-    private var widgetSize: WidgetSize? = null
-    private var widgetClickedCallback: OnWidgetClickedCallback? = null
+    lateinit var widgetSize: WidgetSize
+    lateinit var widgetClickedCallback: OnWidgetClickedCallback
+
+    @Inject
+    lateinit var widgetTypeProvider: WidgetTypeProvider
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
@@ -58,44 +59,18 @@ class OtherWidgetsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.other_widgets_list, container, false)
-
-        val listView = view.findViewById<View>(R.id.list) as ListView
-        listView.onItemClickListener = OnItemClickListener { _, myView, _, _ ->
-            val widgetType = myView.tag as WidgetType
-            this@OtherWidgetsFragment.onClick(widgetType)
-        }
-
-        val adapter = OtherWidgetsAdapter(activity)
-        listView.adapter = adapter
+        val items = widgetTypeProvider.getOtherWidgetsFor(widgetSize)
+        view.list.layoutManager = LinearLayoutManager(activity)
+        view.list.adapter = OtherWidgetsAdapter(items, widgetClickedCallback).apply { notifyDataSetChanged() }
 
         val emptyView = view.findViewById<View>(R.id.emptyView) as LinearLayout
         fillEmptyView(emptyView, R.string.widgetNoOther, container!!)
+        emptyView.apply { if (items.isEmpty()) visibility = View.VISIBLE }
 
         return view
     }
 
-    private fun onClick(type: WidgetType) {
-        if (widgetClickedCallback != null) {
-            widgetClickedCallback!!.onWidgetClicked(type)
-        }
-    }
-
     override fun update(refresh: Boolean) {
-        if (view == null) return
-
-        val listView = view!!.findViewById<View>(R.id.list) as ListView
-        val adapter = listView.adapter as OtherWidgetsAdapter
-
-        val widgets = WidgetType.getOtherWidgetsFor(widgetSize!!)
-        val values = newArrayList(transform(widgets, Function<WidgetType, Pair<WidgetType, String>> { widgetType -> Pair.of(widgetType, activity!!.getString(widgetType!!.widgetView.getWidgetName())) }))
-
-        if (values.isEmpty()) {
-            showEmptyView()
-        } else {
-            hideEmptyView()
-        }
-
-        adapter.updateData(values)
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
@@ -103,6 +78,6 @@ class OtherWidgetsFragment : BaseFragment() {
     }
 
     interface OnWidgetClickedCallback : Serializable {
-        fun onWidgetClicked(widgetType: WidgetType)
+        fun onWidgetClicked(widgetView: AppWidgetView)
     }
 }

@@ -26,44 +26,35 @@ package li.klass.fhem.appwidget.ui.widget.medium
 
 import android.content.Context
 import android.widget.RemoteViews
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.AppWidgetTarget
+
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.util.DateFormatUtil
 import javax.inject.Inject
 
-class MediumWeatherForecastWidget @Inject constructor(
-        val weatherService: WeatherService
-) : DeviceAppWidgetView() {
+class TemperatureWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
-    override fun getWidgetName(): Int = R.string.widget_weather_forecast
+    override val widgetSize: WidgetSize = WidgetSize.MEDIUM
 
-    override fun getContentView(): Int = R.layout.appwidget_weather
+    override fun getWidgetName() = R.string.widget_temperature
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
-        val forecast = weatherService.forecastsFor(device)[0]
+    public override fun getContentView() = R.layout.appwidget_temperature
 
-        view.setTextViewText(R.id.day_description, forecast.weekday + ", " + DateFormatUtil.ANDFHEM_DATE_FORMAT.print(forecast.date))
-        view.setTextViewText(R.id.day_condition, forecast.condition)
-        view.setTextViewText(R.id.day_temperature, forecast.temperature)
+    public override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+        val temperature = valueForAnnotation(device, WidgetTemperatureField::class.java, context)
+        val additionalFieldValue = valueForAnnotation(device, WidgetTemperatureAdditionalField::class.java, context)
+        setTextViewOrHide(view, R.id.additional, additionalFieldValue)
 
-        Glide.with(context)
-                .asBitmap()
-                .load(forecast.icon)
-                .into(AppWidgetTarget(context, R.id.day_image, view, widgetConfiguration.widgetId))
+        view.setTextViewText(R.id.temperature, temperature)
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
 
-    override fun supports(device: FhemDevice): Boolean = device.xmlListDevice.type == "Weather"
+    override val widgetType = WidgetType.TEMPERATURE
 
-    override val widgetSize = WidgetSize.MEDIUM
-
-    override val widgetType = WidgetType.WEATHER_FORECAST
 }

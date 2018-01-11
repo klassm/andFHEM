@@ -32,15 +32,16 @@ import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.OtherAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
+import javax.inject.Inject
 
-class DeviceListUpdateWidget : OtherAppWidgetView() {
-    override fun createWidgetConfiguration(context: Context, widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
+class DeviceListUpdateWidget @Inject constructor() : OtherAppWidgetView() {
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
     }
 
@@ -61,7 +62,7 @@ class DeviceListUpdateWidget : OtherAppWidgetView() {
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.SMALL
+
+    override val widgetType = WidgetType.UPDATE_WIDGET
 }

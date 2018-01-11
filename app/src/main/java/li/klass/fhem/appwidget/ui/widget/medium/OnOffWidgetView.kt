@@ -33,20 +33,19 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
-class OnOffWidgetView : DeviceAppWidgetView() {
-    @Inject
-    lateinit var onOffBehavior: OnOffBehavior
-
-    @Inject
-    lateinit var deviceHookProvider: DeviceHookProvider
+class OnOffWidgetView @Inject constructor(
+        val onOffBehavior: OnOffBehavior,
+        val deviceHookProvider: DeviceHookProvider
+) : DeviceAppWidgetView() {
 
     override fun getWidgetName(): Int = R.string.widget_onOff
 
@@ -83,10 +82,10 @@ class OnOffWidgetView : DeviceAppWidgetView() {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean =
+    override fun supports(device: FhemDevice): Boolean =
             onOffBehavior.supports(device)
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.MEDIUM
+
+    override val widgetType = WidgetType.ON_OFF
 }

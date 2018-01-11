@@ -28,13 +28,15 @@ import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
 import li.klass.fhem.R
+import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
 import java.util.*
+import javax.inject.Inject
 
-class HeatingWidgetView : DeviceAppWidgetView() {
+class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     override fun getWidgetName(): Int = R.string.widget_heating
 
@@ -66,17 +68,15 @@ class HeatingWidgetView : DeviceAppWidgetView() {
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
 
-    override fun supports(device: FhemDevice, context: Context): Boolean {
+    override fun supports(device: FhemDevice): Boolean {
         val xmlListDevice = device.xmlListDevice
         return xmlListDevice.containsAnyOfStates(TEMPERATURE_STATES) && xmlListDevice.containsAnyOfStates(DESIRED_TEMPERATURE_STATES)
     }
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val widgetSize = WidgetSize.MEDIUM
+    override val widgetType = WidgetType.HEATING
 
     companion object {
-
         private val TEMPERATURE_STATES = Arrays.asList("temperature", "measured-temp")
         private val DESIRED_TEMPERATURE_STATES = Arrays.asList("desired-temp", "desiredTemperature")
     }
