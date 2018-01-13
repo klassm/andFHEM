@@ -1,1 +1,1 @@
-* Kleines Widget für Presence (grün wenn anwesend, weiß wenn abwesend)
+TODO
