@@ -37,6 +37,7 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.NotificationUtil
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -95,6 +96,7 @@ constructor() {
             Joiner.on(",").withKeyValueSeparator(" : ").join(updateMap)
         }
 
+        logger.info("generateNotification(device=$deviceName) - text=$text, vibrate=$vibrate")
         NotificationUtil.notify(context, deviceName.hashCode(), pendingIntent, deviceName, text,
                 deviceName, vibrate)
     }
@@ -109,5 +111,6 @@ constructor() {
         val STATE_UPDATES = 2
 
         val PREFERENCES_NAME = "deviceNotifications"
+        val logger = LoggerFactory.getLogger(NotificationService::class.java)
     }
 }
