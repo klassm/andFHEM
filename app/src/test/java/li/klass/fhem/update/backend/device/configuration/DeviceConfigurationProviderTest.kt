@@ -49,11 +49,8 @@ class DeviceConfigurationProviderTest {
 
     @Test
     fun should_parse_concatenated_json() {
-        val file = File(DeviceConfiguration::class.java.getResource("deviceConfiguration.json").toURI())
-        val content = Resources.toString(file.toURI().toURL(), Charsets.UTF_8)
-        val result = JSON.parse(DevicesConfiguration::class.serializer(), content)
-
-        assertThat(result).`as`(file.name).isNotNull()
+        val configuration = DeviceConfigurationProvider().configurationFor("FS20")
+        assertThat(configuration).isNotNull()
     }
 
     companion object {
