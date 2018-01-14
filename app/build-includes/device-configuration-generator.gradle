@@ -69,6 +69,6 @@ class DeviceConfigurationTask extends DefaultTask {
 
 task buildDeviceConfigurationJson(type: DeviceConfigurationTask) {
     inputDir = file('src/main/resources/deviceConfiguration')
-    outputFile = file('src/gen/resources/li/klass/fhem/update/backend/device/configuration/deviceConfiguration.json')
+    outputFile = file('src/gen/resources/deviceConfiguration.json')
 }
 tasks["preBuild"].dependsOn('buildDeviceConfigurationJson')

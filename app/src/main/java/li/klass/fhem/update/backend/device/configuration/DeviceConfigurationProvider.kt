@@ -38,7 +38,7 @@ class DeviceConfigurationProvider @Inject
 constructor() {
     private val configurations: Map<String, DeviceConfiguration> by lazy {
         val jsonAsString = Resources.toString(Resources.getResource(
-                DeviceConfigurationProvider::class.java, "deviceConfiguration.json"), Charsets.UTF_8)
+                DeviceConfigurationProvider::class.java, "/deviceConfiguration.json"), Charsets.UTF_8)
 
         JSON.parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
     }
