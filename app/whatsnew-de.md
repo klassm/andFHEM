@@ -1,1 +1,1 @@
-TODO
+* Repariere verschwindende Geräte (die nach einem Update der Geräteliste wieder auftauchen)

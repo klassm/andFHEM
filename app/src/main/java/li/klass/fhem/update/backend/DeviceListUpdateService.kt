@@ -51,14 +51,16 @@ class DeviceListUpdateService @Inject constructor(
 
     fun updateSingleDevice(deviceName: String, connectionId: String? = null): UpdateResult =
             executeXmllistPartial(connectionId, deviceName, object : BeforeRoomListUpdateModifier {
-                override fun update(cached: RoomDeviceList) {
-                    cached.getDeviceFor(deviceName)?.let { cached.removeDevice(it) }
+                override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
+                    if (newlyLoaded.getDeviceFor(deviceName) != null) {
+                        cached.getDeviceFor(deviceName)?.let { cached.removeDevice(it) }
+                    }
                 }
             })
 
     fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult =
             executeXmllistPartial(connectionId, "room=" + roomName, object : BeforeRoomListUpdateModifier {
-                override fun update(cached: RoomDeviceList) {
+                override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
                     cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
                 }
             })
@@ -92,7 +94,7 @@ class DeviceListUpdateService @Inject constructor(
         }
         return executeXmllist(connectionId, " " + devSpec, object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
-                beforeRoomListUpdateModifier.update(cached)
+                beforeRoomListUpdateModifier.update(cached, parsed)
                 cached.addAllDevicesOf(parsed)
                 return cached
             }
@@ -158,7 +160,7 @@ class DeviceListUpdateService @Inject constructor(
 
     @FunctionalInterface
     private interface BeforeRoomListUpdateModifier {
-        fun update(cached: RoomDeviceList)
+        fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList)
     }
 
     sealed class UpdateResult {

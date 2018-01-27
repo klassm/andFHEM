@@ -1,1 +1,1 @@
-TODO
+* Fix disappearing devices (that appear again after device list update)
