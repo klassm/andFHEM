@@ -41,14 +41,19 @@ class MemorizingTrustManagerContextInitializer {
             val sslContext = SSLContext.getInstance("TLS")
             var clientKeys: Array<KeyManager>? = null
             if (serverSpec?.clientCertificatePath != null) {
+                logger.info("init - using client certificate at ${serverSpec.clientCertificatePath}")
                 val clientCertificate = File(serverSpec.clientCertificatePath)
                 val clientCertificatePassword = serverSpec.clientCertificatePassword
+
+                logger.info("init - client certificate exists=${clientCertificate.exists()}")
                 if (clientCertificate.exists()) {
                     val keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword)
                     val keyManagerFactory = KeyManagerFactory.getInstance("X509")
                     keyManagerFactory.init(keyStore, MoreObjects.firstNonNull(clientCertificatePassword, "").toCharArray())
                     clientKeys = keyManagerFactory.keyManagers
                 }
+            } else {
+                logger.info("init - client certificate path is not configured")
             }
 
             val memorizingTrustManager = MemorizingTrustManager(context)
