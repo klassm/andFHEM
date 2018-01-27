@@ -58,12 +58,14 @@ class DeviceListUpdateService @Inject constructor(
                 }
             })
 
-    fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult =
-            executeXmllistPartial(connectionId, "room=" + roomName, object : BeforeRoomListUpdateModifier {
-                override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
-                    cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
-                }
-            })
+    fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult {
+        val toUpdate = if (roomName == "Unsorted") "" else roomName
+        return executeXmllistPartial(connectionId, "room=" + toUpdate, object : BeforeRoomListUpdateModifier {
+            override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
+                cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
+            }
+        })
+    }
 
     fun updateAllDevices(connectionId: String? = null): UpdateResult {
         return executeXmllist(connectionId, "", object : UpdateHandler {
