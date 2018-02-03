@@ -34,9 +34,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <permission android:name="li.klass.fhem.permissions.EXTERNAL" />
-    <permission android:name="li.klass.fhem.permissions.SEND_COMMAND" />
-
     <uses-feature android:name="android.hardware.touchscreen" />
 
     <supports-screens
@@ -82,10 +79,9 @@
 
         <provider
             android:name=".search.MySearchSuggestionsProvider"
-            android:authorities="li.klass.fhem.search.MySearchSuggestionsProvider"
+            android:authorities="${applicationId}.MySearchSuggestionsProvider"
             android:exported="false" />
 
-        <activity android:name=".activities.DuplicateInstallActivity" />
         <activity
             android:name=".activities.StartupActivity"
             android:alwaysRetainTaskState="true"

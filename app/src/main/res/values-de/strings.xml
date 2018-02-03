@@ -117,7 +117,6 @@
     <string name="error_send_no_error">Es kann kein Fehler gesendet werden, da kein Fehler registriert wurde.</string>
     <string name="errorDeviceListLoad">Konnte %1$s Gerät(e) nicht laden!</string>
     <string name="errorOutdatedData">Die Sensordaten scheinen veraltet zu sein. Bitte prüfen Sie die Geräteverbindung.</string>
-    <string name="errorDuplicateInstall">Die App wurde scheinbar zweimal installiert. Haben Sie vielleicht die Premium-Version und die normale Version parallel installiert? Bitte stellen Sie sicher, dass nur eine Version installiert ist.</string>
     <string name="errorExternalStorageNotPresent">Kein Zugriff auf das Dateisystem.</string>
     <string name="application_log_send">Protokoll senden</string>
     <string name="hex2quat">Hex -> Quat</string>

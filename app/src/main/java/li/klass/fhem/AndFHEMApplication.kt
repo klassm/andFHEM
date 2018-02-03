@@ -45,7 +45,6 @@ import li.klass.fhem.graph.ui.GraphActivity
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.InstalledApplications
 import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
@@ -64,16 +63,6 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
         private set
     lateinit var daggerComponent: ApplicationComponent
         private set
-    val isAndFHEMAlreadyInstalled: Boolean
-        get() {
-            val installedApps = InstalledApplications.getInstalledApps(applicationContext)
-            for (installedApp in installedApps) {
-                if (installedApp.packageName.startsWith("li.klass.fhem") && installedApp.packageName != packageName) {
-                    return true
-                }
-            }
-            return false
-        }
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)

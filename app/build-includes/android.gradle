@@ -140,6 +140,10 @@ android {
         disable 'IconDensities'
         abortOnError false
     }
+
+    productFlavors.all {
+        resValue "string", "searchable_suggestion_provider", applicationId + ".MySearchSuggestionsProvider"
+    }
 }
 
 def getAppVersionCode() {

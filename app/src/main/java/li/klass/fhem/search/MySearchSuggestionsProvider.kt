@@ -7,6 +7,7 @@ import android.database.MatrixCursor
 import android.database.MergeCursor
 import android.net.Uri
 import li.klass.fhem.AndFHEMApplication
+import li.klass.fhem.BuildConfig
 import javax.inject.Inject
 
 
@@ -61,7 +62,7 @@ class MySearchSuggestionsProvider : SearchRecentSuggestionsProvider() {
     }
 
     companion object {
-        val AUTHORITY = MySearchSuggestionsProvider::class.java.name!!
+        val AUTHORITY = BuildConfig.APPLICATION_ID + "." + MySearchSuggestionsProvider::class.java.simpleName!!
         val MODE = DATABASE_MODE_QUERIES
     }
 }

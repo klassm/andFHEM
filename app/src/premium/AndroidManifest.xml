@@ -23,11 +23,5 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <permission
-        android:name="li.klass.fhempremium.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
-
-    <uses-permission android:name="li.klass.fhempremium.permission.C2D_MESSAGE"/>
-
+<manifest>
 </manifest>

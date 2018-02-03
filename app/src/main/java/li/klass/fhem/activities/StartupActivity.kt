@@ -77,14 +77,6 @@ class StartupActivity : Activity() {
             finish()
             return
         }
-        val application = application as AndFHEMApplication
-        if (application.isAndFHEMAlreadyInstalled) {
-            Log.e(TAG, "onCreate() - andFHEM is already installed")
-            startActivity(Intent(this, DuplicateInstallActivity::class.java))
-            finish()
-            return
-        }
-
         (getApplication() as AndFHEMApplication).daggerComponent.inject(this)
 
         setContentView(R.layout.startup)

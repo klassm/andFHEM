@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -25,4 +24,4 @@
 
 <resources>
     <string name="app_title" translatable="false">andFHEM</string>
-    </resources>
+</resources>
