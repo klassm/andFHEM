@@ -22,71 +22,62 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.backup;
+package li.klass.fhem.backup
 
-import android.content.Context;
+import com.google.common.collect.ImmutableMap
+import li.klass.fhem.devices.list.favorites.backend.FavoritesService
+import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.util.ApplicationProperties
+import li.klass.fhem.util.io.FileSystemService
+import li.klass.fhem.util.preferences.SharedPreferencesService
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Rule
+import org.junit.Test
+import org.mockito.InjectMocks
+import org.mockito.Mock
 
-import com.google.common.collect.ImmutableMap;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import java.util.Map;
-
-import li.klass.fhem.devices.list.favorites.backend.FavoritesService;
-import li.klass.fhem.testutil.MockitoRule;
-import li.klass.fhem.util.ApplicationProperties;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
-public class ImportExportServiceTest {
+@Suppress("unused")
+class ImportExportServiceTest {
     @Rule
-    public MockitoRule mockitoRule = new MockitoRule();
+    @JvmField
+    var mockitoRule = MockitoRule()
 
     @Mock
-    ApplicationProperties applicationProperties;
+    lateinit var applicationProperties: ApplicationProperties
     @Mock
-    Context applicationContext;
+    lateinit var favoritesService: FavoritesService
     @Mock
-    FavoritesService favoritesService;
+    lateinit var sharedPreferencesService: SharedPreferencesService
+    @Mock
+    lateinit var fileSystemService: FileSystemService
 
     @InjectMocks
-    ImportExportService importExportService;
-
-    @Before
-    public void setUp() {
-        given(applicationProperties.getApplicationSharedPreferencesName(applicationContext)).willReturn("abc");
-    }
+    lateinit var importExportService: ImportExportService
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void should_match_export_and_import_values() {
+    fun should_match_export_and_import_values() {
         // given
-        Map<String, Object> values = ImmutableMap.<String, Object>builder()
+        val values = ImmutableMap.builder<String, Any>()
                 .put("a", "1")
                 .put("b", 1)
                 .put("c", 1.0)
-                .put("f", 1.f)
+                .put("f", 1f)
                 .put("d", "1.0")
                 .put("e", "anc")
                 .put("g", "anc/bas")
-                .build();
+                .build()
 
         // when
-        Map<String, Object> converted = (Map<String, Object>) importExportService.toImportValues(importExportService.toExportValues(values));
+        val converted = importExportService.toImportValues(importExportService.toExportValues(values)) as Map<*, *>
 
         // then
-        assertThat(converted).isEqualTo(values);
+        assertThat(converted).isEqualTo(values)
     }
 
     @Test
-    public void should_export_values() {
+    fun should_export_values() {
         // given
-        Map<String, Object> values = ImmutableMap.<String, Object>builder()
+        val values = ImmutableMap.builder<String, Any>()
                 .put("a", "1")
                 .put("b", 1)
                 .put("c", 1.0)
@@ -94,13 +85,13 @@ public class ImportExportServiceTest {
                 .put("d", "1.0")
                 .put("e", "anc")
                 .put("g", "anc/bas")
-                .build();
+                .build()
 
         // when
-        Map<String, String> exported = importExportService.toExportValues(values);
+        val exported = importExportService.toExportValues(values)
 
         // then
-        assertThat(exported).isEqualTo(ImmutableMap.<String, String>builder()
+        assertThat(exported).isEqualTo(ImmutableMap.builder<String, String>()
                 .put("a", "1/java.lang.String")
                 .put("b", "1/java.lang.Integer")
                 .put("c", "1.0/java.lang.Double")
@@ -108,13 +99,12 @@ public class ImportExportServiceTest {
                 .put("d", "1.0/java.lang.String")
                 .put("e", "anc/java.lang.String")
                 .put("g", "anc/bas/java.lang.String")
-                .build());
+                .build())
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void should_import_values() {
-        Map<String, String> values = ImmutableMap.<String, String>builder()
+    fun should_import_values() {
+        val values = ImmutableMap.builder<String, String>()
                 .put("a", "1/java.lang.String")
                 .put("b", "1/java.lang.Integer")
                 .put("c", "1.0/java.lang.Double")
@@ -122,13 +112,13 @@ public class ImportExportServiceTest {
                 .put("d", "1.0/java.lang.String")
                 .put("e", "anc/java.lang.String")
                 .put("g", "anc/bas/java.lang.String")
-                .build();
+                .build()
 
         // when
-        Map<String, Object> imported = (Map<String, Object>) importExportService.toImportValues(values);
+        val imported = importExportService.toImportValues(values) as Map<*, *>
 
         // then
-        assertThat(imported).isEqualTo(ImmutableMap.<String, Object>builder()
+        assertThat(imported).isEqualTo(ImmutableMap.builder<String, Any>()
                 .put("a", "1")
                 .put("b", 1)
                 .put("c", 1.0)
@@ -136,6 +126,6 @@ public class ImportExportServiceTest {
                 .put("d", "1.0")
                 .put("e", "anc")
                 .put("g", "anc/bas")
-                .build());
+                .build())
     }
 }
