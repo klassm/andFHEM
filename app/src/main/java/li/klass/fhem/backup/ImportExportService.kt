@@ -116,7 +116,7 @@ class ImportExportService @Inject constructor(
             Integer.parseInt(value)
         } else if (type.isAssignableFrom(Float::class.java) || type.isAssignableFrom(java.lang.Float::class.java)) {
             java.lang.Float.parseFloat(value)
-        } else if (type.isAssignableFrom(Boolean::class.java)) {
+        } else if (type.isAssignableFrom(Boolean::class.java) || type.isAssignableFrom(java.lang.Boolean::class.java)) {
             java.lang.Boolean.parseBoolean(value)
         } else if (type.isAssignableFrom(String::class.java)) {
             value
