@@ -22,24 +22,23 @@
  *   Boston, MA  02110-1301  USA
  */
 
-ext {
-    newReleaseVersion = "dummy"
+
+def getVersionCode(version) {
+    return Integer.parseInt(
+            version.replaceAll("\\.", "")
+                    .replaceAll("-SNAPSHOT", "")
+                    .replaceAll("-BETA", "")
+    )
 }
 
-static def getVersionCode(project) {
-    return Integer.parseInt(project.getVersion()
-            .replaceAll("\\.", "")
-            .replaceAll("-SNAPSHOT", "")
-            .replaceAll("-BETA", ""))
-}
-
-static def getNextVersionCode(project) {
-    def versionCode = getVersionCode(project)
+def getNextVersionCode(version) {
+    def versionCode = getVersionCode(version)
     return project.getVersion().endsWith("-SNAPSHOT") ? versionCode : versionCode + 1
 }
 
-static def getNextVersion(project) {
-    def nextCode = String.valueOf(getNextVersionCode(project))
+def getNextVersion(version) {
+    println("version is $version")
+    def nextCode = String.valueOf(getNextVersionCode(version))
     def rev = nextCode.charAt(nextCode.length() - 1)
     def minor = nextCode.charAt(nextCode.length() - 2)
     def major = nextCode.substring(0, nextCode.length() - 2)
@@ -56,30 +55,33 @@ release {
     failOnSnapshotDependencies = false
     // this is a temporary workround until version 3.0 is released, so that the plugin can be moved to the root project
 
-    versionPatterns = [
-            /.*/: { matcher, project -> newReleaseVersion }
-    ]
-
     git {
         requireBranch = 'master'
         pushToRemote = 'origin'
     }
 }
 
-task releaseBeta {
-    play.track = 'beta'
-    release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore']
-    ext.newReleaseVersion = getNextVersion(project) + "-BETA"
+task setStage {
+    setStage(System.getProperty('stage'))
 }
-releaseBeta.dependsOn("release")
+beforeReleaseBuild.dependsOn('setStage')
 
-task releaseProd {
-    play.track = 'production'
-    release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
-    ext.newReleaseVersion = getNextVersion(project)
-    afterReleaseBuild.dependsOn("resetWhatsNew")
+def setStage(stage) {
+    if (stage == 'production') {
+        play.track = 'production'
+        release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
+        setNewReleaseVersion(getNextVersion(project.version))
+        afterReleaseBuild.dependsOn("resetWhatsNew")
+    } else if (stage == 'beta') {
+        println("releaseBeta")
+        play.track = 'beta'
+        release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore']
+        setNewReleaseVersion(getNextVersion(project.version) + "-BETA")
+        System.setProperty("release.useAutomaticVersion", "true")
+    } else {
+        release.buildTasks = []
+    }
 }
-releaseProd.dependsOn("release")
 
 task uploadToPlayStore
 uploadToPlayStore.dependsOn {
@@ -87,8 +89,22 @@ uploadToPlayStore.dependsOn {
 }
 
 task deleteGitTag(type: Exec) {
-    commandLine 'git', 'tag', '-d', newReleaseVersion
+    commandLine 'git', 'tag', '-d', getNewReleaseVersion()
     ignoreExitValue true
 }
 tasks.findAll { it.name.contains("createReleaseTag") }
         .forEach { it.dependsOn deleteGitTag }
+
+def getNewReleaseVersion() {
+    return System.getProperty("release.releaseVersion")
+}
+
+def setNewReleaseVersion(value) {
+    if (getNewReleaseVersion() == null) {
+        println("set new version to " + value)
+        System.setProperty("release.releaseVersion", value)
+
+        println("set new version after $value")
+        System.setProperty("release.newVersion", getNextVersion(value) + "-SNAPSHOT")
+    }
+}
