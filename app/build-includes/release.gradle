@@ -22,8 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
+ext {
+    newReleaseVersion = "dummy"
+}
+
+static def getVersionCode(project) {
+    return Integer.parseInt(project.getVersion()
+            .replaceAll("\\.", "")
+            .replaceAll("-SNAPSHOT", "")
+            .replaceAll("-BETA", ""))
+}
+
+static def getNextVersionCode(project) {
+    def versionCode = getVersionCode(project)
+    return project.getVersion().endsWith("-SNAPSHOT") ? versionCode : versionCode + 1
+}
+
+static def getNextVersion(project) {
+    def nextCode = String.valueOf(getNextVersionCode(project))
+    def rev = nextCode.charAt(nextCode.length() - 1)
+    def minor = nextCode.charAt(nextCode.length() - 2)
+    def major = nextCode.substring(0, nextCode.length() - 2)
+    return "$major.$minor.$rev"
+}
+
 play {
-    track = 'production'
     userFraction = 1.0
 }
 
@@ -34,21 +57,36 @@ release {
     failOnSnapshotDependencies = false
     // this is a temporary workround until version 3.0 is released, so that the plugin can be moved to the root project
 
+    versionPatterns = [
+            /.*/: { matcher, project -> newReleaseVersion }
+    ]
+
     git {
         requireBranch = 'master'
         pushToRemote = 'origin'
     }
 }
 
+task releaseBeta {
+    play.track = 'beta'
+    ext.newReleaseVersion = getNextVersion(project) + "-BETA"
+}
+
+releaseBeta.dependsOn(release)
+task releaseProd {
+    play.track = 'production'
+    ext.newReleaseVersion = getNextVersion(project)
+    afterReleaseBuild.dependsOn("resetWhatsNew")
+}
+releaseBeta.dependsOn(release)
+
 task uploadToPlayStore
 uploadToPlayStore.dependsOn {
     tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") }
 }
-afterReleaseBuild.dependsOn("resetWhatsNew")
 
 task deleteGitTag(type: Exec) {
-    def myVersion = version.replaceAll("-SNAPSHOT", "")
-    commandLine 'git', 'tag', '-d', "$myVersion"
+    commandLine 'git', 'tag', '-d', newReleaseVersion
     ignoreExitValue true
 }
 tasks.findAll { it.name.contains("createReleaseTag") }

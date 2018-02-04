@@ -141,7 +141,7 @@ android {
 }
 
 def getAppVersionCode() {
-    return Integer.valueOf(version.replaceAll("\\.", "").replace("-SNAPSHOT", ""))
+    return Integer.valueOf(version.replaceAll("\\.", "").replace("-SNAPSHOT", "").replace("-BETA", ""))
 }
 
 if (project.hasProperty('andFHEMReleaseStorePassword')) {
