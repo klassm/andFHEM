@@ -22,12 +22,6 @@
  *   Boston, MA  02110-1301  USA
  */
 
-
-play {
-    track = 'production'
-    userFraction = 1.0
-}
-
 android {
     flavorDimensions "default"
     compileSdkVersion 26

@@ -23,7 +23,7 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.10'
+    ext.kotlin_version = '1.2.21'
     ext.serialization_version = '0.4'
 
     repositories {
@@ -129,12 +129,11 @@ dependencies {
         exclude group: 'glide-parent'
     }
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compile ("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version") {
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-reflect'
     }
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     // Anko Layouts
     compile "org.jetbrains.anko:anko-sdk25:$anko_version"
     // sdk15, sdk19, sdk21, sdk23 are also available

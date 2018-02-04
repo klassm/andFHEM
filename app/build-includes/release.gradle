@@ -22,6 +22,11 @@
  *   Boston, MA  02110-1301  USA
  */
 
+play {
+    track = 'production'
+    userFraction = 1.0
+}
+
 release {
     buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
     versionPropertyFile = '../gradle.properties'
