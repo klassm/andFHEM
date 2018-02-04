@@ -28,7 +28,6 @@ import android.content.Context
 import com.google.common.base.MoreObjects
 import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.connection.backend.FHEMServerSpec
-import li.klass.fhem.util.CloseableUtil
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
@@ -45,8 +44,8 @@ class MemorizingTrustManagerContextInitializer {
                 val clientCertificate = File(serverSpec.clientCertificatePath)
                 val clientCertificatePassword = serverSpec.clientCertificatePassword
 
-                logger.info("init - client certificate exists=${clientCertificate.exists()}")
-                if (clientCertificate.exists()) {
+                logger.info("init - client certificate exists=${clientCertificate.exists()}, canRead=${clientCertificate.canRead()}")
+                if (clientCertificate.exists() && clientCertificate.canRead()) {
                     val keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword)
                     val keyManagerFactory = KeyManagerFactory.getInstance("X509")
                     keyManagerFactory.init(keyStore, MoreObjects.firstNonNull(clientCertificatePassword, "").toCharArray())
@@ -68,18 +67,12 @@ class MemorizingTrustManagerContextInitializer {
 
 
     @Throws(Exception::class)
-    private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String?): KeyStore? {
-        val keyStore: KeyStore?
-        var fileInputStream: FileInputStream? = null
-        try {
-            keyStore = KeyStore.getInstance("PKCS12")
-            fileInputStream = FileInputStream(certificateFile)
-            keyStore!!.load(fileInputStream, clientCertPassword!!.toCharArray())
-        } finally {
-            CloseableUtil.close(fileInputStream)
-        }
-        return keyStore
-    }
+    private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String?): KeyStore? =
+            FileInputStream(certificateFile).use {
+                KeyStore.getInstance("PKCS12").apply {
+                    load(it, clientCertPassword?.toCharArray())
+                }
+            }
 
     data class Initialized(val socketFactory: SSLSocketFactory, val hostnameVerifier: HostnameVerifier, val trustManager: X509TrustManager)
 

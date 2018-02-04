@@ -51,7 +51,6 @@ play {
 }
 
 release {
-    buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
     versionPropertyFile = '../gradle.properties'
     versionProperties = ['version']
     failOnSnapshotDependencies = false
@@ -69,16 +68,18 @@ release {
 
 task releaseBeta {
     play.track = 'beta'
+    release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore']
     ext.newReleaseVersion = getNextVersion(project) + "-BETA"
 }
+releaseBeta.dependsOn("release")
 
-releaseBeta.dependsOn(release)
 task releaseProd {
     play.track = 'production'
+    release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore', 'githubRelease']
     ext.newReleaseVersion = getNextVersion(project)
     afterReleaseBuild.dependsOn("resetWhatsNew")
 }
-releaseBeta.dependsOn(release)
+releaseProd.dependsOn("release")
 
 task uploadToPlayStore
 uploadToPlayStore.dependsOn {
