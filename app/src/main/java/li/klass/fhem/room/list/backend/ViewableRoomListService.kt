@@ -24,15 +24,24 @@
 
 package li.klass.fhem.room.list.backend
 
+import li.klass.fhem.devices.list.backend.HiddenRoomsDeviceFilter
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import javax.inject.Inject
 
 class ViewableRoomListService @Inject constructor(private val deviceListService: DeviceListService,
+                                                  private val hiddenRoomsDeviceFilter: HiddenRoomsDeviceFilter,
                                                   private val fhemWebConfigurationService: FhemWebConfigurationService) {
     fun sortedRoomNameList(connectionId: String? = null): List<String> {
-        val allRooms = deviceListService.getRoomNameList(connectionId)
-        val filteredRooms = fhemWebConfigurationService.filterHiddenRoomsIn(allRooms)
-        return fhemWebConfigurationService.sortRooms(filteredRooms)
+        val allDevicesList = deviceListService.getAllRoomsDeviceList(connectionId)
+        val withoutHiddenGroups = fhemWebConfigurationService.filterHiddenGroupsFrom(allDevicesList)
+        val withoutHiddenDevices = hiddenRoomsDeviceFilter.filterHiddenDevicesIfRequired(withoutHiddenGroups)
+
+        val containedRooms = withoutHiddenDevices.allDevices
+                .flatMap { it.getRooms() }
+                .distinct()
+
+        val withoutHiddenRooms = fhemWebConfigurationService.filterHiddenRoomsIn(containedRooms)
+        return fhemWebConfigurationService.sortRooms(withoutHiddenRooms)
     }
 }
