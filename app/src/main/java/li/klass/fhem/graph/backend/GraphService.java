@@ -96,7 +96,7 @@ public class GraphService {
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.getName(), series.size());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDeviceName(), connectionId, plotSeries, interval, context, svgGraphDefinition.getPlotfunction()));
+            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDeviceName(), connectionId, plotSeries, interval, svgGraphDefinition.getPlotfunction()));
         }
 
         return new GraphData(data, interval);
@@ -115,19 +115,18 @@ public class GraphService {
      * @param connectionId id of the server or absent (absent will use the currently selected server)
      * @param gPlotSeries  chart description
      * @param interval     Interval containing start and end date
-     * @param context      context
      * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(String logDevice,
                                                        Optional<String> connectionId, GPlotSeries gPlotSeries,
-                                                       Interval interval, Context context, List<String> plotfunction) {
-        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, interval, gPlotSeries, context, plotfunction));
+                                                       Interval interval, List<String> plotfunction) {
+        List<GraphEntry> graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, interval, gPlotSeries, plotfunction));
         LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size(), logDevice);
         return graphEntries;
     }
 
     String loadLogData(String logDevice, Optional<String> connectionId, Interval interval,
-                       GPlotSeries plotSeries, Context context, List<String> plotfunction) {
+                       GPlotSeries plotSeries, List<String> plotfunction) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(interval.getStart());
         String toDateFormatted = DATE_TIME_FORMATTER.print(interval.getEnd());
 

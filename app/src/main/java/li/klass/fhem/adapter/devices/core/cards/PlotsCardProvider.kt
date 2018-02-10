@@ -37,7 +37,6 @@ import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
-import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition.BY_NAME
 import li.klass.fhem.graph.ui.GraphActivity
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
@@ -72,7 +71,7 @@ class PlotsCardProvider @Inject constructor(
     private fun fillPlotsCard(plotsCard: CardView, device: FhemDevice,
                               graphDefinitions: Set<SvgGraphDefinition>,
                               connectionId: String?, context: Context) {
-        val definitions = graphDefinitions.sortedWith(BY_NAME)
+        val definitions = graphDefinitions.sortedBy { it.name }
         if (definitions.isEmpty()) {
             return
         }

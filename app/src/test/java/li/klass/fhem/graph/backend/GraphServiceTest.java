@@ -124,7 +124,7 @@ public class GraphServiceTest {
         given(commandExecutionService.executeSync(new Command(command.replaceAll("<SPEC1>", spec1).replaceAll("<SPEC2>", spec2), Optional.<String>absent()))).willReturn(response);
 
         // when
-        String result = graphService.loadLogData(logDeviceName, Optional.<String>absent(), new Interval(from, to), series, context, plotfunction);
+        String result = graphService.loadLogData(logDeviceName, Optional.<String>absent(), new Interval(from, to), series, plotfunction);
 
         // then
         assertThat(result).isEqualToIgnoringCase("\n\r" + response);
