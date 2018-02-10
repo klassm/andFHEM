@@ -70,7 +70,7 @@ class MemorizingTrustManagerContextInitializer {
     private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String?): KeyStore? =
             FileInputStream(certificateFile).use {
                 KeyStore.getInstance("PKCS12").apply {
-                    load(it, clientCertPassword?.toCharArray())
+                    load(it, clientCertPassword?.toCharArray() ?: CharArray(0))
                 }
             }
 
