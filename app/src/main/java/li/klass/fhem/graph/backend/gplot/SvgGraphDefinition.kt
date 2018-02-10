@@ -24,27 +24,11 @@
 
 package li.klass.fhem.graph.backend.gplot
 
-import com.google.common.collect.ComparisonChain
 import java.io.Serializable
-import java.util.*
-import java.util.regex.Pattern
 
-data class SvgGraphDefinition(val name: String, val plotDefinition: GPlotDefinition, val logDeviceName: String, private val labels: List<String>, val title: String, val plotfunction: List<String>) : Serializable {
-
-    internal fun formatText(toFormat: String): String {
-        var result = toFormat.replace("<TL>".toRegex(), title)
-        val matcher = LABEL_PATTERN.matcher(toFormat)
-        while (matcher.find()) {
-            val labelIndex = Integer.parseInt(matcher.group(1)) - 1
-            val replaceBy = if (labelIndex < labels.size) labels[labelIndex].trim { it <= ' ' } else ""
-            result = result.replace(matcher.group(0).toRegex(), replaceBy)
-        }
-        return result
-    }
-
-    companion object {
-
-        private val LABEL_PATTERN = Pattern.compile("<L([0-9]+)>")
-        val BY_NAME: Comparator<SvgGraphDefinition> = Comparator { o1, o2 -> ComparisonChain.start().compare(o1.name!!, o2.name!!).result() }
-    }
-}
+data class SvgGraphDefinition(val name: String,
+                              val plotDefinition: GPlotDefinition,
+                              val logDeviceName: String,
+                              val labels: List<String>,
+                              val title: String,
+                              val plotfunction: List<String>) : Serializable
