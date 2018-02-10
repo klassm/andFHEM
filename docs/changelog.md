@@ -6,6 +6,12 @@ bigimg: /images/changelog.jpg
 
 <div id="home">
 
+Please note: There might be also a newer beta version available. To register for beta version, make sure to join the andFHEM Google+ group
+and register on one of the following pages below (for your installed version):
+
+* https://play.google.com/apps/testing/li.klass.fhem
+* https://play.google.com/apps/testing/li.klass.fhempremium
+
 {% for release in site.github.releases %}
 <h3><a href="https://github.com/klassm/andFHEM/milestones/{{release.name}}">{{release.name}}</a> ({{release.published_at | date: '%d.%m.%Y'}})</h3>
 <div markdown="1">{{release.body}}</div>
