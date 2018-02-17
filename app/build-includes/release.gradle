@@ -95,6 +95,7 @@ task deleteGitTag(type: Exec) {
 }
 tasks.findAll { it.name.contains("createReleaseTag") }
         .forEach { it.dependsOn deleteGitTag }
+createReleaseTag.enabled = false
 
 def getNewReleaseVersion() {
     return System.getProperty("release.releaseVersion")
