@@ -43,7 +43,7 @@ public class DeviceDescMapping {
     @Inject
     public DeviceDescMapping() {
         try {
-            mapping = new JSONObject(Resources.toString(Resources.getResource(DeviceDescMapping.class, "deviceDescMapping.json"), Charsets.UTF_8));
+            mapping = new JSONObject(Resources.toString(Resources.getResource(DeviceDescMapping.class, "/deviceDescMapping.json"), Charsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
