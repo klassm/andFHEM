@@ -25,8 +25,12 @@
 package li.klass.fhem.connection.backend.ssl
 
 import android.content.Context
+import android.net.TrafficStats
 import com.google.common.base.Supplier
+import li.klass.fhem.util.DelegatingSocketFactory
 import okhttp3.OkHttpClient
+import java.net.Socket
+
 
 class OkHttpClientForMemorizingTrustManagerSupplier(val context: Context) : Supplier<OkHttpClient> {
     override fun get(): OkHttpClient {
@@ -34,6 +38,11 @@ class OkHttpClientForMemorizingTrustManagerSupplier(val context: Context) : Supp
         MemorizingTrustManagerContextInitializer().init(context)
 
         val builder = OkHttpClient.Builder()
+                .socketFactory(object : DelegatingSocketFactory(getDefault()) {
+                    // Fix à la: https://github.com/square/okhttp/issues/3537
+                    override fun configureSocket(socket: Socket) =
+                            socket.apply { TrafficStats.tagSocket(socket) }
+                })
 
         MemorizingTrustManagerContextInitializer().init(context)
                 ?.let {
@@ -42,4 +51,5 @@ class OkHttpClientForMemorizingTrustManagerSupplier(val context: Context) : Supp
                 }
         return builder.build()
     }
+
 }
