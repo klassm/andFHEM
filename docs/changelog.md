@@ -9,8 +9,10 @@ bigimg: /images/changelog.jpg
 Please note: There might be also a newer beta version available. To register for beta version, make sure to join the andFHEM Google+ group
 and register on one of the following pages below (for your installed version):
 
-* https://play.google.com/apps/testing/li.klass.fhem
-* https://play.google.com/apps/testing/li.klass.fhempremium
+<ul>
+<li><a href="https://play.google.com/apps/testing/li.klass.fhem">Inapp / Default</a></li>
+<li><a href="https://play.google.com/apps/testing/li.klass.fhempremium">Premium (as separate app)</a></li>
+</ul>
 
 {% for release in site.github.releases %}
 <h3><a href="https://github.com/klassm/andFHEM/milestones/{{release.name}}">{{release.name}}</a> ({{release.published_at | date: '%d.%m.%Y'}})</h3>
