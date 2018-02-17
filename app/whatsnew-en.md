@@ -1,1 +1,1 @@
-* Fix connection / device lists read error for Android >= Oreo
+TODO
