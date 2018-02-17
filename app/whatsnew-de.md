@@ -1,1 +1,1 @@
-TODO
+* Repariere Geräteliste / Verbindungsfehler für Android >= Oreo
