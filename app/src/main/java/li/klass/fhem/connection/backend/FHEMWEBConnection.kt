@@ -31,6 +31,7 @@ import android.net.TrafficStats
 import com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport
 import com.google.api.client.http.GenericUrl
 import com.google.api.client.http.HttpHeaders
+import com.google.api.client.http.HttpResponse
 import com.google.api.client.http.HttpResponseException
 import com.google.common.base.Charsets
 import com.google.common.base.Optional
@@ -115,13 +116,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             } else urlSuffix
             LOG.info("accessing URL {}", url)
 
-            val response = newCompatibleTransport()
-                    .createRequestFactory().buildGetRequest(GenericUrl(url))
-                    .setConnectTimeout(SOCKET_TIMEOUT)
-                    .setReadTimeout(SOCKET_TIMEOUT)
-                    .setLoggingEnabled(false)
-                    .setHeaders(basicAuthHeaders)
-                    .execute()
+            val response = doGet(url)
 
             LOG.debug("response status code is " + response.statusCode)
 
@@ -144,16 +139,8 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     private fun findCsrfToken(serverUrl: String): String? {
         try {
-            val response = newCompatibleTransport()
-                    .createRequestFactory().buildGetRequest(GenericUrl(serverUrl + "?room=notExistingJustToLoadCsrfToken"))
-                    .setConnectTimeout(SOCKET_TIMEOUT)
-                    .setReadTimeout(SOCKET_TIMEOUT)
-                    .setLoggingEnabled(false)
-                    .setHeaders(basicAuthHeaders)
-                    .execute()
-
+            val response = doGet(serverUrl + "?room=notExistingJustToLoadCsrfToken")
             val value = response.headers.getFirstHeaderStringValue("X-FHEM-csrfToken")
-
             response.content.close()
             return value
         } catch (e: SocketTimeoutException) {
@@ -166,6 +153,16 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             LOG.info("cannot load csrf token", e)
             return null
         }
+    }
+
+    private fun doGet(url: String): HttpResponse {
+        return newCompatibleTransport()
+                .createRequestFactory().buildGetRequest(GenericUrl(url))
+                .setConnectTimeout(SOCKET_TIMEOUT)
+                .setReadTimeout(SOCKET_TIMEOUT)
+                .setLoggingEnabled(false)
+                .setHeaders(basicAuthHeaders)
+                .execute()
     }
 
     private fun handleError(urlSuffix: String, isRetry: Boolean, url: String?, e: Exception, context: Context): RequestResult<InputStream> {
