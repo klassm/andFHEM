@@ -47,6 +47,7 @@ def getNextVersion(version) {
 
 play {
     userFraction = 1.0
+    untrackOld = true
 }
 
 release {
