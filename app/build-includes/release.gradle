@@ -22,6 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
+// disable release taqging, as this breaks in multi-module projects
+createReleaseTag.enabled = false
 
 def getVersionCode(version) {
     return Integer.parseInt(
@@ -89,24 +91,17 @@ uploadToPlayStore.dependsOn {
     tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") }
 }
 
-task deleteGitTag(type: Exec) {
-    commandLine 'git', 'tag', '-d', getNewReleaseVersion()
-    ignoreExitValue true
-}
-tasks.findAll { it.name.contains("createReleaseTag") }
-        .forEach { it.dependsOn deleteGitTag }
-createReleaseTag.enabled = false
-
 def getNewReleaseVersion() {
     return System.getProperty("release.releaseVersion")
 }
 
 def setNewReleaseVersion(value) {
     if (getNewReleaseVersion() == null) {
-        println("set new version to " + value)
+        println("set releaseVersion to " + value)
         System.setProperty("release.releaseVersion", value)
 
-        println("set new version after $value")
-        System.setProperty("release.newVersion", getNextVersion(value) + "-SNAPSHOT")
+        def newVersion = getNextVersion(value) + "-SNAPSHOT"
+        println("set new version after $value to $newVersion")
+        System.setProperty("release.newVersion", newVersion)
     }
 }
