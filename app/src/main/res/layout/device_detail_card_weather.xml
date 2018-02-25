@@ -33,6 +33,7 @@
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:background="?backgroundColorSecondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

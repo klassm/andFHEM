@@ -95,5 +95,14 @@
             android:summary=""
             android:title="@string/settingsDefaultTimespan" />
 
+        <ListPreference
+            android:id="@+id/theme"
+            android:defaultValue="AUTO"
+            android:entries="@array/theme"
+            android:entryValues="@array/theme_values"
+            android:key="THEME"
+            android:summary=""
+            android:title="@string/settingsTheme" />
+
     </PreferenceCategory>
 </PreferenceScreen>

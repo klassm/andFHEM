@@ -359,6 +359,7 @@
     <string name="settingsGcmWidgetUpdateSummaryOff">Bei Eingang einer GCM-Nachricht mit neuen Statusinformationen eines Gerätes werden die Widgets nicht aktualisiert</string>
     <string name="settingsStartupView">Start-Ansicht</string>
     <string name="settingsStartupViewSummary">Beim Start der App \'%1$s\' anzeigen</string>
+    <string name="settingsTheme">Theme</string>
     <string name="settingsConnectionTimeout">Verbindungs-Wartezeit</string>
     <string name="settingsConnectionTimeoutSummary">Verbindung beenden, wenn der Server nach %1$s Sekunden nicht reagiert</string>
     <string name="settingsCommandExecutionRetries">Kommando-Wiederholungen</string>

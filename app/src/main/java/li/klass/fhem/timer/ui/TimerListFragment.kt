@@ -157,9 +157,10 @@ class TimerListFragment : BaseFragment() {
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
         val name = contextMenuClickedDevice?.name ?: return false
+        val context = activity ?: return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
-                DeviceActionUtil.deleteDevice(activity, name)
+                DeviceActionUtil.deleteDevice(context, name)
                 return true
             }
         }
@@ -171,6 +172,6 @@ class TimerListFragment : BaseFragment() {
 
     companion object {
         private val TAG = TimerListFragment::class.java.name
-        private val CONTEXT_MENU_DELETE = 1
+        private const val CONTEXT_MENU_DELETE = 1
     }
 }

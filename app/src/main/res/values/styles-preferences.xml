@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -23,16 +22,12 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
-        <shape android:shape="rectangle">
-            <solid android:color="@color/whitegrey"/>
-        </shape>
-    </item>
+<resources>
 
-    <item android:bottom="1.5dp">
-        <shape android:shape="rectangle">
-            <solid android:color="?backgroundColorSecondary" />
-        </shape>
-    </item>
-  </layer-list>
+    <style name="PreferencesBaseTheme" parent="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+    <style name="PreferencesTheme" parent="PreferencesBaseTheme">
+        <item name="backgroundColorSecondary">@color/whitegrey</item>
+        <item name="backgroundColorPrimary">@color/whitegrey</item>
+    </style>
+</resources>

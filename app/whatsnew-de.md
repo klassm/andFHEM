@@ -1,1 +1,1 @@
-TODO
+* Dark theme (Einstellungen > Darstellung > Theme)

@@ -77,7 +77,7 @@ public class AvailableTargetStatesDialogUtil {
             .build();
 
     public static <D extends FhemDevice> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {
-        AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
+        AlertDialog.Builder contextMenu = new AlertDialog.Builder(context, R.style.alertDialog);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
         final SetList setList = device.getSetList();
         final List<String> setOptions = setList.getSortedKeys();

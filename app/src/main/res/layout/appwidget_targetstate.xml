@@ -38,12 +38,12 @@
             android:layout_height="25dp"
             android:gravity="center"
             android:text="@string/state"
-            android:textColor="@android:color/black"
+            android:textColor="?android:textColor"
             android:layout_width="fill_parent"
             android:background="@android:color/white"
             android:ellipsize="start"
             android:contentDescription="@string/switchDevice"
-            android:maxLines="1" />
+            android:singleLine="true" />
     </LinearLayout>
     <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>

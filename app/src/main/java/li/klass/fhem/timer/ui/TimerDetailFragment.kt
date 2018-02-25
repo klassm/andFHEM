@@ -66,7 +66,8 @@ import javax.inject.Inject
 class TimerDetailFragment : BaseFragment() {
     private var timerDevice: TimerDevice? = null
 
-    @Transient private var targetDevice: FhemDevice? = null
+    @Transient
+    private var targetDevice: FhemDevice? = null
     private var savedTimerDeviceName: String? = null
 
     @Inject
@@ -192,8 +193,14 @@ class TimerDetailFragment : BaseFragment() {
         val switchTimeChangeButton = view.findViewById<Button>(R.id.switchTimeSet)
         switchTimeChangeButton.setOnClickListener {
             val switchTime = getSwitchTime(view) ?: LocalTime.now()
-            TimePickerWithSecondsDialog(activity, switchTime.hourOfDay, switchTime.minuteOfHour, switchTime.secondOfMinute,
-                    TimePickerWithSecondsDialog.TimePickerWithSecondsListener { _, newHour, newMinute, newSecond, _ -> setSwitchTime(LocalTime(newHour, newMinute, newSecond), view) }).show()
+            activity?.let {
+                TimePickerWithSecondsDialog(it, switchTime.hourOfDay, switchTime.minuteOfHour, switchTime.secondOfMinute,
+                        object : TimePickerWithSecondsDialog.TimePickerWithSecondsListener {
+                            override fun onTimeChanged(okClicked: Boolean, hours: Int, minutes: Int, seconds: Int, formattedText: String) {
+                                setSwitchTime(LocalTime(hours, minutes, seconds), view)
+                            }
+                        }).show()
+            }
         }
     }
 

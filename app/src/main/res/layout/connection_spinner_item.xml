@@ -34,7 +34,8 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:paddingBottom="4dp"
+    android:background="?backgroundColorSecondary">
 
     <TextView
         android:layout_width="wrap_content"

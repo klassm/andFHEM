@@ -26,7 +26,6 @@ package li.klass.fhem.widget.deviceFunctionality
 
 import android.content.Context
 import android.graphics.Paint
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -68,11 +67,9 @@ class DeviceFunctionalityOrderAdapter(context: Context,
 
         if (item.isVisible) {
             nameView.paintFlags = Paint.FAKE_BOLD_TEXT_FLAG
-            nameView.setTextColor(ContextCompat.getColor(context, R.color.textColorDefault))
             view.change_visibility.setImageResource(R.drawable.visible)
         } else {
             nameView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.FAKE_BOLD_TEXT_FLAG
-            nameView.setTextColor(ContextCompat.getColor(context, R.color.textColorSecondary))
             view.change_visibility.setImageResource(R.drawable.invisible)
         }
     }

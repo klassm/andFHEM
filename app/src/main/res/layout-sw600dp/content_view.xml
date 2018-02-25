@@ -35,7 +35,7 @@
         android:id="@+id/navigation"
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:background="@color/darkGrey" />
+        android:background="?backgroundColorPrimary" />
 
     <li.klass.fhem.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"

@@ -84,7 +84,7 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
         setInitialProgress(progress);
 
         String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
-        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
+        DeviceActionUtil.INSTANCE.showConfirmation(context, new Dialog.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

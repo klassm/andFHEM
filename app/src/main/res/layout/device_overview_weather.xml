@@ -30,7 +30,8 @@
     android:paddingEnd="0dp"
     android:paddingLeft="20dp"
     android:paddingRight="0dp"
-    android:paddingStart="20dp">
+    android:paddingStart="20dp"
+    android:background="?backgroundColorSecondary">
 
     <ImageView
         android:id="@+id/weatherImage"

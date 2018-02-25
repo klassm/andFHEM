@@ -361,6 +361,7 @@
     <string name="settingsGcmWidgetUpdateSummaryOff">When receiving a GCM message containing new state information for a device widgets are not updated</string>
     <string name="settingsStartupView">Startup view</string>
     <string name="settingsStartupViewSummary">On application start \'%1$s\' will be shown</string>
+    <string name="settingsTheme">Theme</string>
     <string name="settingsConnectionTimeout">Connection timeout</string>
     <string name="settingsConnectionTimeoutSummary">Stop the connection attempt if the server does not respond within %1$s seconds</string>
     <string name="settingsCommandExecutionRetries">Command execution retries</string>

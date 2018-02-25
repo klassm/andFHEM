@@ -2,7 +2,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="3dp"
+    app:cardBackgroundColor="?backgroundColorSecondary">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,6 +28,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:textColor="?android:textColorSecondary"
                 android:id="@+id/receiveTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,6 +39,7 @@
         </LinearLayout>
 
         <TextView
+            android:textColor="?android:textColorSecondary"
             android:id="@+id/deviceLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,6 +50,7 @@
 
         <TextView
             android:id="@+id/device"
+            android:textColor="?android:textColorSecondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/time"
@@ -55,6 +60,7 @@
 
         <TableLayout
             android:id="@+id/changes"
+            android:textColor="?android:textColorSecondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/device" />

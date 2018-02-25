@@ -22,14 +22,11 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- the theme applied to the application or activity -->
-    <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools" app="http://schemas.android.com/apk/res-auto">
+
+    <style name="ApplicationTheme" parent="@style/Theme.AppCompat.DayNight.DarkActionBar">
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/primary</item>
-
-        <!-- colorPrimaryDark is used for the status bar -->
-        <item name="colorPrimaryDark">@color/primaryDark</item>
 
         <!-- colorAccent is used as the default value for colorControlActivated
              which is used to tint widgets -->
@@ -55,6 +52,9 @@
             @android:color/secondary_text_light_nodisable
         </item>
         <item name="android:dropDownItemStyle">@style/myDropDownItemStyle</item>
+
+        <item name="backgroundColorPrimary">@color/backgroundColorPrimary</item>
+        <item name="backgroundColorSecondary">@color/backgroundColorSecondary</item>
     </style>
 
     <style name="myDropDownItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
@@ -79,7 +79,7 @@
         <item name="android:minWidth">60dp</item>
         <item name="android:focusable">false</item>
         <item name="android:background">@drawable/theme_toggle_button</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textSize">12sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
@@ -99,6 +99,11 @@
         <item name="android:max">100</item>
         <item name="android:focusable">false</item>
         <item name="android:minWidth">90dp</item>
+    </style>
+
+    <style name="alertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:colorBackground">?backgroundColorSecondary</item>
+        <item name="android:windowBackground">?backgroundColorSecondary</item>
     </style>
 
     <style name="seekBar" parent="seekBarGeneric">
@@ -135,6 +140,7 @@
     </style>
 
     <style name="spinnerGeneric">
+        <item name="android:popupBackground">?backgroundColorSecondary</item>
     </style>
 
     <style name="spinner" parent="spinnerGeneric">
@@ -154,17 +160,17 @@
     </style>
 
     <style name="text" parent="@style/TextAppearance.AppCompat.Small">
-        <item name="android:textColor">@color/textColorDefault</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
 
     <style name="textPrimary" parent="text">
-        <item name="android:textColor">@color/textColorDefault</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="textSecondary" parent="text">
-        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <!-- #############################  -->
@@ -178,7 +184,8 @@
         <item name="android:layout_marginBottom">3dp</item>
     </style>
 
-    <style name="deviceOverviewDescription" parent="textPrimary">
+    <style name="deviceOverviewDescription" parent="textSecondary">
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_weight">5</item>
         <item name="android:textSize">13sp</item>
         <item name="android:ellipsize">end</item>
@@ -190,6 +197,7 @@
     </style>
 
     <style name="deviceOverviewContent" parent="textSecondary">
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">13sp</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:gravity">right</item>
@@ -199,6 +207,7 @@
     </style>
 
     <style name="deviceOverviewTable">
+        <item name="android:background">?backgroundColorSecondary</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
 
@@ -225,13 +234,10 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="deviceOverviewToggleButton" parent="toggleButton">
-        <!--<item name="android:layout_weight">0</item>-->
-        <!--<item name="android:layout_gravity">right</item>-->
-        <!--<item name="android:width">90dp</item>-->
-
     </style>
 
     <style name="alwaysOnDeviceOverviewButton" parent="deviceOverviewToggleButton">
@@ -281,7 +287,7 @@
         <item name="android:layout_marginTop">6dp</item>
     </style>
 
-    <style name="deviceDetailDescription" parent="textPrimary">
+    <style name="deviceDetailDescription" parent="textSecondary">
         <item name="android:layout_gravity">top|left</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
@@ -291,7 +297,7 @@
         <item name="android:layout_gravity">right|center_vertical</item>
         <item name="android:gravity">right</item>
         <item name="android:singleLine">false</item>
-        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="deviceDetailContentSeek" parent="seekBar">
@@ -301,8 +307,7 @@
         <item name="android:layout_span">2</item>
     </style>
 
-    <style name="deviceDetailContentToggle" parent="toggleButton">
-    </style>
+    <style name="deviceDetailContentToggle" parent="toggleButton" />
 
     <style name="deviceDetailTable" parent="deviceDetailSectionContent">
         <item name="android:stretchColumns">1</item>
@@ -341,7 +346,7 @@
 
     <style name="cardActionButton">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/darkerGrey</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:background">@drawable/card_button</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">start|center</item>
@@ -354,14 +359,15 @@
 
     <style name="cardCaption">
         <item name="android:background">@drawable/detail_card_caption</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:padding">10dp</item>
-        <item name="android:paddingLeft">16.0dip</item>
+        <item name="android:paddingLeft">16dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:ellipsize">end</item>
     </style>
 
     <style name="card">
+        <item name="cardBackgroundColor">?backgroundColorSecondary</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>

@@ -30,10 +30,11 @@
     card_view:cardUseCompatPadding="true">
 
     <TextView
+        android:textColor="@color/whitegrey"
         android:id="@+id/notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/activeGreen"
+        android:background="@color/andFHEMDarkGreen"
         android:padding="5dp"
         android:text="@string/gcmAlreadyRegistered" />
 

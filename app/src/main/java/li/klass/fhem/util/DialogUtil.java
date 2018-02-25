@@ -68,7 +68,7 @@ public class DialogUtil {
     }
 
     public static void showAlertDialog(Context context, String title, String text, final AlertOnClickListener onClickListener) {
-        final AlertDialog alert = new AlertDialog.Builder(context).create();
+        final AlertDialog alert = new AlertDialog.Builder(context, R.style.alertDialog).create();
         if (title != null) alert.setTitle(title);
         alert.setCancelable(false);
         alert.setMessage(text);
@@ -83,7 +83,7 @@ public class DialogUtil {
     }
 
     public static void showContentDialog(Context context, String title, View content, final AlertOnClickListener onClickListener) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.alertDialog);
         if (title != null) builder.setTitle(title);
         builder.setCancelable(true);
         builder.setView(content);
@@ -123,7 +123,7 @@ public class DialogUtil {
     }
 
     private static void showConfirmBox(Context context, String title, View view, final AlertOnClickListener positiveOnClickListener) {
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(context, R.style.alertDialog)
                 .setTitle(title)
                 .setView(view)
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {

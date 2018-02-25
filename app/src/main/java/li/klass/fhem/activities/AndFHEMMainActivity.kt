@@ -84,7 +84,11 @@ import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
-open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener, android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener, SwipeRefreshLayout.ChildScrollDelegate {
+open class AndFHEMMainActivity : AppCompatActivity(),
+        NavigationView.OnNavigationItemSelectedListener,
+        FragmentManager.OnBackStackChangedListener,
+        android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener,
+        SwipeRefreshLayout.ChildScrollDelegate {
 
     inner class Receiver : BroadcastReceiver() {
 
@@ -169,6 +173,8 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
     lateinit var connectionService: ConnectionService
     @Inject
     lateinit var licenseService: LicenseService
+    @Inject
+    lateinit var themeInitializer: ThemeInitializer
 
     private var broadcastReceiver: Receiver? = null
 
@@ -183,6 +189,10 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
     private var availableConnectionDataAdapter: AvailableConnectionDataAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val application = application as AndFHEMApplication
+        application.daggerComponent.inject(this)
+        themeInitializer.init()
+
         super.onCreate(savedInstanceState)
 
         try {
@@ -193,9 +203,6 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
     }
 
     private fun initialize(savedInstanceState: Bundle?) {
-        val application = application as AndFHEMApplication
-        application.daggerComponent.inject(this)
-
         saveInstanceStateCalled = false
 
         setContentView(R.layout.main_view)
@@ -777,7 +784,6 @@ open class AndFHEMMainActivity : AppCompatActivity(), NavigationView.OnNavigatio
 
         attachSearchView(menu)
         this.optionsMenu = menu
-
         return super.onCreateOptionsMenu(menu)
     }
 

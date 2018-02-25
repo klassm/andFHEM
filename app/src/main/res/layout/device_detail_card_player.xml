@@ -30,6 +30,7 @@
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
+        android:background="?backgroundColorSecondary"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center">

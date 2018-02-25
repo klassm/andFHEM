@@ -24,5 +24,5 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="?attr/colorControlHighlight">
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@android:color/transparent" />
 </ripple>

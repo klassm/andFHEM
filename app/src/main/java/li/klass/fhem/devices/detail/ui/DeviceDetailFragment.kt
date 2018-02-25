@@ -160,6 +160,7 @@ class DeviceDetailFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val context = activity ?: return false
         when (item!!.itemId) {
 
             R.id.menu_favorites_add -> {
@@ -168,8 +169,8 @@ class DeviceDetailFragment : BaseFragment() {
             R.id.menu_favorites_remove -> {
                 callUpdating(favoritesService::removeFavorite, R.string.context_favoriteremoved)
             }
-            R.id.menu_room -> DeviceActionUtil.moveDevice(activity, device)
-            R.id.menu_alias -> DeviceActionUtil.setAlias(activity, device)
+            R.id.menu_room -> DeviceActionUtil.moveDevice(context, device!!)
+            R.id.menu_alias -> DeviceActionUtil.setAlias(context, device!!)
             R.id.menu_notification -> NotificationSettingView(activity, deviceName).show(activity)
             else -> return false
         }

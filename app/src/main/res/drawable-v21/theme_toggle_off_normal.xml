@@ -27,10 +27,14 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/darkGrey">
 
-    <item
-        android:id="@android:id/mask"
-        android:drawable="@drawable/abc_btn_default_mtrl_shape" />
-    <item android:drawable="@drawable/abc_btn_default_mtrl_shape" />
+    <item>
+        <shape>
+            <corners android:radius="3dp" />
+            <stroke
+                android:color="@color/darkGrey"
+                android:width="1dp" />
+        </shape>
+    </item>
 
     <item
         android:right="10dp"

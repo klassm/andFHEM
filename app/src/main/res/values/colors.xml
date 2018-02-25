@@ -54,17 +54,13 @@
     <color name="errorBackground">#FFDB9C</color>
 
 
-    <!-- new color palette-->
     <color name="primary">#FF079400</color>
-
-    <!-- colorPrimaryDark is used for the status bar -->
-    <color name="primaryDark">#FF0d5302</color>
-
-    <!-- colorAccent is used as the default value for colorControlActivated
-         which is used to tint widgets -->
     <color name="accent">#FFB84100</color>
 
     <color name="textColorDefault">#FF000000</color>
     <color name="textColorSecondary">#FF4e4e4e</color>
     <color name="textColorTertiary">#FF8a8a8a</color>
+
+    <color name="backgroundColorPrimary">@color/whitegrey</color>
+    <color name="backgroundColorSecondary">@android:color/white</color>
 </resources>
