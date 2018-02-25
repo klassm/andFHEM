@@ -24,15 +24,14 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import com.google.common.base.Predicate
 import com.google.common.base.Supplier
-import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.ApplicationProperties
 import org.apache.commons.lang3.StringUtils.stripToNull
+import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
@@ -46,47 +45,59 @@ class FhemWebDeviceInRoomDeviceListSupplier
     override fun get(): FhemDevice? {
         val deviceList = deviceListService.getAllRoomsDeviceList(connectionService.getSelectedId())
         val fhemWebDevices = deviceList.getDevicesOfType("FHEMWEB")
-        return getIn(fhemWebDevices)
+        return findFhemWebDevice(fhemWebDevices)
     }
 
-    private fun getIn(devices: List<FhemDevice>): FhemDevice? {
-        if (devices.isEmpty()) return null
-        if (devices.size == 1) return devices[0]
+    private fun findFhemWebDevice(devices: List<FhemDevice>): FhemDevice? {
+        if (devices.isEmpty()) {
+            logger.info("findFhemWebDevice - cannot find a device because devices are empty")
+            return null
+        }
+        if (devices.size == 1) {
+            logger.info("findFhemWebDevice - only got one device, so using '${devices[0].name}'")
+            return devices[0]
+        }
 
-        val qualifierFromPreferences: String? =
-                stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null))
+        val deviceForQualifier = findDeviceForQualifier(devices)
+        if (deviceForQualifier != null) {
+            logger.info("findFhemWebDevice - found device for qualifier, using '${deviceForQualifier.name}'")
+            return deviceForQualifier
+        }
+        val deviceForPort = findDeviceForPort(devices)
+        if (deviceForPort != null) {
+            logger.info("findFhemWebDevice - found device for port, using '${deviceForPort.name}'")
+            return deviceForPort
+        }
 
-        if (qualifierFromPreferences == null) {
-            val port = connectionService.getPortOfSelectedConnection()
-            val match = from(devices).filter(predicateFHEMWEBDeviceForPort(port)).first()
-            if (match.isPresent) {
-                return match.get() as FhemDevice
+        val someDevice = devices[0]
+        logger.info("findFhemWebDevice - have no idea what device to choose, so choosing random device:  '${someDevice.name}'")
+        return someDevice
+    }
+
+    private fun findDeviceForPort(devices: List<FhemDevice>): FhemDevice? {
+        val port = connectionService.getPortOfSelectedConnection()
+        return devices.firstOrNull {
+            it.xmlListDevice.let {
+                it.type == "FHEMWEB" && it.attributeValueFor("port").orNull() == port.toString()
             }
         }
-
-        val qualifier = (qualifierFromPreferences ?: DEFAULT_FHEMWEB_QUALIFIER).toUpperCase(Locale.getDefault())
-
-        val match = from(devices).filter(predicateFHEMWEBDeviceForQualifier(qualifier)).first()
-        return if (match.isPresent) {
-            match.get() as FhemDevice
-        } else devices[0]
     }
 
-    private fun predicateFHEMWEBDeviceForQualifier(qualifier: String): Predicate<FhemDevice> {
-        return Predicate { device ->
-            (device?.name?.toUpperCase(Locale.getDefault()) ?: "").contains(qualifier)
+    private fun findDeviceForQualifier(devices: List<FhemDevice>): FhemDevice? {
+        val qualifier = getQualifier()
+        logger.debug("findDeviceForQualifier - qualifier is '$qualifier'")
+        return devices.firstOrNull {
+            it.name.toUpperCase(Locale.getDefault()).contains(qualifier)
         }
     }
 
-    private fun predicateFHEMWEBDeviceForPort(port: Int): Predicate<FhemDevice> {
-        return Predicate { device ->
-            return@Predicate device?.xmlListDevice?.let {
-                it.type == "FHEMWEB" && it.attributeValueFor("port").orNull() == port.toString()
-            } == true
-        }
-    }
+    private fun getQualifier(): String =
+            (stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null))
+                    ?: DEFAULT_FHEMWEB_QUALIFIER)
+                    .toUpperCase(Locale.getDefault())
 
     companion object {
-        private val DEFAULT_FHEMWEB_QUALIFIER = "andFHEM"
+        private const val DEFAULT_FHEMWEB_QUALIFIER = "andFHEM"
+        private val logger = LoggerFactory.getLogger(FhemWebDeviceInRoomDeviceListSupplier::class.java)
     }
 }

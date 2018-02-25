@@ -171,10 +171,10 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     }
 
     private fun fhemwebDeviceFor(name: String): FhemDevice {
-        val xmllistDevice = XmlListDevice("FHEMWEB")
-        val device = FhemDevice(xmllistDevice)
-        xmllistDevice.setInternal(XmllistKey.Internal.name, name)
-        xmllistDevice.setAttribute(XmllistKey.Attribute.group, "default")
-        return device
+        val xmllistDevice = XmlListDevice("FHEMWEB").apply {
+            setInternal(XmllistKey.Internal.name, name)
+            setAttribute(XmllistKey.Attribute.group, "default")
+        }
+        return FhemDevice(xmllistDevice)
     }
 }

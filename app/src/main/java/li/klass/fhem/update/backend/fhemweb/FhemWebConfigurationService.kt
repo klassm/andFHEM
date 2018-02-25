@@ -26,6 +26,7 @@ package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
+import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
@@ -39,12 +40,15 @@ class FhemWebConfigurationService @Inject constructor(
 ) {
     fun sortRooms(roomNames: Collection<String>): List<String> {
         val fhemwebDevice = findFhemWebDevice() ?: return roomNames.sorted()
-        return roomSorter.sort(roomNames, sortRoomsAttributeProvider.provideFor(fhemwebDevice))
+        val sortRoomsAttribute = sortRoomsAttributeProvider.provideFor(fhemwebDevice)
+        logger.info("sortRooms - fhemwebDevice=${fhemwebDevice.name}, sortRoomsAttribute=${sortRoomsAttribute.joinToString(separator = ",")}")
+        return roomSorter.sort(roomNames, sortRoomsAttribute)
     }
 
     fun filterHiddenRoomsIn(roomNames: Collection<String>): Set<String> {
         val fhemwebDevice = findFhemWebDevice() ?: return roomNames.toSet()
         val hiddenRooms = hiddenRoomsAttributeProvider.provideFor(fhemwebDevice)
+        logger.info("filterHiddenRoomsIn - fhemwebDevice=${fhemwebDevice.name}, hiddenRoomsAttribute=${hiddenRooms.joinToString(separator = ",")}")
 
         return roomNames.filter { it !in hiddenRooms }.toSet()
     }
@@ -52,6 +56,7 @@ class FhemWebConfigurationService @Inject constructor(
     fun filterHiddenGroupsFrom(roomDeviceList: RoomDeviceList): RoomDeviceList {
         val fhemwebDevice = findFhemWebDevice() ?: return roomDeviceList
         val hiddenGroups = hiddenGroupsAttributeProvider.provideFor(fhemwebDevice)
+        logger.info("filterHiddenGroupsFrom - fhemwebDevice=${fhemwebDevice.name}, hiddenGroupsAttribute=${hiddenGroups.joinToString(separator = ",")}")
 
         return roomDeviceList.filter({
             val groups = it.internalDeviceGroupOrGroupAttributes.map { it.toLowerCase(Locale.getDefault()) }
@@ -65,4 +70,8 @@ class FhemWebConfigurationService @Inject constructor(
     }
 
     private fun findFhemWebDevice(): FhemDevice? = fhemWebDeviceInRoomDeviceListSupplier.get()
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(FhemWebConfigurationService::class.java)
+    }
 }
