@@ -35,19 +35,13 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.DimConversionUtil
 import org.slf4j.LoggerFactory
 
-abstract class SeekBarActionRowFullWidth(protected var initialProgress: Float, private val minimumProgress: Float, private val step: Float, private val maximumProgress: Float, private val layoutId: Int,
+abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
+                                         private val minimumProgress: Double,
+                                         private val step: Double,
+                                         private val maximumProgress: Double,
+                                         private val layoutId: Int,
                                          updateRow: TableRow) {
-    var updateView: TextView? = null
-
-    init {
-        setUpdateRow(updateRow)
-    }
-
-    protected fun setUpdateRow(updateRow: TableRow?) {
-        if (updateRow != null) {
-            updateView = updateRow.findViewById(R.id.value)
-        }
-    }
+    var updateView: TextView = updateRow.findViewById(R.id.value)
 
     fun createRow(inflater: LayoutInflater, device: FhemDevice): TableRow =
             createRow(inflater, device.xmlListDevice)
@@ -57,12 +51,22 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Float, p
         val seekbarProgress = DimConversionUtil.toSeekbarProgress(initialProgress, minimumProgress, step)
 
         val row = inflater.inflate(layoutId, null) as TableRow
-        val seekBar = row.findViewById<SeekBar>(R.id.seekBar)
-        seekBar.setOnSeekBarChangeListener(createListener(device))
-        seekBar.max = seekbarMax
-        seekBar.progress = seekbarProgress
+        findSeekbar(row)
+                .apply {
+                    setOnSeekBarChangeListener(createListener(device))
+                    max = seekbarMax
+                    progress = seekbarProgress
+                }
+        updateView.text = toUpdateText(device, initialProgress)
+
         return row
     }
+
+    protected fun setSeekBarProgressTo(row: TableRow, progress: Double) {
+        findSeekbar(row).progress = DimConversionUtil.toSeekbarProgress(progress, minimumProgress, step)
+    }
+
+    private fun findSeekbar(row: TableRow) = row.findViewById<SeekBar>(R.id.seekBar)!!
 
     private fun createListener(device: XmlListDevice?): SeekBar.OnSeekBarChangeListener {
         return object : SeekBar.OnSeekBarChangeListener {
@@ -71,29 +75,30 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Float, p
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step)
-                LOGGER.info("onStopTrackingTouch - progress={}, converted={}", progress, this.progress)
-                if (updateView != null && fromUser) {
-                    this@SeekBarActionRowFullWidth.onProgressChanged(updateView, seekBar.context, device, this.progress)
-                    initialProgress = progress.toFloat()
+                LOGGER.info("onProgressChange - progress={}, converted={}", progress, this.progress)
+                if (fromUser) {
+                    this@SeekBarActionRowFullWidth.onNewValue(seekBar.context, device, this.progress)
+                    initialProgress = progress.toDouble()
                 }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                this@SeekBarActionRowFullWidth.onStopTrackingTouch(seekBar.context, device, progress)
+                this@SeekBarActionRowFullWidth.onProgressChange(seekBar.context, device, progress)
                 toUpdateText(device, progress)
             }
         }
     }
 
-    open fun onProgressChanged(updateView: TextView?, context: Context, device: XmlListDevice?, progress: Float) {
-        updateView!!.text = toUpdateText(device, progress)
+    protected fun onNewValue(context: Context, device: XmlListDevice?, progress: Double) {
+        updateView.text = toUpdateText(device, progress)
+        onProgressChange(context, device, progress)
     }
 
-    open fun toUpdateText(device: XmlListDevice?, progress: Float): String = progress.toString() + ""
+    open fun toUpdateText(device: XmlListDevice?, progress: Double): String = progress.toString() + ""
 
-    abstract fun onStopTrackingTouch(context: Context, device: XmlListDevice?, progress: Float)
+    abstract fun onProgressChange(context: Context, device: XmlListDevice?, progress: Double)
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(SeekBarActionRowFullWidth::class.java)

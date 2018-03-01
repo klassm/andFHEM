@@ -37,28 +37,28 @@ import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.NumberUtil.isDecimalNumber
 
 abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context,
-                                                  initialProgress: Float, step: Float,
-                                                  minimumProgress: Float, maximumProgress: Float,
+                                                  initialProgress: Double, step: Double,
+                                                  minimumProgress: Double, maximumProgress: Double,
                                                   updateRow: TableRow,
                                                   val applicationProperties: ApplicationProperties)
     : SeekBarActionRowFullWidth(initialProgress, minimumProgress, step,
         maximumProgress, LAYOUT_DETAIL, updateRow) {
 
-    override fun createRow(inflater: LayoutInflater, device: XmlListDevice?): TableRow {
-        val row = super.createRow(inflater, device)
-        applySetButtonIfRequired(device, row)
+    override fun createRow(inflater: LayoutInflater, device: XmlListDevice?) =
+            super.createRow(inflater, device).apply {
+                applySetButtonIfRequired(this, device)
+            }
 
-        return row
-    }
-
-    private fun applySetButtonIfRequired(device: XmlListDevice?, row: TableRow) {
+    private fun applySetButtonIfRequired(row: TableRow, device: XmlListDevice?) {
         val button = row.findViewById<View>(R.id.button) as Button
         button.setOnClickListener {
             val title = context.getString(R.string.set_value)
 
             DialogUtil.showInputBox(context, title, initialProgress.toString() + "") { text ->
                 if (isDecimalNumber(text)) {
-                    onButtonSetValue(device, java.lang.Float.parseFloat(text))
+                    val progress = text.toDouble()
+                    setSeekBarProgressTo(row, progress)
+                    onNewValue(context, device, progress)
                 } else {
                     DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput)
                 }
@@ -69,12 +69,10 @@ abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context
         }
     }
 
-    abstract fun onButtonSetValue(device: XmlListDevice?, value: Float)
-
     protected open fun showButton(): Boolean =
             applicationProperties.getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false)
 
     companion object {
-        val LAYOUT_DETAIL = R.layout.device_detail_seekbarrow_with_button
+        const val LAYOUT_DETAIL = R.layout.device_detail_seekbarrow_with_button
     }
 }

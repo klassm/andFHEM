@@ -46,15 +46,15 @@ public class SliderSetListEntry extends SetListItem {
         this.start = start;
     }
 
-    public float getStart() {
+    public double getStart() {
         return start;
     }
 
-    public float getStop() {
+    public double getStop() {
         return stop;
     }
 
-    public float getStep() {
+    public double getStep() {
         return step;
     }
 

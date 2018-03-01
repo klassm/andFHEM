@@ -41,14 +41,10 @@ open class StateChangingSeekBarFullWidth(context: Context,
         dimmableBehavior.dimStep, dimmableBehavior.dimLowerBound,
         dimmableBehavior.dimUpperBound, updateRow, applicationProperties) {
 
-    override fun onButtonSetValue(device: XmlListDevice?, value: Float) {
-        onStopTrackingTouch(context, device, value)
-    }
-
-    override fun onStopTrackingTouch(context: Context, device: XmlListDevice?, progress: Float) {
+    override fun onProgressChange(context: Context, device: XmlListDevice?, progress: Double) {
         dimmableBehavior.switchTo(stateUiService, context, progress)
     }
 
-    override fun toUpdateText(device: XmlListDevice?, progress: Float): String =
+    override fun toUpdateText(device: XmlListDevice?, progress: Double): String =
             dimmableBehavior.getDimStateForPosition(progress)
 }

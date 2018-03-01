@@ -33,17 +33,17 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.update.backend.xmllist.DeviceNode
-import li.klass.fhem.util.ValueExtractUtil.extractLeadingFloat
+import li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble
 import org.joda.time.DateTime
 import java.util.*
 
 class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListEntry, private val setListAttribute: String) : DimmableTypeBehavior {
 
-    override fun getDimLowerBound(): Float = slider.start
+    override fun getDimLowerBound(): Double = slider.start
 
-    override fun getDimStep(): Float = slider.step
+    override fun getDimStep(): Double = slider.step
 
-    override fun getCurrentDimPosition(device: FhemDevice): Float {
+    override fun getCurrentDimPosition(device: FhemDevice): Double {
         val value = getValue(device).value
         return getPositionForDimState(value)
     }
@@ -54,9 +54,9 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
         return value ?: DeviceNode(DeviceNode.DeviceNodeType.STATE, "state", "", null as DateTime?)
     }
 
-    override fun getDimUpperBound(): Float = slider.stop
+    override fun getDimUpperBound(): Double = slider.stop
 
-    override fun getDimStateForPosition(fhemDevice: FhemDevice, position: Float): String {
+    override fun getDimStateForPosition(fhemDevice: FhemDevice, position: Double): String {
         if (setListAttribute.equals("state", ignoreCase = true)) {
             val setList = fhemDevice.setList
             if (position == getDimLowerBound() && setList.contains("off")) {
@@ -72,7 +72,7 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
 
     }
 
-    override fun getPositionForDimState(dimState: String): Float {
+    override fun getPositionForDimState(dimState: String): Double {
         val state = dimState.toLowerCase(Locale.getDefault())
                 .replace(Joiner.on("|").join(DIM_ATTRIBUTES).toRegex(), "")
                 .replace("%".toRegex(), "")
@@ -82,12 +82,12 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
         } else if (LOWER_BOUND_STATES.contains(state)) {
             return getDimUpperBound()
         }
-        return extractLeadingFloat(state)
+        return extractLeadingDouble(state)
     }
 
     override fun getStateName(): String = setListAttribute
 
-    override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Float) {
+    override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double) {
         stateUiService.setSubState(fhemDevice, connectionId, setListAttribute, getDimStateForPosition(fhemDevice, state), context)
     }
 

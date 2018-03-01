@@ -83,7 +83,7 @@ public abstract class SpinnerActionRow {
         rowView = (TableRow) inflater.inflate(R.layout.device_detail_spinnerrow, viewGroup, false);
 
         ((TextView) rowView.findViewById(R.id.description)).setText(description);
-        final Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
+        final Spinner spinner = rowView.findViewById(R.id.spinner);
         spinner.setPrompt(prompt);
 
         ArrayAdapter adapter = new ArrayAdapter<>(context, R.layout.spinnercontent, spinnerValues);

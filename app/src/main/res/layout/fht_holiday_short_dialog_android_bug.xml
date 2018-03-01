@@ -46,7 +46,7 @@
         <li.klass.fhem.widget.FallbackTimePicker android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_span="2"
-                    android:id="@+id/timePicker"/>
+            android:id="@+id/timePickerAndroidBug" />
     </TableRow>
 
     <TableRow android:id="@+id/updateTemperatureRow">

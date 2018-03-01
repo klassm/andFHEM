@@ -175,7 +175,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             return AndroidBug.handleColorStateBug(object : AndroidBug.BugHandler {
                 override fun bugEncountered(): View {
                     val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector_android_bug, viewGroup, false)
-                    val timePicker = contentView.findViewById<FallbackTimePicker>(R.id.timePicker)
+                    val timePicker = contentView.findViewById<FallbackTimePicker>(R.id.timePickerAndroidBug)
                     timePicker.hours = hours
                     timePicker.minutes = minutes
                     timePicker.setOnValueChangedListener { hours, minutes ->
@@ -188,7 +188,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
 
                 override fun defaultAction(): View {
                     val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false)
-                    val timePicker = contentView.findViewById<TimePicker>(R.id.timePicker)
+                    val timePicker = contentView.findViewById<TimePicker>(R.id.timePickerAndroidBug)
                     timePicker.setIs24HourView(true)
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -25,13 +25,14 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.TableRow;
 
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWidth {
 
-    public DeviceDimActionRowFullWidth(float dimState, float lowerBound, float dimStep, float upperBound, TableRow updateRow, int layoutId) {
+    public DeviceDimActionRowFullWidth(double dimState, double lowerBound, double dimStep, double upperBound, TableRow updateRow, int layoutId) {
         super(
                 dimState,
                 lowerBound,
@@ -41,16 +42,17 @@ public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWi
                 updateRow);
     }
 
-    public void onStopTrackingTouch(final Context context, XmlListDevice device, float progress) {
+    public void onProgressChange(@NonNull final Context context, XmlListDevice device, double progress) {
         onStopDim(context, device, progress);
     }
 
+    @NonNull
     @Override
-    public String toUpdateText(XmlListDevice device, float progress) {
+    public String toUpdateText(XmlListDevice device, double progress) {
         return toDimUpdateText(device, progress);
     }
 
-    public abstract void onStopDim(Context context, XmlListDevice device, float progress);
+    public abstract void onStopDim(Context context, XmlListDevice device, double progress);
 
-    public abstract String toDimUpdateText(XmlListDevice device, float progress);
+    public abstract String toDimUpdateText(XmlListDevice device, double progress);
 }

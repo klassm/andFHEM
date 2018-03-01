@@ -35,23 +35,23 @@ class DimmableBehavior private constructor(
         private val connectionId: String?,
         val behavior: DimmableTypeBehavior) {
 
-    val currentDimPosition: Float
+    val currentDimPosition: Double
         get() = behavior.getCurrentDimPosition(fhemDevice)
 
-    val dimLowerBound: Float
+    val dimLowerBound: Double
         get() = behavior.getDimLowerBound()
 
-    val dimUpperBound: Float
+    val dimUpperBound: Double
         get() = behavior.getDimUpperBound()
 
-    val dimStep: Float
+    val dimStep: Double
         get() = behavior.getDimStep()
 
 
-    fun getDimStateForPosition(position: Float): String =
+    fun getDimStateForPosition(position: Double): String =
             behavior.getDimStateForPosition(fhemDevice, position)
 
-    fun switchTo(stateUiService: StateUiService, context: Context, state: Float) {
+    fun switchTo(stateUiService: StateUiService, context: Context, state: Double) {
         behavior.switchTo(stateUiService, context, fhemDevice, connectionId, state)
     }
 

@@ -30,7 +30,7 @@ object DimConversionUtil {
     private val LOGGER = LoggerFactory.getLogger(DimConversionUtil::class.java)
     private val BASE = 100
 
-    fun toSeekbarProgress(progress: Float, lowerBound: Float, step: Float): Int {
+    fun toSeekbarProgress(progress: Double, lowerBound: Double, step: Double): Int {
         val progressAsInt = (progress * BASE).toInt()
         val lowerBoundAsInt = (lowerBound * BASE).toInt()
         val stepAsInt = (step * BASE).toInt()
@@ -45,17 +45,14 @@ object DimConversionUtil {
         return (progressAsInt - lowerBoundAsInt) / stepZeroSafe
     }
 
-    fun toDimState(progress: Int, lowerBound: Float, step: Float): Float {
-        val safeStep = when {
-            step == 0f -> {
-                LOGGER.error("dim step is 0!")
-                1f;
-            }
-            else -> step;
+    fun toDimState(progress: Int, lowerBound: Double, step: Double): Double {
+        if (step < 0.01) {
+            LOGGER.error("dim step is 0!")
+            return 1.0
         }
         val lowerBoundAsInt = (lowerBound * BASE).toInt()
-        val stepAsInt = (safeStep * BASE).toInt()
+        val stepAsInt = (step * BASE).toInt()
 
-        return (progress * stepAsInt + lowerBoundAsInt) / BASE.toFloat()
+        return (progress * stepAsInt + lowerBoundAsInt) / BASE.toDouble()
     }
 }

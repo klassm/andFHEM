@@ -37,40 +37,40 @@ import java.util.regex.Pattern
 
 class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : DimmableTypeBehavior {
 
-    override fun getDimLowerBound(): Float = 0f
+    override fun getDimLowerBound(): Double = 0.0
 
-    override fun getDimStep(): Float = 1f
+    override fun getDimStep(): Double = 1.0
 
-    override fun getCurrentDimPosition(device: FhemDevice): Float {
+    override fun getCurrentDimPosition(device: FhemDevice): Double {
         val state = device.internalState
         val position = getPositionForDimState(state)
-        return if (position == -1f) 0f else position
+        return if (position == -1.0) 0.0 else position
     }
 
-    override fun getDimUpperBound(): Float = foundDimStates.size.toFloat()
+    override fun getDimUpperBound(): Double = foundDimStates.size.toDouble()
 
-    override fun getDimStateForPosition(fhemDevice: FhemDevice, position: Float): String {
+    override fun getDimStateForPosition(fhemDevice: FhemDevice, position: Double): String {
         val pos = position.toInt()
-        if (pos.toFloat() <= getDimLowerBound()) {
+        if (pos.toDouble() <= getDimLowerBound()) {
             return "off"
-        } else if (pos.toFloat() >= getDimUpperBound()) {
+        } else if (pos.toDouble() >= getDimUpperBound()) {
             return "on"
         }
         return foundDimStates[pos - 1]
     }
 
-    override fun getPositionForDimState(dimState: String): Float {
+    override fun getPositionForDimState(dimState: String): Double {
         if ("on".equals(dimState, ignoreCase = true)) {
             return getDimUpperBound()
         } else if ("off".equals(dimState, ignoreCase = true)) {
             return getDimLowerBound()
         }
-        return (foundDimStates.indexOf(dimState) + 1).toFloat()
+        return (foundDimStates.indexOf(dimState) + 1).toDouble()
     }
 
     override fun getStateName(): String = "state"
 
-    override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Float) {
+    override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double) {
         stateUiService.setState(fhemDevice, getDimStateForPosition(fhemDevice, state), context, connectionId)
     }
 

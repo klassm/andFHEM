@@ -40,7 +40,7 @@ import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
 class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
-    private var dimProgress = 0f
+    private var dimProgress = 0.0
 
     override fun canHandle(entry: SetListEntry): Boolean = entry is SliderSetListEntry
 
@@ -48,7 +48,8 @@ class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
         val sliderSetListEntry = entry as SliderSetListEntry
 
-        val initialProgress = DimmableBehavior.behaviorFor(device, null).orNull()?.currentDimPosition ?: 0f
+        val initialProgress = DimmableBehavior.behaviorFor(device, null).orNull()?.currentDimPosition
+                ?: 0.0
 
         val inflater = LayoutInflater.from(context)
         @SuppressLint("InflateParams") val tableLayout = inflater.inflate(R.layout.availabletargetstates_action_with_seekbar, null, false) as TableLayout
@@ -61,11 +62,11 @@ class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
                 sliderSetListEntry.start, sliderSetListEntry.step, sliderSetListEntry.stop,
                 updateRow, R.layout.device_detail_seekbarrow_full_width) {
 
-            override fun onStopDim(context: Context, device: XmlListDevice, progress: Float) {
+            override fun onStopDim(context: Context, device: XmlListDevice, progress: Double) {
                 dimProgress = progress
             }
 
-            override fun toDimUpdateText(device: XmlListDevice, progress: Float): String =
+            override fun toDimUpdateText(device: XmlListDevice, progress: Double): String =
                     getFormattedDimProgress(progress)
         }.createRow(inflater, device))
 
@@ -83,8 +84,8 @@ class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
                 .show()
     }
 
-    private fun getFormattedDimProgress(progress: Float): String {
-        if (progress % 1 == 0f) {
+    private fun getFormattedDimProgress(progress: Double): String {
+        if (progress % 1 < 0.01) {
             return progress.toInt().toString() + ""
         }
         return progress.toString() + ""

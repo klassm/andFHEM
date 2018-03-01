@@ -74,7 +74,7 @@ public class DimActionRow {
     private SeekBar.OnSeekBarChangeListener createListener(final DimmableBehavior behavior) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            float progress = behavior.getCurrentDimPosition();
+            double progress = behavior.getCurrentDimPosition();
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {

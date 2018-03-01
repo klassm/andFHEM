@@ -30,19 +30,19 @@ import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 
 internal interface DimmableTypeBehavior {
-    fun getDimLowerBound(): Float
+    fun getDimLowerBound(): Double
 
-    fun getDimUpperBound(): Float
+    fun getDimUpperBound(): Double
 
-    fun getDimStep(): Float
+    fun getDimStep(): Double
 
     fun getStateName(): String
 
-    fun getCurrentDimPosition(device: FhemDevice): Float
+    fun getCurrentDimPosition(device: FhemDevice): Double
 
-    fun getDimStateForPosition(fhemDevice: FhemDevice, position: Float): String
+    fun getDimStateForPosition(fhemDevice: FhemDevice, position: Double): String
 
-    fun getPositionForDimState(dimState: String): Float
+    fun getPositionForDimState(dimState: String): Double
 
-    fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Float)
+    fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double)
 }

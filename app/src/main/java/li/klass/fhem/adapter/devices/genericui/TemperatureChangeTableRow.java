@@ -29,8 +29,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.widget.TableRow;
-import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -60,7 +63,7 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
     private TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                       String intentAction, int valueStringId, double minTemperature,
                                       double maxTemperature, ApplicationProperties applicationProperties) {
-        super(context, (float) initialTemperature, 0.5f, (float) minTemperature, (float) maxTemperature, updateTableRow, applicationProperties);
+        super(context, initialTemperature, 0.5, minTemperature, maxTemperature, updateTableRow, applicationProperties);
 
         this.intentAction = intentAction;
         this.valueStringId = valueStringId;
@@ -70,25 +73,25 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
         getUpdateView().setText(appendTemperature(initialTemperature));
     }
 
+    @NotNull
     @Override
-    public void onProgressChanged(TextView updateView, Context context, XmlListDevice device, float progress) {
-        this.newTemperature = progress;
-        updateView.setText(appendTemperature(newTemperature));
+    public String toUpdateText(@Nullable XmlListDevice device, double progress) {
+        return appendTemperature(progress);
     }
 
     @Override
-    public void onStopTrackingTouch(final Context seekBarContext, final XmlListDevice device, float progress) {
+    public void onProgressChange(@NonNull final Context seekBarContext, final XmlListDevice device, final double progress) {
         if (!sendIntents) return;
         if (progress == getInitialProgress()) return;
 
         setInitialProgress(progress);
 
-        String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
+        String confirmationMessage = createConfirmationText(valueStringId, progress);
         DeviceActionUtil.INSTANCE.showConfirmation(context, new Dialog.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                setValue(device, newTemperature);
+                setValue(device, progress);
             }
         }, confirmationMessage);
     }
@@ -112,11 +115,6 @@ public class TemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButto
         context.startService(intent);
 
         getUpdateView().setText(appendTemperature(newValue));
-    }
-
-    @Override
-    public void onButtonSetValue(XmlListDevice device, float value) {
-        setValue(device, value);
     }
 
     public double getTemperature() {
