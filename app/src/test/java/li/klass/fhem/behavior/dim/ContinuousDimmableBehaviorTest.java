@@ -114,8 +114,8 @@ public class ContinuousDimmableBehaviorTest {
         xmlListDevice.setState("state", state);
         given(device.getXmlListDevice()).willReturn(xmlListDevice);
 
-        float position = behavior.getCurrentDimPosition(device);
+        double position = behavior.getCurrentDimPosition(device);
 
-        assertThat(position).isCloseTo(expectedPosition, Offset.offset(0.1f));
+        assertThat(position).isCloseTo(expectedPosition, Offset.offset(0.1));
     }
 }

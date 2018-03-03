@@ -59,7 +59,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
-        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(100, Offset.offset(0.01f));
+        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(100, Offset.offset(0.01));
         assertThat(dimmableBehavior.getDimLowerBound()).isEqualTo(4);
         assertThat(dimmableBehavior.getDimUpperBound()).isEqualTo(105);
         assertThat(dimmableBehavior.getDimStep()).isEqualTo(1);

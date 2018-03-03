@@ -39,7 +39,7 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
     public void testDim() {
         FhemDevice device = getDeviceFor("dim");
         DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
-        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(5, Offset.offset(0.01f));
+        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(5, Offset.offset(0.01));
     }
 
     @Test

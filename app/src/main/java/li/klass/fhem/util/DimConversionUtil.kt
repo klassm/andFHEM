@@ -34,8 +34,8 @@ object DimConversionUtil {
         val progressAsInt = (progress * BASE).toInt()
         val lowerBoundAsInt = (lowerBound * BASE).toInt()
         val stepAsInt = (step * BASE).toInt()
-        val stepZeroSafe = when {
-            stepAsInt == 0 -> {
+        val stepZeroSafe = when (stepAsInt) {
+            0 -> {
                 LOGGER.error("dim step is 0!")
                 1
             }
@@ -46,12 +46,12 @@ object DimConversionUtil {
     }
 
     fun toDimState(progress: Int, lowerBound: Double, step: Double): Double {
-        if (step < 0.01) {
+        val safeStep = if (step == 0.0) {
             LOGGER.error("dim step is 0!")
-            return 1.0
-        }
+            1.0
+        } else step
         val lowerBoundAsInt = (lowerBound * BASE).toInt()
-        val stepAsInt = (step * BASE).toInt()
+        val stepAsInt = (safeStep * BASE).toInt()
 
         return (progress * stepAsInt + lowerBoundAsInt) / BASE.toDouble()
     }
