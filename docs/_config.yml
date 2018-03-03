@@ -34,7 +34,6 @@ navbar-links:
   App Manual:
     - Installation: "installation"
     - Hooks: "hooks"
-    - Voice Commands: "voice-commands"
     - External Interfaces: "external-interfaces"
 
 # Image to show in the navigation bar - image must be a square (width = height)
