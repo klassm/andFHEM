@@ -33,7 +33,6 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
-import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.remote_control_layout.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -113,7 +112,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         return View.OnClickListener {
             async(UI) {
                 bg {
-                    genericDeviceService.setState(device, command, Optional.fromNullable(connectionId))
+                    genericDeviceService.setState(device.xmlListDevice, command, connectionId)
                 }
             }
         }

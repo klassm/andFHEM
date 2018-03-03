@@ -58,7 +58,8 @@ abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context
                 if (isDecimalNumber(text)) {
                     val progress = text.toDouble()
                     setSeekBarProgressTo(row, progress)
-                    onNewValue(context, device, progress)
+                    onNewValue(device, progress)
+                    onProgressChange(context, device, progress)
                 } else {
                     DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput)
                 }

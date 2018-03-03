@@ -56,19 +56,6 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device3.getState()).isEqualTo("level 12");
     }
 
-    @Test
-    public void testFormatTargetState() {
-        FhemDevice device3 = getDeviceFor("device3");
-
-        device3.getXmlListDevice().setState("STATE", "off");
-        assertThat(device3.formatTargetState("level 13")).isEqualTo("level 13");
-        assertThat(device3.formatTargetState("on")).isEqualTo("on");
-        assertThat(device3.formatTargetState("off")).isEqualTo("off");
-
-        device3.getXmlListDevice().setState("STATE", "level 13");
-        assertThat(device3.formatTargetState("level 12")).isEqualTo("level 12");
-    }
-
     @Override
     protected String getFileName() {
         return "trx_light.xml";

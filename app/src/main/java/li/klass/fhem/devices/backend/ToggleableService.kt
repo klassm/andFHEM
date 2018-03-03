@@ -24,7 +24,6 @@
 
 package li.klass.fhem.devices.backend
 
-import com.google.common.base.Optional
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.FhemDevice
 import org.slf4j.LoggerFactory
@@ -53,7 +52,7 @@ constructor(
             logger.error("toggleState(device=${device.name}) - cannot toggle as state cannot be found for current state '${device.state}'")
             return
         }
-        genericDeviceService.setState(device, targetState, Optional.fromNullable(connectionId))
+        genericDeviceService.setState(device.xmlListDevice, targetState, connectionId)
     }
 
     companion object {

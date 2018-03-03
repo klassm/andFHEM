@@ -101,6 +101,10 @@
         {
           "key": "windowopen-temp",
           "value": "5.5 (°C)"
+        },
+        {
+          "key": "mode",
+          "value": "???"
         }
       ]
     },

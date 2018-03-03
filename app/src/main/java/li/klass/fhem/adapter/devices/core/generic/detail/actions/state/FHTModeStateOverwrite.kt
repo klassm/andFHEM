@@ -32,17 +32,16 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TableLayout
 import android.widget.TableRow
-import com.google.common.collect.Lists.newArrayList
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.HolidayShort
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow
-import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.fht.FHTMode
-import li.klass.fhem.service.intent.DeviceIntentService
 import li.klass.fhem.ui.AndroidBug.showMessageIfColorStateBugIsEncountered
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
@@ -50,12 +49,14 @@ import li.klass.fhem.util.DatePickerUtil
 import li.klass.fhem.util.EnumUtils
 import li.klass.fhem.util.EnumUtils.toStringList
 import li.klass.fhem.util.StateToSet
+import org.jetbrains.anko.coroutines.experimental.bg
 import java.util.*
 import javax.inject.Inject
 
 class FHTModeStateOverwrite @Inject constructor(
         private val applicationProperties: ApplicationProperties,
-        private val holidayShort: HolidayShort
+        private val holidayShort: HolidayShort,
+        private val genericDeviceService: GenericDeviceService
 ) : StateAttributeAction {
 
     override fun createRow(device: XmlListDevice, connectionId: String?, key: String, stateValue: String, context: Context, parent: ViewGroup): TableRow {
@@ -64,7 +65,7 @@ class FHTModeStateOverwrite @Inject constructor(
 
             override fun onItemSelected(context: Context, device: XmlListDevice, connectionId: String?, item: String) {
                 val mode = modeFor(item)
-                setMode(device, mode, this, parent, context, LayoutInflater.from(context))
+                setMode(device, mode, this, parent, context, LayoutInflater.from(context), connectionId)
             }
         }.createRow(device, connectionId, parent)
     }
@@ -77,27 +78,30 @@ class FHTModeStateOverwrite @Inject constructor(
         FHTMode.UNKNOWN
     }
 
-    private fun setMode(device: XmlListDevice, mode: FHTMode, spinnerActionRow: SpinnerActionRow, viewGroup: ViewGroup, context: Context, inflater: LayoutInflater) {
-        val intent = Intent(Actions.DEVICE_SET_SUB_STATES)
-                .setClass(context, DeviceIntentService::class.java)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                .putExtra(BundleExtraKeys.STATES, newArrayList(StateToSet("mode", mode.name.toLowerCase(Locale.getDefault()))))
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, UpdatingResultReceiver(context))
-
+    private fun setMode(device: XmlListDevice, mode: FHTMode, spinnerActionRow: SpinnerActionRow,
+                        viewGroup: ViewGroup, context: Context, inflater: LayoutInflater, connectionId: String?) {
         when (mode) {
             FHTMode.UNKNOWN -> {
             }
-            FHTMode.HOLIDAY -> handleHolidayMode(device, spinnerActionRow, intent, context, viewGroup, inflater)
-            FHTMode.HOLIDAY_SHORT -> handleHolidayShortMode(device, spinnerActionRow, intent, viewGroup, context, inflater)
+            FHTMode.HOLIDAY -> handleHolidayMode(device, spinnerActionRow, context, viewGroup, inflater, connectionId)
+            FHTMode.HOLIDAY_SHORT -> {
+                holidayShort.showDialog(context, viewGroup, inflater, spinnerActionRow, device, connectionId)
+            }
             else -> {
-                context.startService(intent)
-                spinnerActionRow.commitSelection()
+                async(UI) {
+                    bg {
+                        genericDeviceService.setSubState(device, "mode", mode.name.toLowerCase(Locale.getDefault()), connectionId)
+                    }.await()
+                    spinnerActionRow.commitSelection()
+                    context.sendBroadcast(Intent(BundleExtraKeys.DO_REFRESH))
+                }
             }
         }
     }
 
     private fun handleHolidayMode(device: XmlListDevice, spinnerActionRow: SpinnerActionRow,
-                                  intent: Intent, context: Context, parent: ViewGroup, inflater: LayoutInflater) {
+                                  context: Context, parent: ViewGroup, inflater: LayoutInflater,
+                                  connectionId: String?) {
 
         showMessageIfColorStateBugIsEncountered(context) {
             val dialogBuilder = AlertDialog.Builder(context)
@@ -121,24 +125,21 @@ class FHTModeStateOverwrite @Inject constructor(
             }
 
             dialogBuilder.setPositiveButton(R.string.okButton) { dialogInterface, _ ->
-                @Suppress("UNCHECKED_CAST")
-                (intent.getSerializableExtra(BundleExtraKeys.STATES) as MutableList<StateToSet>).apply {
-                    add(StateToSet("desired-temp", "" + temperatureChangeTableRow.temperature))
-                    add(StateToSet("holiday1", "" + datePicker.dayOfMonth))
-                    add(StateToSet("holiday2", "" + (datePicker.month + 1)))
+                async(UI) {
+                    bg {
+                        genericDeviceService.setSubStates(device, listOf(
+                                StateToSet("desired-temp", "" + temperatureChangeTableRow.temperature),
+                                StateToSet("holiday1", "" + datePicker.dayOfMonth),
+                                StateToSet("holiday2", "" + (datePicker.month + 1)),
+                                StateToSet("mode", FHTMode.HOLIDAY.name.toLowerCase(Locale.getDefault()))
+                        ), connectionId)
+                    }.await()
+                    spinnerActionRow.commitSelection()
+                    dialogInterface.dismiss()
                 }
-                context.startService(intent)
-
-                spinnerActionRow.commitSelection()
-                dialogInterface.dismiss()
             }
 
             dialogBuilder.show()
         }
-    }
-
-    private fun handleHolidayShortMode(device: XmlListDevice, spinnerActionRow: SpinnerActionRow, intent: Intent, parent: ViewGroup,
-                                       context: Context, layoutInflater: LayoutInflater) {
-        holidayShort.showDialog(context, parent, layoutInflater, spinnerActionRow, device, intent)
     }
 }

@@ -133,8 +133,6 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
 
     fun getReverseEventMapStateFor(state: String): String? = eventMap.getKeyOr(state, state)
 
-    fun formatTargetState(targetState: String): String = targetState
-
     override fun toString(): String {
         val name = name
         val alias = alias

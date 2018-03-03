@@ -31,7 +31,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.support.annotation.RequiresApi
-import com.google.common.base.Optional
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions
@@ -66,7 +65,7 @@ class AlarmClockUpdateService @Inject constructor(
 
         logger.info("updateNextAlarmClock(connection={}) - notifying alarm clock receiver for time {}", connection, nextAlarmClockTrigger)
 
-        deviceService.setState(nextAlarmClockReceiver, nextAlarmClockTrigger, Optional.of(connection), false)
+        deviceService.setState(nextAlarmClockReceiver.xmlListDevice, nextAlarmClockTrigger, connection, false)
     }
 
     fun scheduleUpdate() {

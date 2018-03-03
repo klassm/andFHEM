@@ -34,7 +34,6 @@ import com.google.common.collect.Iterables.partition
 import li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
 import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.intent.RoomListUpdateIntentService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.command.execution.Command
@@ -56,55 +55,51 @@ class GenericDeviceService @Inject constructor(
     private val applicationContext get() = application.applicationContext
 
     @JvmOverloads
-    fun setState(device: FhemDevice, targetState: String, connectionId: Optional<String>, invokeUpdate: Boolean = true) {
-        val toSet = device.formatTargetState(targetState)
+    fun setState(device: XmlListDevice, targetState: String, connectionId: String?, invokeUpdate: Boolean = true) {
+        commandExecutionService.executeSafely(Command("set ${device.name} $targetState", Optional.fromNullable(connectionId)), invokePostCommandActions(device, invokeUpdate, "state", targetState, connectionId))
 
-        commandExecutionService.executeSafely(Command("set ${device.name} $toSet", connectionId), invokePostCommandActions(device, invokeUpdate, "state", toSet, connectionId))
-
-        device.xmlListDevice.setState("STATE", targetState)
-        device.xmlListDevice.setInternal("STATE", targetState)
+        device.setState("STATE", targetState)
+        device.setInternal("STATE", targetState)
     }
 
-    fun setSubState(device: FhemDevice, subStateName: String, value: String, connectionId: Optional<String>, invokeDeviceUpdate: Boolean) {
+    fun setSubState(device: XmlListDevice, subStateName: String, value: String, connectionId: String?, invokeDeviceUpdate: Boolean = true) {
         val commandReplacements = deviceConfigurationProvider.configurationFor(device)
                 .stateConfigFor(subStateName)
                 ?.beforeCommandReplacement ?: emptySet()
-
         val valueToSet = commandReplacements.fold(value, { v: String, replacement ->
             v.replace(("([ ,])" + replacement.search).toRegex(), "$1${replacement.replaceBy}")
                     .replace(("^" + replacement.search).toRegex(), replacement.replaceBy)
         })
-
-        val command = Command("set " + device.name + " " + subStateName + " " + valueToSet, connectionId)
+        val command = Command("set " + device.name + " " + subStateName + " " + valueToSet, Optional.fromNullable(connectionId))
         commandExecutionService.executeSafely(command, invokePostCommandActions(device, invokeDeviceUpdate, subStateName, valueToSet, connectionId))
     }
 
-    private fun invokePostCommandActions(device: FhemDevice, invokeUpdate: Boolean,
+    private fun invokePostCommandActions(device: XmlListDevice, invokeUpdate: Boolean,
                                          stateName: String, toSet: String,
-                                         connectionId: Optional<String>): CommandExecutionService.ResultListener {
+                                         connectionId: String?): CommandExecutionService.ResultListener {
         return object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
 
                 if (invokeUpdate) {
-                    update(device.xmlListDevice, connectionId.orNull())
+                    update(device, connectionId)
                 }
 
                 Tasker.sendTaskerNotifyIntent(applicationContext, device.name, stateName, toSet)
                 Tasker.requestQuery(applicationContext)
-                device.xmlListDevice.setState(stateName, toSet)
+                device.setState(stateName, toSet)
             }
         }
     }
 
-    fun setSubStates(device: FhemDevice, statesToSet: List<StateToSet>, connectionId: Optional<String>) {
-        if ("FHT".equals(device.xmlListDevice.type, ignoreCase = true) && statesToSet.size > 1) {
+    fun setSubStates(device: XmlListDevice, statesToSet: List<StateToSet>, connectionId: String?) {
+        if ("FHT".equals(device.type, ignoreCase = true) && statesToSet.size > 1) {
             setSubStatesForFHT(device, statesToSet, connectionId)
         } else {
             for (toSet in statesToSet) {
                 setSubState(device, toSet.key, toSet.value, connectionId, false)
             }
         }
-        update(device.xmlListDevice, connectionId.orNull())
+        update(device, connectionId)
     }
 
     fun setAttribute(device: XmlListDevice, attributeName: String, attributeValue: String) {
@@ -118,7 +113,7 @@ class GenericDeviceService @Inject constructor(
                 })
     }
 
-    private fun setSubStatesForFHT(device: FhemDevice, statesToSet: List<StateToSet>, connectionId: Optional<String>) {
+    private fun setSubStatesForFHT(device: XmlListDevice, statesToSet: List<StateToSet>, connectionId: String?) {
         val partitions = partition(statesToSet, 8)
         partitions.map { fhtConcat(it) }
                 .forEach { setState(device, it, connectionId, false) }

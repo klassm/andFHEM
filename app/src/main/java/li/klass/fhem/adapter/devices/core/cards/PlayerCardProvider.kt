@@ -28,7 +28,6 @@ import android.content.Context
 import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.ImageButton
-import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_player.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -70,7 +69,7 @@ class PlayerCardProvider @Inject constructor(
         return View.OnClickListener {
             async(UI) {
                 bg {
-                    genericDeviceService.setState(device, command, Optional.fromNullable(connectionId))
+                    genericDeviceService.setState(device.xmlListDevice, command, connectionId)
                 }
             }
         }

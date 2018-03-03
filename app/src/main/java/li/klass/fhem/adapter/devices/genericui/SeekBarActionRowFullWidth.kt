@@ -77,7 +77,7 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
                 this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step)
                 LOGGER.info("onProgressChange - progress={}, converted={}", progress, this.progress)
                 if (fromUser) {
-                    this@SeekBarActionRowFullWidth.onNewValue(seekBar.context, device, this.progress)
+                    this@SeekBarActionRowFullWidth.onNewValue(device, this.progress)
                     initialProgress = progress.toDouble()
                 }
             }
@@ -91,9 +91,8 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
         }
     }
 
-    protected fun onNewValue(context: Context, device: XmlListDevice?, progress: Double) {
+    protected fun onNewValue(device: XmlListDevice?, progress: Double) {
         updateView.text = toUpdateText(device, progress)
-        onProgressChange(context, device, progress)
     }
 
     open fun toUpdateText(device: XmlListDevice?, progress: Double): String = progress.toString() + ""

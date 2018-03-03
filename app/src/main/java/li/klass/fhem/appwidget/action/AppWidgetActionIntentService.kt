@@ -26,7 +26,6 @@ package li.klass.fhem.appwidget.action
 
 import android.content.Intent
 import android.os.ResultReceiver
-import com.google.common.base.Optional
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
@@ -50,7 +49,7 @@ class AppWidgetActionIntentService : ConvenientIntentService(AppWidgetActionInte
         when (intent.action) {
             Actions.DEVICE_SET_STATE -> {
                 val targetState = intent.getStringExtra(DEVICE_TARGET_STATE)
-                genericDeviceService.setState(device, targetState, Optional.fromNullable(connectionId), true)
+                genericDeviceService.setState(device.xmlListDevice, targetState, connectionId, true)
             }
         }
 

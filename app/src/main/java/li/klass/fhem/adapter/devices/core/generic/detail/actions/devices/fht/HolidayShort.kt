@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,28 +34,34 @@ import android.widget.TableRow
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog.view.*
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog_android_bug.view.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow
-import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.devices.backend.GenericDeviceService
+import li.klass.fhem.domain.fht.FHTMode
 import li.klass.fhem.ui.AndroidBug
 import li.klass.fhem.ui.AndroidBug.handleColorStateBug
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.*
+import org.jetbrains.anko.coroutines.experimental.bg
+import java.util.*
 import javax.inject.Inject
 
 class HolidayShort @Inject constructor(private val applicationProperties: ApplicationProperties,
                                        private val dateTimeProvider: DateTimeProvider,
-                                       private val holidayShortCalculator: HolidayShortCalculator) {
+                                       private val holidayShortCalculator: HolidayShortCalculator,
+                                       private val genericDeviceService: GenericDeviceService) {
 
     fun showDialog(context: Context, parent: ViewGroup, layoutInflater: LayoutInflater,
-                   spinnerActionRow: SpinnerActionRow, device: XmlListDevice, switchIntent: Intent) {
+                   spinnerActionRow: SpinnerActionRow, device: XmlListDevice, connectionId: String?) {
         val currentDesiredTemp = device.stateValueFor("desired-temp").orNull()
                 ?.let { ValueExtractUtil.extractLeadingDouble(it) }
                 ?: FHTDetailActionProvider.MINIMUM_TEMPERATURE
         var model = Model(hour = 0, minute = 0, desiredTemp = currentDesiredTemp)
-        val contentView = createContentView(layoutInflater, parent, currentDesiredTemp, object : HolidayShort.OnTimeChanged {
+        val contentView = createContentView(layoutInflater, parent, object : HolidayShort.OnTimeChanged {
             override fun timeChanged(newHour: Int, newMinute: Int, endTimeValue: TextView) {
                 updateHolidayShortEndTime(endTimeValue, newHour, newMinute)
                 model = model.copy(hour = newHour, minute = newMinute)
@@ -87,22 +92,24 @@ class HolidayShort @Inject constructor(private val applicationProperties: Applic
                 .setPositiveButton(R.string.okButton) { dialogInterface, _ ->
                     val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
 
-                    @Suppress("UNCHECKED_CAST")
-                    (switchIntent.getSerializableExtra(BundleExtraKeys.STATES) as MutableList<StateToSet>).apply {
-                        add(StateToSet("desired-temp", "" + model.desiredTemp))
-                        add(StateToSet("holiday1", "" + holidayShortCalculator.calculateHoliday1ValueFrom(switchDate.hourOfDay, switchDate.minuteOfHour)))
-                        add(StateToSet("holiday2", "" + switchDate.dayOfMonth))
+                    async(UI) {
+                        bg {
+                            genericDeviceService.setSubStates(device, listOf(
+                                    StateToSet("desired-temp", "" + model.desiredTemp),
+                                    StateToSet("holiday1", "" + holidayShortCalculator.calculateHoliday1ValueFrom(switchDate.hourOfDay, switchDate.minuteOfHour)),
+                                    StateToSet("holiday2", "" + switchDate.dayOfMonth),
+                                    StateToSet("mode", FHTMode.HOLIDAY_SHORT.name.toLowerCase(Locale.getDefault()))
+                            ), connectionId)
+                        }.await()
+                        spinnerActionRow.commitSelection()
+                        dialogInterface.dismiss()
                     }
-                    context.startService(switchIntent)
-
-                    spinnerActionRow.commitSelection()
-                    dialogInterface.dismiss()
                 }
                 .setView(contentView)
                 .show()
     }
 
-    private fun createContentView(layoutInflater: LayoutInflater, parent: ViewGroup, currentDesiredTemp: Double, onTimeChanged: OnTimeChanged): TableLayout =
+    private fun createContentView(layoutInflater: LayoutInflater, parent: ViewGroup, onTimeChanged: OnTimeChanged): TableLayout =
             handleColorStateBug(object : AndroidBug.BugHandler {
                 override fun bugEncountered(): View {
                     val contentView = layoutInflater.inflate(R.layout.fht_holiday_short_dialog_android_bug, parent, false) as TableLayout

@@ -28,7 +28,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
-import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
@@ -59,7 +58,7 @@ class AppWidgetActionHandler @Inject constructor(
                 override fun handle(device: FhemDevice?, connectionId: String?, bundle: Bundle, context: Context) {
                     device ?: return
                     val targetState = bundle.getString(DEVICE_TARGET_STATE) ?: return
-                    genericDeviceService.setState(device, targetState, Optional.fromNullable(connectionId), true)
+                    genericDeviceService.setState(device.xmlListDevice, targetState, connectionId, true)
                 }
             },
             Actions.WIDGET_REQUEST_UPDATE to object : ActionHandler {
