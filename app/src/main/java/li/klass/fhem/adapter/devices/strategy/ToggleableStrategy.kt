@@ -38,6 +38,7 @@ import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
@@ -48,6 +49,7 @@ import javax.inject.Singleton
 class ToggleableStrategy
 @Inject constructor(private val hookProvider: DeviceHookProvider,
                     private val onOffBehavior: OnOffBehavior,
+                    private val toggleableService: ToggleableService,
                     private val stateUiService: StateUiService) : ViewStrategy() {
 
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
@@ -93,7 +95,7 @@ class ToggleableStrategy
 
         var actionRow: ToggleDeviceActionRow? = holder.getAdditionalHolderFor<ToggleDeviceActionRow>(ToggleDeviceActionRow.HOLDER_KEY)
         if (actionRow == null) {
-            actionRow = ToggleDeviceActionRow(context, onOffBehavior)
+            actionRow = ToggleDeviceActionRow(context, onOffBehavior, toggleableService)
             holder.putAdditionalHolder(ToggleDeviceActionRow.HOLDER_KEY, actionRow)
             LOGGER.info("addToggleDeviceActionRow - creating row, time=" + stopWatch.time)
         }

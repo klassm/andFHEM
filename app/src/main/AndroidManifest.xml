@@ -248,8 +248,6 @@
             android:name=".service.intent.DeviceIntentService"
             android:exported="false">
             <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE" />
-                <action android:name="li.klass.fhem.constants.Actions.SET_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM" />

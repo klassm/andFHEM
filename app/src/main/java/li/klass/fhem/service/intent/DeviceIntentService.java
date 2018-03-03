@@ -54,7 +54,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS;
-import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
@@ -62,8 +61,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ROOM;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-import static li.klass.fhem.service.intent.ConvenientIntentService.State.ERROR;
-import static li.klass.fhem.service.intent.ConvenientIntentService.State.SUCCESS;
 
 public class DeviceIntentService extends ConvenientIntentService {
 
@@ -109,10 +106,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
-        State result = State.SUCCESS;
-        if (DEVICE_TOGGLE_STATE.equals(action)) {
-            result = toggleIntent(device, connectionId);
-        } else if (DEVICE_RENAME.equals(action)) {
+        if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName);
             notificationService.rename(deviceName, newName, this);
@@ -140,23 +134,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             }
         }
 
-        return result;
-    }
-
-    /**
-     * Toggle a device and notify the result receiver
-     *
-     * @param device       device to toggle
-     * @param connectionId connection ID
-     * @return success?
-     */
-    private State toggleIntent(FhemDevice device, Optional<String> connectionId) {
-        if (onOffBehavior.supports(device)) {
-            toggleableService.toggleState(device, connectionId.orNull());
-            return SUCCESS;
-        } else {
-            return ERROR;
-        }
+        return State.SUCCESS;
     }
 
     @Override

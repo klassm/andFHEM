@@ -30,18 +30,21 @@ import android.view.LayoutInflater
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.ToggleButton
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.EventMap
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.service.intent.DeviceIntentService
 import org.apache.commons.lang3.time.StopWatch
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 
-class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBehavior) {
+class ToggleDeviceActionRow(context: Context,
+                            private val onOffBehavior: OnOffBehavior,
+                            private val toggleableService: ToggleableService) {
     val view: TableRow
     private val descriptionView: TextView
     private val toggleButton: ToggleButton
@@ -61,10 +64,12 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
     private fun isOn(device: FhemDevice): Boolean = onOffBehavior.isOn(device)
 
     private fun onButtonClick(context: Context, device: FhemDevice) {
-        context.startService(Intent(Actions.DEVICE_TOGGLE_STATE)
-                .setClass(context, DeviceIntentService::class.java)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, UpdatingResultReceiver(context)))
+        async(UI) {
+            bg {
+                toggleableService.toggleState(device, connectionId = null)
+            }.await()
+            context.sendBroadcast(Intent(Actions.DO_UPDATE))
+        }
     }
 
     fun createRow(context: Context, device: FhemDevice, description: String): TableRow {
