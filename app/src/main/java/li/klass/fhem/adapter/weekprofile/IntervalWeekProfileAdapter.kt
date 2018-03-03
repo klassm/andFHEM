@@ -84,10 +84,10 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
 
         val deleteButton = view.findViewById<Button>(R.id.delete)
         deleteButton.setOnClickListener {
-            DialogUtil.showConfirmBox(context, R.string.areYouSure, R.string.deleteConfirmIntervalText) {
+            DialogUtil.showConfirmBox(context, R.string.areYouSure, R.string.deleteConfirmIntervalText, Runnable {
                 parent.deleteHeatingIntervalAt(relativeChildPosition)
                 notifyWeekProfileChangedListener()
-            }
+            })
         }
 
         if (child.isTimeFixed) {

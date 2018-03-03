@@ -70,7 +70,7 @@ public class SpecialButtonHandler<D extends FhemDevice> implements SetListTarget
                     public void onClick(DialogInterface dialog, int which) {
                         String value = editText.getText().toString();
                         if (!type.matches(value)) {
-                            DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
+                            DialogUtil.INSTANCE.showAlertDialog(context, R.string.error, R.string.invalidInput);
                         } else {
                             callback.onSubStateSelected(device, entry.getKey(), value);
                             dialog.dismiss();

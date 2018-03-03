@@ -245,19 +245,6 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.intent.DeviceIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
-                <action android:name="li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND" />
-            </intent-filter>
-        </service>
-        <service
             android:name=".service.intent.NotificationIntentService"
             android:exported="false">
             <intent-filter>

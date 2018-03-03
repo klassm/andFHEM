@@ -155,7 +155,7 @@ class TimerDetailFragment : BaseFragment() {
                 }
 
                 override fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
-                    onStateSelected(device, state + " " + subState)
+                    onStateSelected(device, "$state $subState")
                 }
 
                 override fun onNothingSelected(device: FhemDevice) {}
@@ -223,6 +223,7 @@ class TimerDetailFragment : BaseFragment() {
 
     private fun save() {
         val view = view ?: return
+        val safeContext = context ?: return
 
         val switchTime = getSwitchTime(view)
         if (targetDevice == null || isBlank(getTargetState(view)) || switchTime == null) {
@@ -234,7 +235,7 @@ class TimerDetailFragment : BaseFragment() {
         val timerDeviceName = getTimerName(view)
         if (!isModify) {
             if (timerDeviceName.contains(" ")) {
-                DialogUtil.showAlertDialog(activity, R.string.error, R.string.error_timer_name_spaces)
+                DialogUtil.showAlertDialog(safeContext, R.string.error, R.string.error_timer_name_spaces)
                 return
             }
         }

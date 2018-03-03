@@ -65,7 +65,7 @@ public class AndroidBug {
         handleColorStateBug(new BugHandler() {
             @Override
             public View bugEncountered() {
-                DialogUtil.showAlertDialog(context, R.string.androidBugDialogDatePickerTitle, R.string.androidBugDialogDatePickerContent);
+                DialogUtil.INSTANCE.showAlertDialog(context, R.string.androidBugDialogDatePickerTitle, R.string.androidBugDialogDatePickerContent);
                 return null;
             }
 

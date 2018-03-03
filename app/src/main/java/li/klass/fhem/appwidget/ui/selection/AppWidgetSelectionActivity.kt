@@ -77,10 +77,10 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         }
 
         if (applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null) != null) {
-            DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password) {
+            DialogUtil.showAlertDialog(this, R.string.app_title, R.string.widget_application_password, Runnable {
                 finish()
                 setResult(Activity.RESULT_CANCELED)
-            }
+            })
         } else {
             setContentView(R.layout.appwidget_selection)
             val viewPager = findViewById<ViewPager>(R.id.viewpager)!!

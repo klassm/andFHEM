@@ -39,6 +39,8 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -47,15 +49,20 @@ import li.klass.fhem.constants.BundleExtraKeys.STRING
 import li.klass.fhem.constants.BundleExtraKeys.STRING_ID
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.error.ErrorHolder
-import li.klass.fhem.service.intent.DeviceIntentService
+import li.klass.fhem.service.ResendLastFailedCommandService
 import li.klass.fhem.widget.SwipeRefreshLayout
+import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.Serializable
+import javax.inject.Inject
 
 abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefreshLayout.ChildScrollDelegate {
 
     var isNavigation = false
+
     @Transient private var broadcastReceiver: UIBroadcastReceiver? = null
     private var backPressCalled = false
+    @Inject
+    lateinit var resendLastFailedCommandService: ResendLastFailedCommandService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +75,15 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         super.onViewCreated(view, savedInstanceState)
 
         val retryButton = view.findViewById<Button?>(R.id.retry)
+        val context = activity ?: return
         retryButton?.setOnClickListener {
             hideConnectionError()
 
-            val resendIntent = Intent(RESEND_LAST_FAILED_COMMAND)
-            resendIntent.setClass(activity, DeviceIntentService::class.java)
-            activity?.startService(resendIntent)
+            async(UI) {
+                bg {
+                    resendLastFailedCommandService.resend(context)
+                }
+            }
         }
     }
 
@@ -150,7 +160,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     protected fun fillEmptyView(view: LinearLayout, text: Int, container: ViewGroup) {
         if (text != 0) {
             val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, container, false)!!
-            val emptyText = emptyView.findViewById<TextView>(R.id.emptyText) as TextView
+            val emptyText = emptyView.findViewById(R.id.emptyText) as TextView
             emptyText.setText(text)
 
             view.addView(emptyView)
@@ -207,11 +217,10 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                             onBackPressResult()
                         }
                     } else if (action == CONNECTION_ERROR) {
-                        val content: String
-                        if (intent.hasExtra(STRING_ID)) {
-                            content = context.getString(intent.getIntExtra(STRING_ID, -1))
+                        val content = if (intent.hasExtra(STRING_ID)) {
+                            context.getString(intent.getIntExtra(STRING_ID, -1))
                         } else {
-                            content = intent.getStringExtra(STRING)
+                            intent.getStringExtra(STRING)
                         }
                         showConnectionError(content)
                     } else if (action == CONNECTION_ERROR_HIDE) {

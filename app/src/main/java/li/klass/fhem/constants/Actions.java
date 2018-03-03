@@ -31,16 +31,11 @@ public class Actions {
 
     public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";
     public static final String DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG";
-    public static final String RESEND_LAST_FAILED_COMMAND = prefix + "RESEND_LAST_FAILED_COMMAND";
     public static final String BACK = prefix + "BACK";
 
     public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
     public static final String SHOW_ALERT = prefix + "SHOW_ALERT";
 
-    public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";
-    public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
-    public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
-    public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
     public static final String DEVICE_WIDGET_TARGET_STATE = prefix + "DEVICE_WIDGET_TARGET_STATE";
 

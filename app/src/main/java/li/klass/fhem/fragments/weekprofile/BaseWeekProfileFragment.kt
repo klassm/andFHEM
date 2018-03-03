@@ -57,8 +57,10 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     private lateinit var heatingConfiguration: HeatingConfiguration<INTERVAL, *>
     private lateinit var weekProfile: WeekProfile<INTERVAL, *>
 
-    @Inject lateinit var deviceListService: DeviceListService
-    @Inject lateinit var deviceListUpdateService: DeviceListUpdateService
+    @Inject
+    lateinit var deviceListService: DeviceListService
+    @Inject
+    lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
     lateinit var genericDeviceService: GenericDeviceService
 
@@ -118,7 +120,8 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     private fun backToDevice() {
-        DialogUtil.showAlertDialog(activity, R.string.doneTitle, R.string.switchDelayNotification) { back() }
+        val context = activity ?: return
+        DialogUtil.showAlertDialog(context, R.string.doneTitle, R.string.switchDelayNotification, Runnable { back() })
     }
 
     override fun update(refresh: Boolean) {

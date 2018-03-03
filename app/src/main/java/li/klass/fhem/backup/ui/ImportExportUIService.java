@@ -133,7 +133,7 @@ public class ImportExportUIService {
         ((TextView) layout.findViewById(R.id.text)).setText(ERROR_TO_TEXT.get(status));
         new AlertDialog.Builder(activity)
                 .setView(layout).setCancelable(false)
-                .setPositiveButton(R.string.okButton, DialogUtil.DISMISSING_LISTENER).show();
+                .setPositiveButton(R.string.okButton, DialogUtil.INSTANCE.getDISMISSING_LISTENER()).show();
     }
 
     public void handleExport(final Activity activity) {
@@ -150,7 +150,7 @@ public class ImportExportUIService {
                 ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());
                 new AlertDialog.Builder(activity)
                         .setView(layout).setCancelable(false)
-                        .setPositiveButton(R.string.okButton, DialogUtil.DISMISSING_LISTENER).show();
+                        .setPositiveButton(R.string.okButton, DialogUtil.INSTANCE.getDISMISSING_LISTENER()).show();
             }
         }, R.string.exportPasswordDescription);
     }

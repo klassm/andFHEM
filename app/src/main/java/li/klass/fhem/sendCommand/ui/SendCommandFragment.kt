@@ -137,6 +137,7 @@ class SendCommandFragment : BaseFragment() {
             override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean = false
 
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                val safeContext = context ?: return false
                 when (item.itemId) {
                     R.id.menu_delete -> async(UI) {
                         bg {
@@ -144,14 +145,16 @@ class SendCommandFragment : BaseFragment() {
                         }.await()
                         update(false)
                     }
-                    R.id.menu_edit -> DialogUtil.showInputBox(context, getString(R.string.context_edit), command) { text ->
-                        async(UI) {
-                            bg {
-                                sendCommandService.editCommand(command, text)
-                            }.await()
-                            update(false)
+                    R.id.menu_edit -> DialogUtil.showInputBox(safeContext, getString(R.string.context_edit), command, object : DialogUtil.InputDialogListener {
+                        override fun onClick(text: String) {
+                            async(UI) {
+                                bg {
+                                    sendCommandService.editCommand(command, text)
+                                }.await()
+                                update(false)
+                            }
                         }
-                    }
+                    })
                 }
                 mode.finish()
                 return true

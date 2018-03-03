@@ -43,8 +43,9 @@ import li.klass.fhem.devices.backend.at.AtService
 import li.klass.fhem.devices.backend.at.TimerDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.ui.FragmentType
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import li.klass.fhem.util.device.DeviceActionUtil
+import li.klass.fhem.util.device.DeviceActionUIService
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
@@ -59,6 +60,10 @@ class TimerListFragment : BaseFragment() {
     lateinit var deviceListUpdateService: DeviceListUpdateService
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+    @Inject
+    lateinit var deviceActionUIService: DeviceActionUIService
+    @Inject
+    lateinit var deviceListService: DeviceListService
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
@@ -160,7 +165,15 @@ class TimerListFragment : BaseFragment() {
         val context = activity ?: return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
-                DeviceActionUtil.deleteDevice(context, name)
+                async(UI) {
+                    bg {
+                        deviceListService.getDeviceForName(name)?.let {
+                            deviceActionUIService.deleteDevice(context, it)
+                        }
+                    }.await()
+                    context.sendBroadcast(Intent(Actions.DO_UPDATE))
+                }
+
                 return true
             }
         }

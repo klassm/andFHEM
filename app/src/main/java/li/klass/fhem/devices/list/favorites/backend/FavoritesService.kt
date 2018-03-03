@@ -39,6 +39,13 @@ constructor(private val deviceListService: DeviceListService,
             private val connectionService: ConnectionService,
             private val sharedPreferencesService: SharedPreferencesService) {
 
+    fun rename(deviceName: String, newName: String) {
+        if (getFavorites().getDeviceFor(deviceName) != null) {
+            removeFavorite(deviceName)
+            addFavorite(newName)
+        }
+    }
+
     /**
      * Adds a new favorite device.
      *

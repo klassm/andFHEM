@@ -92,10 +92,10 @@ public class ErrorHolder {
     }
 
     public static void sendLastErrorAsMail(final Activity activity) {
-        DialogUtil.showConfirmBox(activity, R.string.error_send,
-                R.string.error_send_content, new DialogUtil.AlertOnClickListener() {
+        DialogUtil.INSTANCE.showConfirmBox(activity, R.string.error_send,
+                R.string.error_send_content, new Runnable() {
                     @Override
-                    public void onClick() {
+                    public void run() {
                         handleSendLastError(activity);
                     }
                 });
@@ -106,7 +106,7 @@ public class ErrorHolder {
         try {
             String lastError = ErrorHolder.getText();
             if (lastError == null) {
-                DialogUtil.showAlertDialog(activity, R.string.error_send, R.string.error_send_no_error);
+                DialogUtil.INSTANCE.showAlertDialog(activity, R.string.error_send, R.string.error_send_no_error);
                 return;
             }
 
@@ -190,7 +190,7 @@ public class ErrorHolder {
     private static boolean handleExternalStorageState(Context context) {
         String state = Environment.getExternalStorageState();
         if (!state.equals(Environment.MEDIA_MOUNTED)) {
-            DialogUtil.showAlertDialog(context, R.string.error, R.string.errorExternalStorageNotPresent);
+            DialogUtil.INSTANCE.showAlertDialog(context, R.string.error, R.string.errorExternalStorageNotPresent);
             return false;
         }
         return true;

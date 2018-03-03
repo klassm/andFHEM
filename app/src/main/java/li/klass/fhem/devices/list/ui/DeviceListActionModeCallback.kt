@@ -34,16 +34,17 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.util.device.DeviceActionUtil
+import li.klass.fhem.util.device.DeviceActionUIService
 import li.klass.fhem.widget.notification.NotificationSettingView
 import org.jetbrains.anko.coroutines.experimental.bg
 
 class DeviceListActionModeCallback constructor(
-        val favoritesService: FavoritesService,
-        val device: FhemDevice,
-        val isFavorite: Boolean,
-        val activityContext: Context,
-        val updateListener: () -> Unit
+        private val favoritesService: FavoritesService,
+        private val deviceActionUIService: DeviceActionUIService,
+        private val device: FhemDevice,
+        private val isFavorite: Boolean,
+        private val activityContext: Context,
+        private val updateListener: () -> Unit
 ) : ActionMode.Callback {
 
     override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
@@ -77,10 +78,10 @@ class DeviceListActionModeCallback constructor(
                     Toast.makeText(activityContext, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show()
                 }
             }
-            R.id.menu_rename -> DeviceActionUtil.renameDevice(activityContext, device)
-            R.id.menu_delete -> DeviceActionUtil.deleteDevice(activityContext, device.name)
-            R.id.menu_room -> DeviceActionUtil.moveDevice(activityContext, device)
-            R.id.menu_alias -> DeviceActionUtil.setAlias(activityContext, device)
+            R.id.menu_rename -> deviceActionUIService.renameDevice(activityContext, device)
+            R.id.menu_delete -> deviceActionUIService.deleteDevice(activityContext, device)
+            R.id.menu_room -> deviceActionUIService.moveDevice(activityContext, device)
+            R.id.menu_alias -> deviceActionUIService.setAlias(activityContext, device)
             R.id.menu_notification -> handleNotifications(device.name)
             else -> return false
         }

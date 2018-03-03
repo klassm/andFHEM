@@ -54,16 +54,18 @@ abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context
         button.setOnClickListener {
             val title = context.getString(R.string.set_value)
 
-            DialogUtil.showInputBox(context, title, initialProgress.toString() + "") { text ->
-                if (isDecimalNumber(text)) {
-                    val progress = text.toDouble()
-                    setSeekBarProgressTo(row, progress)
-                    onNewValue(device, progress)
-                    onProgressChange(context, device, progress)
-                } else {
-                    DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput)
+            DialogUtil.showInputBox(context, title, initialProgress.toString() + "", object : DialogUtil.InputDialogListener {
+                override fun onClick(text: String) {
+                    if (isDecimalNumber(text)) {
+                        val progress = text.toDouble()
+                        setSeekBarProgressTo(row, progress)
+                        onNewValue(device, progress)
+                        onProgressChange(context, device, progress)
+                    } else {
+                        DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput)
+                    }
                 }
-            }
+            })
         }
         if (!showButton()) {
             button.visibility = View.GONE

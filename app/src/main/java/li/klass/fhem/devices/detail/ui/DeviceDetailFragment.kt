@@ -42,11 +42,10 @@ import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import li.klass.fhem.util.device.DeviceActionUtil
+import li.klass.fhem.util.device.DeviceActionUIService
 import li.klass.fhem.widget.notification.NotificationSettingView
 import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
@@ -61,11 +60,11 @@ class DeviceDetailFragment : BaseFragment() {
     @Inject
     lateinit var deviceListService: DeviceListService
     @Inject
-    lateinit var graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
-    @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
     @Inject
     lateinit var genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter
+    @Inject
+    lateinit var deviceActionUIService: DeviceActionUIService
 
     private var deviceName: String? = null
     private var device: FhemDevice? = null
@@ -169,8 +168,8 @@ class DeviceDetailFragment : BaseFragment() {
             R.id.menu_favorites_remove -> {
                 callUpdating(favoritesService::removeFavorite, R.string.context_favoriteremoved)
             }
-            R.id.menu_room -> DeviceActionUtil.moveDevice(context, device!!)
-            R.id.menu_alias -> DeviceActionUtil.setAlias(context, device!!)
+            R.id.menu_room -> deviceActionUIService.moveDevice(context, device!!)
+            R.id.menu_alias -> deviceActionUIService.setAlias(context, device!!)
             R.id.menu_notification -> NotificationSettingView(activity, deviceName).show(activity)
             else -> return false
         }

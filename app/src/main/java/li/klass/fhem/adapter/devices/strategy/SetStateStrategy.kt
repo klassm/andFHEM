@@ -34,14 +34,12 @@ import li.klass.fhem.adapter.devices.genericui.ButtonActionRow
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
-import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SetStateStrategy @Inject
 constructor(
-        deviceDescMapping: DeviceDescMapping,
         private val dimmableStrategy: DimmableStrategy,
         private val toggleableStrategy: ToggleableStrategy,
         private val stateUiService: StateUiService,

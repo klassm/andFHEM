@@ -61,6 +61,7 @@ import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
+import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
@@ -87,6 +88,9 @@ abstract class DeviceListFragment : BaseFragment() {
     lateinit var deviceDetailViewProvider: DeviceDetailViewProvider
     @Inject
     lateinit var genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter
+    @Inject
+    lateinit var deviceActionUiService: DeviceActionUIService
+
 
     private var actionMode: ActionMode? = null
 
@@ -239,7 +243,8 @@ abstract class DeviceListFragment : BaseFragment() {
             val isFavorite = bg {
                 favoritesService.isFavorite(device.name)
             }.await()
-            val callback = DeviceListActionModeCallback(favoritesService, device, isFavorite, myActivity, updateListener = { update(false) })
+            val callback = DeviceListActionModeCallback(favoritesService, deviceActionUiService,
+                    device, isFavorite, myActivity, updateListener = { update(false) })
             actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)
         }
         return true

@@ -99,7 +99,6 @@ import li.klass.fhem.room.list.ui.RoomListFragment;
 import li.klass.fhem.search.MySearchSuggestionsProvider;
 import li.klass.fhem.search.SearchResultsFragment;
 import li.klass.fhem.sendCommand.ui.SendCommandFragment;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.ExternalApiService;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
@@ -256,8 +255,6 @@ public interface ApplicationComponent {
     void inject(NotificationIntentService object);
 
     void inject(ExternalApiService object);
-
-    void inject(DeviceIntentService object);
 
     void inject(AppWidgetUpdateIntentService object);
 
