@@ -25,5 +25,4 @@
 <resources>
     <attr name="backgroundColorPrimary" format="reference|color" />
     <attr name="backgroundColorSecondary" format="reference|color" />
-    <attr name="navigationItemColor" format="reference|color" />
 </resources>
