@@ -38,6 +38,7 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.HeatingMo
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow
 import li.klass.fhem.adapter.uiservice.FragmentUiService
+import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.CulHmHeatingMode
 import li.klass.fhem.domain.CulHmHeatingMode.heatingModeFor
 import li.klass.fhem.domain.core.FhemDevice
@@ -51,10 +52,13 @@ import javax.inject.Singleton
 
 @Singleton
 class CulHmDetailActionProvider @Inject
-constructor(private val fragmentUiService: FragmentUiService) : DeviceDetailActionProvider() {
+constructor(
+        private val fragmentUiService: FragmentUiService,
+        stateUiService: StateUiService
+) : DeviceDetailActionProvider() {
 
     init {
-        addStateAttributeAction(MODE_STATE_NAME, CulHmHeatingModeDetailAction())
+        addStateAttributeAction(MODE_STATE_NAME, CulHmHeatingModeDetailAction(stateUiService))
         addStateAttributeAction("content", KFM100ContentView())
     }
 
@@ -73,7 +77,7 @@ constructor(private val fragmentUiService: FragmentUiService) : DeviceDetailActi
         )
     }
 
-    private class CulHmHeatingModeDetailAction : HeatingModeDetailAction<CulHmHeatingMode>() {
+    private class CulHmHeatingModeDetailAction(stateUiService: StateUiService) : HeatingModeDetailAction<CulHmHeatingMode>(stateUiService) {
 
         override val availableModes: Array<CulHmHeatingMode>
             get() = CulHmHeatingMode.values()
@@ -98,23 +102,20 @@ constructor(private val fragmentUiService: FragmentUiService) : DeviceDetailActi
             }.createRow(LayoutInflater.from(context), parent)
         }
 
-        private fun determineContentPercentage(device: XmlListDevice, model: String): Double {
-            val fillContentPercentage: Double
-            if ("HM-Sen-Wa-Od" == model) {
-                fillContentPercentage = extractLeadingDouble(device.getState("level", false).get()) / 100.0
-            } else {
-                val rawToReadable = device.getAttribute("rawToReadable").get()
-                val parts = parseRawToReadable(rawToReadable)
-                val maximum = if (parts.size == 2) {
-                    extractLeadingInt(parts[1]).toDouble()
-                } else 0.0
+        private fun determineContentPercentage(device: XmlListDevice, model: String) =
+                if ("HM-Sen-Wa-Od" == model) {
+                    extractLeadingDouble(device.getState("level", false).get()) / 100.0
+                } else {
+                    val rawToReadable = device.getAttribute("rawToReadable").get()
+                    val parts = parseRawToReadable(rawToReadable)
+                    val maximum = if (parts.size == 2) {
+                        extractLeadingInt(parts[1]).toDouble()
+                    } else 0.0
 
-                val contentValue = extractLeadingDouble(device.getState("content", false).get())
-                val content = if (contentValue > maximum) maximum else contentValue
-                fillContentPercentage = content / maximum
-            }
-            return fillContentPercentage
-        }
+                    val contentValue = extractLeadingDouble(device.getState("content", false).get())
+                    val content = if (contentValue > maximum) maximum else contentValue
+                    content / maximum
+                }
 
         private fun parseRawToReadable(value: String): Array<String> {
             val lastSpace = value.lastIndexOf(" ")
@@ -136,7 +137,7 @@ constructor(private val fragmentUiService: FragmentUiService) : DeviceDetailActi
     }
 
     companion object {
-        internal val MODE_STATE_NAME = "controlMode"
+        internal const val MODE_STATE_NAME = "controlMode"
 
         private fun supportsHeating(xmlListDevice: XmlListDevice): Boolean {
             val controlMode = xmlListDevice.getState(MODE_STATE_NAME, false)

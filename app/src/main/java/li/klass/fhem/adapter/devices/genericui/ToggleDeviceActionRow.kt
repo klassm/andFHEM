@@ -60,7 +60,7 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
 
     private fun isOn(device: FhemDevice): Boolean = onOffBehavior.isOn(device)
 
-    protected fun onButtonClick(context: Context, device: FhemDevice) {
+    private fun onButtonClick(context: Context, device: FhemDevice) {
         context.startService(Intent(Actions.DEVICE_TOGGLE_STATE)
                 .setClass(context, DeviceIntentService::class.java)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
@@ -107,7 +107,7 @@ class ToggleDeviceActionRow(context: Context, private val onOffBehavior: OnOffBe
 
     companion object {
         val HOLDER_KEY = ToggleDeviceActionRow::class.java.name!!
-        val LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow
         private val LOGGER = LoggerFactory.getLogger(ToggleDeviceActionRow::class.java)
+        const val LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow
     }
 }

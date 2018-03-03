@@ -63,6 +63,11 @@ class GenericDeviceService @Inject constructor(
     }
 
     fun setSubState(device: XmlListDevice, subStateName: String, value: String, connectionId: String?, invokeDeviceUpdate: Boolean = true) {
+        if (subStateName.equals("state", ignoreCase = true)) {
+            setState(device, value, connectionId, invokeDeviceUpdate)
+            return
+        }
+
         val commandReplacements = deviceConfigurationProvider.configurationFor(device)
                 .stateConfigFor(subStateName)
                 ?.beforeCommandReplacement ?: emptySet()

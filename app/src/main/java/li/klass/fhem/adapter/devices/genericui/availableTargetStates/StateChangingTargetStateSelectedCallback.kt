@@ -22,18 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend;
+package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
-import java.util.Map;
+import android.content.Context
 
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.domain.core.FhemDevice
 
-@Deprecated
-public abstract class AllDevicesReadCallback {
+class StateChangingTargetStateSelectedCallback(
+        private val context: Context,
+        private val stateUiService: StateUiService,
+        private val connectionId: String?
+) : OnTargetStateSelectedCallback<FhemDevice> {
 
-    public AllDevicesReadCallback() {
+    override fun onStateSelected(device: FhemDevice, targetState: String) {
+        stateUiService.setState(device.xmlListDevice, targetState, context, connectionId)
     }
 
-    @SuppressWarnings("unchecked")
-    public abstract void devicesRead(Map<String, FhemDevice> allDevices);
+    override fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
+        stateUiService.setSubState(device.xmlListDevice, state, subState, connectionId, context)
+    }
+
+    override fun onNothingSelected(device: FhemDevice) {}
 }

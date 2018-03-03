@@ -27,6 +27,8 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices
 import android.content.Context
 import android.content.Intent
 import com.google.common.collect.ImmutableList
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
@@ -34,16 +36,18 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.FHTModeStateOverwrite
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration
-import li.klass.fhem.service.intent.DeviceIntentService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
+import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FHTDetailActionProvider @Inject constructor(
-        fhtModeStateOverwrite: FHTModeStateOverwrite
+        fhtModeStateOverwrite: FHTModeStateOverwrite,
+        val genericDeviceService: GenericDeviceService
 ) : DeviceDetailActionProvider() {
 
     init {
@@ -65,13 +69,11 @@ class FHTDetailActionProvider @Inject constructor(
                 },
                 object : ActionCardButton(R.string.requestRefresh, context) {
                     override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                        context.startService(
-                                Intent(Actions.DEVICE_SET_STATE)
-                                        .setClass(context, DeviceIntentService::class.java)
-                                        .putExtra(CONNECTION_ID, connectionId)
-                                        .putExtra(DEVICE_NAME, device.name)
-                                        .putExtra(DEVICE_TARGET_STATE, "refreshvalues")
-                        )
+                        async(UI) {
+                            bg {
+                                genericDeviceService.setState(device, "refreshvalues", connectionId)
+                            }
+                        }
                     }
                 }
         )

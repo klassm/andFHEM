@@ -22,31 +22,39 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.core.generic.detail.actions.state
+package li.klass.fhem.adapter.devices.genericui
 
 import android.content.Context
-import android.view.ViewGroup
-import android.widget.TableRow
-import li.klass.fhem.R
-import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.testutil.MockitoRule
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import li.klass.fhem.util.EnumUtils.toStringList
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Rule
+import org.junit.Test
+import org.mockito.Mock
 
-abstract class HeatingModeDetailAction<M : Enum<M>>(private val stateUiService: StateUiService) : StateAttributeAction {
+class WebCmdActionRowTest {
 
-    protected abstract val availableModes: Array<M>
+    @Rule
+    @JvmField
+    var mockitoRule = MockitoRule()
 
-    override fun createRow(device: XmlListDevice, connectionId: String?, key: String, stateValue: String, context: Context, parent: ViewGroup): TableRow {
-        val mode = getCurrentModeFor(device)
-        val available = availableModes
+    @Mock
+    private lateinit var context: Context
+    @Mock
+    private lateinit var stateUiService: StateUiService
 
-        return StateChangingSpinnerActionRow(context, stateUiService, null, context.getString(R.string.setMode), toStringList(available), mode.name, key).createRow(device, connectionId, parent)
+    @Test
+    fun should_handle_null_webcmds() {
+        val row = DummyWebCmdRow(stateUiService, context, "row", 0)
+        val dummyDevice = FhemDevice(XmlListDevice("DUMMY"))
+
+        assertThat(dummyDevice.webCmd).isEmpty()
+        assertThat(row.getItems(dummyDevice)).hasSize(0)
     }
 
-    override fun supports(xmlListDevice: XmlListDevice): Boolean {
-        return true
-    }
-
-    protected abstract fun getCurrentModeFor(device: XmlListDevice): M
+    private class DummyWebCmdRow internal constructor(
+            stateUiService: StateUiService, context: Context, description: String, layout: Int
+    ) : WebCmdActionRow(stateUiService, context, layout, description)
 }

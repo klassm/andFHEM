@@ -77,6 +77,6 @@ class LightSceneDeviceViewStrategy @Inject constructor(
     }
 
     private fun activateScene(device: FhemDevice, scene: String, context: Context) {
-        stateUiService.setSubState(device, null, "scene", scene, context)
+        stateUiService.setSubState(device.xmlListDevice, "scene", scene, null, context)
     }
 }

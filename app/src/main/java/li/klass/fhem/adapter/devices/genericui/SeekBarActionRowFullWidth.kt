@@ -49,17 +49,17 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
     open fun createRow(inflater: LayoutInflater, device: XmlListDevice?): TableRow {
         val seekbarMax = DimConversionUtil.toSeekbarProgress(maximumProgress, minimumProgress, step)
         val seekbarProgress = DimConversionUtil.toSeekbarProgress(initialProgress, minimumProgress, step)
-
-        val row = inflater.inflate(layoutId, null) as TableRow
-        findSeekbar(row)
-                .apply {
-                    setOnSeekBarChangeListener(createListener(device))
-                    max = seekbarMax
-                    progress = seekbarProgress
-                }
         updateView.text = toUpdateText(device, initialProgress)
 
-        return row
+        return (inflater.inflate(layoutId, null) as TableRow)
+                .apply {
+                    findSeekbar(this)
+                            .apply {
+                                setOnSeekBarChangeListener(createListener(device))
+                                max = seekbarMax
+                                progress = seekbarProgress
+                            }
+                }
     }
 
     protected fun setSeekBarProgressTo(row: TableRow, progress: Double) {
@@ -75,7 +75,7 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step)
-                LOGGER.info("onProgressChange - progress={}, converted={}", progress, this.progress)
+                LOGGER.debug("onProgressChange - progress={}, converted={}", progress, this.progress)
                 if (fromUser) {
                     this@SeekBarActionRowFullWidth.onNewValue(device, this.progress)
                     initialProgress = progress.toDouble()

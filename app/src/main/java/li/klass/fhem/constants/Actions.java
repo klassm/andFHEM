@@ -46,9 +46,6 @@ public class Actions {
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
     public static final String DEVICE_WIDGET_TARGET_STATE = prefix + "DEVICE_WIDGET_TARGET_STATE";
 
-    public static final String DEVICE_SET_SUB_STATE = prefix + "DEVICE_SET_SUB_STATE";
-    public static final String DEVICE_SET_SUB_STATES = prefix + "DEVICE_SET_SUB_STATES";
-
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
     public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";
     public static final String UPDATE_NAVIGATION = prefix + "UPDATE_NAVIGATION";

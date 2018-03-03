@@ -22,35 +22,22 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.genericui.onoff
 
-import android.content.Context;
+import android.content.Context
+import li.klass.fhem.R
+import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.domain.core.FhemDevice
 
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.onoff.OnOffStateActionRow;
-import li.klass.fhem.domain.core.FhemDevice;
+class OnOffSubStateActionRow(layoutId: Int, private val subState: String, connectionId: String?, val stateUiService: StateUiService)
+    : AbstractOnOffActionRow(layoutId, R.string.blank, connectionId) {
 
-public abstract class StateChangingYesNoTwoButtonActionRow extends OnOffStateActionRow {
-
-    public StateChangingYesNoTwoButtonActionRow(int description, String connectionId) {
-        super(AbstractOnOffActionRow.LAYOUT_DETAIL, description, connectionId);
+    override fun isOn(device: FhemDevice, context: Context): Boolean {
+        val offStateName = getOffStateName(device, context)
+        return !offStateName.equals(device.xmlListDevice.getState(subState, true).or("off"), ignoreCase = true)
     }
 
-    @Override
-    protected String getOnStateText(FhemDevice device, Context context) {
-        return context.getString(R.string.yes);
+    override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String?, targetState: String) {
+        stateUiService.setSubState(device.xmlListDevice, subState, targetState, connectionId, context)
     }
-
-    @Override
-    protected String getOffStateText(FhemDevice device, Context context) {
-        return context.getString(R.string.no);
-    }
-
-    @Override
-    protected boolean isOn(FhemDevice device, Context context) {
-        return isYes(device);
-    }
-
-    protected abstract boolean isYes(FhemDevice device);
 }

@@ -35,7 +35,4 @@ public abstract class DeviceDetailViewAction {
 
     public abstract View createView(Context context, LayoutInflater inflater, FhemDevice device, LinearLayout parent, String connectionId);
 
-    public boolean isVisible(FhemDevice device, Context context) {
-        return true;
-    }
 }

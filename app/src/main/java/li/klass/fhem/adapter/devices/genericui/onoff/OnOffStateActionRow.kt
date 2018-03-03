@@ -22,33 +22,20 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui.onoff;
+package li.klass.fhem.adapter.devices.genericui.onoff
 
-import android.content.Context;
+import android.content.Context
+import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.domain.core.FhemDevice
 
-import com.google.common.base.Optional;
+open class OnOffStateActionRow(
+        layoutId: Int,
+        description: Int?,
+        connectionId: String?,
+        private val stateUiService: StateUiService
+) : AbstractOnOffActionRow(layoutId, description, connectionId) {
 
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.core.FhemDevice;
-
-public class OnOffSubStateActionRow extends AbstractOnOffActionRow {
-
-    private final String subState;
-
-    public OnOffSubStateActionRow(int layoutId, String subState, String connectionId) {
-        super(layoutId, Optional.of(R.string.blank), connectionId);
-        this.subState = subState;
-    }
-
-    @Override
-    protected boolean isOn(FhemDevice device, Context context) {
-        String offStateName = getOffStateName(device, context);
-        return offStateName != null && !offStateName.equalsIgnoreCase(device.getXmlListDevice().getState(subState, true).or("off"));
-    }
-
-    @Override
-    public void onButtonClick(Context context, FhemDevice device, String connectionId, String targetState) {
-        new StateUiService().setSubState(device, connectionId, subState, targetState, context);
+    override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String?, targetState: String) {
+        stateUiService.setState(device, targetState, context, connectionId)
     }
 }

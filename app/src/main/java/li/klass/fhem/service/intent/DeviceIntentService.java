@@ -33,8 +33,6 @@ import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
@@ -51,15 +49,11 @@ import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.update.backend.DeviceListService;
 import li.klass.fhem.update.backend.command.execution.Command;
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
-import li.klass.fhem.util.StateToSet;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
 import static li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
-import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES;
 import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
@@ -67,12 +61,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ALIAS;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NEW_ROOM;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-import static li.klass.fhem.constants.BundleExtraKeys.STATES;
-import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
-import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
-import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
 import static li.klass.fhem.service.intent.ConvenientIntentService.State.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.State.SUCCESS;
 
@@ -123,8 +112,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         State result = State.SUCCESS;
         if (DEVICE_TOGGLE_STATE.equals(action)) {
             result = toggleIntent(device, connectionId);
-        } else if (DEVICE_SET_STATE.equals(action)) {
-            result = setStateIntent(intent, device, connectionId);
         } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName);
@@ -142,24 +129,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_SET_ALIAS.equals(action)) {
             String newAlias = intent.getStringExtra(DEVICE_NEW_ALIAS);
             deviceService.setAlias(device, newAlias);
-
-        } else if (DEVICE_SET_SUB_STATE.equals(action)) {
-            String name = intent.getStringExtra(STATE_NAME);
-            String value = intent.getStringExtra(STATE_VALUE);
-
-            genericDeviceService.setSubState(device.getXmlListDevice(), name, value, connectionId.orNull(), true);
-
-        } else if (DEVICE_SET_SUB_STATES.equals(action))
-
-        {
-            @SuppressWarnings("unchecked")
-            List<StateToSet> statesToSet = (List<StateToSet>) intent.getSerializableExtra(STATES);
-
-            genericDeviceService.setSubStates(device.getXmlListDevice(), statesToSet, connectionId.orNull());
-
-        } else if (RESEND_LAST_FAILED_COMMAND.equals(action))
-
-        {
+        } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
 
             Command lastFailedCommand = commandExecutionService.getLastFailedCommand();
             if (lastFailedCommand != null && "xmllist".equalsIgnoreCase(lastFailedCommand.getCommand())) {
@@ -187,24 +157,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else {
             return ERROR;
         }
-    }
-
-    /**
-     * Set the state of a device and notify the result receiver
-     *
-     * @param intent received intent
-     * @param device device to set the state on
-     * @return success ?
-     */
-    private State setStateIntent(Intent intent, FhemDevice device, Optional<String> connectionId) {
-        String targetState = intent.getStringExtra(DEVICE_TARGET_STATE);
-        int timesToSend = intent.getIntExtra(TIMES_TO_SEND, 1);
-
-        for (int i = 0; i < timesToSend; i++) {
-            genericDeviceService.setState(device.getXmlListDevice(), targetState, connectionId.orNull(), true);
-        }
-
-        return State.SUCCESS;
     }
 
     @Override

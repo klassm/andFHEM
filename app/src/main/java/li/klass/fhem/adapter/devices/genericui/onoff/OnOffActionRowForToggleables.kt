@@ -27,17 +27,19 @@ package li.klass.fhem.adapter.devices.genericui.onoff
 import android.content.Context
 import android.view.View
 import android.widget.TableRow
-import com.google.common.base.Optional
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
+import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 
 class OnOffActionRowForToggleables(layoutId: Int,
                                    private val hookProvider: DeviceHookProvider,
                                    private val onOffBehavior: OnOffBehavior,
-                                   text: Optional<Int>,
-                                   connectionId: String?) : OnOffStateActionRow(layoutId, text, connectionId) {
+                                   stateUiService: StateUiService,
+                                   text: Int?,
+                                   connectionId: String?
+) : OnOffStateActionRow(layoutId, text, connectionId, stateUiService) {
 
     override fun createRow(device: FhemDevice, context: Context): TableRow {
         val tableRow = super.createRow(device, context)
@@ -62,11 +64,11 @@ class OnOffActionRowForToggleables(layoutId: Int,
         return tableRow
     }
 
-    override fun getOnStateName(device: FhemDevice, context: Context): String? =
-            onOffBehavior.getOnStateName(device)
+    override fun getOnStateName(device: FhemDevice, context: Context): String =
+            onOffBehavior.getOnStateName(device) ?: super.getOnStateName(device, context)
 
-    override fun getOffStateName(device: FhemDevice, context: Context): String? =
-            onOffBehavior.getOffStateName(device)
+    override fun getOffStateName(device: FhemDevice, context: Context): String =
+            onOffBehavior.getOffStateName(device) ?: super.getOffStateName(device, context)
 
     override fun isOn(device: FhemDevice, context: Context): Boolean = onOffBehavior.isOn(device)
 }

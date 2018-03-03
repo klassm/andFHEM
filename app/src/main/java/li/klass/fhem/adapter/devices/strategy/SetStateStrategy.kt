@@ -31,6 +31,7 @@ import li.klass.fhem.adapter.devices.StateChangeButtonActionRow
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow
+import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
@@ -43,14 +44,15 @@ constructor(
         deviceDescMapping: DeviceDescMapping,
         private val dimmableStrategy: DimmableStrategy,
         private val toggleableStrategy: ToggleableStrategy,
+        private val stateUiService: StateUiService,
         devStateIconAdder: DevStateIconAdder,
         deviceConfigurationProvider: DeviceConfigurationProvider) :
-        DefaultViewStrategy(deviceDescMapping, devStateIconAdder, deviceConfigurationProvider) {
+        DefaultViewStrategy(devStateIconAdder, deviceConfigurationProvider) {
 
     override fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<XmlDeviceViewItem>, layoutInflater: LayoutInflater) {
         super.fillDeviceOverviewView(view, device, viewHolder, items, layoutInflater)
 
-        val row = StateChangeButtonActionRow(layoutInflater.context, device, ButtonActionRow.LAYOUT_OVERVIEW, null)
+        val row = StateChangeButtonActionRow(layoutInflater.context, device, ButtonActionRow.LAYOUT_OVERVIEW, null, stateUiService)
         viewHolder.tableLayout.addView(row.createRow(layoutInflater))
     }
 

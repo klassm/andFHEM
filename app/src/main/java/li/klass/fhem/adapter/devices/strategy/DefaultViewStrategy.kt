@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.strategy
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TableRow
@@ -34,7 +33,6 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
-import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -44,7 +42,6 @@ import javax.inject.Singleton
 @Singleton
 open class DefaultViewStrategy @Inject
 constructor(
-        private val deviceDescMapping: DeviceDescMapping,
         private val devStateIconAdder: DevStateIconAdder,
         private val deviceConfigurationProvider: DeviceConfigurationProvider
 ) : ViewStrategy() {
@@ -74,8 +71,6 @@ constructor(
         get() = R.layout.device_overview_generic
 
     open fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<XmlDeviceViewItem>, layoutInflater: LayoutInflater) {
-        val context = layoutInflater.context
-
         viewHolder.resetHolder()
         setTextView(viewHolder.deviceName, device.aliasOrName)
 
@@ -97,7 +92,7 @@ constructor(
                         rowHolder = createTableRow(layoutInflater, R.layout.device_overview_generic_table_row)
                         viewHolder.addTableRow(rowHolder)
                     }
-                    fillTableRow(rowHolder, item, device, context)
+                    fillTableRow(rowHolder, item, device)
                     viewHolder.tableLayout.addView(rowHolder.row)
                 }
             }
@@ -118,7 +113,7 @@ constructor(
         )
     }
 
-    private fun fillTableRow(holder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder, item: XmlDeviceViewItem, device: FhemDevice, context: Context) {
+    private fun fillTableRow(holder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder, item: XmlDeviceViewItem, device: FhemDevice) {
         setTextView(holder.description, item.desc)
         setTextView(holder.value, item.value)
         if (item.value == "") {

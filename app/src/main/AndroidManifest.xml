@@ -245,13 +245,6 @@
             </intent-filter>
         </service>
         <service
-            android:name=".appwidget.action.AppWidgetActionIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DIM" />
-            </intent-filter>
-        </service>
-        <service
             android:name=".service.intent.DeviceIntentService"
             android:exported="false">
             <intent-filter>
@@ -263,8 +256,6 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE" />
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATES" />
                 <action android:name="li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND" />
             </intent-filter>
         </service>

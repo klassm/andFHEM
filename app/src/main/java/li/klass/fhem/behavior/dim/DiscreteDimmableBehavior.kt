@@ -71,7 +71,7 @@ class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : Dimm
     override fun getStateName(): String = "state"
 
     override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double) {
-        stateUiService.setState(fhemDevice, getDimStateForPosition(fhemDevice, state), context, connectionId)
+        stateUiService.setState(fhemDevice.xmlListDevice, getDimStateForPosition(fhemDevice, state), context, connectionId)
     }
 
     companion object {

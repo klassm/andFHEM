@@ -41,10 +41,7 @@ import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
-import li.klass.fhem.adapter.devices.genericui.StateChangingColorPickerRow
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth
-import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow
-import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow
+import li.klass.fhem.adapter.devices.genericui.*
 import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffSubStateActionRow
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy
@@ -180,7 +177,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
                 addRow(table, toggleableStrategy.createDetailView(device, context, connectionId))
             }
             if (!device.webCmd.isEmpty()) {
-                addRow(table, WebCmdActionRow(WebCmdActionRow.LAYOUT_DETAIL, context).createRow(context, table, device, connectionId))
+                addRow(table, WebCmdActionRow(stateUiService, context, HolderActionRow.LAYOUT_DETAIL).createRow(context, table, device, connectionId))
             }
             return
         }
@@ -196,10 +193,10 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
             if (groupStates.size <= 1) return
 
             if ((groupStates.contains("on") && groupStates.contains("off") || groupStates.contains("ON") && groupStates.contains("OFF")) && groupStates.size < 5) {
-                addRow(table, OnOffSubStateActionRow(AbstractOnOffActionRow.LAYOUT_DETAIL, setListEntry.key, connectionId)
+                addRow(table, OnOffSubStateActionRow(AbstractOnOffActionRow.LAYOUT_DETAIL, setListEntry.key, connectionId, stateUiService)
                         .createRow(device, context))
             } else {
-                addRow(table, StateChangingSpinnerActionRow(context, null, item.desc, groupStates, item.value, item.key)
+                addRow(table, StateChangingSpinnerActionRow(context, stateUiService, null, item.desc, groupStates, item.value, item.key)
                         .createRow(xmlListDevice, connectionId, table))
             }
         } else if (setListEntry is RGBSetListEntry) {

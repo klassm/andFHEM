@@ -44,7 +44,6 @@ import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.alarm.clock.update.AlarmClockIntentService;
 import li.klass.fhem.appindex.AppIndexIntentService;
-import li.klass.fhem.appwidget.action.AppWidgetActionIntentService;
 import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.MediumAppWidgetProvider;
@@ -52,6 +51,7 @@ import li.klass.fhem.appwidget.provider.SmallAppWidgetProvider;
 import li.klass.fhem.appwidget.ui.selection.BigWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.MediumWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.SmallWidgetSelectionActivity;
+import li.klass.fhem.appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity;
 import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.appwidget.ui.widget.big.BigWeatherForecastWidget;
 import li.klass.fhem.appwidget.ui.widget.medium.DimWidgetView;
@@ -294,7 +294,7 @@ public interface ApplicationComponent {
 
     void inject(SettingsFragment settingsFragment);
 
-    void inject(@NotNull AppWidgetActionIntentService appWidgetActionIntentService);
-
     void inject(@NotNull AppWidgetBroadcastReceiver appWidgetBroadcastReceiver);
+
+    void inject(@NotNull TargetStateAdditionalInformationActivity targetStateAdditionalInformationActivity);
 }

@@ -25,7 +25,6 @@
 package li.klass.fhem.fragments.weekprofile
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,19 +37,16 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.ResultCodes
+import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
+import li.klass.fhem.constants.BundleExtraKeys.HEATING_CONFIGURATION
+import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.service.intent.DeviceIntentService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.DialogUtil
-import li.klass.fhem.util.FhemResultReceiver
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -63,6 +59,8 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     @Inject lateinit var deviceListService: DeviceListService
     @Inject lateinit var deviceListUpdateService: DeviceListUpdateService
+    @Inject
+    lateinit var genericDeviceService: GenericDeviceService
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
@@ -104,17 +102,15 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     private fun onSave() {
         val commands = newArrayList(weekProfile.getStatesToSet())
-        activity?.startService(Intent(Actions.DEVICE_SET_SUB_STATES)
-                .setClass(activity, DeviceIntentService::class.java)
-                .putExtra(DEVICE_NAME, deviceName)
-                .putExtra(BundleExtraKeys.STATES, commands)
-                .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (resultCode != ResultCodes.SUCCESS) return
-                        backToDevice()
-                        update(true)
-                    }
-                }))
+        async(UI) {
+            bg {
+                deviceListService.getDeviceForName(deviceName)
+                        ?.xmlListDevice?.let {
+                    genericDeviceService.setSubStates(it, commands, connectionId = null)
+                }
+            }.await()
+            backToDevice()
+        }
     }
 
     private fun onReset() {

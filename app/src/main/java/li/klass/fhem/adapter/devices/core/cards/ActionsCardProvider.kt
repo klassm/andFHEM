@@ -32,13 +32,15 @@ import kotlinx.coroutines.experimental.async
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
+import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class ActionsCardProvider @Inject constructor(
-        private val detailActionProviders: GenericDetailActionProviders
+        private val detailActionProviders: GenericDetailActionProviders,
+        private val stateUiService: StateUiService
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 30
 
@@ -50,7 +52,7 @@ class ActionsCardProvider @Inject constructor(
         val card = layoutInflater.inflate(R.layout.device_detail_card_actions, null) as CardView
 
         val actionsList = card.actionsList
-        actionsList.addView(AvailableTargetStatesSwitchAction().createView(context, layoutInflater, device, actionsList, connectionId))
+        actionsList.addView(AvailableTargetStatesSwitchAction(stateUiService).createView(context, layoutInflater, device, actionsList, connectionId))
 
         async(UI) {
             bg {

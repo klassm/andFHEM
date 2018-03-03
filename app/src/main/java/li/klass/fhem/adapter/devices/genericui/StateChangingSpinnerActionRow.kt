@@ -22,24 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.update.backend;
+package li.klass.fhem.adapter.devices.genericui
 
-import java.util.Map;
+import android.content.Context
 
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
-@Deprecated
-public abstract class DeviceReadCallback<D extends FhemDevice> extends AllDevicesReadCallback {
-    private String deviceName;
+class StateChangingSpinnerActionRow(context: Context,
+                                    private val stateUiService: StateUiService,
+                                    description: String?,
+                                    prompt: String,
+                                    spinnerValues: List<String>,
+                                    selectedValue: String,
+                                    private val commandAttribute: String
+) : SpinnerActionRow(context, description, prompt, spinnerValues, selectedValue) {
 
-    public DeviceReadCallback(String callbackDevice) {
-        this.deviceName = callbackDevice;
+    override fun onItemSelected(context: Context, device: XmlListDevice, connectionId: String, item: String) {
+
+        stateUiService.setSubState(device, commandAttribute, item, connectionId, context)
     }
-
-    @SuppressWarnings("unchecked")
-    public void devicesRead(Map<String, FhemDevice> allDevices) {
-        onCallbackDeviceRead((D) allDevices.get(deviceName));
-    }
-
-    public abstract void onCallbackDeviceRead(D callbackDevice);
 }

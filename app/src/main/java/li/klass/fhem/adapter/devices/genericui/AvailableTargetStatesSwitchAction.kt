@@ -22,31 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui;
+package li.klass.fhem.adapter.devices.genericui
 
-import android.content.Context;
+import android.content.Context
 
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.R
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback
+import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.domain.core.FhemDevice
 
-public class AvailableTargetStatesSwitchAction extends DeviceDetailViewButtonAction {
-    public AvailableTargetStatesSwitchAction() {
-        super(R.string.switchSetOptions);
+class AvailableTargetStatesSwitchAction(
+        private val stateUiService: StateUiService
+) : DeviceDetailViewButtonAction(R.string.switchSetOptions) {
+
+    override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String) {
+        showSwitchOptionsMenu(context, device, connectionId)
     }
 
-    @Override
-    public void onButtonClick(Context context, FhemDevice device, String connectionId) {
-        showSwitchOptionsMenu(context, device, connectionId);
-    }
-
-    private void showSwitchOptionsMenu(final Context context, final FhemDevice device, String connectionId) {
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, new StateChangingTargetStateSelectedCallback(context, new StateUiService(), connectionId));
-    }
-
-    @Override
-    public boolean isVisible(FhemDevice device, Context context) {
-        return device.getSetList().size() > 0;
+    private fun showSwitchOptionsMenu(context: Context, device: FhemDevice, connectionId: String) {
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(
+                context, device, StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
+        )
     }
 }

@@ -28,7 +28,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TableRow
-import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
@@ -38,6 +37,7 @@ import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleable
 import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
+import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
@@ -46,8 +46,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ToggleableStrategy
-@Inject constructor(val hookProvider: DeviceHookProvider,
-                    val onOffBehavior: OnOffBehavior) : ViewStrategy() {
+@Inject constructor(private val hookProvider: DeviceHookProvider,
+                    private val onOffBehavior: OnOffBehavior,
+                    private val stateUiService: StateUiService) : ViewStrategy() {
 
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
@@ -79,7 +80,7 @@ class ToggleableStrategy
         stopWatch.start()
         val hook = hookProvider.buttonHookFor(device)
         if (hook != NORMAL && hook != TOGGLE_DEVICE) {
-            addOnOffActionRow(holder, device, AbstractOnOffActionRow.LAYOUT_OVERVIEW, Optional.absent<Int>(), connectionId)
+            addOnOffActionRow(holder, device, AbstractOnOffActionRow.LAYOUT_OVERVIEW, null, connectionId)
         } else {
             addToggleDeviceActionRow(holder, device, layoutInflater.context)
         }
@@ -102,10 +103,10 @@ class ToggleableStrategy
         LOGGER.debug("addToggleDeviceActionRow - finished, time=" + stopWatch.time)
     }
 
-    private fun addOnOffActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice, layoutId: Int, text: Optional<Int>, connectionId: String?) {
+    private fun addOnOffActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice, layoutId: Int, text: Int?, connectionId: String?) {
         var onOffActionRow: OnOffActionRowForToggleables? = holder.getAdditionalHolderFor<OnOffActionRowForToggleables>(AbstractOnOffActionRow.HOLDER_KEY)
         if (onOffActionRow == null) {
-            onOffActionRow = OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior, text, connectionId)
+            onOffActionRow = OnOffActionRowForToggleables(layoutId, hookProvider, onOffBehavior, stateUiService, text, connectionId)
             holder.putAdditionalHolder(AbstractOnOffActionRow.HOLDER_KEY, onOffActionRow)
         }
         holder.tableLayout.addView(onOffActionRow
@@ -113,8 +114,10 @@ class ToggleableStrategy
     }
 
     fun createDetailView(device: FhemDevice, context: Context, connectionId: String?): TableRow {
-        return OnOffActionRowForToggleables(AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider, onOffBehavior, Optional.of(R.string.blank), connectionId)
-                .createRow(device, context)
+        return OnOffActionRowForToggleables(
+                AbstractOnOffActionRow.LAYOUT_DETAIL, hookProvider,
+                onOffBehavior, stateUiService, R.string.blank, connectionId
+        ).createRow(device, context)
     }
 
     companion object {

@@ -35,13 +35,14 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow
 import li.klass.fhem.adapter.devices.hook.ButtonHook.WEBCMD_DEVICE
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
+import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class WebcmdStrategy @Inject
-constructor(val hookProvider: DeviceHookProvider) : ViewStrategy() {
+constructor(val hookProvider: DeviceHookProvider, val stateUiService: StateUiService) : ViewStrategy() {
 
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
@@ -67,7 +68,7 @@ constructor(val hookProvider: DeviceHookProvider) : ViewStrategy() {
 
     private fun addWebCmdOverviewActionRow(context: Context, device: FhemDevice,
                                            tableLayout: TableLayout, connectionId: String?) {
-        tableLayout.addView(WebCmdActionRow(device.aliasOrName, HolderActionRow.LAYOUT_OVERVIEW)
+        tableLayout.addView(WebCmdActionRow(stateUiService, context, HolderActionRow.LAYOUT_OVERVIEW, device.aliasOrName)
                 .createRow(context, tableLayout, device, connectionId))
     }
 }
