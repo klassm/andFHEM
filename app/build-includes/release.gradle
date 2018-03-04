@@ -34,6 +34,7 @@ def getVersionCode(version) {
 }
 
 def getNextVersionCode(version) {
+    println("get next version code after " + version)
     def versionCode = getVersionCode(version)
     return project.getVersion().endsWith("-SNAPSHOT") ? versionCode : versionCode + 1
 }
