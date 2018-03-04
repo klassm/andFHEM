@@ -24,8 +24,6 @@
 
 package li.klass.fhem.graph.backend;
 
-import android.content.Context;
-
 import com.google.common.base.Optional;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -42,6 +40,7 @@ import org.mockito.Mock;
 import java.util.Arrays;
 import java.util.List;
 
+import li.klass.fhem.graph.backend.gplot.GPlotSeries;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.testutil.ValueProvider;
 import li.klass.fhem.update.backend.command.execution.Command;
@@ -108,7 +107,6 @@ public class GraphServiceTest {
         // given
         String logDeviceName = valueProvider.lowercaseString(10);
         GPlotSeries series = mock(GPlotSeries.class);
-        Context context = mock(Context.class);
         String spec1 = valueProvider.lowercaseString(10);
         String spec2 = valueProvider.lowercaseString(10);
         List<String> plotfunction = Arrays.asList(spec1, spec2);
