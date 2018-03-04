@@ -111,11 +111,11 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
                 async(UI) {
                     bg {
                         appWidgetUpdateService.updateWidget(widgetId)
-                    }
-                }
+                    }.await()
 
-                setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_APPWIDGET_ID, widgetId))
-                finish()
+                    setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_APPWIDGET_ID, widgetId))
+                    finish()
+                }
             }
         }, *payload)
     }

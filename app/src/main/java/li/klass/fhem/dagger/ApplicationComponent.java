@@ -51,7 +51,6 @@ import li.klass.fhem.appwidget.provider.SmallAppWidgetProvider;
 import li.klass.fhem.appwidget.ui.selection.BigWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.MediumWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.SmallWidgetSelectionActivity;
-import li.klass.fhem.appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity;
 import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.appwidget.ui.widget.big.BigWeatherForecastWidget;
 import li.klass.fhem.appwidget.ui.widget.medium.DimWidgetView;
@@ -292,6 +291,4 @@ public interface ApplicationComponent {
     void inject(SettingsFragment settingsFragment);
 
     void inject(@NotNull AppWidgetBroadcastReceiver appWidgetBroadcastReceiver);
-
-    void inject(@NotNull TargetStateAdditionalInformationActivity targetStateAdditionalInformationActivity);
 }

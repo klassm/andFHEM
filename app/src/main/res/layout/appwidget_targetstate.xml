@@ -38,7 +38,7 @@
             android:layout_height="25dp"
             android:gravity="center"
             android:text="@string/state"
-            android:textColor="?android:textColor"
+            android:textColor="@color/black"
             android:layout_width="fill_parent"
             android:background="@android:color/white"
             android:ellipsize="start"

@@ -37,12 +37,10 @@ import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
-import li.klass.fhem.appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
@@ -57,26 +55,19 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
         view.setTextViewText(R.id.button, state)
 
-        val pendingIntent: PendingIntent
-        if (requiresAdditionalInformation(state)) {
-            val actionIntent = Intent(context, TargetStateAdditionalInformationActivity::class.java)
-                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val actionIntent = Intent(context, AppWidgetBroadcastReceiver::class.java)
+                .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
+                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
 
-            pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId,
-                    actionIntent, FLAG_UPDATE_CURRENT)
-        } else {
-            val actionIntent = Intent(context, AppWidgetBroadcastReceiver::class.java)
-                    .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
-                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
-                    .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
-
-            pendingIntent = PendingIntent.getBroadcast(context, widgetConfiguration.widgetId, actionIntent,
-                    FLAG_UPDATE_CURRENT)
+        view.apply {
+            setOnClickPendingIntent(
+                    R.id.button,
+                    PendingIntent.getBroadcast(context, widgetConfiguration.widgetId, actionIntent,
+                            FLAG_UPDATE_CURRENT)
+            )
         }
-
-        view.setOnClickPendingIntent(R.id.button, pendingIntent)
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }

@@ -146,11 +146,6 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".appwidget.ui.widget.activity.TargetStateAdditionalInformationActivity"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:theme="@style/Theme.Dialog.Light" />
 
         <receiver
             android:name=".appwidget.action.AppWidgetBroadcastReceiver"
