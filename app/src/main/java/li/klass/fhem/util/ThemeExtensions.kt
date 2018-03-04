@@ -22,30 +22,14 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.graph.backend;
+package li.klass.fhem.util
 
-import org.joda.time.Interval;
+import android.content.res.Resources
+import android.util.TypedValue
 
-import java.util.HashMap;
-import java.util.List;
-
-import li.klass.fhem.graph.backend.gplot.GPlotSeries;
-
-public class GraphData {
-    private final HashMap<GPlotSeries, List<GraphEntry>> data;
-    private final Interval interval;
-
-    GraphData(HashMap<GPlotSeries, List<GraphEntry>> data, Interval interval) {
-        this.data = data;
-        this.interval = interval;
-    }
-
-    public Interval getInterval() {
-        return interval;
-    }
-
-    public HashMap<GPlotSeries, List<GraphEntry>> getData() {
-
-        return data;
-    }
+fun Resources.Theme.resolveColor(color: Int): Int {
+    val theme = this
+    return TypedValue().apply {
+        theme.resolveAttribute(color, this, true)
+    }.data
 }

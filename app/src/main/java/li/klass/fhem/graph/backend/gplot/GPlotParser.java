@@ -67,12 +67,12 @@ import static java.util.Collections.emptyMap;
 @Singleton
 public class GPlotParser {
 
-    public static final Pattern SETS_PATTERN = Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]?([^\"^']+)[\"'\\]]?");
-    public static final Pattern AXIS_PATTERN = Pattern.compile("axes x1y([12])");
-    public static final Pattern TITLE_PATTERN = Pattern.compile("title '([^']*)'");
-    public static final Pattern TYPE_PATTERN = Pattern.compile("with ([a-zA-Z]+)");
-    public static final Pattern SERIES_TYPE_PATTERN = Pattern.compile("(l[0-9])((dot|fill(_stripe|_gyr)?)?)");
-    public static final Pattern LINE_WIDTH_PATTERN = Pattern.compile("lw ([0-9]+(\\.[0-9]+)?)");
+    private static final Pattern SETS_PATTERN = Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]?([^\"^']+)[\"'\\]]?");
+    private static final Pattern AXIS_PATTERN = Pattern.compile("axes x1y([12])");
+    private static final Pattern TITLE_PATTERN = Pattern.compile("title '([^']*)'");
+    private static final Pattern TYPE_PATTERN = Pattern.compile("with ([a-zA-Z]+)");
+    private static final Pattern SERIES_TYPE_PATTERN = Pattern.compile("(l[0-9])((dot|fill(_stripe|_gyr)?)?)");
+    private static final Pattern LINE_WIDTH_PATTERN = Pattern.compile("lw ([0-9]+(\\.[0-9]+)?)");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GPlotParser.class);
 

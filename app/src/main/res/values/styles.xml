@@ -55,6 +55,16 @@
 
         <item name="backgroundColorPrimary">@color/backgroundColorPrimary</item>
         <item name="backgroundColorSecondary">@color/backgroundColorSecondary</item>
+
+        <item name="seriesColorRED">@color/seriesColorRED</item>
+        <item name="seriesColorGREEN">@color/seriesColorGREEN</item>
+        <item name="seriesColorBLUE">@color/seriesColorBLUE</item>
+        <item name="seriesColorMAGENTA">@color/seriesColorMAGENTA</item>
+        <item name="seriesColorBROWN">@color/seriesColorBROWN</item>
+        <item name="seriesColorWHITE">@color/seriesColorWHITE</item>
+        <item name="seriesColorOLIVE">@color/seriesColorOLIVE</item>
+        <item name="seriesColorGRAY">@color/seriesColorGRAY</item>
+        <item name="seriesColorYELLOW">@color/seriesColorYELLOW</item>
     </style>
 
     <style name="myDropDownItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">

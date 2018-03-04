@@ -24,11 +24,11 @@
 
 package li.klass.fhem.graph.backend.gplot;
 
-import android.graphics.Color;
-
 import com.google.common.base.Optional;
 
 import java.io.Serializable;
+
+import li.klass.fhem.R;
 
 import static li.klass.fhem.graph.backend.gplot.GPlotSeries.SeriesType.DEFAULT;
 
@@ -143,15 +143,15 @@ public class GPlotSeries implements Serializable {
     }
 
     public enum SeriesColor {
-        RED(Color.RED),
-        GREEN(0xFF004700),
-        BLUE(Color.BLUE),
-        MAGENTA(Color.MAGENTA),
-        BROWN(0xFFA52A2A),
-        WHITE(Color.BLACK),
-        OLIVE(0xFF808000),
-        GRAY(0xFF5A5A5A),
-        YELLOW(Color.YELLOW),;
+        RED(R.attr.seriesColorRED),
+        GREEN(R.attr.seriesColorGREEN),
+        BLUE(R.attr.seriesColorBLUE),
+        MAGENTA(R.attr.seriesColorMAGENTA),
+        BROWN(R.attr.seriesColorBROWN),
+        WHITE(R.attr.seriesColorWHITE),
+        OLIVE(R.attr.seriesColorOLIVE),
+        GRAY(R.attr.seriesColorGRAY),
+        YELLOW(R.attr.seriesColorYELLOW);
 
         private final int color;
 
@@ -159,7 +159,7 @@ public class GPlotSeries implements Serializable {
             this.color = color;
         }
 
-        public int getHexColor() {
+        public int getColorAttribute() {
             return color;
         }
     }

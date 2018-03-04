@@ -56,7 +56,7 @@ public class AndroidBug {
         try {
             return bugHandler.defaultAction();
         } catch (ArrayIndexOutOfBoundsException | InflateException e) {
-            LOG.error("color state bug encountered", e);
+            LOG.error("colorAttribute state bug encountered", e);
             return bugHandler.bugEncountered();
         }
     }

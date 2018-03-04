@@ -25,4 +25,14 @@
 <resources>
     <attr name="backgroundColorPrimary" format="reference|color" />
     <attr name="backgroundColorSecondary" format="reference|color" />
+
+    <attr name="seriesColorRED" format="reference|color" />
+    <attr name="seriesColorGREEN" format="reference|color" />
+    <attr name="seriesColorBLUE" format="reference|color" />
+    <attr name="seriesColorMAGENTA" format="reference|color" />
+    <attr name="seriesColorBROWN" format="reference|color" />
+    <attr name="seriesColorWHITE" format="reference|color" />
+    <attr name="seriesColorOLIVE" format="reference|color" />
+    <attr name="seriesColorGRAY" format="reference|color" />
+    <attr name="seriesColorYELLOW" format="reference|color" />
 </resources>

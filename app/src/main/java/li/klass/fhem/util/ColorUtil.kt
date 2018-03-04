@@ -31,14 +31,14 @@ object ColorUtil {
     class XYColor(val xy: DoubleArray, val brightness: Int)
 
     /**
-     * Converts a given RGB color to the xy system. See
+     * Converts a given RGB colorAttribute to the xy system. See
      * [](https://github.com/PhilipsHue/PhilipsHueSDK-iOS-OSX/blob/master/ApplicationDesignNotes/RGB%20to%20xy%20Color%20conversion.md) for the algorithm.
      *
      * @param rgb given RGB value.
      * @return array of doubles containing the x and y values. xy is also called the
-     * "color point" (see [
+     * "colorAttribute point" (see [
  * everyhue](http://www.everyhue.com/vanilla/discussion/94/rgb-to-xy-or-hue-sat-values/p1) for details. Note that the returned array has size 3, as the third
-     * element represents the brightness of the color (step 7 within the algorithm).
+     * element represents the brightness of the colorAttribute (step 7 within the algorithm).
      */
     fun rgbToXY(rgb: Int): XYColor {
         // Extract colors normed to 0...1
@@ -60,12 +60,12 @@ object ColorUtil {
         val x = X / (X + Y + Z)
         val y = Y / (X + Y + Z)
 
-        // Return the color point and the brightness.
+        // Return the colorAttribute point and the brightness.
         return XYColor(doubleArrayOf(x, y), (Y * 255).toInt())
     }
 
     /**
-     * Converts a given xy color to the RGB system. See
+     * Converts a given xy colorAttribute to the RGB system. See
      * [](https://github.com/PhilipsHue/PhilipsHueSDK-iOS-OSX/blob/master/ApplicationDesignNotes/RGB%20to%20xy%20Color%20conversion.md) for the algorithm.
      *
      * @param xy         given x and y values.

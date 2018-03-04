@@ -42,7 +42,6 @@ import org.mockito.Mock;
 import java.util.Arrays;
 import java.util.List;
 
-import li.klass.fhem.graph.backend.gplot.GPlotSeries;
 import li.klass.fhem.testutil.MockitoRule;
 import li.klass.fhem.testutil.ValueProvider;
 import li.klass.fhem.update.backend.command.execution.Command;

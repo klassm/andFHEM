@@ -36,7 +36,6 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -48,6 +47,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Range
+import kotlinx.android.synthetic.main.chart.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import li.klass.fhem.AndFHEMApplication
@@ -63,6 +63,7 @@ import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
 import li.klass.fhem.util.DisplayUtil
+import li.klass.fhem.util.resolveColor
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -70,8 +71,8 @@ import javax.inject.Inject
 
 class GraphActivity : AppCompatActivity(), Updateable {
 
-    private var deviceName: String? = null
-    private var svgGraphDefinition: SvgGraphDefinition? = null
+    private lateinit var deviceName: String
+    private lateinit var svgGraphDefinition: SvgGraphDefinition
     private var startDate: DateTime? = null
     private var endDate: DateTime? = null
     private var connectionId: String? = null
@@ -108,7 +109,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
     }
 
     override fun update(refresh: Boolean) {
-        val name = deviceName ?: return
+        val name = deviceName
         async(UI) {
             bg {
                 deviceListService.getDeviceForName(name, connectionId)
@@ -146,9 +147,11 @@ class GraphActivity : AppCompatActivity(), Updateable {
      */
     private fun createChart(device: FhemDevice, graphData: Map<GPlotSeries, MutableList<GraphEntry>>) {
 
+        val activity = this
+        val themeTextColor = theme.resolveColor(android.R.attr.textColorPrimary)
+
         handleDiscreteValues(graphData)
         val lineData = createLineDataFor(graphData)
-
         val title = if (DisplayUtil.getWidthInDP(applicationContext) < 500) {
             device.aliasOrName + "\n\r" +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate)
@@ -158,27 +161,30 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
         supportActionBar!!.title = title
 
-        val lineChart = findViewById<LineChart>(R.id.chart)
+        chart.apply {
+            xAxis.apply {
+                valueFormatter = IAxisValueFormatter { value, _ -> ANDFHEM_DATE_TIME_FORMAT.print(value.toLong()) }
+                labelRotationAngle = 300f
+                val labelCount = DisplayUtil.getWidthInDP(applicationContext) / 150
+                setLabelCount(if (labelCount < 2) 2 else labelCount, true)
+                position = XAxis.XAxisPosition.BOTTOM
+                textColor = themeTextColor
+            }
+            axisLeft.textColor = themeTextColor
+            axisRight.textColor = themeTextColor
+            legend.textColor = themeTextColor
 
-        // must be called before setting chart data!
-        val plotDefinition = svgGraphDefinition!!.plotDefinition
-        setRangeFor(plotDefinition.leftAxis.range, lineChart.axisLeft)
-        setRangeFor(plotDefinition.rightAxis.range, lineChart.axisRight)
-        val xAxis = lineChart.xAxis
-        xAxis.valueFormatter = IAxisValueFormatter { value, _ -> ANDFHEM_DATE_TIME_FORMAT.print(value.toLong()) }
-        xAxis.labelRotationAngle = 300f
-        val labelCount = DisplayUtil.getWidthInDP(applicationContext) / 150
-        xAxis.setLabelCount(if (labelCount < 2) 2 else labelCount, true)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
+            val plotDefinition = svgGraphDefinition.plotDefinition
+            setRangeFor(plotDefinition.leftAxis.range, axisLeft)
+            setRangeFor(plotDefinition.rightAxis.range, axisRight)
 
-        val description = Description()
-        description.text = ""
-        lineChart.description = description
-        lineChart.setNoDataText(getString(R.string.noGraphEntries))
-        lineChart.data = lineData
-        lineChart.marker = ChartMarkerView(this)
+            description = Description().apply { text = "" }
+            data = lineData
+            marker = ChartMarkerView(activity)
+            setNoDataText(getString(R.string.noGraphEntries))
 
-        lineChart.animateX(200)
+            animateX(200)
+        }
     }
 
     private fun setRangeFor(axisRange: Optional<Range<Double>>, axis: com.github.mikephil.charting.components.YAxis) {
@@ -237,35 +243,37 @@ class GraphActivity : AppCompatActivity(), Updateable {
         val series = entry.key
         val yEntries = entry.value.map { Entry(it.date.millis.toFloat(), it.value) }.toList()
 
-        val lineDataSet = LineDataSet(yEntries, series.title)
-        lineDataSet.axisDependency = if (series.axis == GPlotSeries.Axis.LEFT)
-            YAxis.AxisDependency.LEFT
-        else
-            YAxis.AxisDependency.RIGHT
-        lineDataSet.color = series.color.hexColor
-        lineDataSet.setCircleColor(series.color.hexColor)
-        lineDataSet.fillColor = series.color.hexColor
-        lineDataSet.setDrawCircles(false)
-        lineDataSet.setDrawValues(false)
-        lineDataSet.lineWidth = series.lineWidth
+        return LineDataSet(yEntries, series.title).apply {
+            axisDependency = if (series.axis == GPlotSeries.Axis.LEFT)
+                YAxis.AxisDependency.LEFT
+            else
+                YAxis.AxisDependency.RIGHT
 
-        when (series.seriesType) {
-            GPlotSeries.SeriesType.FILL -> lineDataSet.setDrawFilled(true)
-            GPlotSeries.SeriesType.DOT -> lineDataSet.enableDashedLine(3f, 2f, 1f)
-            else -> {
+            val seriesColor = theme.resolveColor(series.color.colorAttribute)
+            color = seriesColor
+            setCircleColor(seriesColor)
+            fillColor = seriesColor
+            setDrawCircles(false)
+            setDrawValues(false)
+            lineWidth = series.lineWidth
+
+            when (series.seriesType) {
+                GPlotSeries.SeriesType.FILL -> setDrawFilled(true)
+                GPlotSeries.SeriesType.DOT -> enableDashedLine(3f, 2f, 1f)
+                else -> {
+                }
+            }
+
+            when (series.lineType) {
+                GPlotSeries.LineType.POINTS -> enableDashedLine(3f, 2f, 1f)
+                else -> {
+                }
+            }
+
+            if (isDiscreteSeries(series)) {
+                mode = LineDataSet.Mode.STEPPED
             }
         }
-
-        when (series.lineType) {
-            GPlotSeries.LineType.POINTS -> lineDataSet.enableDashedLine(3f, 2f, 1f)
-            else -> {
-            }
-        }
-
-        if (isDiscreteSeries(series)) {
-            lineDataSet.mode = LineDataSet.Mode.STEPPED
-        }
-        return lineDataSet
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -320,8 +328,8 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
     companion object {
 
-        private val REQUEST_TIME_CHANGE = 1
-        private val DIALOG_EXECUTING = 2
+        private const val REQUEST_TIME_CHANGE = 1
+        private const val DIALOG_EXECUTING = 2
 
         private val DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd")
 

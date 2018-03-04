@@ -54,8 +54,8 @@ public class ColorPicker extends View {
     /**
      * Customizable display parameters (in percents)
      */
-    private static final int paramOuterPadding = 2; // outer padding of the whole color picker view
-    private static final int paramInnerPadding = 5; // distance between value slider wheel and inner color wheel
+    private static final int paramOuterPadding = 2; // outer padding of the whole colorAttribute picker view
+    private static final int paramInnerPadding = 5; // distance between value slider wheel and inner colorAttribute wheel
     private static final int paramValueSliderWidth = 10; // width of the value slider
     private static final int paramArrowPointerSize = 4; // size of the arrow pointer; set to 0 to hide the pointer
 
@@ -87,7 +87,7 @@ public class ColorPicker extends View {
     private Matrix gradientRotationMatrix;
 
     /**
-     * Currently selected color
+     * Currently selected colorAttribute
      */
     private float[] colorHSV = new float[]{0f, 0f, 1f};
 
@@ -158,11 +158,11 @@ public class ColorPicker extends View {
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
 
-        // drawing color wheel
+        // drawing colorAttribute wheel
 
         canvas.drawBitmap(colorWheelBitmap, centerX - colorWheelRadius, centerY - colorWheelRadius, null);
 
-        // drawing color view
+        // drawing colorAttribute view
 
         colorViewPaint.setColor(Color.HSVToColor(colorHSV));
         canvas.drawPath(colorViewPath, colorViewPaint);
@@ -177,7 +177,7 @@ public class ColorPicker extends View {
 
         canvas.drawPath(valueSliderPath, valueSliderPaint);
 
-        // drawing color wheel pointer
+        // drawing colorAttribute wheel pointer
 
         float hueAngle = (float) Math.toRadians(colorHSV[0]);
         int colorPointX = (int) (-Math.cos(hueAngle) * colorHSV[1] * colorWheelRadius) + centerX;

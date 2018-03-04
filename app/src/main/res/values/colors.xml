@@ -63,4 +63,15 @@
 
     <color name="backgroundColorPrimary">@color/whitegrey</color>
     <color name="backgroundColorSecondary">@android:color/white</color>
+
+
+    <color name="seriesColorRED">#FFFF0000</color>
+    <color name="seriesColorGREEN">#FF00b400</color>
+    <color name="seriesColorBLUE">#FF0000FF</color>
+    <color name="seriesColorMAGENTA">#FFFF00FF</color>
+    <color name="seriesColorBROWN">#FFA52A2A</color>
+    <color name="seriesColorWHITE">@android:color/black</color>
+    <color name="seriesColorOLIVE">#FF556B2F</color>
+    <color name="seriesColorGRAY">#FF5A5A5A</color>
+    <color name="seriesColorYELLOW">#FFFFFF00</color>
 </resources>

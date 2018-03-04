@@ -31,4 +31,6 @@
 
     <color name="backgroundColorPrimary">@android:color/black</color>
     <color name="backgroundColorSecondary">#FF242424</color>
+
+    <color name="seriesColorWHITE">@android:color/white</color>
 </resources>
