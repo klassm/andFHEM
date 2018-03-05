@@ -35,11 +35,11 @@ class AvailableTargetStatesSwitchAction(
         private val stateUiService: StateUiService
 ) : DeviceDetailViewButtonAction(R.string.switchSetOptions) {
 
-    override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String) {
+    override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String?) {
         showSwitchOptionsMenu(context, device, connectionId)
     }
 
-    private fun showSwitchOptionsMenu(context: Context, device: FhemDevice, connectionId: String) {
+    private fun showSwitchOptionsMenu(context: Context, device: FhemDevice, connectionId: String?) {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(
                 context, device, StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
         )
