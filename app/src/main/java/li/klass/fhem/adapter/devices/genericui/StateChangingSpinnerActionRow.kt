@@ -38,7 +38,7 @@ class StateChangingSpinnerActionRow(context: Context,
                                     private val commandAttribute: String
 ) : SpinnerActionRow(context, description, prompt, spinnerValues, selectedValue) {
 
-    override fun onItemSelected(context: Context, device: XmlListDevice, connectionId: String, item: String) {
+    override fun onItemSelected(context: Context, device: XmlListDevice, connectionId: String?, item: String) {
 
         stateUiService.setSubState(device, commandAttribute, item, connectionId, context)
     }
