@@ -1,1 +1,1 @@
-TODO
+* Handle crash when editing Telnet connections
