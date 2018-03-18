@@ -56,7 +56,7 @@ class TelnetStrategy(context: Context) : ConnectionStrategy(context) {
     override fun fillView(view: View, fhemServerSpec: FHEMServerSpec) {
         view.connectionName.setText(fhemServerSpec.name)
         view.ip.setText(fhemServerSpec.ip)
-        view.port.setText(fhemServerSpec.port)
+        view.port.setText(fhemServerSpec.port.toString())
         view.password.setText(fhemServerSpec.password)
     }
 }
