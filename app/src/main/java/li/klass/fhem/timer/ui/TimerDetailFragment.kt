@@ -58,6 +58,7 @@ import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
 import li.klass.fhem.widget.TimePickerWithSecondsDialog
+import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.StringUtils.isBlank
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.LocalTime
@@ -226,13 +227,14 @@ class TimerDetailFragment : BaseFragment() {
         val safeContext = context ?: return
 
         val switchTime = getSwitchTime(view)
-        if (targetDevice == null || isBlank(getTargetState(view)) || switchTime == null) {
+        val timerDeviceName = getTimerName(view)
+
+        if (targetDevice == null || isBlank(getTargetState(view)) || switchTime == null || timerDeviceName == null) {
             activity?.sendBroadcast(Intent(SHOW_TOAST)
                     .putExtra(STRING_ID, R.string.incompleteConfigurationError))
             return
         }
 
-        val timerDeviceName = getTimerName(view)
         if (!isModify) {
             if (timerDeviceName.contains(" ")) {
                 DialogUtil.showAlertDialog(safeContext, R.string.error, R.string.error_timer_name_spaces)
@@ -336,7 +338,7 @@ class TimerDetailFragment : BaseFragment() {
         view.timerNameInput.setText(timerDeviceName)
     }
 
-    private fun getTimerName(view: View): String = view.timerNameInput.text.toString()
+    private fun getTimerName(view: View): String? = StringUtils.trimToNull(view.timerNameInput.text.toString())
 
     private fun setTargetState(targetState: String, view: View) {
         view.targetState.setText(targetState)

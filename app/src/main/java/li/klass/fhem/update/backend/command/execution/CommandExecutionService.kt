@@ -73,9 +73,10 @@ class CommandExecutionService @Inject constructor(
     fun executeSync(command: Command): String? {
         val resultListener = SyncResultListener()
         executeSafely(command, 0, resultListener)
-        return resultListener.getResult()
+        val result = resultListener.getResult()
+        LOG.info("executeSync({}) - result is '{}'", command.command, result)
+        return result
     }
-
 
     fun executeSafely(command: Command, resultListener: ResultListener) {
         executeSafely(command, 0, resultListener)
@@ -217,8 +218,7 @@ class CommandExecutionService @Inject constructor(
 
     companion object {
 
-        val DEFAULT_NUMBER_OF_RETRIES = 3
-        private val IMAGE_CACHE_SIZE = 20
+        const val DEFAULT_NUMBER_OF_RETRIES = 3
 
         private val LOG = LoggerFactory.getLogger(CommandExecutionService::class.java)
         private val DO_NOTHING = object : SuccessfulResultListener() {
