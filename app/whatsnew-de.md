@@ -1,1 +1,1 @@
-TODO
+* Behandle Absturz auf <= Android 4.4

@@ -29,7 +29,7 @@
             <corners android:radius="3dp" />
             <solid android:color="@color/focusedColor" />
             <stroke
-                android:color="@color/lightGrey"
+                android:color="@color/darkerGrey"
                 android:width="1dp" />
         </shape>
     </item>

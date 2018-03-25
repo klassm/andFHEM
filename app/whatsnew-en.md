@@ -1,1 +1,1 @@
-TODO
+* Handle crash on <= Android 4.4
