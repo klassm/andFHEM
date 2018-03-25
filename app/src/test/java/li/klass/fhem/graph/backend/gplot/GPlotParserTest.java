@@ -353,39 +353,6 @@ public class GPlotParserTest {
         );
     }
 
-    @DataProvider
-    public static Object[][] allGplotFilesProvider() throws Exception {
-        File resourceDirectory = new File(GPlotParser.class.getResource(".").toURI());
-        File[] files = resourceDirectory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return filename != null && filename.endsWith(".gplot");
-            }
-        });
-
-        Object[][] out = new Object[files.length][];
-        for (int i = 0; i < files.length; i++) {
-            out[i] = new Object[]{files[i]};
-        }
-
-        return out;
-    }
-
-    @Test
-    @UseDataProvider("allGplotFilesProvider")
-    public void should_find_at_least_one_series_in_GPlot_Files(File file) throws Exception {
-        // given
-        String content = Resources.toString(file.toURI().toURL(), Charsets.UTF_8);
-
-        // when
-        GPlotDefinition definition = gPlotParser.parse(content);
-
-        // then
-        boolean containsSeries = !definition.getLeftAxis().getSeries().isEmpty();
-        containsSeries = !definition.getRightAxis().getSeries().isEmpty() | containsSeries;
-        assertThat(containsSeries).isTrue();
-    }
-
     @Test
     public void should_parse_user_specified_power8ttt_gplot() throws Exception {
         // given
