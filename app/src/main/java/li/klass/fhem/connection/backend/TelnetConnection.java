@@ -25,7 +25,6 @@
 package li.klass.fhem.connection.backend;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import org.apache.commons.net.telnet.TelnetClient;
 import org.slf4j.Logger;
@@ -58,7 +57,7 @@ public class TelnetConnection extends FHEMConnection {
         LOG.info("executeTask command {}", command);
 
         final TelnetClient telnetClient = new TelnetClient();
-        telnetClient.setConnectTimeout(getConnectionTimeoutMilliSeconds(context));
+        telnetClient.setConnectTimeout(getConnectionTimeoutMilliSeconds());
 
         BufferedOutputStream bufferedOutputStream = null;
         PrintStream printStream = null;
@@ -194,9 +193,4 @@ public class TelnetConnection extends FHEMConnection {
         return buffer.toString();
     }
 
-    @Override
-    public RequestResult<Bitmap> requestBitmap(String relativePath, Context context) {
-        LOG.debug("get image from relative path '{}'", relativePath);
-        return new RequestResult<>(null, null);
-    }
 }

@@ -47,6 +47,7 @@ buildscript {
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
         classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
         classpath 'io.fabric.tools:gradle:1.25.1'
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
     }
 }
 
@@ -68,7 +69,7 @@ repositories {
 
 ext {
     supportLibVersion = '27.1.0'
-    firebaseVersion = '11.8.0'
+    firebaseVersion = '12.0.0'
     anko_version = '0.10.1'
     architectureComponentsVersion = '1.0.0'
 }
@@ -94,6 +95,7 @@ dependencies {
     compile "com.google.firebase:firebase-appindexing:${firebaseVersion}"
     compile "com.google.firebase:firebase-messaging:${firebaseVersion}"
     compile "com.google.firebase:firebase-ads:${firebaseVersion}"
+    compile "com.google.firebase:firebase-perf:${firebaseVersion}"
     compile 'commons-net:commons-net:3.3'
     compile 'commons-codec:commons-codec:1.11'
     compile 'com.google.code.gson:gson:2.8.1'
@@ -188,3 +190,4 @@ apply from: 'build-includes/unmock.gradle'
 apply from: 'build-includes/javadoc.gradle'
 apply from: 'build-includes/test-resources.gradle'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'

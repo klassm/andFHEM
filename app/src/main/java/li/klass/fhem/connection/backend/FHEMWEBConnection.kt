@@ -25,8 +25,6 @@
 package li.klass.fhem.connection.backend
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.TrafficStats
 import com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport
 import com.google.api.client.http.GenericUrl
@@ -180,18 +178,6 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     private fun retryRequest(urlSuffix: String, context: Context): RequestResult<InputStream> {
         LOG.info("retrying request for alternate URL")
         return executeRequest(serverSpec.alternateUrl!!, urlSuffix, true, context)
-    }
-
-    override fun requestBitmap(relativePath: String, context: Context): RequestResult<Bitmap> {
-        val response = executeRequest(relativePath, context)
-        if (response.error != null) {
-            return RequestResult(response.error)
-        }
-        try {
-            return RequestResult(BitmapFactory.decodeStream(response.content))
-        } finally {
-            close(response.content)
-        }
     }
 
     private fun initSslContext(context: Context) {

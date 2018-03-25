@@ -40,8 +40,6 @@ public abstract class FHEMConnection {
 
     public abstract RequestResult<String> executeCommand(String command, Context context);
 
-    public abstract RequestResult<Bitmap> requestBitmap(String relativePath, Context context);
-
     public FHEMConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
         this.serverSpec = fhemServerSpec;
@@ -58,7 +56,7 @@ public abstract class FHEMConnection {
         ErrorHolder.setError(e, text);
     }
 
-    protected int getConnectionTimeoutMilliSeconds(Context context) {
+    int getConnectionTimeoutMilliSeconds() {
         return 1000 * applicationProperties.getIntegerSharedPreference(
                 SettingsKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
         );

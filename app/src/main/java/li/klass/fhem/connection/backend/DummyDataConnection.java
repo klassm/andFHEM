@@ -25,7 +25,6 @@
 package li.klass.fhem.connection.backend;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -40,7 +39,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.DateFormatUtil;
 
 import static li.klass.fhem.util.DateFormatUtil.*;
 
@@ -108,9 +106,4 @@ public class DummyDataConnection extends FHEMConnection {
         return new RequestResult<>(content);
     }
 
-    @Override
-    public RequestResult<Bitmap> requestBitmap(String relativePath, Context context) {
-        LOG.error("requestBitmap() - get image from {}", relativePath);
-        return new RequestResult<>(null, null);
-    }
 }

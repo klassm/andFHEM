@@ -26,6 +26,7 @@ package li.klass.fhem.update.backend.device.configuration;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
@@ -45,6 +46,7 @@ public class DeviceDescMapping {
         try {
             mapping = new JSONObject(Resources.toString(Resources.getResource(DeviceDescMapping.class, "/deviceDescMapping.json"), Charsets.UTF_8));
         } catch (Exception e) {
+            Crashlytics.logException(e);
             throw new RuntimeException(e);
         }
     }

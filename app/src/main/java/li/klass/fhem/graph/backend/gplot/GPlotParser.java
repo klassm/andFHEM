@@ -26,6 +26,7 @@ package li.klass.fhem.graph.backend.gplot;
 
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -97,6 +98,8 @@ public class GPlotParser {
             return Optional.of(parse(content));
         } catch (Exception e) {
             LOGGER.warn("parseSafe() - cannot parse: \r\n" + content, e);
+            Crashlytics.setString("content", content);
+            Crashlytics.logException(e);
             return Optional.absent();
         }
     }
