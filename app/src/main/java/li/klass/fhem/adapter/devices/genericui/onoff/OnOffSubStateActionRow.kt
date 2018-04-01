@@ -34,7 +34,7 @@ class OnOffSubStateActionRow(layoutId: Int, private val subState: String, connec
 
     override fun isOn(device: FhemDevice, context: Context): Boolean {
         val offStateName = getOffStateName(device, context)
-        return !offStateName.equals(device.xmlListDevice.getState(subState, true).or("off"), ignoreCase = true)
+        return !offStateName.equals(device.xmlListDevice.getState(subState, true) ?: "off", ignoreCase = true)
     }
 
     override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String?, targetState: String) {

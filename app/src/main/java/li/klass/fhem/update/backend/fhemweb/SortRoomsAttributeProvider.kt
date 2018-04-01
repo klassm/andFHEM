@@ -30,8 +30,7 @@ import javax.inject.Inject
 
 class SortRoomsAttributeProvider @Inject constructor() {
     fun provideFor(device: FhemDevice): List<String> {
-        return device.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.sortRooms)
-                .or("")
+        return (device.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.sortRooms) ?: "")
                 .split(sortRoomsDelimiter)
                 .filter { it.isNotBlank() }
     }

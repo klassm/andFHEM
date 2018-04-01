@@ -45,7 +45,7 @@ class StateChangingColorPickerRow(private val stateUiService: StateUiService,
 
     fun createRow(context: Context, inflater: LayoutInflater, viewGroup: ViewGroup): TableRow {
         val view = inflater.inflate(R.layout.device_detail_colorpicker_row, viewGroup, false)
-        val rgb = xmlListDevice.getState(rgbSetListEntry.key, ignoreCase = true).get()
+        val rgb = xmlListDevice.getState(rgbSetListEntry.key, ignoreCase = true)!!
 
         view.color_value.backgroundColor = ColorUtil.fromRgbString(rgb) or -0x1000000
         view.description.text = ""

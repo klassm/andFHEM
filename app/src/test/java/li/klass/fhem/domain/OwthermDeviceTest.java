@@ -37,8 +37,8 @@ public class OwthermDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         FhemDevice device = getDefaultDevice();
 
-        assertThat(device.getXmlListDevice().getState("temperature", true).get()).contains("13.625 (°C)");
-        assertThat(device.getXmlListDevice().getInternal("PRESENT").get()).contains("1");
+        assertThat(device.getXmlListDevice().getState("temperature", true)).isEqualTo("13.625 (°C)");
+        assertThat(device.getXmlListDevice().getInternal("PRESENT")).isEqualTo("1");
     }
 
     @Override

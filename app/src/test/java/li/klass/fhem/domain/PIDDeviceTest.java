@@ -31,7 +31,6 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.guava.api.Assertions.assertThat;
 
 public class PIDDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -43,9 +42,9 @@ public class PIDDeviceTest extends DeviceXMLParsingBase {
 
         XmlListDevice xmlListDevice = device.getXmlListDevice();
         assertThat(device.getState()).isEqualTo("16.8 (delta -0.800000000000001)");
-        assertThat(xmlListDevice.getState("delta", true)).contains("-0.800000000000001");
-        assertThat(xmlListDevice.getState("desired", true)).contains("16.0 (°C)");
-        assertThat(xmlListDevice.getState("actuation", true)).contains("0 (%)");
+        assertThat(xmlListDevice.getState("delta", true)).isEqualTo("-0.800000000000001");
+        assertThat(xmlListDevice.getState("desired", true)).isEqualTo("16.0 (°C)");
+        assertThat(xmlListDevice.getState("actuation", true)).isEqualTo("0 (%)");
 
         assertThat(device.getSetList().getEntries()).isNotEmpty();
     }
@@ -56,10 +55,10 @@ public class PIDDeviceTest extends DeviceXMLParsingBase {
         assertThat(device).isNotNull();
 
         XmlListDevice xmlListDevice = device.getXmlListDevice();
-        assertThat(xmlListDevice.getState("delta", true)).contains("0.129999999999999");
-        assertThat(xmlListDevice.getState("desired", true)).contains("21.5 (°C)");
-        assertThat(xmlListDevice.getState("actuation", true)).contains("27 (%)");
-        assertThat(xmlListDevice.getState("measured", true)).contains("21.37 (°C)");
+        assertThat(xmlListDevice.getState("delta", true)).isEqualTo("0.129999999999999");
+        assertThat(xmlListDevice.getState("desired", true)).isEqualTo("21.5 (°C)");
+        assertThat(xmlListDevice.getState("actuation", true)).isEqualTo("27 (%)");
+        assertThat(xmlListDevice.getState("measured", true)).isEqualTo("21.37 (°C)");
     }
 
     @Override

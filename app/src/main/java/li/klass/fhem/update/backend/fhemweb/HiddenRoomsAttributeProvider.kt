@@ -30,8 +30,7 @@ import javax.inject.Inject
 
 class HiddenRoomsAttributeProvider @Inject constructor() {
     fun provideFor(fhemWebDevice: FhemDevice): Set<String> {
-        return fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenRoom)
-                .or("")
+        return (fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenRoom) ?: "")
                 .split(",")
                 .filter { it.isNotBlank() }
                 .toSet()

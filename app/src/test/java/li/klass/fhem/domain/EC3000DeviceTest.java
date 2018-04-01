@@ -31,7 +31,6 @@ import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.guava.api.Assertions.assertThat;
 
 public class EC3000DeviceTest extends DeviceXMLParsingBase {
 
@@ -41,9 +40,9 @@ public class EC3000DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState()).isEqualTo("68 (W)");
         XmlListDevice xmlListDevice = device.getXmlListDevice();
-        assertThat(xmlListDevice.getState("consumption", true)).contains("13.782 (kWh)");
-        assertThat(xmlListDevice.getState("power", true)).contains("68 (W)");
-        assertThat(xmlListDevice.getState("Euro", true)).contains("3.2929 (€)");
+        assertThat(xmlListDevice.getState("consumption", true)).isEqualTo("13.782 (kWh)");
+        assertThat(xmlListDevice.getState("power", true)).isEqualTo("68 (W)");
+        assertThat(xmlListDevice.getState("Euro", true)).isEqualTo("3.2929 (€)");
     }
 
     @Override

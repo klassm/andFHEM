@@ -128,7 +128,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         val states = configuration.states
         return states
                 .filter { it.markers.contains(annotationCls.simpleName) }
-                .map { device.xmlListDevice.stateValueFor(it.key).orNull() }
+                .map { device.xmlListDevice.stateValueFor(it.key) }
                 .firstOrNull()
     }
 

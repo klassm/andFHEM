@@ -38,7 +38,7 @@ public class WifiLightDeviceTest extends DeviceXMLParsingBase {
         FhemDevice device = getDeviceFor("WZ_Stehlampen");
 
         assertThat(device.getState()).isEqualTo("on");
-        assertThat(device.getXmlListDevice().getState("rgb", true).get()).contains("00FFFF");
+        assertThat(device.getXmlListDevice().getState("rgb", true)).isEqualTo("00FFFF");
     }
 
     @Override

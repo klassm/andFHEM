@@ -62,7 +62,7 @@ import static com.google.common.collect.FluentIterable.from;
 public class AvailableTargetStatesDialogUtil {
 
     private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
-            new RGBTargetStateHandler<>(),
+            new RGBTargetStateHandler(),
             new GroupSetListTargetStateHandler<>(),
             new SliderSetListTargetStateHandler(),
             new TimeTargetStateHandler<>(),

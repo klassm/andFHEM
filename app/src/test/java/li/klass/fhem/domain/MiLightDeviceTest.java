@@ -30,7 +30,6 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.guava.api.Assertions.assertThat;
 
 public class MiLightDeviceTest extends DeviceXMLParsingBase {
 
@@ -38,7 +37,7 @@ public class MiLightDeviceTest extends DeviceXMLParsingBase {
     public void should_read_device() {
         FhemDevice device = getDeviceFor("LEDBulb1");
         assertThat(device).isNotNull();
-        assertThat(device.getXmlListDevice().getState("RGB", true)).contains("FFFFFF");
+        assertThat(device.getXmlListDevice().getState("RGB", true)).isEqualTo("FFFFFF");
     }
 
     @Override

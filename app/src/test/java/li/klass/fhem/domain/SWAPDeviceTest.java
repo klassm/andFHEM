@@ -29,14 +29,14 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.FhemDevice;
 
-import static org.assertj.guava.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class SWAPDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSwapDeviceWithExtendedXmllistTagAndRGB() {
         FhemDevice device = getDeviceFor("SWAP_05");
-        assertThat(device.getXmlListDevice().getState("rgb", true)).contains("FFFF00F0");
+        assertThat(device.getXmlListDevice().getState("rgb", true)).isEqualTo("FFFF00F0");
     }
 
     @Override

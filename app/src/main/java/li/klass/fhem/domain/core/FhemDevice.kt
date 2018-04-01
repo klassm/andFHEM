@@ -39,9 +39,9 @@ import java.util.*
 
 class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
 
-    val eventMap: EventMap by lazy { EventMap(EventMapParser.parse(xmlListDevice.getAttribute("eventMap").or(""))) }
-    val setList: SetList by lazy { SetList.parse(xmlListDevice.getHeader("sets").or("")) }
-    val devStateIcons: DevStateIcons by lazy { DevStateIcons.parse(xmlListDevice.getAttribute("devStateIcon").orNull()) }
+    val eventMap: EventMap by lazy { EventMap(EventMapParser.parse(xmlListDevice.getAttribute("eventMap") ?: "")) }
+    val setList: SetList by lazy { SetList.parse(xmlListDevice.getHeader("sets") ?: "") }
+    val devStateIcons: DevStateIcons by lazy { DevStateIcons.parse(xmlListDevice.getAttribute("devStateIcon")) }
 
     val aliasOrName: String
         get() = andFHEMAlias ?: alias ?: name
@@ -62,7 +62,7 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
         get() {
             val xmlListDevice = xmlListDevice
             val state = xmlListDevice.getInternal("STATE")
-            return state.or(xmlListDevice.getState("state", false)).or("")
+            return state ?: (xmlListDevice.getState("state", false)) ?: ""
         }
 
     val internalState: String
@@ -72,10 +72,10 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
         }
 
     val alias: String?
-        get() = StringUtils.trimToNull(xmlListDevice.getAttribute("alias").orNull())
+        get() = StringUtils.trimToNull(xmlListDevice.getAttribute("alias"))
 
     private val andFHEMAlias: String?
-        get() = StringUtils.trimToNull(xmlListDevice.getAttribute("andFHEM_alias").orNull())
+        get() = StringUtils.trimToNull(xmlListDevice.getAttribute("andFHEM_alias"))
 
     /**
      * Generate an array of available target states, but respect any set event maps.
@@ -94,11 +94,11 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
         get() = xmlListDevice.webCmd
 
     val widgetName: String
-        get() = xmlListDevice.getAttribute("widget_name").or(aliasOrName)
+        get() = xmlListDevice.getAttribute("widget_name") ?: aliasOrName
 
     val internalDeviceGroupOrGroupAttributes: List<String>
         get() {
-            return xmlListDevice.getAttribute("group").or("").split(",")
+            return (xmlListDevice.getAttribute("group") ?: "").split(",")
                     .filter { it.isNotBlank() }
                     .toList()
         }
@@ -145,8 +145,8 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
 
     companion object {
         val BY_NAME: Comparator<FhemDevice> = Comparator { o1, o2 ->
-            val comparableAttribute = o1.xmlListDevice.getAttribute("sortby").or(o1.aliasOrName)
-            val otherComparableAttribute = o2.xmlListDevice.getAttribute("sortby").or(o2.aliasOrName)
+            val comparableAttribute = o1.xmlListDevice.getAttribute("sortby") ?: o1.aliasOrName
+            val otherComparableAttribute = o2.xmlListDevice.getAttribute("sortby") ?: o2.aliasOrName
 
             comparableAttribute.compareTo(otherComparableAttribute)
         }

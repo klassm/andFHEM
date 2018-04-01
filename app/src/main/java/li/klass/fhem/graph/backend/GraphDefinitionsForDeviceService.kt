@@ -32,7 +32,6 @@ import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.slf4j.LoggerFactory
-import java.util.*
 import javax.inject.Inject
 
 class GraphDefinitionsForDeviceService @Inject constructor(
@@ -63,27 +62,30 @@ class GraphDefinitionsForDeviceService @Inject constructor(
             }
 
     private fun toGraphDefinition(allDevices: ImmutableSet<XmlListDevice>, currentDevice: XmlListDevice): SvgGraphDefinition {
-        val logDeviceName = currentDevice.getInternal("LOGDEVICE").get()
-        val gplotFileName = currentDevice.getInternal("GPLOTFILE").get()
+        val logDeviceName = currentDevice.getInternal("LOGDEVICE")!!
+        val gplotFileName = currentDevice.getInternal("GPLOTFILE")!!
         val gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)).get()
 
-        val labels = Arrays.asList(*currentDevice.getAttribute("label")
-                .or("").replace("\"".toRegex(), "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
-        val title = currentDevice.getAttribute("title").or("")
+        val labels = (currentDevice.getAttribute("label") ?: "")
+                .replace("\"".toRegex(), "")
+                .split(",".toRegex())
+                .dropLastWhile { it.isEmpty() }
+                .toList()
+        val title = currentDevice.getAttribute("title") ?: ""
         val plotfunction = plotfunctionListFor(currentDevice)
 
         return SvgGraphDefinition(currentDevice.name, gPlotDefinition, logDeviceName, labels, title, plotfunction)
     }
 
     private fun plotfunctionListFor(device: XmlListDevice): List<String> {
-        return device.getAttribute("plotfunction").or("").trim()
+        return (device.getAttribute("plotfunction") ?: "").trim()
                 .split(" ".toRegex())
                 .filter { it.isNotEmpty() }
     }
 
     private fun gplotDefinitionExists(allDevices: ImmutableSet<XmlListDevice>, currentDevice: XmlListDevice): Boolean {
         val gplotFileName = currentDevice.getInternal("GPLOTFILE")
-        return gplotFileName.isPresent && gPlotHolder.definitionFor(gplotFileName.get(), isConfigDb(allDevices)).isPresent
+        return gplotFileName != null && gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)).isPresent
     }
 
     private fun isSvgForDevice(allDevices: ImmutableSet<XmlListDevice>, inputDevice: XmlListDevice, svgDevice: XmlListDevice) =
@@ -99,19 +101,19 @@ class GraphDefinitionsForDeviceService @Inject constructor(
 
     private fun isRelevantViaLogDevice(svgDevice: XmlListDevice, allDevices: ImmutableSet<XmlListDevice>, inputDevice: XmlListDevice): Boolean {
         val logDeviceName = svgDevice.getInternal("LOGDEVICE")
-        val logDevice = allDevices.firstOrNull { it.name == logDeviceName.or("") }
+        val logDevice = allDevices.firstOrNull { it.name == logDeviceName ?: "" }
 
         if (logDevice == null || logDevice.type != "FileLog") {
             return false
         }
 
         val logDeviceRegexp = logDevice.getInternal("REGEXP")
-        return logDeviceRegexp.isPresent && ConcernsDevicePredicate.forPattern(logDeviceRegexp.get()).apply(inputDevice)
+        return logDeviceRegexp != null && ConcernsDevicePredicate.forPattern(logDeviceRegexp).apply(inputDevice)
     }
 
     private fun isConfigDb(allDevices: ImmutableSet<XmlListDevice>): Boolean {
         return allDevices
-                .any { it != null && "configDB" == it.getAttribute("configfile").orNull() }
+                .any { it != null && "configDB" == it.getAttribute("configfile") }
     }
 
     companion object {

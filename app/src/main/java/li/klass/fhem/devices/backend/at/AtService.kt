@@ -77,14 +77,14 @@ class AtService @Inject constructor(
     }
 
     private fun toTimerDevice(device: FhemDevice): TimerDevice? {
-        val definition = device.xmlListDevice.getInternal("DEF").orNull() ?: return null
+        val definition = device.xmlListDevice.getInternal("DEF") ?: return null
         val parsedDefinition = atDefinitionParser.parse(definition) ?: return null
 
         return TimerDevice(
                 name = device.name,
-                isActive = device.xmlListDevice.getAttribute("disable").or("0") == "0",
+                isActive = (device.xmlListDevice.getAttribute("disable") ?: "0") == "0",
                 definition = parsedDefinition,
-                next = device.xmlListDevice.getInternal("TIMESPEC").or("??:??:??")
+                next = device.xmlListDevice.getInternal("TIMESPEC") ?: ("??:??:??")
         )
     }
 

@@ -45,7 +45,7 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
         val xmlListDevice = device.xmlListDevice
 
-        val warnings = xmlListDevice.getState("warnings", false).orNull()
+        val warnings = xmlListDevice.getState("warnings", false)
         val temperature = xmlListDevice.getFirstStateOf(TEMPERATURE_STATES)
         val desiredTemp = xmlListDevice.getFirstStateOf(DESIRED_TEMPERATURE_STATES)
 
@@ -56,10 +56,10 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
         }
 
         val target = context.getString(R.string.target)
-        setTextViewOrHide(view, R.id.temperature, temperature.or("??"))
+        setTextViewOrHide(view, R.id.temperature, (temperature ?: ""))
 
-        if (desiredTemp.isPresent) {
-            val text = target + ": " + desiredTemp.or("??")
+        if (desiredTemp != null) {
+            val text = target + ": " + desiredTemp
             setTextViewOrHide(view, R.id.additional, text)
         } else {
             view.setViewVisibility(R.id.additional, View.GONE)

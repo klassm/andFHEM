@@ -37,7 +37,7 @@ import javax.inject.Inject
 class FcmDecryptor @Inject constructor() {
 
     fun decrypt(data: Map<String, String>, gcmDevice: FhemDevice): Map<String, String> {
-        return gcmDevice.xmlListDevice.getAttribute("cryptKey").orNull()
+        return gcmDevice.xmlListDevice.getAttribute("cryptKey")
                 ?.let { decrypt(data, it) } ?: data
     }
 

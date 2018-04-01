@@ -31,7 +31,7 @@ import javax.inject.Inject
 class ColumnAttributeProvider @Inject constructor() {
     fun getFor(fhemwebDevice: FhemDevice, room: String): List<String> {
 
-        val attribute = fhemwebDevice.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.column).or("")
+        val attribute = fhemwebDevice.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.column) ?: ""
         return attribute.split(" ")
                 .map { handleRoom(it) }
                 .filter { it != null }

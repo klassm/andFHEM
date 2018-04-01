@@ -44,8 +44,8 @@ constructor(deviceGroupProviders: DeviceGroupProviders,
     fun functionalityFor(device: FhemDevice, context: Context): String {
         val xmlListDevice = device.xmlListDevice
         val group = xmlListDevice.getAttribute("group")
-        if (group.isPresent) {
-            return group.get()
+        if (group != null) {
+            return group
         }
 
         val providerGroup = providerMap[xmlListDevice.type]

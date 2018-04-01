@@ -32,7 +32,6 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.guava.api.Assertions.assertThat;
 
 public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
@@ -42,7 +41,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         assertThat(device.getName()).isEqualTo("rgb");
-        assertThat(device.getXmlListDevice().getState("rgb", true)).contains("FFFF00");
+        assertThat(device.getXmlListDevice().getState("rgb", true)).isEqualTo("FFFF00");
     }
 
     @Test
@@ -50,7 +49,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
         FhemDevice device = getDeviceFor("Bild");
 
         assertThat(device).isNotNull();
-        assertThat(device.getXmlListDevice().getState("rgb", true)).isAbsent();
+        assertThat(device.getXmlListDevice().getState("rgb", true)).isNull();
     }
 
     @Test

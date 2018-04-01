@@ -34,7 +34,7 @@ import javax.inject.Inject
 class WeatherService @Inject constructor() {
 
     fun iconFor(device: FhemDevice): String? =
-            device.xmlListDevice.stateValueFor("icon").orNull()
+            device.xmlListDevice.stateValueFor("icon")
                     ?.let { iconForName(it) }
 
 

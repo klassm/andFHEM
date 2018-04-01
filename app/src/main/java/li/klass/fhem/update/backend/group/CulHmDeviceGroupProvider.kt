@@ -35,12 +35,9 @@ class CulHmDeviceGroupProvider @Inject
 constructor() : DeviceGroupProvider("CUL_HM") {
 
     override fun groupFor(xmlListDevice: XmlListDevice, context: Context): String? {
-        val subTypeAttribute = xmlListDevice.getAttribute("subType")
-        if (!subTypeAttribute.isPresent) {
-            return null
-        }
+        val subTypeAttribute = xmlListDevice.getAttribute("subType") ?: return null
 
-        return CulHmSubType.subTypeFor(subTypeAttribute.get())
+        return CulHmSubType.subTypeFor(subTypeAttribute)
                 ?.functionality?.getCaptionText(context)
     }
 }

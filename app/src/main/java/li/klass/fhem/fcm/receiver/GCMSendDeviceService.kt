@@ -72,7 +72,7 @@ constructor(val genericDeviceService: GenericDeviceService,
             getRegistrationIdsOf(device).contains(getRegistrationId())
 
     private fun getRegistrationIdsOf(device: XmlListDevice): List<String> =
-            device.getAttribute("regIds").or("")
+            (device.getAttribute("regIds") ?: "")
                     .split("|")
 
     companion object {

@@ -78,7 +78,7 @@ class FhemWebDeviceInRoomDeviceListSupplier
         val port = connectionService.getPortOfSelectedConnection()
         return devices.firstOrNull {
             it.xmlListDevice.let {
-                it.type == "FHEMWEB" && it.attributeValueFor("port").orNull() == port.toString()
+                it.type == "FHEMWEB" && it.attributeValueFor("port") == port.toString()
             }
         }
     }

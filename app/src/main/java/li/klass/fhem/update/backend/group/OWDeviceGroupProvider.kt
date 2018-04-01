@@ -32,7 +32,7 @@ import javax.inject.Inject
 class OWDeviceGroupProvider @Inject constructor() : DeviceGroupProvider("OWDevice") {
     override fun groupFor(xmlListDevice: XmlListDevice, context: Context): String? {
         return when {
-            xmlListDevice.getInternal("STATE").or("").contains("°C") -> TEMPERATURE
+            (xmlListDevice.getInternal("STATE") ?: "").contains("°C") -> TEMPERATURE
             else -> null
         }?.getCaptionText(context)
     }

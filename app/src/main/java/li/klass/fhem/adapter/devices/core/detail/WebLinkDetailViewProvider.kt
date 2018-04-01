@@ -38,6 +38,6 @@ class WebLinkDetailViewProvider @Inject constructor() : DetailViewProvider {
         }
         return Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW)
-                .putExtra(BundleExtraKeys.LOAD_URL, device.xmlListDevice.getInternal("LINK").orNull())
+                .putExtra(BundleExtraKeys.LOAD_URL, device.xmlListDevice.getInternal("LINK"))
     }
 }

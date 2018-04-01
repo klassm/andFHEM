@@ -57,8 +57,8 @@ class RemotecontrolDeviceService @Inject constructor() {
 
     private fun iconPrefixFor(xmlListDevice: XmlListDevice): String {
         return "/" +
-                xmlListDevice.getAttribute("rc_iconpath").or("icons/remotecontrol") +
-                "/" + xmlListDevice.getAttribute("rc_iconprefix").or("black_btn_")
+                (xmlListDevice.getAttribute("rc_iconpath") ?: "icons/remotecontrol") +
+                "/" + (xmlListDevice.getAttribute("rc_iconprefix") ?: "black_btn_")
     }
 
     data class Row(val index: Int, val entries: List<Entry>)

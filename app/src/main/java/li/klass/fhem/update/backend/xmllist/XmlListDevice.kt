@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.xmllist
 
-import com.google.common.base.Optional
 import org.apache.commons.lang3.StringUtils.trimToNull
 import org.joda.time.DateTime
 import java.io.Serializable
@@ -41,8 +40,6 @@ class XmlListDevice(
     val creationTime = DateTime.now()!!
     val name: String get() = internals["NAME"]?.value ?: "??"
 
-    private fun containsInternal(key: String): Boolean = internals.containsKey(key)
-
     fun containsState(state: String): Boolean = containsAnyOfStates(setOf(state))
 
     fun containsAnyOfStates(toFind: Collection<String>): Boolean =
@@ -50,37 +47,21 @@ class XmlListDevice(
 
     fun containsAttribute(attribute: String): Boolean = attributes.containsKey(attribute)
 
-    private fun containsHeader(header: String): Boolean = headers.containsKey(header)
+    fun getState(state: String, ignoreCase: Boolean = false) =
+            states.filterKeys { it.equals(state, ignoreCase) }
+                    .values.firstOrNull()?.value
 
-    fun getState(state: String, ignoreCase: Boolean = false): Optional<String> {
-        val matches = states.filterKeys { it.equals(state, ignoreCase) }
-        return if (matches.isEmpty()) Optional.absent() else Optional.of(matches.values.first().value)
-    }
-
-    fun getFirstStateOf(toFind: Collection<String>): Optional<String> {
+    fun getFirstStateOf(toFind: Collection<String>): String? {
         return toFind
                 .map { getState(it) }
-                .firstOrNull { it.isPresent }
-                ?: Optional.absent()
+                .firstOrNull { it != null }
     }
 
-    fun getAttribute(attribute: String): Optional<String> {
-        return if (containsAttribute(attribute)) {
-            Optional.fromNullable(attributes[attribute]?.value)
-        } else Optional.absent()
-    }
+    fun getAttribute(attribute: String) = attributes[attribute]?.value
 
-    fun getHeader(header: String): Optional<String> {
-        return if (containsHeader(header)) {
-            Optional.fromNullable(headers[header]?.value)
-        } else Optional.absent()
-    }
+    fun getHeader(header: String) = headers[header]?.value
 
-    fun getInternal(key: String): Optional<String> {
-        return if (containsInternal(key)) {
-            Optional.fromNullable(internals[key]?.value)
-        } else Optional.absent()
-    }
+    fun getInternal(key: String) = internals[key]?.value
 
     fun setState(key: String, value: String) {
         states.put(key, DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow()))
@@ -90,17 +71,13 @@ class XmlListDevice(
         internals.put(key, DeviceNode(DeviceNode.DeviceNodeType.INT, key, value, measuredNow()))
     }
 
-    fun setHeader(key: String, value: String) {
-        headers.put(key, DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow()))
-    }
-
     fun setAttribute(key: String, value: String?) {
         val toSet = trimToNull(value)
         if (toSet == null) {
             attributes.remove(key)
             return
         }
-        if (!toSet.equals(getAttribute(key).orNull(), ignoreCase = true)) {
+        if (!toSet.equals(getAttribute(key), ignoreCase = true)) {
             attributes.put(key, DeviceNode(DeviceNode.DeviceNodeType.ATTR, key, toSet, measuredNow()))
         }
     }
@@ -114,17 +91,9 @@ class XmlListDevice(
                 '}'
     }
 
-    fun attributeValueFor(key: String): Optional<String> {
-        return if (attributes.containsKey(key)) {
-            Optional.fromNullable(attributes[key]?.value)
-        } else Optional.absent()
-    }
+    fun attributeValueFor(key: String): String? = attributes[key]?.value
 
-    fun stateValueFor(key: String): Optional<String> {
-        return if (states.containsKey(key)) {
-            Optional.fromNullable(states[key]?.value)
-        } else Optional.absent()
-    }
+    fun stateValueFor(key: String) = states[key]?.value
 
     private fun measuredNow(): String = DateTime().toString(DATE_PATTERN)
 

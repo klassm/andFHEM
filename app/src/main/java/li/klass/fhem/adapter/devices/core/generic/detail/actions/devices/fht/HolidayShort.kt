@@ -57,7 +57,7 @@ class HolidayShort @Inject constructor(private val applicationProperties: Applic
 
     fun showDialog(context: Context, parent: ViewGroup, layoutInflater: LayoutInflater,
                    spinnerActionRow: SpinnerActionRow, device: XmlListDevice, connectionId: String?) {
-        val currentDesiredTemp = device.stateValueFor("desired-temp").orNull()
+        val currentDesiredTemp = device.stateValueFor("desired-temp")
                 ?.let { ValueExtractUtil.extractLeadingDouble(it) }
                 ?: FHTDetailActionProvider.MINIMUM_TEMPERATURE
         var model = Model(hour = 0, minute = 0, desiredTemp = currentDesiredTemp)

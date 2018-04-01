@@ -6,7 +6,6 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.guava.api.Assertions.assertThat;
 
 public class DMXDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -14,8 +13,8 @@ public class DMXDeviceTest extends DeviceXMLParsingBase {
         FhemDevice device = getDeviceFor("LedBett");
         assertThat(device).isNotNull();
 
-        assertThat(device.getXmlListDevice().getState("rgb", true)).contains("ffffff");
-        assertThat(device.getXmlListDevice().getState("pct", true)).contains("10");
+        assertThat(device.getXmlListDevice().getState("rgb", true)).isEqualTo("ffffff");
+        assertThat(device.getXmlListDevice().getState("pct", true)).isEqualTo("10");
     }
 
     @Override

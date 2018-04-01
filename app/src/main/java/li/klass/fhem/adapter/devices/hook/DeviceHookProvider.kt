@@ -45,14 +45,14 @@ constructor() {
                 .firstOrNull() ?: ButtonHook.NORMAL
     }
 
-    fun getOnStateName(device: FhemDevice): String? = device.xmlListDevice.attributeValueFor(ON_STATE_NAME).orNull()
+    fun getOnStateName(device: FhemDevice): String? = device.xmlListDevice.attributeValueFor(ON_STATE_NAME)
 
     fun getOffStateName(device: FhemDevice): String? =
-            device.xmlListDevice.attributeValueFor(OFF_STATE_NAME).orNull()
+            device.xmlListDevice.attributeValueFor(OFF_STATE_NAME)
 
     fun invertState(device: FhemDevice): Boolean {
         val hookValue = device.xmlListDevice.attributeValueFor(INVERT_STATE)
-        return hookValue.isPresent && hookValue.get().equals("true", ignoreCase = true)
+        return hookValue?.equals("true", ignoreCase = true) ?: false
     }
 
     companion object {

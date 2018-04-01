@@ -156,7 +156,7 @@ class DeviceListParser @Inject constructor(
                                         context: Context): Boolean {
 
         try {
-            if (xmlListDevice.getAttribute("always_hidden").orNull() == "true") {
+            if (xmlListDevice.getAttribute("always_hidden") == "true") {
                 return true
             }
 

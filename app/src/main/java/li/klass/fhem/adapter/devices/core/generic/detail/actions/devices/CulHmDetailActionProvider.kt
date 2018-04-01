@@ -83,7 +83,7 @@ constructor(
             get() = CulHmHeatingMode.values()
 
         override fun getCurrentModeFor(device: XmlListDevice): CulHmHeatingMode =
-                heatingModeFor(device.getState(MODE_STATE_NAME, false).get()).get()
+                heatingModeFor(device.getState(MODE_STATE_NAME, false)).get()
 
         override fun supports(xmlListDevice: XmlListDevice): Boolean =
                 CulHmDetailActionProvider.supportsHeating(xmlListDevice)
@@ -92,7 +92,7 @@ constructor(
     private class KFM100ContentView : StateAttributeAction {
 
         override fun createRow(device: XmlListDevice, connectionId: String?, key: String, stateValue: String, context: Context, parent: ViewGroup): TableRow {
-            val model = device.getAttribute("model").get()
+            val model = device.getAttribute("model")!!
             val fillContentPercentage = determineContentPercentage(device, model)
 
 
@@ -104,15 +104,15 @@ constructor(
 
         private fun determineContentPercentage(device: XmlListDevice, model: String) =
                 if ("HM-Sen-Wa-Od" == model) {
-                    extractLeadingDouble(device.getState("level", false).get()) / 100.0
+                    extractLeadingDouble(device.getState("level", false)) / 100.0
                 } else {
-                    val rawToReadable = device.getAttribute("rawToReadable").get()
+                    val rawToReadable = device.getAttribute("rawToReadable")!!
                     val parts = parseRawToReadable(rawToReadable)
                     val maximum = if (parts.size == 2) {
                         extractLeadingInt(parts[1]).toDouble()
                     } else 0.0
 
-                    val contentValue = extractLeadingDouble(device.getState("content", false).get())
+                    val contentValue = extractLeadingDouble(device.getState("content", false))
                     val content = if (contentValue > maximum) maximum else contentValue
                     content / maximum
                 }
@@ -124,15 +124,10 @@ constructor(
         }
 
         override fun supports(xmlListDevice: XmlListDevice): Boolean {
-            val modelOpt = xmlListDevice.getAttribute("model")
-            if (!modelOpt.isPresent) {
-                return false
-            }
+            val model = xmlListDevice.getAttribute("model") ?: return false
 
-            val model = modelOpt.get()
             return ("HM-Sen-Wa-Od".equals(model, ignoreCase = true) && xmlListDevice.containsState("level"))
                     || (xmlListDevice.containsAttribute("rawToReadable") && xmlListDevice.containsState("content"))
-
         }
     }
 
@@ -141,7 +136,7 @@ constructor(
 
         private fun supportsHeating(xmlListDevice: XmlListDevice): Boolean {
             val controlMode = xmlListDevice.getState(MODE_STATE_NAME, false)
-            return controlMode.isPresent && heatingModeFor(controlMode.get()).isPresent
+            return controlMode != null && heatingModeFor(controlMode).isPresent
         }
     }
 }

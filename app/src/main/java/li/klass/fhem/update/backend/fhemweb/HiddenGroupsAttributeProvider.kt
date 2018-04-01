@@ -31,8 +31,7 @@ import javax.inject.Inject
 
 class HiddenGroupsAttributeProvider @Inject constructor() {
     fun provideFor(fhemWebDevice: FhemDevice): Set<String> {
-        return fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenGroup)
-                .or("")
+        return (fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenGroup) ?: "")
                 .split(",")
                 .filter { it.isNotBlank() }
                 .map { it.toLowerCase(Locale.getDefault()) }

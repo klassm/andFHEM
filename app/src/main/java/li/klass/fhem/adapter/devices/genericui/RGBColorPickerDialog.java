@@ -56,9 +56,9 @@ public class RGBColorPickerDialog extends AlertDialog implements DialogInterface
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.colorpicker_dialog, null);
 
 
-        final CheckBox sendEachChangeCheckbox = (CheckBox) view.findViewById(R.id.sendEachChange);
+        final CheckBox sendEachChangeCheckbox = view.findViewById(R.id.sendEachChange);
 
-        final ColorPicker picker = (ColorPicker) view.findViewById(R.id.colorPicker);
+        final ColorPicker picker = view.findViewById(R.id.colorPicker);
         picker.setColor(initialColor);
         picker.setListener(new ColorPickerListener() {
             @Override
@@ -77,7 +77,7 @@ public class RGBColorPickerDialog extends AlertDialog implements DialogInterface
         setView(view);
     }
 
-    public void onColorChange(int color) {
+    private void onColorChange(int color) {
         if (newColor != initialColor) {
             callback.onColorChanged(ColorUtil.INSTANCE.toHexStringWithoutPrefix(color), RGBColorPickerDialog.this);
         } else {
