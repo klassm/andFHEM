@@ -54,7 +54,7 @@ object DialogUtil {
 
     @JvmOverloads
     fun showAlertDialog(context: Context, title: String?, text: String, onClickListener: Runnable? = null) {
-        val alert = AlertDialog.Builder(context, R.style.alertDialog)
+        AlertDialog.Builder(context, R.style.alertDialog)
                 .setCancelable(false)
                 .setMessage(text)
                 .setTitle(title ?: "")
