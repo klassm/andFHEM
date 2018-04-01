@@ -46,8 +46,8 @@ class TemperatureWidgetView @Inject constructor() : DeviceAppWidgetView() {
     public override fun getContentView() = R.layout.appwidget_temperature
 
     public override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
-        val temperature = valueForAnnotation(device, WidgetTemperatureField::class.java, context)
-        val additionalFieldValue = valueForAnnotation(device, WidgetTemperatureAdditionalField::class.java, context)
+        val temperature = valueForMarker(device, WidgetTemperatureField::class.java)
+        val additionalFieldValue = valueForMarker(device, WidgetTemperatureAdditionalField::class.java)
         setTextViewOrHide(view, R.id.additional, additionalFieldValue)
 
         view.setTextViewText(R.id.temperature, temperature)

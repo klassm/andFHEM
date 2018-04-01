@@ -44,9 +44,9 @@ class MediumInformationWidgetView @Inject constructor() : DeviceAppWidgetView() 
     override fun getContentView(): Int = R.layout.appwidget_information_medium
 
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
-        val line1 = valueForAnnotation(device, WidgetMediumLine1::class.java, context)
-        val line2 = valueForAnnotation(device, WidgetMediumLine2::class.java, context)
-        val line3 = valueForAnnotation(device, WidgetMediumLine3::class.java, context)
+        val line1 = valueForMarker(device, WidgetMediumLine1::class.java)
+        val line2 = valueForMarker(device, WidgetMediumLine2::class.java)
+        val line3 = valueForMarker(device, WidgetMediumLine3::class.java)
 
         setTextViewOrHide(view, R.id.line1, line1)
         setTextViewOrHide(view, R.id.line2, line2)

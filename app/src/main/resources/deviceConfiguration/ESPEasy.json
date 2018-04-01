@@ -1,13 +1,47 @@
 {
-  "defaultGroup": "UNKNOWN",
+  "defaultGroup": "SWITCH",
   "sensorDevice": true,
   "showStateInOverview": true,
   "delayForUpdateAfterCommand": 2,
+  "supportedWidgets": [
+    "TemperatureWidgetView",
+    "MediumInformationWidgetView"
+  ],
   "states": [
     {
       "key": "presence",
       "desc": "present",
       "showInOverview": false
+    },
+    {
+      "key": "Temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine1",
+        "WidgetTemperatureField"
+      ]
+    },
+    {
+      "key": "Humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetMediumLine2",
+        "WidgetTemperatureAdditionalField"
+      ]
     }
-  ]
+  ],
+  "sanitise": {
+    "deviceValues": {
+      "Temperature": {
+        "extract": "double",
+        "append": "°C"
+      },
+      "Humidity": {
+        "extract": "double",
+        "append": "%"
+      }
+    }
+  }
 }

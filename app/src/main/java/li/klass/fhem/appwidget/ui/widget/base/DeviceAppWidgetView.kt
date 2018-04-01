@@ -40,7 +40,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
-import li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -124,13 +123,13 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         }
     }
 
-    protected fun valueForAnnotation(device: FhemDevice, annotationCls: Class<out Annotation>, context: Context): String? {
+    protected fun valueForMarker(device: FhemDevice, annotationCls: Class<out Annotation>): String? {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         val states = configuration.states
-        states
+        return states
                 .filter { it.markers.contains(annotationCls.simpleName) }
-                .forEach { return device.xmlListDevice.stateValueFor(it.key).orNull() }
-        return getValueAndDescriptionForAnnotation(device, annotationCls, context)
+                .map { device.xmlListDevice.stateValueFor(it.key).orNull() }
+                .firstOrNull()
     }
 
     protected open fun createDeviceWidgetConfiguration(context: Context, appWidgetId: Int, device: FhemDevice,
