@@ -103,12 +103,11 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             executeRequest(serverSpec!!.url!!, urlSuffix, false, context)
 
     private fun executeRequest(serverUrl: String, urlSuffix: String?, isRetry: Boolean, context: Context): RequestResult<InputStream> {
-        var url: String? = null
         TrafficStats.setThreadStatsTag(1)
         try {
             initSslContext(context)
 
-            url = serverUrl + if (urlSuffix?.contains("cmd=") == true) {
+            val url = serverUrl + if (urlSuffix?.contains("cmd=") == true) {
                 val csrfToken = findCsrfToken(serverUrl) ?: ""
                 urlSuffix + "&fwcsrf=" + csrfToken
             } else urlSuffix

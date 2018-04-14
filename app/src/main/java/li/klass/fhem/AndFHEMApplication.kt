@@ -32,6 +32,7 @@ import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.alexfu.phoenix.Phoenix
+import com.google.android.gms.security.ProviderInstaller
 import com.google.firebase.FirebaseApp
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
@@ -73,6 +74,7 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
 
     override fun onCreate() {
         super.onCreate()
+        ProviderInstaller.installIfNeeded(getApplicationContext());
         setDefaultUncaughtExceptionHandler()
         setStrictMode()
 
