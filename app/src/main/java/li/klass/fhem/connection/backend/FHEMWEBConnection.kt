@@ -130,7 +130,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
         } catch (e: Exception) {
             LOG.info("error while loading data", e)
-            return handleError(urlSuffix ?: "", isRetry, url, e, context)
+            return handleError(urlSuffix ?: "", isRetry, serverUrl, e, context)
         }
 
     }
