@@ -26,6 +26,8 @@ package li.klass.fhem.connection.backend
 
 import android.content.Context
 import android.net.TrafficStats
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport
 import com.google.api.client.http.GenericUrl
 import com.google.api.client.http.HttpHeaders
@@ -61,6 +63,11 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     override fun executeCommand(command: String, context: Context): RequestResult<String> {
         LOG.info("executeTask command " + command)
+        try {
+            ProviderInstaller.installIfNeeded(context);
+        } catch (e: GooglePlayServicesRepairableException) {
+            LOG.error("cannot install play providers", e)
+        }
 
         val urlSuffix = generateUrlSuffix(command)
 
