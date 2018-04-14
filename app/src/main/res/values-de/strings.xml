@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -41,8 +41,8 @@
     <string name="measured">Messzeit</string>
     <string name="warnings">Warnungen</string>
     <string name="time">Zeit</string>
-    <string name="avgDay">Tagesschnitt</string>
     <string name="avgHour">Stundenschnitt</string>
+    <string name="avgDay">Tagesschnitt</string>
     <string name="avgYear">Jahresschnitt</string>
     <string name="avgMonth">Monatsschnitt</string>
     <string name="minDay">Tagesminimum</string>
@@ -99,7 +99,7 @@
     <string name="ip">IP-Adresse</string>
     <string name="wake">Wecken</string>
     <string name="isRunning">Läuft gerade?</string>
-    <string name="shutdown">Ausschalten</string>
+    <string name="shutdown">Herunterfahren</string>
     <string name="stateAppendix">%1$s setzen als</string>
     <string name="requestRefresh">Update anfordern</string>
     <string name="delta">Delta</string>
@@ -114,16 +114,16 @@
     <string name="error">Fehler!</string>
     <string name="error_send">Letzten Fehler senden</string>
     <string name="error_send_content">AndFHEM kann den letzten Fehler als Mail an den Entwickler senden. Fortfahren?</string>
-    <string name="error_send_no_error">Es kann kein Fehler gesendet werden, da kein Fehler registriert wurde.</string>
+    <string name="error_send_no_error">Es kann kein Fehler gesendet werden, da kein Fehler registriert wurde!</string>
     <string name="errorDeviceListLoad">Konnte %1$s Gerät(e) nicht laden!</string>
     <string name="errorOutdatedData">Die Sensordaten scheinen veraltet zu sein. Bitte prüfen Sie die Geräteverbindung.</string>
-    <string name="errorExternalStorageNotPresent">Kein Zugriff auf das Dateisystem.</string>
     <string name="application_log_send">Protokoll senden</string>
+    <string name="errorExternalStorageNotPresent">Kein Zugriff auf das Dateisystem.</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>
     <string name="set_value">Wert setzen</string>
-    <string name="set">Ändern</string>
+    <string name="set">Setzen</string>
     <string name="android_version">Android-Version</string>
     <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
     <string name="unknown">unbekannt</string>
@@ -131,8 +131,8 @@
     <string name="about">Über andFHEM</string>
     <string name="copyFrom">Kopiere aus …</string>
     <string name="commandAccepted">Kommando akzeptiert?</string>
-    <string name="up">Hoch</string>
-    <string name="down">Runter</string>
+    <string name="up">hoch</string>
+    <string name="down">runter</string>
     <string name="stop">Stop</string>
     <string name="visibility">Sichtbarkeit</string>
     <string name="rawValue">Rohwert</string>
@@ -167,16 +167,16 @@
     <string name="price">Preis</string>
     <string name="pricePerDay">Preis/Tag</string>
     <string name="energy">Zählerstand</string>
+    <string name="cumulativeUsage">Gesamtzählerstand</string>
     <string name="voltage">Spannung</string>
     <string name="current">Stromstärke</string>
-    <string name="cumulativeUsage">Gesamtzählerstand</string>
     <string name="saturation">Sättigung</string>
     <string name="hue">Farbton</string>
     <string name="color">Farbe</string>
     <string name="alarm">Alarm</string>
-    <string name="apiKey">API-Key</string>
+    <string name="apiKey">API-Schlüssel</string>
     <string name="gcmAlreadyRegistered">Gerät ist bereits registriert!</string>
-    <string name="gcmRegistrationNotActive">FCM ist nicht aktiv! Stimmt die Cloud Messaging Sender-Id?</string>
+    <string name="gcmRegistrationNotActive">FCM nicht aktiv! Stimmt die Cloud Messaging Sender-Id?</string>
     <string name="gcmRegisterThis">Dieses Gerät registrieren</string>
     <string name="gcmSuccessfullyRegistered">Gerät wurde registriert.</string>
     <string name="notificationAllUpdates">Alle Aktualisierungen</string>
@@ -191,7 +191,7 @@
     <string name="callMonEventRing">Klingelnd</string>
     <string name="callMonEventCall">Wählend</string>
     <string name="callMonEventConnect">Verbunden</string>
-    <string name="callMonEventDisconnect">Aufgelegt</string>
+    <string name="callMonEventDisconnect">Auflegen</string>
     <string name="callMonEventMissed">Verpasst</string>
     <string name="webcmd">Kommandos</string>
     <string name="temperatureMinimum">Min-Temperatur</string>
@@ -273,34 +273,34 @@
     <string name="connectionPort">Port</string>
     <string name="connectionPortDesc">z.B. 7072</string>
     <string name="connectionEmptyError">Feld \"%s\" darf nicht leer sein!</string>
-    <string name="connectionUrlHttp">URL muss mit "http" beginnen!</string>
+    <string name="connectionUrlHttp">URL muss mit \"http\" beginnen!</string>
     <string name="connectionCurrent">Aktuelle Verbindung</string>
     <string name="connectionClientCertificate">Client-Zertifikat</string>
+    <string name="connectionClientCertificateDesc">(optional)</string>
     <string name="connectionClientCertificatePassword">Passwort für Client-Zertifikat</string>
     <string name="connectionClientCertificatePasswordDesc">(optional)</string>
-    <string name="connectionClientCertificateDesc">(optional)</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
     <string name="update">Aktualisieren</string>
-    <string name="loading">Lade\u2026</string>
-    <string name="executing">Führe aus\u2026</string>
-    <string name="updatingDeviceList">Aktualisiere Geräteliste \u2026</string>
-    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s\u2026</string>
+    <string name="loading">Lade\\u2026</string>
+    <string name="executing">Führe aus\\u2026</string>
+    <string name="updatingDeviceList">Aktualisiere Geräteliste \\u2026</string>
+    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s\\u2026</string>
     <string name="help">Hilfe</string>
     <string name="command_execution_result">Kommando-Ergebnis</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
     <string name="context_removefavorite">Aus Favoriten entfernen</string>
-    <string name="context_favoriteadded">Favorit wurde hinzugefügt.</string>
-    <string name="context_favoriteremoved">Favorit wurde gelöscht.</string>
+    <string name="context_favoriteadded">Favorit wurde hinzugefügt!</string>
+    <string name="context_favoriteremoved">Favorit wurde gelöscht!</string>
 
     <string name="context_rename">Umbenennen</string>
     <string name="context_alias">Alias vergeben</string>
     <string name="context_delete">Löschen</string>
     <string name="context_move">Verschieben</string>
-    <string name="context_notification">Benachrichtigungen</string>
     <string name="context_edit">Ändern</string>
+    <string name="context_notification">Benachrichtigungen</string>
 
     <string name="areYouSure">Sind Sie sicher?</string>
     <string name="areYouSureText">Möchten Sie wirklich %1$s auf %2$s setzen?</string>
@@ -331,7 +331,7 @@
     <string name="settingsAutoUpdate">Automatisches Update</string>
     <string name="settingsAutoUpdateSummary">Geräteliste %1$s automatisch aktualisieren, solange das Programm läuft</string>
     <string name="settingsWidgetRemoteUpdate">Remote-Aktualisierung</string>
-    <string name="settingsWidgetRemoteUpdateSummaryOn">Widgetupdates können neue Daten vom FHEM-Server holen</string>
+    <string name="settingsWidgetRemoteUpdateSummaryOn">Widgets können neue Daten vom FHEM-Server anfordern</string>
     <string name="settingsWidgetRemoteUpdateSummaryOff">Widgetupdates holen keine neuen Daten vom FHEM-Server</string>
     <string name="settingsDeviceColumnWidth">Geräte-Spaltenbreite</string>
     <string name="settingsDeviceColumnWidthSummary">Spalten in den Gerätelisten haben eine Mindestbreite von %1$s dp</string>
@@ -342,7 +342,7 @@
     <string name="settingsWidgetUpdateTimeMobile">Mobilfunk-Aktualisierungsintervall</string>
     <string name="settingsWidgetUpdateTimeMobileSummary">Wenn das Gerät nicht mit einem WLAN verbunden ist, werden Widgets alle %1$s aktualisiert</string>
     <string name="settingsDeviceFunctionalityOrder">Gerätefunktions-Reihenfolge</string>
-    <string name="settingsDeviceFunctionalityOrderSummary">Angezeigte Gerätefunktioneren und deren Reihenfolge konfigurieren</string>
+    <string name="settingsDeviceFunctionalityOrderSummary">Angezeigte Gerätefunktionen und deren Reihenfolge</string>
     <string name="settingsUpdateOnApplicationStart">Aktualisierung beim Start</string>
     <string name="settingsUpdateOnApplicationStartSummaryOn">Aktuell: Beim Start der App die Geräteliste aktualisieren</string>
     <string name="settingsUpdateOnApplicationStartSummaryOff">Aktuell: Beim Start der App die Geräteliste nicht aktualisieren</string>
@@ -350,28 +350,28 @@
     <string name="settingsUpdateRoomOnOpenSummaryOn">Aktuell: Beim Öffnen eines Raums alle enthaltenen Geräte aktualisieren</string>
     <string name="settingsUpdateRoomOnOpenSummaryOff">Aktuell: Beim Öffnen eines Raums alle enthaltenen Geräte nicht aktualisieren</string>
     <string name="settingsShowSetValueButtons">\'Ändern\'-Knöpfe für Schieber</string>
-    <string name="settingsShowSetValueButtonsSummaryOn">Für Schieberegler zusätzlich einen \'Ändern\'-Knopf anzeigen</string>
-    <string name="settingsShowSetValueButtonsSummaryOff">Für Schieberegler keinen \'Ändern\'-Knopf anzeigen</string>
+    <string name="settingsShowSetValueButtonsSummaryOn">Für Schieberegler zusätzlich einen \'Setzen\'-Knopf anzeigen</string>
+    <string name="settingsShowSetValueButtonsSummaryOff">Für Schieberegler keinen \'Setzen\'-Knopf anzeigen</string>
     <string name="settingsGCMProjectId">GCM-Projektnummer</string>
-    <string name="settingsGCMProjectIdSummary">Die GCM-Projektnummer ist \'%1$s\'. Informationen zur Einrichtung von GCM können der Installationsanleitung in der Hilfe entnommen werden</string>
-    <string name="settingsGcmWidgetUpdate">Widget-Aktualisierug bei GCM-Nachricht</string>
+    <string name="settingsGCMProjectIdSummary">Die GCM-Projektnummer ist auf \'%1$s\' gesetzt. Informationen zur Einrichtung von GCM können der Installationsanleitung in der Hilfe entnommen werden</string>
+    <string name="settingsGcmWidgetUpdate">Widget-Aktualisierung bei GCM-Nachricht</string>
     <string name="settingsGcmWidgetUpdateSummaryOn">Bei Eingang einer GCM-Nachricht mit neuen Statusinformationen eines Gerätes werden die Widgets aktualisiert</string>
     <string name="settingsGcmWidgetUpdateSummaryOff">Bei Eingang einer GCM-Nachricht mit neuen Statusinformationen eines Gerätes werden die Widgets nicht aktualisiert</string>
     <string name="settingsStartupView">Start-Ansicht</string>
     <string name="settingsStartupViewSummary">Beim Start der App \'%1$s\' anzeigen</string>
     <string name="settingsTheme">Theme</string>
     <string name="settingsConnectionTimeout">Verbindungs-Wartezeit</string>
-    <string name="settingsConnectionTimeoutSummary">Verbindung beenden, wenn der Server nach %1$s Sekunden nicht reagiert</string>
+    <string name="settingsConnectionTimeoutSummary">Verbindung beenden, wenn der Server innerhalb %1$s Sekunden nicht reagiert</string>
     <string name="settingsCommandExecutionRetries">Kommando-Wiederholungen</string>
-    <string name="settingsCommandExecutionRetriesSummary">Ein Kommando wird bis zu %1$s gesendet, wenn die Ausführung fehlschlägt.</string>
+    <string name="settingsCommandExecutionRetriesSummary">Ein Kommando wird bis zu %1$s mal gesendet, falls die Ausführung fehlschlägt.</string>
     <string name="settingsCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
     <string name="settingsFHEMWEBDeviceName">FHEMWEB-Gerätename</string>
     <string name="settingsFHEMWEBDeviceNameSummary">Passt ein FHEMWEB-Gerätename zum Inhalt dieser Einstellung (%1$s), so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
     <string name="settingsApplicationPassword">Passwort</string>
     <string name="settingsApplicationPasswordSummary">Passwort, welches beim Start der App abgefragt wird.</string>
-    <string name="settingsClearTrustedCertificatesSummary">Alle Zertifikate aus dem App-Trust-Store entfernen</string>
-    <string name="settingsClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
-    <string name="settingsClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
+    <string name="settingsClearTrustedCertificates">Vertrauenswürdige Zertifikate löschen</string>
+    <string name="settingsClearTrustedCertificatesSummary">Alle manuell akzeptierten Zertifikate aus dem App-Trust-Store entfernen</string>
+    <string name="settingsClearTrustedCertificatesFinished">Zertifikate entfernt</string>
     <string name="settingsKeepMessagesDays">FCM-Nachrichten Aufbewahrungszeit</string>
     <string name="settingsKeepMessagesDaysSummary">Anzahl Tage, für die GCM Nachrichten vorgehalten werden</string>
 
@@ -381,10 +381,10 @@
     <string name="error_device_list_parse">Geräteliste konnte nicht gelesen werden.</string>
     <string name="error_authentication">Falscher Benutzername oder Passwort.</string>
     <string name="error_invalid_content">Ungültiger Inhalt wurde geladen. Ist die URL wirklich richtig?</string>
-    <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server-Logs lesen.</string>
-    <string name="error_bad_request">Fehlerhafte Anfrage (400)"</string>
-    <string name="error_not_found">Seite nicht gefunden (404)"</string>
-    <string name="error_internal">Interner Fehler. Bitte noch einmal versuchen."</string>
+    <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server-Logs lesen!</string>
+    <string name="error_bad_request">Fehlerhafte Anfrage (400)!</string>
+    <string name="error_not_found">Seite nicht gefunden (404)!</string>
+    <string name="error_internal">Interner Fehler. Bitte noch einmal versuchen!</string>
     <string name="error_timer_name_spaces">Der Name von Zeitschaltuhren darf keine Leerzeichen enthalten!</string>
     <string name="retry">Wiederholen</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
@@ -402,10 +402,10 @@
     <string name="endDate">End-Datum</string>
     <string name="startTime">Start-Zeit</string>
     <string name="endTime">End-Zeit</string>
-    <string name="startDateAfterEndDateMsg">Start-Datum muss vor End-Datum sein.</string>
+    <string name="startDateAfterEndDateMsg">Start-Datum muss vor End-Datum sein</string>
     <string name="optionChangeStartEndDate">Start- / End-Datum ändern</string>
 
-    <string name="generalDetails">Allgemeine Informationen</string>
+    <string name="generalDetails">Allgemeine Details</string>
     <string name="plots">Graphen</string>
     <string name="switchSetOptions">Schaltoptionen</string>
 
@@ -425,7 +425,7 @@
     <string name="until">bis</string>
     <string name="fromTimetable">(%1$d) Von</string>
     <string name="toTimetable">(%1$d) Bis</string>
-    <string name="change">Ändern</string>
+    <string name="change">ändern</string>
     <string name="on">an</string>
     <string name="off">aus</string>
     <string name="ON">AN</string>
@@ -440,6 +440,7 @@
     <string name="shop_buyPemium">AndFHEM Premium kaufen</string>
     <string name="premium_multipleConnections">Für mehr als eine Verbindung wird AndFHEM Premium benötigt.</string>
 
+    <string name="blank" translatable="false" />
     <string name="deviceListEmpty">Keine passenden Geräte gefunden!</string>
 
     <string name="widget_small">andFHEM Klein</string>
@@ -448,8 +449,8 @@
 
     <string name="widget_type_selection">Widget Typ</string>
     <string name="widget_temperature">Temperatur</string>
-    <string name="widget_toggle">Umschalter</string>
     <string name="widget_presence">Anwesenheit</string>
+    <string name="widget_toggle">Umschalter</string>
     <string name="widget_status">Status</string>
     <string name="widget_information">Informationen</string>
     <string name="widget_weather_forecast">Wettervorhersage</string>
@@ -465,7 +466,7 @@
     <string name="widget_send_command_link">Kommando senden</string>
     <string name="widget_device_list_update">Geräteliste aktualisieren</string>
     <string name="widget_room_detail">Verknüpfung</string>
-    <string name="widget_remote_update_started">Geräteliste wird aktualisiert\u2026</string>
+    <string name="widget_remote_update_started">Geräteliste wird aktualisiert\\u2026</string>
     <string name="widget_application_password">Bei aktiviertem App-Passwort können keine Widgets ausgewählt werden.</string>
 
     <string name="widget_devices">Geräte-Widgets</string>
@@ -486,7 +487,7 @@
     <string name="timer_targetState">Ziel-Zustand</string>
     <string name="timer_time">Schaltzeit</string>
     <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
-    <string name="timer_next_trigger">Nächster Schaltvorgang: %s</string>
+    <string name="timer_next_trigger">Nächster Schaltvorgang %s</string>
 
     <string name="twilight_light">Helligkeit</string>
     <string name="twilight_next_event">Nächstes Ereignis</string>
@@ -527,13 +528,9 @@
     <string name="dummyConnectionNotification">Momentan werden nur Dummy-Geräte angezeigt!</string>
 
     <string name="localeSendCommandPlugin">AndFHEM-Kommando</string>
-    <string name="localeSendCommandPluginInfoText">Bitte ein FHEM-Kommando eingeben, das ausgeführt werden soll (z.B.
-        "set device off")
-    </string>
+    <string name="localeSendCommandPluginInfoText">Bitte ein FHEM-Kommando eingeben, das ausgeführt werden soll (z.B.         \"set device off\")</string>
     <string name="localeDeviceState">AndFHEM-Gerätestatus</string>
-    <string name="localeDeviceStateInfo">Bitte ein Gerät auswählen und einen Zielstatus eingeben, bei dem das Ereignis
-        als erfolgreich angesehen wird. (z.B. "off")
-    </string>
+    <string name="localeDeviceStateInfo">Bitte ein Gerät auswählen und einen Zielstatus eingeben, bei dem das Ereignis         als erfolgreich angesehen wird. (z.B. \"off\")</string>
     <string name="localeConnectionChangePlugin">AndFHEM-Verbindungswechsel</string>
     <string name="localeConnectionChangePluginInfoText">Bitte eine Verbindung auswählen, auf die andFHEM wechseln soll.</string>
 
@@ -542,8 +539,8 @@
 
     <string name="noFavoritesCaption">Keine Favoriten gefunden!</string>
     <string name="noFavoritesMessage">Um einen Favoriten zu erstellen, klicken Sie bitte in der Geräteliste lange auf ein Gerät. Klicken Sie anschließend auf den Stern.</string>
-    <string name="noRooms">Keine Räume gefunden!</string>
     <string name="noConnections">Keine Verbindungen gefunden!</string>
+    <string name="noRooms">Keine Räume gefunden!</string>
     <string name="noDevices">Keine Geräte gefunden!</string>
 
     <string name="functionalityDimmer">Dimmen</string>
@@ -563,8 +560,8 @@
     <string name="functionalityFHEM">FHEM</string>
     <string name="functionalityLog">Log</string>
     <string name="functionalityFloorplan">Grundriss</string>
-    <string name="functionalityWebView">Web Link</string>
     <string name="functionalityRemoteControl">Fernbedienung</string>
+    <string name="functionalityWebView">Web Link</string>
     <string name="functionalityPresence">Anwesenheit</string>
     <string name="functionalityUnknown">Unbekannt</string>
 
@@ -578,20 +575,20 @@
     <string name="forward">weiter</string>
     <string name="programChannelSuccess">Programmiere Kanal %1$s</string>
 
-    <string name="day">Tag</string>
-
     <string name="windowOpen">Fenster geöffnet</string>
+    <string name="day">Tag</string>
     <string name="zoom_reset">Zoom zurücksetzen</string>
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
+
     <string name="average">Durchschnitt</string>
 
     <string name="currentStatus_billing">Initialisiere Verbindung zu Google Billing …</string>
     <string name="currentStatus_loadingDeviceList">Lade Geräteliste …</string>
     <string name="currentStatus_loadingFavorites">Lade Favoriten …</string>
-    <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen.</string>
-    <string name="currentStatus_deleteFcmHistory">Lösche alte FCM Einträge …</string>
-    <string name="currentStatus_checkForCorruptedDeviceList">Prüfe auf veraltete Gerätelisten …</string>
+    <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen!</string>
+    <string name="currentStatus_deleteFcmHistory">Lösche alte FCM Verlaufs-Einträge …</string>
+    <string name="currentStatus_checkForCorruptedDeviceList">Prüfe auf korrumpierte Gerätelisten …</string>
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
     <string name="androidBugDialogDatePickerContent">Android 5.0 beinhaltet einen Bug, der den nachfolgenden Dialog zum Absturz bringt, weshalb dieses Feature in dieser Android-Version nicht verwendet werden kann.</string>
@@ -599,7 +596,7 @@
     <string name="accessibility_description">Dieser Bedienungshilfen-Dienst erlaubt andFHEM, jedes Google Now-Sprachkommando mitzuhören. AndFHEM speichert diese Daten nicht, versucht aber daraus FHEM-Kommandos zu generieren.</string>
 
     <string name="importPreferences">Import</string>
-    <string name="importPreferencesSummary">Importiert die App-Einstellungen aus einem bestehenden Backup</string>
+    <string name="importPreferencesSummary">Importiert die App-Einstellungen aus einem bestehenden Backup.</string>
     <string name="exportPreferences">Export</string>
     <string name="exportPreferencesSummary">Erstellt ein neues Backup der App-Einstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
     <string name="exportImportSuccess">Erfolg</string>
@@ -607,8 +604,8 @@
     <string name="exportSuccessLocation">Das Backup erfolgte nach</string>
     <string name="importSuccess">Das Backup wurde erfolgreich angewendet.</string>
     <string name="importExportPassword">Backup-Passwort</string>
-    <string name="exportPasswordDescription">Geben Sie bitte ein Passwort für die Verschlüsselung des Backups ein. Das Feld darf auch leer bleiben.</string>
-    <string name="importPasswordDescription">Geben Sie bitte gib ein Passwort für die Entschlüsselung des Backups ein. Es muss mit dem bei der Erstellungen des Backups eingegebenen Passwort übereinstimmen. Wenn kein Passwort vergeben wurde, kann das Feld leer bleiben.</string>
+    <string name="exportPasswordDescription">Geben Sie bitte ein Passwort für die Verschlüsselung des Backups ein. Stellen Sie sicher, dass Sie sich das Passwort für spätere Backup-Importe merken. Das Feld darf auch leer bleiben.</string>
+    <string name="importPasswordDescription">Geben Sie bitte ein Passwort für die Entschlüsselung des Backups ein. Es muss mit dem bei der Erstellung des Backups eingegebenen Passwort übereinstimmen. Wenn kein Passwort vergeben wurde, kann das Feld leer bleiben.</string>
     <string name="importErrorWrongPassword">Falsches Passwort</string>
     <string name="importErrorInvalidFile">Diese Datei sieht nicht wie eine gültige andFHEM Backup-Datei aus.</string>
 
@@ -620,7 +617,7 @@
     <string name="detailInternalsSection">Interna</string>
     <string name="selectValue">wählen …</string>
     <string name="customText">benutzerdefiniert</string>
-    <string name="device_type_order_column_attribute_note">Achtung: Die hier konfigurierte Reihenfolge wird eventuell durch ein gesetztes "column" Attribut auf einem FHEMWEB-Gerät überschrieben!</string>
+    <string name="device_type_order_column_attribute_note">Achtung: Die hier konfigurierte Reihenfolge wird eventuell durch ein gesetztes \"column\" Attribut auf einem FHEMWEB-Gerät überschrieben.</string>
 
     <string name="A">A</string>
     <string name="B">B</string>
@@ -641,7 +638,6 @@
     <string name="fcm_history_updates">Aktualisierungen</string>
     <string name="fcm_history_no_messages">Keine Nachrichten gefunden.</string>
     <string name="fcm_history_no_updates">Keine Aktualisierungen gefunden.</string>
-    <string name="fcm_history_date_label">Daten vom</string>
+    <string name="fcm_history_date_label">Daten von</string>
     <string name="fcm_history_received">(Empfangen: %s)</string>
-
 </resources>
