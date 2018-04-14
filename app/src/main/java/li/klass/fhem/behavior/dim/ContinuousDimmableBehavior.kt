@@ -78,9 +78,9 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
                 .replace("%".toRegex(), "")
                 .trim { it <= ' ' }
         if (UPPER_BOUND_STATES.contains(state)) {
-            return getDimLowerBound()
-        } else if (LOWER_BOUND_STATES.contains(state)) {
             return getDimUpperBound()
+        } else if (LOWER_BOUND_STATES.contains(state)) {
+            return getDimLowerBound()
         }
         return extractLeadingDouble(state)
     }
