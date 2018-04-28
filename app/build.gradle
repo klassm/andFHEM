@@ -23,7 +23,7 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.31'
     ext.serialization_version = '0.4.2'
 
     repositories {
@@ -36,7 +36,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
 
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
@@ -69,7 +69,7 @@ repositories {
 
 ext {
     supportLibVersion = '27.1.1'
-    firebaseVersion = '12.0.1'
+    firebaseVersion = '15.0.0'
     anko_version = '0.10.1'
     architectureComponentsVersion = '1.0.0'
 }
@@ -98,7 +98,7 @@ dependencies {
     compile "com.google.firebase:firebase-perf:${firebaseVersion}"
     compile 'commons-net:commons-net:3.3'
     compile 'commons-codec:commons-codec:1.11'
-    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.google.code.gson:gson:2.8.2'
     compile('com.google.guava:guava:23.4-android') {
         exclude group: 'com.google.code.findbugs'
     }
@@ -148,13 +148,13 @@ dependencies {
     compile "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
     compile "org.jetbrains.anko:anko-coroutines:$anko_version"
 
-    compile 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+    compile 'com.crashlytics.sdk.android:crashlytics:2.9.2'
 
     implementation "android.arch.persistence.room:runtime:$architectureComponentsVersion"
     kapt "android.arch.persistence.room:compiler:${architectureComponentsVersion}"
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.17.0'
+    testCompile 'org.mockito:mockito-core:2.18.3'
     testCompile 'com.nhaarman:mockito-kotlin:1.5.0'
     testCompile 'com.tngtech.java:junit-dataprovider:1.12.0'
     testCompile 'org.assertj:assertj-core:3.9.1'
