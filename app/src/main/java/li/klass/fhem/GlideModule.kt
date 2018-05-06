@@ -36,10 +36,9 @@ import java.io.InputStream
 
 @GlideModule
 class GlideModule : AppGlideModule() {
-    override fun registerComponents(context: Context?, glide: Glide?, registry: Registry?) {
+    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         super.registerComponents(context, glide, registry)
-        context ?: return
-        registry?.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(
+        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(
                 OkHttpClientForMemorizingTrustManagerSupplier(context).get()
         ))
     }
