@@ -58,17 +58,18 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
             xmlListDevice.attributes.put("room", DeviceNode(DeviceNodeType.ATTR, "room", roomsConcatenated, null as DateTime?))
         }
 
-    /**
-     * Devices state, as shown in FHEMWEB. This includes mapping to eventMap values (i.e B1 instead of on)
-     */
     val state: String
-        get() = xmlListDevice.getState("state") ?: internalState
+        get() {
+            val xmlListDevice = xmlListDevice
+            val state = xmlListDevice.getInternal("STATE")
+            return state ?: (xmlListDevice.getState("state", false)) ?: ""
+        }
 
-    /**
-     * Internal state, as uses in FHEM internally. This excludes eventMap states.
-     */
     val internalState: String
-        get() = xmlListDevice.getInternal("STATE") ?: ""
+        get() {
+            val state = state
+            return eventMap.getKeyFor(state) ?: return state
+        }
 
     val alias: String?
         get() = StringUtils.trimToNull(xmlListDevice.getAttribute("alias"))
@@ -96,9 +97,11 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
         get() = xmlListDevice.getAttribute("widget_name") ?: aliasOrName
 
     val internalDeviceGroupOrGroupAttributes: List<String>
-        get() = (xmlListDevice.getAttribute("group") ?: "").split(",")
-                .filter { it.isNotBlank() }
-                .toList()
+        get() {
+            return (xmlListDevice.getAttribute("group") ?: "").split(",")
+                    .filter { it.isNotBlank() }
+                    .toList()
+        }
 
 
     /**
@@ -116,20 +119,29 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
         if (other == null || javaClass != other.javaClass) return false
 
         val another = other as FhemDevice?
-        return this.name == another?.name
+        val name = name
+        return name == another?.name
+
     }
 
-    override fun hashCode(): Int = this.name.hashCode()
+    override fun hashCode(): Int {
+        val name = name
+        return name.hashCode()
+    }
 
     fun getEventMapStateFor(state: String): String = eventMap.getValueOr(state, state)
 
     fun getReverseEventMapStateFor(state: String): String? = eventMap.getKeyOr(state, state)
 
-    override fun toString(): String = "FhemDevice{" +
-            ", name='" + this.name + '\'' +
-            ", alias='" + this.alias + '\'' +
-            ", eventMap=" + eventMap +
-            '}'
+    override fun toString(): String {
+        val name = name
+        val alias = alias
+        return "FhemDevice{" +
+                ", name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
+                ", eventMap=" + eventMap +
+                '}'
+    }
 
     companion object {
         val BY_NAME: Comparator<FhemDevice> = Comparator { o1, o2 ->
