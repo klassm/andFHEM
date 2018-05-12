@@ -64,11 +64,15 @@ class XmlListDevice(
     fun getInternal(key: String) = internals[key]?.value
 
     fun setState(key: String, value: String) {
-        states.put(key, DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow()))
+        states[key] = DeviceNode(DeviceNode.DeviceNodeType.STATE, key, value, measuredNow())
+    }
+
+    fun setHeader(key: String, value: String) {
+        headers[key] = DeviceNode(DeviceNode.DeviceNodeType.HEADER, key, value, measuredNow())
     }
 
     fun setInternal(key: String, value: String) {
-        internals.put(key, DeviceNode(DeviceNode.DeviceNodeType.INT, key, value, measuredNow()))
+        internals[key] = DeviceNode(DeviceNode.DeviceNodeType.INT, key, value, measuredNow())
     }
 
     fun setAttribute(key: String, value: String?) {

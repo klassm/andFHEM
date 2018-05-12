@@ -59,7 +59,14 @@ class OnOffBehaviorTest {
     fun should_recognize_on_and_off_states_correctly(testCase: IsOnTestCase) {
 
         //  given
-        val device = FhemDevice(XmlListDevice("BLUB", HashMap(), HashMap(), HashMap(), HashMap()))
+        val xmlListDevice = XmlListDevice("BLUB")
+                .apply {
+                    setInternal("NAME", "Name")
+                    setAttribute("eventMap", testCase.eventMap)
+                    setHeader("sets", testCase.setList)
+                }
+
+        val device = FhemDevice(xmlListDevice)
         device.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
 
@@ -70,24 +77,38 @@ class OnOffBehaviorTest {
 
     @UseDataProvider("isOnProvider")
     @Test
-    fun should_handle_invert_state_hook(testCase: IsOnTestCase) {
+    fun should_calculate_on_off(testCase: IsOnTestCase) {
         //  given
         val xmlListDevice = XmlListDevice("BLUB")
-        xmlListDevice.setInternal("NAME", "Name")
+                .apply {
+                    setInternal("NAME", "Name")
+                    setAttribute("eventMap", testCase.eventMap)
+                    setHeader("sets", testCase.setList)
+                }
+
         val device = FhemDevice(xmlListDevice)
         device.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
         `when`(deviceHookProvider.invertState(device)).thenReturn(false)
 
+        assertThat(onOffBehavior.isOn(device)).isEqualTo(testCase.expected)
+    }
+
+    @UseDataProvider("isOnProvider")
+    @Test
+    fun should_handle_invert_state(testCase: IsOnTestCase) {
         val xmlListDevice2 = XmlListDevice("BLA")
-        xmlListDevice.setInternal("NAME", "name")
+                .apply {
+                    setInternal("NAME", "Name")
+                    setAttribute("eventMap", testCase.eventMap)
+                    setHeader("sets", testCase.setList)
+                }
         val device2 = FhemDevice(xmlListDevice2)
         device2.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device2)).thenReturn("off")
         `when`(deviceHookProvider.invertState(device2)).thenReturn(true)
 
         // expect
-        assertThat(onOffBehavior.isOn(device)).isEqualTo(testCase.expected)
         assertThat(onOffBehavior.isOn(device2)).isEqualTo(!testCase.expected)
     }
 
@@ -121,7 +142,10 @@ class OnOffBehaviorTest {
         assertThat(supports).isEqualTo(testCase.expectedSupports)
     }
 
-    data class IsOnTestCase(val state: String, val expected: Boolean)
+    data class IsOnTestCase(val state: String,
+                            val eventMap: String = "",
+                            val setList: String = "",
+                            val expected: Boolean)
 
     data class HookProviderTestCase(val hook: ButtonHook, val isOn: Boolean, val expected: Boolean)
 
@@ -176,7 +200,9 @@ class OnOffBehaviorTest {
                     IsOnTestCase(state = "off", expected = false),
                     IsOnTestCase(state = "dim20%", expected = true),
                     IsOnTestCase(state = "off-for-timer 2000", expected = false),
-                    IsOnTestCase(state = "on-for-timer 2000", expected = true)
+                    IsOnTestCase(state = "on-for-timer 2000", expected = true),
+                    IsOnTestCase(state = "B0", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = false),
+                    IsOnTestCase(state = "B1", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = true)
             )
         }
 

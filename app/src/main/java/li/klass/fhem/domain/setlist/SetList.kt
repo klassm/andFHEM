@@ -50,8 +50,6 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
 
     fun contains(vararg keys: String): Boolean = contains(keys.toList())
 
-    fun containsAnyOf(toSearch: Set<String>): Boolean = toSearch.any { entries.containsKey(it) }
-
     fun contains(keys: Iterable<String>): Boolean =
             keys.any { entries.containsKey(it) }
 
