@@ -283,8 +283,8 @@
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
     <string name="update">Aktualisieren</string>
-    <string name="loading">Lade\\u2026</string>
-    <string name="executing">Führe aus\\u2026</string>
+    <string name="loading">Lade\u2026</string>
+    <string name="executing">Führe aus\u2026</string>
     <string name="updatingDeviceList">Aktualisiere Geräteliste \\u2026</string>
     <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s\\u2026</string>
     <string name="help">Hilfe</string>
