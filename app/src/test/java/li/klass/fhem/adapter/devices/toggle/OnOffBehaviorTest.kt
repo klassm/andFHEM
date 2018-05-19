@@ -24,6 +24,9 @@
 
 package li.klass.fhem.adapter.devices.toggle
 
+import com.nhaarman.mockito_kotlin.createinstance.createInstance
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.whenever
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
@@ -32,16 +35,19 @@ import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.DateTime
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 
 @RunWith(DataProviderRunner::class)
 class OnOffBehaviorTest {
@@ -54,6 +60,19 @@ class OnOffBehaviorTest {
     @Mock
     private lateinit var deviceHookProvider: DeviceHookProvider
 
+    @Mock
+    private lateinit var deviceConfigurationProvider: DeviceConfigurationProvider
+
+    @Mock
+    private lateinit var deviceConfiguration: DeviceConfiguration
+
+    @Before
+    fun setUp() {
+        whenever(deviceConfigurationProvider.configurationFor(
+                argThat<FhemDevice> { it is FhemDevice } ?: createInstance())
+        ).doReturn(deviceConfiguration)
+    }
+
     @UseDataProvider("isOnProvider")
     @Test
     fun should_recognize_on_and_off_states_correctly(testCase: IsOnTestCase) {
@@ -65,6 +84,8 @@ class OnOffBehaviorTest {
                     setAttribute("eventMap", testCase.eventMap)
                     setHeader("sets", testCase.setList)
                 }
+        whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
+        whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
         val device = FhemDevice(xmlListDevice)
         device.xmlListDevice.setInternal("STATE", testCase.state)
@@ -85,6 +106,8 @@ class OnOffBehaviorTest {
                     setAttribute("eventMap", testCase.eventMap)
                     setHeader("sets", testCase.setList)
                 }
+        whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
+        whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
         val device = FhemDevice(xmlListDevice)
         device.xmlListDevice.setInternal("STATE", testCase.state)
@@ -103,6 +126,9 @@ class OnOffBehaviorTest {
                     setAttribute("eventMap", testCase.eventMap)
                     setHeader("sets", testCase.setList)
                 }
+        whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
+        whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
+
         val device2 = FhemDevice(xmlListDevice2)
         device2.xmlListDevice.setInternal("STATE", testCase.state)
         `when`(deviceHookProvider.getOffStateName(device2)).thenReturn("off")
@@ -145,7 +171,9 @@ class OnOffBehaviorTest {
     data class IsOnTestCase(val state: String,
                             val eventMap: String = "",
                             val setList: String = "",
-                            val expected: Boolean)
+                            val expected: Boolean,
+                            val additionalOnStates: Set<String> = emptySet(),
+                            val additionalOffStates: Set<String> = emptySet())
 
     data class HookProviderTestCase(val hook: ButtonHook, val isOn: Boolean, val expected: Boolean)
 
@@ -199,10 +227,12 @@ class OnOffBehaviorTest {
                     IsOnTestCase(state = "on", expected = true),
                     IsOnTestCase(state = "off", expected = false),
                     IsOnTestCase(state = "dim20%", expected = true),
-                    IsOnTestCase(state = "off-for-timer 2000", expected = false),
-                    IsOnTestCase(state = "on-for-timer 2000", expected = true),
+                    IsOnTestCase(state = "off-for-timer 2000", setList = "off-for-timer", expected = false),
+                    IsOnTestCase(state = "on-for-timer 2000", setList = "on-for-timer", expected = true),
                     IsOnTestCase(state = "B0", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = false),
-                    IsOnTestCase(state = "B1", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = true)
+                    IsOnTestCase(state = "B1", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = true),
+                    IsOnTestCase(state = "100", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = true),
+                    IsOnTestCase(state = "0", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = false)
             )
         }
 

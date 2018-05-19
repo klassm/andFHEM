@@ -1,6 +1,12 @@
 {
   "sensorDevice": false,
   "defaultGroup": "WINDOW",
+  "additionalOnStateNames": [
+    "100"
+  ],
+  "additionalOffStateNames": [
+    "0"
+  ],
   "sanitise": {
     "__general__": {
       "addAttributesIfNotPresent": [

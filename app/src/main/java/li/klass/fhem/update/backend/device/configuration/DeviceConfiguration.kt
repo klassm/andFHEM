@@ -54,6 +54,14 @@ data class DeviceConfiguration(
         @Optional
         val internals: Set<ViewItemConfig> = emptySet(),
 
+        @SerialName("additionalOnStateNames")
+        @Optional
+        val additionalOnStateNames: Set<String> = emptySet(),
+
+        @SerialName("additionalOffStateNames")
+        @Optional
+        val additionalOffStateNames: Set<String> = emptySet(),
+
         @SerialName("showStateInOverview")
         @Optional
         val isShowStateInOverview: Boolean = true,

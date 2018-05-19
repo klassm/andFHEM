@@ -28,12 +28,15 @@ import com.google.common.base.Optional
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class OnOffBehavior
-@Inject constructor(val hookProvider: DeviceHookProvider) {
+@Inject constructor(private val hookProvider: DeviceHookProvider,
+                    private val deviceConfigurationProvider: DeviceConfigurationProvider
+) {
 
     fun isOnByState(device: FhemDevice): Boolean = !isOffByState(device)
 
@@ -43,8 +46,8 @@ class OnOffBehavior
         if (internalState.equals("???", ignoreCase = true)) {
             return true
         }
-
-        return (getOffStateNames(device) + "off").any { internalState.contains(it) }
+        val firstStatePart = internalState.split(" ")[0] // important for on / off-for-timer
+        return (getOffStateNames(device) + "off").any { firstStatePart == it }
     }
 
     fun isOn(device: FhemDevice): Boolean {
@@ -67,7 +70,9 @@ class OnOffBehavior
         val offStateNameByHook = hookProvider.getOffStateName(device)
         val offStateNames = availableOffStateNames + eventMapNamesFor(availableOffStateNames, device)
         val existingOffStateNames = existingStatesOfIncludingEventMap(device, offStateNames)
-        return Optional.fromNullable(offStateNameByHook).asSet() + existingOffStateNames
+        return Optional.fromNullable(offStateNameByHook).asSet() +
+                existingOffStateNames +
+                deviceConfigurationProvider.configurationFor(device).additionalOffStateNames
     }
 
     fun getOffStateName(device: FhemDevice): String? = hookProvider.getOffStateName(device)
@@ -79,7 +84,9 @@ class OnOffBehavior
         val onStateNameByHook = hookProvider.getOnStateName(device)
         val onStateNames = availableOnStateNames + eventMapNamesFor(availableOnStateNames, device)
         val existingOnStateNames = existingStatesOfIncludingEventMap(device, onStateNames)
-        return Optional.fromNullable(onStateNameByHook).asSet() + existingOnStateNames + "on"
+        return Optional.fromNullable(onStateNameByHook).asSet() +
+                existingOnStateNames +
+                deviceConfigurationProvider.configurationFor(device).additionalOnStateNames
     }
 
     private fun existingStatesOfIncludingEventMap(device: FhemDevice, offStateNames: Set<String>): Set<String> {
@@ -109,7 +116,7 @@ class OnOffBehavior
     fun supports(device: FhemDevice): Boolean = hookProvider.buttonHookFor(device) != ButtonHook.DEVICE_VALUES && getOnStateName(device) != null && getOffStateName(device) != null
 
     companion object {
-        val availableOnStateNames = setOf("on", "ON", "ein")
-        val availableOffStateNames = setOf("off", "OFF", "aus")
+        val availableOnStateNames = setOf("on", "ON", "ein", "on-for-timer", "on-till")
+        val availableOffStateNames = setOf("off", "OFF", "aus", "off-for-timer", "off-till")
     }
 }
