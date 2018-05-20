@@ -232,7 +232,9 @@ class OnOffBehaviorTest {
                     IsOnTestCase(state = "B0", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = false),
                     IsOnTestCase(state = "B1", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = true),
                     IsOnTestCase(state = "100", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = true),
-                    IsOnTestCase(state = "0", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = false)
+                    IsOnTestCase(state = "0", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = false),
+                    IsOnTestCase(state = "ON", setList = "on off", expected = true),
+                    IsOnTestCase(state = "OFF", setList = "on off", expected = false)
             )
         }
 
