@@ -1,1 +1,1 @@
-* Repariere Anzeige von on Zustand (teilweise angezeigt als on-for-timer)
+TODO
