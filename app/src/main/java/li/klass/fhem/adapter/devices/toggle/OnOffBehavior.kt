@@ -66,11 +66,11 @@ class OnOffBehavior
                 else -> isOn(device)
             }
 
-    private fun getOffStateNames(device: FhemDevice): Set<String> {
+    private fun getOffStateNames(device: FhemDevice): List<String> {
         val offStateNameByHook = hookProvider.getOffStateName(device)
         val offStateNames = availableOffStateNames + eventMapNamesFor(availableOffStateNames, device)
         val existingOffStateNames = existingStatesOfIncludingEventMap(device, offStateNames)
-        return Optional.fromNullable(offStateNameByHook).asSet() +
+        return Optional.fromNullable(offStateNameByHook).asSet().toList() +
                 existingOffStateNames +
                 deviceConfigurationProvider.configurationFor(device).additionalOffStateNames
     }
@@ -80,22 +80,23 @@ class OnOffBehavior
             ?: device.eventMap.getFirstResolvingTo(device.webCmd, "off")
             ?: if (device.webCmd.contains("off")) "off" else null
 
-    private fun getOnStateNames(device: FhemDevice): Set<String> {
+    private fun getOnStateNames(device: FhemDevice): List<String> {
         val onStateNameByHook = hookProvider.getOnStateName(device)
         val onStateNames = availableOnStateNames + eventMapNamesFor(availableOnStateNames, device)
         val existingOnStateNames = existingStatesOfIncludingEventMap(device, onStateNames)
-        return Optional.fromNullable(onStateNameByHook).asSet() +
+        return Optional.fromNullable(onStateNameByHook).asSet().toList() +
                 existingOnStateNames +
                 deviceConfigurationProvider.configurationFor(device).additionalOnStateNames
     }
 
-    private fun existingStatesOfIncludingEventMap(device: FhemDevice, offStateNames: Set<String>): Set<String> {
+    private fun existingStatesOfIncludingEventMap(device: FhemDevice, offStateNames: Set<String>): List<String> {
         val states = device.setList.existingStatesOf(offStateNames)
         val reverseEventMapStates = states
                 .map { device.getReverseEventMapStateFor(it) }
                 .filter { it != null }
                 .map { it!! }
-        return states + reverseEventMapStates
+        val comparator = (compareBy<String>({ it == "on" }, { it == "off" }, { it }))
+        return (states + reverseEventMapStates).sortedWith(comparator).asReversed()
     }
 
     fun getOnStateName(device: FhemDevice): String? = hookProvider.getOnStateName(device)
@@ -103,7 +104,7 @@ class OnOffBehavior
             ?: device.eventMap.getFirstResolvingTo(device.webCmd, "on")
             ?: if (device.webCmd.contains("on")) "on" else null
 
-    fun getOnOffStateNames(device: FhemDevice): Set<String> =
+    fun getOnOffStateNames(device: FhemDevice): List<String> =
             getOnStateNames(device) + getOffStateNames(device)
 
     private fun eventMapNamesFor(stateNames: Set<String>, device: FhemDevice): List<String> {
