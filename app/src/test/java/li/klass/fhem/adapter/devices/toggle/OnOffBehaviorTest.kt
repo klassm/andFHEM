@@ -234,7 +234,9 @@ class OnOffBehaviorTest {
                     IsOnTestCase(state = "100", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = true),
                     IsOnTestCase(state = "0", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = false),
                     IsOnTestCase(state = "ON", setList = "on off", expected = true),
-                    IsOnTestCase(state = "OFF", setList = "on off", expected = false)
+                    IsOnTestCase(state = "OFF", setList = "on off", expected = false),
+                    IsOnTestCase(state = "off", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = false),
+                    IsOnTestCase(state = "on", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = true)
             )
         }
 

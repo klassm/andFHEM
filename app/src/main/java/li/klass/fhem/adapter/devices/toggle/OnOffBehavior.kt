@@ -46,8 +46,10 @@ class OnOffBehavior
         if (internalState.equals("???", ignoreCase = true)) {
             return true
         }
-        val firstStatePart = internalState.split(" ")[0] // important for on / off-for-timer
-        return (getOffStateNames(device) + "off").any { firstStatePart.equals(it, ignoreCase = true) }
+        val stateToUse = if (internalState.contains("-for-timer")) {
+            internalState.split(" ")[0] // important for on / off-for-timer
+        } else internalState
+        return (getOffStateNames(device) + "off").any { stateToUse.equals(it, ignoreCase = true) }
     }
 
     fun isOn(device: FhemDevice): Boolean {

@@ -1,0 +1,47 @@
+<FHZINFO>
+    <ESPEasy_LIST>
+        <ESPEasy name="device" state="off"
+                 sets="on:noArg off:noArg off:noArg off:noArg buzzer candle:noArg clearreadings:noArg dmx dots erase:noArg event gpio help:buzzer,candle,clearreadings,dmx,dots,erase,event,gpio,help,inputswitchstate,irsend,lcd,lcdcmd,lights,longpulse,longpulse_ms,mcpgpio,mcplongpulse,mcppulse,motorshieldcmd,neopixel,neopixelall,neopixelline,nfx,oled,oledcmd,oledframedcmd,pcapwm,pcfgpio,pcflongpulse,pcfpulse,pulse,pwm,pwmfade,raw,reboot,reset,rtttl,serialsend,servo,status,statusrequest,tone inputswitchstate:noArg irsend lcd lcdcmd lights longpulse longpulse_ms mcpgpio mcplongpulse mcppulse motorshieldcmd neopixel neopixelall:colorpicker,HSVp neopixelline nfx oled oledcmd oledframedcmd pcapwm pcfgpio pcflongpulse pcfpulse pulse pwm pwmfade:colorpicker,HSVp raw reboot:noArg reset:noArg rtttl serialsend servo status statusrequest:noArg tone"
+                 attrs="alias comment:textField-long eventMap:textField-long group room suppressReading userReadings:textField-long verbose:0,1,2,3,4,5 allowedIPs authentication:1,0 autocreate:1,0 autosave:1,0 colorpicker:RGB,HSV,HSVp deniedIPs disable:1,0 displayTextEncode:1,0 displayTextWidth do_not_notify:0,1 httpReqTimeout IODev Interval adjustValue parseCmdResponse pollGPIOs presenceCheck:1,0 readingPrefixGPIO readingSuffixGPIOState readingSwitchText:1,0 setState:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,100 combineDevices rgbGPIOs maxQueueSize:10,25,50,100,250,500,1000,2500,5000,10000,25000,50000,100000 maxHttpSessions:0,1,2,3,4,5,6,7,8,9 resendFailedCmd:0,1 mapLightCmds colorpickerCTww colorpickerCTcw event-on-change-reading event-on-update-reading event-aggregator event-min-interval stateFormat:textField-long timestamp-on-change-reading oldreadings DbLogExclude DbLogInclude cmdIcon devStateIcon devStateStyle fp_Grundriss icon sortby webCmd webCmdLabel:textField-long widgetOverride userattr">
+            <INT key="DEF" value="192.168.3.154 80 espBridge sonoffRF02_Relay"/>
+            <INT key="ESP_BUILD" value="147"/>
+            <INT key="ESP_SLEEP" value="0"/>
+            <INT key="ESP_UNIT" value="5"/>
+            <INT key="ESP_VERSION" value="9"/>
+            <INT key="HOST" value="192.168.3.154"/>
+            <INT key="IDENT" value="sonoffRF02_Relay"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="LASTInputDev" value="espBridge"/>
+            <INT key="MSGCNT" value="667"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NOTIFYDEV" value="global"/>
+            <INT key="NR" value="146"/>
+            <INT key="NTFY_ORDER" value="50-device"/>
+            <INT key="PORT" value="80"/>
+            <INT key="STATE" value="off"/>
+            <INT key="SUBTYPE" value="device"/>
+            <INT key="TYPE" value="ESPEasy"/>
+            <INT key="VERSION" value="1.38"/>
+            <INT key="espBridge_MSGCNT" value="667"/>
+            <INT key="espBridge_TIME" value="2018-05-21 10:45:05"/>
+            <INT key="IODev" value="espBridge"/>
+            <ATTR key="IODev" value="espBridge"/>
+            <ATTR key="Interval" value="300"/>
+            <ATTR key="alias" value="Projektionswecker"/>
+            <ATTR key="eventMap"
+                  value="/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/"/>
+            <ATTR key="group" value="ESPEasy Device"/>
+            <ATTR key="icon" value="hue_filled_outlet"/>
+            <ATTR key="presenceCheck" value="1"/>
+            <ATTR key="readingSwitchText" value="1"/>
+            <ATTR key="room" value="ESPEasy,Schlafzimmer"/>
+            <ATTR key="setState" value="3"/>
+            <ATTR key="stateFormat"
+                  value="{ReadingsVal($name,&quot;presence&quot;,&quot;&quot;) eq &quot;absent&quot; ? &quot;absent&quot; : ReadingsVal($name,&quot;Switch&quot;,&quot;&quot;)}"/>
+            <ATTR key="webCmd" value=":"/>
+            <STATE key="Switch" value="off" measured="2018-05-21 10:45:05"/>
+            <STATE key="presence" value="present" measured="2018-05-21 10:44:23"/>
+            <STATE key="state" value="Swi: off" measured="2018-05-21 10:45:05"/>
+        </ESPEasy>
+    </ESPEasy_LIST>
+</FHZINFO>

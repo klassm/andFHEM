@@ -79,11 +79,13 @@ public abstract class DeviceXMLParsingBase {
     @Rule
     public MockitoRule mockitoRule = new MockitoRule();
 
+    protected ApplicationComponent applicationComponent;
+
     @Before
     public void before() throws Exception {
         AndFHEMApplication application = mock(AndFHEMApplication.class);
         when(application.getApplicationContext()).thenReturn(context);
-        ApplicationComponent applicationComponent = DaggerApplicationComponent.builder()
+        applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(application))
                 .databaseModule(new DatabaseModule(application)).build();
 

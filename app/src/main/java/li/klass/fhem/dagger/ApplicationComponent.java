@@ -131,6 +131,8 @@ public interface ApplicationComponent {
 
     Application getApplication();
 
+    OnOffBehavior getOnOffBehavior();
+
     void inject(DeviceFunctionalityOrderPreference object);
 
     void inject(AndFHEMMainActivity object);
