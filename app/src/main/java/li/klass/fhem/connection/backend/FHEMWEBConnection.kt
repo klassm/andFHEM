@@ -62,10 +62,10 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         get() = serverSpec?.password ?: ""
 
     override fun executeCommand(command: String, context: Context): RequestResult<String> {
-        LOG.info("executeTask command " + command)
+        LOG.info("executeTask command $command")
         try {
             ProviderInstaller.installIfNeeded(context);
-        } catch (e: GooglePlayServicesRepairableException) {
+        } catch (e: Exception) {
             LOG.error("cannot install play providers", e)
         }
 
@@ -81,7 +81,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             reader = InputStreamReader(response.content, Charsets.UTF_8)
             val content = CharStreams.toString(reader)
             if (content.contains("<title>") || content.contains("<div id=")) {
-                LOG.error("found strange content: " + content)
+                LOG.error("found strange content: $content")
                 ErrorHolder.setError("found strange content in URL $urlSuffix: \r\n\r\n$content")
                 return RequestResult(INVALID_CONTENT)
             }
@@ -116,7 +116,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
             val url = serverUrl + if (urlSuffix?.contains("cmd=") == true) {
                 val csrfToken = findCsrfToken(serverUrl) ?: ""
-                urlSuffix + "&fwcsrf=" + csrfToken
+                "$urlSuffix&fwcsrf=$csrfToken"
             } else urlSuffix
             LOG.info("accessing URL {}", url)
 
@@ -143,7 +143,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     private fun findCsrfToken(serverUrl: String): String? {
         try {
-            val response = doGet(serverUrl + "?room=notExistingJustToLoadCsrfToken")
+            val response = doGet("$serverUrl?room=notExistingJustToLoadCsrfToken")
             val value = response.headers.getFirstHeaderStringValue("X-FHEM-csrfToken")
             response.content.close()
             return value
