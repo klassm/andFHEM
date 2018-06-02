@@ -26,7 +26,7 @@ package li.klass.fhem.domain
 
 import li.klass.fhem.domain.core.DeviceFunctionality
 
-enum class CulHmSubType private constructor(val functionality: DeviceFunctionality) {
+enum class CulHmSubType(val functionality: DeviceFunctionality) {
     DIMMER(DeviceFunctionality.DIMMER),
     SWITCH(DeviceFunctionality.SWITCH),
     SMOKE_DETECTOR(DeviceFunctionality.SMOKE_DETECTOR),

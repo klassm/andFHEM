@@ -59,10 +59,10 @@ constructor(
 
     init {
         addStateAttributeAction(MODE_STATE_NAME, CulHmHeatingModeDetailAction(stateUiService))
-        addStateAttributeAction("content", KFM100ContentView())
+        addStateAttributeAction("state", KFM100ContentView())
     }
 
-    override fun getDeviceType(): String = "CUL_HM"
+    override fun getDeviceType() = "CUL_HM"
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return ImmutableList.of<ActionCardAction>(
