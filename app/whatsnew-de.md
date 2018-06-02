@@ -1,1 +1,1 @@
-TODO
+* Menüpunkt zur Anzeige des FHEM Logs (nur FHEMWEB)
