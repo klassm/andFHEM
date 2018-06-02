@@ -1,1 +1,1 @@
-* Add viewing of FHEM log to the menu (FHEMWEB only)
+TODO
