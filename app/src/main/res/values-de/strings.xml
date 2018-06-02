@@ -639,4 +639,10 @@
     <string name="fcm_history_no_updates">Keine Aktualisierungen gefunden.</string>
     <string name="fcm_history_date_label">Daten von</string>
     <string name="fcm_history_received">(Empfangen: %s)</string>
+
+    <string name="fhem_log">FHEM Log</string>
+    <string name="fhem_log_error">Kann das FHEM Log nicht laden. Details siehe App Log.</string>
+    <string name="fhem_log_error_permission_external_storage">Fehlende Berechtigung zum Schreiben
+        der Speicherkarte.
+    </string>
 </resources>

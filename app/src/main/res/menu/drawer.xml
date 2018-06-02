@@ -32,6 +32,10 @@
             android:id="@+id/fcm_history"
             android:icon="@drawable/ic_menu_notification"
             android:title="@string/fcm_history" />
+        <item
+                android:id="@+id/fhem_log"
+                android:icon="@drawable/ic_action_storage"
+                android:title="@string/fhem_log"/>
     </group>
     <group android:id="@+id/secondary_items">
         <item

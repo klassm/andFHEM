@@ -26,7 +26,6 @@ package li.klass.fhem.connection.backend
 
 import android.content.Context
 import android.net.TrafficStats
-import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.security.ProviderInstaller
 import com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport
 import com.google.api.client.http.GenericUrl
@@ -63,47 +62,45 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     override fun executeCommand(command: String, context: Context): RequestResult<String> {
         LOG.info("executeTask command $command")
+        val urlSuffix = generateCommandUrlSuffix(command)
+        val result = request(context, urlSuffix)
+        if (result.content.contains("<title>") || result.content.contains("<div id=")) {
+            LOG.error("found strange content: ${result.content}")
+            ErrorHolder.setError("found strange content in URL $urlSuffix: \r\n\r\n${result.content}")
+            return RequestResult(INVALID_CONTENT)
+        }
+        return result
+    }
+
+    fun request(context: Context, urlSuffix: String): RequestResult<String> {
         try {
             ProviderInstaller.installIfNeeded(context);
         } catch (e: Exception) {
             LOG.error("cannot install play providers", e)
         }
 
-        val urlSuffix = generateUrlSuffix(command)
-
-        var reader: InputStreamReader? = null
         try {
             val response = executeRequest(urlSuffix, context)
             if (response.error != null) {
                 return RequestResult(response.error)
             }
 
-            reader = InputStreamReader(response.content, Charsets.UTF_8)
-            val content = CharStreams.toString(reader)
-            if (content.contains("<title>") || content.contains("<div id=")) {
-                LOG.error("found strange content: $content")
-                ErrorHolder.setError("found strange content in URL $urlSuffix: \r\n\r\n$content")
-                return RequestResult(INVALID_CONTENT)
+            InputStreamReader(response.content, Charsets.UTF_8).use {
+                return RequestResult(CharStreams.toString(it))
             }
-
-            return RequestResult(content)
         } catch (e: Exception) {
             LOG.error("cannot handle result", e)
             return RequestResult(INTERNAL_ERROR)
-        } finally {
-            close(reader)
         }
     }
 
-    private fun generateUrlSuffix(command: String): String? {
-        var urlSuffix: String? = null
+    private fun generateCommandUrlSuffix(command: String): String {
         try {
-            urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8")
+            return "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8")
         } catch (e: UnsupportedEncodingException) {
             LOG.error("unsupported encoding", e)
+            throw RuntimeException(e)
         }
-
-        return urlSuffix
     }
 
     fun executeRequest(urlSuffix: String?, context: Context): RequestResult<InputStream> =

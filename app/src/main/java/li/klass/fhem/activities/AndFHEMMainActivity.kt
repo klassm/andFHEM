@@ -58,11 +58,14 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.UpdateTimerTask
+import li.klass.fhem.activities.drawer.actions.DrawerActions
 import li.klass.fhem.billing.BillingService
 import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
+import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.Actions.IS_PREMIUM
 import li.klass.fhem.constants.BundleExtraKeys
@@ -175,6 +178,8 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     lateinit var licenseService: LicenseService
     @Inject
     lateinit var themeInitializer: ThemeInitializer
+    @Inject
+    lateinit var drawerActions: DrawerActions
 
     private var broadcastReceiver: Receiver? = null
 
@@ -278,41 +283,11 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         drawer_layout.closeDrawer(GravityCompat.START)
 
-        when (menuItem.itemId) {
-            R.id.menu_settings -> {
-                val settingsIntent = Intent(this, SettingsActivity::class.java)
-                startActivityForResult(settingsIntent, Activity.RESULT_OK)
-                return true
-            }
-            R.id.menu_help -> {
-                val helpUri = Uri.parse(ApplicationUrls.HELP_PAGE)
-                val helpIntent = Intent(Intent.ACTION_VIEW, helpUri)
-                startActivity(helpIntent)
-                return true
-            }
-            R.id.menu_premium -> {
-                val premiumIntent = Intent(this, PremiumActivity::class.java)
-                startActivity(premiumIntent)
-                return true
-            }
-            R.id.menu_about -> {
-                val version: String
-                version = try {
-                    val pkg = packageName
-                    packageManager.getPackageInfo(pkg, 0).versionName
-                } catch (e: PackageManager.NameNotFoundException) {
-                    "?"
-                }
-
-                DialogUtil.showAlertDialog(this, R.string.about,
-                        "Matthias Klass\r\nVersion: " + version + "\r\n" +
-                                "andFHEM.klass.li\r\nandFHEM@klass.li\r\n" + packageName)
-                return true
-            }
+        if (drawerActions.handle(this, menuItem.itemId)) {
+            return true
         }
 
         val fragmentType = FragmentType.getFragmentFor(menuItem.itemId) ?: return false
-
         switchToFragment(fragmentType, Bundle())
 
         return true
@@ -328,6 +303,10 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         nav_drawer.setNavigationItemSelectedListener(this)
         if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
             nav_drawer.menu.removeItem(R.id.menu_premium)
+        }
+
+        if (connectionService.getCurrentServer()?.serverType != ServerType.FHEMWEB) {
+            nav_drawer.menu.removeItem(R.id.fhem_log)
         }
 
         licenseService.isPremium(object : IsPremiumListener {
