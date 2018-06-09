@@ -1,1 +1,1 @@
-TODO
+* Support any log formats for the FHEM logging configuration
