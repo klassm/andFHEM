@@ -93,9 +93,9 @@ dependencies {
 
     implementation fileTree(dir: './libs', include: '*.jar')
     implementation "com.google.firebase:firebase-appindexing:15.0.1"
-    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    implementation "com.google.firebase:firebase-messaging:17.0.0"
     implementation "com.google.firebase:firebase-ads:15.0.1"
-    implementation "com.google.firebase:firebase-perf:15.1.0"
+    implementation "com.google.firebase:firebase-perf:16.0.0"
     implementation 'commons-net:commons-net:3.3'
     implementation 'commons-codec:commons-codec:1.11'
     implementation 'com.google.code.gson:gson:2.8.2'
