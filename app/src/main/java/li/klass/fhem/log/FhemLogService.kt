@@ -32,6 +32,7 @@ import kotlinx.serialization.toUtf8Bytes
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DateFormatUtil
 import li.klass.fhem.util.io.FileSystemService
 import org.joda.time.LocalDate
@@ -43,7 +44,8 @@ import javax.inject.Inject
 
 class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataConnectionSwitch,
                                          private val application: Application,
-                                         private val fileSystemService: FileSystemService) {
+                                         private val fileSystemService: FileSystemService,
+                                         private val deviceListService: DeviceListService) {
 
     @SuppressLint("SetWorldReadable")
     fun getLogAndWriteToTemporaryFile(): File? {
@@ -60,15 +62,24 @@ class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataC
     private fun getLog(): String? {
         return try {
             val today = LocalDate.now()
-            val thisMonth = today.toString(yearMonthDateFormat)
+            val thisMonth = "fhem-${today.toString(yearMonthDateFormat)}.log";
+
+            val logfileName = (deviceListService.getDeviceForName("Logfile")
+                    ?.xmlListDevice?.getInternal("currentlogfile")
+                    ?.replace("./log/", "")
+                    ?: thisMonth)
+
             val fhemWebConnection = dataConnectionSwitch.getProviderFor() as FHEMWEBConnection
-            val content = fhemWebConnection.request(applicationContext, "/FileLog_logWrapper?dev=Logfile&type=text&file=fhem-$thisMonth.log")
-                    .content
+            val content = fhemWebConnection.request(
+                    applicationContext,
+                    "/FileLog_logWrapper?dev=Logfile&type=text&file=$logfileName"
+            ).content
+
             content?.let {
                 val todayWithDots = today.toString(yearMonthDateFormatWithDot)
                 it
                         .replace(Regex("<br/>.+?(?=</html>)</html>"), "")
-                        .replace(Regex("^.+?(?=<br>2018.06)<br>", RegexOption.DOT_MATCHES_ALL), "")
+                        .replace(Regex("^.+?(?=<br>${todayWithDots})<br>", RegexOption.DOT_MATCHES_ALL), "")
             }
         } catch (e: Exception) {
             LOG.error("getLog - cannot retrieve application log", e)
