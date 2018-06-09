@@ -1,1 +1,1 @@
-* Support any log formats for the FHEM logging configuration
+* Short correct group for HM-Sen-Wa-Od devices

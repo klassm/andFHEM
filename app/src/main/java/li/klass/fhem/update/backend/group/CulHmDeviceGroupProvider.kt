@@ -26,6 +26,7 @@ package li.klass.fhem.update.backend.group
 
 import android.content.Context
 import li.klass.fhem.domain.CulHmSubType
+import li.klass.fhem.domain.core.DeviceFunctionality
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,8 +37,17 @@ constructor() : DeviceGroupProvider("CUL_HM") {
 
     override fun groupFor(xmlListDevice: XmlListDevice, context: Context): String? {
         val subTypeAttribute = xmlListDevice.getAttribute("subType") ?: return null
+        val model = xmlListDevice.getAttribute("model")
+        val functionality = CulHmSubType.subTypeFor(subTypeAttribute)?.functionality
 
-        return CulHmSubType.subTypeFor(subTypeAttribute)
-                ?.functionality?.getCaptionText(context)
+        return (functionality ?: functionalityForModel(model))
+                ?.getCaptionText(context)
+    }
+
+    private fun functionalityForModel(model: String?): DeviceFunctionality? {
+        return when (model) {
+            "HM-Sen-Wa-Od" -> DeviceFunctionality.FILL_STATE
+            else -> null
+        }
     }
 }

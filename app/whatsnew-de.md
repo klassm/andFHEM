@@ -1,1 +1,1 @@
-* Unterstütze beliebige Log-Formate für die FHEM Log Konfiguration
+* Zeige korrekte Gruppe für Hm-Sen-Wa-Od Geräte
