@@ -1,1 +1,1 @@
-* Deaktiviere Night-Mode für Android < 21, repariere Detailansicht für Android < 21
+TODO
