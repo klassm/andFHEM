@@ -24,7 +24,7 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
+    <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/whitegrey"/>
         </shape>
@@ -32,7 +32,7 @@
 
     <item android:bottom="1.5dp">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white"/>
+            <solid android:color="?backgroundColorSecondary"/>
         </shape>
     </item>
-  </layer-list>
+</layer-list>

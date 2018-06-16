@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.strategy.ViewStrategy
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class GenericOverviewDetailDeviceAdapter @Inject constructor(
@@ -50,7 +51,14 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
         genericDetailCardProviders.providers.sortedBy { it.ordering() }
-                .map { it.provideCard(device, context, connectionId) }
+                .map {
+                    try {
+                        it.provideCard(device, context, connectionId)
+                    } catch (e: Exception) {
+                        logger.error("getDeviceDetailView(device=${device.name}) - error while providing card of ${it.javaClass.name}", e)
+                        null
+                    }
+                }
                 .filter { it != null }
                 .forEach { linearLayout.addView(it) }
 
@@ -60,5 +68,9 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
     override fun fillOverviewStrategies(overviewStrategies: MutableList<ViewStrategy>) {
         super.fillOverviewStrategies(overviewStrategies)
         strategyProvider.strategies.forEach { overviewStrategies.add(it) }
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(GenericOverviewDetailDeviceAdapter::class.java)
     }
 }
