@@ -2,7 +2,10 @@ package li.klass.fhem.settings.type
 
 import android.app.Activity
 import android.content.SharedPreferences
+import android.os.Build
 import android.preference.Preference
+import android.preference.PreferenceManager
+import android.support.v7.app.AppCompatDelegate
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.settings.SettingsKeys
@@ -22,6 +25,10 @@ class AppearanceTypeHandler @Inject constructor()
         deviceColumnWidthPreference.setMinimumValue(200)
         deviceColumnWidthPreference.setDefaultValue(DeviceListFragment.DEFAULT_COLUMN_WIDTH)
         deviceColumnWidthPreference.setMaximumValue(800)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            preferenceFinder(SettingsKeys.THEME).isEnabled = false
+        }
     }
 
     companion object {

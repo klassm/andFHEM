@@ -24,6 +24,7 @@
 
 package li.klass.fhem.activities
 
+import android.os.Build
 import android.support.v7.app.AppCompatDelegate
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
@@ -31,7 +32,14 @@ import javax.inject.Inject
 
 class ThemeInitializer @Inject constructor(val applicationProperties: ApplicationProperties) {
     fun init() {
-        val mode = applicationProperties.getStringSharedPreference(SettingsKeys.THEME)
+        AppCompatDelegate.setDefaultNightMode(getMode())
+    }
+
+    private fun getMode(): Int {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return AppCompatDelegate.MODE_NIGHT_NO;
+        }
+        return applicationProperties.getStringSharedPreference(SettingsKeys.THEME)
                 ?.let {
                     when (it) {
                         "DARK" -> AppCompatDelegate.MODE_NIGHT_YES
@@ -39,6 +47,5 @@ class ThemeInitializer @Inject constructor(val applicationProperties: Applicatio
                         else -> AppCompatDelegate.MODE_NIGHT_AUTO
                     }
                 } ?: AppCompatDelegate.MODE_NIGHT_AUTO
-        AppCompatDelegate.setDefaultNightMode(mode)
     }
 }
