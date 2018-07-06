@@ -1,1 +1,1 @@
-TODO
+* Widget Update auf Android Mechanismus umgebaut
