@@ -195,18 +195,6 @@
         </receiver>
 
         <service
-            android:name=".appwidget.update.AppWidgetUpdateIntentService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET" />
-                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
-                <action android:name="li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS" />
-                <action android:name="li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE" />
-                <action android:name="li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED" />
-            </intent-filter>
-        </service>
-        <service
             android:name=".service.intent.ExternalApiService"
             android:exported="true"
             android:permission="li.klass.fhem.permissions.EXTERNAL">

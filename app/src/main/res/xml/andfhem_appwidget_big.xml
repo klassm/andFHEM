@@ -28,8 +28,8 @@
                     xmlns:tools="http://schemas.android.com/tools"
                     android:minWidth="142dp"
                     android:minHeight="142dp"
-                    android:updatePeriodMillis="86400"
-    android:configure="li.klass.fhem.appwidget.ui.selection.BigWidgetSelectionActivity"
+                    android:updatePeriodMillis="1800000"
+                    android:configure="li.klass.fhem.appwidget.ui.selection.BigWidgetSelectionActivity"
                     android:initialLayout="@layout/appwidget_loading"
                     android:widgetCategory="keyguard|home_screen"
                     tools:ignore="UnusedAttribute">

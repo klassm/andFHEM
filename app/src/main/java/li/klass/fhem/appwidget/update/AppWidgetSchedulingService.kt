@@ -46,25 +46,10 @@ class AppWidgetSchedulingService @Inject constructor(
         private val deviceListService: DeviceListService
 ) {
 
+    @Deprecated(message = "To be removed when cancelling of widget updates is released")
     fun cancelUpdating(appWidgetId: Int) {
         val updatePendingIntent = updatePendingIndentForWidgetId(appWidgetId)
         alarmManager.cancel(updatePendingIntent)
-    }
-
-    fun scheduleUpdate(widgetConfiguration: WidgetConfiguration) {
-        val interval = updateIntervalProvider.getConnectionDependentUpdateInterval()
-        if (interval > 0) {
-            LOG.debug(String.format("scheduling widget update %s => %s", widgetConfiguration.toString(), (interval / 1000).toString() + "s"))
-
-            val pendingIntent = updatePendingIndentForWidgetId(widgetConfiguration.widgetId)
-            val now = System.currentTimeMillis()
-            val firstRun = now + interval
-
-            cancelUpdating(widgetConfiguration.widgetId)
-            if (pendingIntent != null) {
-                alarmManager.setRepeating(AlarmManager.RTC, firstRun, interval, pendingIntent)
-            }
-        }
     }
 
     fun shouldUpdateDeviceList(connectionId: String?): Boolean {
@@ -94,6 +79,7 @@ class AppWidgetSchedulingService @Inject constructor(
         return shouldUpdate
     }
 
+    @Deprecated(message = "To be removed when cancelling of widget updates is released")
     private fun updatePendingIndentForWidgetId(widgetId: Int): PendingIntent? {
         val updateIntent = getRedrawWidgetIntent(widgetId, true)
 
@@ -101,6 +87,7 @@ class AppWidgetSchedulingService @Inject constructor(
                 updateIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
+    @Deprecated(message = "To be removed when cancelling of widget updates is released")
     private fun getRedrawWidgetIntent(appWidgetId: Int, allowRemoteUpdate: Boolean): Intent {
         return Intent(Actions.REDRAW_WIDGET)
                 .setClass(applicationContext, AppWidgetUpdateIntentService::class.java)

@@ -43,9 +43,6 @@
     </string-array>
 
     <string-array name="widgetUpdateTimeEntries">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>20 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
         <item>2 hours</item>
@@ -59,13 +56,6 @@
     </string-array>
 
     <string-array name="widgetUpdateTimeValues" translatable="false">
-        <item>300</item>
-        <!-- 5 minutes -->
-        <item>600</item>
-        <!-- 10 minutes -->
-        <item>1200</item>
-        <!-- 20 minutes -->
-        <item>1800</item>
         <!-- 30 minutes -->
         <item>3600</item>
         <!-- 1 hour -->

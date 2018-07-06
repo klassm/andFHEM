@@ -50,9 +50,12 @@ class AppWidgetInstanceManager @Inject constructor(
 
     fun update(widgetId: Int) {
         val configuration = getConfigurationFor(widgetId)
+
+        // Discard any existing update intents
+        appWidgetSchedulingService.cancelUpdating(widgetId)
+
         if (configuration == null) {
             LOG.error("cannot find configuration for widget id {}", widgetId)
-            appWidgetSchedulingService.cancelUpdating(widgetId)
             return
         }
 
@@ -64,7 +67,6 @@ class AppWidgetInstanceManager @Inject constructor(
             Crashlytics.logException(e)
             LOG.error("updateWidgetAfterDeviceListReload() - something strange happened during appwidget update", e)
         }
-        appWidgetSchedulingService.scheduleUpdate(configuration)
     }
 
     fun getExistingWidgetIds(): Set<Int> {

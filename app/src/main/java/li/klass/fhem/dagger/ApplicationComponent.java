@@ -257,8 +257,6 @@ public interface ApplicationComponent {
 
     void inject(ExternalApiService object);
 
-    void inject(AppWidgetUpdateIntentService object);
-
     void inject(LicenseIntentService object);
 
     void inject(AlarmClockIntentService object);
