@@ -91,7 +91,7 @@ class SetListTest {
                             .thenExpect("on" to NoArgSetListEntry("on")),
                     TestCase("empty :textField")
                             .withSetList("0:noArg 1:noArg :textField")
-                            .thenExpect("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "internalState" to TextFieldSetListEntry("internalState")),
+                            .thenExpect("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "state" to TextFieldSetListEntry("state")),
                     TestCase("empty set list")
                             .withSetList("")
                             .thenExpectEmptySetList(),
