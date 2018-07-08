@@ -41,14 +41,21 @@ class OnOffBehavior
     fun isOnByState(device: FhemDevice): Boolean = !isOffByState(device)
 
     fun isOffByState(device: FhemDevice): Boolean {
-        val internalState = device.internalState
+        val onStateName = getOnStateName(device) ?: "on"
+        val offStateName = getOffStateName(device) ?: "off"
 
-        if (internalState.equals("???", ignoreCase = true)) {
+        val readingsState = device.xmlListDevice.getState("state", true) ?: ""
+        val state = when {
+            readingsState.startsWith(onStateName) || readingsState.startsWith(offStateName) -> readingsState
+            else -> device.internalState
+        }
+
+        if (state.equals("???", ignoreCase = true)) {
             return true
         }
-        val stateToUse = if (internalState.contains("-for-timer")) {
-            internalState.split(" ")[0] // important for on / off-for-timer
-        } else internalState
+        val stateToUse = if (state.contains("-for-timer")) {
+            state.split(" ")[0] // important for on / off-for-timer
+        } else state
         return (getOffStateNames(device) + "off").any { stateToUse.equals(it, ignoreCase = true) }
     }
 

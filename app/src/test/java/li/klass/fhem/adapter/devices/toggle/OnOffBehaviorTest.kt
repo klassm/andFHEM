@@ -82,13 +82,14 @@ class OnOffBehaviorTest {
                 .apply {
                     setInternal("NAME", "Name")
                     setAttribute("eventMap", testCase.eventMap)
+                    setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
         whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
         whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
         val device = FhemDevice(xmlListDevice)
-        device.xmlListDevice.setInternal("STATE", testCase.state)
+        device.xmlListDevice.setInternal("STATE", testCase.internalState)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
 
         // expect
@@ -104,13 +105,14 @@ class OnOffBehaviorTest {
                 .apply {
                     setInternal("NAME", "Name")
                     setAttribute("eventMap", testCase.eventMap)
+                    setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
         whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
         whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
         val device = FhemDevice(xmlListDevice)
-        device.xmlListDevice.setInternal("STATE", testCase.state)
+        device.xmlListDevice.setInternal("STATE", testCase.internalState)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
         `when`(deviceHookProvider.invertState(device)).thenReturn(false)
 
@@ -124,13 +126,14 @@ class OnOffBehaviorTest {
                 .apply {
                     setInternal("NAME", "Name")
                     setAttribute("eventMap", testCase.eventMap)
+                    setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
         whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
         whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
         val device2 = FhemDevice(xmlListDevice2)
-        device2.xmlListDevice.setInternal("STATE", testCase.state)
+        device2.xmlListDevice.setInternal("STATE", testCase.internalState)
         `when`(deviceHookProvider.getOffStateName(device2)).thenReturn("off")
         `when`(deviceHookProvider.invertState(device2)).thenReturn(true)
 
@@ -168,7 +171,8 @@ class OnOffBehaviorTest {
         assertThat(supports).isEqualTo(testCase.expectedSupports)
     }
 
-    data class IsOnTestCase(val state: String,
+    data class IsOnTestCase(val internalState: String,
+                            val readingsState: String = internalState,
                             val eventMap: String = "",
                             val setList: String = "",
                             val expected: Boolean,
@@ -224,19 +228,21 @@ class OnOffBehaviorTest {
         @JvmStatic
         fun isOnProvider(): List<IsOnTestCase> {
             return listOf(
-                    IsOnTestCase(state = "on", expected = true),
-                    IsOnTestCase(state = "off", expected = false),
-                    IsOnTestCase(state = "dim20%", expected = true),
-                    IsOnTestCase(state = "off-for-timer 2000", setList = "off-for-timer", expected = false),
-                    IsOnTestCase(state = "on-for-timer 2000", setList = "on-for-timer", expected = true),
-                    IsOnTestCase(state = "B0", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = false),
-                    IsOnTestCase(state = "B1", eventMap = "BI:on B0:off", setList = "state:BI,B0 on off", expected = true),
-                    IsOnTestCase(state = "100", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = true),
-                    IsOnTestCase(state = "0", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = false),
-                    IsOnTestCase(state = "ON", setList = "on off", expected = true),
-                    IsOnTestCase(state = "OFF", setList = "on off", expected = false),
-                    IsOnTestCase(state = "off", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = false),
-                    IsOnTestCase(state = "on", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = true)
+                    IsOnTestCase(internalState = "on", expected = true),
+                    IsOnTestCase(internalState = "off", expected = false),
+                    IsOnTestCase(internalState = "dim20%", expected = true),
+                    IsOnTestCase(internalState = "off-for-timer 2000", setList = "off-for-timer", expected = false),
+                    IsOnTestCase(internalState = "on-for-timer 2000", setList = "on-for-timer", expected = true),
+                    IsOnTestCase(internalState = "B0", eventMap = "BI:on B0:off", setList = "internalState:BI,B0 on off", expected = false),
+                    IsOnTestCase(internalState = "B1", eventMap = "BI:on B0:off", setList = "internalState:BI,B0 on off", expected = true),
+                    IsOnTestCase(internalState = "100", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = true),
+                    IsOnTestCase(internalState = "0", additionalOnStates = setOf("100"), additionalOffStates = setOf("0"), expected = false),
+                    IsOnTestCase(internalState = "ON", setList = "on off", expected = true),
+                    IsOnTestCase(internalState = "OFF", setList = "on off", expected = false),
+                    IsOnTestCase(internalState = "off", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = false),
+                    IsOnTestCase(internalState = "on", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = true),
+                    IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "off", expected = false),
+                    IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "on", expected = true)
             )
         }
 

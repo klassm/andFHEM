@@ -91,7 +91,7 @@ class SetListTest {
                             .thenExpect("on" to NoArgSetListEntry("on")),
                     TestCase("empty :textField")
                             .withSetList("0:noArg 1:noArg :textField")
-                            .thenExpect("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "state" to TextFieldSetListEntry("state")),
+                            .thenExpect("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "internalState" to TextFieldSetListEntry("internalState")),
                     TestCase("empty set list")
                             .withSetList("")
                             .thenExpectEmptySetList(),
@@ -99,20 +99,20 @@ class SetListTest {
                             .withSetList(" on off ")
                             .thenExpect("on" to NoArgSetListEntry("on"), "off" to NoArgSetListEntry("off")),
                     TestCase("colon without values leads to group")
-                            .withSetList("state:")
+                            .withSetList("internalState:")
                             .thenExpectEmptySetList(),
                     TestCase("slider")
-                            .withSetList("state:slider,1,2,3 dim:slider,0,5,100")
-                            .thenExpect("state" to SliderSetListEntry("state", 1f, 2f, 3f), "dim" to SliderSetListEntry("dim", 0f, 5f, 100f)),
+                            .withSetList("internalState:slider,1,2,3 dim:slider,0,5,100")
+                            .thenExpect("internalState" to SliderSetListEntry("internalState", 1f, 2f, 3f), "dim" to SliderSetListEntry("dim", 0f, 5f, 100f)),
                     TestCase("slider desiredTemperature")
                             .withSetList("desiredTemperature:slider,4.5,0.5,29.5,1")
                             .thenExpect("desiredTemperature" to SliderSetListEntry("desiredTemperature", 4.5f, 0.5f, 29.5f)),
                     TestCase("group")
-                            .withSetList("level:1,2,3 state:on,off")
-                            .thenExpect("level" to GroupSetListEntry("level", "1", "2", "3"), "state" to GroupSetListEntry("state", "on", "off")),
+                            .withSetList("level:1,2,3 internalState:on,off")
+                            .thenExpect("level" to GroupSetListEntry("level", "1", "2", "3"), "internalState" to GroupSetListEntry("internalState", "on", "off")),
                     TestCase("time")
-                            .withSetList("state:time")
-                            .thenExpect("state" to TimeSetListEntry("state")),
+                            .withSetList("internalState:time")
+                            .thenExpect("internalState" to TimeSetListEntry("internalState")),
                     TestCase("multiple")
                             .withSetList("blab:multiple,bla,blub")
                             .thenExpect("blab" to MultipleSetListEntry("blab", "multiple", "bla", "blub")),
@@ -137,9 +137,9 @@ class SetListTest {
                     TestCase("colorPicker non RGB")
                             .withSetList("pct:colorpicker,BRI,0,1,100")
                             .thenExpect("pct" to SliderSetListEntry("pct", 0f, 1f, 100f)),
-                    TestCase("state is group")
-                            .withSetList("state:Manuell,Sonnenaufgang_real,Sonnenaufgang_zivil,05:00,06:00,07:00,08:00")
-                            .thenExpect("state" to GroupSetListEntry("state", "Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00"))
+                    TestCase("internalState is group")
+                            .withSetList("internalState:Manuell,Sonnenaufgang_real,Sonnenaufgang_zivil,05:00,06:00,07:00,08:00")
+                            .thenExpect("internalState" to GroupSetListEntry("internalState", "Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00"))
 
             )
         }
