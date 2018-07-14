@@ -52,7 +52,7 @@ class DimWidgetView @Inject constructor() : DeviceAppWidgetView() {
     }
 
     private fun update(context: Context, device: FhemDevice, view: RemoteViews, widgetId: Int, connectionId: String?) {
-        val behavior = DimmableBehavior.behaviorFor(device, connectionId).get()
+        val behavior = DimmableBehavior.behaviorFor(device, connectionId)!!
         view.setTextViewText(R.id.state, behavior.getDimStateForPosition(behavior.currentDimPosition))
 
         val dimDownState = behavior.getDimStateForPosition(behavior.currentDimPosition - 1)
@@ -66,8 +66,7 @@ class DimWidgetView @Inject constructor() : DeviceAppWidgetView() {
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
-    override fun supports(device: FhemDevice): Boolean =
-            DimmableBehavior.supports(device)
+    override fun supports(device: FhemDevice) = DimmableBehavior.supports(device)
 
     private fun sendTargetDimState(context: Context, device: FhemDevice, targetState: String, connectionId: String?) =
             Intent(context, AppWidgetIntentService::class.java)

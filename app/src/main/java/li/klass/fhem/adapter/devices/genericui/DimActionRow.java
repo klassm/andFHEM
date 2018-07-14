@@ -60,7 +60,10 @@ public class DimActionRow {
     }
 
     public void fillWith(final FhemDevice device, TableRow updateRow, String connectionId) {
-        DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, connectionId).get();
+        DimmableBehavior behavior = DimmableBehavior.Companion.behaviorFor(device, connectionId);
+        if (behavior == null) {
+            return;
+        }
 
         seekBar.setOnSeekBarChangeListener(createListener(behavior));
         seekBar.setMax(DimConversionUtil.INSTANCE.toSeekbarProgress(behavior.getDimUpperBound(), behavior.getDimLowerBound(), behavior.getDimStep()));

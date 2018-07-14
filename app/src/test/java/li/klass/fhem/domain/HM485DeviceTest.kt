@@ -22,40 +22,35 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain
 
-import org.assertj.core.data.Offset;
-import org.junit.Test;
+import li.klass.fhem.behavior.dim.DimmableBehavior
+import li.klass.fhem.domain.core.DeviceXMLParsingBase
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.data.Offset
+import org.junit.Test
 
-import li.klass.fhem.behavior.dim.DimmableBehavior;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.core.FhemDevice;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class HM485DeviceTest extends DeviceXMLParsingBase {
+class HM485DeviceTest : DeviceXMLParsingBase() {
 
     @Test
-    public void testDim() {
-        FhemDevice device = getDeviceFor("dim");
-        DimmableBehavior dimmableBehavior = DimmableBehavior.Companion.behaviorFor(device, null).get();
-        assertThat(dimmableBehavior.getCurrentDimPosition()).isEqualTo(5, Offset.offset(0.01));
+    fun testDim() {
+        val device = getDeviceFor("dim")
+        val dimmableBehavior = DimmableBehavior.behaviorFor(device, null)
+        assertThat(dimmableBehavior!!.currentDimPosition).isEqualTo(5.0, Offset.offset(0.01))
     }
 
     @Test
-    public void testSwitch() {
-        FhemDevice device = getDeviceFor("switch");
-        assertThat(device).isNotNull();
+    fun testSwitch() {
+        val device = getDeviceFor("switch")
+        assertThat(device).isNotNull()
     }
 
     @Test
-    public void testDeviceWithState() throws Exception {
-        FhemDevice device = getDeviceFor("WZ.Terrassentuer_links");
-        assertThat(device.getState()).isEqualTo("closed");
+    @Throws(Exception::class)
+    fun testDeviceWithState() {
+        val device = getDeviceFor("WZ.Terrassentuer_links")
+        assertThat(device.state).isEqualTo("closed")
     }
 
-    @Override
-    protected String getFileName() {
-        return "hm485.xml";
-    }
+    override fun getFileName() = "hm485.xml"
 }

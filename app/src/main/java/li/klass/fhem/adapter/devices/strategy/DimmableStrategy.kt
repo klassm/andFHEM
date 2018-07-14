@@ -74,17 +74,13 @@ constructor(
     }
 
     override fun supports(fhemDevice: FhemDevice): Boolean {
-        if (DimmableBehavior.isDimDisabled(fhemDevice)) {
-            return false
-        }
         val hook = deviceHookProvider.buttonHookFor(fhemDevice)
-        return hook == ButtonHook.NORMAL && DimmableBehavior.behaviorFor(fhemDevice, null).isPresent
+        return hook == ButtonHook.NORMAL && DimmableBehavior.behaviorFor(fhemDevice, null) != null
     }
 
     fun createDetailView(device: FhemDevice, row: TableRow, context: Context, connectionId: String?): TableRow {
-        val dimmableBehaviorOpt = DimmableBehavior.behaviorFor(device, connectionId)
-        val behavior = dimmableBehaviorOpt.get()
-        return StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, behavior, row)
+        val dimmableBehavior = DimmableBehavior.behaviorFor(device, connectionId)!!
+        return StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, dimmableBehavior, row)
                 .createRow(LayoutInflater.from(context), device)
     }
 }

@@ -26,7 +26,6 @@ package li.klass.fhem.behavior.dim
 
 import android.content.Context
 import com.google.common.base.Joiner
-import com.google.common.base.Optional
 import com.google.common.collect.ImmutableList
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
@@ -96,14 +95,14 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
         private val UPPER_BOUND_STATES = ImmutableList.of("on", "close", "closed")
         private val LOWER_BOUND_STATES = ImmutableList.of("off", "open", "opened")
 
-        fun supports(device: FhemDevice) = behaviorFor(device.setList).isPresent
+        fun supports(device: FhemDevice) = behaviorFor(device.setList) != null
 
-        fun behaviorFor(setList: SetList): Optional<ContinuousDimmableBehavior> {
-            return Optional.fromNullable(DIM_ATTRIBUTES
+        fun behaviorFor(setList: SetList): ContinuousDimmableBehavior? {
+            return DIM_ATTRIBUTES
                     .filter { setList.contains(it) }
                     .map { setList[it, true] }
                     .map { if (it is SliderSetListEntry) ContinuousDimmableBehavior(it, it.key) else null }
-                    .firstOrNull())
+                    .firstOrNull()
         }
     }
 }

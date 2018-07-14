@@ -62,24 +62,23 @@ class DimmableBehavior private constructor(
                         && (ContinuousDimmableBehavior.supports(device)
                         || DiscreteDimmableBehavior.supports(device))
 
-        fun behaviorFor(fhemDevice: FhemDevice, connectionId: String?): Optional<DimmableBehavior> {
+        fun behaviorFor(fhemDevice: FhemDevice, connectionId: String?): DimmableBehavior? {
             val setList = fhemDevice.setList
             if (isDimDisabled(fhemDevice)) {
-                return Optional.absent()
+                return null
             }
 
             val discrete = DiscreteDimmableBehavior.behaviorFor(setList)
-            if (discrete.isPresent) {
-                return Optional.of(DimmableBehavior(fhemDevice, connectionId, discrete.get()))
+            if (discrete != null) {
+                return DimmableBehavior(fhemDevice, connectionId, discrete)
             }
 
             val continuous = ContinuousDimmableBehavior.behaviorFor(setList)
-            if (continuous.isPresent) {
-                val behavior = continuous.get()
-                return Optional.of(DimmableBehavior(fhemDevice, connectionId, behavior))
+            if (continuous != null) {
+                return DimmableBehavior(fhemDevice, connectionId, continuous)
             }
 
-            return Optional.absent()
+            return null
         }
 
         fun continuousBehaviorFor(device: FhemDevice, attribute: String, connectionId: String?): Optional<DimmableBehavior> {

@@ -53,7 +53,7 @@ constructor(deviceGroupProviders: DeviceGroupProviders,
         if (providerGroup != null) return providerGroup
 
         return when {
-            DimmableBehavior.behaviorFor(device, null).isPresent -> DeviceFunctionality.DIMMER
+            DimmableBehavior.behaviorFor(device, null) != null -> DeviceFunctionality.DIMMER
             onOffBehavior.supports(device) -> DeviceFunctionality.SWITCH
             else -> DeviceFunctionality.valueOf(deviceConfigurationProvider.configurationFor(device).defaultGroup)
         }.getCaptionText(context)

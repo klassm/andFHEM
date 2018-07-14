@@ -25,7 +25,6 @@
 package li.klass.fhem.behavior.dim
 
 import android.content.Context
-import com.google.common.base.Optional
 import com.google.common.base.Predicate
 import com.google.common.collect.FluentIterable.from
 import com.google.common.collect.ImmutableList
@@ -85,17 +84,17 @@ class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : Dimm
             Integer.parseInt(leftToCompare).compareTo(Integer.parseInt(rightToCompare))
         }
 
-        fun supports(device: FhemDevice) = behaviorFor(device.setList).isPresent
+        fun supports(device: FhemDevice) = behaviorFor(device.setList) != null
 
-        fun behaviorFor(setList: SetList): Optional<DiscreteDimmableBehavior> {
+        fun behaviorFor(setList: SetList): DiscreteDimmableBehavior? {
 
             val keys = setList.sortedKeys
             val foundDimStates = from(keys).filter(dimmableState).toSortedList(compareByDimValue)
 
-            return if (foundDimStates.isEmpty())
-                Optional.absent()
-            else
-                Optional.of(DiscreteDimmableBehavior(foundDimStates))
+            return when {
+                foundDimStates.isEmpty() -> null
+                else -> DiscreteDimmableBehavior(foundDimStates)
+            }
         }
     }
 }

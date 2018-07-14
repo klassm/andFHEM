@@ -48,7 +48,7 @@ class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
         val sliderSetListEntry = entry as SliderSetListEntry
 
-        val initialProgress = DimmableBehavior.behaviorFor(device, null).orNull()?.currentDimPosition
+        val initialProgress = DimmableBehavior.behaviorFor(device, null)?.currentDimPosition
                 ?: 0.0
 
         val inflater = LayoutInflater.from(context)
