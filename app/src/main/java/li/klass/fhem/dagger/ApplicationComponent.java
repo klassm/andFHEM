@@ -44,7 +44,7 @@ import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.alarm.clock.update.AlarmClockIntentService;
 import li.klass.fhem.appindex.AppIndexIntentService;
-import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver;
+import li.klass.fhem.appwidget.action.AppWidgetIntentService;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.MediumAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.SmallAppWidgetProvider;
@@ -73,7 +73,6 @@ import li.klass.fhem.appwidget.ui.widget.small.SmallPresenceWidget;
 import li.klass.fhem.appwidget.ui.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
-import li.klass.fhem.appwidget.update.AppWidgetUpdateIntentService;
 import li.klass.fhem.backup.ImportExportService;
 import li.klass.fhem.connection.ui.ConnectionDetailFragment;
 import li.klass.fhem.connection.ui.ConnectionListFragment;
@@ -290,5 +289,5 @@ public interface ApplicationComponent {
 
     void inject(SettingsFragment settingsFragment);
 
-    void inject(@NotNull AppWidgetBroadcastReceiver appWidgetBroadcastReceiver);
+    void inject(@NotNull AppWidgetIntentService appWidgetIntentService);
 }

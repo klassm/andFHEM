@@ -30,7 +30,7 @@ import android.content.Intent
 import android.os.SystemClock
 import android.widget.RemoteViews
 import li.klass.fhem.R
-import li.klass.fhem.appwidget.action.AppWidgetBroadcastReceiver
+import li.klass.fhem.appwidget.action.AppWidgetIntentService
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
@@ -52,12 +52,12 @@ class DeviceListUpdateWidget @Inject constructor() : OtherAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, widgetConfiguration: WidgetConfiguration) {
         view.setImageViewResource(R.id.icon, R.drawable.launcher_refresh)
 
-        val updateIntent = Intent(context, AppWidgetBroadcastReceiver::class.java)
+        val updateIntent = Intent(context, AppWidgetIntentService::class.java)
                 .setAction(WIDGET_REQUEST_UPDATE)
                 .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
                 .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
 
-        view.setOnClickPendingIntent(R.id.layout, PendingIntent.getBroadcast(context,
+        view.setOnClickPendingIntent(R.id.layout, PendingIntent.getService(context,
                 widgetConfiguration.widgetId, updateIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }

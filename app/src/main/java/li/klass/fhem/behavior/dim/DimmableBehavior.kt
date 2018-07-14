@@ -58,8 +58,9 @@ class DimmableBehavior private constructor(
     companion object {
 
         fun supports(device: FhemDevice) =
-                ContinuousDimmableBehavior.supports(device)
-                        || DiscreteDimmableBehavior.supports(device)
+                !isDimDisabled(device)
+                        && (ContinuousDimmableBehavior.supports(device)
+                        || DiscreteDimmableBehavior.supports(device))
 
         fun behaviorFor(fhemDevice: FhemDevice, connectionId: String?): Optional<DimmableBehavior> {
             val setList = fhemDevice.setList

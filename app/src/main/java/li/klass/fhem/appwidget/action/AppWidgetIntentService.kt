@@ -24,13 +24,12 @@
 
 package li.klass.fhem.appwidget.action
 
-import android.content.BroadcastReceiver
-import android.content.Context
+import android.app.IntentService
 import android.content.Intent
 import li.klass.fhem.AndFHEMApplication
 import javax.inject.Inject
 
-class AppWidgetBroadcastReceiver : BroadcastReceiver() {
+class AppWidgetIntentService : IntentService(AppWidgetIntentService::class.java.name) {
     @Inject
     lateinit var appWidgetActionHandler: AppWidgetActionHandler
 
@@ -38,10 +37,8 @@ class AppWidgetBroadcastReceiver : BroadcastReceiver() {
         AndFHEMApplication.application?.daggerComponent?.inject(this)
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onHandleIntent(intent: Intent?) {
         intent ?: return
-        context ?: return
-
-        appWidgetActionHandler.handle(context, intent.extras, intent.action)
+        appWidgetActionHandler.handle(this, intent.extras, intent.action)
     }
 }
