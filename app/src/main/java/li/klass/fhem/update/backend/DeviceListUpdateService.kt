@@ -144,15 +144,19 @@ class DeviceListUpdateService @Inject constructor(
     }
 
     fun checkForCorruptedDeviceList() {
-        val connections = connectionService.listAll()
-                .filter { it !is DummyServerSpec }
-        connections.forEach { connection ->
-            val corrupted = deviceListCacheService.isCorrupted(connection.id)
-            LOG.info("checkForCorruptedDeviceList - checking ${connection.name}, corrupted=$corrupted")
-            if (corrupted) {
-                LOG.info("checkForCorruptedDeviceList - could not load device list for ${connection.name}, requesting update")
-                updateAllDevices(connection.id)
-            }
+        try {
+            connectionService.listAll()
+                    .filter { it !is DummyServerSpec }
+                    .forEach { connection ->
+                        val corrupted = deviceListCacheService.isCorrupted(connection.id)
+                        LOG.info("checkForCorruptedDeviceList - checking ${connection.name}, corrupted=$corrupted")
+                        if (corrupted) {
+                            LOG.info("checkForCorruptedDeviceList - could not load device list for ${connection.name}, requesting update")
+                            updateAllDevices(connection.id)
+                        }
+                    }
+        } catch (e: Exception) {
+            LOG.error("checkForCorruptedDeviceList - error while checking for corrupted device lists", e)
         }
     }
 
