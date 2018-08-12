@@ -1,1 +1,1 @@
-TODO
+* Repair error messages not showing when encountering connection issues

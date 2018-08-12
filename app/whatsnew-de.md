@@ -1,1 +1,1 @@
-TODO
+* Repariere Fehlermeldung bei Verbindungsproblemen
