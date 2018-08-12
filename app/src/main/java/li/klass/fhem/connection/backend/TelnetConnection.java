@@ -25,23 +25,16 @@
 package li.klass.fhem.connection.backend;
 
 import android.content.Context;
-
+import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.CloseableUtil;
+import li.klass.fhem.util.StringUtil;
 import org.apache.commons.net.telnet.TelnetClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-
-import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.CloseableUtil;
-import li.klass.fhem.util.StringUtil;
 
 public class TelnetConnection extends FHEMConnection {
     public static final String TAG = TelnetConnection.class.getName();
@@ -49,7 +42,7 @@ public class TelnetConnection extends FHEMConnection {
 
     private static final Logger LOG = LoggerFactory.getLogger(TelnetConnection.class.getName());
 
-    public TelnetConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
+    TelnetConnection(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
         super(fhemServerSpec, applicationProperties);
     }
 
@@ -78,12 +71,12 @@ public class TelnetConnection extends FHEMConnection {
             if (passwordRead != null && passwordRead.contains(PASSWORD_PROMPT)) {
                 LOG.info("sending password");
                 if (!writeCommand(inputStream, printStream, serverSpec.getPassword())) {
-                    return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
+                    return new RequestResult<>(null, RequestResultError.AUTHENTICATION_ERROR);
                 }
             }
 
             if (!writeCommand(inputStream, printStream, command + "\r\n")) {
-                return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+                return new RequestResult<>(null, RequestResultError.HOST_CONNECTION_ERROR);
             }
 
             // If we send an xmllist, we are done when finding the closing FHZINFO tag.
@@ -97,7 +90,7 @@ public class TelnetConnection extends FHEMConnection {
             }
 
             if (result == null) {
-                return new RequestResult<>(RequestResultError.INVALID_CONTENT);
+                return new RequestResult<>(null, RequestResultError.INVALID_CONTENT);
             }
 
             telnetClient.disconnect();
@@ -123,7 +116,7 @@ public class TelnetConnection extends FHEMConnection {
         } catch (SocketTimeoutException e) {
             LOG.error("timeout", e);
             setErrorInErrorHolderFor(e, errorHost, command);
-            return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
+            return new RequestResult<>(null, RequestResultError.CONNECTION_TIMEOUT);
         } catch (UnsupportedEncodingException e) {
             // this may never happen, as UTF8 is known ...
             setErrorInErrorHolderFor(e, errorHost, command);
@@ -134,11 +127,11 @@ public class TelnetConnection extends FHEMConnection {
             // is that the FHEM server ends the connection after receiving an invalid password.
             LOG.error("SocketException", e);
             setErrorInErrorHolderFor(e, errorHost, command);
-            return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
+            return new RequestResult<>(null, RequestResultError.AUTHENTICATION_ERROR);
         } catch (IOException e) {
             LOG.error("IOException", e);
             setErrorInErrorHolderFor(e, errorHost, command);
-            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
+            return new RequestResult<>(null, RequestResultError.HOST_CONNECTION_ERROR);
         } finally {
             CloseableUtil.close(printStream, bufferedOutputStream);
         }

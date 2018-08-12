@@ -22,38 +22,23 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.connection.backend;
+package li.klass.fhem.connection.backend
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.Context
+import android.content.Intent
 
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 
-public class RequestResult<CONTENT> {
-    public final CONTENT content;
-    public final RequestResultError error;
+data class RequestResult<CONTENT> @JvmOverloads constructor(val content: CONTENT? = null,
+                                                            val error: RequestResultError? = null) {
 
-    public RequestResult(CONTENT content) {
-        this(content, null);
-    }
+    fun handleErrors(context: Context): Boolean {
+        if (error == null) return false
 
-    public RequestResult(RequestResultError error) {
-        this(null, error);
-    }
+        context.sendBroadcast(Intent(Actions.CONNECTION_ERROR)
+                .putExtra(BundleExtraKeys.STRING_ID, error.errorStringId))
 
-    public RequestResult(CONTENT content, RequestResultError error) {
-        this.content = content;
-        this.error = error;
-    }
-
-    public boolean handleErrors(Context context) {
-        if (error == null) return false;
-
-        Intent intent = new Intent(Actions.CONNECTION_ERROR);
-        intent.putExtra(BundleExtraKeys.STRING_ID, error.errorStringId);
-        context.sendBroadcast(intent);
-
-        return true;
+        return true
     }
 }

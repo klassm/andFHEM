@@ -40,7 +40,6 @@ import li.klass.fhem.connection.backend.RequestResultError.*
 import li.klass.fhem.connection.backend.ssl.MemorizingTrustManagerContextInitializer
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.CloseableUtil.close
 import org.slf4j.LoggerFactory
 import java.io.*
 import java.net.SocketTimeoutException
@@ -64,10 +63,10 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         LOG.info("executeTask command $command")
         val urlSuffix = generateCommandUrlSuffix(command)
         val result = request(context, urlSuffix)
-        if (result.content.contains("<title>") || result.content.contains("<div id=")) {
+        if (result.content != null && (result.content.contains("<title>") || result.content.contains("<div id="))) {
             LOG.error("found strange content: ${result.content}")
             ErrorHolder.setError("found strange content in URL $urlSuffix: \r\n\r\n${result.content}")
-            return RequestResult(INVALID_CONTENT)
+            return RequestResult(error = INVALID_CONTENT)
         }
         return result
     }
@@ -82,7 +81,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
         try {
             val response = executeRequest(urlSuffix, context)
             if (response.error != null) {
-                return RequestResult(response.error)
+                return RequestResult(error = response.error)
             }
 
             InputStreamReader(response.content, Charsets.UTF_8).use {
@@ -90,7 +89,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             }
         } catch (e: Exception) {
             LOG.error("cannot handle result", e)
-            return RequestResult(INTERNAL_ERROR)
+            return RequestResult(error = INTERNAL_ERROR)
         }
     }
 
@@ -125,11 +124,12 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             return RequestResult(BufferedInputStream(response.content) as InputStream)
         } catch (e: HttpResponseException) {
             val errorResult = handleHttpStatusCode(e.statusCode)
-            val msg = "found error " + errorResult!!.error.declaringClass.simpleName + " for " +
+            val msg = "found error " + (errorResult?.error?.declaringClass?.simpleName
+                    ?: "unknown") + " for " +
                     "status code " + e.statusCode
             LOG.debug(msg)
             ErrorHolder.setError(null, msg)
-            return errorResult
+            return errorResult ?: RequestResult(error = INTERNAL_ERROR)
 
         } catch (e: Exception) {
             LOG.info("error while loading data", e)
@@ -168,7 +168,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     private fun handleError(urlSuffix: String, isRetry: Boolean, url: String?, e: Exception, context: Context): RequestResult<InputStream> {
         setErrorInErrorHolderFor(e, url, urlSuffix)
-        return handleRetryIfRequired(isRetry, RequestResult(HOST_CONNECTION_ERROR), urlSuffix, context)
+        return handleRetryIfRequired(isRetry, RequestResult(error = HOST_CONNECTION_ERROR), urlSuffix, context)
     }
 
     private fun handleRetryIfRequired(isCurrentRequestRetry: Boolean, previousResult: RequestResult<InputStream>,
@@ -210,7 +210,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             val error = STATUS_CODE_MAP[statusCode] ?: return null
 
             LOG.info("handleHttpStatusCode() : encountered http status code {}", statusCode)
-            return RequestResult(error)
+            return RequestResult(error = error)
         }
     }
 }

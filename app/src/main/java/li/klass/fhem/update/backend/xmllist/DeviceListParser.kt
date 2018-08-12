@@ -63,7 +63,7 @@ class DeviceListParser @Inject constructor(
                     .replace("<ATTR key=\"globalpassword\" value=\"[^\"]+\"/>".toRegex(), "")
                     .replace("<ATTR key=\"basicAuth\" value=\"[^\"]+\"/>".toRegex(), ""))
 
-            RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors(context)
+            RequestResult<String>(error = RequestResultError.DEVICE_LIST_PARSE).handleErrors(context)
             null
         }
 

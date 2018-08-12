@@ -103,7 +103,7 @@ class CommandExecutionService @Inject constructor(
             lastFailedCommand = command
             resultListener.onError()
         } else {
-            resultListener.onResult(result.content)
+            resultListener.onResult(result.content!!)
         }
     }
 
