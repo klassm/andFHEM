@@ -1,5 +1,8 @@
+13.08.2018
+ - Repair linebreak replacing, so to replace linebreaks globally
+
 28.10.2017
- - Resolve error when loading module usith >= Perl 5.22
+ - Resolve error when loading module using >= Perl 5.22
  - Resolve warnings
 
 20.10.2017

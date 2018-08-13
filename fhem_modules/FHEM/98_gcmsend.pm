@@ -216,7 +216,7 @@ sub gcmsend_sendMessage($$) {
     if ($length == 3 || $length == 4) {
         $tickerText = $parts[0];
         $contentTitle = $parts[1];
-        $contentText = $parts[2] =~ s/\\n/\n/r;
+        $contentText = $parts[2] =~ s/\\n/\n/rg;
 
         if ($length == 4) {
             if (!($parts[3] =~ m/[1-9][0-9]*/)) {
