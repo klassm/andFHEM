@@ -1,1 +1,1 @@
-* Erlaube cleartext traffic (via http) an den Backend Server (standardmäßig seit Android 9 verboten)
+TODO

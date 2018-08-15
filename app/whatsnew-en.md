@@ -1,1 +1,1 @@
-* Enable cleartext traffic via http to FHEM (disallowed sind Android 9 by default)
+TODO
