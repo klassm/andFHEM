@@ -47,7 +47,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.argThat
 
 @RunWith(DataProviderRunner::class)
 class OnOffBehaviorTest {
@@ -241,6 +242,7 @@ class OnOffBehaviorTest {
                     IsOnTestCase(internalState = "OFF", setList = "on off", expected = false),
                     IsOnTestCase(internalState = "off", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = false),
                     IsOnTestCase(internalState = "on", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = true),
+                    IsOnTestCase(internalState = "off", readingsState = "on", setList = "on off", expected = false),
                     IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "off", expected = false),
                     IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "on", expected = true)
             )

@@ -1,1 +1,1 @@
-TODO
+* Prefer the internal state over the readings state when calculating whether a device is on or off

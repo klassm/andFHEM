@@ -46,7 +46,8 @@ class OnOffBehavior
 
         val readingsState = device.xmlListDevice.getState("state", true) ?: ""
         val state = when {
-            readingsState.startsWith(onStateName) || readingsState.startsWith(offStateName) -> readingsState
+            isValidToggleState(device.internalState, onStateName, offStateName) -> device.internalState
+            isValidToggleState(readingsState, onStateName, offStateName) -> readingsState
             else -> device.internalState
         }
 
@@ -58,6 +59,9 @@ class OnOffBehavior
         } else state
         return (getOffStateNames(device) + "off").any { stateToUse.equals(it, ignoreCase = true) }
     }
+
+    private fun isValidToggleState(state: String, onStateName: String, offStateName: String) =
+            state.startsWith(onStateName) || state.startsWith(offStateName)
 
     fun isOn(device: FhemDevice): Boolean {
         var isOn = isOnByState(device)
