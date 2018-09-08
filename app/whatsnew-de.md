@@ -1,1 +1,1 @@
-* Bevorzuge den INT state über den READINGS state bei der Berechnung, ob ein Gerät an oder aus ist
+TODO
