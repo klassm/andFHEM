@@ -25,48 +25,78 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/localeDeviceStateInfo"
-        android:layout_margin="10dp"
-        android:textStyle="bold"
-        android:layout_gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/localeDeviceStateInfo"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:stretchColumns="1"
-        android:padding="5dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:stretchColumns="1"
+            android:padding="5dp">
         <TableRow>
             <TextView android:layout_height="wrap_content"
                       android:layout_width="wrap_content"
                       android:text="@string/deviceName"/>
-            <LinearLayout android:layout_height="wrap_content"
-                          android:layout_width="wrap_content"
-                          android:orientation="horizontal"
-                          android:layout_gravity="end">
+            <RelativeLayout android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:layout_gravity="start">
                 <TextView android:layout_height="wrap_content"
                           android:layout_width="wrap_content"
                           android:id="@+id/deviceName"
-                          android:text=""
-                          android:layout_gravity="center_vertical"
+                          android:layout_toStartOf="@id/set"
+                          android:layout_toLeftOf="@id/set"
+                          android:layout_gravity="start|center_vertical"
                           android:paddingLeft="0dp"
                           android:paddingStart="0dp"
                           android:paddingRight="5dp"
-                    android:paddingEnd="5dp"
-                    tools:ignore="NewApi" />
+                          android:paddingEnd="5dp"
+                          android:layout_alignParentStart="true"
+                          android:layout_alignParentLeft="true"
+                          tools:ignore="NewApi"/>
 
                 <Button android:text="@string/set"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:id="@+id/set"
-                        android:layout_width="wrap_content" android:layout_gravity="center_horizontal"/>
-            </LinearLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_horizontal|end"/>
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:text="@string/type"/>
+            <Spinner android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:minWidth="200dp"
+                     android:id="@+id/attributeType"
+                     style="@style/spinner"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:text="@string/attributeName"/>
+            <EditText android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:id="@+id/attributeName"
+                      android:minWidth="200dp"
+                      android:inputType="text"
+                      android:hint="@string/attributeName"/>
         </TableRow>
 
         <TableRow>
@@ -75,14 +105,15 @@
                       android:text="@string/state"/>
             <EditText android:layout_height="wrap_content"
                       android:layout_width="wrap_content"
-                      android:id="@+id/targetStateText"
+                      android:id="@+id/attributeValue"
                       android:minWidth="200dp"
-                      android:inputType="text"/>
+                      android:inputType="text"
+                      android:hint="@string/state"/>
         </TableRow>
     </TableLayout>
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:id="@+id/save" android:layout_gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:id="@+id/save" android:layout_gravity="center"/>
 </LinearLayout>

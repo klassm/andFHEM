@@ -32,11 +32,9 @@ public class BundleExtraKeys {
     public static final String ROOM_NAME = "ROOMNAME";
     public static final String DEVICE = "DEVICE";
     public static final String DEVICE_NAME = "DEVICENAME";
+    public static final String ATTRIBUTE_NAME = "ATTRIBUTE_NAME";
+    public static final String ATTRIBUTE_TYPE = "ATTRIBUTE_TYPE";
     public static final String DEVICE_DISPLAY_NAME = "DEVICEDISPLAYNAME";
-    public static final String DEVICE_NEW_NAME = "DEVICENEWNAME";
-    public static final String DEVICE_NEW_ROOM = "DEVICENEWROOM";
-    public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";
-    public static final String TIMES_TO_SEND = "TIMES_TO_SEND";
     public static final String RESULT_RECEIVER = "RESULTRECEIVER";
     public static final String STRING_ID = "STRINGID";
     public static final String STRING = "STRING";
@@ -49,15 +47,10 @@ public class BundleExtraKeys {
     public static final String ON_CLICKED_CALLBACK = "ON_CLICKED_CALLBACK";
     public static final String TEXT = "TEXT";
 
-    public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
     public static final String DEVICE_GRAPH_DEFINITION = "DEVICE_GRAPH_DEFINITION";
     public static final String START_DATE = "STARTDATE";
     public static final String END_DATE = "ENDDATE";
-    public static final String DEVICE_DIM_PROGRESS = "DIMPROGRESS";
     public static final String DEVICE_TARGET_STATE = "TARGETSTATE";
-    public static final String STATES = "STATES";
-    public static final String DEVICE_TEMPERATURE = "TEMPERATURE";
-    public static final String DEVICE_MODE = "DEVICEMODE";
 
     public static final String FRAGMENT_NAME = "FRAGMENTNAME";
     public static final String FRAGMENT = "FRAGMENT";
@@ -67,9 +60,6 @@ public class BundleExtraKeys {
 
     public static final String COMMAND = "COMMAND";
 
-    public static final String IMAGE_RELATIVE_PATH = "IMAGE_RELATIVE_PATH";
-    public static final String IMAGE = "LOAD_IMAGE";
-
     public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
     public static final String APP_WIDGET_TYPE_NAME = "APP_WIDGET_TYPE_NAME";
     public static final String APP_WIDGET_SIZE = "APP_WIDGET_SIZE";
@@ -77,22 +67,9 @@ public class BundleExtraKeys {
     public static final String DEVICE_FILTER = "DEVICE_FILTER";
     public static final String CLICKED_DEVICE = "CLICKED_DEVICE";
 
-    public static final String TIMER_HOUR = "HOUR";
-    public static final String TIMER_MINUTE = "MINUTE";
-    public static final String TIMER_SECOND = "SECOND";
-    public static final String TIMER_TYPE = "TIMER_TYPE";
-    public static final String TIMER_REPETITION = "TIMER_REPETITION";
-    public static final String TIMER_TARGET_DEVICE_NAME = "TIMER_TARGET_DEVICE_NAME";
-    public static final String TIMER_TARGET_STATE = "TIMER_TARGET_STATE";
-    public static final String TIMER_TARGET_STATE_APPENDIX = "TIMER_TARGET_STATE_APPENDIX";
-    public static final String TIMER_IS_ACTIVE = "TIMER_IS_ACTIVE";
 
     public static final String STATE_NAME = "STATE_NAME";
     public static final String STATE_VALUE = "STATE_VALUE";
-
-    public static final String UPDATE_MAP = "UPDATE_MAP";
-    public static final String VIBRATE = "VIBRATE";
-    public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
 
     public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";
 
@@ -102,6 +79,5 @@ public class BundleExtraKeys {
 
     public static final String IS_PREMIUM = "IS_PREMIUM";
 
-    public static final String RESEND_TRY = "RESEND_TRY";
     public static final String HEATING_CONFIGURATION = "HEATING_CONFIGURATION";
 }

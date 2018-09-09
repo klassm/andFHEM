@@ -128,6 +128,7 @@
     <string name="feature_requires_android_version">This feature requires a minimum Android version of %1$s.</string>
     <string name="unknown">unknown</string>
     <string name="type">Type</string>
+    <string name="attributeName">Attribute-Name</string>
     <string name="about">About</string>
     <string name="copyFrom">Copy from …</string>
     <string name="commandAccepted">Command accepted?</string>
