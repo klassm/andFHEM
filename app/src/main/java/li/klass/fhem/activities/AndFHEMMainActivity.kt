@@ -25,16 +25,13 @@
 package li.klass.fhem.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.NavigationView
@@ -44,7 +41,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -55,7 +51,6 @@ import android.widget.Toast
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.main_view.*
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.activities.drawer.actions.DrawerActions
@@ -65,7 +60,6 @@ import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
-import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.Actions.IS_PREMIUM
 import li.klass.fhem.constants.BundleExtraKeys
@@ -75,7 +69,6 @@ import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.service.intent.LicenseIntentService
-import li.klass.fhem.settings.SettingsActivity
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.STARTUP_VIEW
 import li.klass.fhem.ui.FragmentType
@@ -95,19 +88,17 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
     inner class Receiver : BroadcastReceiver() {
 
-        val intentFilter = IntentFilter()
-
-        init {
-            intentFilter.addAction(SHOW_FRAGMENT)
-            intentFilter.addAction(DO_UPDATE)
-            intentFilter.addAction(UPDATE_NAVIGATION)
-            intentFilter.addAction(SHOW_EXECUTING_DIALOG)
-            intentFilter.addAction(DISMISS_EXECUTING_DIALOG)
-            intentFilter.addAction(SHOW_TOAST)
-            intentFilter.addAction(SHOW_ALERT)
-            intentFilter.addAction(BACK)
-            intentFilter.addAction(CONNECTIONS_CHANGED)
-            intentFilter.addAction(REDRAW)
+        val intentFilter = IntentFilter().apply {
+            addAction(SHOW_FRAGMENT)
+            addAction(DO_UPDATE)
+            addAction(UPDATE_NAVIGATION)
+            addAction(SHOW_EXECUTING_DIALOG)
+            addAction(DISMISS_EXECUTING_DIALOG)
+            addAction(SHOW_TOAST)
+            addAction(SHOW_ALERT)
+            addAction(BACK)
+            addAction(CONNECTIONS_CHANGED)
+            addAction(REDRAW)
         }
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -117,7 +108,8 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                         val action = intent.action ?: return@Runnable
 
                         if (SHOW_FRAGMENT == action) {
-                            val bundle = intent.extras ?: throw IllegalArgumentException("need a content fragment")
+                            val bundle = intent.extras
+                                    ?: throw IllegalArgumentException("need a content fragment")
                             val fragmentType: FragmentType?
                             fragmentType = if (bundle.containsKey(FRAGMENT)) {
                                 bundle.getSerializable(FRAGMENT) as FragmentType
@@ -158,8 +150,8 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                             redrawContent()
                         }
                     } catch (e: Exception) {
-                        Log.e(TAG, "exception occurred while receiving broadcast", e)
-                        Log.e(TAG, "exception occurred while receiving broadcast", e)
+                        LOGGER.error("exception occurred while receiving broadcast", e)
+                        LOGGER.error("exception occurred while receiving broadcast", e)
                     }
                 })
             }
@@ -203,7 +195,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         try {
             initialize(savedInstanceState)
         } catch (e: Throwable) {
-            Log.e(TAG, "onCreate() : error during initialization", e)
+            LOGGER.error("onCreate() : error during initialization", e)
         }
     }
 
@@ -227,12 +219,11 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         showDrawerToggle(supportFragmentManager.backStackEntryCount == 0)
     }
 
-
     private fun handleStartupFragment(hasFavorites: Boolean) {
         val startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name)
         var preferencesStartupFragment: FragmentType? = FragmentType.forEnumName(startupView)
-        Log.d(TAG, "handleStartupFragment() : startup view is " + preferencesStartupFragment)
+        LOGGER.debug("handleStartupFragment() : startup view is $preferencesStartupFragment")
 
         if (preferencesStartupFragment == null) {
             preferencesStartupFragment = ALL_DEVICES
@@ -245,7 +236,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
 
         val startupBundle = Bundle()
-        Log.i(TAG, "handleStartupFragment () : startup with $fragmentType (extras: $startupBundle)")
+        LOGGER.info("handleStartupFragment () : startup with $fragmentType (extras: $startupBundle)")
         switchToFragment(fragmentType, startupBundle)
     }
 
@@ -301,7 +292,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         drawer_layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
 
         nav_drawer.setNavigationItemSelectedListener(this)
-        if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
+        if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
             nav_drawer.menu.removeItem(R.id.menu_premium)
         }
 
@@ -435,7 +426,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
 
-        Log.i(TAG, "onResume() : resuming")
+        LOGGER.info("onResume() : resuming")
 
         loginUiService.doLoginIfRequired(this, object : LoginUIService.LoginStrategy {
             @SuppressLint("InflateParams")
@@ -445,7 +436,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                         .setView(loginView)
                         .setTitle(R.string.login)
                         .setOnCancelListener { finish() }
-                        .setPositiveButton(R.string.okButton, { _, _ -> checkLogin.invoke((loginView.findViewById<EditText>(R.id.password)).text.toString()) })
+                        .setPositiveButton(R.string.okButton) { _, _ -> checkLogin.invoke((loginView.findViewById<EditText>(R.id.password)).text.toString()) }
                         .show()
             }
 
@@ -525,8 +516,9 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         // We post this delayed, as otherwise we will block the application startup (causing
         // ugly ANRs).
         Handler().post {
-            val updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(SettingsKeys.AUTO_UPDATE_TIME,
-                    "-1"))!!
+            val autoUpdateTime = applicationProperties.getStringSharedPreference(SettingsKeys.AUTO_UPDATE_TIME,
+                    "-1")!!
+            val updateInterval = Integer.valueOf(autoUpdateTime)
 
             if (timer == null && updateInterval != -1) {
                 timer = Timer()
@@ -556,7 +548,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         try {
             unregisterReceiver(broadcastReceiver)
         } catch (e: IllegalArgumentException) {
-            Log.i(TAG, "onStop() : receiver was not registered, ignore ...")
+            LOGGER.info("onStop() : receiver was not registered, ignore ...")
         }
 
         refresh_layout?.isRefreshing = false
@@ -602,7 +594,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         if (!saveInstanceStateCalled) {
             if (myData == null) myData = Bundle()
 
-            Log.i(TAG, "switch to " + fragmentType!!.name + " with " + myData.toString())
+            LOGGER.info("switch to " + fragmentType!!.name + " with " + myData.toString())
             if (fragmentType.isTopLevelFragment) {
                 clearBackStack()
             }
@@ -619,7 +611,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             val contentFragment = createContentFragment(fragmentType, myData)
             val navigationFragment = createNavigationFragment(fragmentType, myData)
 
-            setContent(navigationFragment, contentFragment, !fragmentType.isTopLevelFragment)
+            setContent(navigationFragment, contentFragment!!, !fragmentType.isTopLevelFragment)
         }
     }
 
@@ -652,7 +644,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             val fragmentClass = fragmentType.contentClass
             createFragmentForClass(data, fragmentClass)
         } catch (e: Exception) {
-            Log.e(TAG, "cannot instantiate fragment", e)
+            LOGGER.error("cannot instantiate fragment", e)
             null
         }
 
@@ -672,20 +664,20 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             fragment!!.isNavigation = true
             return fragment
         } catch (e: Exception) {
-            Log.e(TAG, "cannot instantiate fragment", e)
+            LOGGER.error("cannot instantiate fragment", e)
             return null
         }
 
     }
 
-    private fun setContent(navigationFragment: BaseFragment?, contentFragment: BaseFragment?, addToBackStack: Boolean) {
+    private fun setContent(navigationFragment: BaseFragment?, contentFragment: BaseFragment, addToBackStack: Boolean) {
         if (saveInstanceStateCalled) return
 
         val hasNavigation = hasNavigation(navigationFragment, contentFragment)
 
         val fragmentManager = supportFragmentManager
         if (fragmentManager == null) {
-            Log.e(TAG, "fragment manager is null in #setContent")
+            LOGGER.error("fragment manager is null in #setContent")
             return
         }
 
@@ -698,14 +690,14 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                 .replace(R.id.content, contentFragment, CONTENT_TAG)
 
         if (hasNavigation) {
-            transaction.replace(R.id.navigation, navigationFragment, NAVIGATION_TAG)
+            transaction.replace(R.id.navigation, navigationFragment!!, NAVIGATION_TAG)
         }
         if (addToBackStack) {
-            transaction.addToBackStack(contentFragment!!.javaClass.name)
+            transaction.addToBackStack(contentFragment.javaClass.name)
             showDrawerToggle(false)
         }
 
-        transaction.setBreadCrumbTitle(contentFragment!!.getTitle(this))
+        transaction.setBreadCrumbTitle(contentFragment.getTitle(this))
         transaction.commit()
 
         updateNavigationVisibility(navigationFragment, contentFragment)
@@ -749,7 +741,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     @SuppressLint("NewApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-        if (packageName == AndFHEMApplication.Companion.PREMIUM_PACKAGE) {
+        if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
             menu.removeItem(R.id.menu_premium)
         }
 
@@ -791,11 +783,11 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
     companion object {
 
+        @JvmStatic
         private val LOGGER = LoggerFactory.getLogger(AndFHEMMainActivity::class.java)
 
-        val TAG = AndFHEMMainActivity::class.java.name!!
-        val NAVIGATION_TAG = "NAVIGATION_TAG"
-        val CONTENT_TAG = "CONTENT_TAG"
-        private val STATE_DRAWER_ID = "drawer_id"
+        private const val NAVIGATION_TAG = "NAVIGATION_TAG"
+        private const val CONTENT_TAG = "CONTENT_TAG"
+        private const val STATE_DRAWER_ID = "drawer_id"
     }
 }
