@@ -1,1 +1,1 @@
-* Allow selection of ATTRIBUTE, STATE or INTERNAL for Tasker condition query plugin
+TODO
