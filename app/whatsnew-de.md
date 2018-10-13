@@ -1,1 +1,1 @@
-TODO
+* Verbesserung für nicht mehr reagierende Widgets

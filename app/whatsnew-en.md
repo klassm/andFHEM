@@ -1,1 +1,1 @@
-TODO
+* Improvements for freezing appwidgets.
