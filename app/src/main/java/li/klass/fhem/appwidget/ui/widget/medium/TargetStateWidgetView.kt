@@ -33,7 +33,7 @@ import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
-import li.klass.fhem.appwidget.action.AppWidgetIntentService
+import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
@@ -55,7 +55,7 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
         view.setTextViewText(R.id.button, state)
 
-        val actionIntent = Intent(context, AppWidgetIntentService::class.java)
+        val actionIntent = Intent(context, AppWidgetActionBroadcastReceiver::class.java)
                 .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
                 .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload)
@@ -64,7 +64,7 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
         view.apply {
             setOnClickPendingIntent(
                     R.id.button,
-                    PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
+                    PendingIntent.getBroadcast(context, widgetConfiguration.widgetId, actionIntent,
                             FLAG_UPDATE_CURRENT)
             )
         }

@@ -25,11 +25,6 @@
 package li.klass.fhem.dagger;
 
 import android.app.Application;
-
-import org.jetbrains.annotations.NotNull;
-
-import javax.inject.Singleton;
-
 import dagger.Component;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
@@ -44,7 +39,7 @@ import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior;
 import li.klass.fhem.alarm.clock.update.AlarmClockIntentService;
 import li.klass.fhem.appindex.AppIndexIntentService;
-import li.klass.fhem.appwidget.action.AppWidgetIntentService;
+import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.MediumAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.SmallAppWidgetProvider;
@@ -53,25 +48,8 @@ import li.klass.fhem.appwidget.ui.selection.MediumWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.SmallWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.appwidget.ui.widget.big.BigWeatherForecastWidget;
-import li.klass.fhem.appwidget.ui.widget.medium.DimWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.HeatingWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.MediumInformationWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.MediumWeatherForecastWidget;
-import li.klass.fhem.appwidget.ui.widget.medium.OnOffWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.RoomDetailLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.medium.StatusWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.TargetStateWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.appwidget.ui.widget.medium.ToggleWidgetView;
-import li.klass.fhem.appwidget.ui.widget.small.AllDevicesLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.small.ConversionLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.small.DeviceListUpdateWidget;
-import li.klass.fhem.appwidget.ui.widget.small.FavoritesLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.small.RoomsLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.small.SendCommandLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.small.SmallPresenceWidget;
-import li.klass.fhem.appwidget.ui.widget.small.SmallToggleWidget;
-import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
+import li.klass.fhem.appwidget.ui.widget.medium.*;
+import li.klass.fhem.appwidget.ui.widget.small.*;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.backup.ImportExportService;
 import li.klass.fhem.connection.ui.ConnectionDetailFragment;
@@ -97,11 +75,7 @@ import li.klass.fhem.room.list.ui.RoomListFragment;
 import li.klass.fhem.search.MySearchSuggestionsProvider;
 import li.klass.fhem.search.SearchResultsFragment;
 import li.klass.fhem.sendCommand.ui.SendCommandFragment;
-import li.klass.fhem.service.intent.ExternalApiService;
-import li.klass.fhem.service.intent.LicenseIntentService;
-import li.klass.fhem.service.intent.NotificationIntentService;
-import li.klass.fhem.service.intent.RoomListUpdateIntentService;
-import li.klass.fhem.service.intent.SendCommandService;
+import li.klass.fhem.service.intent.*;
 import li.klass.fhem.settings.SettingsActivity;
 import li.klass.fhem.settings.SettingsFragment;
 import li.klass.fhem.timer.ui.TimerDetailFragment;
@@ -113,6 +87,9 @@ import li.klass.fhem.update.backend.device.configuration.Sanitiser;
 import li.klass.fhem.update.backend.group.GroupProvider;
 import li.klass.fhem.update.backend.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
+import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Singleton;
 
 @Singleton
 @Component(modules = {ApplicationModule.class, DatabaseModule.class})
@@ -289,5 +266,5 @@ public interface ApplicationComponent {
 
     void inject(SettingsFragment settingsFragment);
 
-    void inject(@NotNull AppWidgetIntentService appWidgetIntentService);
+    void inject(@NotNull AppWidgetActionBroadcastReceiver appWidgetActionBroadcastReceiver);
 }

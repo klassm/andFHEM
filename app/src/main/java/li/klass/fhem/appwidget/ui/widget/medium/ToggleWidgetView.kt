@@ -33,7 +33,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
-import li.klass.fhem.appwidget.action.AppWidgetIntentService
+import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
@@ -66,7 +66,7 @@ open class ToggleWidgetView @Inject constructor(
             view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(onOffBehavior.getOffStateName(device)!!))
         }
 
-        val pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         view.setOnClickPendingIntent(R.id.toggleOff, pendingIntent)
         view.setOnClickPendingIntent(R.id.toggleOn, pendingIntent)
 
@@ -76,7 +76,7 @@ open class ToggleWidgetView @Inject constructor(
     private fun actionIntentFor(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): Intent {
         val hook = deviceHookProvider.buttonHookFor(device)
 
-        return Intent(context, AppWidgetIntentService::class.java)
+        return Intent(context, AppWidgetActionBroadcastReceiver::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(APP_WIDGET_ID, widgetConfiguration.widgetId)
                 .putExtra(DEVICE_NAME, device.name)

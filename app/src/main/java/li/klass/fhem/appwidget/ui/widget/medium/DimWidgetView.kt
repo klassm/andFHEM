@@ -29,7 +29,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import li.klass.fhem.R
-import li.klass.fhem.appwidget.action.AppWidgetIntentService
+import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
@@ -62,14 +62,14 @@ class DimWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
         val dimUpState = behavior.getDimStateForPosition(behavior.currentDimPosition + 1)
         val dimUpIntent = sendTargetDimState(context, device, dimUpState, connectionId)
-        view.setOnClickPendingIntent(R.id.dimUp, PendingIntent.getService(context, (widgetId.toString() + "dimUp").hashCode(), dimUpIntent,
+        view.setOnClickPendingIntent(R.id.dimUp, PendingIntent.getBroadcast(context, (widgetId.toString() + "dimUp").hashCode(), dimUpIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT))
     }
 
     override fun supports(device: FhemDevice) = DimmableBehavior.supports(device)
 
     private fun sendTargetDimState(context: Context, device: FhemDevice, targetState: String, connectionId: String?) =
-            Intent(context, AppWidgetIntentService::class.java)
+            Intent(context, AppWidgetActionBroadcastReceiver::class.java)
                     .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
                     .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
                     .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)

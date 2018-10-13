@@ -32,7 +32,7 @@ import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
-import li.klass.fhem.appwidget.action.AppWidgetIntentService
+import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
@@ -72,15 +72,14 @@ class OnOffWidgetView @Inject constructor(
         openDeviceDetailPageWhenClicking(R.id.deviceName, view, device, widgetConfiguration, context)
     }
 
-    private fun targetStatePendingIntent(context: Context, device: FhemDevice, targetState: String, widgetConfiguration: WidgetConfiguration, requestCode: Int): PendingIntent? {
-        val intent = Intent(context, AppWidgetIntentService::class.java)
-                .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
-                .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
-        return PendingIntent.getService(context, requestCode,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
+    private fun targetStatePendingIntent(context: Context, device: FhemDevice, targetState: String, widgetConfiguration: WidgetConfiguration, requestCode: Int) =
+            PendingIntent.getBroadcast(context, requestCode,
+                    Intent(context, AppWidgetActionBroadcastReceiver::class.java)
+                            .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
+                            .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
+                            .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
+                            .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId),
+                    PendingIntent.FLAG_UPDATE_CURRENT)
 
     override fun supports(device: FhemDevice): Boolean =
             onOffBehavior.supports(device)

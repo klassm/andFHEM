@@ -47,7 +47,7 @@ class AppWidgetActionHandler @Inject constructor(
         private val appWidgetUpdateService: AppWidgetUpdateService,
         deviceListUpdateService: DeviceListUpdateService
 ) {
-    internal val handlers: Map<String, ActionHandler> = mapOf(
+    private val handlers: Map<String, ActionHandler> = mapOf(
             Actions.DEVICE_WIDGET_TOGGLE to object : ActionHandler {
                 override fun handle(device: FhemDevice?, connectionId: String?, bundle: Bundle, context: Context) {
                     device ?: return
@@ -70,7 +70,7 @@ class AppWidgetActionHandler @Inject constructor(
     )
 
     fun handle(context: Context, bundle: Bundle, action: String) {
-        val handler = handlers.get(action) ?: return
+        val handler = handlers[action] ?: return
         val deviceName = bundle.getString(DEVICE_NAME)
         val connectionId = bundle.getString(CONNECTION_ID)
 
