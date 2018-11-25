@@ -81,21 +81,22 @@ class StartupActivity : Activity() {
         super.onResume()
 
         val activity = this
+
+
         GlobalScope.launch(Dispatchers.Main) {
             async {
                 deviceListService.resetUpdateProgress(this@StartupActivity)
             }.await()
 
             loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
-
-                override suspend fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
+                override fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
                     loginStatus.visibility = View.GONE
                     loginLayout.visibility = View.VISIBLE
 
                     login.setOnClickListener {
-                        launch(Dispatchers.Main) {
-                            val passwordInput = findViewById<EditText>(R.id.password)
-                            val password = passwordInput.text.toString()
+                        val passwordInput = findViewById<EditText>(R.id.password)
+                        val password = passwordInput.text.toString()
+                        GlobalScope.launch(Dispatchers.Main) {
                             checkLogin(password)
                         }
                     }

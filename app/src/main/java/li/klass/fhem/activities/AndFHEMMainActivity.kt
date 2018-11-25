@@ -52,7 +52,6 @@ import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.main_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
@@ -436,16 +435,19 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         val activity = this
         GlobalScope.launch(Dispatchers.Main) {
             loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
-                override suspend fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
-                    coroutineScope {
-                        val loginView = layoutInflater.inflate(R.layout.login, null)
-                        AlertDialog.Builder(context)
-                                .setView(loginView)
-                                .setTitle(R.string.login)
-                                .setOnCancelListener { finish() }
-                                .setPositiveButton(R.string.okButton) { _, _ -> launch { checkLogin((loginView.findViewById<EditText>(R.id.password)).text.toString()) } }
-                                .show()
-                    }
+                override fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
+                    val loginView = layoutInflater.inflate(R.layout.login, null)
+                    AlertDialog.Builder(context)
+                            .setView(loginView)
+                            .setTitle(R.string.login)
+                            .setOnCancelListener { finish() }
+                            .setPositiveButton(R.string.okButton) { _, _ ->
+                                val password = (loginView.findViewById<EditText>(R.id.password)).text.toString()
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    checkLogin(password)
+                                }
+                            }
+                            .show()
                 }
 
                 override suspend fun onLoginSuccess() {

@@ -57,7 +57,7 @@ class LoginUIService @Inject constructor(
     }
 
     interface LoginStrategy {
-        suspend fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit)
+        fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit)
 
         suspend fun onLoginSuccess()
 
