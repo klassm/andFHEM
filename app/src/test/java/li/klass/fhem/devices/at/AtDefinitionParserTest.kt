@@ -178,9 +178,20 @@ class AtDefinitionParserTest {
                             timerType = ABSOLUTE,
                             definition = "2016-10-16T17:00:00 { fhem(\"set d on\") }",
                             assembledDefinition = "17:00:00 { fhem(\"set d on\") }"
+                    ),
+                    TestCase(
+                            hours = 17,
+                            minutes = 0,
+                            seconds = 0,
+                            targetState = "scene",
+                            targetDevice = "weihnachtsbeleuchtung",
+                            additionalInformation = "on",
+                            repetition = ONCE,
+                            timerType = ABSOLUTE,
+                            definition = "2016-10-16T17:00:00 { fhem(\"set weihnachtsbeleuchtung scene on\") }",
+                            assembledDefinition = "17:00:00 { fhem(\"set weihnachtsbeleuchtung scene on\") }"
                     )
             )
-
         }
     }
 }

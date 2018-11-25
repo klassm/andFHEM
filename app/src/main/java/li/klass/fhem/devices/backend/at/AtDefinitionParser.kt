@@ -62,9 +62,8 @@ class AtDefinitionParser @Inject constructor() {
     }
 
     private fun parseDateContent(switchTime: String): LocalTime? {
-        val validatedTime = if (switchTime.length < "00:00:00".length) {
-            switchTime + ":00"
-        } else switchTime
+        val validatedTime = if (switchTime.length < "00:00:00".length) "$switchTime:00" else switchTime
+
         return try {
             val date = DATE_TIME_FORMAT.parseDateTime(validatedTime)
             LocalTime(date.hourOfDay, date.minuteOfHour, date.secondOfMinute)
@@ -104,9 +103,9 @@ class AtDefinitionParser @Inject constructor() {
 
             val targetDevice = trimToNull(matcher.group(1))
             val targetState = trimToNull(matcher.group(2))
-            val targetStateAddtionalInformation = trimToNull(matcher.group(3))
+            val targetStateAdditionalInformation = trimToNull(matcher.group(3))
 
-            return ParsedSwitchContent(targetDevice, targetState, targetStateAddtionalInformation, null)
+            return ParsedSwitchContent(targetDevice, targetState, targetStateAdditionalInformation, null)
         }
     }
 
@@ -179,7 +178,7 @@ class AtDefinitionParser @Inject constructor() {
     )
 
     companion object {
-        private val FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,\\\\.]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)")
+        private val FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,\\\\.]+) ([\\w%-]+)(?: ([0-9\\w.:]+))?\"\\)(.*)")
         private val PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)")
         private val DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?")
         private val DATE_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm:ss")
