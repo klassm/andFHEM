@@ -58,7 +58,7 @@ class DeviceConfigurationProviderTest {
         @JvmStatic
         @Throws(Exception::class)
         fun allFilesProvider(): List<File> {
-            val resourceDirectory = File(DeviceConfiguration::class.java.getResource("/deviceConfiguration").toURI())
+            val resourceDirectory = File(DeviceConfiguration::class.java.getResource("/deviceConfiguration")!!.toURI())
             val files = resourceDirectory.listFiles { _, filename -> filename != null && filename.endsWith(".json") }
 
             return files.toList()
