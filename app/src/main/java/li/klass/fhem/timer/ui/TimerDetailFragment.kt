@@ -257,7 +257,7 @@ class TimerDetailFragment : BaseFragment() {
         )
 
         GlobalScope.launch(Dispatchers.Main) {
-            async {
+            async(Dispatchers.IO) {
                 if (isModify) {
                     atService.modify(timerDevice)
                 } else {
@@ -298,7 +298,7 @@ class TimerDetailFragment : BaseFragment() {
         val myActivity = activity ?: return
 
         GlobalScope.launch(Dispatchers.Main) {
-            async {
+            async(Dispatchers.IO) {
                 atService.getTimerDeviceFor(timerDeviceName)
             }.await()?.let {
                 setValuesForCurrentTimerDevice(it)
@@ -312,7 +312,7 @@ class TimerDetailFragment : BaseFragment() {
         updateTimerInformation(timerDevice)
 
         GlobalScope.launch(Dispatchers.Main) {
-            async {
+            async(Dispatchers.IO) {
                 deviceListService.getDeviceForName(device.definition.targetDeviceName)
             }.await()?.let {
                 updateTargetDevice(it, this@TimerDetailFragment.view)

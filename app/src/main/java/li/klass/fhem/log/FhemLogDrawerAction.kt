@@ -51,7 +51,7 @@ class FhemLogDrawerAction @Inject constructor(
         }
         activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         GlobalScope.launch(Dispatchers.Main) {
-            val temporaryFile = async {
+            val temporaryFile = async(Dispatchers.IO) {
                 fhemLogService.getLogAndWriteToTemporaryFile()
             }.await()
             activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))

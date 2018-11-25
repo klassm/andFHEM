@@ -69,7 +69,7 @@ class PlayerCardProvider @Inject constructor(
         command ?: return null
         return View.OnClickListener {
             GlobalScope.launch(Dispatchers.Main) {
-                async {
+                async(Dispatchers.IO) {
                     genericDeviceService.setState(device.xmlListDevice, command, connectionId)
                 }.await()
             }

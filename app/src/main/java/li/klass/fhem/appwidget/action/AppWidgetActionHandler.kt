@@ -28,6 +28,8 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
@@ -37,7 +39,6 @@ import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class AppWidgetActionHandler @Inject constructor(
@@ -74,7 +75,7 @@ class AppWidgetActionHandler @Inject constructor(
         val deviceName = bundle.getString(DEVICE_NAME)
         val connectionId = bundle.getString(CONNECTION_ID)
 
-        doAsync {
+        GlobalScope.launch {
             val device = deviceName?.let { deviceListService.getDeviceForName(it, connectionId) }
             handler.handle(device, connectionId, bundle, context)
             appWidgetUpdateService.updateAllWidgets()

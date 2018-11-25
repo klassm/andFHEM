@@ -28,12 +28,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.service.intent.SendCommandService
-import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class FireSettingLocaleReceiver : BroadcastReceiver() {
@@ -55,11 +56,11 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
         Log.i(TAG, "action=$action,command=$command,connectionId=$connectionId")
 
         if (Actions.EXECUTE_COMMAND == action) {
-            doAsync {
+            GlobalScope.launch {
                 sendCommandService.executeCommand(command, connectionId)
             }
         } else if (Actions.CONNECTION_UPDATE == action) {
-            doAsync {
+            GlobalScope.launch {
                 connectionsService.setSelectedId(connectionId)
             }
         }

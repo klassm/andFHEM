@@ -81,7 +81,7 @@ class ConnectionChangeLocaleSettingActivity : Activity() {
         }
 
         GlobalScope.launch(Dispatchers.Main) {
-            val connections = async {
+            val connections = async(Dispatchers.IO) {
                 connectionService.listAll()
             }.await()
             fillConnectionSpinner(connections, connectionListAdapter)

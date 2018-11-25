@@ -33,6 +33,7 @@ import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.startup.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.startup.actions.StartupActions
@@ -84,7 +85,7 @@ class StartupActivity : Activity() {
 
 
         GlobalScope.launch(Dispatchers.Main) {
-            async {
+            async(IO) {
                 deviceListService.resetUpdateProgress(this@StartupActivity)
             }.await()
 
@@ -123,7 +124,7 @@ class StartupActivity : Activity() {
         GlobalScope.launch(Dispatchers.Main) {
             startupActions.actions.map {
                 setCurrentStatus(it.statusText)
-                async {
+                async(IO) {
                     try {
                         it.run()
                     } catch (e: Exception) {
@@ -140,7 +141,7 @@ class StartupActivity : Activity() {
         setCurrentStatus(R.string.currentStatus_loadingFavorites)
 
         coroutineScope {
-            val hasFavorites = async {
+            val hasFavorites = async(IO) {
                 favoritesService.hasFavorites()
             }.await()
             logger.debug("showMainActivity : favorites_present=$hasFavorites")

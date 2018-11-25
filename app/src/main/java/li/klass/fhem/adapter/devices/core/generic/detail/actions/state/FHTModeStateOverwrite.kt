@@ -90,7 +90,7 @@ class FHTModeStateOverwrite @Inject constructor(
             }
             else -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async {
+                    async(Dispatchers.IO) {
                         genericDeviceService.setSubState(device, "mode", mode.name.toLowerCase(Locale.getDefault()), connectionId)
                     }.await()
                     spinnerActionRow.commitSelection()
@@ -127,7 +127,7 @@ class FHTModeStateOverwrite @Inject constructor(
 
             dialogBuilder.setPositiveButton(R.string.okButton) { dialogInterface, _ ->
                 GlobalScope.launch(Dispatchers.Main) {
-                    async {
+                    async(Dispatchers.IO) {
                         genericDeviceService.setSubStates(device, listOf(
                                 StateToSet("desired-temp", "" + temperatureChangeTableRow.temperature),
                                 StateToSet("holiday1", "" + datePicker.dayOfMonth),

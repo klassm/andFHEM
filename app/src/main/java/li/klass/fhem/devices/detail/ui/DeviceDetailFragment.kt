@@ -116,7 +116,7 @@ class DeviceDetailFragment : BaseFragment() {
         if (refresh) myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
         coroutineScope {
-            val device = async {
+            val device = async(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(name, connectionId)
                     appWidgetUpdateService.updateAllWidgets()
@@ -178,7 +178,7 @@ class DeviceDetailFragment : BaseFragment() {
     private fun callUpdating(actionToCall: (String) -> Unit, toastStringId: Int) {
         deviceName ?: return
         GlobalScope.launch(Dispatchers.Main) {
-            async {
+            async(Dispatchers.IO) {
                 actionToCall(deviceName!!)
             }.await()
             showToast(toastStringId)

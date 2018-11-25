@@ -108,10 +108,8 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
     private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
-                async {
-                    genericDeviceService.setState(device.xmlListDevice, command, connectionId)
-                }.await()
+            GlobalScope.launch((Dispatchers.IO)) {
+                genericDeviceService.setState(device.xmlListDevice, command, connectionId)
             }
         }
     }

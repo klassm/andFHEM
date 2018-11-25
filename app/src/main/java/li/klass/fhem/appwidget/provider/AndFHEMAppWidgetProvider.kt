@@ -56,10 +56,7 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
         logger.info("onUpdate - request update for ids=${Arrays.toString(appWidgetIds)}")
         GlobalScope.launch(Dispatchers.Main) {
             appWidgetIds.map {
-                appWidgetUpdateService.doRemoteUpdate(it)
-            }
-            appWidgetIds.map {
-                async {
+                async(Dispatchers.IO) {
                     appWidgetUpdateService.doRemoteUpdate(it)
                 }
             }.awaitAll().forEach { appWidgetUpdateService.updateWidget(it) }

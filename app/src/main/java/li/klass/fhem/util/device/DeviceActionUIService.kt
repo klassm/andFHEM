@@ -45,7 +45,6 @@ class DeviceActionUIService @Inject constructor(
         private val deviceService: DeviceService,
         private val notificationService: NotificationService,
         private val favoritesService: FavoritesService
-
 ) {
 
     fun renameDevice(context: Context, device: FhemDevice) {
@@ -57,7 +56,7 @@ class DeviceActionUIService @Inject constructor(
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         val newName = input.text.toString()
-                        async {
+                        async(Dispatchers.IO) {
                             deviceService.renameDevice(device, newName)
                             notificationService.rename(device.name, newName, context)
                             favoritesService.rename(device.name, newName)
@@ -72,7 +71,7 @@ class DeviceActionUIService @Inject constructor(
     fun deleteDevice(context: Context, device: FhemDevice) {
         showConfirmation(context, DialogInterface.OnClickListener { _, _ ->
             GlobalScope.launch(Dispatchers.Main) {
-                async {
+                async(Dispatchers.IO) {
                     deviceService.deleteDevice(device)
                 }.await()
                 invokeUpdate(context)
@@ -89,7 +88,7 @@ class DeviceActionUIService @Inject constructor(
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     val newRoom = input.text.toString()
                     GlobalScope.launch(Dispatchers.Main) {
-                        async { deviceService.moveDevice(device, newRoom, context) }.await()
+                        async(Dispatchers.IO) { deviceService.moveDevice(device, newRoom, context) }.await()
                         invokeUpdate(context)
                     }
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
@@ -105,7 +104,7 @@ class DeviceActionUIService @Inject constructor(
                     val newAlias = input.text.toString()
 
                     GlobalScope.launch(Dispatchers.Main) {
-                        async { deviceService.setAlias(device, newAlias) }.await()
+                        async(Dispatchers.IO) { deviceService.setAlias(device, newAlias) }.await()
                         invokeUpdate(context)
                     }
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()

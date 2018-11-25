@@ -29,7 +29,6 @@ import android.content.Intent
 import com.google.common.collect.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
@@ -70,10 +69,8 @@ class FHTDetailActionProvider @Inject constructor(
                 },
                 object : ActionCardButton(R.string.requestRefresh, context) {
                     override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                        GlobalScope.launch(Dispatchers.Main) {
-                            async {
-                                genericDeviceService.setState(device, "refreshvalues", connectionId)
-                            }.await()
+                        GlobalScope.launch(Dispatchers.IO) {
+                            genericDeviceService.setState(device, "refreshvalues", connectionId)
                         }
                     }
                 }

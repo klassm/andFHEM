@@ -104,7 +104,7 @@ class SendCommandFragment : BaseFragment() {
         val myActivity = activity ?: return
         myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         coroutineScope {
-            val recentCommands = async {
+            val recentCommands = async(Dispatchers.IO) {
                 sendCommandService.getRecentCommands()
             }.await()
 
@@ -138,7 +138,7 @@ class SendCommandFragment : BaseFragment() {
                 val safeContext = context ?: return false
                 when (item.itemId) {
                     R.id.menu_delete -> GlobalScope.launch(Dispatchers.Main) {
-                        async {
+                        async(Dispatchers.IO) {
                             sendCommandService.deleteCommand(command)
                         }.await()
                         update(false)
@@ -146,7 +146,7 @@ class SendCommandFragment : BaseFragment() {
                     R.id.menu_edit -> DialogUtil.showInputBox(safeContext, getString(R.string.context_edit), command, object : DialogUtil.InputDialogListener {
                         override fun onClick(text: String) {
                             GlobalScope.launch(Dispatchers.Main) {
-                                async {
+                                async(Dispatchers.IO) {
                                     sendCommandService.editCommand(command, text)
                                 }.await()
                                 update(false)

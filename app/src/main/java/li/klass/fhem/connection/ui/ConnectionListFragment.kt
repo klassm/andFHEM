@@ -174,10 +174,10 @@ class ConnectionListFragment : BaseFragment() {
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async {
+                    async(Dispatchers.IO) {
                         connectionService.delete(clickedConnectionId!!)
                     }.await()
-                    update(false)
+                    updateAsync(false)
                 }
                 return true
             }
@@ -197,7 +197,7 @@ class ConnectionListFragment : BaseFragment() {
 
     private suspend fun doUpdate() {
         coroutineScope {
-            val connectionList = async {
+            val connectionList = async(Dispatchers.IO) {
                 connectionService.listAll()
             }.await()
 

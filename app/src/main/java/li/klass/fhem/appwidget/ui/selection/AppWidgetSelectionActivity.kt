@@ -107,7 +107,7 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
                 appWidgetInstanceManager.save(widgetConfiguration)
 
                 GlobalScope.launch(Dispatchers.Main) {
-                    async {
+                    async(Dispatchers.IO) {
                         appWidgetUpdateService.updateWidget(widgetId)
                     }.await()
 

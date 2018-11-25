@@ -33,6 +33,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.ListView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.R
@@ -135,7 +136,7 @@ open class RoomListFragment : BaseFragment() {
             activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
         coroutineScope {
-            val roomNameList = async {
+            val roomNameList = async(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()

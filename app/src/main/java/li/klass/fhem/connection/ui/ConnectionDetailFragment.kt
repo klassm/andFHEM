@@ -200,7 +200,7 @@ class ConnectionDetailFragment : BaseFragment() {
         val saveData = saveStrategy.saveDataFor(view!!) ?: return
 
         coroutineScope {
-            async {
+            async(Dispatchers.IO) {
                 if (isModify) {
                     connectionService.update(connectionId!!, saveData)
                 } else {

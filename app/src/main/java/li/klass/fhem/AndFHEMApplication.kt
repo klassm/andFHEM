@@ -33,6 +33,8 @@ import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
 import li.klass.fhem.alarm.clock.update.AlarmClockUpdateService
@@ -45,7 +47,6 @@ import li.klass.fhem.graph.ui.GraphActivity
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
@@ -83,13 +84,13 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
 
         setApplicationInformation()
 
-        doAsync {
+        GlobalScope.launch {
             alarmClockUpdateService.scheduleUpdate()
         }
     }
 
     override fun onUpdate(oldVersion: Int, newVersion: Int) {
-        doAsync {
+        GlobalScope.launch {
             deviceListUpdateService.checkForCorruptedDeviceList()
         }
     }

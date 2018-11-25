@@ -75,7 +75,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
 
     suspend fun doLoad() {
         coroutineScope {
-            val (all, selected) = async {
+            val (all, selected) = async(Dispatchers.IO) {
                 Pair(connectionService.listAll(), connectionService.getSelectedId())
             }.await()
 

@@ -162,16 +162,19 @@ abstract class DeviceListFragment : BaseFragment() {
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$refresh)")
 
         coroutineScope {
-            val elements = async {
                 if (refresh) {
                     myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
-                    executeRemoteUpdate(myActivity)
+                    async(Dispatchers.IO) {
+                        executeRemoteUpdate(myActivity)
+                    }.await()
                     myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
                     myActivity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
                 }
+            val elements = async(Dispatchers.IO) {
                 val deviceList = getRoomDeviceListForUpdate(myActivity)
                 viewableRoomDeviceListProvider.provideFor(myActivity, deviceList)
             }.await()
+
             if (view != null) {
                 updateWith(elements, view!!)
             }
@@ -240,7 +243,7 @@ abstract class DeviceListFragment : BaseFragment() {
     private fun onLongClick(device: FhemDevice): Boolean {
         val myActivity = activity ?: return false
         GlobalScope.launch(Dispatchers.Main) {
-            val isFavorite = async {
+            val isFavorite = async(Dispatchers.IO) {
                 favoritesService.isFavorite(device.name)
             }.await()
             val callback = DeviceListActionModeCallback(favoritesService, deviceActionUiService,

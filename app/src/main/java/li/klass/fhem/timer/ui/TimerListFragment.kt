@@ -128,7 +128,7 @@ class TimerListFragment : BaseFragment() {
     override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         coroutineScope {
-            val timerDevices = async {
+            val timerDevices = async(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
@@ -164,7 +164,7 @@ class TimerListFragment : BaseFragment() {
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async {
+                    async(Dispatchers.IO) {
                         deviceListService.getDeviceForName(name)
                     }.await()?.let {
                         deviceActionUIService.deleteDevice(context, it)

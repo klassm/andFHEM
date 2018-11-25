@@ -66,7 +66,7 @@ class ToggleDeviceActionRow(context: Context,
 
     private fun onButtonClick(context: Context, device: FhemDevice) {
         GlobalScope.launch(Dispatchers.Main) {
-            async {
+            async(Dispatchers.IO) {
                 toggleableService.toggleState(device, connectionId = null)
             }.await()
             context.sendBroadcast(Intent(Actions.DO_UPDATE))

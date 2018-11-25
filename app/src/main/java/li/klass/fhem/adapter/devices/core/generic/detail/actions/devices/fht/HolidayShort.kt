@@ -94,7 +94,7 @@ class HolidayShort @Inject constructor(private val applicationProperties: Applic
                     val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
 
                     GlobalScope.launch(Dispatchers.Main) {
-                        async {
+                        async(Dispatchers.IO) {
                             genericDeviceService.setSubStates(device, listOf(
                                     StateToSet("desired-temp", "" + model.desiredTemp),
                                     StateToSet("holiday1", "" + holidayShortCalculator.calculateHoliday1ValueFrom(switchDate.hourOfDay, switchDate.minuteOfHour)),
