@@ -167,11 +167,10 @@ class TimerListFragment : BaseFragment() {
             CONTEXT_MENU_DELETE -> {
                 async(UI) {
                     bg {
-                        deviceListService.getDeviceForName(name)?.let {
-                            deviceActionUIService.deleteDevice(context, it)
-                        }
-                    }.await()
-                    context.sendBroadcast(Intent(Actions.DO_UPDATE))
+                        deviceListService.getDeviceForName(name)
+                    }.await()?.let {
+                        deviceActionUIService.deleteDevice(context, it)
+                    }
                 }
 
                 return true

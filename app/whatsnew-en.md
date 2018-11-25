@@ -1,1 +1,1 @@
-TODO
+* Repair deletion of timers
