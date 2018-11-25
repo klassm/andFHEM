@@ -1,5 +1,7 @@
 package li.klass.fhem.fcm.history.data
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.fcm.history.data.change.FcmHistoryChangeDao
 import li.klass.fhem.fcm.history.data.change.FcmHistoryChangeEntity
 import li.klass.fhem.fcm.history.data.message.FcmHistoryMessageDao
@@ -59,7 +61,8 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
         return fcmHistoryChangeDao.getChangesAt(dateFormat.print(localDate))
                 .map {
                     val changes = it.changes ?: ""
-                    val changesAsJson = if (changes.isEmpty()) JSONArray() else JSONArray(it.changes ?: "")
+                    val changesAsJson = if (changes.isEmpty()) JSONArray() else JSONArray(it.changes
+                            ?: "")
                     val changesAsPairs = (0 until changesAsJson.length())
                             .map { changesAsJson.get(it) }
                             .map { it as JSONObject }
@@ -83,18 +86,20 @@ class FcmHistoryService @Inject constructor(private val dateTimeProvider: DateTi
             return
         }
 
-        try {
-            val now = dateTimeProvider.now()
-            val deleteUntil = datetimeFormat.print(now.minusDays(days))
-            logger.info("deleteContentOlderThan - deleting content older than $days days < $deleteUntil")
+        GlobalScope.launch {
+            try {
+                val now = dateTimeProvider.now()
+                val deleteUntil = datetimeFormat.print(now.minusDays(days))
+                logger.info("deleteContentOlderThan - deleting content older than $days days < $deleteUntil")
 
-            val deletesUpdates = fcmHistoryChangeDao.deleteWhereDataIsBefore(deleteUntil)
-            logger.info("deleteContentOlderThan - deleted $deletesUpdates updates")
+                val deletesUpdates = fcmHistoryChangeDao.deleteWhereDataIsBefore(deleteUntil)
+                logger.info("deleteContentOlderThan - deleted $deletesUpdates updates")
 
-            val deletesMessages = fcmHistoryMessageDao.deleteWhereDataIsBefore(deleteUntil)
-            logger.info("deleteContentOlderThan - deleted $deletesMessages messages")
-        } catch (e: Exception) {
-            logger.error("deleteContentOlderThan - error during deletion", e)
+                val deletesMessages = fcmHistoryMessageDao.deleteWhereDataIsBefore(deleteUntil)
+                logger.info("deleteContentOlderThan - deleted $deletesMessages messages")
+            } catch (e: Exception) {
+                logger.error("deleteContentOlderThan - error during deletion", e)
+            }
         }
     }
 

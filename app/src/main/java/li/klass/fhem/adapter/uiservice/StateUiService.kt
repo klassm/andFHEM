@@ -27,7 +27,7 @@ package li.klass.fhem.adapter.uiservice
 import android.content.Context
 import android.content.Intent
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
@@ -40,9 +40,9 @@ class StateUiService @Inject constructor(
         val genericDeviceService: GenericDeviceService
 ) {
 
-    fun setSubState(device: XmlListDevice,
-                    stateName: String, value: String, connectionId: String?, context: Context) {
-        runBlocking {
+    suspend fun setSubState(device: XmlListDevice,
+                            stateName: String, value: String, connectionId: String?, context: Context) {
+        coroutineScope {
             async {
                 genericDeviceService.setSubState(device, stateName, value, connectionId)
             }.await()
@@ -50,11 +50,11 @@ class StateUiService @Inject constructor(
         }
     }
 
-    fun setState(device: FhemDevice, value: String, context: Context, connectionId: String?) =
+    suspend fun setState(device: FhemDevice, value: String, context: Context, connectionId: String?) =
             setState(device.xmlListDevice, value, context, connectionId)
 
-    fun setState(device: XmlListDevice, value: String, context: Context, connectionId: String?) {
-        runBlocking {
+    suspend fun setState(device: XmlListDevice, value: String, context: Context, connectionId: String?) {
+        coroutineScope {
             async {
                 genericDeviceService.setState(device, value, connectionId)
             }.await()
@@ -62,7 +62,5 @@ class StateUiService @Inject constructor(
         }
     }
 
-    private fun invokeUpdate(context: Context) {
-        context.sendBroadcast(Intent(Actions.DO_UPDATE))
-    }
+    private fun invokeUpdate(context: Context) = context.sendBroadcast(Intent(Actions.DO_UPDATE))
 }

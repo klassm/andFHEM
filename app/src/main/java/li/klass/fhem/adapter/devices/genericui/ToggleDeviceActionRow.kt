@@ -30,8 +30,10 @@ import android.view.LayoutInflater
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.ToggleButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
@@ -39,7 +41,6 @@ import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.EventMap
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 
 class ToggleDeviceActionRow(context: Context,
@@ -64,7 +65,7 @@ class ToggleDeviceActionRow(context: Context,
     private fun isOn(device: FhemDevice): Boolean = onOffBehavior.isOn(device)
 
     private fun onButtonClick(context: Context, device: FhemDevice) {
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             async {
                 toggleableService.toggleState(device, connectionId = null)
             }.await()

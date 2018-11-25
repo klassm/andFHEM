@@ -24,40 +24,41 @@
 
 package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
-import android.app.Dialog
+import android.app.AlertDialog
 import android.content.Context
+import com.google.common.collect.Iterables
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
-import li.klass.fhem.adapter.devices.genericui.RGBColorPickerDialog
+import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
-import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
+import li.klass.fhem.domain.setlist.typeEntry.MultipleStrictSetListEntry
 
-class RGBTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
+class GroupSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     override fun canHandle(entry: SetListEntry): Boolean {
-        return entry is RGBSetListEntry
+        return entry is GroupSetListEntry || entry is MultipleStrictSetListEntry
     }
 
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
-        val rgbSetListEntry = entry as RGBSetListEntry
-        val initial = device.xmlListDevice.getState(rgbSetListEntry.key, true) ?: "0xFFF"
+        val groupSetListEntry = entry as GroupSetListEntry
 
-        RGBColorPickerDialog(context, initial, object : RGBColorPickerDialog.Callback {
-            override fun onColorChanged(newRGB: String, dialog1: Dialog) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    callback.onSubStateSelected(device, entry.getKey(), newRGB)
+        AlertDialog.Builder(context)
+                .setTitle(device.aliasOrName + " " + groupSetListEntry.key)
+                .setItems(Iterables.toArray(groupSetListEntry.groupStates, CharSequence::class.java)) { dialog, which ->
+                    val subState = groupSetListEntry.groupStates[which]
+                    GlobalScope.launch(Dispatchers.Main) {
+                        callback.onSubStateSelected(device, groupSetListEntry.key, subState)
+                    }
+                    dialog.dismiss()
                 }
-                dialog1.dismiss()
-            }
-
-            override fun onColorUnchanged(dialog1: Dialog) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    callback.onNothingSelected(device)
+                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        callback.onNothingSelected(device)
+                    }
+                    dialog.dismiss()
                 }
-                dialog1.dismiss()
-            }
-        }).show()
+                .show()
     }
 }

@@ -29,14 +29,15 @@ import android.support.v7.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.device.DeviceActionUIService
 import li.klass.fhem.widget.notification.NotificationSettingView
-import org.jetbrains.anko.coroutines.experimental.bg
 
 class DeviceListActionModeCallback constructor(
         private val favoritesService: FavoritesService,
@@ -63,7 +64,7 @@ class DeviceListActionModeCallback constructor(
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menu_favorites_add -> {
-                runBlocking {
+                GlobalScope.launch(Dispatchers.Main) {
                     async {
                         favoritesService.addFavorite(device.name)
                     }.await()
@@ -71,7 +72,7 @@ class DeviceListActionModeCallback constructor(
                 }
             }
             R.id.menu_favorites_remove -> {
-                runBlocking {
+                GlobalScope.launch(Dispatchers.Main) {
                     async {
                         favoritesService.removeFavorite(device.name)
                     }.await()

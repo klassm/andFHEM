@@ -89,7 +89,7 @@ abstract class OverviewDeviceAdapter : DeviceAdapter() {
         throw IllegalStateException("no overview strategy found, default should always be present")
     }
 
-    fun createOverviewView(convertView: View?, rawDevice: FhemDevice, context: Context): View {
+    suspend fun createOverviewView(convertView: View?, rawDevice: FhemDevice, context: Context): View {
         val stopWatch = StopWatch()
         stopWatch.start()
         val viewStrategy = getMostSpecificOverviewStrategy(rawDevice)

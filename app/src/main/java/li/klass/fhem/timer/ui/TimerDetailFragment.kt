@@ -37,8 +37,7 @@ import com.google.common.base.Splitter
 import com.google.common.base.Strings
 import com.google.common.collect.ImmutableList
 import kotlinx.android.synthetic.main.timer_detail.view.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.showSwitchOptionsMenu
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
@@ -150,15 +149,17 @@ class TimerDetailFragment : BaseFragment() {
     private fun bindTargetStateButton(view: View) {
         view.targetStateSet.setOnClickListener { _ ->
             showSwitchOptionsMenu<FhemDevice>(activity, targetDevice, object : OnTargetStateSelectedCallback<FhemDevice> {
-                override fun onStateSelected(device: FhemDevice, targetState: String) {
+                override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                     setTargetState(targetState, view)
                 }
 
-                override fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
-                    onStateSelected(device, "$state $subState")
+                override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
+                    coroutineScope {
+                        onStateSelected(device, "$state $subState")
+                    }
                 }
 
-                override fun onNothingSelected(device: FhemDevice) {}
+                override suspend fun onNothingSelected(device: FhemDevice) {}
             })
         }
     }
@@ -255,7 +256,7 @@ class TimerDetailFragment : BaseFragment() {
                 next = timerDevice?.next ?: ""
         )
 
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             async {
                 if (isModify) {
                     atService.modify(timerDevice)
@@ -296,7 +297,7 @@ class TimerDetailFragment : BaseFragment() {
         checkNotNull(timerDeviceName)
         val myActivity = activity ?: return
 
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             async {
                 atService.getTimerDeviceFor(timerDeviceName)
             }.await()?.let {
@@ -310,7 +311,7 @@ class TimerDetailFragment : BaseFragment() {
         this.timerDevice = device
         updateTimerInformation(timerDevice)
 
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             async {
                 deviceListService.getDeviceForName(device.definition.targetDeviceName)
             }.await()?.let {

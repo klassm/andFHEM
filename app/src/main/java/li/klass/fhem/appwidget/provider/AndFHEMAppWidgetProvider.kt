@@ -27,8 +27,7 @@ package li.klass.fhem.appwidget.provider
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -55,14 +54,15 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         logger.info("onUpdate - request update for ids=${Arrays.toString(appWidgetIds)}")
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
+            appWidgetIds.map {
+                appWidgetUpdateService.doRemoteUpdate(it)
+            }
             appWidgetIds.map {
                 async {
-                    appWidgetUpdateService.doRemoteUpdate(it) {
-                        appWidgetUpdateService.updateWidget(it)
-                    }
+                    appWidgetUpdateService.doRemoteUpdate(it)
                 }
-            }.forEach { it.await() }
+            }.awaitAll().forEach { appWidgetUpdateService.updateWidget(it) }
         }
     }
 

@@ -38,9 +38,7 @@ import com.github.angads25.filepicker.model.DialogProperties
 import com.github.angads25.filepicker.view.FilePickerDialog
 import com.google.common.base.Preconditions.checkNotNull
 import com.google.common.collect.Lists.newArrayList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
@@ -118,7 +116,9 @@ class ConnectionDetailFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.save) {
-            handleSave()
+            GlobalScope.launch(Dispatchers.Main) {
+                handleSave()
+            }
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -192,14 +192,14 @@ class ConnectionDetailFragment : BaseFragment() {
         if (detailChangedListener != null) detailChangedListener!!.onChanged()
     }
 
-    private fun handleSave() {
+    private suspend fun handleSave() {
         view ?: return
 
         val myContext = context ?: return
         val saveStrategy = strategyFor(connectionType ?: ServerType.FHEMWEB, myContext)
         val saveData = saveStrategy.saveDataFor(view!!) ?: return
 
-        runBlocking {
+        coroutineScope {
             async {
                 if (isModify) {
                     connectionService.update(connectionId!!, saveData)

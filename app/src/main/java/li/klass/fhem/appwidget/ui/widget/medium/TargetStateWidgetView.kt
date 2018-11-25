@@ -82,17 +82,17 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback<*> {
         return object : OnTargetStateSelectedCallback<FhemDevice> {
-            override fun onStateSelected(device: FhemDevice, targetState: String) {
+            override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
                         widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, targetState)))
             }
 
-            override fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
+            override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
                         widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, state + " " + subState)))
             }
 
-            override fun onNothingSelected(device: FhemDevice) {}
+            override suspend fun onNothingSelected(device: FhemDevice) {}
         }
     }
 

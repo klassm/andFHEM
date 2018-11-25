@@ -38,7 +38,7 @@ class StateCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 10
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         return detailCardWithDeviceValuesProvider.createCard(device, connectionId,
                 R.string.detailStatesSection, StateItemProvider(), context)
     }

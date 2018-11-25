@@ -29,8 +29,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.widget.EditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.DeviceService
@@ -53,7 +55,7 @@ class DeviceActionUIService @Inject constructor(
                 .setTitle(R.string.context_rename)
                 .setView(input)
                 .setPositiveButton(R.string.okButton) { _, _ ->
-                    runBlocking {
+                    GlobalScope.launch(Dispatchers.Main) {
                         val newName = input.text.toString()
                         async {
                             deviceService.renameDevice(device, newName)
@@ -69,7 +71,7 @@ class DeviceActionUIService @Inject constructor(
 
     fun deleteDevice(context: Context, device: FhemDevice) {
         showConfirmation(context, DialogInterface.OnClickListener { _, _ ->
-            runBlocking {
+            GlobalScope.launch(Dispatchers.Main) {
                 async {
                     deviceService.deleteDevice(device)
                 }.await()
@@ -86,7 +88,7 @@ class DeviceActionUIService @Inject constructor(
                 .setView(input)
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     val newRoom = input.text.toString()
-                    runBlocking {
+                    GlobalScope.launch(Dispatchers.Main) {
                         async { deviceService.moveDevice(device, newRoom, context) }.await()
                         invokeUpdate(context)
                     }
@@ -102,7 +104,7 @@ class DeviceActionUIService @Inject constructor(
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     val newAlias = input.text.toString()
 
-                    runBlocking {
+                    GlobalScope.launch(Dispatchers.Main) {
                         async { deviceService.setAlias(device, newAlias) }.await()
                         invokeUpdate(context)
                     }

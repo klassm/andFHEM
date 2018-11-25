@@ -205,29 +205,31 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun createDeviceView(device: FhemDevice, view: View) {
-        fun firstChildOf(layout: CardView) = when (layout.childCount) {
-            0 -> null
-            else -> layout.getChildAt(0)
+        GlobalScope.launch(Dispatchers.Main) {
+            fun firstChildOf(layout: CardView) = when (layout.childCount) {
+                0 -> null
+                else -> layout.getChildAt(0)
+            }
+
+            val stopWatch = StopWatch()
+            stopWatch.start()
+
+            LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
+
+            val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
+
+            LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
+
+            view.card.removeAllViews()
+            view.card.addView(contentView)
+
+            LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
+
+            view.setOnClickListener { onClick(device) }
+            view.setOnLongClickListener { onLongClick(device) }
+
+            LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
         }
-
-        val stopWatch = StopWatch()
-        stopWatch.start()
-
-        LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
-
-        val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
-
-        LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
-
-        view.card.removeAllViews()
-        view.card.addView(contentView)
-
-        LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
-
-        view.setOnClickListener { onClick(device) }
-        view.setOnLongClickListener { onLongClick(device) }
-
-        LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
     }
 
     private fun onClick(device: FhemDevice) {
@@ -237,7 +239,7 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private fun onLongClick(device: FhemDevice): Boolean {
         val myActivity = activity ?: return false
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             val isFavorite = async {
                 favoritesService.isFavorite(device.name)
             }.await()

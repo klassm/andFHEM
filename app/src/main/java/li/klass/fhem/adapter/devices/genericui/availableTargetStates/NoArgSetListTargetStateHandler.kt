@@ -22,23 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
+package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
-import android.content.Context;
+import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.SetListEntry;
-import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry;
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.domain.setlist.SetListEntry
+import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry
 
-public class NoArgSetListTargetStateHandler<D extends FhemDevice> implements SetListTargetStateHandler<D> {
-    @Override
-    public boolean canHandle(SetListEntry entry) {
-        return entry instanceof NoArgSetListEntry;
-    }
+class NoArgSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandler<D> {
+    override fun canHandle(entry: SetListEntry): Boolean = entry is NoArgSetListEntry
 
-    @Override
-    public void handle(SetListEntry entry, Context context, D device, OnTargetStateSelectedCallback<D> callback) {
-        NoArgSetListEntry noArgSetListEntry = (NoArgSetListEntry) entry;
-        callback.onStateSelected(device, noArgSetListEntry.getKey());
+    override fun handle(entry: SetListEntry, context: Context, device: D, callback: OnTargetStateSelectedCallback<D>) {
+        val noArgSetListEntry = entry as NoArgSetListEntry
+        GlobalScope.launch(Dispatchers.Main) {
+            callback.onStateSelected(device, noArgSetListEntry.key)
+        }
     }
 }

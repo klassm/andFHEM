@@ -51,7 +51,7 @@ class DimmableBehavior private constructor(
     fun getDimStateForPosition(position: Double): String =
             behavior.getDimStateForPosition(fhemDevice, position)
 
-    fun switchTo(stateUiService: StateUiService, context: Context, state: Double) {
+    suspend fun switchTo(stateUiService: StateUiService, context: Context, state: Double) {
         behavior.switchTo(stateUiService, context, fhemDevice, connectionId, state)
     }
 

@@ -29,6 +29,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ToggleButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback
 import li.klass.fhem.adapter.uiservice.StateUiService
@@ -42,24 +45,26 @@ open class WebCmdActionRow(
 ) : HolderActionRow<String>(description, layout) {
     override fun getItems(device: FhemDevice): List<String> = device.webCmd
 
-    override fun viewFor(command: String, device: FhemDevice, inflater: LayoutInflater,
-                         context: Context, viewGroup: ViewGroup, connectionId: String?): View {
+    override suspend fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater,
+                                 context: Context, viewGroup: ViewGroup, connectionId: String?): View {
 
         val container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false)
         val button = container.findViewById<ToggleButton>(R.id.toggleButton)!!
 
-        button.text = device.getEventMapStateFor(command)
-        button.textOn = device.getEventMapStateFor(command)
-        button.textOff = device.getEventMapStateFor(command)
+        button.text = device.getEventMapStateFor(item)
+        button.textOn = device.getEventMapStateFor(item)
+        button.textOff = device.getEventMapStateFor(item)
 
         button.setOnClickListener {
             val setList = device.setList
             val callback = StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
             val result = AvailableTargetStatesDialogUtil.handleSelectedOption(
-                    context, device, setList[command, true], callback
+                    context, device, setList[item, true], callback
             )
             if (!result) {
-                stateUiService.setState(device, command, context, connectionId)
+                GlobalScope.launch(Dispatchers.Main) {
+                    stateUiService.setState(device, item, context, connectionId)
+                }
             }
         }
 

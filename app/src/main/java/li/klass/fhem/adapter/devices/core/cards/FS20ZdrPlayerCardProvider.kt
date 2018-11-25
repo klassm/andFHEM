@@ -29,12 +29,13 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.device_detail_card_fs20_zdr_player.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
@@ -43,7 +44,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         if (device.xmlListDevice.type != "fs20_zdr") {
             return null
         }
@@ -72,7 +73,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
     private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
-            runBlocking {
+            GlobalScope.launch(Dispatchers.Main) {
                 async {
                     genericDeviceService.setState(device.xmlListDevice, command, connectionId)
                 }.await()
@@ -80,7 +81,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         }
     }
 
-    private fun actionProviderFor(device: FhemDevice, connectionId: String?): (String?) -> View.OnClickListener? {
+    private fun actionProviderFor(device: FhemDevice, connectionId: String?): suspend (String?) -> View.OnClickListener? {
         return { command: String? ->
             command?.let { actionFor(command, device, connectionId) }
         }

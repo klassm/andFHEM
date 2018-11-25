@@ -25,7 +25,7 @@
 package li.klass.fhem.appwidget.update
 
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.settings.SettingsKeys
@@ -53,18 +53,17 @@ class AppWidgetUpdateService @Inject constructor(
         appWidgetInstanceManager.update(appWidgetId)
     }
 
-    fun doRemoteUpdate(appWidgetId: Int, callback: () -> Unit) {
+    suspend fun doRemoteUpdate(appWidgetId: Int): Int {
         val configuration = appWidgetInstanceManager.getConfigurationFor(appWidgetId)
         val allowRemoteUpdates = applicationProperties.getBooleanSharedPreference(SettingsKeys.ALLOW_REMOTE_UPDATE, true)
         val connectionId = configuration?.connectionId
         if (configuration == null || !allowRemoteUpdates) {
-            callback()
-            return
+            return appWidgetId
         }
 
         LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId)
 
-        runBlocking {
+        coroutineScope {
             async {
                 val widgetView = widgetTypeProvider.widgetFor(configuration.widgetType)
                 if (widgetView is DeviceAppWidgetView) {
@@ -74,8 +73,9 @@ class AppWidgetUpdateService @Inject constructor(
                     handleOtherUpdate(connectionId)
                 }
             }.await()
-            callback()
         }
+
+        return appWidgetId
     }
 
     private fun handleOtherUpdate(connectionId: String?) {

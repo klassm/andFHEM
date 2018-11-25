@@ -25,6 +25,9 @@
 package li.klass.fhem.adapter.devices.genericui.onoff
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
@@ -38,6 +41,8 @@ class OnOffSubStateActionRow(layoutId: Int, private val subState: String, connec
     }
 
     override fun onButtonClick(context: Context, device: FhemDevice, connectionId: String?, targetState: String) {
-        stateUiService.setSubState(device.xmlListDevice, subState, targetState, connectionId, context)
+        GlobalScope.launch(Dispatchers.Main) {
+            stateUiService.setSubState(device.xmlListDevice, subState, targetState, connectionId, context)
+        }
     }
 }

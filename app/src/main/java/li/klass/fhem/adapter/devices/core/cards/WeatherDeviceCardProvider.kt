@@ -35,7 +35,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.device_detail_card_weather.view.*
 import kotlinx.android.synthetic.main.weather_forecast_item.view.*
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.WeatherService
@@ -51,7 +51,7 @@ class WeatherDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 1
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         if (device.xmlListDevice.type != "Weather") {
             return null
         }
@@ -61,7 +61,7 @@ class WeatherDeviceCardProvider @Inject constructor(
         }
         view.forecast.adapter = Adapter()
 
-        runBlocking {
+        coroutineScope {
             val forecasts = async { weatherService.forecastsFor(device) }.await()
             updateListWith(view.forecast, forecasts)
             view.invalidate()

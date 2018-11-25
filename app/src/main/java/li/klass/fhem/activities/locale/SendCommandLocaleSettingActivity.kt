@@ -32,8 +32,10 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE
@@ -83,7 +85,7 @@ class SendCommandLocaleSettingActivity : Activity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             val connections = async {
                 connectionService.listAll()
             }.await()

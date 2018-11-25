@@ -35,13 +35,13 @@ class StateChangingTargetStateSelectedCallback(
         private val connectionId: String?
 ) : OnTargetStateSelectedCallback<FhemDevice> {
 
-    override fun onStateSelected(device: FhemDevice, targetState: String) {
+    override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
         stateUiService.setState(device.xmlListDevice, targetState, context, connectionId)
     }
 
-    override fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
+    override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
         stateUiService.setSubState(device.xmlListDevice, state, subState, connectionId, context)
     }
 
-    override fun onNothingSelected(device: FhemDevice) {}
+    override suspend fun onNothingSelected(device: FhemDevice) {}
 }

@@ -32,8 +32,7 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
@@ -48,7 +47,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : AppCompatActivity(), SelectionCompletedCallback {
@@ -108,7 +106,7 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
             override fun widgetConfigurationCreated(widgetConfiguration: WidgetConfiguration) {
                 appWidgetInstanceManager.save(widgetConfiguration)
 
-                runBlocking {
+                GlobalScope.launch(Dispatchers.Main) {
                     async {
                         appWidgetUpdateService.updateWidget(widgetId)
                     }.await()

@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fcm_history_updates.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.fragments.core.BaseFragment
@@ -48,7 +46,7 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
 
     abstract fun getAdapter(): ADAPTER
 
-    abstract fun doUpdateView(localDate: LocalDate, view: View)
+    abstract suspend fun doUpdateView(localDate: LocalDate, view: View)
 
     abstract fun getRecyclerViewFrom(view: View): RecyclerView
 

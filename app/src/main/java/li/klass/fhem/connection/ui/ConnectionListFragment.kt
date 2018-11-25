@@ -33,10 +33,7 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.connection_list.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
@@ -176,7 +173,7 @@ class ConnectionListFragment : BaseFragment() {
         if (clickedConnectionId == null) return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
-                runBlocking {
+                GlobalScope.launch(Dispatchers.Main) {
                     async {
                         connectionService.delete(clickedConnectionId!!)
                     }.await()

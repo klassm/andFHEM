@@ -11,7 +11,7 @@ class DeleteOldFcmMessagesStartupAction @Inject constructor(
         private val fcmHistoryService: FcmHistoryService
 ) : StartupAction(R.string.currentStatus_deleteFcmHistory) {
 
-    override fun run() {
+    override suspend fun run() {
         val retentionDays = Integer.parseInt(applicationProperties.getStringSharedPreference(SettingsKeys.FCM_KEEP_MESSAGES_DAYS, "-1"))
         fcmHistoryService.deleteContentOlderThan(retentionDays)
     }

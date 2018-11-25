@@ -34,8 +34,7 @@ import android.widget.TableRow
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import kotlinx.android.synthetic.main.remote_control_layout.view.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -53,13 +52,13 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.remote_control_layout, null, false)
         val actionProvider = actionProviderFor(device, connectionId)
-        runBlocking {
+        coroutineScope {
             val rows = async {
                 remotecontrolDeviceService.getRowsFor(device)
             }.await()
@@ -109,7 +108,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
     private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
-            runBlocking {
+            GlobalScope.launch(Dispatchers.Main) {
                 async {
                     genericDeviceService.setState(device.xmlListDevice, command, connectionId)
                 }.await()

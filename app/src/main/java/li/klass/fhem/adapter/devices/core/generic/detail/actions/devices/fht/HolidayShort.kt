@@ -34,8 +34,10 @@ import android.widget.TableRow
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog.view.*
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog_android_bug.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton
@@ -91,7 +93,7 @@ class HolidayShort @Inject constructor(private val applicationProperties: Applic
                 .setPositiveButton(R.string.okButton) { dialogInterface, _ ->
                     val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
 
-                    runBlocking {
+                    GlobalScope.launch(Dispatchers.Main) {
                         async {
                             genericDeviceService.setSubStates(device, listOf(
                                     StateToSet("desired-temp", "" + model.desiredTemp),

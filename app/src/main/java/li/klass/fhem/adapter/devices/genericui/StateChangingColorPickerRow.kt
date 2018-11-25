@@ -30,6 +30,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TableRow
 import kotlinx.android.synthetic.main.device_detail_colorpicker_row.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
@@ -52,7 +55,9 @@ class StateChangingColorPickerRow(private val stateUiService: StateUiService,
         view.set.setOnClickListener {
             RGBColorPickerDialog(context, rgb, object : RGBColorPickerDialog.Callback {
                 override fun onColorChanged(newRGB: String, dialog: Dialog) {
-                    stateUiService.setSubState(xmlListDevice, rgbSetListEntry.key, newRGB, connectionId, context)
+                    GlobalScope.launch(Dispatchers.Main) {
+                        stateUiService.setSubState(xmlListDevice, rgbSetListEntry.key, newRGB, connectionId, context)
+                    }
                 }
 
                 override fun onColorUnchanged(dialog: Dialog) {}

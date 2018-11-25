@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.fcm_history_updates.view.*
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
@@ -15,8 +15,8 @@ class FcmHistoryUpdatesFragment : FcmHistoryBaseFragment<FcmUpdatesAdapter>(R.la
 
     override fun getAdapter() = FcmUpdatesAdapter(emptyList())
 
-    override fun doUpdateView(localDate: LocalDate, view: View) {
-        runBlocking {
+    override suspend fun doUpdateView(localDate: LocalDate, view: View) {
+        coroutineScope {
             val updates = async {
                 fcmHistoryService.getChanges(localDate)
             }.await()

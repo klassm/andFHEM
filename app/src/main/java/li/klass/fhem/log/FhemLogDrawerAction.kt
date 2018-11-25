@@ -29,8 +29,10 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.activities.drawer.actions.AbstractDrawerAction
 import li.klass.fhem.constants.Actions
@@ -48,7 +50,7 @@ class FhemLogDrawerAction @Inject constructor(
             return
         }
         activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             val temporaryFile = async {
                 fhemLogService.getLogAndWriteToTemporaryFile()
             }.await()

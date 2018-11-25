@@ -102,7 +102,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     private fun onSave() {
         val commands = newArrayList(weekProfile.getStatesToSet())
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             async {
                 deviceListService.getDeviceForName(deviceName)
                         ?.xmlListDevice?.let {

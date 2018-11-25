@@ -32,7 +32,7 @@ import android.widget.Button
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
@@ -47,7 +47,7 @@ class PlotsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 20
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 
@@ -56,8 +56,8 @@ class PlotsCardProvider @Inject constructor(
         return cardView
     }
 
-    private fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
-        runBlocking {
+    private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
+        coroutineScope {
             val graphs = async {
                 graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, Optional.fromNullable(connectionId))
             }.await()

@@ -30,6 +30,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TableLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow
@@ -44,7 +47,7 @@ class LightSceneDeviceViewStrategy @Inject constructor(
         val stateUiService: StateUiService
 ) : ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val layout = layoutInflater.inflate(R.layout.device_overview_generic, null) as TableLayout
         layout.removeAllViews()
 
@@ -59,9 +62,9 @@ class LightSceneDeviceViewStrategy @Inject constructor(
                 }
             }
 
-            override fun viewFor(scene: String, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View {
+            override suspend fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View {
                 val button = inflater.inflate(R.layout.lightscene_button, viewGroup, false) as Button
-                setSceneButtonProperties(device, scene, button, context)
+                setSceneButtonProperties(device, item, button, context)
                 return button
             }
         }.createRow(layout.context, layout, rawDevice, connectionId))
@@ -73,10 +76,16 @@ class LightSceneDeviceViewStrategy @Inject constructor(
 
     private fun setSceneButtonProperties(device: FhemDevice, scene: String, button: Button, context: Context) {
         button.text = scene
-        button.setOnClickListener { activateScene(device, scene, context) }
+        button.setOnClickListener {
+            GlobalScope.launch(Dispatchers.Main) {
+                launch {
+                    activateScene(device, scene, context)
+                }
+            }
+        }
     }
 
-    private fun activateScene(device: FhemDevice, scene: String, context: Context) {
+    private suspend fun activateScene(device: FhemDevice, scene: String, context: Context) {
         stateUiService.setSubState(device.xmlListDevice, "scene", scene, null, context)
     }
 }

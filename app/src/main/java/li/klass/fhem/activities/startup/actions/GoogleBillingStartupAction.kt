@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GoogleBillingStartupAction @Inject constructor(
         private val licenseService: LicenseService
 ) : StartupAction(R.string.currentStatus_billing) {
-    override fun run() {
+    override suspend fun run() {
         licenseService.isPremium(object : IsPremiumListener {
             override fun isPremium(isPremium: Boolean) {
                 logger.info("initializeGoogleBilling() : connection was " + (if (isPremium) "successful" else "not successful"))

@@ -30,8 +30,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.connection_spinner_item.view.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.connection.backend.ConnectionService
@@ -74,8 +73,8 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
         return myView
     }
 
-    fun doLoad() {
-        runBlocking {
+    suspend fun doLoad() {
+        coroutineScope {
             val (all, selected) = async {
                 Pair(connectionService.listAll(), connectionService.getSelectedId())
             }.await()
@@ -110,13 +109,13 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
             LOG.info("onItemSelected - changing from $currentlySelectedPosition to $pos")
             currentlySelectedPosition = pos
             val myContext = context
-            runBlocking {
-                async {
+            GlobalScope.launch(Dispatchers.Main) {
+                launch {
                     connectionService.setSelectedId(data[pos].id)
                     if (currentlySelectedPosition != -1) {
                         myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, false))
                     }
-                }.await()
+                }
             }
         }
         onConnectionChanged.run()

@@ -26,6 +26,9 @@ package li.klass.fhem.adapter.devices.genericui
 
 import android.content.Context
 import android.widget.TableRow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.behavior.dim.DimmableBehavior
@@ -42,7 +45,9 @@ open class StateChangingSeekBarFullWidth(context: Context,
         dimmableBehavior.dimUpperBound, updateRow, applicationProperties) {
 
     override fun onProgressChange(context: Context, device: XmlListDevice?, progress: Double) {
-        dimmableBehavior.switchTo(stateUiService, context, progress)
+        GlobalScope.launch(Dispatchers.Main) {
+            dimmableBehavior.switchTo(stateUiService, context, progress)
+        }
     }
 
     override fun toUpdateText(device: XmlListDevice?, progress: Double): String =

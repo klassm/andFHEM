@@ -38,7 +38,6 @@ import kotlinx.android.synthetic.main.device_name_selection.view.*
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService

@@ -28,8 +28,7 @@ import android.content.Context
 import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.Toast
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
@@ -45,7 +44,7 @@ class GcmSendCardProvider @Inject constructor(
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }
@@ -57,8 +56,8 @@ class GcmSendCardProvider @Inject constructor(
         return cardView
     }
 
-    private fun loadCardContent(device: FhemDevice, cardView: CardView) {
-        runBlocking {
+    private suspend fun loadCardContent(device: FhemDevice, cardView: CardView) {
+        coroutineScope {
             val isRegistered = async { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }.await()
             if (isRegistered) {
                 cardView.visibility = View.VISIBLE
@@ -69,7 +68,7 @@ class GcmSendCardProvider @Inject constructor(
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return listOf(object : ActionCardButton(R.string.gcmRegisterThis, context) {
             override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                runBlocking {
+                GlobalScope.launch(Dispatchers.Main) {
                     val result = async { gcmSendDeviceService.addSelf(device) }.await()
                     Toast.makeText(context, result.resultText, Toast.LENGTH_LONG).show()
                 }

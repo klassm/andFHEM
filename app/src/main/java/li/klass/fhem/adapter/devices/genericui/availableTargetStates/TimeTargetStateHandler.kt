@@ -24,40 +24,47 @@
 
 package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
-import android.app.Dialog
+import android.app.AlertDialog
 import android.content.Context
+import android.widget.TimePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
-import li.klass.fhem.adapter.devices.genericui.RGBColorPickerDialog
+import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
-import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
+import li.klass.fhem.domain.setlist.typeEntry.TimeSetListEntry
+import org.apache.commons.lang3.StringUtils
+import org.joda.time.DateTime
 
-class RGBTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
+class TimeTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     override fun canHandle(entry: SetListEntry): Boolean {
-        return entry is RGBSetListEntry
+        return entry is TimeSetListEntry
     }
 
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
-        val rgbSetListEntry = entry as RGBSetListEntry
-        val initial = device.xmlListDevice.getState(rgbSetListEntry.key, true) ?: "0xFFF"
+        val timePicker = TimePicker(context)
+        val now = DateTime.now()
+        timePicker.currentHour = now.hourOfDay
+        timePicker.currentMinute = now.minuteOfHour
+        timePicker.setIs24HourView(true)
 
-        RGBColorPickerDialog(context, initial, object : RGBColorPickerDialog.Callback {
-            override fun onColorChanged(newRGB: String, dialog1: Dialog) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    callback.onSubStateSelected(device, entry.getKey(), newRGB)
+        AlertDialog.Builder(context)
+                .setTitle(device.aliasOrName + " " + entry.key)
+                .setView(timePicker)
+                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        callback.onNothingSelected(device)
+                    }
+                    dialog.dismiss()
                 }
-                dialog1.dismiss()
-            }
-
-            override fun onColorUnchanged(dialog1: Dialog) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    callback.onNothingSelected(device)
+                .setPositiveButton(R.string.okButton) { dialog, which ->
+                    val hourOut = StringUtils.leftPad("" + timePicker.currentHour, 2, '0')
+                    val minuteOut = StringUtils.leftPad("" + timePicker.currentMinute, 2, '0')
+                    GlobalScope.launch(Dispatchers.Main) {
+                        callback.onSubStateSelected(device, entry.key, "$hourOut:$minuteOut")
+                    }
                 }
-                dialog1.dismiss()
-            }
-        }).show()
+                .show()
     }
 }

@@ -30,9 +30,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -179,7 +177,7 @@ class DeviceDetailFragment : BaseFragment() {
 
     private fun callUpdating(actionToCall: (String) -> Unit, toastStringId: Int) {
         deviceName ?: return
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             async {
                 actionToCall(deviceName!!)
             }.await()

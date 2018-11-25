@@ -39,7 +39,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -78,10 +81,10 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         retryButton?.setOnClickListener {
             hideConnectionError()
 
-            runBlocking {
-                async {
+            GlobalScope.launch(Dispatchers.Main) {
+                launch {
                     resendLastFailedCommandService.resend(context)
-                }.await()
+                }
             }
         }
     }
@@ -98,7 +101,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         updateInternal(refresh)
     }
 
-    fun updateAsync(refresh: Boolean = true) = GlobalScope.launch {
+    fun updateAsync(refresh: Boolean = true) = GlobalScope.launch(Dispatchers.Main) {
         update(refresh)
     }
 

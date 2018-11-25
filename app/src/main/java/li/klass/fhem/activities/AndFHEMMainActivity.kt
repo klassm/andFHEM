@@ -126,7 +126,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                             updateShowRefreshProgressIcon()
                             refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false))
                         } else if (action == UPDATE_NAVIGATION) {
-                            GlobalScope.launch {
+                            GlobalScope.launch(Dispatchers.Main) {
                                 refreshNavigation()
                             }
                         } else if (action == SHOW_EXECUTING_DIALOG) {
@@ -149,7 +149,11 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                             onBackPressed(intent.getSerializableExtra(FRAGMENT) as FragmentType?)
                         } else if (CONNECTIONS_CHANGED == action) {
                             if (availableConnectionDataAdapter != null) {
-                                availableConnectionDataAdapter!!.doLoad()
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    launch {
+                                        availableConnectionDataAdapter!!.doLoad()
+                                    }
+                                }
                             }
                         } else if (REDRAW == action) {
                             redrawContent()
@@ -245,11 +249,12 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         switchToFragment(fragmentType, startupBundle)
     }
 
-    private fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
+    private suspend fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
         val connectionSpinner = spinner as Spinner
         availableConnectionDataAdapter = AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged, connectionService)
         connectionSpinner.adapter = availableConnectionDataAdapter
         connectionSpinner.onItemSelectedListener = availableConnectionDataAdapter
+
         availableConnectionDataAdapter!!.doLoad()
     }
 
@@ -313,12 +318,14 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             }
         })
 
-        initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
-                Runnable {
-                    if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-                        drawer_layout.closeDrawer(GravityCompat.START)
-                    }
-                })
+        GlobalScope.launch(Dispatchers.Main) {
+            initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
+                    Runnable {
+                        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                            drawer_layout.closeDrawer(GravityCompat.START)
+                        }
+                    })
+        }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
@@ -509,7 +516,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         }
 
     private fun refreshFragments(doUpdate: Boolean) {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             refreshContent(doUpdate)
             refreshNavigation()
         }

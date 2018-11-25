@@ -103,7 +103,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
         supportActionBar!!.navigationMode = ActionBar.NAVIGATION_MODE_STANDARD
 
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             update(false)
         }
     }
@@ -123,9 +123,9 @@ class GraphActivity : AppCompatActivity(), Updateable {
      * Reads all the charting data for a given date and the column specifications set as attribute.
      * @param device    concerned device
      */
-    private fun readDataAndCreateChart(device: FhemDevice) {
+    private suspend fun readDataAndCreateChart(device: FhemDevice) {
         val myContext = this
-        runBlocking {
+        coroutineScope {
             showDialog(DIALOG_EXECUTING)
             val result = async {
                 graphService.getGraphData(device, Optional.absent(), svgGraphDefinition, startDate, endDate, myContext)
@@ -304,7 +304,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
                 REQUEST_TIME_CHANGE -> {
                     startDate = bundle.getSerializable(START_DATE) as DateTime
                     endDate = bundle.getSerializable(END_DATE) as DateTime
-                    GlobalScope.launch {
+                    GlobalScope.launch(Dispatchers.Main) {
                         update(false)
                     }
                 }

@@ -28,7 +28,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
 import android.view.*
@@ -85,7 +84,7 @@ class SendCommandFragment : BaseFragment() {
     override fun mayPullToRefresh(): Boolean = false
 
     private fun sendCommandIntent(command: String) {
-        runBlocking {
+        GlobalScope.launch(Dispatchers.Main) {
             val result = async {
                 sendCommandService.executeCommand(command, connectionId = null)
             }.await()
@@ -138,7 +137,7 @@ class SendCommandFragment : BaseFragment() {
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                 val safeContext = context ?: return false
                 when (item.itemId) {
-                    R.id.menu_delete -> runBlocking {
+                    R.id.menu_delete -> GlobalScope.launch(Dispatchers.Main) {
                         async {
                             sendCommandService.deleteCommand(command)
                         }.await()
@@ -146,7 +145,7 @@ class SendCommandFragment : BaseFragment() {
                     }
                     R.id.menu_edit -> DialogUtil.showInputBox(safeContext, getString(R.string.context_edit), command, object : DialogUtil.InputDialogListener {
                         override fun onClick(text: String) {
-                            GlobalScope.launch {
+                            GlobalScope.launch(Dispatchers.Main) {
                                 async {
                                     sendCommandService.editCommand(command, text)
                                 }.await()

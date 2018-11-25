@@ -31,6 +31,9 @@ import android.view.LayoutInflater
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.DeviceDimActionRowFullWidth
 import li.klass.fhem.behavior.dim.DimmableBehavior
@@ -73,14 +76,18 @@ class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + sliderSetListEntry.key)
                 .setView(tableLayout)
-                .setNegativeButton(R.string.cancelButton, { dialog, _ ->
-                    callback.onNothingSelected(device)
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        callback.onNothingSelected(device)
+                    }
                     dialog.dismiss()
-                })
-                .setPositiveButton(R.string.okButton, { dialog, _ ->
-                    callback.onSubStateSelected(device, sliderSetListEntry.key, getFormattedDimProgress(dimProgress))
+                }
+                .setPositiveButton(R.string.okButton) { dialog, _ ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        callback.onSubStateSelected(device, sliderSetListEntry.key, getFormattedDimProgress(dimProgress))
+                    }
                     dialog.dismiss()
-                })
+                }
                 .show()
     }
 
