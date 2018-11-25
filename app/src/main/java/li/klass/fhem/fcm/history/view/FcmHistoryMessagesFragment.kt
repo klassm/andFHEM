@@ -4,12 +4,11 @@ import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.fcm_history_messages.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.LocalDate
 
 class FcmHistoryMessagesFragment : FcmHistoryBaseFragment<FcmMessagesAdapter>(R.layout.fcm_history_messages) {
@@ -21,8 +20,8 @@ class FcmHistoryMessagesFragment : FcmHistoryBaseFragment<FcmMessagesAdapter>(R.
     override fun getAdapter() = FcmMessagesAdapter(emptyList())
 
     override fun doUpdateView(localDate: LocalDate, view: View) {
-        async(UI) {
-            val messages = bg {
+        runBlocking {
+            val messages = async {
                 fcmHistoryService.getMessages(localDate)
             }.await()
 

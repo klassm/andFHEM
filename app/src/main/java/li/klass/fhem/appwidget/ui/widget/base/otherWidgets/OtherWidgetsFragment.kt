@@ -70,7 +70,7 @@ class OtherWidgetsFragment : BaseFragment() {
         return view
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {

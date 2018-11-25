@@ -24,14 +24,13 @@
 
 package li.klass.fhem.appwidget.update
 
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -65,8 +64,8 @@ class AppWidgetUpdateService @Inject constructor(
 
         LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId)
 
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 val widgetView = widgetTypeProvider.widgetFor(configuration.widgetType)
                 if (widgetView is DeviceAppWidgetView) {
                     val deviceName = widgetView.deviceNameFrom(configuration)
@@ -96,6 +95,6 @@ class AppWidgetUpdateService @Inject constructor(
     }
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(AppWidgetUpdateIntentService::class.java)!!
+        private val LOG = LoggerFactory.getLogger(AppWidgetUpdateService::class.java)!!
     }
 }

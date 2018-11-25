@@ -29,8 +29,8 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.Button
 import kotlinx.android.synthetic.main.device_detail_card_fs20_zdr_player.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
@@ -72,10 +72,10 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
     private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
         command ?: return null
         return View.OnClickListener {
-            async(UI) {
-                bg {
+            runBlocking {
+                async {
                     genericDeviceService.setState(device.xmlListDevice, command, connectionId)
-                }
+                }.await()
             }
         }
     }

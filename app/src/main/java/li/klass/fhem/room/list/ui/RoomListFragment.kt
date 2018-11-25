@@ -33,8 +33,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.ListView
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.RoomListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -48,7 +48,6 @@ import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.Reject
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.Serializable
 import java.util.*
 import javax.inject.Inject
@@ -128,15 +127,15 @@ open class RoomListFragment : BaseFragment() {
         }
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         if (view == null) return
 
         hideEmptyView()
         if (refresh && !isNavigation)
             activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
-        async(UI) {
-            val roomNameList = bg {
+        coroutineScope {
+            val roomNameList = async {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()

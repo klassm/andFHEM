@@ -31,14 +31,13 @@ import android.view.View
 import android.widget.Button
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.graph.ui.GraphActivity
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -58,8 +57,8 @@ class PlotsCardProvider @Inject constructor(
     }
 
     private fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
-        async(UI) {
-            val graphs = bg {
+        runBlocking {
+            val graphs = async {
                 graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, Optional.fromNullable(connectionId))
             }.await()
             fillPlotsCard(cardView, device, graphs, connectionId, context)

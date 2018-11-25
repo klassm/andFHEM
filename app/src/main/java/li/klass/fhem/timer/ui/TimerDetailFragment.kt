@@ -37,8 +37,8 @@ import com.google.common.base.Splitter
 import com.google.common.base.Strings
 import com.google.common.collect.ImmutableList
 import kotlinx.android.synthetic.main.timer_detail.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.showSwitchOptionsMenu
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
@@ -60,7 +60,6 @@ import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
 import li.klass.fhem.widget.TimePickerWithSecondsDialog
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.StringUtils.isBlank
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.LocalTime
 import javax.inject.Inject
 
@@ -256,8 +255,8 @@ class TimerDetailFragment : BaseFragment() {
                 next = timerDevice?.next ?: ""
         )
 
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 if (isModify) {
                     atService.modify(timerDevice)
                 } else {
@@ -297,8 +296,8 @@ class TimerDetailFragment : BaseFragment() {
         checkNotNull(timerDeviceName)
         val myActivity = activity ?: return
 
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 atService.getTimerDeviceFor(timerDeviceName)
             }.await()?.let {
                 setValuesForCurrentTimerDevice(it)
@@ -311,8 +310,8 @@ class TimerDetailFragment : BaseFragment() {
         this.timerDevice = device
         updateTimerInformation(timerDevice)
 
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 deviceListService.getDeviceForName(device.definition.targetDeviceName)
             }.await()?.let {
                 updateTargetDevice(it, this@TimerDetailFragment.view)
@@ -376,7 +375,7 @@ class TimerDetailFragment : BaseFragment() {
     private fun getType(view: View): TimerType =
             TimerType.values()[view.timerType.selectedItemPosition]
 
-    override fun update(refresh: Boolean) {}
+    override suspend fun update(refresh: Boolean) {}
 
     override fun getTitle(context: Context): CharSequence? = context.getString(R.string.timer)
 

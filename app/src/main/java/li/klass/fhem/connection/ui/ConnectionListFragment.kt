@@ -33,8 +33,10 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.connection_list.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
@@ -52,7 +54,6 @@ import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.util.Reject
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class ConnectionListFragment : BaseFragment() {
@@ -175,8 +176,8 @@ class ConnectionListFragment : BaseFragment() {
         if (clickedConnectionId == null) return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
-                async(UI) {
-                    bg {
+                runBlocking {
+                    async {
                         connectionService.delete(clickedConnectionId!!)
                     }.await()
                     update(false)
@@ -187,15 +188,19 @@ class ConnectionListFragment : BaseFragment() {
         return false
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         if (view == null) return
 
         hideEmptyView()
         val myActivity = activity ?: return
         if (refresh) myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
-        async(UI) {
-            val connectionList = bg {
+        doUpdate()
+    }
+
+    private suspend fun doUpdate() {
+        coroutineScope {
+            val connectionList = async {
                 connectionService.listAll()
             }.await()
 

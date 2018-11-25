@@ -31,8 +31,9 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import kotlinx.android.synthetic.main.timer_overview.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.timer.TimerListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -46,7 +47,6 @@ import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUIService
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class TimerListFragment : BaseFragment() {
@@ -114,9 +114,9 @@ class TimerListFragment : BaseFragment() {
         super.onResume()
         if (createNewDeviceCalled) {
             createNewDeviceCalled = false
-            update(true)
+            updateAsync(true)
         } else {
-            update(false)
+            updateAsync(false)
         }
     }
 
@@ -127,10 +127,10 @@ class TimerListFragment : BaseFragment() {
         return super.canChildScrollUp()
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
-        async(UI) {
-            val timerDevices = bg {
+        coroutineScope {
+            val timerDevices = async {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
@@ -165,8 +165,8 @@ class TimerListFragment : BaseFragment() {
         val context = activity ?: return false
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
-                async(UI) {
-                    bg {
+                runBlocking {
+                    async {
                         deviceListService.getDeviceForName(name)
                     }.await()?.let {
                         deviceActionUIService.deleteDevice(context, it)

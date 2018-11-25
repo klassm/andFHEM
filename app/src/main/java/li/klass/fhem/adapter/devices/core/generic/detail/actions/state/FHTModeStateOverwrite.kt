@@ -32,8 +32,8 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TableLayout
 import android.widget.TableRow
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.HolidayShort
@@ -49,7 +49,6 @@ import li.klass.fhem.util.DatePickerUtil
 import li.klass.fhem.util.EnumUtils
 import li.klass.fhem.util.EnumUtils.toStringList
 import li.klass.fhem.util.StateToSet
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.util.*
 import javax.inject.Inject
 
@@ -88,8 +87,8 @@ class FHTModeStateOverwrite @Inject constructor(
                 holidayShort.showDialog(context, viewGroup, inflater, spinnerActionRow, device, connectionId)
             }
             else -> {
-                async(UI) {
-                    bg {
+                runBlocking {
+                    async {
                         genericDeviceService.setSubState(device, "mode", mode.name.toLowerCase(Locale.getDefault()), connectionId)
                     }.await()
                     spinnerActionRow.commitSelection()
@@ -125,8 +124,8 @@ class FHTModeStateOverwrite @Inject constructor(
             }
 
             dialogBuilder.setPositiveButton(R.string.okButton) { dialogInterface, _ ->
-                async(UI) {
-                    bg {
+                runBlocking {
+                    async {
                         genericDeviceService.setSubStates(device, listOf(
                                 StateToSet("desired-temp", "" + temperatureChangeTableRow.temperature),
                                 StateToSet("holiday1", "" + datePicker.dayOfMonth),

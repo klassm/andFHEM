@@ -32,8 +32,8 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE
@@ -44,7 +44,6 @@ import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions.EXECUTE_COMMAND
 import li.klass.fhem.constants.BundleExtraKeys.*
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -84,8 +83,8 @@ class SendCommandLocaleSettingActivity : Activity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        async(UI) {
-            val connections = bg {
+        runBlocking {
+            val connections = async {
                 connectionService.listAll()
             }.await()
             fillConnectionSpinner(connections, connectionListAdapter)

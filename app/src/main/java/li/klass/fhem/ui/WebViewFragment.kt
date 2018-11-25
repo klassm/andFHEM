@@ -22,8 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.core;
+package li.klass.fhem.ui
 
-public interface Updateable {
-    void update(boolean refresh);
+import android.os.Bundle
+
+import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.dagger.ApplicationComponent
+
+class WebViewFragment : AbstractWebViewFragment() {
+    override var loadUrl: String = ""
+        private set
+
+    override fun inject(applicationComponent: ApplicationComponent) {
+        applicationComponent.inject(this)
+    }
+
+    override fun setArguments(args: Bundle?) {
+        super.setArguments(args)
+        loadUrl = args?.getString(BundleExtraKeys.LOAD_URL)!!
+    }
+
+    override fun showProgressDialog(): Boolean = false
 }

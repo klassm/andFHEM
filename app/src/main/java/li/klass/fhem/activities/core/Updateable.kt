@@ -22,34 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.ui;
+package li.klass.fhem.activities.core
 
-import android.os.Bundle;
-
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ApplicationComponent;
-
-public class WebViewFragment extends AbstractWebViewFragment {
-    private String loadUrl;
-
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
-    }
-
-    @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
-        loadUrl = args.getString(BundleExtraKeys.LOAD_URL);
-    }
-
-    @Override
-    protected String getLoadUrl() {
-        return loadUrl;
-    }
-
-    @Override
-    public boolean showProgressDialog() {
-        return false;
-    }
+interface Updateable {
+    suspend fun update(refresh: Boolean)
 }

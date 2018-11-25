@@ -36,8 +36,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.device_name_selection.view.*
 import kotlinx.android.synthetic.main.room_detail.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -50,7 +51,6 @@ import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.io.Serializable
 import javax.inject.Inject
@@ -112,10 +112,10 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
     protected abstract fun onDeviceNameClick(child: FhemDevice)
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
-        async(UI) {
-            val elements = bg {
+        coroutineScope {
+            val elements = async {
                 myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
                 if (refresh && !isNavigation) {

@@ -28,6 +28,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
 import android.view.*
@@ -35,8 +36,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import kotlinx.android.synthetic.main.command_execution.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
@@ -45,7 +45,6 @@ import li.klass.fhem.service.intent.SendCommandService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.ListViewUtil
 import org.apache.commons.lang3.StringUtils.isEmpty
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class SendCommandFragment : BaseFragment() {
@@ -86,8 +85,8 @@ class SendCommandFragment : BaseFragment() {
     override fun mayPullToRefresh(): Boolean = false
 
     private fun sendCommandIntent(command: String) {
-        async(UI) {
-            val result = bg {
+        runBlocking {
+            val result = async {
                 sendCommandService.executeCommand(command, connectionId = null)
             }.await()
             if (!isEmpty(result?.replace("[\\r\\n]".toRegex(), ""))) {
@@ -96,17 +95,17 @@ class SendCommandFragment : BaseFragment() {
                         .setMessage(result)
                         .setPositiveButton(R.string.okButton) { dialogInterface, _ ->
                             dialogInterface.cancel()
-                            update(false)
+                            updateAsync(false)
                         }.show()
             }
         }
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
-        async(UI) {
-            val recentCommands = bg {
+        coroutineScope {
+            val recentCommands = async {
                 sendCommandService.getRecentCommands()
             }.await()
 
@@ -139,16 +138,16 @@ class SendCommandFragment : BaseFragment() {
             override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                 val safeContext = context ?: return false
                 when (item.itemId) {
-                    R.id.menu_delete -> async(UI) {
-                        bg {
+                    R.id.menu_delete -> runBlocking {
+                        async {
                             sendCommandService.deleteCommand(command)
                         }.await()
                         update(false)
                     }
                     R.id.menu_edit -> DialogUtil.showInputBox(safeContext, getString(R.string.context_edit), command, object : DialogUtil.InputDialogListener {
                         override fun onClick(text: String) {
-                            async(UI) {
-                                bg {
+                            GlobalScope.launch {
+                                async {
                                     sendCommandService.editCommand(command, text)
                                 }.await()
                                 update(false)
@@ -166,7 +165,7 @@ class SendCommandFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        update(false)
+        updateAsync(false)
     }
 
     override fun getTitle(context: Context): CharSequence? =

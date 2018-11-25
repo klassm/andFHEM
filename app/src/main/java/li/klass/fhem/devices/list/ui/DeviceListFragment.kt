@@ -41,8 +41,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailViewProvider
@@ -63,7 +62,6 @@ import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -155,7 +153,7 @@ abstract class DeviceListFragment : BaseFragment() {
         view.addView(emptyView)
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         if (refresh) {
             myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
@@ -163,8 +161,8 @@ abstract class DeviceListFragment : BaseFragment() {
 
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$refresh)")
 
-        async(UI) {
-            val elements = bg {
+        coroutineScope {
+            val elements = async {
                 if (refresh) {
                     myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
                     executeRemoteUpdate(myActivity)
@@ -239,12 +237,14 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private fun onLongClick(device: FhemDevice): Boolean {
         val myActivity = activity ?: return false
-        async(UI) {
-            val isFavorite = bg {
+        runBlocking {
+            val isFavorite = async {
                 favoritesService.isFavorite(device.name)
             }.await()
             val callback = DeviceListActionModeCallback(favoritesService, deviceActionUiService,
-                    device, isFavorite, myActivity, updateListener = { update(false) })
+                    device, isFavorite, myActivity, updateListener = {
+                updateAsync(false)
+            })
             actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)
         }
         return true

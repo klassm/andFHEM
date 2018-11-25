@@ -26,13 +26,12 @@ package li.klass.fhem.adapter.uiservice
 
 import android.content.Context
 import android.content.Intent
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,8 +42,8 @@ class StateUiService @Inject constructor(
 
     fun setSubState(device: XmlListDevice,
                     stateName: String, value: String, connectionId: String?, context: Context) {
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 genericDeviceService.setSubState(device, stateName, value, connectionId)
             }.await()
             invokeUpdate(context)
@@ -55,8 +54,8 @@ class StateUiService @Inject constructor(
             setState(device.xmlListDevice, value, context, connectionId)
 
     fun setState(device: XmlListDevice, value: String, context: Context, connectionId: String?) {
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 genericDeviceService.setState(device, value, connectionId)
             }.await()
             invokeUpdate(context)

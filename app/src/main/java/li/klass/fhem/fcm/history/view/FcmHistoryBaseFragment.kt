@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fcm_history_updates.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.fragments.core.BaseFragment
@@ -38,7 +40,7 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
             val lastDate = dateFormat.parseLocalDate(view.selectedDate.text.toString())
             DatePickerDialog(context, R.style.alertDialog, { _, year, month, day ->
                 view.selectedDate.text = dateFormat.print(LocalDate(year, month + 1, day))
-                update(false)
+                updateAsync(false)
             }, lastDate.year, lastDate.monthOfYear - 1, lastDate.dayOfMonth).show()
         }
         return view
@@ -50,7 +52,7 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
 
     abstract fun getRecyclerViewFrom(view: View): RecyclerView
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myView = view
         myView ?: return
         val selectedDate = DateFormatUtil.ANDFHEM_DATE_FORMAT.parseLocalDate(myView.selectedDate.text.toString())

@@ -30,8 +30,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
 import kotlinx.android.synthetic.main.connection_spinner_item.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.connection.backend.ConnectionService
@@ -40,9 +40,7 @@ import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.ui.FragmentType
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
-import java.lang.IllegalArgumentException
 
 class AvailableConnectionDataAdapter(private val parent: Spinner,
                                      private val onConnectionChanged: Runnable,
@@ -77,8 +75,8 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
     }
 
     fun doLoad() {
-        async(UI) {
-            val (all, selected) = bg {
+        runBlocking {
+            val (all, selected) = async {
                 Pair(connectionService.listAll(), connectionService.getSelectedId())
             }.await()
 
@@ -112,13 +110,13 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
             LOG.info("onItemSelected - changing from $currentlySelectedPosition to $pos")
             currentlySelectedPosition = pos
             val myContext = context
-            async(UI) {
-                bg {
+            runBlocking {
+                async {
                     connectionService.setSelectedId(data[pos].id)
                     if (currentlySelectedPosition != -1) {
                         myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, false))
                     }
-                }
+                }.await()
             }
         }
         onConnectionChanged.run()

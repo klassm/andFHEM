@@ -30,8 +30,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -47,7 +48,6 @@ import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUIService
 import li.klass.fhem.widget.notification.NotificationSettingView
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class DeviceDetailFragment : BaseFragment() {
@@ -110,14 +110,15 @@ class DeviceDetailFragment : BaseFragment() {
         return view
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         hideEmptyView()
         val name = deviceName ?: return
 
         val myActivity = activity ?: return
         if (refresh) myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
-        async(UI) {
-            val device = bg {
+
+        coroutineScope {
+            val device = async {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(name, connectionId)
                     appWidgetUpdateService.updateAllWidgets()
@@ -178,8 +179,8 @@ class DeviceDetailFragment : BaseFragment() {
 
     private fun callUpdating(actionToCall: (String) -> Unit, toastStringId: Int) {
         deviceName ?: return
-        async(UI) {
-            bg {
+        runBlocking {
+            async {
                 actionToCall(deviceName!!)
             }.await()
             showToast(toastStringId)

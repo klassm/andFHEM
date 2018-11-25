@@ -34,8 +34,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.device_detail_card_weather.view.*
 import kotlinx.android.synthetic.main.weather_forecast_item.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.WeatherService
@@ -43,7 +43,6 @@ import li.klass.fhem.devices.backend.WeatherService.WeatherForecastInformation
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import li.klass.fhem.util.view.setTextOrHide
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
@@ -62,8 +61,8 @@ class WeatherDeviceCardProvider @Inject constructor(
         }
         view.forecast.adapter = Adapter()
 
-        async(UI) {
-            val forecasts = bg { weatherService.forecastsFor(device) }.await()
+        runBlocking {
+            val forecasts = async { weatherService.forecastsFor(device) }.await()
             updateListWith(view.forecast, forecasts)
             view.invalidate()
         }

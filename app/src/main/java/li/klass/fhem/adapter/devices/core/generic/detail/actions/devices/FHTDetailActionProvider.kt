@@ -27,8 +27,8 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices
 import android.content.Context
 import android.content.Intent
 import com.google.common.collect.ImmutableList
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
@@ -40,7 +40,6 @@ import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -69,10 +68,10 @@ class FHTDetailActionProvider @Inject constructor(
                 },
                 object : ActionCardButton(R.string.requestRefresh, context) {
                     override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                        async(UI) {
-                            bg {
+                        runBlocking {
+                            async {
                                 genericDeviceService.setState(device, "refreshvalues", connectionId)
-                            }
+                            }.await()
                         }
                     }
                 }

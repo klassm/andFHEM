@@ -29,15 +29,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.device_overview_weather.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -52,8 +51,8 @@ class WeatherDeviceViewStrategy @Inject constructor(
         val view = layoutInflater.inflate(R.layout.device_overview_weather, null)
         defaultViewStrategy.fillDeviceOverviewView(view, rawDevice, GenericDeviceOverviewViewHolder(view), deviceItems, layoutInflater)
 
-        async(UI) {
-            val url = bg {
+        runBlocking {
+            val url = async {
                 weatherService.iconFor(rawDevice)
             }.await()
             setWeatherIconIn(view.weatherImage, url)

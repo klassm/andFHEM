@@ -32,8 +32,8 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
@@ -108,8 +108,8 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
             override fun widgetConfigurationCreated(widgetConfiguration: WidgetConfiguration) {
                 appWidgetInstanceManager.save(widgetConfiguration)
 
-                async(UI) {
-                    bg {
+                runBlocking {
+                    async {
                         appWidgetUpdateService.updateWidget(widgetId)
                     }.await()
 

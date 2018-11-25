@@ -29,15 +29,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.widget.EditText
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.DeviceService
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.service.NotificationService
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class DeviceActionUIService @Inject constructor(
@@ -54,22 +53,24 @@ class DeviceActionUIService @Inject constructor(
                 .setTitle(R.string.context_rename)
                 .setView(input)
                 .setPositiveButton(R.string.okButton) { _, _ ->
-                    val newName = input.text.toString()
-                    async(UI) {
-                        bg {
+                    runBlocking {
+                        val newName = input.text.toString()
+                        async {
                             deviceService.renameDevice(device, newName)
                             notificationService.rename(device.name, newName, context)
                             favoritesService.rename(device.name, newName)
                         }.await()
                         invokeUpdate(context)
                     }
+
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
     }
 
+
     fun deleteDevice(context: Context, device: FhemDevice) {
         showConfirmation(context, DialogInterface.OnClickListener { _, _ ->
-            async(UI) {
-                bg {
+            runBlocking {
+                async {
                     deviceService.deleteDevice(device)
                 }.await()
                 invokeUpdate(context)
@@ -85,10 +86,8 @@ class DeviceActionUIService @Inject constructor(
                 .setView(input)
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     val newRoom = input.text.toString()
-                    async(UI) {
-                        bg {
-                            deviceService.moveDevice(device, newRoom, context)
-                        }.await()
+                    runBlocking {
+                        async { deviceService.moveDevice(device, newRoom, context) }.await()
                         invokeUpdate(context)
                     }
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
@@ -102,10 +101,9 @@ class DeviceActionUIService @Inject constructor(
                 .setView(input)
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     val newAlias = input.text.toString()
-                    async(UI) {
-                        bg {
-                            deviceService.setAlias(device, newAlias)
-                        }.await()
+
+                    runBlocking {
+                        async { deviceService.setAlias(device, newAlias) }.await()
                         invokeUpdate(context)
                     }
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
