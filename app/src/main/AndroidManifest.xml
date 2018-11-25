@@ -56,6 +56,9 @@
                 android:required="false"/>
 
         <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2659219871370009~5714990385" />
+        <meta-data
                 android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
                 android:resource="@dimen/app_defaultsize_w"/>
         <meta-data
