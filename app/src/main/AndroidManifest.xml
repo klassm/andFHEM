@@ -196,6 +196,13 @@
                 <action android:name="li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE"/>
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".service.intent.LicenseIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.IS_PREMIUM" />
+            </intent-filter>
+        </receiver>
 
         <service
                 android:name=".service.intent.ExternalApiService"
@@ -203,13 +210,6 @@
                 android:permission="li.klass.fhem.permissions.EXTERNAL">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES"/>
-            </intent-filter>
-        </service>
-        <service
-                android:name=".service.intent.LicenseIntentService"
-                android:exported="false">
-            <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.IS_PREMIUM"/>
             </intent-filter>
         </service>
         <service

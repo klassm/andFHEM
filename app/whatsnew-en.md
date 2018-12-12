@@ -1,1 +1,1 @@
-TODO
+* Updated libraries and dependencies, thus increase SDK level to 15 (Android 4.0 -> Android 4.0.3)

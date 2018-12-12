@@ -24,21 +24,25 @@
 
 package li.klass.fhem.service.intent;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.ResultReceiver;
+
+import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.IsPremiumListener;
 import li.klass.fhem.billing.LicenseService;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM;
-import static li.klass.fhem.constants.ResultCodes.SUCCESS;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
-public class LicenseIntentService extends ConvenientIntentService {
+public class LicenseIntentService extends BroadcastReceiver {
 
     @Inject
     LicenseService licenseService;
@@ -47,18 +51,17 @@ public class LicenseIntentService extends ConvenientIntentService {
     ApplicationProperties applicationProperties;
 
     public LicenseIntentService() {
-        super(LicenseIntentService.class.getName());
+        super();
+        AndFHEMApplication.Companion.getApplication().getDaggerComponent().inject(this);
     }
 
     @Override
-    protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
 
         if (Actions.IS_PREMIUM.equals(action)) {
             handlePremiumRequest(resultReceiver);
-            return State.DONE;
-        } else {
-            return State.DONE;
         }
     }
 
@@ -67,13 +70,16 @@ public class LicenseIntentService extends ConvenientIntentService {
         licenseService.isPremium(new IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
-                sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium);
+                sendSingleExtraResult(resultReceiver, isPremium);
             }
         });
     }
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
+    protected void sendSingleExtraResult(ResultReceiver receiver, Serializable value) {
+        if (receiver != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM, value);
+            receiver.send(li.klass.fhem.constants.ResultCodes.SUCCESS, bundle);
+        }
     }
 }
