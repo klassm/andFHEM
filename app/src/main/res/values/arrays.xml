@@ -73,8 +73,9 @@
         <!-- 36 hours -->
         <item>172800</item>
         <!-- 48 hours -->
-        <item>0</item>
+        <item>259200</item>
         <!-- never -->
+        <item>0</item>
     </string-array>
 
     <string-array name="updateRoomListTimeEntries">
