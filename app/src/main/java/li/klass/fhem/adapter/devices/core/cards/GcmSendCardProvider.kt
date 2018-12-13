@@ -28,8 +28,7 @@ import android.content.Context
 import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.Toast
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
@@ -37,7 +36,6 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.receiver.GCMSendDeviceService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
@@ -46,7 +44,7 @@ class GcmSendCardProvider @Inject constructor(
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }
@@ -58,9 +56,9 @@ class GcmSendCardProvider @Inject constructor(
         return cardView
     }
 
-    private fun loadCardContent(device: FhemDevice, cardView: CardView) {
-        async(UI) {
-            val isRegistered = bg { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }.await()
+    private suspend fun loadCardContent(device: FhemDevice, cardView: CardView) {
+        coroutineScope {
+            val isRegistered = async(Dispatchers.IO) { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }.await()
             if (isRegistered) {
                 cardView.visibility = View.VISIBLE
             }
@@ -70,8 +68,8 @@ class GcmSendCardProvider @Inject constructor(
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return listOf(object : ActionCardButton(R.string.gcmRegisterThis, context) {
             override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                async(UI) {
-                    val result = bg { gcmSendDeviceService.addSelf(device) }.await()
+                GlobalScope.launch(Dispatchers.Main) {
+                    val result = async(Dispatchers.IO) { gcmSendDeviceService.addSelf(device) }.await()
                     Toast.makeText(context, result.resultText, Toast.LENGTH_LONG).show()
                 }
             }

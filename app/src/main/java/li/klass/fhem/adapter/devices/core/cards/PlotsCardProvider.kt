@@ -31,14 +31,14 @@ import android.view.View
 import android.widget.Button
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.graph.ui.GraphActivity
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -48,7 +48,7 @@ class PlotsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 20
 
-    override fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 
@@ -57,9 +57,9 @@ class PlotsCardProvider @Inject constructor(
         return cardView
     }
 
-    private fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
-        async(UI) {
-            val graphs = bg {
+    private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
+        coroutineScope {
+            val graphs = async(Dispatchers.IO) {
                 graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, Optional.fromNullable(connectionId))
             }.await()
             fillPlotsCard(cardView, device, graphs, connectionId, context)

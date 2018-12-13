@@ -44,5 +44,5 @@ internal interface DimmableTypeBehavior {
 
     fun getPositionForDimState(dimState: String): Double
 
-    fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double)
+    suspend fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double)
 }

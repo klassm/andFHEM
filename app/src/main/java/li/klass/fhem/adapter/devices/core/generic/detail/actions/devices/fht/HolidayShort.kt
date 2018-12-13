@@ -34,8 +34,10 @@ import android.widget.TableRow
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog.view.*
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog_android_bug.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton
@@ -46,7 +48,6 @@ import li.klass.fhem.ui.AndroidBug
 import li.klass.fhem.ui.AndroidBug.handleColorStateBug
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.*
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.util.*
 import javax.inject.Inject
 
@@ -92,8 +93,8 @@ class HolidayShort @Inject constructor(private val applicationProperties: Applic
                 .setPositiveButton(R.string.okButton) { dialogInterface, _ ->
                     val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
 
-                    async(UI) {
-                        bg {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        async(Dispatchers.IO) {
                             genericDeviceService.setSubStates(device, listOf(
                                     StateToSet("desired-temp", "" + model.desiredTemp),
                                     StateToSet("holiday1", "" + holidayShortCalculator.calculateHoliday1ValueFrom(switchDate.hourOfDay, switchDate.minuteOfHour)),

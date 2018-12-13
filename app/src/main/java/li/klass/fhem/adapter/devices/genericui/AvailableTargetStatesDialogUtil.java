@@ -63,17 +63,17 @@ public class AvailableTargetStatesDialogUtil {
 
     private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS_WITHOUT_NO_ARG = ImmutableList.of(
             new RGBTargetStateHandler(),
-            new GroupSetListTargetStateHandler<>(),
+            new GroupSetListTargetStateHandler(),
             new SliderSetListTargetStateHandler(),
-            new TimeTargetStateHandler<>(),
-            new TextFieldTargetStateHandler<>(),
-            new MultipleSetListTargetStateHandler<>(),
-            new SpecialButtonSecondsHandler<>(),
-            new SpecialButtonHandler<>()
+            new TimeTargetStateHandler(),
+            new TextFieldTargetStateHandler(),
+            new MultipleSetListTargetStateHandler(),
+            new SpecialButtonSecondsHandler(),
+            new SpecialButtonHandler()
     );
     private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS = ImmutableList.<SetListTargetStateHandler<FhemDevice>>builder()
             .addAll(HANDLERS_WITHOUT_NO_ARG)
-            .add(new NoArgSetListTargetStateHandler<>()) // must be last entry!
+            .add(new NoArgSetListTargetStateHandler()) // must be last entry!
             .build();
 
     public static <D extends FhemDevice> void showSwitchOptionsMenu(final Context context, final D device, final OnTargetStateSelectedCallback callback) {

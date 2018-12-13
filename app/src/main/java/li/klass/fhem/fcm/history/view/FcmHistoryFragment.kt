@@ -24,7 +24,7 @@ class FcmHistoryFragment : BaseFragment() {
     override fun inject(applicationComponent: ApplicationComponent) {
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
     }
 
     override fun mayPullToRefresh() = false

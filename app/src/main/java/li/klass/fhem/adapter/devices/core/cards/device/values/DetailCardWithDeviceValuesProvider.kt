@@ -33,6 +33,9 @@ import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder
@@ -66,8 +69,8 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         private val applicationProperties: ApplicationProperties,
         private val detailActionProviders: GenericDetailActionProviders) {
 
-    fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
-                   itemProvider: ItemProvider, context: Context): CardView {
+    suspend fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
+                           itemProvider: ItemProvider, context: Context): CardView {
         val card = context.layoutInflater.inflate(R.layout.device_detail_card_table, null)
 
         val providers = detailActionProviders.providers
@@ -92,8 +95,10 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         val button = card.findViewById<Button>(R.id.expandButton)
         button.visibility = if (showExpandButton) View.VISIBLE else View.GONE
         button.setOnClickListener {
-            fillTable(device, connectionId, table, getSortedClassItems(device, itemProvider, true, context), providers, context)
-            button.visibility = View.GONE
+            GlobalScope.launch(Dispatchers.Main) {
+                fillTable(device, connectionId, table, getSortedClassItems(device, itemProvider, true, context), providers, context)
+                button.visibility = View.GONE
+            }
         }
 
         if (table.childCount == 0) {
@@ -103,7 +108,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         return card as CardView
     }
 
-    private fun fillTable(device: FhemDevice, connectionId: String?, table: TableLayout, items: List<XmlDeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
+    private suspend fun fillTable(device: FhemDevice, connectionId: String?, table: TableLayout, items: List<XmlDeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {
 
         table.removeAllViews()
 
@@ -154,8 +159,8 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
     }
 
 
-    private fun addActionIfRequired(device: FhemDevice, connectionId: String?, table: TableLayout,
-                                    item: XmlDeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
+    private suspend fun addActionIfRequired(device: FhemDevice, connectionId: String?, table: TableLayout,
+                                            item: XmlDeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
         val xmlListDevice = device.xmlListDevice
 
         val attributeActions = providers

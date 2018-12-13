@@ -36,8 +36,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.device_name_selection.view.*
 import kotlinx.android.synthetic.main.room_detail.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -50,7 +51,6 @@ import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.io.Serializable
 import javax.inject.Inject
@@ -112,28 +112,35 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
     protected abstract fun onDeviceNameClick(child: FhemDevice)
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
-        async(UI) {
-            val elements = bg {
+        coroutineScope {
+            if (!isNavigation) {
                 myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
+            }
 
-                if (refresh && !isNavigation) {
+            if (refresh && !isNavigation) {
+                async(Dispatchers.IO) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
+
                     myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
-                }
+                }.await()
+            }
+
+            val elements = async(Dispatchers.IO) {
                 val deviceList = when {
                     roomName != null -> deviceListService.getDeviceListForRoom(roomName!!)
                     else -> deviceListService.getAllRoomsDeviceList()
                 }.filter(deviceFilter::isSelectable)
 
                 val elements = viewableElementsCalculator.calculateElements(myActivity, deviceList)
-                if (!isNavigation) {
-                    myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
-                }
                 elements
             }.await()
+
+            if (!isNavigation) {
+                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+            }
             deviceListReceived(elements)
         }
     }

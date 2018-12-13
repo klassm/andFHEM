@@ -86,7 +86,7 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
 
     override fun getStateName(): String = setListAttribute
 
-    override fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double) {
+    override suspend fun switchTo(stateUiService: StateUiService, context: Context, fhemDevice: FhemDevice, connectionId: String?, state: Double) {
         stateUiService.setSubState(fhemDevice.xmlListDevice, setListAttribute, getDimStateForPosition(fhemDevice, state), connectionId, context)
     }
 

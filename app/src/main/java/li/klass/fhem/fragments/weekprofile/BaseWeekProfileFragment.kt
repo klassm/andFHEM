@@ -33,8 +33,7 @@ import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.Lists.newArrayList
 import kotlinx.android.synthetic.main.weekprofile.*
 import kotlinx.android.synthetic.main.weekprofile.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
 import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
@@ -47,7 +46,6 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.DialogUtil
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -87,7 +85,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        update(false)
+        updateAsync(false)
 
         getAdapter().registerWeekProfileChangedListener(object : BaseWeekProfileAdapter.WeekProfileChangedListener {
             override fun onWeekProfileChanged(weekProfile: WeekProfile<*, *>) {
@@ -104,8 +102,8 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     private fun onSave() {
         val commands = newArrayList(weekProfile.getStatesToSet())
-        async(UI) {
-            bg {
+        GlobalScope.launch(Dispatchers.Main) {
+            async(Dispatchers.IO) {
                 deviceListService.getDeviceForName(deviceName)
                         ?.xmlListDevice?.let {
                     genericDeviceService.setSubStates(it, commands, connectionId = null)
@@ -116,7 +114,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     private fun onReset() {
-        update(false)
+        updateAsync(false)
     }
 
     private fun backToDevice() {
@@ -124,10 +122,10 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         DialogUtil.showAlertDialog(context, R.string.doneTitle, R.string.switchDelayNotification, Runnable { back() })
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         activity ?: return
-        async(UI) {
-            bg {
+        coroutineScope {
+            async(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName)
                 }

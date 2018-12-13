@@ -26,13 +26,13 @@ package li.klass.fhem.adapter.uiservice
 
 import android.content.Context
 import android.content.Intent
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,29 +41,27 @@ class StateUiService @Inject constructor(
         val genericDeviceService: GenericDeviceService
 ) {
 
-    fun setSubState(device: XmlListDevice,
-                    stateName: String, value: String, connectionId: String?, context: Context) {
-        async(UI) {
-            bg {
+    suspend fun setSubState(device: XmlListDevice,
+                            stateName: String, value: String, connectionId: String?, context: Context) {
+        coroutineScope {
+            async(Dispatchers.IO) {
                 genericDeviceService.setSubState(device, stateName, value, connectionId)
             }.await()
             invokeUpdate(context)
         }
     }
 
-    fun setState(device: FhemDevice, value: String, context: Context, connectionId: String?) =
+    suspend fun setState(device: FhemDevice, value: String, context: Context, connectionId: String?) =
             setState(device.xmlListDevice, value, context, connectionId)
 
-    fun setState(device: XmlListDevice, value: String, context: Context, connectionId: String?) {
-        async(UI) {
-            bg {
+    suspend fun setState(device: XmlListDevice, value: String, context: Context, connectionId: String?) {
+        coroutineScope {
+            async(Dispatchers.IO) {
                 genericDeviceService.setState(device, value, connectionId)
             }.await()
             invokeUpdate(context)
         }
     }
 
-    private fun invokeUpdate(context: Context) {
-        context.sendBroadcast(Intent(Actions.DO_UPDATE))
-    }
+    private fun invokeUpdate(context: Context) = context.sendBroadcast(Intent(Actions.DO_UPDATE))
 }

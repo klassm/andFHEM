@@ -29,14 +29,15 @@ import android.support.v7.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.device.DeviceActionUIService
 import li.klass.fhem.widget.notification.NotificationSettingView
-import org.jetbrains.anko.coroutines.experimental.bg
 
 class DeviceListActionModeCallback constructor(
         private val favoritesService: FavoritesService,
@@ -63,16 +64,16 @@ class DeviceListActionModeCallback constructor(
     override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.menu_favorites_add -> {
-                async(UI) {
-                    bg {
+                GlobalScope.launch(Dispatchers.Main) {
+                    async(Dispatchers.IO) {
                         favoritesService.addFavorite(device.name)
                     }.await()
                     Toast.makeText(activityContext, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show()
                 }
             }
             R.id.menu_favorites_remove -> {
-                async(UI) {
-                    bg {
+                GlobalScope.launch(Dispatchers.Main) {
+                    async(Dispatchers.IO) {
                         favoritesService.removeFavorite(device.name)
                     }.await()
                     Toast.makeText(activityContext, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show()

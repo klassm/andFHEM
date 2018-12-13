@@ -48,8 +48,7 @@ import com.google.common.base.Optional
 import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Range
 import kotlinx.android.synthetic.main.chart.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -64,7 +63,6 @@ import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
 import li.klass.fhem.util.DisplayUtil
 import li.klass.fhem.util.resolveColor
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
@@ -96,8 +94,8 @@ class GraphActivity : AppCompatActivity(), Updateable {
             endDate = savedInstanceState.getSerializable(END_DATE) as DateTime?
         }
 
-        val extras = intent.extras
-        deviceName = extras.getString(DEVICE_NAME)
+        val extras = intent.extras ?: return
+        deviceName = extras.getString(DEVICE_NAME)!!
         connectionId = extras.getString(CONNECTION_ID)
 
         svgGraphDefinition = extras.getSerializable(DEVICE_GRAPH_DEFINITION) as SvgGraphDefinition
@@ -105,13 +103,15 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
         supportActionBar!!.navigationMode = ActionBar.NAVIGATION_MODE_STANDARD
 
-        update(false)
+        GlobalScope.launch(Dispatchers.Main) {
+            update(false)
+        }
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val name = deviceName
-        async(UI) {
-            bg {
+        coroutineScope {
+            async(Dispatchers.IO) {
                 deviceListService.getDeviceForName(name, connectionId)
             }.await()?.let {
                 readDataAndCreateChart(it)
@@ -123,11 +123,11 @@ class GraphActivity : AppCompatActivity(), Updateable {
      * Reads all the charting data for a given date and the column specifications set as attribute.
      * @param device    concerned device
      */
-    private fun readDataAndCreateChart(device: FhemDevice) {
+    private suspend fun readDataAndCreateChart(device: FhemDevice) {
         val myContext = this
-        async(UI) {
+        coroutineScope {
             showDialog(DIALOG_EXECUTING)
-            val result = bg {
+            val result = async(Dispatchers.IO) {
                 graphService.getGraphData(device, Optional.absent(), svgGraphDefinition, startDate, endDate, myContext)
             }.await()
             dismissDialog(DIALOG_EXECUTING)
@@ -299,12 +299,14 @@ class GraphActivity : AppCompatActivity(), Updateable {
         super.onActivityResult(requestCode, resultCode, resultIntent)
 
         if (resultIntent != null && resultCode == Activity.RESULT_OK) {
-            val bundle = resultIntent.extras
+            val bundle = resultIntent.extras ?: return
             when (requestCode) {
                 REQUEST_TIME_CHANGE -> {
                     startDate = bundle.getSerializable(START_DATE) as DateTime
                     endDate = bundle.getSerializable(END_DATE) as DateTime
-                    update(false)
+                    GlobalScope.launch(Dispatchers.Main) {
+                        update(false)
+                    }
                 }
             }
         }

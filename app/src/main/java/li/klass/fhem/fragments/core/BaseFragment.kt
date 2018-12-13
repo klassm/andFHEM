@@ -39,8 +39,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -51,7 +53,6 @@ import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
 import li.klass.fhem.widget.SwipeRefreshLayout
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -59,7 +60,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     var isNavigation = false
 
-    @Transient private var broadcastReceiver: UIBroadcastReceiver? = null
+    @Transient
+    private var broadcastReceiver: UIBroadcastReceiver? = null
     private var backPressCalled = false
     @Inject
     lateinit var resendLastFailedCommandService: ResendLastFailedCommandService
@@ -79,8 +81,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         retryButton?.setOnClickListener {
             hideConnectionError()
 
-            async(UI) {
-                bg {
+            GlobalScope.launch(Dispatchers.Main) {
+                launch {
                     resendLastFailedCommandService.resend(context)
                 }
             }
@@ -94,9 +96,13 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         return view?.canScrollVertically(-1) ?: false
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         hideConnectionError()
         updateInternal(refresh)
+    }
+
+    fun updateAsync(refresh: Boolean = true) = GlobalScope.launch(Dispatchers.Main) {
+        update(refresh)
     }
 
     private fun hideConnectionError() {
@@ -117,9 +123,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         broadcastReceiver!!.attach()
         backPressCalled = false
 
-        update(false)
+        updateAsync(false)
     }
-
 
     override fun onDetach() {
         super.onDetach()
@@ -131,7 +136,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     }
 
     fun onBackPressResult() {
-        update(false)
+        updateAsync(false)
     }
 
     fun invalidate() {
@@ -170,6 +175,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     private fun showConnectionError(content: String) {
         if (isNavigation) return
 
+
         val view = view ?: return
 
         val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
@@ -192,7 +198,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     private fun updateInternal(doRefresh: Boolean) {
         if (mayUpdateFromBroadcast()) {
-            update(doRefresh)
+            updateAsync(doRefresh)
         }
     }
 

@@ -26,18 +26,18 @@ package li.klass.fhem.log
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.activities.drawer.actions.AbstractDrawerAction
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.PermissionUtil
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.io.File
 import javax.inject.Inject
 
@@ -50,8 +50,8 @@ class FhemLogDrawerAction @Inject constructor(
             return
         }
         activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
-        async(UI) {
-            val temporaryFile = bg {
+        GlobalScope.launch(Dispatchers.Main) {
+            val temporaryFile = async(Dispatchers.IO) {
                 fhemLogService.getLogAndWriteToTemporaryFile()
             }.await()
             activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))

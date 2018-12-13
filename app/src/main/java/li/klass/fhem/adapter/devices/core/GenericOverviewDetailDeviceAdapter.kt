@@ -47,7 +47,7 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
     }
 
     @SuppressLint("InflateParams")
-    fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?): View {
+    suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?): View {
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
         genericDetailCardProviders.providers.sortedBy { it.ordering() }

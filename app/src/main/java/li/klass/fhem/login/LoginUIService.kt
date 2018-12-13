@@ -17,7 +17,7 @@ class LoginUIService @Inject constructor(
         private val sharedPreferencesService: SharedPreferencesService,
         private val dateTimeProvider: DateTimeProvider
 ) {
-    fun doLoginIfRequired(context: Context, loginStrategy: LoginStrategy) {
+    suspend fun doLoginIfRequired(context: Context, loginStrategy: LoginStrategy) {
         val requiredPassword = readPassword()
         val lastLogin = readLastLogin()
         val now = dateTimeProvider.now()
@@ -28,13 +28,12 @@ class LoginUIService @Inject constructor(
             return
         }
 
-        loginStrategy.requireLogin(context, { enteredPassword ->
+        loginStrategy.requireLogin(context) { enteredPassword ->
             checkPassword(enteredPassword, requiredPassword, loginStrategy)
-        })
-
+        }
     }
 
-    private fun checkPassword(enteredPassword: String, requiredPassword: String, loginStrategy: LoginStrategy) {
+    private suspend fun checkPassword(enteredPassword: String, requiredPassword: String, loginStrategy: LoginStrategy) {
         val isCorrect = enteredPassword == requiredPassword
 
         if (isCorrect) {
@@ -58,10 +57,10 @@ class LoginUIService @Inject constructor(
     }
 
     interface LoginStrategy {
-        fun requireLogin(context: Context, checkLogin: (String) -> Unit)
+        fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit)
 
-        fun onLoginSuccess()
+        suspend fun onLoginSuccess()
 
-        fun onLoginFailure()
+        suspend fun onLoginFailure()
     }
 }

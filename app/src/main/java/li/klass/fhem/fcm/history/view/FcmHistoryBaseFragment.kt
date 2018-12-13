@@ -38,7 +38,7 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
             val lastDate = dateFormat.parseLocalDate(view.selectedDate.text.toString())
             DatePickerDialog(context, R.style.alertDialog, { _, year, month, day ->
                 view.selectedDate.text = dateFormat.print(LocalDate(year, month + 1, day))
-                update(false)
+                updateAsync(false)
             }, lastDate.year, lastDate.monthOfYear - 1, lastDate.dayOfMonth).show()
         }
         return view
@@ -46,11 +46,11 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
 
     abstract fun getAdapter(): ADAPTER
 
-    abstract fun doUpdateView(localDate: LocalDate, view: View)
+    abstract suspend fun doUpdateView(localDate: LocalDate, view: View)
 
     abstract fun getRecyclerViewFrom(view: View): RecyclerView
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myView = view
         myView ?: return
         val selectedDate = DateFormatUtil.ANDFHEM_DATE_FORMAT.parseLocalDate(myView.selectedDate.text.toString())

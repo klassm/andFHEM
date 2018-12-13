@@ -22,34 +22,15 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.ui;
+package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
-import android.os.Bundle;
+import li.klass.fhem.domain.core.FhemDevice
 
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ApplicationComponent;
+interface OnTargetStateSelectedCallback<D : FhemDevice> {
 
-public class WebViewFragment extends AbstractWebViewFragment {
-    private String loadUrl;
+    suspend fun onStateSelected(device: D, targetState: String)
 
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
-    }
+    suspend fun onSubStateSelected(device: D, state: String, subState: String)
 
-    @Override
-    public void setArguments(Bundle args) {
-        super.setArguments(args);
-        loadUrl = args.getString(BundleExtraKeys.LOAD_URL);
-    }
-
-    @Override
-    protected String getLoadUrl() {
-        return loadUrl;
-    }
-
-    @Override
-    public boolean showProgressDialog() {
-        return false;
-    }
+    suspend fun onNothingSelected(device: D)
 }

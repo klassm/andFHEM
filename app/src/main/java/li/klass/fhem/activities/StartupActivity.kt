@@ -32,8 +32,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.startup.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.startup.actions.StartupActions
@@ -45,7 +45,6 @@ import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -82,32 +81,33 @@ class StartupActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        async(UI) {
-            bg {
+        val activity = this
+
+
+        GlobalScope.launch(Dispatchers.Main) {
+            async(IO) {
                 deviceListService.resetUpdateProgress(this@StartupActivity)
             }.await()
-        }
 
-        loginUiService.doLoginIfRequired(this, object : LoginUIService.LoginStrategy {
-            override fun requireLogin(context: Context, checkLogin: (String) -> Unit) {
-                loginStatus.visibility = View.GONE
-                loginLayout.visibility = View.VISIBLE
+            loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
+                override fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
+                    loginStatus.visibility = View.GONE
+                    loginLayout.visibility = View.VISIBLE
 
-                login.setOnClickListener {
-                    val passwordInput = findViewById<EditText>(R.id.password)
-                    val password = passwordInput.text.toString()
-                    checkLogin(password)
+                    login.setOnClickListener {
+                        val passwordInput = findViewById<EditText>(R.id.password)
+                        val password = passwordInput.text.toString()
+                        GlobalScope.launch(Dispatchers.Main) {
+                            checkLogin(password)
+                        }
+                    }
                 }
-            }
 
-            override fun onLoginSuccess() {
-                handleLoginStatus()
-            }
+                override suspend fun onLoginSuccess() = handleLoginStatus()
 
-            override fun onLoginFailure() {
-                finish()
-            }
-        })
+                override suspend fun onLoginFailure() = finish()
+            })
+        }
     }
 
     private val loginLayout: View
@@ -121,26 +121,27 @@ class StartupActivity : Activity() {
     }
 
     private fun handleStartupActions() {
-        async(UI) {
-            startupActions.actions.forEach {
+        GlobalScope.launch(Dispatchers.Main) {
+            startupActions.actions.map {
                 setCurrentStatus(it.statusText)
-                bg {
+                async(IO) {
                     try {
                         it.run()
                     } catch (e: Exception) {
                         logger.error("handleStartupActions - error while running ${it.javaClass.name}", e)
                     }
-                }.await()
-            }
+                }
+            }.awaitAll()
+
             showMainActivity()
         }
     }
 
-    private fun showMainActivity() {
+    private suspend fun showMainActivity() {
         setCurrentStatus(R.string.currentStatus_loadingFavorites)
 
-        async(UI) {
-            val hasFavorites = bg {
+        coroutineScope {
+            val hasFavorites = async(IO) {
                 favoritesService.hasFavorites()
             }.await()
             logger.debug("showMainActivity : favorites_present=$hasFavorites")

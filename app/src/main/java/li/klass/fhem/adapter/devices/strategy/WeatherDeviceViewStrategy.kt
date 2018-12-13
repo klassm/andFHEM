@@ -29,15 +29,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.device_overview_weather.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -48,12 +48,12 @@ class WeatherDeviceViewStrategy @Inject constructor(
 ) : ViewStrategy() {
 
     @SuppressLint("InflateParams")
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val view = layoutInflater.inflate(R.layout.device_overview_weather, null)
         defaultViewStrategy.fillDeviceOverviewView(view, rawDevice, GenericDeviceOverviewViewHolder(view), deviceItems, layoutInflater)
 
-        async(UI) {
-            val url = bg {
+        coroutineScope {
+            val url = async(Dispatchers.IO) {
                 weatherService.iconFor(rawDevice)
             }.await()
             setWeatherIconIn(view.weatherImage, url)

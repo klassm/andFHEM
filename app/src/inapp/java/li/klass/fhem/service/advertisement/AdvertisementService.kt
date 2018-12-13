@@ -56,7 +56,7 @@ constructor() {
 
     fun addAd(view: View, activity: Activity) {
 
-        activity.startService(Intent(Actions.IS_PREMIUM)
+        activity.sendBroadcast(Intent(Actions.IS_PREMIUM)
                 .setClass(activity, LicenseIntentService::class.java)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
                     override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
@@ -74,7 +74,7 @@ constructor() {
         var showAds = true
         val adContainer = view.findViewById<View>(R.id.adContainer) as LinearLayout
 
-        Log.i(TAG, "isPremium is " + isPremium)
+        Log.i(TAG, "isPremium is $isPremium")
         if (isPremium) {
             showAds = false
             Log.i(TAG, "found premium version, skipping ads")

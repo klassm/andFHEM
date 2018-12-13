@@ -28,6 +28,7 @@ import com.google.common.io.Resources
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
+import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.json.JSON
 import kotlinx.serialization.serializer
 import org.assertj.core.api.Assertions.assertThat
@@ -37,6 +38,7 @@ import java.io.File
 
 @RunWith(DataProviderRunner::class)
 class DeviceConfigurationProviderTest {
+    @UseExperimental(ImplicitReflectionSerializer::class)
     @Test
     @UseDataProvider("allFilesProvider")
     fun should_parse_all_json_files(file: File) {

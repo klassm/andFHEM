@@ -38,8 +38,7 @@ import com.github.angads25.filepicker.model.DialogProperties
 import com.github.angads25.filepicker.view.FilePickerDialog
 import com.google.common.base.Preconditions.checkNotNull
 import com.google.common.collect.Lists.newArrayList
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
@@ -49,7 +48,6 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
@@ -118,7 +116,9 @@ class ConnectionDetailFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.save) {
-            handleSave()
+            GlobalScope.launch(Dispatchers.Main) {
+                handleSave()
+            }
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -192,15 +192,15 @@ class ConnectionDetailFragment : BaseFragment() {
         if (detailChangedListener != null) detailChangedListener!!.onChanged()
     }
 
-    private fun handleSave() {
+    private suspend fun handleSave() {
         view ?: return
 
         val myContext = context ?: return
         val saveStrategy = strategyFor(connectionType ?: ServerType.FHEMWEB, myContext)
         val saveData = saveStrategy.saveDataFor(view!!) ?: return
 
-        async(UI) {
-            bg {
+        coroutineScope {
+            async(Dispatchers.IO) {
                 if (isModify) {
                     connectionService.update(connectionId!!, saveData)
                 } else {
@@ -250,7 +250,7 @@ class ConnectionDetailFragment : BaseFragment() {
     override fun getTitle(context: Context): CharSequence? =
             context.getString(R.string.connectionManageTitle)
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         if (!isModify) {
             LOG.info("I can only update if a connection is being modified!")
             activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
@@ -258,8 +258,8 @@ class ConnectionDetailFragment : BaseFragment() {
         }
 
         val myContext = context ?: return
-        async(UI) {
-            val result = bg {
+        coroutineScope {
+            val result = async {
                 connectionService.forId(connectionId!!)
             }.await()
             if (result == null) {

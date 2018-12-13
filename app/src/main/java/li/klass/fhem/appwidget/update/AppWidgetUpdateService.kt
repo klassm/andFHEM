@@ -24,14 +24,14 @@
 
 package li.klass.fhem.appwidget.update
 
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -54,19 +54,18 @@ class AppWidgetUpdateService @Inject constructor(
         appWidgetInstanceManager.update(appWidgetId)
     }
 
-    fun doRemoteUpdate(appWidgetId: Int, callback: () -> Unit) {
+    suspend fun doRemoteUpdate(appWidgetId: Int): Int {
         val configuration = appWidgetInstanceManager.getConfigurationFor(appWidgetId)
         val allowRemoteUpdates = applicationProperties.getBooleanSharedPreference(SettingsKeys.ALLOW_REMOTE_UPDATE, true)
         val connectionId = configuration?.connectionId
         if (configuration == null || !allowRemoteUpdates) {
-            callback()
-            return
+            return appWidgetId
         }
 
         LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId)
 
-        async(UI) {
-            bg {
+        coroutineScope {
+            async(Dispatchers.IO) {
                 val widgetView = widgetTypeProvider.widgetFor(configuration.widgetType)
                 if (widgetView is DeviceAppWidgetView) {
                     val deviceName = widgetView.deviceNameFrom(configuration)
@@ -75,8 +74,9 @@ class AppWidgetUpdateService @Inject constructor(
                     handleOtherUpdate(connectionId)
                 }
             }.await()
-            callback()
         }
+
+        return appWidgetId
     }
 
     private fun handleOtherUpdate(connectionId: String?) {
@@ -96,6 +96,6 @@ class AppWidgetUpdateService @Inject constructor(
     }
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(AppWidgetUpdateIntentService::class.java)!!
+        private val LOG = LoggerFactory.getLogger(AppWidgetUpdateService::class.java)!!
     }
 }

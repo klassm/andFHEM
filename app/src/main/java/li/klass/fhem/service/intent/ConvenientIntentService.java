@@ -26,12 +26,9 @@ package li.klass.fhem.service.intent;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
 
-import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -106,22 +103,6 @@ public abstract class ConvenientIntentService extends IntentService {
     protected void sendNoResult(ResultReceiver receiver, int resultCode) {
         if (receiver != null) {
             receiver.send(resultCode, null);
-        }
-    }
-
-    protected void sendSingleExtraResult(ResultReceiver receiver, int resultCode, String bundleExtrasKey, Serializable value) {
-        if (receiver != null) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(bundleExtrasKey, value);
-            receiver.send(resultCode, bundle);
-        }
-    }
-
-    protected void sendSingleExtraResult(ResultReceiver receiver, int resultCode, String bundleExtrasKey, Parcelable value) {
-        if (receiver != null) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(bundleExtrasKey, value);
-            receiver.send(resultCode, bundle);
         }
     }
 

@@ -27,22 +27,22 @@ package li.klass.fhem.appwidget.provider
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.dagger.ApplicationComponent
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.util.*
 import java.util.logging.Logger
 import javax.inject.Inject
 
 abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvider() {
 
-    @Inject lateinit var appWidgetInstanceManager: AppWidgetInstanceManager
+    @Inject
+    lateinit var appWidgetInstanceManager: AppWidgetInstanceManager
 
-    @Inject lateinit var appWidgetUpdateService: AppWidgetUpdateService
+    @Inject
+    lateinit var appWidgetUpdateService: AppWidgetUpdateService
 
     init {
         AndFHEMApplication.application
@@ -54,14 +54,12 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         logger.info("onUpdate - request update for ids=${Arrays.toString(appWidgetIds)}")
-        async(UI) {
-            bg {
-                appWidgetIds.forEach {
-                    appWidgetUpdateService.doRemoteUpdate(it) {
-                        appWidgetUpdateService.updateWidget(it)
-                    }
+        GlobalScope.launch(Dispatchers.Main) {
+            appWidgetIds.map {
+                async(Dispatchers.IO) {
+                    appWidgetUpdateService.doRemoteUpdate(it)
                 }
-            }
+            }.awaitAll().forEach { appWidgetUpdateService.updateWidget(it) }
         }
     }
 

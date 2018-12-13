@@ -25,6 +25,9 @@
 package li.klass.fhem.adapter.devices.genericui
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -39,7 +42,8 @@ class StateChangingSpinnerActionRow(context: Context,
 ) : SpinnerActionRow(context, description, prompt, spinnerValues, selectedValue) {
 
     override fun onItemSelected(context: Context, device: XmlListDevice, connectionId: String?, item: String) {
-
-        stateUiService.setSubState(device, commandAttribute, item, connectionId, context)
+        GlobalScope.launch(Dispatchers.Main) {
+            stateUiService.setSubState(device, commandAttribute, item, connectionId, context)
+        }
     }
 }

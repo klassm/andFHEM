@@ -22,15 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices.genericui.availableTargetStates;
+package li.klass.fhem.activities.core
 
-import li.klass.fhem.domain.core.FhemDevice;
-
-public interface OnTargetStateSelectedCallback<D extends FhemDevice> {
-
-    void onStateSelected(D device, String targetState);
-
-    void onSubStateSelected(D device, String state, String subState);
-
-    void onNothingSelected(D device);
+interface Updateable {
+    suspend fun update(refresh: Boolean)
 }

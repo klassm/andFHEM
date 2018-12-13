@@ -31,8 +31,10 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Spinner
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
@@ -43,7 +45,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.COMMAND
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
 
 class ConnectionChangeLocaleSettingActivity : Activity() {
@@ -79,8 +80,8 @@ class ConnectionChangeLocaleSettingActivity : Activity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
-        async(UI) {
-            val connections = bg {
+        GlobalScope.launch(Dispatchers.Main) {
+            val connections = async(Dispatchers.IO) {
                 connectionService.listAll()
             }.await()
             fillConnectionSpinner(connections, connectionListAdapter)

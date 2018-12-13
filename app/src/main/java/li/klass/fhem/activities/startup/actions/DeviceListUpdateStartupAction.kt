@@ -13,7 +13,7 @@ class DeviceListUpdateStartupAction @Inject constructor(
         private val applicationProperties: ApplicationProperties,
         private val appWidgetUpdateService: AppWidgetUpdateService
 ) : StartupAction(R.string.currentStatus_loadingDeviceList) {
-    override fun run() {
+    override suspend fun run() {
         val updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(SettingsKeys.UPDATE_ON_APPLICATION_START, false)
         if (updateOnApplicationStart) {
             executeRemoteUpdate()

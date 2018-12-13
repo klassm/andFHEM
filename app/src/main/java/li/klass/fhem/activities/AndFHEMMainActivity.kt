@@ -50,6 +50,9 @@ import android.widget.Spinner
 import android.widget.Toast
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.main_view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.UpdateTimerTask
@@ -123,7 +126,9 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                             updateShowRefreshProgressIcon()
                             refreshFragments(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false))
                         } else if (action == UPDATE_NAVIGATION) {
-                            refreshNavigation()
+                            GlobalScope.launch(Dispatchers.Main) {
+                                refreshNavigation()
+                            }
                         } else if (action == SHOW_EXECUTING_DIALOG) {
                             updateShowRefreshProgressIcon()
                             refresh_layout?.isRefreshing = true
@@ -144,7 +149,11 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                             onBackPressed(intent.getSerializableExtra(FRAGMENT) as FragmentType?)
                         } else if (CONNECTIONS_CHANGED == action) {
                             if (availableConnectionDataAdapter != null) {
-                                availableConnectionDataAdapter!!.doLoad()
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    launch {
+                                        availableConnectionDataAdapter!!.doLoad()
+                                    }
+                                }
                             }
                         } else if (REDRAW == action) {
                             redrawContent()
@@ -240,11 +249,12 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         switchToFragment(fragmentType, startupBundle)
     }
 
-    private fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
+    private suspend fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
         val connectionSpinner = spinner as Spinner
         availableConnectionDataAdapter = AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged, connectionService)
         connectionSpinner.adapter = availableConnectionDataAdapter
         connectionSpinner.onItemSelectedListener = availableConnectionDataAdapter
+
         availableConnectionDataAdapter!!.doLoad()
     }
 
@@ -308,12 +318,14 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             }
         })
 
-        initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
-                Runnable {
-                    if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-                        drawer_layout.closeDrawer(GravityCompat.START)
-                    }
-                })
+        GlobalScope.launch(Dispatchers.Main) {
+            initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
+                    Runnable {
+                        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                            drawer_layout.closeDrawer(GravityCompat.START)
+                        }
+                    })
+        }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
@@ -427,40 +439,46 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         super.onResume()
 
         LOGGER.info("onResume() : resuming")
-
-        loginUiService.doLoginIfRequired(this, object : LoginUIService.LoginStrategy {
-            @SuppressLint("InflateParams")
-            override fun requireLogin(context: Context, checkLogin: Function1<String, Unit>) {
-                val loginView = layoutInflater.inflate(R.layout.login, null)
-                AlertDialog.Builder(context)
-                        .setView(loginView)
-                        .setTitle(R.string.login)
-                        .setOnCancelListener { finish() }
-                        .setPositiveButton(R.string.okButton) { _, _ -> checkLogin.invoke((loginView.findViewById<EditText>(R.id.password)).text.toString()) }
-                        .show()
-            }
-
-            override fun onLoginSuccess() {
-                saveInstanceStateCalled = false
-
-                if (broadcastReceiver != null) {
-                    registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+        val activity = this
+        GlobalScope.launch(Dispatchers.Main) {
+            loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
+                override fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
+                    val loginView = layoutInflater.inflate(R.layout.login, null)
+                    AlertDialog.Builder(context)
+                            .setView(loginView)
+                            .setTitle(R.string.login)
+                            .setOnCancelListener { finish() }
+                            .setPositiveButton(R.string.okButton) { _, _ ->
+                                val password = (loginView.findViewById<EditText>(R.id.password)).text.toString()
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    checkLogin(password)
+                                }
+                            }
+                            .show()
                 }
 
-                if (availableConnectionDataAdapter != null) {
-                    availableConnectionDataAdapter!!.doLoad()
+                override suspend fun onLoginSuccess() {
+                    saveInstanceStateCalled = false
+
+                    if (broadcastReceiver != null) {
+                        registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+                    }
+
+                    if (availableConnectionDataAdapter != null) {
+                        availableConnectionDataAdapter!!.doLoad()
+                    }
+                    updateNavigationVisibility()
+
+                    handleTimerUpdates()
+                    handleOpenIntent()
+                    updateTitle()
                 }
-                updateNavigationVisibility()
 
-                handleTimerUpdates()
-                handleOpenIntent()
-                updateTitle()
-            }
-
-            override fun onLoginFailure() {
-                finish()
-            }
-        })
+                override suspend fun onLoginFailure() {
+                    finish()
+                }
+            })
+        }
     }
 
     override fun onRestart() {
@@ -498,16 +516,18 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         }
 
     private fun refreshFragments(doUpdate: Boolean) {
-        refreshContent(doUpdate)
-        refreshNavigation()
+        GlobalScope.launch(Dispatchers.Main) {
+            refreshContent(doUpdate)
+            refreshNavigation()
+        }
     }
 
-    private fun refreshNavigation() {
+    private suspend fun refreshNavigation() {
         val nav = navigationFragment
         nav?.update(false)
     }
 
-    private fun refreshContent(doUpdate: Boolean) {
+    private suspend fun refreshContent(doUpdate: Boolean) {
         val content = contentFragment
         content?.update(doUpdate)
     }

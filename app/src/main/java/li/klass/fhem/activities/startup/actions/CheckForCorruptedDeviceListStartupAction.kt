@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CheckForCorruptedDeviceListStartupAction @Inject constructor(
         private val deviceListUpdateService: DeviceListUpdateService
 ) : StartupAction(R.string.currentStatus_checkForCorruptedDeviceList) {
-    override fun run() {
+    override suspend fun run() {
         deviceListUpdateService.checkForCorruptedDeviceList()
     }
 }

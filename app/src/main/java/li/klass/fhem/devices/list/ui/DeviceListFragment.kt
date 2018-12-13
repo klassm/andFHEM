@@ -41,8 +41,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailViewProvider
@@ -63,7 +62,6 @@ import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -155,7 +153,7 @@ abstract class DeviceListFragment : BaseFragment() {
         view.addView(emptyView)
     }
 
-    override fun update(refresh: Boolean) {
+    override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         if (refresh) {
             myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
@@ -163,17 +161,20 @@ abstract class DeviceListFragment : BaseFragment() {
 
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$refresh)")
 
-        async(UI) {
-            val elements = bg {
+        coroutineScope {
                 if (refresh) {
                     myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
-                    executeRemoteUpdate(myActivity)
+                    async(Dispatchers.IO) {
+                        executeRemoteUpdate(myActivity)
+                    }.await()
                     myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
                     myActivity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
                 }
+            val elements = async(Dispatchers.IO) {
                 val deviceList = getRoomDeviceListForUpdate(myActivity)
                 viewableRoomDeviceListProvider.provideFor(myActivity, deviceList)
             }.await()
+
             if (view != null) {
                 updateWith(elements, view!!)
             }
@@ -207,29 +208,31 @@ abstract class DeviceListFragment : BaseFragment() {
     }
 
     private fun createDeviceView(device: FhemDevice, view: View) {
-        fun firstChildOf(layout: CardView) = when (layout.childCount) {
-            0 -> null
-            else -> layout.getChildAt(0)
+        GlobalScope.launch(Dispatchers.Main) {
+            fun firstChildOf(layout: CardView) = when (layout.childCount) {
+                0 -> null
+                else -> layout.getChildAt(0)
+            }
+
+            val stopWatch = StopWatch()
+            stopWatch.start()
+
+            LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
+
+            val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
+
+            LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
+
+            view.card.removeAllViews()
+            view.card.addView(contentView)
+
+            LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
+
+            view.setOnClickListener { onClick(device) }
+            view.setOnLongClickListener { onLongClick(device) }
+
+            LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
         }
-
-        val stopWatch = StopWatch()
-        stopWatch.start()
-
-        LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
-
-        val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
-
-        LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
-
-        view.card.removeAllViews()
-        view.card.addView(contentView)
-
-        LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
-
-        view.setOnClickListener { onClick(device) }
-        view.setOnLongClickListener { onLongClick(device) }
-
-        LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
     }
 
     private fun onClick(device: FhemDevice) {
@@ -239,12 +242,14 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private fun onLongClick(device: FhemDevice): Boolean {
         val myActivity = activity ?: return false
-        async(UI) {
-            val isFavorite = bg {
+        GlobalScope.launch(Dispatchers.Main) {
+            val isFavorite = async(Dispatchers.IO) {
                 favoritesService.isFavorite(device.name)
             }.await()
             val callback = DeviceListActionModeCallback(favoritesService, deviceActionUiService,
-                    device, isFavorite, myActivity, updateListener = { update(false) })
+                    device, isFavorite, myActivity, updateListener = {
+                updateAsync(false)
+            })
             actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)
         }
         return true
