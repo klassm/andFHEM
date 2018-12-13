@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package android.support.v4.widget;
+package androidx.drawerlayout.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

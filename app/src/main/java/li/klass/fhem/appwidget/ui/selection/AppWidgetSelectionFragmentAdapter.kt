@@ -26,9 +26,9 @@ package li.klass.fhem.appwidget.ui.selection
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
@@ -54,7 +54,7 @@ internal class AppWidgetSelectionFragmentAdapter(fm: FragmentManager, private va
             1 -> return roomsFragment()
             2 -> return othersFragment()
         }
-        throw IllegalStateException("cannot handle position " + position)
+        throw IllegalStateException("cannot handle position $position")
     }
 
     override fun getCount(): Int = 3
@@ -65,7 +65,7 @@ internal class AppWidgetSelectionFragmentAdapter(fm: FragmentManager, private va
             1 -> return context.getString(R.string.widget_rooms)
             2 -> return context.getString(R.string.widget_others)
         }
-        throw IllegalStateException("cannot handle position " + position)
+        throw IllegalStateException("cannot handle position $position")
     }
 
 

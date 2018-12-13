@@ -1,6 +1,5 @@
 package li.klass.fhem.appwidget.ui.widget.base.otherWidgets
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
 
 class OtherWidgetsAdapter(elements: List<AppWidgetView>, val widgetClickedCallback: OtherWidgetsFragment.OnWidgetClickedCallback)
-    : RecyclerView.Adapter<OtherWidgetsAdapter.ViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<OtherWidgetsAdapter.ViewHolder>() {
     private val sortedElements = elements.sortedBy { it.getWidgetName() }
 
     override fun getItemCount() = sortedElements.size
@@ -22,7 +21,7 @@ class OtherWidgetsAdapter(elements: List<AppWidgetView>, val widgetClickedCallba
         holder.bind(sortedElements[position])
     }
 
-    class ViewHolder(val view: View, val widgetClickedCallback: OtherWidgetsFragment.OnWidgetClickedCallback) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(val view: View, val widgetClickedCallback: OtherWidgetsFragment.OnWidgetClickedCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         fun bind(appWidgetView: AppWidgetView) {
             view.text.text = view.context.getString(appWidgetView.getWidgetName())
             view.setOnClickListener { widgetClickedCallback.onWidgetClicked(appWidgetView) }

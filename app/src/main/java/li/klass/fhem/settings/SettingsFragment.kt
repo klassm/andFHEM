@@ -40,7 +40,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     lateinit var typeHandlers: SettingsTypeHandlers
 
     private val typeHandler: SettingsTypeHandler
-        get() = typeHandlers.handlerFor(arguments.getString("type"))
+        get() = typeHandlers.handlerFor(arguments.getString("type")!!)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as AndFHEMApplication).daggerComponent.inject(this)

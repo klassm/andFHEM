@@ -25,10 +25,10 @@
 package li.klass.fhem.adapter.timer
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.timer_list_item.view.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter

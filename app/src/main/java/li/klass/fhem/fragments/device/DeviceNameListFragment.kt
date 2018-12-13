@@ -28,12 +28,12 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.ResultReceiver
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.device_name_selection.view.*
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.coroutines.Dispatchers

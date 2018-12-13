@@ -26,10 +26,10 @@ package li.klass.fhem.adapter.rooms
 
 import android.content.Context
 import android.preference.PreferenceManager.getDefaultSharedPreferences
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.settings.SettingsKeys.SHOW_HIDDEN_DEVICES

@@ -1,7 +1,7 @@
 package li.klass.fhem.fcm.history.data
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 
 abstract class FcmHistoryEntity() {
     constructor(datetime: String, date: String, saveDatetime: String) : this() {

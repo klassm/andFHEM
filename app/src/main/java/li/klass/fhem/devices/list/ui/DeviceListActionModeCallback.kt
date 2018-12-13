@@ -25,10 +25,10 @@
 package li.klass.fhem.devices.list.ui
 
 import android.content.Context
-import android.support.v7.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.view.ActionMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async

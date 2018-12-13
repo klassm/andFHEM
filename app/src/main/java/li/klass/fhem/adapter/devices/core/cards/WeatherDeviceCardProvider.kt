@@ -26,12 +26,12 @@ package li.klass.fhem.adapter.devices.core.cards
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.CardView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.device_detail_card_weather.view.*
 import kotlinx.android.synthetic.main.weather_forecast_item.view.*
 import kotlinx.coroutines.Dispatchers

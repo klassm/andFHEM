@@ -31,7 +31,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <android.support.v4.widget.RepairedDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.drawerlayout.widget.RepairedDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,7 +39,7 @@
 
         <include layout="@layout/content_view" />
 
-        <android.support.design.widget.NavigationView
+        <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_drawer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -51,7 +51,7 @@
             android:background="?attr/backgroundColorSecondary"
             app:menu="@menu/drawer" />
 
-    </android.support.v4.widget.RepairedDrawerLayout>
+    </androidx.drawerlayout.widget.RepairedDrawerLayout>
 
     <TextView
         android:id="@+id/tabletIndicator"

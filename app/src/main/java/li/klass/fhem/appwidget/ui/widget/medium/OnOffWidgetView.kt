@@ -27,8 +27,8 @@ package li.klass.fhem.appwidget.ui.widget.medium
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior

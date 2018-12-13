@@ -24,8 +24,6 @@
 
 package li.klass.fhem.graph.backend.gplot;
 
-import android.support.annotation.NonNull;
-
 import com.crashlytics.android.Crashlytics;
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
@@ -58,6 +56,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.SeriesColor;
 
 import static com.google.common.base.Preconditions.checkArgument;

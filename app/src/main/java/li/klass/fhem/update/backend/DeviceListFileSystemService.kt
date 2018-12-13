@@ -119,7 +119,7 @@ class DeviceListFileSystemService @Inject constructor(
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
-        val PREFERENCES_NAME = DeviceListFileSystemService::class.java.name!!
+        val PREFERENCES_NAME = DeviceListFileSystemService::class.java.name
 
         private val LOG = LoggerFactory.getLogger(DeviceListFileSystemService::class.java)
         val LAST_UPDATE_PROPERTY = "LAST_UPDATE"

@@ -25,10 +25,10 @@
 package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
-import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import androidx.cardview.widget.CardView
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
 import kotlinx.coroutines.Dispatchers

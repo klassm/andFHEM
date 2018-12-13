@@ -25,11 +25,11 @@
 package li.klass.fhem.appwidget.ui.widget.base.otherWidgets
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.other_widgets_list.view.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetSize

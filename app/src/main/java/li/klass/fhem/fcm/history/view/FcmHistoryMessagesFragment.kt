@@ -1,8 +1,8 @@
 package li.klass.fhem.fcm.history.view
 
 import android.content.Intent
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fcm_history_messages.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

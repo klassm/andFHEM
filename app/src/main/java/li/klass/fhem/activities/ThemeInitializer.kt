@@ -25,7 +25,7 @@
 package li.klass.fhem.activities
 
 import android.os.Build
-import android.support.v7.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import javax.inject.Inject

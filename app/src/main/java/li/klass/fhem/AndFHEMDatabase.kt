@@ -1,7 +1,7 @@
 package li.klass.fhem
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import li.klass.fhem.fcm.history.data.change.FcmHistoryChangeDao
 import li.klass.fhem.fcm.history.data.change.FcmHistoryChangeEntity
 import li.klass.fhem.fcm.history.data.message.FcmHistoryMessageDao

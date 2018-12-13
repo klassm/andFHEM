@@ -29,8 +29,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.StrictMode
-import android.support.multidex.MultiDexApplication
 import android.util.Log
+import androidx.multidex.MultiDexApplication
 import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.GlobalScope

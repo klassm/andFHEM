@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Build
 import android.preference.Preference
-import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatDelegate
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.settings.SettingsKeys

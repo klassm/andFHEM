@@ -24,7 +24,7 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/card"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content" />
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/forecast"
             android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
@@ -54,4 +54,4 @@
             android:layout_height="wrap_content"
             tools:ignore="UnusedAttribute" />
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

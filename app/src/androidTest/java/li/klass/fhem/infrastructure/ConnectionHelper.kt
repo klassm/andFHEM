@@ -24,11 +24,11 @@
 
 package li.klass.fhem.infrastructure
 
-import android.support.test.espresso.Espresso.onData
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.contrib.DrawerActions
-import android.support.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onData
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.contrib.DrawerActions
+import androidx.test.espresso.matcher.ViewMatchers
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import org.hamcrest.BaseMatcher

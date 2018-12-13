@@ -29,8 +29,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +37,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Runnable
@@ -202,7 +201,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
     }
 
-    inner class UIBroadcastReceiver(private val activity: FragmentActivity) : BroadcastReceiver() {
+    inner class UIBroadcastReceiver(private val activity: androidx.fragment.app.FragmentActivity) : BroadcastReceiver() {
 
         private val intentFilter: IntentFilter = IntentFilter().apply {
             addAction(TOP_LEVEL_BACK)

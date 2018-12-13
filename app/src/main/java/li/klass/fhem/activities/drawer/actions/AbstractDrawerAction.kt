@@ -24,9 +24,9 @@
 
 package li.klass.fhem.activities.drawer.actions
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
-abstract class AbstractDrawerAction(val drawerId: Int, val returnHandle: Boolean = true) : DrawerAction {
+abstract class AbstractDrawerAction(private val drawerId: Int, val returnHandle: Boolean = true) : DrawerAction {
     override fun handle(activity: AppCompatActivity, drawerId: Int): Boolean {
         if (drawerId == this.drawerId) {
             execute(activity)

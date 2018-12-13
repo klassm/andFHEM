@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
-import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -52,7 +51,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): androidx.cardview.widget.CardView? {
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }
@@ -65,7 +64,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
             updateTableWith(view.content, rows, context, actionProvider)
         }
 
-        return view as CardView
+        return view as androidx.cardview.widget.CardView
     }
 
     private fun updateTableWith(table: TableLayout, rows: List<RemotecontrolDeviceService.Row>,

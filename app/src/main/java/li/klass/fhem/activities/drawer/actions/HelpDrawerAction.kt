@@ -26,7 +26,7 @@ package li.klass.fhem.activities.drawer.actions
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
 import javax.inject.Inject

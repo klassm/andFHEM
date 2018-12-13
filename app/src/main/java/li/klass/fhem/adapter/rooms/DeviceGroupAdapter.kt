@@ -1,10 +1,10 @@
 package li.klass.fhem.adapter.rooms
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.room_device_group.view.*
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator.Element

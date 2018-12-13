@@ -25,7 +25,7 @@
 package li.klass.fhem.activities.drawer.actions
 
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import li.klass.fhem.R
 import li.klass.fhem.util.DialogUtil
 import javax.inject.Inject

@@ -1,10 +1,10 @@
 package li.klass.fhem.fcm.history.view
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fcm_history_change_row.view.*
 import kotlinx.android.synthetic.main.fcm_history_updates_item.view.*
 import li.klass.fhem.R

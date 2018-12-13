@@ -24,7 +24,7 @@
 
 package li.klass.fhem.activities.drawer.actions
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 interface DrawerAction {
     fun handle(activity: AppCompatActivity, drawerId: Int): Boolean

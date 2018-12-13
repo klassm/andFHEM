@@ -28,12 +28,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.ActionMode
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import kotlinx.android.synthetic.main.command_execution.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
