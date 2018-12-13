@@ -19,7 +19,7 @@ GEM
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
     ffi (>= 1.9.24)
-    ffi (1.9.18-x64-mingw32)
+    ffi (1.9.25-x64-mingw32)
     forwardable-extended (2.6.0)
     gemoji (3.0.0)
     github-pages (163)
