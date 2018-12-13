@@ -54,8 +54,10 @@ def getReleaseNotes() {
 }
 
 task updateGithubConfiguration {
-    github.name = version
-    github.tagName = version
-    github.body = getReleaseNotes()
+    doLast {
+        github.name = version
+        github.tagName = version
+        github.body = getReleaseNotes()
+    }
 }
 githubRelease.dependsOn updateGithubConfiguration

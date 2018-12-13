@@ -25,7 +25,6 @@ import java.net.URI
  */
 
 
-
 buildscript {
     val kotlinVersion: String by project
     repositories {
@@ -177,9 +176,9 @@ dependencies {
     androidTestImplementation(group = "androidx.test.espresso", name = "espresso-contrib", version = "3.1.1")
 }
 
-apply(from = "build-includes/resource-id-mapper-generator.gradle")
-apply(from = "build-includes/device-configuration-generator.gradle")
-apply(from = "build-includes/update-whatsnew.gradle")
+apply(from = "build-includes/whatsnew.gradle.kts")
+apply(from = "build-includes/resourceIdMapper.gradle.kts")
+apply(from = "build-includes/deviceConfiguration.gradle.kts")
 apply(from = "build-includes/github.gradle")
 apply(from = "build-includes/release.gradle")
 apply(from = "build-includes/android.gradle")
