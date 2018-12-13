@@ -56,6 +56,8 @@ val supportLibVersion = "28.0.0"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.8.0"
+val daggerVersion = "2.19"
+val coroutinesVersion = "1.0.1"
 
 plugins {
     id("net.researchgate.release") version "2.6.0"
@@ -109,8 +111,8 @@ dependencies {
         exclude(group = "com.google.code.findbugs")
         exclude(group = "org.apache.httpcomponents")
     }
-    implementation(group = "com.google.dagger", name = "dagger", version = "2.16")
-    kapt(group = "com.google.dagger", name = "dagger-compiler", version = "2.16")
+    implementation(group = "com.google.dagger", name = "dagger", version = daggerVersion)
+    kapt(group = "com.google.dagger", name = "dagger-compiler", version = daggerVersion)
     implementation(group = "com.google.errorprone", name = "error_prone_annotations", version = "2.2.0")
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "1.3")
 
@@ -118,7 +120,7 @@ dependencies {
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0-alpha01")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
-    implementation(group = "androidx.annotation", name = "annotation", version = "1.0.1")
+    implementation(group = "androidx.annotation", name = "annotation", version = coroutinesVersion)
     implementation(group = "androidx.room", name = "room-runtime", version = "2.1.0-alpha03")
     kapt(group = "androidx.room", name = "room-compiler", version = "2.1.0-alpha03")
 
@@ -147,8 +149,8 @@ dependencies {
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-runtime", version = kotlinSerializationVersion) {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
     }
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = "1.0.1")
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.0.1")
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)
 
     // Anko Layouts
     implementation(group = "org.jetbrains.anko", name = "anko-sdk25", version = ankoVersion)

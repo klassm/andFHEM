@@ -91,6 +91,13 @@
 -dontwarn kotlin.reflect.**
 -keep class org.jetbrains.** { *; }
 
+# kotlinx.coroutines
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
+
 -keep class com.google.android.material.** { *; }
 -dontwarn com.google.android.material.**
 -dontnote com.google.android.material.**
