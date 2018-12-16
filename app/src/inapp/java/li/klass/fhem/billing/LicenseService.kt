@@ -39,29 +39,30 @@ class LicenseService @Inject constructor(
         private val application: Application
 ) {
 
-    fun isPremium(listener: IsPremiumListener) {
-        billingService.loadInventory({ success ->
-            val isPremium = isPremiumInternal(success)
-            listener.isPremium(isPremium)
-        }, applicationContext)
+    suspend fun isPremium(): Boolean {
+        val loadSuccessful = billingService.loadInventory(applicationContext)
+        return isPremiumInternal(loadSuccessful)
     }
 
     private fun isPremiumInternal(loadSuccessful: Boolean): Boolean {
-        var isPremium = false
-
-        if (applicationContext.packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
-            LOGGER.info("found package name to be " + AndFHEMApplication.PREMIUM_PACKAGE + " => premium")
-            isPremium = true
-        } else if (isDebug()) {
-            LOGGER.info("running in debug => premium")
-            isPremium = true
-        } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) || billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID))) {
-            LOGGER.info("found inapp premium purchase => premium")
-            isPremium = true
-        } else {
-            LOGGER.info("seems that I am not Premium...")
+        when {
+            applicationContext.packageName == AndFHEMApplication.PREMIUM_PACKAGE -> {
+                LOGGER.info("found package name to be " + AndFHEMApplication.PREMIUM_PACKAGE + " => premium")
+                return true
+            }
+            isDebug() -> {
+                LOGGER.info("running in debug => premium")
+                return true
+            }
+            loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) || billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID)) -> {
+                LOGGER.info("found inapp premium purchase => premium")
+                return true
+            }
+            else -> {
+                LOGGER.info("seems that I am not Premium...")
+                return false
+            }
         }
-        return isPremium
     }
 
     fun isDebug(): Boolean {

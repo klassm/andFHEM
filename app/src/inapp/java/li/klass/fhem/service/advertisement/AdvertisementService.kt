@@ -26,7 +26,6 @@ package li.klass.fhem.service.advertisement
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -37,37 +36,27 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.PremiumActivity
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM
-import li.klass.fhem.constants.ResultCodes.SUCCESS
-import li.klass.fhem.service.intent.LicenseIntentService
-import li.klass.fhem.util.FhemResultReceiver
+import li.klass.fhem.billing.LicenseService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AdvertisementService @Inject
-constructor() {
+constructor(private val licenseService: LicenseService) {
     private var lastErrorTimestamp: Long = 0
 
     fun addAd(view: View, activity: Activity) {
 
-        activity.sendBroadcast(Intent(Actions.IS_PREMIUM)
-                .setClass(activity, LicenseIntentService::class.java)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                    override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                        if (!resultData!!.containsKey(IS_PREMIUM)) {
-                            return
-                        }
-                        val isPremium = resultCode == SUCCESS && resultData.getBoolean(IS_PREMIUM, false)
-                        showAdsBasedOnPremium(isPremium, view, activity)
-                    }
-                })
-        )
+        GlobalScope.launch(Dispatchers.Main) {
+            val isPremium = licenseService.isPremium()
+            showAdsBasedOnPremium(isPremium, view, activity)
+        }
     }
 
     private fun showAdsBasedOnPremium(isPremium: Boolean, view: View, activity: Activity) {

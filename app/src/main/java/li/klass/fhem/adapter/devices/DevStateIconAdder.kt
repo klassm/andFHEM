@@ -4,9 +4,11 @@ import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
-import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
@@ -29,23 +31,23 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
         logger.info("addDevStateIconIfRequired(icon=$icon, device=${device.name})")
         imageView.visibility = View.VISIBLE
 
-        licenseService.isPremium(object : IsPremiumListener {
-            override fun isPremium(isPremium: Boolean) {
-                if (isPremium && currentProvider is FHEMWEBConnection) {
-                    val url = "${currentProvider.server.url}/images/default/${icon.image}.png"
-                    val authHeader = currentProvider.basicAuthHeaders.authorization
-                    val glideUrl = GlideUrl(url, LazyHeaders.Builder()
-                            .addHeader("Authorization", authHeader)
-                            .build())
+        GlobalScope.launch(Dispatchers.Main) {
+            val isPremium = licenseService.isPremium()
+            if (isPremium && currentProvider is FHEMWEBConnection) {
+                val url = "${currentProvider.server.url}/images/default/${icon.image}.png"
+                val authHeader = currentProvider.basicAuthHeaders.authorization
+                val glideUrl = GlideUrl(url, LazyHeaders.Builder()
+                        .addHeader("Authorization", authHeader)
+                        .build())
 
-                    logger.info("addDevStateIconIfRequired - loading icon from $url")
-                    GlideApp.with(imageView.context)
-                            .load(glideUrl)
-                            .error(R.drawable.empty)
-                            .into(imageView)
-                }
+                logger.info("addDevStateIconIfRequired - loading icon from $url")
+                GlideApp.with(imageView.context)
+                        .load(glideUrl)
+                        .error(R.drawable.empty)
+                        .into(imageView)
             }
-        })
+
+        }
     }
 
     companion object {

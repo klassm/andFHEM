@@ -37,19 +37,17 @@ import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
+import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
-import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.util.Reject
 import javax.inject.Inject
 
@@ -59,6 +57,8 @@ class ConnectionListFragment : BaseFragment() {
     lateinit var advertisementService: AdvertisementService
     @Inject
     lateinit var connectionService: ConnectionService
+    @Inject
+    lateinit var licenseService: LicenseService
 
     private var clickedConnectionId: String? = null
     private var connectionId: String? = null
@@ -111,22 +111,17 @@ class ConnectionListFragment : BaseFragment() {
         if (item!!.itemId == R.id.connection_add) {
             val size = adapter.data.size
 
-            activity?.startService(Intent(Actions.IS_PREMIUM)
-                    .setClass(activity, LicenseIntentService::class.java)
-                    .putExtra(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                            val isPremium = resultCode == ResultCodes.SUCCESS && resultData!!.getBoolean(BundleExtraKeys.IS_PREMIUM, false)
-
-                            if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                                activity?.sendBroadcast(Intent(Actions.SHOW_ALERT)
-                                        .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
-                                        .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
-                            } else {
-                                activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
-                                        .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL))
-                            }
-                        }
-                    }))
+            GlobalScope.launch(Dispatchers.Main) {
+                val isPremium = licenseService.isPremium()
+                if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                    activity?.sendBroadcast(Intent(Actions.SHOW_ALERT)
+                            .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
+                            .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
+                } else {
+                    activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
+                            .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL))
+                }
+            }
             return true
         }
 

@@ -58,20 +58,15 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.activities.drawer.actions.DrawerActions
 import li.klass.fhem.billing.BillingService
-import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
 import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.Actions.IS_PREMIUM
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH
-import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT
-import li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME
+import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.login.LoginUIService
-import li.klass.fhem.service.intent.LicenseIntentService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.STARTUP_VIEW
 import li.klass.fhem.ui.FragmentType
@@ -310,15 +305,13 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             nav_drawer.menu.removeItem(R.id.fhem_log)
         }
 
-        licenseService.isPremium(object : IsPremiumListener {
-            override fun isPremium(isPremium: Boolean) {
-                if (!isPremium) {
-                    nav_drawer.menu.removeItem(R.id.fcm_history)
-                }
-            }
-        })
-
         GlobalScope.launch(Dispatchers.Main) {
+            val isPremium = licenseService.isPremium()
+            if (!isPremium) {
+                nav_drawer.menu.removeItem(R.id.fcm_history)
+            }
+
+
             initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
                     Runnable {
                         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -479,11 +472,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                 }
             })
         }
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        startService(Intent(IS_PREMIUM).setClass(this, LicenseIntentService::class.java))
     }
 
     override fun onNewIntent(intent: Intent) {

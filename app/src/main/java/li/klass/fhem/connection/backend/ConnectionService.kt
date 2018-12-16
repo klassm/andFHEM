@@ -32,8 +32,10 @@ import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists.newArrayList
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.billing.IsPremiumListener
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ServerType.*
 import li.klass.fhem.domain.core.DeviceVisibility
@@ -63,16 +65,15 @@ constructor(private val applicationProperties: ApplicationProperties,
 
     fun create(saveData: SaveData) {
         if (exists(saveData.name)) return
-        licenseService.isPremium(object : IsPremiumListener {
-            override fun isPremium(isPremium: Boolean) {
-                if (isPremium || getCountWithoutDummy() < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val isPremium = licenseService.isPremium()
+            if (isPremium || getCountWithoutDummy() < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-                    val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
-                    saveData.fillServer(server)
-                    saveToPreferences(server)
-                }
+                val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
+                saveData.fillServer(server)
+                saveToPreferences(server)
             }
-        })
+        }
     }
 
     fun update(id: String, saveData: SaveData) {

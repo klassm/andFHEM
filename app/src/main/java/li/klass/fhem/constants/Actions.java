@@ -48,7 +48,6 @@ public class Actions {
 
     public static final String REDRAW_WIDGET = prefix + "REDRAW_WIDGET";
     public static final String WIDGET_REQUEST_UPDATE = prefix + "WIDGET_REQUEST_UPDATE";
-    public static final String REDRAW_ALL_WIDGETS = prefix + "REDRAW_ALL_WIDGETS";
 
     public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
 
@@ -63,8 +62,6 @@ public class Actions {
 
 
     public static final String EXT_DEVICE_STATE_NOTIFY = prefix + "EXT_DEVICE_STATE_NOTIFY";
-
-    public static final String IS_PREMIUM = prefix + "IS_PREMIUM";
 
     public static final String UPDATE_NEXT_ALARM_CLOCK = prefix + "NEXT_ALARM_CLOCK";
 }
