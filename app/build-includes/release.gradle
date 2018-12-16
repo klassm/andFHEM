@@ -66,11 +66,12 @@ release {
 }
 
 task setStage {
-    setStage(System.getProperty('stage'))
+    setStage(System.getProperty('stage')) // explicitly configuration phase
 }
 beforeReleaseBuild.dependsOn('setStage')
 
 def setStage(stage) {
+    println("building $stage")
     System.setProperty("release.useAutomaticVersion", "true")
     if (stage == 'production') {
         play.track = 'production'
