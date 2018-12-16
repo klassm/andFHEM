@@ -46,22 +46,17 @@ constructor() {
         private set
 
     private val isSetup: Boolean
-        get() = iabHelper != null && iabHelper!!.isSetupDone
+        get() = iabHelper?.isSetupDone ?: false
 
     private val isLoaded: Boolean
-        get() = !inventory.allOwnedSkus.isEmpty()
+        get() = inventory.allOwnedSkus.isNotEmpty()
 
     @Synchronized
-    fun stop() {
-        try {
-            if (iabHelper != null) {
-                iabHelper!!.dispose()
-                iabHelper = null
-            }
-        } catch (e: Exception) {
-            LOG.debug("stop() - cannot stop", e)
-        }
-
+    fun stop() = try {
+        iabHelper?.dispose()
+        iabHelper = null
+    } catch (e: Exception) {
+        LOG.debug("stop() - cannot stop", e)
     }
 
     @Synchronized
@@ -73,24 +68,23 @@ constructor() {
             if (!success) {
                 LOG.error("requestPurchase() - cannot initialize purchase flow, setup was not successful");
                 return null
-            } else {
-                val helper = iabHelper ?: return null
-                helper.flagEndAsync()
+            }
 
-                return awaitCallback { callback ->
-                    helper.launchPurchaseFlow(activity, itemId, 0, { result, info ->
-                        if (result.isSuccess) {
-                            LOG.info("requestPurchase() - purchase result: SUCCESS");
-                            GlobalScope.launch {
-                                loadInventory(activity)
-                                callback.onComplete(info)
-                            }
-                        } else {
-                            LOG.error("requestPurchase() - purchase result: " + result.toString());
+            val helper = iabHelper ?: return null
+            helper.flagEndAsync()
+
+            return awaitCallback { callback ->
+                helper.launchPurchaseFlow(activity, itemId, 0, { result, info ->
+                    if (result.isSuccess) {
+                        LOG.info("requestPurchase() - purchase result: SUCCESS");
+                        GlobalScope.launch {
+                            loadInventory(activity)
+                            callback.onComplete(info)
                         }
-                    }, payload)
-                }
-
+                    } else {
+                        LOG.error("requestPurchase() - purchase result: " + result.toString());
+                    }
+                }, payload)
             }
         } catch (e: Exception) {
             LOG.error("requestPurchase() - error while launching purchase flow", e)
@@ -117,9 +111,7 @@ constructor() {
     }
 
     @Synchronized
-    operator fun contains(sku: String): Boolean {
-        return inventory.hasPurchase(sku)
-    }
+    operator fun contains(sku: String): Boolean = inventory.hasPurchase(sku)
 
     private suspend fun ensureSetup(context: Context): Boolean {
         return if (isSetup) {
@@ -159,41 +151,25 @@ constructor() {
         }
     }
 
-    private fun createIabHelper(context: Context): IabHelper {
-        return IabHelper(context, AndFHEMApplication.PUBLIC_KEY_ENCODED)
-    }
+    private fun createIabHelper(context: Context): IabHelper =
+            IabHelper(context, AndFHEMApplication.PUBLIC_KEY_ENCODED)
 
     @Synchronized
-    private fun loadInternal(): Boolean {
-
-        try {
-            if (isLoaded) {
-                LOG.debug("loadInternal() - inventory was already loaded, skipping load")
-            } else if (!iabHelper!!.isSetupDone) {
-                inventory = Inventory.empty()
-                LOG.error("loadInternal() - setup was not done, initializing with empty inventory")
-            } else {
-                LOG.debug("loadInternal() - loading inventory")
-                inventory = iabHelper!!.queryInventory(false, null)
-                LOG.debug("loadInternal() - query inventory finished, inventory is $inventory")
-            }
-            return true
-        } catch (e: Exception) {
-            LOG.error("loadInternal() - cannot load inventory", e)
-            return false
+    private fun loadInternal(): Boolean = try {
+        if (isLoaded) {
+            LOG.debug("loadInternal() - inventory was already loaded, skipping load")
+        } else if (!iabHelper!!.isSetupDone) {
+            inventory = Inventory.empty()
+            LOG.error("loadInternal() - setup was not done, initializing with empty inventory")
+        } else {
+            LOG.debug("loadInternal() - loading inventory")
+            inventory = iabHelper!!.queryInventory(false, null)
+            LOG.debug("loadInternal() - query inventory finished, inventory is $inventory")
         }
-    }
-
-    interface ProductPurchasedListener {
-        fun onProductPurchased(orderId: String, productId: String)
-    }
-
-    interface OnLoadInventoryFinishedListener {
-        fun onInventoryLoadFinished(success: Boolean)
-    }
-
-    interface SetupFinishedListener {
-        fun onSetupFinished(success: Boolean)
+        true
+    } catch (e: Exception) {
+        LOG.error("loadInternal() - cannot load inventory", e)
+        false
     }
 
     companion object {
