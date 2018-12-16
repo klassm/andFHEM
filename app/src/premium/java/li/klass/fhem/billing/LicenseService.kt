@@ -30,11 +30,7 @@ import javax.inject.Singleton
 @Singleton
 class LicenseService @Inject constructor() {
 
-    fun isPremium(listener: IsPremiumListener) {
-        listener.isPremium(true)
-    }
+    suspend fun isPremium() = true
 
-    fun isDebug(): Boolean {
-        return false
-    }
+    fun isDebug() = false
 }
