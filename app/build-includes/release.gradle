@@ -84,7 +84,7 @@ def setStage(stage) {
         release.buildTasks = ['generateWhatsNew', 'build', 'uploadToPlayStore']
         setNewReleaseVersion(getNextVersion(project.version) + "-BETA")
     } else {
-        release.buildTasks = []
+        throw IllegalArgumentException("don't know how to handle $stage, choose on of 'production', 'beta'")
     }
 }
 
