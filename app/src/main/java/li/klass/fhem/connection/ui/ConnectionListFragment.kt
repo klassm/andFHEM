@@ -49,6 +49,7 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.Reject
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class ConnectionListFragment : BaseFragment() {
@@ -114,10 +115,12 @@ class ConnectionListFragment : BaseFragment() {
             GlobalScope.launch(Dispatchers.Main) {
                 val isPremium = licenseService.isPremium()
                 if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                    logger.info("onOptionsItemSelected - won't add a new connection as I am not Premium")
                     activity?.sendBroadcast(Intent(Actions.SHOW_ALERT)
                             .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
                             .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
                 } else {
+                    logger.info("onOptionsItemSelected - showing connection detail for a new connection")
                     activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                             .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL))
                 }
@@ -192,15 +195,16 @@ class ConnectionListFragment : BaseFragment() {
 
     private suspend fun doUpdate() {
         coroutineScope {
-            val connectionList = async(Dispatchers.IO) {
+            val connectionList = withContext(Dispatchers.IO) {
                 connectionService.listAll()
-            }.await()
+            }
 
             val nonDummyConnections = connectionList.filterNot { it.serverType == ServerType.DUMMY }
             view!!.emptyView.visibility = if (nonDummyConnections.isEmpty()) View.VISIBLE else View.GONE
 
             adapter.updateData(nonDummyConnections, connectionId)
             scrollToSelected(connectionId, adapter.data)
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }
 
@@ -226,6 +230,9 @@ class ConnectionListFragment : BaseFragment() {
     }
 
     companion object {
+        @JvmStatic
         private val CONTEXT_MENU_DELETE = 1
+        @JvmStatic
+        private val logger = LoggerFactory.getLogger(ConnectionListFragment::class.java)
     }
 }
