@@ -1,1 +1,1 @@
-* Vereinfache Logik für Premium-Version
+TODO
