@@ -126,7 +126,7 @@ class DeviceListParser @Inject constructor(
         }
 
         if (errorCount > 0) {
-            ErrorHolder.setError("Cannot parse xmlListDevices: \r\n {}$errorText")
+            ErrorHolder.setError("Cannot parse xmlListDevices: \r\n $errorText")
         }
 
         return errorCount

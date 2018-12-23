@@ -51,29 +51,12 @@ class SetListTest {
         assertThat(setList.getFirstPresentStateOf("blub")).isNull()
     }
 
-    class TestCase internal constructor(private val desc: String) {
-        lateinit var setList: String
-        lateinit var expected: Map<String, SetListEntry>
-
-        internal fun withSetList(setList: String): TestCase {
-            this.setList = setList
-            return this
-        }
-
-        internal fun thenExpect(vararg expected: Pair<String, SetListEntry>): TestCase {
-            this.expected = expected.toMap()
-            return this
-        }
-
-        internal fun thenExpectEmptySetList(): TestCase {
-            this.expected = emptyMap()
-            return this
-        }
-
+    data class TestCase internal constructor(val desc: String, val setList: String, val expected: Map<String, SetListEntry>) {
         override fun toString(): String {
             return desc + " {" +
                     "setList='" + setList + '\'' +
-                    ", expected=" + expected +
+                    "," +
+                    " expected=" + expected +
                     '}'
         }
     }
@@ -83,64 +66,66 @@ class SetListTest {
         @JvmStatic
         fun setListProvider(): Array<Array<Any>> {
             return testForEach(
-                    TestCase("only colon")
-                            .withSetList(" : ")
-                            .thenExpectEmptySetList(),
-                    TestCase("noArg")
-                            .withSetList("on:noArg")
-                            .thenExpect("on" to NoArgSetListEntry("on")),
-                    TestCase("empty :textField")
-                            .withSetList("0:noArg 1:noArg :textField")
-                            .thenExpect("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "state" to TextFieldSetListEntry("state")),
-                    TestCase("empty set list")
-                            .withSetList("")
-                            .thenExpectEmptySetList(),
-                    TestCase("leading trailing whitepace")
-                            .withSetList(" on off ")
-                            .thenExpect("on" to NoArgSetListEntry("on"), "off" to NoArgSetListEntry("off")),
-                    TestCase("colon without values leads to group")
-                            .withSetList("internalState:")
-                            .thenExpectEmptySetList(),
-                    TestCase("slider")
-                            .withSetList("internalState:slider,1,2,3 dim:slider,0,5,100")
-                            .thenExpect("internalState" to SliderSetListEntry("internalState", 1f, 2f, 3f), "dim" to SliderSetListEntry("dim", 0f, 5f, 100f)),
-                    TestCase("slider desiredTemperature")
-                            .withSetList("desiredTemperature:slider,4.5,0.5,29.5,1")
-                            .thenExpect("desiredTemperature" to SliderSetListEntry("desiredTemperature", 4.5f, 0.5f, 29.5f)),
-                    TestCase("group")
-                            .withSetList("level:1,2,3 internalState:on,off")
-                            .thenExpect("level" to GroupSetListEntry("level", "1", "2", "3"), "internalState" to GroupSetListEntry("internalState", "on", "off")),
-                    TestCase("time")
-                            .withSetList("internalState:time")
-                            .thenExpect("internalState" to TimeSetListEntry("internalState")),
-                    TestCase("multiple")
-                            .withSetList("blab:multiple,bla,blub")
-                            .thenExpect("blab" to MultipleSetListEntry("blab", "multiple", "bla", "blub")),
-                    TestCase("multiple-strict")
-                            .withSetList("blab:multiple-strict,bla,blub")
-                            .thenExpect("blab" to MultipleStrictSetListEntry("blab", "multiple-strict", "bla", "blub")),
-                    TestCase("textField")
-                            .withSetList("blab:textField")
-                            .thenExpect("blab" to TextFieldSetListEntry("blab")),
-                    TestCase("textField-long")
-                            .withSetList("blab:textField-long")
-                            .thenExpect("blab" to TextFieldLongSetListEntry("blab")),
-                    TestCase("RGB")
-                            .withSetList("blab:colorpicker,RGB")
-                            .thenExpect("blab" to RGBSetListEntry("blab")),
-                    TestCase("colorPicker with group")
-                            .withSetList("ct:colorpicker,CT,154,1,500")
-                            .thenExpect("ct" to SliderSetListEntry("ct", 154f, 1f, 500f)),
-                    TestCase("colorPicker without argument")
-                            .withSetList("ct:colorpicker")
-                            .thenExpect("ct" to NoArgSetListEntry("ct")),
-                    TestCase("colorPicker non RGB")
-                            .withSetList("pct:colorpicker,BRI,0,1,100")
-                            .thenExpect("pct" to SliderSetListEntry("pct", 0f, 1f, 100f)),
-                    TestCase("internalState is group")
-                            .withSetList("internalState:Manuell,Sonnenaufgang_real,Sonnenaufgang_zivil,05:00,06:00,07:00,08:00")
-                            .thenExpect("internalState" to GroupSetListEntry("internalState", "Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00"))
-
+                    TestCase(desc = "only colon",
+                            setList = " : ",
+                            expected = emptyMap()),
+                    TestCase(desc = "noArg",
+                            setList = "on:noArg",
+                            expected = mapOf("on" to NoArgSetListEntry("on"))),
+                    TestCase(desc = "empty :textField",
+                            setList = "0:noArg 1:noArg :textField",
+                            expected = mapOf("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "state" to TextFieldSetListEntry("state"))),
+                    TestCase(desc = "empty set list",
+                            setList = "",
+                            expected = emptyMap()),
+                    TestCase(desc = "leading trailing whitepace",
+                            setList = " on off ",
+                            expected = mapOf("on" to NoArgSetListEntry("on"), "off" to NoArgSetListEntry("off"))),
+                    TestCase(desc = "colon without values leads to group",
+                            setList = "internalState:",
+                            expected = emptyMap()),
+                    TestCase(desc = "slider",
+                            setList = "internalState:slider,1,2,3 dim:slider,0,5,100",
+                            expected = mapOf("internalState" to SliderSetListEntry("internalState", 1f, 2f, 3f), "dim" to SliderSetListEntry("dim", 0f, 5f, 100f))),
+                    TestCase(desc = "slider desiredTemperature",
+                            setList = "desiredTemperature:slider,4.5,0.5,29.5,1",
+                            expected = mapOf("desiredTemperature" to SliderSetListEntry("desiredTemperature", 4.5f, 0.5f, 29.5f))),
+                    TestCase(desc = "group",
+                            setList = "level:1,2,3 internalState:on,off",
+                            expected = mapOf("level" to GroupSetListEntry("level", "1", "2", "3"), "internalState" to GroupSetListEntry("internalState", "on", "off"))),
+                    TestCase(desc = "time",
+                            setList = "internalState:time",
+                            expected = mapOf("internalState" to TimeSetListEntry("internalState"))),
+                    TestCase(desc = "multiple",
+                            setList = "blab:multiple,bla,blub",
+                            expected = mapOf("blab" to MultipleSetListEntry("blab", "multiple", "bla", "blub"))),
+                    TestCase(desc = "multiple-strict",
+                            setList = "blab:multiple-strict,bla,blub",
+                            expected = mapOf("blab" to MultipleStrictSetListEntry("blab", "multiple-strict", "bla", "blub"))),
+                    TestCase(desc = "textField",
+                            setList = "blab:textField",
+                            expected = mapOf("blab" to TextFieldSetListEntry("blab"))),
+                    TestCase(desc = "textField-long",
+                            setList = "blab:textField-long",
+                            expected = mapOf("blab" to TextFieldLongSetListEntry("blab"))),
+                    TestCase(desc = "RGB",
+                            setList = "blab:colorpicker,RGB",
+                            expected = mapOf("blab" to RGBSetListEntry("blab"))),
+                    TestCase(desc = "colorPicker with group",
+                            setList = "ct:colorpicker,CT,154,1,500",
+                            expected = mapOf("ct" to SliderSetListEntry("ct", 154f, 1f, 500f))),
+                    TestCase(desc = "colorPicker without argument",
+                            setList = "ct:colorpicker",
+                            expected = mapOf("ct" to NoArgSetListEntry("ct"))),
+                    TestCase(desc = "colorPicker non RGB",
+                            setList = "pct:colorpicker,BRI,0,1,100",
+                            expected = mapOf("pct" to SliderSetListEntry("pct", 0f, 1f, 100f))),
+                    TestCase(desc = "internalState is group",
+                            setList = "internalState:Manuell,Sonnenaufgang_real,Sonnenaufgang_zivil,05:00,06:00,07:00,08:00",
+                            expected = mapOf("internalState" to GroupSetListEntry("internalState", "Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00"))),
+                    TestCase(desc = "including a question mark producing an invalid regexp",
+                            setList = "attrTemplate:?,A_01_tasmota_basic_noprefix,A_01b_tasmota_1ch+motion+SI7021_noprefix,A_02a_tasmota_2channel_2devices_noprefix,A_04a_tasmota_sonoff_4ch_noprefix,A_10_shelly1,A_10a_shellyplug,A_11a_shelly2,A_14_shelly4pro,A_15_shellybulb,L_01a_zigbee2mqtt_bridge,L_01b_zigbee2mqtt_bridge_V2_speaking_names,L_01x_zigbee2mqtt_bridge_outdated,L_02a_zigbee2mqtt_bulb,L_02b_zigbee2mqtt_colorbulb,L_02b_zigbee2mqtt_colorbulbWithoutColorTemp,L_03_zigbee2mqtt_smokeDetector,L_04_zigbee2mqtt_hueMotionSensor,L_05_zigbee2mqtt_smart+plug,X_01_esp_milight_hub_bridge,X_01_esp_milight_hub_rgbw_bulb",
+                            expected = mapOf("attrTemplate" to GroupSetListEntry("attrTemplate", "?", "A_01_tasmota_basic_noprefix", "A_01b_tasmota_1ch+motion+SI7021_noprefix", "A_02a_tasmota_2channel_2devices_noprefix", "A_04a_tasmota_sonoff_4ch_noprefix", "A_10_shelly1", "A_10a_shellyplug", "A_11a_shelly2", "A_14_shelly4pro", "A_15_shellybulb", "L_01a_zigbee2mqtt_bridge", "L_01b_zigbee2mqtt_bridge_V2_speaking_names", "L_01x_zigbee2mqtt_bridge_outdated", "L_02a_zigbee2mqtt_bulb", "L_02b_zigbee2mqtt_colorbulb", "L_02b_zigbee2mqtt_colorbulbWithoutColorTemp", "L_03_zigbee2mqtt_smokeDetector", "L_04_zigbee2mqtt_hueMotionSensor", "L_05_zigbee2mqtt_smart+plug", "X_01_esp_milight_hub_bridge", "X_01_esp_milight_hub_rgbw_bulb")))
             )
         }
     }

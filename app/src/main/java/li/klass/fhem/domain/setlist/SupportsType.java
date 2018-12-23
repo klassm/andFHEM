@@ -48,7 +48,7 @@ class SupportsType {
 
     public boolean supports(String[] parts) {
         //noinspection SimplifiableIfStatement
-        if (parts.length == 0 || !type.toLowerCase(Locale.getDefault()).matches(parts[0].toLowerCase(Locale.getDefault()))) {
+        if (parts.length == 0 || !parts[0].toLowerCase(Locale.getDefault()).matches(type.toLowerCase(Locale.getDefault()))) {
             return false;
         }
         return !expectedLength.isPresent() || parts.length >= expectedLength.get();
