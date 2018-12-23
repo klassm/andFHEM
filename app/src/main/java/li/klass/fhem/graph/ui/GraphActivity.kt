@@ -111,9 +111,9 @@ class GraphActivity : AppCompatActivity(), Updateable {
     override suspend fun update(refresh: Boolean) {
         val name = deviceName
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 deviceListService.getDeviceForName(name, connectionId)
-            }.await()?.let {
+            }?.let {
                 readDataAndCreateChart(it)
             }
         }
@@ -127,9 +127,9 @@ class GraphActivity : AppCompatActivity(), Updateable {
         val myContext = this
         coroutineScope {
             showDialog(DIALOG_EXECUTING)
-            val result = async(Dispatchers.IO) {
+            val result = withContext(Dispatchers.IO) {
                 graphService.getGraphData(device, Optional.absent(), svgGraphDefinition, startDate, endDate, myContext)
-            }.await()
+            }
             dismissDialog(DIALOG_EXECUTING)
 
             startDate = result.interval.start

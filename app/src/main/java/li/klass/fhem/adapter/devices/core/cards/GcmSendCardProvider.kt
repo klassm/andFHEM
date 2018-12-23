@@ -58,7 +58,7 @@ class GcmSendCardProvider @Inject constructor(
 
     private suspend fun loadCardContent(device: FhemDevice, cardView: CardView) {
         coroutineScope {
-            val isRegistered = async(Dispatchers.IO) { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }.await()
+            val isRegistered = withContext(Dispatchers.IO) { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }
             if (isRegistered) {
                 cardView.visibility = View.VISIBLE
             }
@@ -69,7 +69,7 @@ class GcmSendCardProvider @Inject constructor(
         return listOf(object : ActionCardButton(R.string.gcmRegisterThis, context) {
             override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    val result = async(Dispatchers.IO) { gcmSendDeviceService.addSelf(device) }.await()
+                    val result = withContext(Dispatchers.IO) { gcmSendDeviceService.addSelf(device) }
                     Toast.makeText(context, result.resultText, Toast.LENGTH_LONG).show()
                 }
             }

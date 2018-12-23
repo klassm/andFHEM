@@ -200,13 +200,13 @@ class ConnectionDetailFragment : BaseFragment() {
         val saveData = saveStrategy.saveDataFor(view!!) ?: return
 
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 if (isModify) {
                     connectionService.update(connectionId!!, saveData)
                 } else {
                     connectionService.create(saveData)
                 }
-            }.await()
+            }
             activity?.sendBroadcast(Intent(Actions.BACK))
         }
     }
@@ -259,9 +259,9 @@ class ConnectionDetailFragment : BaseFragment() {
 
         val myContext = context ?: return
         coroutineScope {
-            val result = async {
+            val result = withContext(Dispatchers.Default) {
                 connectionService.forId(connectionId!!)
-            }.await()
+            }
             if (result == null) {
                 LOG.error("update - cannot find server with ID $connectionId")
                 myContext.sendBroadcast(Intent(Actions.BACK))

@@ -28,8 +28,8 @@ import android.content.Context
 import androidx.cardview.widget.CardView
 import kotlinx.android.synthetic.main.device_detail_card_actions.view.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
@@ -55,13 +55,13 @@ class ActionsCardProvider @Inject constructor(
         actionsList.addView(AvailableTargetStatesSwitchAction(stateUiService).createView(context, layoutInflater, device, actionsList, connectionId))
 
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 detailActionProviders.providers
                         .filter { it.supports(device.xmlListDevice) }
                         .flatMap { it.actionsFor(context) }
                         .filter { it.supports(device) }
                         .map { it.createView(device.xmlListDevice, connectionId, context, layoutInflater, actionsList) }
-            }.await().forEach { actionsList.addView(it) }
+            }.forEach { actionsList.addView(it) }
         }
         return card
     }

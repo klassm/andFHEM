@@ -34,8 +34,8 @@ import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.ListView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.RoomListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -136,13 +136,13 @@ open class RoomListFragment : BaseFragment() {
             activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
 
         coroutineScope {
-            val roomNameList = async(Dispatchers.IO) {
+            val roomNameList = withContext(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
                 roomListService.sortedRoomNameList()
-            }.await()
+            }
             handleUpdateData(roomNameList)
         }
     }

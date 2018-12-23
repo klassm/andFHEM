@@ -58,9 +58,9 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         val view = context.layoutInflater.inflate(R.layout.remote_control_layout, null, false)
         val actionProvider = actionProviderFor(device, connectionId)
         coroutineScope {
-            val rows = async {
+            val rows = withContext(Dispatchers.Default) {
                 remotecontrolDeviceService.getRowsFor(device)
-            }.await()
+            }
             updateTableWith(view.content, rows, context, actionProvider)
         }
 

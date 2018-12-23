@@ -25,8 +25,8 @@
 package li.klass.fhem.appwidget.update
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.settings.SettingsKeys
@@ -65,7 +65,7 @@ class AppWidgetUpdateService @Inject constructor(
         LOG.info("doRemoteUpdate - updating data for widget-id {}, connectionId={}", appWidgetId, connectionId)
 
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 val widgetView = widgetTypeProvider.widgetFor(configuration.widgetType)
                 if (widgetView is DeviceAppWidgetView) {
                     val deviceName = widgetView.deviceNameFrom(configuration)
@@ -73,7 +73,7 @@ class AppWidgetUpdateService @Inject constructor(
                 } else {
                     handleOtherUpdate(connectionId)
                 }
-            }.await()
+            }
         }
 
         return appWidgetId

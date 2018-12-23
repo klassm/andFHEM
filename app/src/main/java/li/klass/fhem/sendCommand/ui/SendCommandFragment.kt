@@ -85,9 +85,9 @@ class SendCommandFragment : BaseFragment() {
 
     private fun sendCommandIntent(command: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            val result = async {
+            val result = withContext(Dispatchers.Default) {
                 sendCommandService.executeCommand(command, connectionId = null)
-            }.await()
+            }
             if (!isEmpty(result?.replace("[\\r\\n]".toRegex(), ""))) {
                 AlertDialog.Builder(activity)
                         .setTitle(R.string.command_execution_result)
@@ -104,9 +104,9 @@ class SendCommandFragment : BaseFragment() {
         val myActivity = activity ?: return
         myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         coroutineScope {
-            val recentCommands = async(Dispatchers.IO) {
+            val recentCommands = withContext(Dispatchers.IO) {
                 sendCommandService.getRecentCommands()
-            }.await()
+            }
 
             if (view != null) {
                 @Suppress("UNCHECKED_CAST")
@@ -138,17 +138,17 @@ class SendCommandFragment : BaseFragment() {
                 val safeContext = context ?: return false
                 when (item.itemId) {
                     R.id.menu_delete -> GlobalScope.launch(Dispatchers.Main) {
-                        async(Dispatchers.IO) {
+                        withContext(Dispatchers.IO) {
                             sendCommandService.deleteCommand(command)
-                        }.await()
+                        }
                         update(false)
                     }
                     R.id.menu_edit -> DialogUtil.showInputBox(safeContext, getString(R.string.context_edit), command, object : DialogUtil.InputDialogListener {
                         override fun onClick(text: String) {
                             GlobalScope.launch(Dispatchers.Main) {
-                                async(Dispatchers.IO) {
+                                withContext(Dispatchers.IO) {
                                     sendCommandService.editCommand(command, text)
-                                }.await()
+                                }
                                 update(false)
                             }
                         }

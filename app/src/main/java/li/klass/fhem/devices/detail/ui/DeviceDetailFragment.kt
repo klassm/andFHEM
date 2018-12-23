@@ -116,13 +116,13 @@ class DeviceDetailFragment : BaseFragment() {
         if (refresh) myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
 
         coroutineScope {
-            val device = async(Dispatchers.IO) {
+            val device = withContext(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(name, connectionId)
                     appWidgetUpdateService.updateAllWidgets()
                 }
                 deviceListService.getDeviceForName(name, connectionId)
-            }.await()
+            }
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             device?.let {
                 this@DeviceDetailFragment.device = it
@@ -178,9 +178,9 @@ class DeviceDetailFragment : BaseFragment() {
     private fun callUpdating(actionToCall: (String) -> Unit, toastStringId: Int) {
         deviceName ?: return
         GlobalScope.launch(Dispatchers.Main) {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 actionToCall(deviceName!!)
-            }.await()
+            }
             showToast(toastStringId)
             update(false)
         }

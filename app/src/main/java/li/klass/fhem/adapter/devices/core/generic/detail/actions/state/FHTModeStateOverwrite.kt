@@ -34,8 +34,8 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht.HolidayShort
@@ -90,9 +90,9 @@ class FHTModeStateOverwrite @Inject constructor(
             }
             else -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         genericDeviceService.setSubState(device, "mode", mode.name.toLowerCase(Locale.getDefault()), connectionId)
-                    }.await()
+                    }
                     spinnerActionRow.commitSelection()
                     context.sendBroadcast(Intent(BundleExtraKeys.DO_REFRESH))
                 }
@@ -127,14 +127,14 @@ class FHTModeStateOverwrite @Inject constructor(
 
             dialogBuilder.setPositiveButton(R.string.okButton) { dialogInterface, _ ->
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         genericDeviceService.setSubStates(device, listOf(
                                 StateToSet("desired-temp", "" + temperatureChangeTableRow.temperature),
                                 StateToSet("holiday1", "" + datePicker.dayOfMonth),
                                 StateToSet("holiday2", "" + (datePicker.month + 1)),
                                 StateToSet("mode", FHTMode.HOLIDAY.name.toLowerCase(Locale.getDefault()))
                         ), connectionId)
-                    }.await()
+                    }
                     spinnerActionRow.commitSelection()
                     dialogInterface.dismiss()
                 }

@@ -27,8 +27,8 @@ package li.klass.fhem.adapter.uiservice
 import android.content.Context
 import android.content.Intent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
@@ -44,9 +44,9 @@ class StateUiService @Inject constructor(
     suspend fun setSubState(device: XmlListDevice,
                             stateName: String, value: String, connectionId: String?, context: Context) {
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 genericDeviceService.setSubState(device, stateName, value, connectionId)
-            }.await()
+            }
             invokeUpdate(context)
         }
     }
@@ -56,9 +56,9 @@ class StateUiService @Inject constructor(
 
     suspend fun setState(device: XmlListDevice, value: String, context: Context, connectionId: String?) {
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 genericDeviceService.setState(device, value, connectionId)
-            }.await()
+            }
             invokeUpdate(context)
         }
     }

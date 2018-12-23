@@ -35,8 +35,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.device_detail_card_weather.view.*
 import kotlinx.android.synthetic.main.weather_forecast_item.view.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.WeatherService
@@ -63,7 +63,7 @@ class WeatherDeviceCardProvider @Inject constructor(
         view.forecast.adapter = Adapter()
 
         coroutineScope {
-            val forecasts = async(Dispatchers.IO) { weatherService.forecastsFor(device) }.await()
+            val forecasts = withContext(Dispatchers.IO) { weatherService.forecastsFor(device) }
             updateListWith(view.forecast, forecasts)
             view.invalidate()
         }

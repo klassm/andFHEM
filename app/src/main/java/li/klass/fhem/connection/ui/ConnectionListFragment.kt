@@ -172,9 +172,9 @@ class ConnectionListFragment : BaseFragment() {
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         connectionService.delete(clickedConnectionId!!)
-                    }.await()
+                    }
                     updateAsync(false)
                 }
                 return true

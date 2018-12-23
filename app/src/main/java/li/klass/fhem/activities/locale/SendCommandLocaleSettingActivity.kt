@@ -34,8 +34,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE
@@ -86,9 +86,9 @@ class SendCommandLocaleSettingActivity : Activity() {
         }
 
         GlobalScope.launch(Dispatchers.Main) {
-            val connections = async(Dispatchers.IO) {
+            val connections = withContext(Dispatchers.IO) {
                 connectionService.listAll()
-            }.await()
+            }
             fillConnectionSpinner(connections, connectionListAdapter)
         }
 

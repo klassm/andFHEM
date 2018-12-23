@@ -74,8 +74,8 @@ class DeviceGroupAdapter(
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DeviceGroupAdapter::class.java)
-        private val TYPE_GROUP = 1
-        private val TYPE_DEVICE = 2
+        private const val TYPE_GROUP = 1
+        private const val TYPE_DEVICE = 2
     }
 
     data class Configuration(val deviceResourceId: Int,

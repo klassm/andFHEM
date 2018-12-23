@@ -85,9 +85,9 @@ class StartupActivity : Activity() {
 
 
         GlobalScope.launch(Dispatchers.Main) {
-            async(IO) {
+            withContext(IO) {
                 deviceListService.resetUpdateProgress(this@StartupActivity)
-            }.await()
+            }
 
             loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
                 override fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
@@ -141,9 +141,9 @@ class StartupActivity : Activity() {
         setCurrentStatus(R.string.currentStatus_loadingFavorites)
 
         coroutineScope {
-            val hasFavorites = async(IO) {
+            val hasFavorites = withContext(IO) {
                 favoritesService.hasFavorites()
-            }.await()
+            }
             logger.debug("showMainActivity : favorites_present=$hasFavorites")
             gotoMainActivity(hasFavorites)
         }

@@ -5,8 +5,8 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fcm_history_messages.view.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.dagger.ApplicationComponent
@@ -22,9 +22,9 @@ class FcmHistoryMessagesFragment : FcmHistoryBaseFragment<FcmMessagesAdapter>(R.
 
     override suspend fun doUpdateView(localDate: LocalDate, view: View) {
         coroutineScope {
-            val messages = async(Dispatchers.IO) {
+            val messages = withContext(Dispatchers.IO) {
                 fcmHistoryService.getMessages(localDate)
-            }.await()
+            }
 
             activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             showEmptyViewIfRequired(messages.isEmpty(), view.messages, view.fcm_no_messages)

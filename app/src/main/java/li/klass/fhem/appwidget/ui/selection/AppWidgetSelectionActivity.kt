@@ -107,9 +107,9 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
                 appWidgetInstanceManager.save(widgetConfiguration)
 
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         appWidgetUpdateService.updateWidget(widgetId)
-                    }.await()
+                    }
 
                     setResult(Activity.RESULT_OK, Intent().putExtra(EXTRA_APPWIDGET_ID, widgetId))
                     finish()

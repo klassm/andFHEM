@@ -128,14 +128,14 @@ class TimerListFragment : BaseFragment() {
     override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         coroutineScope {
-            val timerDevices = async(Dispatchers.IO) {
+            val timerDevices = withContext(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
                 }
                 atService.getTimerDevices()
 
-            }.await()
+            }
             adapter?.updateData(timerDevices)
             view?.empty?.visibility = if (timerDevices.isEmpty()) View.VISIBLE else View.GONE
             myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
@@ -164,9 +164,9 @@ class TimerListFragment : BaseFragment() {
         when (item!!.itemId) {
             CONTEXT_MENU_DELETE -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         deviceListService.getDeviceForName(name)
-                    }.await()?.let {
+                    }?.let {
                         deviceActionUIService.deleteDevice(context, it)
                     }
                 }

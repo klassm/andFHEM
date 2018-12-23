@@ -31,8 +31,8 @@ import android.content.Intent
 import android.widget.EditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.DeviceService
@@ -56,11 +56,11 @@ class DeviceActionUIService @Inject constructor(
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         val newName = input.text.toString()
-                        async(Dispatchers.IO) {
+                        withContext(Dispatchers.IO) {
                             deviceService.renameDevice(device, newName)
                             notificationService.rename(device.name, newName, context)
                             favoritesService.rename(device.name, newName)
-                        }.await()
+                        }
                         invokeUpdate(context)
                     }
 
@@ -71,9 +71,9 @@ class DeviceActionUIService @Inject constructor(
     fun deleteDevice(context: Context, device: FhemDevice) {
         showConfirmation(context, DialogInterface.OnClickListener { _, _ ->
             GlobalScope.launch(Dispatchers.Main) {
-                async(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
                     deviceService.deleteDevice(device)
-                }.await()
+                }
                 invokeUpdate(context)
             }
         }, context.getString(R.string.deleteConfirmation))
@@ -88,7 +88,7 @@ class DeviceActionUIService @Inject constructor(
                 .setPositiveButton(R.string.okButton) { _, _ ->
                     val newRoom = input.text.toString()
                     GlobalScope.launch(Dispatchers.Main) {
-                        async(Dispatchers.IO) { deviceService.moveDevice(device, newRoom, context) }.await()
+                        withContext(Dispatchers.IO) { deviceService.moveDevice(device, newRoom, context) }
                         invokeUpdate(context)
                     }
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
@@ -104,7 +104,7 @@ class DeviceActionUIService @Inject constructor(
                     val newAlias = input.text.toString()
 
                     GlobalScope.launch(Dispatchers.Main) {
-                        async(Dispatchers.IO) { deviceService.setAlias(device, newAlias) }.await()
+                        withContext(Dispatchers.IO) { deviceService.setAlias(device, newAlias) }
                         invokeUpdate(context)
                     }
                 }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()

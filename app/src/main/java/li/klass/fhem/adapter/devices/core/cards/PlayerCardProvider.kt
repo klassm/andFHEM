@@ -31,8 +31,8 @@ import androidx.cardview.widget.CardView
 import kotlinx.android.synthetic.main.device_detail_card_player.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.core.FhemDevice
@@ -69,9 +69,9 @@ class PlayerCardProvider @Inject constructor(
         command ?: return null
         return View.OnClickListener {
             GlobalScope.launch(Dispatchers.Main) {
-                async(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
                     genericDeviceService.setState(device.xmlListDevice, command, connectionId)
-                }.await()
+                }
             }
         }
     }

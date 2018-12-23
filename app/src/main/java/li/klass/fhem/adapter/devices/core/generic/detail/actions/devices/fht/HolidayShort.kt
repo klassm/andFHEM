@@ -36,8 +36,8 @@ import kotlinx.android.synthetic.main.fht_holiday_short_dialog.view.*
 import kotlinx.android.synthetic.main.fht_holiday_short_dialog_android_bug.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton
@@ -94,14 +94,14 @@ class HolidayShort @Inject constructor(private val applicationProperties: Applic
                     val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
 
                     GlobalScope.launch(Dispatchers.Main) {
-                        async(Dispatchers.IO) {
+                        withContext(Dispatchers.IO) {
                             genericDeviceService.setSubStates(device, listOf(
                                     StateToSet("desired-temp", "" + model.desiredTemp),
                                     StateToSet("holiday1", "" + holidayShortCalculator.calculateHoliday1ValueFrom(switchDate.hourOfDay, switchDate.minuteOfHour)),
                                     StateToSet("holiday2", "" + switchDate.dayOfMonth),
                                     StateToSet("mode", FHTMode.HOLIDAY_SHORT.name.toLowerCase(Locale.getDefault()))
                             ), connectionId)
-                        }.await()
+                        }
                         spinnerActionRow.commitSelection()
                         dialogInterface.dismiss()
                     }

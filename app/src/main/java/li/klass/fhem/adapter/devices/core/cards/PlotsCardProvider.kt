@@ -32,8 +32,8 @@ import androidx.cardview.widget.CardView
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
@@ -59,9 +59,9 @@ class PlotsCardProvider @Inject constructor(
 
     private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
         coroutineScope {
-            val graphs = async(Dispatchers.IO) {
+            val graphs = withContext(Dispatchers.IO) {
                 graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, Optional.fromNullable(connectionId))
-            }.await()
+            }
             fillPlotsCard(cardView, device, graphs, connectionId, context)
 
             cardView.invalidate()

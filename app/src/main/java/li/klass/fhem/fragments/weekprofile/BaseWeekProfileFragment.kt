@@ -103,12 +103,12 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     private fun onSave() {
         val commands = newArrayList(weekProfile.getStatesToSet())
         GlobalScope.launch(Dispatchers.Main) {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 deviceListService.getDeviceForName(deviceName)
                         ?.xmlListDevice?.let {
                     genericDeviceService.setSubStates(it, commands, connectionId = null)
                 }
-            }.await()
+            }
             backToDevice()
         }
     }
@@ -125,12 +125,12 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     override suspend fun update(refresh: Boolean) {
         activity ?: return
         coroutineScope {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName)
                 }
                 deviceListService.getDeviceForName(deviceName)
-            }.await()?.let {
+            }?.let {
                 weekProfile = heatingConfiguration.fillWith(it.xmlListDevice)
                 updateChangeButtonsHolderVisibility(weekProfile)
             }

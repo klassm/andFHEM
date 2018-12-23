@@ -32,8 +32,8 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
@@ -66,9 +66,9 @@ class ToggleDeviceActionRow(context: Context,
 
     private fun onButtonClick(context: Context, device: FhemDevice) {
         GlobalScope.launch(Dispatchers.Main) {
-            async(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 toggleableService.toggleState(device, connectionId = null)
-            }.await()
+            }
             context.sendBroadcast(Intent(Actions.DO_UPDATE))
         }
     }

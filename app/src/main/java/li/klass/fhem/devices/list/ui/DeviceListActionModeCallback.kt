@@ -31,8 +31,8 @@ import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
@@ -65,17 +65,17 @@ class DeviceListActionModeCallback constructor(
         when (menuItem.itemId) {
             R.id.menu_favorites_add -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         favoritesService.addFavorite(device.name)
-                    }.await()
+                    }
                     Toast.makeText(activityContext, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show()
                 }
             }
             R.id.menu_favorites_remove -> {
                 GlobalScope.launch(Dispatchers.Main) {
-                    async(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         favoritesService.removeFavorite(device.name)
-                    }.await()
+                    }
                     Toast.makeText(activityContext, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show()
                 }
             }

@@ -37,8 +37,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.device_name_selection.view.*
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
@@ -120,15 +120,15 @@ abstract class DeviceNameListFragment : BaseFragment() {
             }
 
             if (refresh && !isNavigation) {
-                async(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
 
                     myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
-                }.await()
+                }
             }
 
-            val elements = async(Dispatchers.IO) {
+            val elements = withContext(Dispatchers.IO) {
                 val deviceList = when {
                     roomName != null -> deviceListService.getDeviceListForRoom(roomName!!)
                     else -> deviceListService.getAllRoomsDeviceList()
@@ -136,7 +136,7 @@ abstract class DeviceNameListFragment : BaseFragment() {
 
                 val elements = viewableElementsCalculator.calculateElements(myActivity, deviceList)
                 elements
-            }.await()
+            }
 
             if (!isNavigation) {
                 myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
