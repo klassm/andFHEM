@@ -24,13 +24,13 @@
 
 package li.klass.fhem.domain
 
-import li.klass.fhem.behavior.dim.DimmableBehavior
 import li.klass.fhem.domain.core.DeviceXMLParsingBase
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
+import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class DummyDeviceTest : DeviceXMLParsingBase() {
+class StructureDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributesInOnOffDummy() {
         val device = defaultDevice
@@ -44,54 +44,23 @@ class DummyDeviceTest : DeviceXMLParsingBase() {
     }
 
     @Test
-    fun testForCorrectlySetAttributesInCommonDummy() {
-        val device = getDeviceFor("device1")
-
-        assertThat(device.name).isEqualTo("device1")
-        assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
-
-        assertThat(device.state).isEqualTo("??")
-    }
-
-    @Test
     fun testDeviceWithSetList() {
         val device = getDeviceFor("deviceWithSetlist")
 
-        assertThat(device.setList["state", false] as GroupSetListEntry)
-                .isEqualTo(GroupSetListEntry("state", listOf("17", "18", "19", "20", "21", "21.5", "22")))
+        assertThat(device.setList["state", false] as GroupSetListEntry).isEqualTo(GroupSetListEntry("state", listOf("17", "18", "19", "20", "21", "21.5", "22")))
     }
 
     @Test
-    fun testDeviceWithTimer() {
-        val device = getDeviceFor("timerDevice")
+    fun testSlider() {
+        val device = getDeviceFor("slider")
         assertThat(device).isNotNull()
+
+        val value = device.setList["pct", false]
+        assertThat(value).isInstanceOf(SliderSetListEntry::class.java)
+        assertThat(value as SliderSetListEntry).isEqualTo(SliderSetListEntry("pct", 10.0, 2.0, 110.0))
     }
 
-    @Test
-    fun testSliderDevice() {
-        val device = getDeviceFor("sliderDevice")
-        val behavior = DimmableBehavior.behaviorFor(device, null)
-        assertThat(behavior!!.dimUpperBound).isEqualTo(50.0)
-        assertThat(behavior.dimLowerBound).isEqualTo(10.0)
-        assertThat(behavior.dimStep).isEqualTo(2.0)
+    override fun getFileName(): String {
+        return "structure.xml"
     }
-
-    @Test
-    fun testEventMapDevice() {
-        val device = getDeviceFor("eventMapDevice")
-
-        val eventMapStates = device.availableTargetStatesEventMapTexts
-        assertThat(eventMapStates).isNotNull
-
-        val setList = device.setList
-        assertThat(setList).isNotNull()
-
-        assertThat(setList.size()).isEqualTo(eventMapStates.size)
-
-        assertThat(setList.contains("oben", "unten", "65", "40")).isEqualTo(true)
-
-        assertThat(eventMapStates).contains("Oben", "Unten", "Halbschatten", "Vollschatten")
-    }
-
-    override fun getFileName() = "dummy.xml"
 }

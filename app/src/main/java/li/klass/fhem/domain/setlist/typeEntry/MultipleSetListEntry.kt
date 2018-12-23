@@ -22,21 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist.typeEntry;
+package li.klass.fhem.domain.setlist.typeEntry
 
-import java.util.Arrays;
+import li.klass.fhem.domain.setlist.SetListItemType
+import org.apache.commons.lang3.StringUtils.join
 
-import li.klass.fhem.domain.setlist.SetListItemType;
+class MultipleSetListEntry(
+        key: String?,
+        groupStates: List<String>
+) : BaseGroupSetListEntry(key, SetListItemType.MULTIPLE, groupStates.subList(1, groupStates.size)) {
 
-import static org.apache.commons.lang3.StringUtils.join;
-
-public class MultipleStrictSetListEntry extends BaseGroupSetListEntry {
-    public MultipleStrictSetListEntry(String key, String... groupStates) {
-        super(key, SetListItemType.MULTIPLE_STRICT, Arrays.copyOfRange(groupStates, 1, groupStates.length));
-    }
-
-    @Override
-    public String asText() {
-        return key + ":" + type.getType() + join(groupStates, ",");
+    override fun asText(): String {
+        return key + ":" + type.type + join(groupStates, ",")
     }
 }

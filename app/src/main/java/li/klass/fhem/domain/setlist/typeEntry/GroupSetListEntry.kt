@@ -22,35 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.setlist.typeEntry
 
-import org.junit.Test;
+import li.klass.fhem.domain.setlist.SetListItemType
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class LightSceneDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        FhemDevice device = getDefaultDevice();
-
-        GroupSetListEntry scene = (GroupSetListEntry) device.getSetList().get("scene", false);
-        assertThat(scene.getGroupStates()).contains("on", "off");
-    }
-
-    @Test
-    public void testDeviceWithOnlyOneScene() {
-        FhemDevice device = getDeviceFor("device1");
-
-        GroupSetListEntry scene = (GroupSetListEntry) device.getSetList().get("scene", false);
-        assertThat(scene.getGroupStates()).contains("absent");
-    }
-
-    @Override
-    protected String getFileName() {
-        return "lightscene.xml";
-    }
-}
+class GroupSetListEntry(key: String?, groupStates: List<String>) : BaseGroupSetListEntry(key, SetListItemType.GROUP, groupStates)

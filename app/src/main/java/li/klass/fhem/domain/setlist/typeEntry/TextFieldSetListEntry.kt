@@ -22,18 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist.typeEntry;
+package li.klass.fhem.domain.setlist.typeEntry
 
-import li.klass.fhem.domain.setlist.SetListItem;
-import li.klass.fhem.domain.setlist.SetListItemType;
+import li.klass.fhem.domain.setlist.SetListItem
+import li.klass.fhem.domain.setlist.SetListItemType
 
-public class NotFoundSetListEntry extends SetListItem {
-    public NotFoundSetListEntry(String key) {
-        super(key, SetListItemType.NO_ARG);
-    }
+class TextFieldSetListEntry(key: String?) : SetListItem(key, SetListItemType.TEXT_FIELD) {
 
-    @Override
-    public String asText() {
-        return key + ":" + type.getType();
-    }
+    override fun asText(): String = "$key:${type.type}"
 }

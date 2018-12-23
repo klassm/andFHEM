@@ -82,17 +82,17 @@ class ContinuousDimmableBehaviorTest {
         @JvmStatic
         @DataProvider
         fun continuousProvider() = listOf(
-                ContinuousProviderTestCase(SetList.parse("dim:slider,0,5,100"), SliderSetListEntry("dim", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("state:slider,0,5,100"), SliderSetListEntry("state", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("pct:slider,0,5,100"), SliderSetListEntry("pct", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("value:slider,0,5,100"), SliderSetListEntry("value", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("position:slider,0,5,100"), SliderSetListEntry("position", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("level:slider,0,5,100"), SliderSetListEntry("level", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("state:slider,0,5,100 dim:slider,1,2,100"), SliderSetListEntry("state", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("dim:slider,0,5,100 level:slider,1,2,100"), SliderSetListEntry("dim", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("level:slider,0,5,100 pct:slider,1,2,100"), SliderSetListEntry("level", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("pct:slider,0,5,100 position:slider,1,2,100"), SliderSetListEntry("pct", 0f, 5f, 100f)),
-                ContinuousProviderTestCase(SetList.parse("position:slider,0,5,100 value:slider,1,2,100"), SliderSetListEntry("position", 0f, 5f, 100f)))
+                ContinuousProviderTestCase(SetList.parse("dim:slider,0,5,100"), SliderSetListEntry("dim", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("state:slider,0,5,100"), SliderSetListEntry("state", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("pct:slider,0,5,100"), SliderSetListEntry("pct", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("value:slider,0,5,100"), SliderSetListEntry("value", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("position:slider,0,5,100"), SliderSetListEntry("position", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("level:slider,0,5,100"), SliderSetListEntry("level", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("state:slider,0,5,100 dim:slider,1,2,100"), SliderSetListEntry("state", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("dim:slider,0,5,100 level:slider,1,2,100"), SliderSetListEntry("dim", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("level:slider,0,5,100 pct:slider,1,2,100"), SliderSetListEntry("level", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("pct:slider,0,5,100 position:slider,1,2,100"), SliderSetListEntry("pct", 0.0, 5.0, 100.0)),
+                ContinuousProviderTestCase(SetList.parse("position:slider,0,5,100 value:slider,1,2,100"), SliderSetListEntry("position", 0.0, 5.0, 100.0)))
 
         @JvmStatic
         @DataProvider

@@ -22,12 +22,14 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist;
+package li.klass.fhem.domain.setlist.typeEntry
 
-import java.io.Serializable;
+import li.klass.fhem.domain.setlist.SetListItem
+import li.klass.fhem.domain.setlist.SetListItemType
 
-public interface SetListEntry extends Serializable {
-    String asText();
+class NoArgSetListEntry(key: String?) : SetListItem(key, SetListItemType.NO_ARG) {
 
-    String getKey();
+    override fun asText(): String {
+        return key + ":" + type.type
+    }
 }

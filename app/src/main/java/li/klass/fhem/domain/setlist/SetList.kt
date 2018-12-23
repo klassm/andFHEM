@@ -24,24 +24,16 @@
 
 package li.klass.fhem.domain.setlist
 
-import com.google.common.base.Optional
-import com.google.common.collect.Lists.newArrayList
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.NotFoundSetListEntry
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.StringUtils.isEmpty
 import java.io.Serializable
-import java.util.*
 
 class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable {
 
     val sortedKeys: List<String>
-        get() {
-            val keys = newArrayList(entries.keys)
-            Collections.sort(keys)
-            return keys
-        }
-
+        get() = entries.keys.sorted()
 
     operator fun get(key: String, ignoreCase: Boolean = true): SetListEntry {
         val matches = entries.filter { it.key.equals(key, ignoreCase) }
@@ -63,13 +55,10 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
     override fun toString(): String {
         val keys = sortedKeys
 
-        val parts = newArrayList<String>()
-        for (key in keys) {
-            val value = entries[key] as SetListEntry
-            parts.add(value.asText())
-        }
-
-        return StringUtils.join(parts, " ")
+        return keys
+                .map { entries[it] as SetListEntry }
+                .map { it.asText() }
+                .joinToString(separator = " ")
     }
 
     fun getFirstPresentStateOf(vararg states: String): String? =
@@ -103,21 +92,17 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
             val value = if (keyValue.size == 2) keyValue[1] else ""
             if (StringUtils.isEmpty(value)) return null
 
-            val setListEntry = handle(key, value)
-            if (setListEntry.isPresent) {
-                return Pair(key, setListEntry.get())
-            }
-            return null
+            return handle(key, value)?.let { Pair(key, it) }
         }
 
-        private fun handle(key: String, value: String): Optional<SetListItem> {
-            val parts = value.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        private fun handle(key: String, value: String): SetListItem? {
+            val parts = value.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toList()
 
             val type = findType(parts)
             return type.getSetListItemFor(key, parts)
         }
 
-        private fun findType(parts: Array<String>): SetListItemType {
+        private fun findType(parts: List<String>): SetListItemType {
             for (type in SetListItemType.values()) {
                 if (type.supports(parts)) {
                     return type

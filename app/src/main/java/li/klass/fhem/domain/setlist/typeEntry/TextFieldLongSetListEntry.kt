@@ -22,39 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist;
+package li.klass.fhem.domain.setlist.typeEntry
 
-import com.google.common.base.Optional;
+import li.klass.fhem.domain.setlist.SetListItem
+import li.klass.fhem.domain.setlist.SetListItemType
 
-import java.util.Locale;
+class TextFieldLongSetListEntry(key: String?) : SetListItem(key, SetListItemType.TEXT_FIELD_LONG) {
 
-class SupportsType {
-
-    private final String type;
-    private Optional<Integer> expectedLength;
-
-    public SupportsType(String type) {
-        this(type, Optional.<Integer>absent());
-    }
-
-    public SupportsType(String type, int length) {
-        this(type, Optional.of(length));
-    }
-
-    public SupportsType(String type, Optional<Integer> expectedLength) {
-        this.type = type;
-        this.expectedLength = expectedLength;
-    }
-
-    public boolean supports(String[] parts) {
-        //noinspection SimplifiableIfStatement
-        if (parts.length == 0 || !parts[0].toLowerCase(Locale.getDefault()).matches(type.toLowerCase(Locale.getDefault()))) {
-            return false;
-        }
-        return !expectedLength.isPresent() || parts.length >= expectedLength.get();
-    }
-
-    public String getType() {
-        return type;
-    }
+    override fun asText(): String = "$key:${type.type}"
 }

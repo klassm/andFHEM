@@ -41,7 +41,7 @@ import li.klass.fhem.util.DialogUtil
 
 class SpecialButtonHandler : SetListTargetStateHandler<FhemDevice> {
     override fun canHandle(entry: SetListEntry): Boolean {
-        return entry is NoArgSetListEntry && DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.getKey()) != null
+        return entry is NoArgSetListEntry && DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.key) != null
     }
 
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {

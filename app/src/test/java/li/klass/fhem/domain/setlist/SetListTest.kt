@@ -53,11 +53,7 @@ class SetListTest {
 
     data class TestCase internal constructor(val desc: String, val setList: String, val expected: Map<String, SetListEntry>) {
         override fun toString(): String {
-            return desc + " {" +
-                    "setList='" + setList + '\'' +
-                    "," +
-                    " expected=" + expected +
-                    '}'
+            return "$desc {setList='$setList', expected=$expected}"
         }
     }
 
@@ -86,22 +82,22 @@ class SetListTest {
                             expected = emptyMap()),
                     TestCase(desc = "slider",
                             setList = "internalState:slider,1,2,3 dim:slider,0,5,100",
-                            expected = mapOf("internalState" to SliderSetListEntry("internalState", 1f, 2f, 3f), "dim" to SliderSetListEntry("dim", 0f, 5f, 100f))),
+                            expected = mapOf("internalState" to SliderSetListEntry("internalState", 1.0, 2.0, 3.0), "dim" to SliderSetListEntry("dim", 0.0, 5.0, 100.0))),
                     TestCase(desc = "slider desiredTemperature",
                             setList = "desiredTemperature:slider,4.5,0.5,29.5,1",
-                            expected = mapOf("desiredTemperature" to SliderSetListEntry("desiredTemperature", 4.5f, 0.5f, 29.5f))),
+                            expected = mapOf("desiredTemperature" to SliderSetListEntry("desiredTemperature", 4.5, 0.5, 29.5))),
                     TestCase(desc = "group",
                             setList = "level:1,2,3 internalState:on,off",
-                            expected = mapOf("level" to GroupSetListEntry("level", "1", "2", "3"), "internalState" to GroupSetListEntry("internalState", "on", "off"))),
+                            expected = mapOf("level" to GroupSetListEntry("level", listOf("1", "2", "3")), "internalState" to GroupSetListEntry("internalState", listOf("on", "off")))),
                     TestCase(desc = "time",
                             setList = "internalState:time",
                             expected = mapOf("internalState" to TimeSetListEntry("internalState"))),
                     TestCase(desc = "multiple",
                             setList = "blab:multiple,bla,blub",
-                            expected = mapOf("blab" to MultipleSetListEntry("blab", "multiple", "bla", "blub"))),
+                            expected = mapOf("blab" to MultipleSetListEntry("blab", listOf("multiple", "bla", "blub")))),
                     TestCase(desc = "multiple-strict",
                             setList = "blab:multiple-strict,bla,blub",
-                            expected = mapOf("blab" to MultipleStrictSetListEntry("blab", "multiple-strict", "bla", "blub"))),
+                            expected = mapOf("blab" to MultipleStrictSetListEntry("blab", listOf("multiple-strict", "bla", "blub")))),
                     TestCase(desc = "textField",
                             setList = "blab:textField",
                             expected = mapOf("blab" to TextFieldSetListEntry("blab"))),
@@ -113,19 +109,19 @@ class SetListTest {
                             expected = mapOf("blab" to RGBSetListEntry("blab"))),
                     TestCase(desc = "colorPicker with group",
                             setList = "ct:colorpicker,CT,154,1,500",
-                            expected = mapOf("ct" to SliderSetListEntry("ct", 154f, 1f, 500f))),
+                            expected = mapOf("ct" to SliderSetListEntry("ct", 154.0, 1.0, 500.0))),
                     TestCase(desc = "colorPicker without argument",
                             setList = "ct:colorpicker",
                             expected = mapOf("ct" to NoArgSetListEntry("ct"))),
                     TestCase(desc = "colorPicker non RGB",
                             setList = "pct:colorpicker,BRI,0,1,100",
-                            expected = mapOf("pct" to SliderSetListEntry("pct", 0f, 1f, 100f))),
+                            expected = mapOf("pct" to SliderSetListEntry("pct", 0.0, 1.0, 100.0))),
                     TestCase(desc = "internalState is group",
                             setList = "internalState:Manuell,Sonnenaufgang_real,Sonnenaufgang_zivil,05:00,06:00,07:00,08:00",
-                            expected = mapOf("internalState" to GroupSetListEntry("internalState", "Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00"))),
+                            expected = mapOf("internalState" to GroupSetListEntry("internalState", listOf("Manuell", "Sonnenaufgang_real", "Sonnenaufgang_zivil", "05:00", "06:00", "07:00", "08:00")))),
                     TestCase(desc = "including a question mark producing an invalid regexp",
                             setList = "attrTemplate:?,A_01_tasmota_basic_noprefix,A_01b_tasmota_1ch+motion+SI7021_noprefix,A_02a_tasmota_2channel_2devices_noprefix,A_04a_tasmota_sonoff_4ch_noprefix,A_10_shelly1,A_10a_shellyplug,A_11a_shelly2,A_14_shelly4pro,A_15_shellybulb,L_01a_zigbee2mqtt_bridge,L_01b_zigbee2mqtt_bridge_V2_speaking_names,L_01x_zigbee2mqtt_bridge_outdated,L_02a_zigbee2mqtt_bulb,L_02b_zigbee2mqtt_colorbulb,L_02b_zigbee2mqtt_colorbulbWithoutColorTemp,L_03_zigbee2mqtt_smokeDetector,L_04_zigbee2mqtt_hueMotionSensor,L_05_zigbee2mqtt_smart+plug,X_01_esp_milight_hub_bridge,X_01_esp_milight_hub_rgbw_bulb",
-                            expected = mapOf("attrTemplate" to GroupSetListEntry("attrTemplate", "?", "A_01_tasmota_basic_noprefix", "A_01b_tasmota_1ch+motion+SI7021_noprefix", "A_02a_tasmota_2channel_2devices_noprefix", "A_04a_tasmota_sonoff_4ch_noprefix", "A_10_shelly1", "A_10a_shellyplug", "A_11a_shelly2", "A_14_shelly4pro", "A_15_shellybulb", "L_01a_zigbee2mqtt_bridge", "L_01b_zigbee2mqtt_bridge_V2_speaking_names", "L_01x_zigbee2mqtt_bridge_outdated", "L_02a_zigbee2mqtt_bulb", "L_02b_zigbee2mqtt_colorbulb", "L_02b_zigbee2mqtt_colorbulbWithoutColorTemp", "L_03_zigbee2mqtt_smokeDetector", "L_04_zigbee2mqtt_hueMotionSensor", "L_05_zigbee2mqtt_smart+plug", "X_01_esp_milight_hub_bridge", "X_01_esp_milight_hub_rgbw_bulb")))
+                            expected = mapOf("attrTemplate" to GroupSetListEntry("attrTemplate", listOf("?", "A_01_tasmota_basic_noprefix", "A_01b_tasmota_1ch+motion+SI7021_noprefix", "A_02a_tasmota_2channel_2devices_noprefix", "A_04a_tasmota_sonoff_4ch_noprefix", "A_10_shelly1", "A_10a_shellyplug", "A_11a_shelly2", "A_14_shelly4pro", "A_15_shellybulb", "L_01a_zigbee2mqtt_bridge", "L_01b_zigbee2mqtt_bridge_V2_speaking_names", "L_01x_zigbee2mqtt_bridge_outdated", "L_02a_zigbee2mqtt_bulb", "L_02b_zigbee2mqtt_colorbulb", "L_02b_zigbee2mqtt_colorbulbWithoutColorTemp", "L_03_zigbee2mqtt_smokeDetector", "L_04_zigbee2mqtt_hueMotionSensor", "L_05_zigbee2mqtt_smart+plug", "X_01_esp_milight_hub_bridge", "X_01_esp_milight_hub_rgbw_bulb"))))
             )
         }
     }

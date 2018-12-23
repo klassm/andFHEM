@@ -22,12 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist.typeEntry;
+package li.klass.fhem.domain.setlist.typeEntry
 
-import li.klass.fhem.domain.setlist.SetListItemType;
+import li.klass.fhem.domain.setlist.SetListItemType
+import org.apache.commons.lang3.StringUtils.join
 
-public class GroupSetListEntry extends BaseGroupSetListEntry {
-    public GroupSetListEntry(String key, String... groupStates) {
-        super(key, SetListItemType.GROUP, groupStates);
+class MultipleStrictSetListEntry(
+        key: String?,
+        groupStates: List<String>
+) : BaseGroupSetListEntry(key, SetListItemType.MULTIPLE_STRICT, groupStates.subList(1, groupStates.size)) {
+
+    override fun asText(): String {
+        return key + ":" + type.type + join(groupStates, ",")
     }
 }

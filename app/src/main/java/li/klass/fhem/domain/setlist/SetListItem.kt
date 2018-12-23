@@ -22,51 +22,34 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist;
+package li.klass.fhem.domain.setlist
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils
 
-public abstract class SetListItem implements SetListEntry {
-    protected final String key;
-    protected final SetListItemType type;
+abstract class SetListItem(key: String?, protected val type: SetListItemType) : SetListEntry {
+    override val key: String = StringUtils.trimToNull(key) ?: "state"
 
 
-    public SetListItem(String key, SetListItemType type) {
-        key = StringUtils.trimToNull(key);
-        this.key = key == null ? "state" : key;
-        this.type = type;
-    }
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
 
-    @Override
-    public String getKey() {
-        return key;
-    }
+        val that = other as SetListItem?
 
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SetListItem that = (SetListItem) o;
-
-        if (key != null ? !key.equals(that.key) : that.key != null) return false;
-        return type == that.type;
+        return key == that?.key && type == that.type
 
     }
 
-    @Override
-    public int hashCode() {
-        int result = key != null ? key.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
+    override fun hashCode(): Int {
+        var result = if (true) key.hashCode() else 0
+        result = 31 * result + type.hashCode()
+        return result
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "SetListItem{" +
-                "key='" + key + '\'' +
+                "key='" + key + '\''.toString() +
                 ", type=" + type +
-                '}';
+                '}'.toString()
     }
 }

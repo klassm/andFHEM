@@ -22,21 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist.typeEntry;
+package li.klass.fhem.domain
 
-import java.util.Arrays;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase
+import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
-import li.klass.fhem.domain.setlist.SetListItemType;
+class LightSceneDeviceTest : DeviceXMLParsingBase() {
+    @Test
+    fun testForCorrectlySetAttributes() {
+        val device = defaultDevice
 
-import static org.apache.commons.lang3.StringUtils.join;
-
-public class MultipleSetListEntry extends BaseGroupSetListEntry {
-    public MultipleSetListEntry(String key, String... groupStates) {
-        super(key, SetListItemType.MULTIPLE, Arrays.copyOfRange(groupStates, 1, groupStates.length));
+        val scene = device.setList["scene", false] as GroupSetListEntry
+        assertThat(scene.groupStates).contains("on", "off")
     }
 
-    @Override
-    public String asText() {
-        return key + ":" + type.getType() + join(groupStates, ",");
+    @Test
+    fun testDeviceWithOnlyOneScene() {
+        val device = getDeviceFor("device1")
+
+        val scene = device.setList["scene", false] as GroupSetListEntry
+        assertThat(scene.groupStates).contains("absent")
+    }
+
+    override fun getFileName(): String {
+        return "lightscene.xml"
     }
 }

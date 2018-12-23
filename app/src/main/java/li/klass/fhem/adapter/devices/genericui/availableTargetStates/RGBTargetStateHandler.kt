@@ -47,7 +47,7 @@ class RGBTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         RGBColorPickerDialog(context, initial, object : RGBColorPickerDialog.Callback {
             override fun onColorChanged(newRGB: String, dialog1: Dialog) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    callback.onSubStateSelected(device, entry.getKey(), newRGB)
+                    callback.onSubStateSelected(device, entry.key, newRGB)
                 }
                 dialog1.dismiss()
             }

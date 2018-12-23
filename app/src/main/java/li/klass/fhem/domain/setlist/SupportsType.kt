@@ -22,18 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.setlist.typeEntry;
+package li.klass.fhem.domain.setlist
 
-import li.klass.fhem.domain.setlist.SetListItem;
-import li.klass.fhem.domain.setlist.SetListItemType;
+import java.util.*
 
-public class TextFieldSetListEntry extends SetListItem {
-    public TextFieldSetListEntry(String key) {
-        super(key, SetListItemType.TEXT_FIELD);
-    }
-
-    @Override
-    public String asText() {
-        return key + ":" + type.getType();
+open class SupportsType @JvmOverloads constructor(val type: String, private val expectedLength: Int? = null) {
+    open fun supports(parts: List<String>): Boolean = when {
+        parts.isEmpty() || !parts[0].toLowerCase(Locale.getDefault()).matches(type.toLowerCase(Locale.getDefault()).toRegex()) -> false
+        else -> expectedLength == null || parts.size >= expectedLength
     }
 }
