@@ -138,7 +138,7 @@ constructor(
 
         private val LOG = LoggerFactory.getLogger(DeviceListService::class.java)
 
-        val NEVER_UPDATE_PERIOD: Long = 0
-        val ALWAYS_UPDATE_PERIOD: Long = -1
+        const val NEVER_UPDATE_PERIOD: Long = 0
+        const val ALWAYS_UPDATE_PERIOD: Long = -1
     }
 }

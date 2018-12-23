@@ -82,9 +82,9 @@ public abstract class ConvenientIntentService extends IntentService {
     private void handleTaskInternal(Intent intent) {
         ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
         boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
-        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, DeviceListService.Companion.getNEVER_UPDATE_PERIOD());
+        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, DeviceListService.NEVER_UPDATE_PERIOD);
         if (doRefresh) {
-            updatePeriod = DeviceListService.Companion.getALWAYS_UPDATE_PERIOD();
+            updatePeriod = DeviceListService.ALWAYS_UPDATE_PERIOD;
         }
 
         try {

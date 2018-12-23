@@ -39,6 +39,7 @@ import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.graph.backend.gplot.GPlotHolder
 import li.klass.fhem.update.backend.device.configuration.Sanitiser
 import li.klass.fhem.update.backend.group.GroupProvider
+import li.klass.fhem.util.stackTraceAsString
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -66,7 +67,6 @@ class DeviceListParser @Inject constructor(
             RequestResult<String>(error = RequestResultError.DEVICE_LIST_PARSE).handleErrors(context)
             null
         }
-
     }
 
     @Throws(Exception::class)
@@ -82,9 +82,9 @@ class DeviceListParser @Inject constructor(
         gPlotHolder.reset()
         val parsedDevices = parser.parse(list)
 
-        val errorHolder = ReadErrorHolder()
-
         val allDevices = newHashMap<String, FhemDevice>()
+
+        val parseErrors = mutableMapOf<XmlListDevice, Exception>()
 
         for ((key) in parsedDevices) {
             val xmlListDevices = parsedDevices[key]
@@ -94,18 +94,18 @@ class DeviceListParser @Inject constructor(
 
             if (connectionService.mayShowInCurrentConnectionType(key)) {
 
-                val localErrorCount = devicesFromDocument(xmlListDevices, allDevices,
+                val functionalityParseErrors = devicesFromDocument(xmlListDevices, allDevices,
                         context)
 
-                if (localErrorCount > 0) {
-                    errorHolder.addErrors(localErrorCount)
-                }
+                parseErrors.putAll(functionalityParseErrors)
             }
         }
 
         val roomDeviceList = buildRoomDeviceList(allDevices)
 
-        handleErrors(errorHolder, context)
+
+
+        handleErrors(context, parseErrors)
 
         LOG.info("loaded {} devices!", allDevices.size)
 
@@ -113,23 +113,22 @@ class DeviceListParser @Inject constructor(
     }
 
     private fun devicesFromDocument(xmlListDevices: List<XmlListDevice>, allDevices: MutableMap<String, FhemDevice>,
-                                    context: Context): Int {
+                                    context: Context): Map<XmlListDevice, Exception> {
 
-        var errorCount = 0
-        val errorText = StringBuilder()
+        val parseErrors = mutableMapOf<XmlListDevice, Exception>()
 
         for (xmlListDevice in xmlListDevices) {
-            if (!deviceFromXmlListDevice(xmlListDevice, allDevices, context)) {
-                errorCount++
-                errorText.append(xmlListDevice.toString()).append("\r\n\r\n")
+            try {
+                deviceFromXmlListDevice(xmlListDevice, context)?.let {
+                    allDevices[it.name] = it
+                }
+            } catch (e: Exception) {
+                LOG.error("error parsing device $xmlListDevice", e)
+                parseErrors[xmlListDevice] = e
             }
         }
 
-        if (errorCount > 0) {
-            ErrorHolder.setError("Cannot parse xmlListDevices: \r\n $errorText")
-        }
-
-        return errorCount
+        return parseErrors.toMap()
     }
 
     private fun buildRoomDeviceList(allDevices: Map<String, FhemDevice>): RoomDeviceList {
@@ -140,40 +139,34 @@ class DeviceListParser @Inject constructor(
         return roomDeviceList
     }
 
-    private fun handleErrors(errorHolder: ReadErrorHolder, context: Context) {
-        if (errorHolder.hasErrors()) {
-            var errorMessage = context.getString(R.string.errorDeviceListLoad)
-            errorMessage = String.format(errorMessage, "" + errorHolder.errorCount)
-
-            val intent = Intent(Actions.SHOW_TOAST)
-            intent.putExtra(BundleExtraKeys.CONTENT, errorMessage)
-            context.sendBroadcast(intent)
+    private fun handleErrors(context: Context, parseErrors: MutableMap<XmlListDevice, Exception>) {
+        if (parseErrors.isEmpty()) {
+            return
         }
+        val errorText = parseErrors.map { (device, exception) ->
+            "$device =>\n${exception.message}\n${exception.stackTraceAsString()}"
+        }.joinToString(separator = "\n\n")
+        ErrorHolder.setError(errorText)
+
+        val errorMessage = String.format(context.getString(R.string.errorDeviceListLoad), "${parseErrors.size}")
+
+        context.sendBroadcast(Intent(Actions.SHOW_TOAST)
+                .putExtra(BundleExtraKeys.CONTENT, errorMessage))
     }
 
     private fun deviceFromXmlListDevice(xmlListDevice: XmlListDevice,
-                                        allDevices: MutableMap<String, FhemDevice>,
-                                        context: Context): Boolean {
+                                        context: Context): FhemDevice? {
 
-        try {
-            if (xmlListDevice.getAttribute("always_hidden") == "true") {
-                return true
-            }
-
-            val device = FhemDevice(xmlListDevice)
-
-            LOG.debug("loaded device with name " + device.name)
-
-            xmlListDevice.setAttribute("group", groupProvider.functionalityFor(device, context))
-
-            allDevices.put(device.name, device)
-
-            return true
-        } catch (e: Exception) {
-            LOG.error("error parsing device", e)
-            return false
+        if (xmlListDevice.getAttribute("always_hidden") == "true") {
+            return null
         }
 
+        val device = FhemDevice(xmlListDevice)
+
+        xmlListDevice.setAttribute("group", groupProvider.functionalityFor(device, context))
+
+        LOG.debug("loaded device with name " + device.name)
+        return device
     }
 
     fun fillDeviceWith(device: FhemDevice, updates: Map<String, String>) {
@@ -193,19 +186,9 @@ class DeviceListParser @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                LOG.error("fillDeviceWith - handle " + entry, e)
+                LOG.error("fillDeviceWith - handle $entry", e)
             }
 
-        }
-    }
-
-    private inner class ReadErrorHolder {
-        var errorCount = 0
-
-        internal fun hasErrors(): Boolean = errorCount != 0
-
-        internal fun addErrors(toAdd: Int) {
-            errorCount += toAdd
         }
     }
 
