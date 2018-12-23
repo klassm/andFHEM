@@ -36,7 +36,7 @@ import org.apmem.tools.layouts.FlowLayout
 
 abstract class HolderActionRow<I>(private val description: String, private val layout: Int) {
 
-    suspend fun createRow(context: Context, viewGroup: ViewGroup, device: FhemDevice, connectionId: String?): TableRow {
+    fun createRow(context: Context, viewGroup: ViewGroup, device: FhemDevice, connectionId: String?): TableRow {
         val inflater = LayoutInflater.from(context)
         val row = inflater.inflate(layout, viewGroup, false) as TableRow
 
@@ -59,7 +59,7 @@ abstract class HolderActionRow<I>(private val description: String, private val l
 
     abstract fun getItems(device: FhemDevice): List<I>
 
-    abstract suspend fun viewFor(item: I, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View?
+    abstract fun viewFor(item: I, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View?
 
     companion object {
 

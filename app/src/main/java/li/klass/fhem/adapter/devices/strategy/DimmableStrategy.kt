@@ -50,7 +50,7 @@ constructor(
         val applicationProperties: ApplicationProperties
 ) : ViewStrategy() {
 
-    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val myView = when {
             convertView == null || convertView.tag == null -> {
                 val v = layoutInflater.inflate(R.layout.device_overview_generic, null)

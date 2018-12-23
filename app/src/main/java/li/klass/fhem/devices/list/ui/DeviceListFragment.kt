@@ -207,32 +207,32 @@ abstract class DeviceListFragment : BaseFragment() {
         LOGGER.debug("updateWith - update dummyConnectionNotification, time=${stopWatch.time}")
     }
 
+    private fun firstChildOf(layout: CardView) = when (layout.childCount) {
+        0 -> null
+        else -> layout.getChildAt(0)
+    }
+
     private fun createDeviceView(device: FhemDevice, view: View) {
-        GlobalScope.launch(Dispatchers.Main) {
-            fun firstChildOf(layout: CardView) = when (layout.childCount) {
-                0 -> null
-                else -> layout.getChildAt(0)
-            }
+        LOGGER.info("createDeviceView(name=${device.name})")
 
-            val stopWatch = StopWatch()
-            stopWatch.start()
+        val stopWatch = StopWatch()
+        stopWatch.start()
 
-            LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
+        LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
 
-            val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
+        val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
 
-            LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
+        LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
 
-            view.card.removeAllViews()
-            view.card.addView(contentView)
+        view.card.removeAllViews()
+        view.card.addView(contentView)
 
-            LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
+        LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
 
-            view.setOnClickListener { onClick(device) }
-            view.setOnLongClickListener { onLongClick(device) }
+        view.setOnClickListener { onClick(device) }
+        view.setOnLongClickListener { onLongClick(device) }
 
-            LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
-        }
+        LOGGER.debug("bind - finished device=${device.name}, time=${stopWatch.time}")
     }
 
     private fun onClick(device: FhemDevice) {
@@ -257,6 +257,6 @@ abstract class DeviceListFragment : BaseFragment() {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DeviceListFragment::class.java)
-        val DEFAULT_COLUMN_WIDTH = 350
+        const val DEFAULT_COLUMN_WIDTH = 350
     }
 }

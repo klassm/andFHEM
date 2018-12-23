@@ -29,9 +29,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.device_overview_weather.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
@@ -48,16 +45,12 @@ class WeatherDeviceViewStrategy @Inject constructor(
 ) : ViewStrategy() {
 
     @SuppressLint("InflateParams")
-    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val view = layoutInflater.inflate(R.layout.device_overview_weather, null)
         defaultViewStrategy.fillDeviceOverviewView(view, rawDevice, GenericDeviceOverviewViewHolder(view), deviceItems, layoutInflater)
 
-        coroutineScope {
-            val url = withContext(Dispatchers.IO) {
-                weatherService.iconFor(rawDevice)
-            }
-            setWeatherIconIn(view.weatherImage, url)
-        }
+        val url = weatherService.iconFor(rawDevice)
+        setWeatherIconIn(view.weatherImage, url)
         return view
     }
 

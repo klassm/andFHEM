@@ -217,7 +217,7 @@
 
     <style name="deviceOverviewTable">
         <item name="android:background">?backgroundColorSecondary</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
 
         <item name="android:layout_marginLeft">10dp</item>

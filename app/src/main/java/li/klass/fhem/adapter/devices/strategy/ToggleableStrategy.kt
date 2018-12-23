@@ -52,7 +52,7 @@ class ToggleableStrategy
                     private val toggleableService: ToggleableService,
                     private val stateUiService: StateUiService) : ViewStrategy() {
 
-    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
         val stopWatch = StopWatch()
         stopWatch.start()

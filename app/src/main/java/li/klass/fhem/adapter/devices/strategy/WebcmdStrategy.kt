@@ -44,7 +44,7 @@ import javax.inject.Singleton
 class WebcmdStrategy @Inject
 constructor(val hookProvider: DeviceHookProvider, val stateUiService: StateUiService) : ViewStrategy() {
 
-    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
         if (myView == null || myView.tag == null) {
             myView = layoutInflater.inflate(R.layout.device_overview_generic, null)
@@ -61,13 +61,13 @@ constructor(val hookProvider: DeviceHookProvider, val stateUiService: StateUiSer
     override fun supports(fhemDevice: FhemDevice): Boolean =
             hookProvider.buttonHookFor(fhemDevice) == WEBCMD_DEVICE
 
-    private suspend fun addOverviewSwitchActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice, connectionId: String?) {
+    private fun addOverviewSwitchActionRow(holder: GenericDeviceOverviewViewHolder, device: FhemDevice, connectionId: String?) {
         val layout = holder.tableLayout
         addWebCmdOverviewActionRow(layout.context, device, layout, connectionId)
     }
 
-    private suspend fun addWebCmdOverviewActionRow(context: Context, device: FhemDevice,
-                                                   tableLayout: TableLayout, connectionId: String?) {
+    private fun addWebCmdOverviewActionRow(context: Context, device: FhemDevice,
+                                           tableLayout: TableLayout, connectionId: String?) {
         tableLayout.addView(WebCmdActionRow(stateUiService, context, HolderActionRow.LAYOUT_OVERVIEW, device.aliasOrName)
                 .createRow(context, tableLayout, device, connectionId))
     }

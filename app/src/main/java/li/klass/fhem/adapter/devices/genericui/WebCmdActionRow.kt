@@ -45,8 +45,8 @@ open class WebCmdActionRow(
 ) : HolderActionRow<String>(description, layout) {
     override fun getItems(device: FhemDevice): List<String> = device.webCmd
 
-    override suspend fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater,
-                                 context: Context, viewGroup: ViewGroup, connectionId: String?): View {
+    override fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater,
+                         context: Context, viewGroup: ViewGroup, connectionId: String?): View {
 
         val container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false)
         val button = container.findViewById<ToggleButton>(R.id.toggleButton)!!

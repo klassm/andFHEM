@@ -47,7 +47,7 @@ class LightSceneDeviceViewStrategy @Inject constructor(
         val stateUiService: StateUiService
 ) : ViewStrategy() {
 
-    override suspend fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         val layout = layoutInflater.inflate(R.layout.device_overview_generic, null) as TableLayout
         layout.removeAllViews()
 
@@ -62,7 +62,7 @@ class LightSceneDeviceViewStrategy @Inject constructor(
                 }
             }
 
-            override suspend fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View {
+            override fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View {
                 val button = inflater.inflate(R.layout.lightscene_button, viewGroup, false) as Button
                 setSceneButtonProperties(device, item, button, context)
                 return button
