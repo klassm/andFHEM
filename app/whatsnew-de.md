@@ -1,1 +1,1 @@
-TODO
+* Geräte mit einem Fragezeichen in der setList konnten nicht verwendet werden
