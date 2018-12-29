@@ -36,7 +36,13 @@ import li.klass.fhem.settings.SettingsKeys.SHOW_HIDDEN_DEVICES
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class RoomListAdapter(context: Context, resource: Int, data: List<String>) : ListDataAdapter<String>(context, resource, data, CASE_INSENSITIVE_COMPARATOR) {
+class RoomListAdapter(
+        context: Context,
+        resource: Int,
+        data: List<String>,
+        val hiddenRooms: Set<String>
+) : ListDataAdapter<String>(context, resource, data, CASE_INSENSITIVE_COMPARATOR) {
+
     private var selectedRoom: String? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -67,13 +73,13 @@ class RoomListAdapter(context: Context, resource: Int, data: List<String>) : Lis
 
         val preferences = getDefaultSharedPreferences(context)
         val showHiddenDevices = preferences.getBoolean(SHOW_HIDDEN_DEVICES, false)
-        if (!showHiddenDevices) {
-            newData
-                    .filter { it.equals("hidden", ignoreCase = true) }
-                    .forEach { newData.remove(it) }
+
+        val newRooms = when (showHiddenDevices) {
+            true -> newData
+            else -> newData.filterNot { hiddenRooms.contains(it) }
         }
 
-        updateData(newData)
+        updateData(newRooms)
     }
 
     private fun setSelectedRoom(selectedRoom: String?) {
@@ -84,7 +90,7 @@ class RoomListAdapter(context: Context, resource: Int, data: List<String>) : Lis
     override fun doSort(): Boolean = true
 
     companion object {
-        val CASE_INSENSITIVE_COMPARATOR: Comparator<String> = Comparator { lhs, rhs -> lhs.toLowerCase(Locale.getDefault()).compareTo(rhs.toLowerCase(Locale.getDefault())) }
+        val CASE_INSENSITIVE_COMPARATOR: Comparator<String> = Comparator { lhs, rhs -> lhs.toLowerCase().compareTo(rhs.toLowerCase()) }
 
         private val LOG = LoggerFactory.getLogger(RoomListAdapter::class.java)
     }

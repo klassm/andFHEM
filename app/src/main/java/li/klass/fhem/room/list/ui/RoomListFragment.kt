@@ -48,6 +48,7 @@ import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListUpdateService
+import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import li.klass.fhem.util.Reject
 import java.io.Serializable
 import java.util.*
@@ -63,6 +64,8 @@ open class RoomListFragment : BaseFragment() {
     lateinit var roomListService: ViewableRoomListService
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+    @Inject
+    lateinit var fhemWebConfigurationService: FhemWebConfigurationService
 
     private var roomName: String? = null
     private var emptyTextId = R.string.noRooms
@@ -88,7 +91,9 @@ open class RoomListFragment : BaseFragment() {
         if (superView != null) return superView
         val myActivity = activity ?: return superView
 
-        val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList<String>())
+        val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
+
+        val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList(), hiddenRooms)
         val layout = inflater.inflate(R.layout.room_list, container, false)
         advertisementService.addAd(layout, myActivity)
 

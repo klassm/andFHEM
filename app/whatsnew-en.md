@@ -1,1 +1,1 @@
-TODO
+* Treat devices in "hiddenrooms" as if they were in room"hidden". If the respective switch in the settings has been set, those devices are also hidden from the "All devices" tab.

@@ -1,23 +1,28 @@
 package li.klass.fhem.search
 
+import li.klass.fhem.devices.list.backend.HiddenRoomsDeviceFilter
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.DeviceListService
 import java.util.*
 import javax.inject.Inject
 
-class SearchResultsProvider @Inject constructor(val deviceListService: DeviceListService) {
+class SearchResultsProvider @Inject constructor(
+        val deviceListService: DeviceListService,
+        val hiddenRoomsDeviceFilter: HiddenRoomsDeviceFilter
+) {
     fun query(query: String): RoomDeviceList {
         if (query.trim().isEmpty()) {
             return RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM)
         }
         val comparableQuery = toComparable(query)
         val allRoomsList = deviceListService.getAllRoomsDeviceList()
-        return allRoomsList.filter({
+        val filtered = allRoomsList.filter {
             (toComparable(it.name).contains(comparableQuery)
                     || toComparable(it.aliasOrName).contains(comparableQuery)
                     || toComparable(it.roomConcatenated).contains(comparableQuery))
-        })
+        }
 
+        return hiddenRoomsDeviceFilter.filterHiddenDevicesIfRequired(filtered)
     }
 
     private fun toComparable(input: String): String {

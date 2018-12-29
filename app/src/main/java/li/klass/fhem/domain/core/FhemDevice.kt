@@ -112,6 +112,9 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
      */
     fun isInRoom(room: String): Boolean = getRooms().contains(room)
 
+    fun isInAnyRoomsOf(rooms: Set<String>): Boolean =
+            getRooms().intersect(rooms).isNotEmpty()
+
     fun getRooms() = roomConcatenated.split(",")
 
     override fun equals(other: Any?): Boolean {

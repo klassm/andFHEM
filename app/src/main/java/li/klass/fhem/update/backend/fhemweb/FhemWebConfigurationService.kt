@@ -46,11 +46,18 @@ class FhemWebConfigurationService @Inject constructor(
     }
 
     fun filterHiddenRoomsIn(roomNames: Collection<String>): Set<String> {
-        val fhemwebDevice = findFhemWebDevice() ?: return roomNames.toSet()
-        val hiddenRooms = hiddenRoomsAttributeProvider.provideFor(fhemwebDevice)
-        logger.info("filterHiddenRoomsIn - fhemwebDevice=${fhemwebDevice.name}, hiddenRoomsAttribute=${hiddenRooms.joinToString(separator = ",")}")
+        val hiddenRooms = getHiddenRooms()
+        logger.info("filterHiddenRoomsIn - hiddenRoomsAttribute=${hiddenRooms.joinToString(separator = ",")}")
 
         return roomNames.filter { it !in hiddenRooms }.toSet()
+    }
+
+    fun getHiddenRooms(): Set<String> {
+        val fhemwebDevice = findFhemWebDevice()
+        val hiddenRooms = fhemwebDevice?.let { hiddenRoomsAttributeProvider.provideFor(it) }
+                ?: emptySet()
+
+        return hiddenRooms + "hidden"
     }
 
     fun filterHiddenGroupsFrom(roomDeviceList: RoomDeviceList): RoomDeviceList {
@@ -58,10 +65,10 @@ class FhemWebConfigurationService @Inject constructor(
         val hiddenGroups = hiddenGroupsAttributeProvider.provideFor(fhemwebDevice)
         logger.info("filterHiddenGroupsFrom - fhemwebDevice=${fhemwebDevice.name}, hiddenGroupsAttribute=${hiddenGroups.joinToString(separator = ",")}")
 
-        return roomDeviceList.filter({
+        return roomDeviceList.filter {
             val groups = it.internalDeviceGroupOrGroupAttributes.map { it.toLowerCase(Locale.getDefault()) }
             !hiddenGroups.containsAll(groups)
-        })
+        }
     }
 
     fun getColumnAttributeFor(room: String): List<String> {

@@ -26,11 +26,13 @@ package li.klass.fhem.devices.list.backend
 
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import li.klass.fhem.util.ApplicationProperties
 import javax.inject.Inject
 
 class HiddenRoomsDeviceFilter @Inject constructor(
-        val applicationProperties: ApplicationProperties
+        val applicationProperties: ApplicationProperties,
+        val fhemWebConfigurationService: FhemWebConfigurationService
 ) {
     fun filterHiddenDevicesIfRequired(roomDeviceList: RoomDeviceList): RoomDeviceList {
         val showHiddenDevices = applicationProperties.getBooleanSharedPreference(SettingsKeys.SHOW_HIDDEN_DEVICES, false)
@@ -38,6 +40,7 @@ class HiddenRoomsDeviceFilter @Inject constructor(
             return roomDeviceList
         }
 
-        return roomDeviceList.filter({ !it.isInRoom("hidden") })
+        val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
+        return roomDeviceList.filter { !it.isInAnyRoomsOf(hiddenRooms) }
     }
 }
