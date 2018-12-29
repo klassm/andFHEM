@@ -1,1 +1,1 @@
-* Behandle Geräte in "hiddenrooms" als ob sie im Raum "hidden" wären. Wenn der entsprechende Schalter in den Einstellunge gesetzt ist werden damit diese Geräte auch nicht mehr im "Alle Geräte" Tab angezeigt. 
+TODO
