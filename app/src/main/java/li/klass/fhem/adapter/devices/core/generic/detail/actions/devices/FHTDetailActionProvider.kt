@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices
 
 import android.content.Context
-import android.content.Intent
 import com.google.common.collect.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -35,11 +34,8 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailAct
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.FHTModeStateOverwrite
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.adapter.uiservice.FragmentUiService
 import li.klass.fhem.devices.backend.GenericDeviceService
-import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -47,6 +43,7 @@ import javax.inject.Singleton
 @Singleton
 class FHTDetailActionProvider @Inject constructor(
         fhtModeStateOverwrite: FHTModeStateOverwrite,
+        val fragmentUiService: FragmentUiService,
         val genericDeviceService: GenericDeviceService
 ) : DeviceDetailActionProvider() {
 
@@ -57,15 +54,8 @@ class FHTDetailActionProvider @Inject constructor(
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return ImmutableList.of<ActionCardAction>(
                 object : ActionCardButton(R.string.timetable, context) {
-                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                        context.sendBroadcast(
-                                Intent(Actions.SHOW_FRAGMENT)
-                                        .putExtra(FRAGMENT, FragmentType.FROM_TO_WEEK_PROFILE)
-                                        .putExtra(CONNECTION_ID, connectionId)
-                                        .putExtra(DEVICE_NAME, device.name)
-                                        .putExtra(HEATING_CONFIGURATION, FHTConfiguration())
-                        )
-                    }
+                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) =
+                            fragmentUiService.showFromToWeekProfileFor(device, connectionId, context)
                 },
                 object : ActionCardButton(R.string.requestRefresh, context) {
                     override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {

@@ -29,15 +29,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.common.base.Preconditions.checkArgument
 import com.google.common.collect.Lists.newArrayList
 import kotlinx.android.synthetic.main.weekprofile.*
 import kotlinx.android.synthetic.main.weekprofile.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
-import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
-import li.klass.fhem.constants.BundleExtraKeys.HEATING_CONFIGURATION
+import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
@@ -52,6 +50,7 @@ import javax.inject.Inject
 abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>> : BaseFragment() {
 
     private lateinit var deviceName: String
+    private lateinit var deviceDisplayName: String
     private lateinit var heatingConfiguration: HeatingConfiguration<INTERVAL, *>
     private lateinit var weekProfile: WeekProfile<INTERVAL, *>
 
@@ -66,10 +65,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         super.setArguments(args)
         args ?: return
 
-        checkArgument(args.containsKey(DEVICE_NAME))
-        checkArgument(args.containsKey(HEATING_CONFIGURATION))
+        deviceName = args.getString(DEVICE_NAME)!!
+        deviceDisplayName = args.getString(DEVICE_DISPLAY_NAME) ?: deviceName
 
-        deviceName = args.getString(DEVICE_NAME)
         @Suppress("UNCHECKED_CAST")
         heatingConfiguration = args.getSerializable(HEATING_CONFIGURATION)!! as HeatingConfiguration<INTERVAL, *>
     }
@@ -156,10 +154,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     override fun mayUpdateFromBroadcast(): Boolean = false
 
-    override fun getTitle(context: Context) = deviceName
+    override fun getTitle(context: Context) = deviceDisplayName
 
     companion object {
-
         private val LOGGER = LoggerFactory.getLogger(BaseWeekProfileFragment::class.java)
     }
 }
