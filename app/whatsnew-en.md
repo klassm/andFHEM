@@ -1,1 +1,1 @@
-TODO
+* Repair background color for timetable editing and intervals

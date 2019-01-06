@@ -1,1 +1,1 @@
-TODO
+* Repariere Hintergrundfarbe im Dark-Mode für Intervall-Schaltpläne
