@@ -30,7 +30,10 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.TextView
+import android.widget.TimePicker
+import kotlinx.android.synthetic.main.weekprofile_temperature_time_selector.view.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow
 import li.klass.fhem.domain.heating.schedule.DayProfile
@@ -136,7 +139,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             val minutesPart = time?.substring(3, 5) ?: "0"
 
             hours = if (hoursPart == "24") 0 else Integer.valueOf(hoursPart)
-            minutes = Integer.valueOf(minutesPart)!!
+            minutes = Integer.valueOf(minutesPart)
         }
 
         fun showDialog(context: Context, viewGroup: ViewGroup) {
@@ -145,8 +148,8 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
 
             val contentView = createContentViewWith(layoutInflater, viewGroup)
 
-            val tableLayout = contentView.findViewById<TableLayout>(R.id.tableLayout)
-            val updateRow = contentView.findViewById<TableRow>(R.id.updateRow)
+            val tableLayout = contentView.tableLayout
+            val updateRow = contentView.updateRow
             val temperatureChangeTableRow = object : TemperatureChangeTableRow(context, interval.changedTemperature,
                     updateRow, 5.5, 30.0, applicationProperties) {
                 override fun showButton(): Boolean = false
@@ -154,7 +157,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             tableLayout.addView(temperatureChangeTableRow.createRow(layoutInflater, null))
 
             val dialog = builder.setView(contentView).show()
-            contentView.findViewById<Button>(R.id.okButton)
+            contentView.okButton
                     .setOnClickListener {
                         dialog.dismiss()
                         val temperature = temperatureChangeTableRow.temperature
@@ -175,7 +178,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             return AndroidBug.handleColorStateBug(object : AndroidBug.BugHandler {
                 override fun bugEncountered(): View {
                     val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector_android_bug, viewGroup, false)
-                    val timePicker = contentView.findViewById<FallbackTimePicker>(R.id.timePickerAndroidBug)
+                    val timePicker = contentView.timePickerAndroidBug.findViewById<FallbackTimePicker>(R.id.timePickerAndroidBug)
                     timePicker.hours = hours
                     timePicker.minutes = minutes
                     timePicker.setOnValueChangedListener { hours, minutes ->

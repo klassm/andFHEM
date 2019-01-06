@@ -39,7 +39,7 @@
             android:id="@+id/tableLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/whitegrey"
+            android:background="@color/backgroundColorSecondary"
             android:orientation="vertical"
             tools:ignore="Overdraw">
 
@@ -83,6 +83,7 @@
         </TableLayout>
 
         <Button
+            android:layout_gravity="center_horizontal"
             android:id="@+id/okButton"
             style="@style/button"
             android:text="@string/okButton" />
