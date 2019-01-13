@@ -15,7 +15,7 @@ and register on one of the following pages below (for your installed version):
 </ul>
 
 {% for release in site.github.releases %}
-<h3><a href="https://github.com/klassm/andFHEM/milestones/{{release.name}}">{{release.name}}</a> ({{release.published_at | date: '%d.%m.%Y'}})</h3>
+<h3><a href="https://github.com/klassm/andFHEM/issues?q=milestone%3A{{release.name}}">{{release.name}}</a> ({{release.published_at | date: '%d.%m.%Y'}})</h3>
 <div markdown="1">{{release.body}}</div>
 {% endfor %}
 
