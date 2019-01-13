@@ -37,6 +37,7 @@ enum class WidgetType {
     TARGET_STATE,
     ON_OFF,
     ROOM_DETAIL_LINK,
+    ROOM_DETAIL_LINK_SMALL,
     FAVORITES_LINK,
     ROOMS_LINK,
     ALL_DEVICES_LINK,

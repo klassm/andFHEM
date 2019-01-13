@@ -24,34 +24,26 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/appwidget_small">
+<RelativeLayout style="@style/appwidget_medium"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout android:layout_height="fill_parent"
+    <RelativeLayout
+        android:id="@+id/layout"
         style="@style/appwidget_content_small"
-        android:layout_width="fill_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/main">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
-        <TextView android:id="@+id/toggleOn"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/roomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/on"
+            android:text="@string/rooms"
             android:textColor="@android:color/black"
-            android:background="@drawable/rounded_green"
-            android:contentDescription="@string/switchDevice"
-            />
-        <TextView android:id="@+id/toggleOff"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
-            android:gravity="center"
-            android:text="@string/off"
-            android:textColor="@android:color/black"
-            android:background="@drawable/rounded_white"
-            android:contentDescription="@string/switchDevice"
-            />
-    </LinearLayout>
-    <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
+            android:textStyle="bold"
+            tools:ignore="NewApi" />
+    </RelativeLayout>
 </RelativeLayout>

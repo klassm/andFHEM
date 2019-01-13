@@ -35,13 +35,18 @@
     <style name="appwidget_content">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginLeft">7dp</item>
         <item name="android:layout_marginRight">15dp</item>
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginTop">7dp</item>
         <item name="android:background">@drawable/appwidget_background</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
         <item name="android:id">@id/main</item>
+    </style>
+
+    <style name="appwidget_content_small" parent="@style/appwidget_content">
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
     </style>
 
     <style name="appwidget_item">
