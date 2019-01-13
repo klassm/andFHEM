@@ -36,6 +36,7 @@ public class GPlotSeries implements Serializable {
     private String title;
     private String logDef;
     private LineType lineType;
+    private Optional<String> logDevice = Optional.absent();
     private Axis axis;
     private SeriesColor color;
     private SeriesType seriesType;
@@ -49,6 +50,7 @@ public class GPlotSeries implements Serializable {
         color = builder.color.get();
         seriesType = builder.seriesType;
         lineWidth = builder.lineWidth;
+        logDevice = builder.logDevice;
     }
 
     public String getTitle() {
@@ -79,6 +81,10 @@ public class GPlotSeries implements Serializable {
         return lineWidth;
     }
 
+    public Optional<String> getLogDevice() {
+        return logDevice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,7 +98,8 @@ public class GPlotSeries implements Serializable {
                 && axis == that.axis
                 && color == that.color
                 && seriesType == that.seriesType
-                && lineWidth == that.lineWidth;
+                && lineWidth == that.lineWidth
+                && logDevice.equals(that.logDevice);
     }
 
     @Override
@@ -102,6 +109,7 @@ public class GPlotSeries implements Serializable {
         result = 31 * result + (lineType != null ? lineType.hashCode() : 0);
         result = 31 * result + (axis != null ? axis.hashCode() : 0);
         result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + (logDevice != null ? logDevice.hashCode() : 0);
         result = 31 * result + (seriesType != null ? seriesType.hashCode() : 0);
         result = 31 * result + (lineWidth != +0.0f ? Float.floatToIntBits(lineWidth) : 0);
         return result;
@@ -117,6 +125,7 @@ public class GPlotSeries implements Serializable {
                 ", color=" + color +
                 ", seriesType=" + seriesType +
                 ", lineWidth=" + lineWidth +
+                ", logDevice=" + logDevice +
                 '}';
     }
 
@@ -169,6 +178,7 @@ public class GPlotSeries implements Serializable {
         private String logDef;
         private LineType lineType = LineType.LINES;
         private Axis axis;
+        private Optional<String> logDevice = Optional.absent();
         private Optional<SeriesColor> color = Optional.absent();
         private SeriesType seriesType = DEFAULT;
         private float lineWidth = 1;
@@ -212,6 +222,11 @@ public class GPlotSeries implements Serializable {
 
         public Builder withLineWith(float lineWidth) {
             this.lineWidth = lineWidth;
+            return this;
+        }
+
+        public Builder withLogDevice(Optional<String> logDevice) {
+            this.logDevice = logDevice;
             return this;
         }
 

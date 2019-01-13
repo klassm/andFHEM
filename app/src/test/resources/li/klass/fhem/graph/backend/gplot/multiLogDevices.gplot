@@ -1,0 +1,17 @@
+set terminal png transparent size <SIZE> crop
+set output '<OUT>.png'
+set xdata time
+set timefmt "%Y-%m-%d_%H:%M:%S"
+set xlabel " "
+set title 'test'
+set ytics
+set y2tics
+set grid
+set ylabel ""
+set y2label ""
+
+#FileLog_wetterstation 4:IR:0:
+#FileLog_zisterne 4:zisterne.level\x3a:0:
+
+plot "<IN>" using 1:2 axes x1y1 title 'Temperature' ls l0 lw 1 with lines,\
+     "<IN>" using 1:2 axes x1y2 title 'Zisterne' ls l1fill lw 1 with lines

@@ -25,19 +25,16 @@
 package li.klass.fhem.graph.backend.gplot;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
 import com.google.common.collect.Range;
 import com.google.common.io.Resources;
-import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 
 import li.klass.fhem.testutil.MockitoRule;
@@ -70,23 +67,56 @@ public class GPlotParserTest {
         GPlotAxis leftAxis = definition.getLeftAxis();
         assertThat(leftAxis.getLabel()).isEqualTo("Actuator (%)");
         assertThat(leftAxis.getSeries()).containsExactly(new Builder()
-                        .withTitle("Actuator (%)")
-                        .withColor(SeriesColor.GREEN)
-                        .withLineType(LineType.LINES)
-                        .withLogDef("4:actuator.*[0-9]+%:0:int")
-                        .withAxis(Axis.LEFT)
-                        .build()
+                .withTitle("Actuator (%)")
+                .withColor(SeriesColor.GREEN)
+                .withLineType(LineType.LINES)
+                .withLogDef("4:actuator.*[0-9]+%:0:int")
+                .withAxis(Axis.LEFT)
+                .build()
         );
 
         GPlotAxis rightAxis = definition.getRightAxis();
         assertThat(rightAxis.getLabel()).isEqualTo("Temperature in C");
         assertThat(rightAxis.getSeries()).containsExactly(new Builder()
-                        .withTitle("Measured temperature")
-                        .withLineType(LineType.LINES)
-                        .withLogDef("4:measured:0:")
-                        .withAxis(Axis.RIGHT)
-                        .withColor(SeriesColor.RED)
-                        .build()
+                .withTitle("Measured temperature")
+                .withLineType(LineType.LINES)
+                .withLogDef("4:measured:0:")
+                .withAxis(Axis.RIGHT)
+                .withColor(SeriesColor.RED)
+                .build()
+        );
+    }
+
+    @Test
+    public void should_parse_a_multi_log_device_gplot() throws Exception {
+        // given
+        String content = readGPlot("multiLogDevices.gplot");
+
+        // when
+        GPlotDefinition definition = gPlotParser.parse(content);
+
+        // then
+        GPlotAxis leftAxis = definition.getLeftAxis();
+        assertThat(leftAxis.getSeries()).containsExactly(new Builder()
+                .withTitle("Temperature")
+                .withColor(SeriesColor.RED)
+                .withLineType(LineType.LINES)
+                .withLogDef("4:IR:0:")
+                .withAxis(Axis.LEFT)
+                .withLogDevice(Optional.of("FileLog_wetterstation"))
+                .build()
+        );
+
+        GPlotAxis rightAxis = definition.getRightAxis();
+        assertThat(rightAxis.getSeries()).containsExactly(new Builder()
+                .withTitle("Zisterne")
+                .withLineType(LineType.LINES)
+                .withLogDef("4:zisterne.level\\x3a:0:")
+                .withAxis(Axis.RIGHT)
+                .withColor(SeriesColor.GREEN)
+                .withSeriesType(SeriesType.FILL)
+                .withLogDevice(Optional.of("FileLog_zisterne"))
+                .build()
         );
     }
 
@@ -379,6 +409,7 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.FILL)
                         .withAxis(Axis.RIGHT)
                         .withLineWith(1)
+                        .withLogDevice(Optional.of("sumLog"))
                         .build());
     }
 
@@ -497,6 +528,7 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.FILL)
                         .withAxis(Axis.LEFT)
                         .withLineWith(1.5f)
+                        .withLogDevice(Optional.of("logdb"))
                         .build(),
                 new Builder()
                         .withTitle("Handy2")
@@ -506,6 +538,7 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.FILL)
                         .withAxis(Axis.LEFT)
                         .withLineWith(1.5f)
+                        .withLogDevice(Optional.of("logdb"))
                         .build());
 
         assertThat(rightAxis.getSeries()).containsOnly(
@@ -517,6 +550,7 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.RIGHT)
                         .withLineWith(2)
+                        .withLogDevice(Optional.of("logdb"))
                         .build(),
                 new Builder()
                         .withTitle("Fenster Küche")
@@ -526,6 +560,7 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.RIGHT)
                         .withLineWith(1)
+                        .withLogDevice(Optional.of("logdb"))
                         .build(),
                 new Builder()
                         .withTitle("Fenster Schlafzimmer")
@@ -535,6 +570,7 @@ public class GPlotParserTest {
                         .withSeriesType(SeriesType.DEFAULT)
                         .withAxis(Axis.RIGHT)
                         .withLineWith(1)
+                        .withLogDevice(Optional.of("logdb"))
                         .build());
     }
 

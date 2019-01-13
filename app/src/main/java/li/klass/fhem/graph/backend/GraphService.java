@@ -96,7 +96,8 @@ public class GraphService {
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.getName(), series.size());
 
         for (GPlotSeries plotSeries : series) {
-            data.put(plotSeries, getCurrentGraphEntriesFor(svgGraphDefinition.getLogDeviceName(), connectionId, plotSeries, interval, svgGraphDefinition.getPlotfunction()));
+            String logDevice = plotSeries.getLogDevice().or(svgGraphDefinition.getLogDeviceName());
+            data.put(plotSeries, getCurrentGraphEntriesFor(logDevice, connectionId, plotSeries, interval, svgGraphDefinition.getPlotfunction()));
         }
 
         return new GraphData(data, interval);

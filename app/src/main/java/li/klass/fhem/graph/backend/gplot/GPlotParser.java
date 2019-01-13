@@ -170,7 +170,12 @@ public class GPlotParser {
                     && spaceSeparatedParts.length == 2
                     && !spaceSeparatedParts[0].matches("[#]+[ ]*")
                     && spaceSeparatedParts[1].contains(":")) {
-                builders.add(new GPlotSeries.Builder().withLogDef(spaceSeparatedParts[1]));
+                String logDevice = spaceSeparatedParts[0].substring(1);
+                GPlotSeries.Builder builder = new GPlotSeries.Builder();
+                if (!logDevice.equalsIgnoreCase("FileLog") && !logDevice.equalsIgnoreCase("DBLog")) {
+                    builder.withLogDevice(Optional.of(logDevice));
+                }
+                builders.add(builder.withLogDef(spaceSeparatedParts[1]));
             } else if (plotFound) {
                 GPlotSeries.Builder builder = builders.peek();
                 if (builder == null) {
