@@ -28,7 +28,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ToggleButton
+import kotlinx.android.synthetic.main.togglebutton.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -49,21 +49,22 @@ open class WebCmdActionRow(
                          context: Context, viewGroup: ViewGroup, connectionId: String?): View {
 
         val container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false)
-        val button = container.findViewById<ToggleButton>(R.id.toggleButton)!!
 
-        button.text = device.getEventMapStateFor(item)
-        button.textOn = device.getEventMapStateFor(item)
-        button.textOff = device.getEventMapStateFor(item)
+        container.toggleButton.apply {
+            text = device.getEventMapStateFor(item)
+            textOn = device.getEventMapStateFor(item)
+            textOff = device.getEventMapStateFor(item)
 
-        button.setOnClickListener {
-            val setList = device.setList
-            val callback = StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
-            val result = AvailableTargetStatesDialogUtil.handleSelectedOption(
-                    context, device, setList[item, true], callback
-            )
-            if (!result) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    stateUiService.setState(device, item, context, connectionId)
+            setOnClickListener {
+                val setList = device.setList
+                val callback = StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
+                val result = AvailableTargetStatesDialogUtil.handleSelectedOption(
+                        context, device, setList[item, true], callback
+                )
+                if (!result) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        stateUiService.setState(device, item, context, connectionId)
+                    }
                 }
             }
         }

@@ -1,0 +1,23 @@
+{
+  "defaultGroup": "UNKNOWN",
+  "sanitise": {
+    "deviceValues": {
+      "STATE": {
+        "replaceAll": [
+          {
+            "search": " &amp;deg;C",
+            "replaceBy": " (°C)"
+          }
+        ]
+      },
+      "state": {
+        "replaceAll": [
+          {
+            "search": " &amp;deg;C",
+            "replaceBy": " (°C)"
+          }
+        ]
+      }
+    }
+  }
+}
