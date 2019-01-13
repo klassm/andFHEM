@@ -45,7 +45,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.common.base.Optional
-import com.google.common.collect.Lists.newArrayList
 import com.google.common.collect.Range
 import kotlinx.android.synthetic.main.chart.*
 import kotlinx.coroutines.*
@@ -128,7 +127,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         coroutineScope {
             showDialog(DIALOG_EXECUTING)
             val result = withContext(Dispatchers.IO) {
-                graphService.getGraphData(device, Optional.absent(), svgGraphDefinition, startDate, endDate, myContext)
+                graphService.getGraphData(device, null, svgGraphDefinition, startDate, endDate, myContext)
             }
             dismissDialog(DIALOG_EXECUTING)
 
@@ -145,13 +144,13 @@ class GraphActivity : AppCompatActivity(), Updateable {
      * *
      * @param graphData used graph data
      */
-    private fun createChart(device: FhemDevice, graphData: Map<GPlotSeries, MutableList<GraphEntry>>) {
+    private fun createChart(device: FhemDevice, graphData: Map<GPlotSeries, List<GraphEntry>>) {
 
         val activity = this
         val themeTextColor = theme.resolveColor(android.R.attr.textColorPrimary)
 
-        handleDiscreteValues(graphData)
-        val lineData = createLineDataFor(graphData)
+        val processedData = handleDiscreteValues(graphData)
+        val lineData = createLineDataFor(processedData)
         val title = if (DisplayUtil.getWidthInDP(applicationContext) < 500) {
             device.aliasOrName + "\n\r" +
                     DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate)
@@ -199,32 +198,38 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
     }
 
-    private fun handleDiscreteValues(graphData: Map<GPlotSeries, MutableList<GraphEntry>>) {
-        for ((key, values) in graphData) {
+    private fun handleDiscreteValues(graphData: Map<GPlotSeries, List<GraphEntry>>): Map<GPlotSeries, List<GraphEntry>> {
+        return graphData.mapValues { (key, values) ->
             if (!isDiscreteSeries(key)) {
-                continue
-            }
+                values
+            } else handleDiscreteValue(key, values)
+        }
+    }
 
-            var previousValue = -1f
-            val newData = newArrayList<GraphEntry>()
+    private fun handleDiscreteValue(gPlotSeries: GPlotSeries, values: List<GraphEntry>): List<GraphEntry> {
+        if (!isDiscreteSeries(gPlotSeries)) {
+            return values
+        }
 
-            for (graphEntry in values) {
-                val date = graphEntry.date
-                val value = graphEntry.value
+        var previousValue = -1f
+        val newData = mutableListOf<GraphEntry>()
 
-                if (previousValue == -1f) {
-                    previousValue = value
-                }
+        for (graphEntry in values) {
+            val date = graphEntry.date
+            val value = graphEntry.value
 
-                newData.add(GraphEntry(date.minusMillis(1), previousValue))
-                newData.add(GraphEntry(date, value))
-                newData.add(GraphEntry(date.plusMillis(1), value))
-
+            if (previousValue == -1f) {
                 previousValue = value
             }
-            values.clear()
-            values.addAll(newData)
+
+            newData.add(GraphEntry(date.minusMillis(1), previousValue))
+            newData.add(GraphEntry(date, value))
+            newData.add(GraphEntry(date.plusMillis(1), value))
+
+            previousValue = value
         }
+
+        return newData
     }
 
     private fun isDiscreteSeries(plotSeries: GPlotSeries): Boolean {
@@ -232,14 +237,14 @@ class GraphActivity : AppCompatActivity(), Updateable {
         return lineType == GPlotSeries.LineType.STEPS || lineType == GPlotSeries.LineType.FSTEPS || lineType == GPlotSeries.LineType.HISTEPS
     }
 
-    private fun createLineDataFor(graphData: Map<GPlotSeries, MutableList<GraphEntry>>): LineData? {
+    private fun createLineDataFor(graphData: Map<GPlotSeries, List<GraphEntry>>): LineData? {
         val lineDataItems = graphData
                 .filter { it.value.isNotEmpty() }
                 .map { lineDataSetFrom(it) }.toList()
         return if (lineDataItems.isEmpty()) null else LineData(lineDataItems)
     }
 
-    private fun lineDataSetFrom(entry: Map.Entry<GPlotSeries, MutableList<GraphEntry>>): ILineDataSet {
+    private fun lineDataSetFrom(entry: Map.Entry<GPlotSeries, List<GraphEntry>>): ILineDataSet {
         val series = entry.key
         val yEntries = entry.value.map { Entry(it.date.millis.toFloat(), it.value) }.toList()
 
@@ -347,7 +352,6 @@ class GraphActivity : AppCompatActivity(), Updateable {
          * @param graphDefinition series descriptions each representing one series in the resulting chart
          */
         fun showChart(context: Context, device: FhemDevice, connectionId: String?, graphDefinition: SvgGraphDefinition) {
-
             context.startActivity(Intent(context, GraphActivity::class.java)
                     .putExtra(DEVICE_NAME, device.name)
                     .putExtra(CONNECTION_ID, connectionId)

@@ -22,30 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.graph.backend;
+package li.klass.fhem.graph.backend
 
-import org.joda.time.Interval;
+import li.klass.fhem.graph.backend.gplot.GPlotSeries
+import org.joda.time.Interval
 
-import java.util.HashMap;
-import java.util.List;
-
-import li.klass.fhem.graph.backend.gplot.GPlotSeries;
-
-public class GraphData {
-    private final HashMap<GPlotSeries, List<GraphEntry>> data;
-    private final Interval interval;
-
-    GraphData(HashMap<GPlotSeries, List<GraphEntry>> data, Interval interval) {
-        this.data = data;
-        this.interval = interval;
-    }
-
-    public Interval getInterval() {
-        return interval;
-    }
-
-    public HashMap<GPlotSeries, List<GraphEntry>> getData() {
-
-        return data;
-    }
-}
+data class GraphData(val data: Map<GPlotSeries, List<GraphEntry>>, val interval: Interval)
