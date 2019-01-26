@@ -28,6 +28,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.device_overview_weather.view.*
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
@@ -62,6 +63,7 @@ class WeatherDeviceViewStrategy @Inject constructor(
         url ?: return
         GlideApp.with(imageView.context)
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.empty)
                 .into(imageView)
     }

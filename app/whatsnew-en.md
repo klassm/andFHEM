@@ -1,1 +1,1 @@
-TODO
+* Cache up to 100MB of image data (i.e. for icons)

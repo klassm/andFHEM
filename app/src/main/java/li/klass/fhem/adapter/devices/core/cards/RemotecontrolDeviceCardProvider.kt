@@ -30,6 +30,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TableLayout
 import android.widget.TableRow
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import kotlinx.android.synthetic.main.remote_control_layout.view.*
@@ -96,6 +97,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 
         GlideApp.with(context)
                 .load(glideUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.empty)
                 .into(imageButton)
 

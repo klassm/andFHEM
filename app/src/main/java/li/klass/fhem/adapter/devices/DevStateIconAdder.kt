@@ -2,6 +2,7 @@ package li.klass.fhem.adapter.devices
 
 import android.view.View
 import android.widget.ImageView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +44,7 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
                 logger.info("addDevStateIconIfRequired - loading icon from $url")
                 GlideApp.with(imageView.context)
                         .load(glideUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .error(R.drawable.empty)
                         .into(imageView)
             }

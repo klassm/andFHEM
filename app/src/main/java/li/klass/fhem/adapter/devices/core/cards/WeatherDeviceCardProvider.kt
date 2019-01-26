@@ -98,6 +98,7 @@ class WeatherDeviceCardProvider @Inject constructor(
 
                     GlideApp.with(context)
                             .load(element.icon)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .error(R.drawable.empty)
                             .into(forecastWeatherImage)
                 }

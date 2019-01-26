@@ -92,13 +92,10 @@ class DeviceListParser @Inject constructor(
                 continue
             }
 
-            if (connectionService.mayShowInCurrentConnectionType(key)) {
-
                 val functionalityParseErrors = devicesFromDocument(xmlListDevices, allDevices,
                         context)
 
                 parseErrors.putAll(functionalityParseErrors)
-            }
         }
 
         val roomDeviceList = buildRoomDeviceList(allDevices)
