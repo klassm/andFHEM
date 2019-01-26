@@ -35,7 +35,6 @@ import com.google.api.client.http.HttpResponseException
 import com.google.common.base.Charsets
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableMap
-import com.google.common.io.CharStreams
 import li.klass.fhem.connection.backend.RequestResultError.*
 import li.klass.fhem.connection.backend.ssl.MemorizingTrustManagerContextInitializer
 import li.klass.fhem.error.ErrorHolder
@@ -85,7 +84,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             }
 
             InputStreamReader(response.content, Charsets.UTF_8).use {
-                return RequestResult(CharStreams.toString(it))
+                return RequestResult(it.readText())
             }
         } catch (e: Exception) {
             LOG.error("cannot handle result", e)
@@ -192,7 +191,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     companion object {
-        val SOCKET_TIMEOUT = 20000
+        val SOCKET_TIMEOUT = 60000
         private val LOG = LoggerFactory.getLogger(FHEMWEBConnection::class.java)
         private val STATUS_CODE_MAP: Map<Int, RequestResultError> = ImmutableMap.builder<Int, RequestResultError>()
                 .put(400, BAD_REQUEST)

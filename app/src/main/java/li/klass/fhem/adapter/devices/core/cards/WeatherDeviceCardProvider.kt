@@ -32,6 +32,7 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.device_detail_card_weather.view.*
 import kotlinx.android.synthetic.main.weather_forecast_item.view.*
 import kotlinx.coroutines.Dispatchers
