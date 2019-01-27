@@ -35,13 +35,11 @@ import android.util.Log;
 import com.google.api.client.repackaged.com.google.common.base.Objects;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
-import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -155,8 +153,6 @@ public class ErrorHolder {
             Process process = Runtime.getRuntime().exec("logcat -d -n 8 -r 32 -D -f " + outputFile.getAbsolutePath());
             reader = new InputStreamReader(process.getInputStream(), Charsets.UTF_8);
 
-            List<String> logLines = CharStreams.readLines(reader);
-            String log = Joiner.on("\r\n").join(logLines);
             return outputFile;
         } finally {
             CloseableUtil.close(reader);
