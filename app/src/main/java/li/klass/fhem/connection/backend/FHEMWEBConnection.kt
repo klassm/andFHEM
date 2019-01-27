@@ -72,7 +72,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     fun request(context: Context, urlSuffix: String): RequestResult<String> {
         try {
-            ProviderInstaller.installIfNeeded(context);
+            ProviderInstaller.installIfNeeded(context)
         } catch (e: Exception) {
             LOG.error("cannot install play providers", e)
         }
@@ -142,7 +142,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             val response = doGet("$serverUrl?room=notExistingJustToLoadCsrfToken")
             val value = response.headers.getFirstHeaderStringValue("X-FHEM-csrfToken")
             response.content.close()
-            return value
+            return URLEncoder.encode(value, "UTF-8")
         } catch (e: SocketTimeoutException) {
             LOG.info("socket timed out", e)
             throw e
