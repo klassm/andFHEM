@@ -1,1 +1,1 @@
-TODO
+* Repair an app crash within the KFM100 detail view
