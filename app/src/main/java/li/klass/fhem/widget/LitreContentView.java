@@ -126,7 +126,7 @@ public class LitreContentView extends View {
         canvas.save();
 
         float contentHeight = (float) (2 * innerCircleRadius * fillPercentage);
-        canvas.clipRect(xStart, innerCircleYCenter + innerCircleRadius - contentHeight, innerCircleXCenter + innerCircleRadius, size, Region.Op.REPLACE);
+        canvas.clipRect(xStart, innerCircleYCenter + innerCircleRadius - contentHeight, innerCircleXCenter + innerCircleRadius, size, Region.Op.INTERSECT);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setShader(new LinearGradient(0, 0, 0, getHeight(), DARK_BLUE, LIGHT_BLUE, Shader.TileMode.MIRROR));
