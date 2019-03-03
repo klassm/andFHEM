@@ -138,11 +138,11 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     private fun findCsrfToken(serverUrl: String): String? {
-        try {
+        return try {
             val response = doGet("$serverUrl?room=notExistingJustToLoadCsrfToken")
             val value = response.headers.getFirstHeaderStringValue("X-FHEM-csrfToken")
             response.content.close()
-            return URLEncoder.encode(value, "UTF-8")
+            value?.let { URLEncoder.encode(it, "UTF-8") }
         } catch (e: SocketTimeoutException) {
             LOG.info("socket timed out", e)
             throw e
@@ -151,7 +151,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             throw e
         } catch (e: IOException) {
             LOG.info("cannot load csrf token", e)
-            return null
+            null
         }
     }
 
