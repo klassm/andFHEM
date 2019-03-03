@@ -1,1 +1,1 @@
-TODO
+* Repair app crash when no CSRF token could be found
