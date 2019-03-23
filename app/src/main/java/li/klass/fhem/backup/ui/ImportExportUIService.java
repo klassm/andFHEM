@@ -77,6 +77,7 @@ public class ImportExportUIService {
         DialogProperties properties = new DialogProperties();
         properties.selection_mode = DialogConfigs.SINGLE_MODE;
         properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.extensions = new String[]{"backup"};
         properties.root = importExportService.getExportDirectory();
 
         FilePickerDialog dialog = new FilePickerDialog(activity, properties);
