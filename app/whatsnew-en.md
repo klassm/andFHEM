@@ -1,1 +1,1 @@
-TODO
+* Heating Widget for EQ3BT

@@ -1,1 +1,1 @@
-TODO
+* Heizung-Widget für EQ3BT

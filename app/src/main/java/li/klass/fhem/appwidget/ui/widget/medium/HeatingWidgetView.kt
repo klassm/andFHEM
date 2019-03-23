@@ -49,6 +49,9 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
         val temperature = xmlListDevice.getFirstStateOf(TEMPERATURE_STATES)
         val desiredTemp = xmlListDevice.getFirstStateOf(DESIRED_TEMPERATURE_STATES)
 
+        val boost = xmlListDevice.getFirstStateOf(BOOST_STATES)
+        val boostText = if (boost != null && boost != "0") context.getString(R.string.boost) else null
+
         if (warnings != null && warnings.toLowerCase(Locale.getDefault()).contains("open")) {
             view.setViewVisibility(R.id.windowOpen, View.VISIBLE)
         } else {
@@ -56,11 +59,13 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
         }
 
         val target = context.getString(R.string.target)
-        setTextViewOrHide(view, R.id.temperature, (temperature ?: ""))
+        setTextViewOrHide(view, R.id.temperature, "$target: $desiredTemp")
 
-        if (desiredTemp != null) {
-            val text = target + ": " + desiredTemp
-            setTextViewOrHide(view, R.id.additional, text)
+        val additionalValues = listOf(temperature, boostText)
+                .filterNotNull()
+                .joinToString(separator = ", ")
+        if (!additionalValues.isBlank()) {
+            setTextViewOrHide(view, R.id.additional, additionalValues)
         } else {
             view.setViewVisibility(R.id.additional, View.GONE)
         }
@@ -70,14 +75,15 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     override fun supports(device: FhemDevice): Boolean {
         val xmlListDevice = device.xmlListDevice
-        return xmlListDevice.containsAnyOfStates(TEMPERATURE_STATES) && xmlListDevice.containsAnyOfStates(DESIRED_TEMPERATURE_STATES)
+        return xmlListDevice.containsAnyOfStates(DESIRED_TEMPERATURE_STATES)
     }
 
     override val widgetSize = WidgetSize.MEDIUM
     override val widgetType = WidgetType.HEATING
 
     companion object {
-        private val TEMPERATURE_STATES = Arrays.asList("temperature", "measured-temp")
-        private val DESIRED_TEMPERATURE_STATES = Arrays.asList("desired-temp", "desiredTemperature")
+        private val TEMPERATURE_STATES = listOf("temperature", "measured-temp")
+        private val BOOST_STATES = listOf("boost")
+        private val DESIRED_TEMPERATURE_STATES = listOf("desired-temp", "desiredTemperature")
     }
 }
