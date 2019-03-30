@@ -68,7 +68,7 @@ release {
 task setStage {
     setStage(System.getProperty('stage')) // explicitly configuration phase
 }
-beforeReleaseBuild.dependsOn('setStage')
+beforeReleaseBuild.dependsOn('clean', 'setStage')
 
 def setStage(stage) {
     println("building $stage")
