@@ -122,6 +122,9 @@ class ImportExportService @Inject constructor(
             value
         } else if (type.isAssignableFrom(Double::class.java) || type.isAssignableFrom(java.lang.Double::class.java)) {
             java.lang.Double.parseDouble(value)
+        } else if (type.isAssignableFrom(Long::class.java) || type.isAssignableFrom(
+                        java.lang.Long::class.java)) {
+            java.lang.Long.parseLong(value)
         } else {
             throw IllegalArgumentException("don't know how to handle " + type.name)
         }

@@ -86,7 +86,7 @@ class ImportExportServiceTest {
                 .put("d", "1.0")
                 .put("e", "anc")
                 .put("g", "anc/bas")
-                .put("h", true)
+                .put("h", true).put("l", 1L)
                 .build()
 
         // when
@@ -101,7 +101,7 @@ class ImportExportServiceTest {
                 .put("d", "1.0/java.lang.String")
                 .put("e", "anc/java.lang.String")
                 .put("g", "anc/bas/java.lang.String")
-                .put("h", "true/java.lang.Boolean")
+                .put("h", "true/java.lang.Boolean").put("l", "1/java.lang.Long")
                 .build())
     }
 
@@ -115,7 +115,7 @@ class ImportExportServiceTest {
                 .put("d", "1.0/java.lang.String")
                 .put("e", "anc/java.lang.String")
                 .put("g", "anc/bas/java.lang.String")
-                .put("h", "true/java.lang.Boolean")
+                .put("h", "true/java.lang.Boolean").put("l", "1/java.lang.Long")
                 .build()
 
         // when
@@ -130,7 +130,7 @@ class ImportExportServiceTest {
                 .put("d", "1.0")
                 .put("e", "anc")
                 .put("g", "anc/bas")
-                .put("h", true)
+                .put("h", true).put("l", 1L)
                 .build())
     }
 }
