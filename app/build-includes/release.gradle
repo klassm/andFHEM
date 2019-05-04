@@ -115,3 +115,5 @@ if (project.hasProperty('andFHEMReleasePK12')) {
 if (project.hasProperty('andFHEMReleaseAccount')) {
     play.serviceAccountEmail = andFHEMReleaseAccount
 }
+
+play.enabled = play.serviceAccountCredentials != null && play.serviceAccountEmail != null
