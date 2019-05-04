@@ -163,7 +163,7 @@ class ImportExportService @Inject constructor(
                         val content = Gson().fromJson<Map<String, Map<String, String>>>(reader, Map::class.java)
                         content.entries
                                 .filter { exportKeys.containsKey(it.key) }
-                                .map { exportKeys.get(it.key)!! to toImportValues(it.value) }
+                                .map { exportKeys.getValue(it.key) to toImportValues(it.value) }
                                 .forEach { sharedPreferencesService.writeAllIn(it.first, it.second) }
                     }
 
