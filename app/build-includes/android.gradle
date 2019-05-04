@@ -29,11 +29,6 @@ android {
     testBuildType 'debug'
     compileOptions.incremental = true
 
-    playAccountConfigs {
-        defaultAccountConfig {
-        }
-    }
-
     testOptions {
         unitTests.returnDefaultValues = true
     }
@@ -48,7 +43,6 @@ android {
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        playAccountConfig = playAccountConfigs.defaultAccountConfig
         versionCode getAppVersionCode()
         versionName version
         javaCompileOptions {
@@ -149,10 +143,4 @@ if (project.hasProperty('andFHEMReleaseStorePassword')) {
 }
 if (project.hasProperty('andFHEMReleaseAliasPassword')) {
     android.signingConfigs.release.keyPassword = andFHEMReleaseAliasPassword
-}
-if (project.hasProperty('andFHEMReleasePK12')) {
-    android.playAccountConfigs.defaultAccountConfig.pk12File = file(andFHEMReleasePK12)
-}
-if (project.hasProperty('andFHEMReleaseAccount')) {
-    android.playAccountConfigs.defaultAccountConfig.serviceAccountEmail = andFHEMReleaseAccount
 }

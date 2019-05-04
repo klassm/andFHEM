@@ -26,7 +26,7 @@ package li.klass.fhem.domain.setlist
 
 import li.klass.fhem.domain.setlist.typeEntry.*
 
-enum class SetListItemType(val supportsType: SupportsType) {
+enum class SetListItemType(private val supportsType: SupportsType) {
     NO_ARG(SupportsType("noArg", 1)) {
         override fun entryFor(key: String, parts: List<String>): SetListItem? =
                 NoArgSetListEntry(key)
