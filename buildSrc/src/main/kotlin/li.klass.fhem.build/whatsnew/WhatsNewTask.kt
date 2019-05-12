@@ -43,7 +43,7 @@ open class WhatsNewTask : DefaultTask() {
         } else content
 
         toUpdate.forEach {
-            val targetFile = File(it.getAbsolutePath() + "/$locale/whatsnew")
+            val targetFile = File(it.getAbsolutePath() + "/release-notes/$locale/production.txt")
             targetFile.delete()
             targetFile.writeText(shortText, Charsets.UTF_8)
         }
