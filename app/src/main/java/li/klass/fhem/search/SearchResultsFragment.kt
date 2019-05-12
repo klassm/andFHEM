@@ -25,9 +25,14 @@ class SearchResultsFragment : DeviceListFragment() {
     }
 
     private fun saveRecentQuery() {
-        val suggestions = SearchRecentSuggestions(activity,
-                MySearchSuggestionsProvider.AUTHORITY, MySearchSuggestionsProvider.MODE)
-        suggestions.saveRecentQuery(query, null)
+        val context: Context = activity ?: return
+        @Suppress("SENSELESS_COMPARISON") // can be nullable according to annotations
+        if (context != null) {
+            val suggestions =
+                    SearchRecentSuggestions(context, MySearchSuggestionsProvider.AUTHORITY,
+                                            MySearchSuggestionsProvider.MODE)
+            suggestions.saveRecentQuery(query, null)
+        }
     }
 
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList = searchResultsProvider.query(query)
