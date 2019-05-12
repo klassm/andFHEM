@@ -1,1 +1,1 @@
-TODO
+* Fill state view for KFM100 HM-Sen-Wa-Od in uppercase was not shown

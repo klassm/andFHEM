@@ -1,1 +1,1 @@
-TODO
+* Füllstand für KFM100 HM-Sen-Wa-Od in Uppercase wurde nicht angezeigt

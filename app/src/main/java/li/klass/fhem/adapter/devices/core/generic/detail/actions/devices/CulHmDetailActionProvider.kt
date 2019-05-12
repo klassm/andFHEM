@@ -102,8 +102,8 @@ constructor(
             }.createRow(LayoutInflater.from(context), parent)
         }
 
-        private fun determineContentPercentage(device: XmlListDevice, model: String) =
-                if ("HM-Sen-Wa-Od" == model) {
+        private fun determineContentPercentage(device: XmlListDevice, model: String) = if ("HM-Sen-Wa-Od".equals(
+                        model, ignoreCase = true)) {
                     extractLeadingDouble(device.getState("level", false)) / 100.0
                 } else {
                     val rawToReadable = device.getAttribute("rawToReadable")!!
