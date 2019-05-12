@@ -1,0 +1,311 @@
+{
+  "defaultLanguage": "en-US",
+  "defaultPrice": {
+    "currency": "EUR",
+    "priceMicros": "500000"
+  },
+  "listings": {
+    "en-US": {
+      "description": "andFHEM Premium for donators.",
+      "title": "andFHEM Premium Donators"
+    }
+  },
+  "packageName": "li.klass.fhem",
+  "prices": {
+    "KR": {
+      "currency": "KRW",
+      "priceMicros": "999000000"
+    },
+    "MX": {
+      "currency": "MXN",
+      "priceMicros": "9900000"
+    },
+    "SG": {
+      "currency": "SGD",
+      "priceMicros": "990000"
+    },
+    "CA": {
+      "currency": "CAD",
+      "priceMicros": "990000"
+    },
+    "CH": {
+      "currency": "CHF",
+      "priceMicros": "1000000"
+    },
+    "NO": {
+      "currency": "NOK",
+      "priceMicros": "6000000"
+    },
+    "NL": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "IL": {
+      "currency": "ILS",
+      "priceMicros": "3000000"
+    },
+    "NZ": {
+      "currency": "NZD",
+      "priceMicros": "990000"
+    },
+    "HK": {
+      "currency": "HKD",
+      "priceMicros": "7000000"
+    },
+    "CZ": {
+      "currency": "CZK",
+      "priceMicros": "19500000"
+    },
+    "AU": {
+      "currency": "AUD",
+      "priceMicros": "990000"
+    },
+    "FR": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "BE": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "GR": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "US": {
+      "currency": "USD",
+      "priceMicros": "990000"
+    },
+    "PL": {
+      "currency": "PLN",
+      "priceMicros": "2990000"
+    },
+    "PT": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "AT": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "LU": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "IN": {
+      "currency": "INR",
+      "priceMicros": "50000000"
+    },
+    "ES": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "DE": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "GB": {
+      "currency": "GBP",
+      "priceMicros": "500000"
+    },
+    "EE": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "IE": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "JP": {
+      "currency": "JPY",
+      "priceMicros": "99000000"
+    },
+    "SK": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "FI": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "RU": {
+      "currency": "RUB",
+      "priceMicros": "30000000"
+    },
+    "IT": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "DK": {
+      "currency": "DKK",
+      "priceMicros": "6000000"
+    },
+    "SI": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "SE": {
+      "currency": "SEK",
+      "priceMicros": "7000000"
+    },
+    "HU": {
+      "currency": "HUF",
+      "priceMicros": "225000000"
+    },
+    "TW": {
+      "currency": "TWD",
+      "priceMicros": "30000000"
+    },
+    "AE": {
+      "currency": "AED",
+      "priceMicros": "3500000"
+    },
+    "BG": {
+      "currency": "BGN",
+      "priceMicros": "1500000"
+    },
+    "BO": {
+      "currency": "BOB",
+      "priceMicros": "7000000"
+    },
+    "CL": {
+      "currency": "CLP",
+      "priceMicros": "500000000"
+    },
+    "CO": {
+      "currency": "COP",
+      "priceMicros": "2000000000"
+    },
+    "CR": {
+      "currency": "CRC",
+      "priceMicros": "500000000"
+    },
+    "CY": {
+      "currency": "EUR",
+      "priceMicros": "500000"
+    },
+    "EG": {
+      "currency": "EGP",
+      "priceMicros": "7000000"
+    },
+    "ID": {
+      "currency": "IDR",
+      "priceMicros": "12000000000"
+    },
+    "LB": {
+      "currency": "LBP",
+      "priceMicros": "1500000000"
+    },
+    "LT": {
+      "currency": "EUR",
+      "priceMicros": "720000"
+    },
+    "MA": {
+      "currency": "MAD",
+      "priceMicros": "8500000"
+    },
+    "MY": {
+      "currency": "MYR",
+      "priceMicros": "3500000"
+    },
+    "PE": {
+      "currency": "PEN",
+      "priceMicros": "3000000"
+    },
+    "PH": {
+      "currency": "PHP",
+      "priceMicros": "43000000"
+    },
+    "PK": {
+      "currency": "PKR",
+      "priceMicros": "105000000"
+    },
+    "RO": {
+      "currency": "RON",
+      "priceMicros": "3500000"
+    },
+    "SA": {
+      "currency": "SAR",
+      "priceMicros": "4000000"
+    },
+    "TH": {
+      "currency": "THB",
+      "priceMicros": "32000000"
+    },
+    "TR": {
+      "currency": "TRY",
+      "priceMicros": "2000000"
+    },
+    "UA": {
+      "currency": "UAH",
+      "priceMicros": "8000000"
+    },
+    "VN": {
+      "currency": "VND",
+      "priceMicros": "21000000000"
+    },
+    "ZA": {
+      "currency": "ZAR",
+      "priceMicros": "10000000"
+    },
+    "BR": {
+      "currency": "BRL",
+      "priceMicros": "2500000"
+    },
+    "LI": {
+      "currency": "CHF",
+      "priceMicros": "990000"
+    },
+    "KZ": {
+      "currency": "KZT",
+      "priceMicros": "105190000"
+    },
+    "QA": {
+      "currency": "QAR",
+      "priceMicros": "2040000"
+    },
+    "NG": {
+      "currency": "NGN",
+      "priceMicros": "110840000"
+    },
+    "KW": {
+      "currency": "USD",
+      "priceMicros": "990000"
+    },
+    "BH": {
+      "currency": "USD",
+      "priceMicros": "990000"
+    },
+    "OM": {
+      "currency": "USD",
+      "priceMicros": "990000"
+    },
+    "HR": {
+      "currency": "HRK",
+      "priceMicros": "7000000"
+    },
+    "LV": {
+      "currency": "EUR",
+      "priceMicros": "590000"
+    },
+    "KE": {
+      "currency": "KES",
+      "priceMicros": "200000000"
+    },
+    "KH": {
+      "currency": "USD",
+      "priceMicros": "990000"
+    },
+    "TZ": {
+      "currency": "TZS",
+      "priceMicros": "2200000000"
+    },
+    "LK": {
+      "currency": "LKR",
+      "priceMicros": "150000000"
+    }
+  },
+  "purchaseType": "managedUser",
+  "sku": "li.klass.fhem.premiumdonator",
+  "status": "active"
+}

@@ -1,0 +1,19 @@
+AndFHEM is an application to control devices using an FHEM home automation server.
+
+Features:
+* Cache FHEM data on your device. No need to load all the data on every request.
+* Manage your devices in rooms. Create favorites to get a status summary.
+* View devices aggregated by functionality, not by device type.
+* Control and switch your devices, incl. heating, dimming, ...
+* View your FileLog data in zoomable plots.
+* Switch between an arbitrary amount of FHEM servers (Premium only)
+* Create timers without having to write Perl code within the FHEM config.
+* Switch devices based on Tasker, Locale or Llama
+* Draw data from telnet and FHEMWEB interface
+* Receive push notifications using Google Cloud Messaging (GCM).
+* Send user-defined commands to FHEM
+
+Supported Devices:
+The list grew too long to show it right here. See http://andfhem.klass.li for the full list!
+
+The application is financed by showing ads. You can disable the advertisements by buying andFHEM Premium within the application!

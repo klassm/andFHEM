@@ -1,0 +1,315 @@
+{
+  "defaultLanguage": "en-US",
+  "defaultPrice": {
+    "currency": "EUR",
+    "priceMicros": "3490000"
+  },
+  "listings": {
+    "en-US": {
+      "description": "Premium features for andFHEM (removed ads, multiple FHEM connections)",
+      "title": "andFHEM Premium"
+    },
+    "de-DE": {
+      "description": "Premium Features für andFHEM. Momentan enthält das die App ohne Werbung!",
+      "title": "andFHEM Premium"
+    }
+  },
+  "packageName": "li.klass.fhem",
+  "prices": {
+    "EG": {
+      "currency": "EGP",
+      "priceMicros": "33150000"
+    },
+    "AU": {
+      "currency": "AUD",
+      "priceMicros": "5320000"
+    },
+    "BE": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "BO": {
+      "currency": "BOB",
+      "priceMicros": "32900000"
+    },
+    "BG": {
+      "currency": "BGN",
+      "priceMicros": "6830000"
+    },
+    "CL": {
+      "currency": "CLP",
+      "priceMicros": "2643000000"
+    },
+    "CR": {
+      "currency": "CRC",
+      "priceMicros": "2426000000"
+    },
+    "DK": {
+      "currency": "DKK",
+      "priceMicros": "26040000"
+    },
+    "DE": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "EE": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "FI": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "FR": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "GR": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "HK": {
+      "currency": "HKD",
+      "priceMicros": "36940000"
+    },
+    "IN": {
+      "currency": "INR",
+      "priceMicros": "297320000"
+    },
+    "ID": {
+      "currency": "IDR",
+      "priceMicros": "57960000000"
+    },
+    "IE": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "IL": {
+      "currency": "ILS",
+      "priceMicros": "16800000"
+    },
+    "IT": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "JP": {
+      "currency": "JPY",
+      "priceMicros": "486000000"
+    },
+    "CA": {
+      "currency": "CAD",
+      "priceMicros": "5260000"
+    },
+    "CO": {
+      "currency": "COP",
+      "priceMicros": "9753000000"
+    },
+    "LB": {
+      "currency": "LBP",
+      "priceMicros": "7155000000"
+    },
+    "LT": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "LU": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "MY": {
+      "currency": "MYR",
+      "priceMicros": "15890000"
+    },
+    "MA": {
+      "currency": "MAD",
+      "priceMicros": "39220000"
+    },
+    "MX": {
+      "currency": "MXN",
+      "priceMicros": "63360000"
+    },
+    "NZ": {
+      "currency": "NZD",
+      "priceMicros": "5760000"
+    },
+    "NL": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "NO": {
+      "currency": "NOK",
+      "priceMicros": "29220000"
+    },
+    "AT": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "PK": {
+      "currency": "PKR",
+      "priceMicros": "502000000"
+    },
+    "PE": {
+      "currency": "PEN",
+      "priceMicros": "13410000"
+    },
+    "PH": {
+      "currency": "PHP",
+      "priceMicros": "214110000"
+    },
+    "PL": {
+      "currency": "PLN",
+      "priceMicros": "14580000"
+    },
+    "PT": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "KR": {
+      "currency": "KRW",
+      "priceMicros": "5108000000"
+    },
+    "RO": {
+      "currency": "RON",
+      "priceMicros": "15600000"
+    },
+    "RU": {
+      "currency": "RUB",
+      "priceMicros": "165500000"
+    },
+    "SA": {
+      "currency": "SAR",
+      "priceMicros": "17860000"
+    },
+    "SE": {
+      "currency": "SEK",
+      "priceMicros": "30880000"
+    },
+    "CH": {
+      "currency": "CHF",
+      "priceMicros": "4270000"
+    },
+    "SG": {
+      "currency": "SGD",
+      "priceMicros": "6050000"
+    },
+    "SK": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "SI": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "ES": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "ZA": {
+      "currency": "ZAR",
+      "priceMicros": "52940000"
+    },
+    "TW": {
+      "currency": "TWD",
+      "priceMicros": "144000000"
+    },
+    "TH": {
+      "currency": "THB",
+      "priceMicros": "156200000"
+    },
+    "CZ": {
+      "currency": "CZK",
+      "priceMicros": "96130000"
+    },
+    "TR": {
+      "currency": "TRY",
+      "priceMicros": "10530000"
+    },
+    "UA": {
+      "currency": "UAH",
+      "priceMicros": "40170000"
+    },
+    "HU": {
+      "currency": "HUF",
+      "priceMicros": "1087000000"
+    },
+    "AE": {
+      "currency": "AED",
+      "priceMicros": "17490000"
+    },
+    "US": {
+      "currency": "USD",
+      "priceMicros": "4760000"
+    },
+    "GB": {
+      "currency": "GBP",
+      "priceMicros": "2900000"
+    },
+    "VN": {
+      "currency": "VND",
+      "priceMicros": "100497000000"
+    },
+    "CY": {
+      "currency": "EUR",
+      "priceMicros": "3490000"
+    },
+    "BR": {
+      "currency": "BRL",
+      "priceMicros": "11080000"
+    },
+    "LI": {
+      "currency": "CHF",
+      "priceMicros": "3620000"
+    },
+    "KZ": {
+      "currency": "KZT",
+      "priceMicros": "734240000"
+    },
+    "QA": {
+      "currency": "QAR",
+      "priceMicros": "14230000"
+    },
+    "NG": {
+      "currency": "NGN",
+      "priceMicros": "773680000"
+    },
+    "KW": {
+      "currency": "USD",
+      "priceMicros": "3800000"
+    },
+    "BH": {
+      "currency": "USD",
+      "priceMicros": "3990000"
+    },
+    "OM": {
+      "currency": "USD",
+      "priceMicros": "3990000"
+    },
+    "HR": {
+      "currency": "HRK",
+      "priceMicros": "33000000"
+    },
+    "LV": {
+      "currency": "EUR",
+      "priceMicros": "4190000"
+    },
+    "KE": {
+      "currency": "KES",
+      "priceMicros": "400000000"
+    },
+    "KH": {
+      "currency": "USD",
+      "priceMicros": "4490000"
+    },
+    "TZ": {
+      "currency": "TZS",
+      "priceMicros": "10000000000"
+    },
+    "LK": {
+      "currency": "LKR",
+      "priceMicros": "675000000"
+    }
+  },
+  "purchaseType": "managedUser",
+  "sku": "li.klass.fhem.premium",
+  "status": "active"
+}
