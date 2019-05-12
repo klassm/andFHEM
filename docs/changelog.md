@@ -6,8 +6,7 @@ bigimg: /images/changelog.jpg
 
 <div id="home">
 
-Please note: There might be also a newer beta version available. To register for beta version, make sure to join the <a href="https://plus.google.com/communities/109065806053127368354" target="_blank">andFHEM Google+ group</a>
-and register on one of the following pages below (for your installed version):
+Please note: There might be also a newer beta version available. To enable the beta version, register on one of the following pages below (for your installed version):
 
 <ul>
 <li><a href="https://play.google.com/apps/testing/li.klass.fhem">Inapp / Default</a></li>
