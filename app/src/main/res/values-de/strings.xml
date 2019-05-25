@@ -286,8 +286,8 @@
     <string name="update">Aktualisieren</string>
     <string name="loading">Lade\u2026</string>
     <string name="executing">Führe aus\u2026</string>
-    <string name="updatingDeviceList">Aktualisiere Geräteliste \\u2026</string>
-    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s\\u2026</string>
+    <string name="updatingDeviceList">Aktualisiere Geräteliste \u2026</string>
+    <string name="updatingDeviceListForDevice">Aktualisiere Geräteliste für %s\u2026</string>
     <string name="help">Hilfe</string>
     <string name="command_execution_result">Kommando-Ergebnis</string>
 
@@ -466,7 +466,7 @@
     <string name="widget_send_command_link">Kommando senden</string>
     <string name="widget_device_list_update">Geräteliste aktualisieren</string>
     <string name="widget_room_detail">Verknüpfung</string>
-    <string name="widget_remote_update_started">Geräteliste wird aktualisiert\\u2026</string>
+    <string name="widget_remote_update_started">Geräteliste wird aktualisiert\u2026</string>
     <string name="widget_application_password">Bei aktiviertem App-Passwort können keine Widgets ausgewählt werden.</string>
 
     <string name="widget_devices">Geräte-Widgets</string>
