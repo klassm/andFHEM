@@ -1,1 +1,1 @@
-* Füllstand für KFM100 HM-Sen-Wa-Od in Uppercase wurde nicht angezeigt
+* Repariere Texte für die deutsche Version der App
