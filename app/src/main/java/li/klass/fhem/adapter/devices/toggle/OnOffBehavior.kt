@@ -108,7 +108,8 @@ class OnOffBehavior
                 .map { device.getReverseEventMapStateFor(it) }
                 .filter { it != null }
                 .map { it!! }
-        val comparator = (compareBy<String>({ it == "on" }, { it == "off" }, { it }))
+        val comparator =
+                (compareBy<String>({ it.equals("on", true) }, { it.equals("off", true) }, { it }))
         return (states + reverseEventMapStates).sortedWith(comparator).asReversed()
     }
 
