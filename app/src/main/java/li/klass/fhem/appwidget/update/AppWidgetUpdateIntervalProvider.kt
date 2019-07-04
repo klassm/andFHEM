@@ -29,6 +29,7 @@ import android.content.Context
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.NetworkState
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -37,18 +38,17 @@ class AppWidgetUpdateIntervalProvider @Inject constructor(
         private val applicationProperties: ApplicationProperties
 ) {
     fun getConnectionDependentUpdateInterval(): Long {
-        val updateInterval: Long
-
-        if (!NetworkState.isConnected(applicationContext)) {
+        val updateInterval = if (!NetworkState.isConnected(applicationContext)) {
             LOG.debug("getConnectionDependentUpdateInterval - no network connection")
-            updateInterval = DeviceListService.Companion.NEVER_UPDATE_PERIOD
+            DeviceListService.NEVER_UPDATE_PERIOD
         } else if (NetworkState.isConnectedMobile(applicationContext)) {
             LOG.debug("getConnectionDependentUpdateInterval - mobile connection")
-            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE).toLong()
+            getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE).toLong()
         } else {
             LOG.debug("getConnectionDependentUpdateInterval - wlan connection")
-            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN).toLong()
+            getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN).toLong()
         }
+
         LOG.info("getConnectionDependentUpdateInterval - update interval is $updateInterval")
 
         return updateInterval
@@ -63,8 +63,10 @@ class AppWidgetUpdateIntervalProvider @Inject constructor(
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
-        private val WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN"
-        private val WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE"
-        val LOG = LoggerFactory.getLogger(AppWidgetUpdateIntervalProvider::class.java)
+        private const val WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN =
+                "WIDGET_UPDATE_INTERVAL_WLAN"
+        private const val WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE =
+                "WIDGET_UPDATE_INTERVAL_MOBILE"
+        val LOG: Logger = LoggerFactory.getLogger(AppWidgetUpdateIntervalProvider::class.java)
     }
 }
