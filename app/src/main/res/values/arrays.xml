@@ -57,23 +57,23 @@
 
     <string-array name="widgetUpdateTimeValues" translatable="false">
         <!-- 30 minutes -->
-        <item>3600</item>
+        <item>1800</item>
         <!-- 1 hour -->
-        <item>7200</item>
+        <item>3600</item>
         <!-- 2 hours -->
-        <item>14400</item>
+        <item>7200</item>
         <!-- 4 hours -->
-        <item>28800</item>
+        <item>14400</item>
         <!-- 8 hours -->
-        <item>43200</item>
+        <item>28800</item>
         <!-- 12 hours -->
-        <item>86400</item>
+        <item>43200</item>
         <!-- 24 hours -->
-        <item>129600</item>
+        <item>86400</item>
         <!-- 36 hours -->
-        <item>172800</item>
+        <item>129600</item>
         <!-- 48 hours -->
-        <item>259200</item>
+        <item>172800</item>
         <!-- never -->
         <item>0</item>
     </string-array>
