@@ -1,1 +1,1 @@
-TODO
+* Weiteres Logging für Widget-Updates

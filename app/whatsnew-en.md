@@ -1,1 +1,1 @@
-TODO
+* Increased logging for widget updates
