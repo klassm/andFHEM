@@ -64,17 +64,22 @@ class AppWidgetSchedulingService @Inject constructor(
     private fun shouldUpdate(lastUpdate: DateTime): Boolean {
         val updatePeriod = updateIntervalProvider.getConnectionDependentUpdateInterval()
         if (updatePeriod == DeviceListService.ALWAYS_UPDATE_PERIOD) {
-            LOG.debug("shouldUpdateDeviceList() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
+            LOG.info(
+                    "shouldUpdateDeviceList() : recommend update, as updatePeriod is set to ALWAYS_UPDATE")
             return true
         }
         if (updatePeriod == DeviceListService.NEVER_UPDATE_PERIOD) {
-            LOG.debug("shouldUpdateDeviceList() : recommend no update, as updatePeriod is set to NEVER_UPDATE")
+            LOG.info(
+                    "shouldUpdateDeviceList() : recommend no update, as updatePeriod is set to NEVER_UPDATE")
             return false
         }
 
         val shouldUpdate = (lastUpdate + updatePeriod).isBeforeNow
 
-        LOG.debug("shouldUpdateDeviceList() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", if (!shouldUpdate) "no " else "to", DateFormatUtil.toReadable(lastUpdate), updatePeriod / 1000 / 60)
+        LOG.info(
+                "shouldUpdateDeviceList() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)",
+                if (!shouldUpdate) "no " else "to", DateFormatUtil.toReadable(lastUpdate),
+                updatePeriod / 1000 / 60)
 
         return shouldUpdate
     }
