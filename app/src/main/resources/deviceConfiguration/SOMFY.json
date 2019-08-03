@@ -11,8 +11,8 @@
     "__general__": {
       "addAttributesIfNotPresent": [
         {
-          "key": "webCmd",
-          "value": "auf:stop:ab"
+          "key": "onOffDevice",
+          "value": "true"
         }
       ]
     }
