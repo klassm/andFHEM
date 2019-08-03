@@ -22,36 +22,19 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain
 
-import org.junit.Test;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Test
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.core.FhemDevice;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class SomfyDeviceTest extends DeviceXMLParsingBase {
+class SomfyDeviceTest : DeviceXMLParsingBase() {
     @Test
-    @SuppressWarnings("unchecked")
-    public void should_read_device() {
-        FhemDevice device = getDeviceFor("SOMFY_WZ_EG_1");
-        assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("stop");
-        assertThat(device.getWebCmd()).containsExactly("auf", "stop", "ab");
+    fun should_read_device() {
+        val device = getDeviceFor("SOMFY_WZ_EG_1")
+        assertThat(device).isNotNull
+        assertThat(device.state).isEqualTo("stop")
     }
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void should_add_auf_ab_and_stop_as_webcmd_even_if_not_present() {
-        FhemDevice device = getDeviceFor("SOMFY1");
-        assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("stop");
-        assertThat(device.getWebCmd()).containsExactly("auf", "stop", "go-my", "ab");
-    }
-
-    @Override
-    protected String getFileName() {
-        return "somfy.xml";
-    }
+    override fun getFileName() = "somfy.xml"
 }
