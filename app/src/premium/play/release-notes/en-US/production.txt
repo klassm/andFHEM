@@ -1,1 +1,1 @@
-* Increased logging for widget updates
+* Show SOMFY devices as on off devices by default, remove default webcmd
