@@ -1,1 +1,1 @@
-TODO
+* Zeige Somfy Geräte per default als ein-aus Geräte, entferne Standard Somfy Webcmd

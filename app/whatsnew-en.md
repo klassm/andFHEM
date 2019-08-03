@@ -1,1 +1,1 @@
-TODO
+* Show SOMFY devices as on off devices by default, remove default webcmd
