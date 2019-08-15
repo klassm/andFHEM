@@ -13,6 +13,10 @@
         {
           "key": "onOffDevice",
           "value": "true"
+        },
+        {
+          "key": "eventMap",
+          "value": "on:down stop:stop off:up off:open"
         }
       ]
     }
