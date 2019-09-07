@@ -1,1 +1,1 @@
-* Zeige Somfy Geräte per default als ein-aus Geräte, entferne Standard Somfy Webcmd
+* Unterstützung für Android Q / 10
