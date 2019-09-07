@@ -24,15 +24,18 @@ class MySearchSuggestionsProvider : SearchRecentSuggestionsProvider() {
         return super.onCreate()
     }
 
-    override fun query(uri: Uri?, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>, sortOrder: String?): Cursor {
+    override fun query(uri: Uri, projection: Array<out String>?, selection: String?,
+                       selectionArgs: Array<out String>?, sortOrder: String?): Cursor {
         val recent = super.query(uri, projection, selection, selectionArgs, sortOrder)
 
-        val customResultsCursor = queryCache(recent, selectionArgs[0])
+        val customResultsCursor = queryCache(recent, selectionArgs?.let { it[0] })
         return MergeCursor(arrayOf(recent, customResultsCursor))
     }
 
-    private fun queryCache(recentsCursor: Cursor, userQuery: String): Cursor {
-        val arrayCursor = MatrixCursor(recentsCursor.columnNames)
+    private fun queryCache(recentsCursor: Cursor?, userQuery: String?): Cursor {
+        val arrayCursor = MatrixCursor(recentsCursor?.columnNames ?: emptyArray())
+        recentsCursor ?: return arrayCursor
+        userQuery ?: return arrayCursor
 
         val formatColumnIndex = recentsCursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_FORMAT)
         val text1Index = recentsCursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1)
@@ -62,7 +65,8 @@ class MySearchSuggestionsProvider : SearchRecentSuggestionsProvider() {
     }
 
     companion object {
-        val AUTHORITY = BuildConfig.APPLICATION_ID + "." + MySearchSuggestionsProvider::class.java.simpleName!!
+        val AUTHORITY =
+                BuildConfig.APPLICATION_ID + "." + MySearchSuggestionsProvider::class.java.simpleName
         val MODE = DATABASE_MODE_QUERIES
     }
 }

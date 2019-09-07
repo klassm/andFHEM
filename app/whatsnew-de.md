@@ -1,1 +1,1 @@
-TODO
+* Unterstützung für Android Q / 10

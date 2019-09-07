@@ -19,7 +19,8 @@ class SearchResultsFragment : DeviceListFragment() {
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         args ?: return
-        query = args.getString(SearchManager.QUERY)
+
+        query = args.getString(SearchManager.QUERY) ?: ""
 
         saveRecentQuery()
     }

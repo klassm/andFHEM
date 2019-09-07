@@ -16,10 +16,13 @@ class ListSummaryAction(
                 currentValue, summaryTemplate, preference.context)
     }
 
-    private fun nameForArrayValueFormatted(valuesArrayResource: Int, textArrayResource: Int, value: String, summaryTemplate: Int, context: Context): String =
+    private fun nameForArrayValueFormatted(valuesArrayResource: Int, textArrayResource: Int,
+                                           value: String?, summaryTemplate: Int,
+                                           context: Context): String =
             String.format(context.getString(summaryTemplate), nameForArrayValue(valuesArrayResource, textArrayResource, value, context))
 
-    private fun nameForArrayValue(valuesArrayResource: Int, textArrayResource: Int, value: String, context: Context): String? {
+    private fun nameForArrayValue(valuesArrayResource: Int, textArrayResource: Int, value: String?,
+                                  context: Context): String? {
         val index = ArrayUtils.indexOf(context.resources.getStringArray(valuesArrayResource), value)
         if (index == -1) {
             return null

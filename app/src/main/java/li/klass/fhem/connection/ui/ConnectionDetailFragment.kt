@@ -84,6 +84,7 @@ class ConnectionDetailFragment : BaseFragment() {
         if (view != null) {
             return view
         }
+        val context: Context = activity ?: return null
 
         view = inflater.inflate(R.layout.connection_detail, container, false)
 
@@ -94,8 +95,8 @@ class ConnectionDetailFragment : BaseFragment() {
 
         val connectionTypes = serverTypes
 
-        val adapter = ArrayAdapter(activity,
-                android.R.layout.simple_spinner_dropdown_item, connectionTypes)
+        val adapter = ArrayAdapter(context,
+                                   android.R.layout.simple_spinner_dropdown_item, connectionTypes)
         connectionTypeSpinner.adapter = adapter
 
         connectionTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

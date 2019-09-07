@@ -17,7 +17,8 @@ class SearchResultsActivity : AppCompatActivity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            startActivity(Intent(context, AndFHEMMainActivity::class.java).putExtras(intent.extras))
+            startActivity(Intent(context, AndFHEMMainActivity::class.java).putExtras(
+                    intent.extras ?: Bundle()))
             finish()
         }
     }
@@ -32,7 +33,7 @@ class SearchResultsActivity : AppCompatActivity() {
     }
 
     private fun handleView() {
-        val deviceName = intent.extras.getString("query")
+        val deviceName = intent.extras?.getString("query")
         val bundle = Bundle()
         bundle.putString(BundleExtraKeys.DEVICE_NAME, deviceName)
         bundle.putSerializable(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)

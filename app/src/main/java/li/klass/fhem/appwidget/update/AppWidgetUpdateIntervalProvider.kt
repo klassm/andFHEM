@@ -55,7 +55,7 @@ class AppWidgetUpdateIntervalProvider @Inject constructor(
     }
 
     private fun getWidgetUpdateIntervalFor(key: String): Int {
-        val value = applicationProperties.getStringSharedPreference(key, "3600")
+        val value = applicationProperties.getStringSharedPreference(key) ?: "3600"
         val intValue = Integer.parseInt(value)
         return intValue * 1000
     }

@@ -59,6 +59,7 @@ class SendCommandFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val view = inflater.inflate(R.layout.command_execution, container, false)
+        val context = activity ?: return null
         view.send.setOnClickListener {
             val editText = view.findViewById<View>(R.id.input) as EditText
             val command = editText.text.toString()
@@ -66,7 +67,8 @@ class SendCommandFragment : BaseFragment() {
             sendCommandIntent(command)
         }
 
-        val recentCommandsAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1)
+        val recentCommandsAdapter =
+                ArrayAdapter<String>(context, android.R.layout.simple_list_item_1)
         view.command_history.adapter = recentCommandsAdapter
         view.command_history.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val command = recentCommandsAdapter.getItem(position)
@@ -83,7 +85,8 @@ class SendCommandFragment : BaseFragment() {
 
     override fun mayPullToRefresh(): Boolean = false
 
-    private fun sendCommandIntent(command: String) {
+    private fun sendCommandIntent(command: String?) {
+        command ?: return
         GlobalScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.Default) {
                 sendCommandService.executeCommand(command, connectionId = null)
@@ -124,7 +127,8 @@ class SendCommandFragment : BaseFragment() {
     }
 
 
-    private fun showContextMenuFor(command: String) {
+    private fun showContextMenuFor(command: String?) {
+        command ?: return
         (activity as AppCompatActivity).startSupportActionMode(object : ActionMode.Callback {
             override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                 val inflater = mode.menuInflater

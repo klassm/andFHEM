@@ -49,7 +49,6 @@ buildscript {
 
 val kotlinVersion: String by project
 val kotlinSerializationVersion = "0.9.1"
-val supportLibVersion = "28.0.0"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.8.0"

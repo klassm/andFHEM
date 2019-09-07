@@ -27,6 +27,7 @@ abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val
         val today = LocalDate.now()
 
         view ?: return view
+        val context = activity ?: return null
 
         val recyclerView = getRecyclerViewFrom(view)
         recyclerView.layoutManager = LinearLayoutManager(activity as Context)

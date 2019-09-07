@@ -96,10 +96,11 @@ class TimerDetailFragment : BaseFragment() {
             return view
         }
         view = inflater.inflate(R.layout.timer_detail, container, false)
+        val context = activity ?: return null
 
-        bindRepetitionSpinner(view)
+        bindRepetitionSpinner(view, context)
         bindSelectDeviceButton(view)
-        bindTimerTypeSpinner(view)
+        bindTimerTypeSpinner(view, context)
         bindSwitchTimeButton(view)
         bindIsActiveCheckbox(view)
         bindTargetStateButton(view)
@@ -205,18 +206,18 @@ class TimerDetailFragment : BaseFragment() {
         }
     }
 
-    private fun bindTimerTypeSpinner(view: View) {
+    private fun bindTimerTypeSpinner(view: View, context: Context) {
 
-        view.timerType.adapter = ArrayAdapter<String>(activity, R.layout.spinnercontent).apply {
+        view.timerType.adapter = ArrayAdapter<String>(context, R.layout.spinnercontent).apply {
             TimerType.values()
                     .map { view.context.getString(it.text) }
                     .forEach { this.add(it) }
         }
     }
 
-    private fun bindRepetitionSpinner(view: View) {
+    private fun bindRepetitionSpinner(view: View, context: Context) {
         val repetitionSpinner = view.timerRepetition
-        val repetitionAdapter = ArrayAdapter<String>(activity, R.layout.spinnercontent)
+        val repetitionAdapter = ArrayAdapter<String>(context, R.layout.spinnercontent)
         AtRepetition.values()
                 .forEach { repetitionAdapter.add(view.context.getString(it.stringId)) }
         repetitionSpinner.adapter = repetitionAdapter
