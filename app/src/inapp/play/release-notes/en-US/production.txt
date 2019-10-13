@@ -1,1 +1,1 @@
-* Support for Android Q / 10
+* LightScene: Currently active scene will be marked within the overview

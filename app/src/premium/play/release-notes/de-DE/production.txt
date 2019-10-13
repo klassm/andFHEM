@@ -1,1 +1,1 @@
-* Unterstützung für Android Q / 10
+* LightScene: Aktueller Zustand wird in Übersicht markiert
