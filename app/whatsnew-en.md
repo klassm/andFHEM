@@ -1,1 +1,1 @@
-TODO
+* LightScene: Currently active scene will be marked within the overview

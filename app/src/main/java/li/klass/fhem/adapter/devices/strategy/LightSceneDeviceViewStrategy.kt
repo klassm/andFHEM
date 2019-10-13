@@ -39,31 +39,37 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
+import org.jetbrains.anko.backgroundDrawable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LightSceneDeviceViewStrategy @Inject constructor(
-        val stateUiService: StateUiService
-) : ViewStrategy() {
+class LightSceneDeviceViewStrategy @Inject constructor(val stateUiService: StateUiService) :
+        ViewStrategy() {
 
-    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
+    override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?,
+                                    rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>,
+                                    connectionId: String?): View {
         val layout = layoutInflater.inflate(R.layout.device_overview_generic, null) as TableLayout
         layout.removeAllViews()
 
-        layout.addView(object : HolderActionRow<String>(rawDevice.aliasOrName,
-                HolderActionRow.LAYOUT_OVERVIEW) {
+        layout.addView(object : HolderActionRow<String>(rawDevice.aliasOrName, LAYOUT_OVERVIEW) {
 
             override fun getItems(device: FhemDevice): List<String> {
-                val sceneEntry = device.setList["scene"]
-                return when (sceneEntry) {
+                return when (val sceneEntry = device.setList["scene"]) {
                     is GroupSetListEntry -> sceneEntry.groupStates
-                    else -> emptyList()
+                    else                 -> emptyList()
                 }
             }
 
-            override fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater, context: Context, viewGroup: ViewGroup, connectionId: String?): View {
+            override fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater,
+                                 context: Context, viewGroup: ViewGroup,
+                                 connectionId: String?): View {
                 val button = inflater.inflate(R.layout.lightscene_button, viewGroup, false) as Button
+                if (item == device.state) {
+                    button.backgroundDrawable =
+                            context.resources.getDrawable(R.drawable.theme_toggle_on_normal)
+                }
                 setSceneButtonProperties(device, item, button, context)
                 return button
             }
@@ -71,10 +77,11 @@ class LightSceneDeviceViewStrategy @Inject constructor(
         return layout
     }
 
-    override fun supports(fhemDevice: FhemDevice): Boolean =
-            fhemDevice.xmlListDevice.type == "LightScene"
+    override fun supports(
+            fhemDevice: FhemDevice): Boolean = fhemDevice.xmlListDevice.type == "LightScene"
 
-    private fun setSceneButtonProperties(device: FhemDevice, scene: String, button: Button, context: Context) {
+    private fun setSceneButtonProperties(device: FhemDevice, scene: String, button: Button,
+                                         context: Context) {
         button.text = scene
         button.setOnClickListener {
             GlobalScope.launch(Dispatchers.Main) {

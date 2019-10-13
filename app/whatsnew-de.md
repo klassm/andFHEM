@@ -1,1 +1,1 @@
-TODO
+* LightScene: Aktueller Zustand wird in Übersicht markiert
