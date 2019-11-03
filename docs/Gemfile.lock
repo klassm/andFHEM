@@ -180,7 +180,7 @@ GEM
     minitest (5.10.3)
     multipart-post (2.0.0)
     net-dns (0.8.0)
-    nokogiri (1.8.5)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.3.0)
     nokogiri (1.8.5-x64-mingw32)
       mini_portile2 (~> 2.3.0)
