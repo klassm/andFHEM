@@ -40,14 +40,14 @@ class AtDefinitionParser @Inject constructor() {
         val prefixMatcher = PREFIX_PATTERN.matcher(replaced)
         if (!prefixMatcher.matches()) return null
 
-        val rest = prefixMatcher.group(3).trim()
+        val rest = prefixMatcher.group(3)?.trim() ?: ""
         val parsedContent = parseDeviceSwitchContent(rest) ?: return null
 
-        val prefix = prefixMatcher.group(1)
+        val prefix = prefixMatcher.group(1) ?: ""
         val timerType = extractTimerTypeFrom(prefix)
         val repetition = parsedContent.repetition ?: extractRepetitionFrom(prefix)
 
-        val dateContent = prefixMatcher.group(2)
+        val dateContent = prefixMatcher.group(2) ?: ""
         val switchTime = parseDateContent(dateContent) ?: return null
 
 
@@ -80,16 +80,17 @@ class AtDefinitionParser @Inject constructor() {
             val fhemMatcher = FHEM_PATTERN.matcher(replacedRest)
             if (!fhemMatcher.matches()) return null
 
-            val targetDevice = fhemMatcher.group(1)
-            val targetState = fhemMatcher.group(2)
+            val targetDevice = fhemMatcher.group(1) ?: ""
+            val targetState = fhemMatcher.group(2) ?: ""
             val targetStateAddtionalInformation = fhemMatcher.group(3)
 
-            val fhemRest = fhemMatcher.group(4).trim { it <= ' ' }.toLowerCase(Locale.getDefault())
+            val fhemRest =
+                    fhemMatcher.group(4)?.trim { it <= ' ' }?.toLowerCase(Locale.getDefault()) ?: ""
             val ifPattern = Pattern.compile("if[ ]?\\(([^)]+)\\)")
             val ifMatcher = ifPattern.matcher(fhemRest)
 
             val repetition = if (ifMatcher.find()) {
-                val ifContent = ifMatcher.group(1)
+                val ifContent = ifMatcher.group(1) ?: ""
                 val parts = ifContent.split("&&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
                 parts.map { it.trim() }
