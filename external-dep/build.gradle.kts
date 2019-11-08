@@ -24,5 +24,3 @@
 
 configurations.create("default")
 artifacts.add("default", file("memorizing-trust-manager-release.aar"))
-
-task(name = "testClasses")

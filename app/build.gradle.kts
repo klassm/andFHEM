@@ -91,7 +91,6 @@ val unmock = configurations.findByName("unmock")!!
 dependencies {
     unmock(group = "org.robolectric", name = "android-all", version = "7.0.0_r1-robolectric-0")
 
-    implementation(fileTree(mapOf("dir" to "./libs", "include" to "*.jar")))
     implementation(project(":external-dep"))
 
     implementation("com.google.firebase", name = "firebase-appindexing", version = "17.1.0")
