@@ -30,6 +30,8 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
+import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval
+import li.klass.fhem.fragments.weekprofile.HeatingConfigurationProvider
 import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import javax.inject.Inject
@@ -37,18 +39,26 @@ import javax.inject.Singleton
 
 @Singleton
 class FragmentUiService @Inject constructor() {
-    fun showIntervalWeekProfileFor(device: XmlListDevice, connectionId: String?, context: Context, heatingConfiguration: HeatingConfiguration<*, *>) =
+    fun showIntervalWeekProfileFor(device: XmlListDevice, connectionId: String?, context: Context,
+                                   heatingConfiguration: HeatingConfigurationProvider<*>) =
             showWeekProfileFor(context, connectionId, device, heatingConfiguration, FragmentType.INTERVAL_WEEK_PROFILE)
 
-    fun showFromToWeekProfileFor(device: XmlListDevice, connectionId: String?, context: Context) =
-            showWeekProfileFor(context, connectionId, device, FHTConfiguration(), FragmentType.FROM_TO_WEEK_PROFILE)
+    fun showFromToWeekProfileFor(device: XmlListDevice, connectionId: String?, context: Context) {
+        val provider = object : HeatingConfigurationProvider<FromToHeatingInterval> {
+            override fun get(): HeatingConfiguration<FromToHeatingInterval, *> = FHTConfiguration()
+        }
+        showWeekProfileFor(context, connectionId, device, provider,
+                           FragmentType.FROM_TO_WEEK_PROFILE)
+    }
 
-    private fun showWeekProfileFor(context: Context, connectionId: String?, device: XmlListDevice, heatingConfiguration: HeatingConfiguration<*, *>, fragmentType: FragmentType) {
+    private fun showWeekProfileFor(context: Context, connectionId: String?, device: XmlListDevice,
+                                   heatingConfigurationProvider: HeatingConfigurationProvider<*>,
+                                   fragmentType: FragmentType) {
         context.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(FRAGMENT, fragmentType)
                 .putExtra(CONNECTION_ID, connectionId)
                 .putExtra(DEVICE_NAME, device.name)
-                .putExtra(DEVICE_DISPLAY_NAME, device.getAttribute("alias") ?: device.name)
-                .putExtra(HEATING_CONFIGURATION, heatingConfiguration))
+                .putExtra(DEVICE_DISPLAY_NAME, device.getAttribute("alias") ?: device.name).putExtra(
+                        HEATING_CONFIGURATION, heatingConfigurationProvider))
     }
 }

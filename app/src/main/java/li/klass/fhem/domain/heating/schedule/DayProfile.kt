@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.heating.schedule
 
-import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval
@@ -42,7 +41,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
         this.heatingConfiguration = configuration
 
         if (heatingConfiguration.numberOfIntervalsType == HeatingConfiguration.NumberOfIntervalsType.FIXED) {
-            for (i in 0..maximumNumberOfHeatingIntervals - 1) {
+            for (i in 0 until maximumNumberOfHeatingIntervals) {
                 heatingIntervals.add(configuration.createHeatingInterval())
             }
         }
@@ -79,8 +78,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
 
     fun replaceHeatingIntervalsWith(newIntervals: List<H>) {
         heatingIntervals.clear()
-        heatingIntervals.addAll(from(newIntervals)
-                .transform { input -> input!!.copy() }.toList())
+        heatingIntervals.addAll(newIntervals.map { it.copy() })
     }
 
     private fun canAddHeatingInterval(): Boolean {
@@ -97,16 +95,8 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
             return if (heatingIntervals.any { it.isModified }) true else !deletedIntervals.isEmpty()
         }
 
-    val maximumNumberOfHeatingIntervals: Int
+    private val maximumNumberOfHeatingIntervals: Int
         get() = heatingConfiguration.getMaximumNumberOfHeatingIntervals()
-
-    fun acceptChanges() {
-        for (heatingInterval in heatingIntervals) {
-            heatingInterval.acceptChanges()
-        }
-        Collections.sort(heatingIntervals)
-        deletedIntervals.clear()
-    }
 
     fun reset() {
         val iterator = heatingIntervals.iterator()
@@ -121,8 +111,7 @@ class DayProfile<H : BaseHeatingInterval<H>, INTERVAL_CONFIG : HeatingIntervalCo
 
         deletedIntervals.filterNotTo(heatingIntervals) { it.isNew }
         deletedIntervals.clear()
-
-        Collections.sort(heatingIntervals)
+        heatingIntervals.sort()
     }
 
     override fun toString(): String {

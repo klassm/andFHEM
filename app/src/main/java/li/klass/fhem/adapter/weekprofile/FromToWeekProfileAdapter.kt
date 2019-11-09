@@ -37,8 +37,7 @@ import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval
 
 class FromToWeekProfileAdapter(context: Context) : BaseWeekProfileAdapter<FromToHeatingInterval>(context) {
 
-
-    protected interface OnTimeChangedListener {
+    private interface OnTimeChangedListener {
         fun onTimeChanged(newTime: String)
     }
 

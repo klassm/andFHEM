@@ -26,6 +26,7 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 
 import android.content.Context;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +55,9 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval<H>, C e
 
     }
     public final String offTime;
-    public final int maximumNumberOfHeatingIntervals;
+    private final int maximumNumberOfHeatingIntervals;
 
-    public final NumberOfIntervalsType numberOfIntervalsType;
+    private final NumberOfIntervalsType numberOfIntervalsType;
     private static final Logger LOG = LoggerFactory.getLogger(HeatingConfiguration.class);
 
     public HeatingConfiguration(String offTime, int maximumNumberOfHeatingIntervals, NumberOfIntervalsType numberOfIntervalsType, int intervalMinutesMustBeDivisibleBy) {
@@ -125,9 +126,8 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval<H>, C e
         return intervalMinutesMustBeDivisibleBy;
     }
 
-    public IntervalType getIntervalType() {
-        return null;
-    }
+    @NotNull
+    public abstract IntervalType getIntervalType();
 
     @Override
     public int getMaximumNumberOfHeatingIntervals() {

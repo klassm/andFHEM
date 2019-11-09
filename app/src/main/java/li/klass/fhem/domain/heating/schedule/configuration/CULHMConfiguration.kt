@@ -31,12 +31,10 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
 import li.klass.fhem.util.DayUtil
 import li.klass.fhem.util.StateToSet
-import java.util.*
 
 class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHMConfiguration>(
         "",
-        MAXIMUM_NUMBER_OF_HEATING_INTERVALS,
-        HeatingConfiguration.NumberOfIntervalsType.DYNAMIC,
+        MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC,
         10
 ) {
 
@@ -61,7 +59,7 @@ class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHM
                     interval.isTimeFixed = true
                 }
             } else { //temperature desc
-                interval.temperature = java.lang.Double.valueOf(part)!!
+                interval.temperature = java.lang.Double.valueOf(part)
             }
         }
     }
@@ -69,18 +67,17 @@ class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHM
     public override fun generateStateToSetFor(dayProfile: DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>): List<StateToSet> {
 
         val heatingIntervals = newArrayList(dayProfile.getHeatingIntervals())
-        Collections.sort(heatingIntervals)
+        heatingIntervals.sort()
 
-        val command = heatingIntervals
-                .map { "${it.changedSwitchTime} ${it.changedTemperature}" }
-                .joinToString(separator = " ")
+        val command = heatingIntervals.joinToString(
+                separator = " ") { "${it.changedSwitchTime} ${it.changedTemperature}" }
 
         val shortName = DayUtil.getShortNameFor(dayProfile.day)
         shortName ?: return emptyList()
 
         val shortNameToSet = (shortName[0].toUpperCase()) + shortName.substring(1)
 
-        return ImmutableList.of(StateToSet("tempList" + shortNameToSet, command))
+        return ImmutableList.of(StateToSet("tempList$shortNameToSet", command))
     }
 
     override fun afterXMLRead(weekProfile: WeekProfile<FilledTemperatureInterval, CULHMConfiguration>) {
@@ -115,10 +112,10 @@ class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHM
 
     override fun createHeatingInterval(): FilledTemperatureInterval = FilledTemperatureInterval()
 
-    override fun getIntervalType(): IntervalType? = IntervalType.TO
+    override fun getIntervalType(): IntervalType = IntervalType.TO
 
     companion object {
-        private val MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 24
-        private val MINIMUM_TEMPERATURE = 5.5
+        private const val MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 24
+        private const val MINIMUM_TEMPERATURE = 5.5
     }
 }

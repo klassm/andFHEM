@@ -43,6 +43,9 @@ import li.klass.fhem.domain.CulHmHeatingMode
 import li.klass.fhem.domain.CulHmHeatingMode.heatingModeFor
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
+import li.klass.fhem.fragments.weekprofile.HeatingConfigurationProvider
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingInt
@@ -51,11 +54,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CulHmDetailActionProvider @Inject
-constructor(
-        private val fragmentUiService: FragmentUiService,
-        stateUiService: StateUiService
-) : DeviceDetailActionProvider() {
+class CulHmDetailActionProvider @Inject constructor(
+        private val fragmentUiService: FragmentUiService, stateUiService: StateUiService) :
+        DeviceDetailActionProvider() {
 
     init {
         addStateAttributeAction(MODE_STATE_NAME, CulHmHeatingModeDetailAction(stateUiService))
@@ -65,57 +66,63 @@ constructor(
     override fun getDeviceType() = "CUL_HM"
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
-        return ImmutableList.of<ActionCardAction>(
-                object : ActionCardButton(R.string.timetable, context) {
-                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
-                        fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context, CULHMConfiguration())
-                    }
-
-                    override fun supports(device: FhemDevice): Boolean =
-                            supportsHeating(device.xmlListDevice)
+        return ImmutableList.of<ActionCardAction>(object : ActionCardButton(R.string.timetable,
+                                                                            context) {
+            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
+                val provider = object : HeatingConfigurationProvider<FilledTemperatureInterval> {
+                    override fun get(): HeatingConfiguration<FilledTemperatureInterval, *> = CULHMConfiguration()
                 }
-        )
+                fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context,
+                                                             provider)
+            }
+
+            override fun supports(device: FhemDevice): Boolean = supportsHeating(
+                    device.xmlListDevice)
+        })
     }
 
-    private class CulHmHeatingModeDetailAction(stateUiService: StateUiService) : HeatingModeDetailAction<CulHmHeatingMode>(stateUiService) {
+    private class CulHmHeatingModeDetailAction(stateUiService: StateUiService) :
+            HeatingModeDetailAction<CulHmHeatingMode>(stateUiService) {
 
         override val availableModes: Array<CulHmHeatingMode>
             get() = CulHmHeatingMode.values()
 
-        override fun getCurrentModeFor(device: XmlListDevice): CulHmHeatingMode =
-                heatingModeFor(device.getState(MODE_STATE_NAME, false)).get()
+        override fun getCurrentModeFor(device: XmlListDevice): CulHmHeatingMode = heatingModeFor(
+                device.getState(MODE_STATE_NAME, false)).get()
 
-        override fun supports(xmlListDevice: XmlListDevice): Boolean =
-                CulHmDetailActionProvider.supportsHeating(xmlListDevice)
+        override fun supports(xmlListDevice: XmlListDevice): Boolean = supportsHeating(
+                xmlListDevice)
     }
 
     private class KFM100ContentView : StateAttributeAction {
 
-        override fun createRow(device: XmlListDevice, connectionId: String?, key: String, stateValue: String, context: Context, parent: ViewGroup): TableRow {
+        override fun createRow(device: XmlListDevice, connectionId: String?, key: String,
+                               stateValue: String, context: Context, parent: ViewGroup): TableRow {
             val model = device.getAttribute("model")!!
             val fillContentPercentage = determineContentPercentage(device, model)
 
 
             return object : CustomViewTableRow() {
-                override fun getContentView(): View =
-                        LitreContentView(context, fillContentPercentage)
+                override fun getContentView(): View = LitreContentView(context,
+                                                                       fillContentPercentage)
             }.createRow(LayoutInflater.from(context), parent)
         }
 
-        private fun determineContentPercentage(device: XmlListDevice, model: String) = if ("HM-Sen-Wa-Od".equals(
-                        model, ignoreCase = true)) {
-                    extractLeadingDouble(device.getState("level", false)) / 100.0
-                } else {
-                    val rawToReadable = device.getAttribute("rawToReadable")!!
-                    val parts = parseRawToReadable(rawToReadable)
-                    val maximum = if (parts.size == 2) {
-                        extractLeadingInt(parts[1]).toDouble()
-                    } else 0.0
+        private fun determineContentPercentage(device: XmlListDevice,
+                                               model: String) = if ("HM-Sen-Wa-Od".equals(model,
+                                                                                          ignoreCase = true)) {
+            extractLeadingDouble(device.getState("level", false)) / 100.0
+        } else {
+            val rawToReadable = device.getAttribute("rawToReadable")!!
+            val parts = parseRawToReadable(rawToReadable)
+            val maximum = if (parts.size == 2) {
+                extractLeadingInt(parts[1]).toDouble()
+            } else 0.0
 
-                    val contentValue = extractLeadingDouble(device.getState("content", false))
-                    val content = if (contentValue > maximum) maximum else contentValue
-                    content / maximum
-                }
+            val contentValue = extractLeadingDouble(device.getState("content", false))
+            val content = if (contentValue > maximum) maximum else contentValue
+            content / maximum
+        }
 
         private fun parseRawToReadable(value: String): Array<String> {
             val lastSpace = value.lastIndexOf(" ")
@@ -126,8 +133,9 @@ constructor(
         override fun supports(xmlListDevice: XmlListDevice): Boolean {
             val model = xmlListDevice.getAttribute("model") ?: return false
 
-            return ("HM-Sen-Wa-Od".equals(model, ignoreCase = true) && xmlListDevice.containsState("level"))
-                    || (xmlListDevice.containsAttribute("rawToReadable") && xmlListDevice.containsState("content"))
+            return ("HM-Sen-Wa-Od".equals(model, ignoreCase = true) && xmlListDevice.containsState(
+                    "level")) || (xmlListDevice.containsAttribute(
+                    "rawToReadable") && xmlListDevice.containsState("content"))
         }
     }
 

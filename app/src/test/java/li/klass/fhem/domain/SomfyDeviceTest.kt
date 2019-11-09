@@ -32,7 +32,7 @@ class SomfyDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun should_read_device() {
         val device = getDeviceFor("SOMFY_WZ_EG_1")
-        assertThat(device).isNotNull
+        assertThat(device).isNotNull()
         assertThat(device.state).isEqualTo("stop")
     }
 

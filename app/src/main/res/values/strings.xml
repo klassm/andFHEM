@@ -692,4 +692,6 @@
     <string name="fhem_log_error_permission_external_storage">Missing permission to write the
         external storage.
     </string>
+
+    <string name="chooseDevice">Choose Device</string>
 </resources>

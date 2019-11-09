@@ -647,4 +647,6 @@
     <string name="fhem_log_error_permission_external_storage">Fehlende Berechtigung zum Schreiben
         der Speicherkarte.
     </string>
+
+    <string name="chooseDevice">Gerät auswählen</string>
 </resources>

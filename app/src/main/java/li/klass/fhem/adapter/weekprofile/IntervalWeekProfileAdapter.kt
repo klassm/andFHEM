@@ -63,7 +63,7 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
 
         val isNew = child.isNew
 
-        val intervalStringId = weekProfile!!.getIntervalType().stringId
+        val intervalStringId = weekProfile!!.intervalType.stringId
         val intervalTypeTextView = view.findViewById<TextView>(R.id.intervalType)
         intervalTypeTextView.setText(intervalStringId)
 

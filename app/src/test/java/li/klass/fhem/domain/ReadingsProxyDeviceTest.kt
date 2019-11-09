@@ -36,7 +36,7 @@ class ReadingsProxyDeviceTest : DeviceXMLParsingBase() {
     fun testRGBProxy() {
         val device = getDeviceFor("rgb")
 
-        assertThat(device).isNotNull
+        assertThat(device).isNotNull()
         assertThat(device.name).isEqualTo("rgb")
         assertThat(device.xmlListDevice.getState("rgb", true)).isEqualTo("FFFF00")
     }
@@ -45,7 +45,7 @@ class ReadingsProxyDeviceTest : DeviceXMLParsingBase() {
     fun testSwitchProxy() {
         val device = getDeviceFor("Bild")
 
-        assertThat(device).isNotNull
+        assertThat(device).isNotNull()
         assertThat(device.xmlListDevice.getState("rgb", true)).isNull()
     }
 
@@ -53,7 +53,7 @@ class ReadingsProxyDeviceTest : DeviceXMLParsingBase() {
     fun testDimmable() {
         val device = getDeviceFor("dimmable")
 
-        assertThat(device).isNotNull
+        assertThat(device).isNotNull()
         val dimmableBehavior = DimmableBehavior.behaviorFor(device, null)
         assertThat(dimmableBehavior!!.currentDimPosition).isEqualTo(100.0, Offset.offset(0.01))
         assertThat(dimmableBehavior.dimLowerBound).isEqualTo(4.0)

@@ -55,9 +55,15 @@
                 android:layout_weight="1"
                 android:text="@string/reset" />
         </TableRow>
-
-
     </TableLayout>
+
+    <Button
+            android:id="@+id/copy_from_device"
+            style="@style/button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/copyFrom"
+            />
 
     <li.klass.fhem.widget.NestedListView
         android:id="@+id/weekprofile"

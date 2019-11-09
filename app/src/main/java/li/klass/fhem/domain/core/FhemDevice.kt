@@ -37,7 +37,7 @@ import org.joda.time.DateTime
 import java.io.Serializable
 import java.util.*
 
-class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
+class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable, Comparable<FhemDevice> {
 
     val eventMap: EventMap by lazy { EventMap(EventMapParser.parse(xmlListDevice.getAttribute("eventMap") ?: "")) }
     val setList: SetList by lazy { SetList.parse(xmlListDevice.getHeader("sets") ?: "") }
@@ -144,6 +144,10 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable {
                 ", alias='" + alias + '\'' +
                 ", eventMap=" + eventMap +
                 '}'
+    }
+
+    override fun compareTo(other: FhemDevice): Int {
+        return other.aliasOrName.compareTo(aliasOrName)
     }
 
     companion object {

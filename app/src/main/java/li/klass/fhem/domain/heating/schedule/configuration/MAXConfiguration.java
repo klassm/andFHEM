@@ -26,6 +26,8 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 
 import com.google.common.collect.ImmutableList;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -171,6 +173,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     }
 
     @Override
+    @NotNull
     public IntervalType getIntervalType() {
         return IntervalType.FROM;
     }
