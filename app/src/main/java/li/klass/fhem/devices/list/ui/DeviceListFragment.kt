@@ -33,12 +33,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import kotlinx.android.synthetic.main.device_view_header.*
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.*
@@ -49,6 +51,7 @@ import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
@@ -58,10 +61,12 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
+import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -198,12 +203,20 @@ abstract class DeviceListFragment : BaseFragment() {
         }
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
-        val dummyConnectionNotification = view.findViewById<TextView>(R.id.dummyConnectionNotification)
+        val dummyConnectionNotification =
+                view.findViewById<RelativeLayout>(R.id.dummyConnectionNotification)
         if (!dataConnectionSwitch.isDummyDataActive()) {
             dummyConnectionNotification.visibility = View.GONE
         } else {
             dummyConnectionNotification.visibility = View.VISIBLE
         }
+
+        configureServers.onClick {
+            context?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT).apply {
+                putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_LIST)
+            })
+        }
+
         LOGGER.debug("updateWith - update dummyConnectionNotification, time=${stopWatch.time}")
     }
 

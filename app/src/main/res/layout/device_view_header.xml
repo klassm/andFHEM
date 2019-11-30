@@ -61,17 +61,41 @@
             />
     </RelativeLayout>
 
-    <TextView android:id="@+id/dummyConnectionNotification"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_margin="0dp"
-        android:text="@string/dummyConnectionNotification"
-        android:gravity="center"
-        android:background="@color/red"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:textColor="@color/whitegrey"/>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dummyConnectionNotification"
+            android:background="@color/red"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            >
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/button"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/configureServers"
+                android:text="@string/connectionManage"
+                />
+
+        <TextView
+                android:id="@+id/dummyConnectionNotificationText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/configureServers"
+                android:layout_toStartOf="@+id/configureServers"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/dummyConnectionNotification"
+                />
+    </RelativeLayout>
+
 
     <LinearLayout android:id="@+id/emptyView"
         android:layout_marginTop="20dp"
