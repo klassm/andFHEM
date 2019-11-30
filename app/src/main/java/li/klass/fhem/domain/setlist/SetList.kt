@@ -24,8 +24,8 @@
 
 package li.klass.fhem.domain.setlist
 
-import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.NotFoundSetListEntry
+import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.StringUtils.isEmpty
 import java.io.Serializable
@@ -55,10 +55,8 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
     override fun toString(): String {
         val keys = sortedKeys
 
-        return keys
-                .map { entries[it] as SetListEntry }
-                .map { it.asText() }
-                .joinToString(separator = " ")
+        return keys.map { entries[it] as SetListEntry }
+                .joinToString(separator = " ") { it.asText() }
     }
 
     fun getFirstPresentStateOf(vararg states: String): String? =
@@ -71,26 +69,21 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
             val parts = inputText.trim()
                     .split(" ".toRegex()).toTypedArray()
 
-            return SetList(parts.map { handlePart(it) }
-                    .filterNotNull()
-                    .toMap())
+            return SetList(parts.mapNotNull { handlePart(it) }.toMap())
         }
 
         private fun handlePart(part: String): Pair<String, SetListEntry>? {
-            var myPart = part
-            if (myPart.matches("[^:]+:noArg$".toRegex())) {
-                myPart = myPart.replace(":noArg$".toRegex(), "")
-            }
-            if (!myPart.contains(":")) {
-                return Pair(myPart, NoArgSetListEntry(myPart))
+
+            if (!part.contains(":")) {
+                return Pair(part, TextFieldSetListEntry(part))
             }
 
-            val keyValue = myPart.split(":".toRegex(), 2).toTypedArray()
+            val keyValue = part.split(":".toRegex(), 2).toTypedArray()
 
             var key: String? = StringUtils.trimToNull(keyValue[0])
-            key = if (key == null) "state" else key
+            key = key ?: "state"
             val value = if (keyValue.size == 2) keyValue[1] else ""
-            if (StringUtils.isEmpty(value)) return null
+            if (isEmpty(value)) return null
 
             return handle(key, value)?.let { Pair(key, it) }
         }
