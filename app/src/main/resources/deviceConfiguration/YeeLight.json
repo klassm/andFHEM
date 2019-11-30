@@ -1,0 +1,19 @@
+{
+  "defaultGroup": "SWITCH",
+  "stateAttributeName": "power",
+  "states": [
+    {
+      "key": "power",
+      "desc": "powerState",
+      "showInOverview": true
+    },
+    {
+      "key": "sat",
+      "desc": "saturation"
+    },
+    {
+      "key": "hue",
+      "desc": "hue"
+    }
+  ]
+}

@@ -53,7 +53,7 @@ class GraphDefinitionsForDeviceService @Inject constructor(
     private fun getGraphDefinitionsFor(allDevices: ImmutableSet<XmlListDevice>, device: XmlListDevice): Set<SvgGraphDefinition> =
             when (device.type) {
                 "SVG" -> setOf(toGraphDefinition(allDevices, device))
-                else -> allDevices
+                else  -> allDevices.asSequence()
                         .filter { it.type == "SVG" }
                         .filter { isSvgForDevice(allDevices, device, it) }
                         .filter { gplotDefinitionExists(allDevices, it) }

@@ -87,6 +87,7 @@
     <string name="yearUsage">Year Usage</string>
     <string name="lastStateChange">Last State Change</string>
     <string name="lastState">Last State</string>
+    <string name="powerState">Power State</string>
     <string name="power">Power</string>
     <string name="audio">Audio</string>
     <string name="audioMode">Audio mode</string>

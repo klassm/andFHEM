@@ -86,6 +86,7 @@ class OnOffBehaviorTest {
                     setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
+        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
         whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
         whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
@@ -109,6 +110,7 @@ class OnOffBehaviorTest {
                     setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
+        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
         whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
         whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
@@ -130,6 +132,7 @@ class OnOffBehaviorTest {
                     setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
+        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
         whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
         whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
 
@@ -147,6 +150,7 @@ class OnOffBehaviorTest {
     @Throws(Exception::class)
     fun isOnConsideringHooks(testCase: HookProviderTestCase) {
         val device = FhemDevice(XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), HashMap()))
+        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
         `when`(deviceHookProvider.buttonHookFor(device)).thenReturn(testCase.hook)
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
         device.xmlListDevice.setInternal("STATE", if (testCase.isOn) "on" else "off")
@@ -164,6 +168,7 @@ class OnOffBehaviorTest {
                 .toMutableMap()
         val device = FhemDevice(XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), headers))
 
+        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
         `when`(deviceHookProvider.getOffStateName(device)).thenReturn(testCase.offStateNameHook)
         `when`(deviceHookProvider.getOnStateName(device)).thenReturn(testCase.onStateNameHook)
 

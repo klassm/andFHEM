@@ -44,7 +44,9 @@ class OnOffBehavior
         val onStateName = getOnStateName(device) ?: "on"
         val offStateName = getOffStateName(device) ?: "off"
 
-        val readingsState = device.xmlListDevice.getState("state", true) ?: ""
+        val stateAttributeName =
+                deviceConfigurationProvider.configurationFor(device).stateAttributeName
+        val readingsState = device.xmlListDevice.getState(stateAttributeName, true) ?: ""
         val state = when {
             isValidToggleState(device.internalState, onStateName, offStateName) -> device.internalState
             isValidToggleState(readingsState, onStateName, offStateName) -> readingsState
@@ -105,9 +107,7 @@ class OnOffBehavior
     private fun existingStatesOfIncludingEventMap(device: FhemDevice, offStateNames: Set<String>): List<String> {
         val states = device.setList.existingStatesOf(offStateNames)
         val reverseEventMapStates = states
-                .map { device.getReverseEventMapStateFor(it) }
-                .filter { it != null }
-                .map { it!! }
+                .map { device.getReverseEventMapStateFor(it) }.filterNotNull()
         val comparator =
                 (compareBy<String>({ it.equals("on", true) }, { it.equals("off", true) }, { it }))
         return (states + reverseEventMapStates).sortedWith(comparator).asReversed()

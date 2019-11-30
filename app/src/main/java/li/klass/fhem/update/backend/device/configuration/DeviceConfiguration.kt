@@ -74,6 +74,8 @@ data class DeviceConfiguration(
         @Optional
         val delayForUpdateAfterCommand: Int = 0,
 
+        @SerialName("stateAttributeName") @Optional val stateAttributeName: String = "state",
+
         @SerialName("player")
         @Optional
         val playerConfiguration: PlayerConfiguration? = null,
