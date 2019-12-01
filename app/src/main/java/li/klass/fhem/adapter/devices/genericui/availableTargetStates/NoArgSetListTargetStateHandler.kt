@@ -33,10 +33,11 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry
 
-class NoArgSetListTargetStateHandler<D : FhemDevice> : SetListTargetStateHandler<D> {
+class NoArgSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     override fun canHandle(entry: SetListEntry): Boolean = entry is NoArgSetListEntry
 
-    override fun handle(entry: SetListEntry, context: Context, device: D, callback: OnTargetStateSelectedCallback<D>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice,
+                        callback: OnTargetStateSelectedCallback<FhemDevice>) {
         val noArgSetListEntry = entry as NoArgSetListEntry
         GlobalScope.launch(Dispatchers.Main) {
             callback.onStateSelected(device, noArgSetListEntry.key)
