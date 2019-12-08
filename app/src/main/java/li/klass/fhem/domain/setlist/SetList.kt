@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.setlist
 
+import li.klass.fhem.domain.setlist.typeEntry.NoArgSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.NotFoundSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.TextFieldSetListEntry
 import org.apache.commons.lang3.StringUtils
@@ -42,11 +43,11 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
 
     fun contains(vararg keys: String): Boolean = contains(keys.toList())
 
-    fun contains(keys: Iterable<String>): Boolean =
-            keys.any { entries.containsKey(it) }
+    fun contains(keys: Iterable<String>): Boolean = keys.any { entries.containsKey(it) }
 
-    fun existingStatesOf(toSearch: Set<String>): Set<String> =
-            entries.keys.filter { toSearch.contains(it) }.toSet()
+    fun existingStatesOf(toSearch: Set<String>): Set<String> = entries.keys.filter {
+        toSearch.contains(it)
+    }.toSet()
 
     fun size(): Int = entries.size
 
@@ -59,15 +60,14 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
                 .joinToString(separator = " ") { it.asText() }
     }
 
-    fun getFirstPresentStateOf(vararg states: String): String? =
-            states.asSequence().firstOrNull { contains(it) }
+    fun getFirstPresentStateOf(
+            vararg states: String): String? = states.asSequence().firstOrNull { contains(it) }
 
     companion object {
         fun parse(inputText: String): SetList {
             if (isEmpty(inputText)) return SetList(emptyMap())
 
-            val parts = inputText.trim()
-                    .split(" ".toRegex()).toTypedArray()
+            val parts = inputText.trim().split(" ".toRegex()).toTypedArray()
 
             return SetList(parts.mapNotNull { handlePart(it) }.toMap())
         }
@@ -75,7 +75,11 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
         private fun handlePart(part: String): Pair<String, SetListEntry>? {
 
             if (!part.contains(":")) {
-                return Pair(part, TextFieldSetListEntry(part))
+                val entry = when (part) {
+                    "on", "off" -> NoArgSetListEntry(part)
+                    else        -> TextFieldSetListEntry(part)
+                }
+                return Pair(part, entry)
             }
 
             val keyValue = part.split(":".toRegex(), 2).toTypedArray()
@@ -101,10 +105,9 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
                     return type
                 }
             }
-            return if (parts.isEmpty() || parts.isNotEmpty() && "colorpicker".equals(parts[0], ignoreCase = true))
-                SetListItemType.NO_ARG
-            else
-                SetListItemType.GROUP
+            return if (parts.isEmpty() || parts.isNotEmpty() && "colorpicker".equals(parts[0],
+                                                                                     ignoreCase = true)) SetListItemType.NO_ARG
+            else SetListItemType.GROUP
         }
     }
 }
