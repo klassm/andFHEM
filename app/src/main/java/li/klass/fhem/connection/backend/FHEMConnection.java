@@ -25,7 +25,6 @@
 package li.klass.fhem.connection.backend;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.settings.SettingsKeys;
@@ -53,7 +52,7 @@ public abstract class FHEMConnection {
         String text = "Error while accessing '" + host + "' with suffix '" + suffix + "'\r\n" +
                 serverSpec.toString() + "\r\n";
 
-        ErrorHolder.setError(e, text);
+        ErrorHolder.INSTANCE.setError(e, text);
     }
 
     int getConnectionTimeoutMilliSeconds() {

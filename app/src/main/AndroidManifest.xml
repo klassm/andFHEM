@@ -22,9 +22,10 @@
   ~   Boston, MA  02110-1301  USA
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="li.klass.fhem"
-    android:installLocation="auto">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="li.klass.fhem"
+        android:installLocation="auto"
+        >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -38,62 +39,87 @@
     <uses-feature android:name="android.hardware.touchscreen" />
 
     <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:smallScreens="true"
-        android:xlargeScreens="true" />
+            android:anyDensity="true"
+            android:largeScreens="true"
+            android:normalScreens="true"
+            android:smallScreens="true"
+            android:xlargeScreens="true"
+            />
 
     <application
-        android:name=".AndFHEMApplication"
-        android:allowBackup="true"
-        android:hardwareAccelerated="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/ApplicationTheme">
+            android:name=".AndFHEMApplication"
+            android:allowBackup="true"
+            android:hardwareAccelerated="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:theme="@style/ApplicationTheme"
+            >
         <uses-library
-            android:name="com.sec.android.app.multiwindow"
-            android:required="false" />
+                android:name="com.sec.android.app.multiwindow"
+                android:required="false"
+                />
 
         <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2659219871370009~5714990385" />
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-2659219871370009~5714990385"
+                />
         <meta-data
-            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
-            android:resource="@dimen/app_defaultsize_w" />
+                android:name="com.sec.android.multiwindow.DEFAULT_SIZE_W"
+                android:resource="@dimen/app_defaultsize_w"
+                />
         <meta-data
-            android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
-            android:resource="@dimen/app_defaultsize_h" />
+                android:name="com.sec.android.multiwindow.DEFAULT_SIZE_H"
+                android:resource="@dimen/app_defaultsize_h"
+                />
         <meta-data
-            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
-            android:resource="@dimen/app_minimumsize_w" />
+                android:name="com.sec.android.multiwindow.MINIMUM_SIZE_W"
+                android:resource="@dimen/app_minimumsize_w"
+                />
         <meta-data
-            android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
-            android:resource="@dimen/app_minimumsize_h" />
+                android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
+                android:resource="@dimen/app_minimumsize_h"
+                />
         <meta-data
-            android:name="com.sec.android.support.multiwindow"
-            android:value="true" />
+                android:name="com.sec.android.support.multiwindow"
+                android:value="true"
+                />
         <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version"
+                />
         <meta-data
-            android:name="android.app.default_searchable"
-            android:value="li.klass.fhem.search.SearchResultsActivity" />
+                android:name="android.app.default_searchable"
+                android:value="li.klass.fhem.search.SearchResultsActivity"
+                />
 
         <provider
-            android:name=".search.MySearchSuggestionsProvider"
-            android:authorities="${applicationId}.MySearchSuggestionsProvider"
-            android:exported="false" />
+                android:name=".search.MySearchSuggestionsProvider"
+                android:authorities="${applicationId}.MySearchSuggestionsProvider"
+                android:exported="false"
+                />
+
+        <provider
+                android:name=".file.provider.AndFHEMFileProvider"
+                android:authorities="${applicationId}.AndFHEMFileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true"
+                >
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths"
+                    />
+        </provider>
 
         <activity
-            android:name=".activities.StartupActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@style/FullscreenTheme">
+                android:name=".activities.StartupActivity"
+                android:alwaysRetainTaskState="true"
+                android:configChanges="keyboardHidden|screenSize"
+                android:label="@string/app_name"
+                android:launchMode="singleTask"
+                android:noHistory="true"
+                android:theme="@style/FullscreenTheme"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -103,38 +129,45 @@
         </activity>
 
         <activity
-            android:name=".search.SearchResultsActivity"
-            android:launchMode="singleTop">
+                android:name=".search.SearchResultsActivity"
+                android:launchMode="singleTop"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                    android:name="android.app.searchable"
+                    android:resource="@xml/searchable"
+                    />
         </activity>
 
         <activity
-            android:name=".activities.AndFHEMMainActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="keyboardHidden|screenSize"
-            android:launchMode="singleTask">
+                android:name=".activities.AndFHEMMainActivity"
+                android:alwaysRetainTaskState="true"
+                android:configChanges="keyboardHidden|screenSize"
+                android:launchMode="singleTask"
+                >
 
         </activity>
         <activity
-            android:name=".activities.PremiumActivity"
-            android:label="@string/premium" />
+                android:name=".activities.PremiumActivity"
+                android:label="@string/premium"
+                />
         <activity
-            android:name=".settings.SettingsActivity"
-            android:label="@string/preferences"
-            android:theme="@style/PreferencesTheme" />
+                android:name=".settings.SettingsActivity"
+                android:label="@string/preferences"
+                android:theme="@style/PreferencesTheme"
+                />
         <activity
-            android:name=".activities.CommandIndicatorActivity"
-            android:theme="@style/transparentDialogTheme" />
+                android:name=".activities.CommandIndicatorActivity"
+                android:theme="@style/transparentDialogTheme"
+                />
         <activity android:name=".graph.ui.GraphActivity" />
         <activity android:name=".graph.ui.ChartingDateSelectionActivity" />
         <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+                android:name="com.google.android.gms.ads.AdActivity"
+                android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+                />
         <activity android:name=".appwidget.ui.selection.SmallWidgetSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -152,45 +185,52 @@
         </activity>
 
         <receiver
-            android:name=".appwidget.provider.SmallAppWidgetProvider"
-            android:exported="true"
-            android:label="@string/widget_small">
+                android:name=".appwidget.provider.SmallAppWidgetProvider"
+                android:exported="true"
+                android:label="@string/widget_small"
+                >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/andfhem_appwidget_small" />
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/andfhem_appwidget_small"
+                    />
         </receiver>
         <receiver
-            android:name=".appwidget.provider.MediumAppWidgetProvider"
-            android:exported="true"
-            android:label="@string/widget_medium">
+                android:name=".appwidget.provider.MediumAppWidgetProvider"
+                android:exported="true"
+                android:label="@string/widget_medium"
+                >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/andfhem_appwidget_medium" />
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/andfhem_appwidget_medium"
+                    />
         </receiver>
         <receiver
-            android:name=".appwidget.provider.BigAppWidgetProvider"
-            android:exported="true"
-            android:label="@string/widget_big">
+                android:name=".appwidget.provider.BigAppWidgetProvider"
+                android:exported="true"
+                android:label="@string/widget_big"
+                >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/andfhem_appwidget_big" />
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/andfhem_appwidget_big"
+                    />
         </receiver>
 
         <receiver
-            android:name=".appwidget.action.AppWidgetActionBroadcastReceiver"
-            android:exported="false">
+                android:name=".appwidget.action.AppWidgetActionBroadcastReceiver"
+                android:exported="false"
+                >
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TARGET_STATE" />
@@ -199,43 +239,49 @@
         </receiver>
 
         <service
-            android:name=".service.intent.ExternalApiService"
-            android:exported="true"
-            android:permission="li.klass.fhem.permissions.EXTERNAL">
+                android:name=".service.intent.ExternalApiService"
+                android:exported="true"
+                android:permission="li.klass.fhem.permissions.EXTERNAL"
+                >
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES" />
             </intent-filter>
         </service>
         <service
-            android:name=".appwidget.update.AppWidgetListViewUpdateRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+                android:name=".appwidget.update.AppWidgetListViewUpdateRemoteViewsService"
+                android:permission="android.permission.BIND_REMOTEVIEWS"
+                />
         <service
-            android:name=".alarm.clock.update.AlarmClockIntentService"
-            android:exported="false">
+                android:name=".alarm.clock.update.AlarmClockIntentService"
+                android:exported="false"
+                >
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.NEXT_ALARM_CLOCK" />
                 <action android:name="li.klass.fhem.constants.Actions.SCHEDULE_ALARM_CLOCK_UPDATE" />
             </intent-filter>
         </service>
         <service
-            android:name=".service.intent.RoomListUpdateIntentService"
-            android:exported="false">
+                android:name=".service.intent.RoomListUpdateIntentService"
+                android:exported="false"
+                >
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE" />
             </intent-filter>
         </service>
         <service
-            android:name=".service.intent.NotificationIntentService"
-            android:exported="false">
+                android:name=".service.intent.NotificationIntentService"
+                android:exported="false"
+                >
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_SET_FOR_DEVICE" />
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE" />
             </intent-filter>
         </service>
         <service
-            android:name=".appindex.AppIndexIntentService"
-            android:exported="true"
-            android:permission="com.google.android.gms.permission.APPINDEXING">
+                android:name=".appindex.AppIndexIntentService"
+                android:exported="true"
+                android:permission="com.google.android.gms.permission.APPINDEXING"
+                >
             <intent-filter>
                 <action android:name="com.google.firebase.appindexing.UPDATE_INDEX" />
             </intent-filter>
@@ -243,64 +289,71 @@
 
         <activity android:name=".devices.ui.DeviceNameSelectionActivity" />
         <activity
-            android:name=".activities.locale.ConditionQueryLocaleSettingActivity"
-            android:exported="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/localeDeviceState">
+                android:name=".activities.locale.ConditionQueryLocaleSettingActivity"
+                android:exported="true"
+                android:icon="@drawable/ic_launcher"
+                android:label="@string/localeDeviceState"
+                >
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION" />
                 <action android:name="net.dinglisch.android.tasker.ACTION_EDIT_EVENT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.locale.SendCommandLocaleSettingActivity"
-            android:exported="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/localeSendCommandPlugin">
+                android:name=".activities.locale.SendCommandLocaleSettingActivity"
+                android:exported="true"
+                android:icon="@drawable/ic_launcher"
+                android:label="@string/localeSendCommandPlugin"
+                >
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.locale.ConnectionChangeLocaleSettingActivity"
-            android:exported="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/localeConnectionChangePlugin">
+                android:name=".activities.locale.ConnectionChangeLocaleSettingActivity"
+                android:exported="true"
+                android:icon="@drawable/ic_launcher"
+                android:label="@string/localeConnectionChangePlugin"
+                >
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>
         </activity>
 
         <receiver
-            android:name=".activities.locale.ConditionQueryLocaleReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver">
+                android:name=".activities.locale.ConditionQueryLocaleReceiver"
+                android:exported="true"
+                tools:ignore="ExportedReceiver"
+                >
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".activities.locale.FireSettingLocaleReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver">
+                android:name=".activities.locale.FireSettingLocaleReceiver"
+                android:exported="true"
+                tools:ignore="ExportedReceiver"
+                >
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".fcm.receiver.FcmIntentService"
-            android:enabled="true"
-            android:exported="false">
+                android:name=".fcm.receiver.FcmIntentService"
+                android:enabled="true"
+                android:exported="false"
+                >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".activities.FHEMUrlActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoDisplay">
+                android:name=".activities.FHEMUrlActivity"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.NoDisplay"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -311,8 +364,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.duenndns.ssl.MemorizingActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+                android:name="de.duenndns.ssl.MemorizingActivity"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                />
     </application>
 
 </manifest>

@@ -178,6 +178,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         val view = view ?: return
 
         val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
+        val activity = activity ?: return
 
         errorLayout.setOnLongClickListener {
             ErrorHolder.sendLastErrorAsMail(activity)
