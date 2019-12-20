@@ -21,19 +21,18 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.graph.backend.gplot
 
-package li.klass.fhem.graph.backend.gplot;
+import com.google.common.base.Optional
+import com.google.common.collect.Range
+import li.klass.fhem.graph.backend.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeriesBuilder
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Range;
-
-import static li.klass.fhem.graph.backend.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeriesBuilder;
-
-public class GPlotAxisTestdataCreator {
-    public static GPlotAxis defaultGPlotAxis() {
-        GPlotAxis axis = new GPlotAxis("myLabel", Optional.of(Range.atLeast(10D)));
-        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series1").withAxis(GPlotSeries.Axis.LEFT).withColor(GPlotSeries.SeriesColor.RED).build());
-        axis.addSeries(defaultGPlotSeriesBuilder().withTitle("series2").withAxis(GPlotSeries.Axis.LEFT).withColor(GPlotSeries.SeriesColor.RED).build());
-        return axis;
+object GPlotAxisTestdataCreator {
+    @JvmStatic
+    fun defaultGPlotAxis() = GPlotAxis("myLabel", Optional.of(Range.atLeast(10.0))).apply {
+        addSeries(defaultGPlotSeriesBuilder().copy(title = "series1", axis = GPlotSeries.Axis.LEFT,
+                                                   color = GPlotSeries.SeriesColor.RED))
+        addSeries(defaultGPlotSeriesBuilder().copy(title = "series2", axis = GPlotSeries.Axis.RIGHT,
+                                                   color = GPlotSeries.SeriesColor.GREEN))
     }
 }

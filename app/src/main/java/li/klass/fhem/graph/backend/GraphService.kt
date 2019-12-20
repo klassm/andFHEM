@@ -67,7 +67,7 @@ class GraphService @Inject constructor(
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.name, series.size)
 
         val data = series.map { plotSeries ->
-            val logDevice = plotSeries.logDevice.or(svgGraphDefinition.logDeviceName)
+            val logDevice = plotSeries.logDevice ?: svgGraphDefinition.logDeviceName
             plotSeries to getCurrentGraphEntriesFor(logDevice, connectionId, plotSeries, interval, svgGraphDefinition.plotfunction)
         }.toMap()
 

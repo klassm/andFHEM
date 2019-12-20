@@ -24,6 +24,8 @@
 
 package li.klass.fhem.graph.backend.gplot;
 
+import androidx.annotation.NonNull;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
@@ -38,7 +40,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.JarURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +57,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.annotation.NonNull;
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.SeriesColor;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -64,29 +64,41 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Collections.emptyMap;
 
+class TemporaryGPlotSeries {
+    String title = "";
+    String logDef;
+    GPlotSeries.LineType lineType = GPlotSeries.LineType.LINES;
+    String logDevice;
+    GPlotSeries.Axis axis;
+    SeriesColor color;
+    GPlotSeries.SeriesType seriesType = GPlotSeries.SeriesType.DEFAULT;
+    Float lineWidth = 1f;
+
+    GPlotSeries toGPlotSeries() {
+        return new GPlotSeries(title, logDef, lineType, logDevice, axis, color, seriesType,
+            lineWidth);
+    }
+}
+
 @Singleton
 public class GPlotParser {
 
-    private static final Pattern SETS_PATTERN = Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]?([^\"^']+)[\"'\\]]?");
+    private static final Pattern SETS_PATTERN =
+        Pattern.compile("set ([a-zA-Z0-9]+) [\"'\\[]?([^\"^']+)[\"'\\]]?");
     private static final Pattern AXIS_PATTERN = Pattern.compile("axes x1y([12])");
     private static final Pattern TITLE_PATTERN = Pattern.compile("title '([^']*)'");
     private static final Pattern TYPE_PATTERN = Pattern.compile("with ([a-zA-Z]+)");
-    private static final Pattern SERIES_TYPE_PATTERN = Pattern.compile("(l[0-9])((dot|fill(_stripe|_gyr)?)?)");
+    private static final Pattern SERIES_TYPE_PATTERN =
+        Pattern.compile("(l[0-9])((dot|fill(_stripe|_gyr)?)?)");
     private static final Pattern LINE_WIDTH_PATTERN = Pattern.compile("lw ([0-9]+(\\.[0-9]+)?)");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GPlotParser.class);
 
-    private ImmutableMap<String, SeriesColor> TO_COLOR = ImmutableMap.<String, SeriesColor>builder()
-            .put("l0", SeriesColor.RED)
-            .put("l1", SeriesColor.GREEN)
-            .put("l2", SeriesColor.BLUE)
-            .put("l3", SeriesColor.MAGENTA)
-            .put("l4", SeriesColor.BROWN)
-            .put("l5", SeriesColor.WHITE)
-            .put("l6", SeriesColor.OLIVE)
-            .put("l7", SeriesColor.GRAY)
-            .put("l8", SeriesColor.YELLOW)
-            .build();
+    private ImmutableMap<String, SeriesColor> TO_COLOR =
+        ImmutableMap.<String, SeriesColor>builder().put("l0", SeriesColor.RED)
+            .put("l1", SeriesColor.GREEN).put("l2", SeriesColor.BLUE).put("l3", SeriesColor.MAGENTA)
+            .put("l4", SeriesColor.BROWN).put("l5", SeriesColor.WHITE).put("l6", SeriesColor.OLIVE)
+            .put("l7", SeriesColor.GRAY).put("l8", SeriesColor.YELLOW).build();
 
     @Inject
     public GPlotParser() {
@@ -114,8 +126,9 @@ public class GPlotParser {
 
         List<GPlotSeries> series = extractSeriesFrom(lines);
         for (GPlotSeries s : series) {
-            (s.getAxis() == GPlotSeries.Axis.LEFT ? definition.getLeftAxis() : definition.getRightAxis())
-                    .addSeries(s);
+            (s.getAxis() == GPlotSeries.Axis.LEFT ?
+                definition.getLeftAxis() :
+                definition.getRightAxis()).addSeries(s);
         }
 
         return definition;
@@ -123,16 +136,15 @@ public class GPlotParser {
 
     private GPlotAxis createAxis(Map<String, String> setsDeclarations, String prefix) {
         String labelKey = prefix + "label";
-        String rightLabel = setsDeclarations.containsKey(labelKey) ?
-                setsDeclarations.get(labelKey) : "";
+        String rightLabel =
+            setsDeclarations.containsKey(labelKey) ? setsDeclarations.get(labelKey) : "";
 
         String rangeKey = prefix + "range";
         Optional<Range<Double>> optRange = Optional.absent();
         if (setsDeclarations.containsKey(rangeKey)) {
-            String rangeValue = setsDeclarations.get(rangeKey).replaceAll("[\\[\\]]", "")
-                    .replace("min", "")
-                    .replace("max", "")
-                    .trim();
+            String rangeValue =
+                setsDeclarations.get(rangeKey).replaceAll("[\\[\\]]", "").replace("min", "")
+                    .replace("max", "").trim();
             String[] parts = rangeValue.split(":");
 
             optRange = calculateRange(rangeValue, parts);
@@ -150,13 +162,14 @@ public class GPlotParser {
         } else if (rangeValue.endsWith(":")) {
             return Optional.of(Range.atLeast(Double.parseDouble(parts[0])));
         } else {
-            return Optional.of(Range.closed(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])));
+            return Optional
+                .of(Range.closed(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])));
         }
     }
 
     private List<GPlotSeries> extractSeriesFrom(List<String> lines) {
         List<GPlotSeries> result = newArrayList();
-        Queue<GPlotSeries.Builder> builders = new LinkedList<>();
+        Queue<TemporaryGPlotSeries> temporarySeries = new LinkedList<>();
 
         List<SeriesColor> colors = new ArrayList<>(Arrays.asList(SeriesColor.values()));
         boolean plotFound = false;
@@ -166,38 +179,38 @@ public class GPlotParser {
                 plotFound = true;
             }
             String[] spaceSeparatedParts = line.split(" ");
-            if (line.startsWith("#")
-                    && spaceSeparatedParts.length == 2
-                    && !spaceSeparatedParts[0].matches("[#]+[ ]*")
-                    && spaceSeparatedParts[1].contains(":")) {
+            if (line.startsWith("#") && spaceSeparatedParts.length == 2 && !spaceSeparatedParts[0]
+                .matches("[#]+[ ]*") && spaceSeparatedParts[1].contains(":")) {
                 String logDevice = spaceSeparatedParts[0].substring(1);
-                GPlotSeries.Builder builder = new GPlotSeries.Builder();
-                if (!logDevice.equalsIgnoreCase("FileLog") && !logDevice.equalsIgnoreCase("DBLog")) {
-                    builder.withLogDevice(Optional.of(logDevice));
+                TemporaryGPlotSeries newSeries = new TemporaryGPlotSeries();
+                if (!logDevice.equalsIgnoreCase("FileLog") && !logDevice
+                    .equalsIgnoreCase("DBLog")) {
+                    newSeries.logDevice = logDevice;
                 }
-                builders.add(builder.withLogDef(spaceSeparatedParts[1]));
+                newSeries.logDef = spaceSeparatedParts[1];
+                temporarySeries.add(newSeries);
             } else if (plotFound) {
-                GPlotSeries.Builder builder = builders.peek();
-                if (builder == null) {
+                TemporaryGPlotSeries series = temporarySeries.peek();
+                if (series == null) {
                     LOGGER.error("extractSeriesFrom - builder is null");
                     break;
                 }
 
-                boolean attributeFound = handleAxis(line, builder);
-                attributeFound = handleTitle(line, builder) | attributeFound;
-                attributeFound = handleLineType(line, builder) | attributeFound;
-                attributeFound = handleSeriesType(line, builder, colors) | attributeFound;
-                attributeFound = handleLineWidth(line, builder) | attributeFound;
+                boolean attributeFound = handleAxis(line, series);
+                attributeFound = handleTitle(line, series) | attributeFound;
+                attributeFound = handleLineType(line, series) | attributeFound;
+                attributeFound = handleSeriesType(line, series, colors) | attributeFound;
+                attributeFound = handleLineWidth(line, series) | attributeFound;
 
-                LOGGER.trace("extractSeriesFrom - builder is " + builder);
+                LOGGER.trace("extractSeriesFrom - builder is " + series);
                 if (attributeFound) {
-                    if (!builder.isColorSet()) {
+                    if (series.color == null) {
                         SeriesColor color = Iterables.getFirst(colors, SeriesColor.RED);
-                        builder.withColor(color);
+                        series.color = color;
                         colors.remove(color);
                     }
-                    result.add(builder.build());
-                    builders.remove();
+                    result.add(series.toGPlotSeries());
+                    temporarySeries.remove();
                 }
             }
         }
@@ -205,17 +218,19 @@ public class GPlotParser {
         return result;
     }
 
-    private boolean handleLineWidth(String line, GPlotSeries.Builder builder) {
+    private boolean handleLineWidth(String line, TemporaryGPlotSeries series) {
         Matcher matcher = LINE_WIDTH_PATTERN.matcher(line);
         if (matcher.find()) {
             float lineWidth = Float.parseFloat(matcher.group(1));
-            builder.withLineWith(lineWidth);
+            series.lineWidth = lineWidth;
             return true;
         }
         return false;
     }
 
-    private boolean handleSeriesType(String line, GPlotSeries.Builder builder, List<SeriesColor> colors) {
+    private boolean handleSeriesType(String line, TemporaryGPlotSeries builder,
+                                     List<SeriesColor> colors)
+    {
         Matcher matcher = SERIES_TYPE_PATTERN.matcher(line);
         if (matcher.find()) {
             String colorDesc = matcher.group(1);
@@ -231,8 +246,8 @@ public class GPlotParser {
             SeriesColor color = TO_COLOR.get(colorDesc);
             colors.remove(color);
 
-            builder.withColor(color);
-            builder.withSeriesType(seriesType);
+            builder.color = color;
+            builder.seriesType = seriesType;
 
             return true;
         }
@@ -240,11 +255,12 @@ public class GPlotParser {
         return false;
     }
 
-    private boolean handleLineType(String line, GPlotSeries.Builder builder) {
+    private boolean handleLineType(String line, TemporaryGPlotSeries builder) {
         Matcher typeMatcher = TYPE_PATTERN.matcher(line);
         if (typeMatcher.find()) {
             try {
-                builder.withLineType(GPlotSeries.LineType.valueOf(typeMatcher.group(1).toUpperCase(Locale.getDefault())));
+                builder.lineType = GPlotSeries.LineType
+                    .valueOf(typeMatcher.group(1).toUpperCase(Locale.getDefault()));
                 return true;
             } catch (IllegalArgumentException e) {
                 LOGGER.debug("cannot find type for {}", typeMatcher.group(1));
@@ -253,30 +269,30 @@ public class GPlotParser {
         return false;
     }
 
-    private boolean handleTitle(String line, GPlotSeries.Builder builder) {
+    private boolean handleTitle(String line, TemporaryGPlotSeries builder) {
         Matcher titleMatcher = TITLE_PATTERN.matcher(line);
         if (titleMatcher.find()) {
-            builder.withTitle(titleMatcher.group(1));
+            builder.title = titleMatcher.group(1);
             return true;
         }
         return false;
     }
 
-    private boolean handleAxis(String line, GPlotSeries.Builder builder) {
+    private boolean handleAxis(String line, TemporaryGPlotSeries builder) {
         Matcher axesMatcher = AXIS_PATTERN.matcher(line);
         if (axesMatcher.find()) {
             String axis = axesMatcher.group(1);
             switch (axis) {
                 case "1":
-                    builder.withAxis(GPlotSeries.Axis.LEFT);
+                    builder.axis = GPlotSeries.Axis.LEFT;
                     break;
                 case "2":
-                    builder.withAxis(GPlotSeries.Axis.RIGHT);
+                    builder.axis = GPlotSeries.Axis.RIGHT;
                     break;
             }
             return true;
         } else {
-            builder.withAxis(GPlotSeries.Axis.LEFT);
+            builder.axis = GPlotSeries.Axis.LEFT;
             return false;
         }
     }
@@ -306,7 +322,8 @@ public class GPlotParser {
         return emptyMap();
     }
 
-    private Map<String, GPlotDefinition> readDefinitionsFromJar(URL url) throws IOException, URISyntaxException {
+    private Map<String, GPlotDefinition> readDefinitionsFromJar(URL url) throws IOException
+    {
         Map<String, GPlotDefinition> result = newHashMap();
         JarURLConnection con = (JarURLConnection) url.openConnection();
         JarFile archive = con.getJarFile();

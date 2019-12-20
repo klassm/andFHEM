@@ -21,15 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.graph.backend.gplot
 
-package li.klass.fhem.graph.backend.gplot;
-
-public class GPlotSeriesTestdataBuilder {
-    public static GPlotSeries.Builder defaultGPlotSeriesBuilder() {
-        return new GPlotSeries.Builder()
-                .withAxis(GPlotSeries.Axis.LEFT)
-                .withLogDef("4::")
-                .withTitle("mySeries")
-                .withLineType(GPlotSeries.LineType.LINES);
-    }
+object GPlotSeriesTestdataBuilder {
+    @JvmStatic
+    fun defaultGPlotSeriesBuilder() = GPlotSeries(axis = GPlotSeries.Axis.LEFT, logDef = "4::",
+                                                  title = "mySeries",
+                                                  lineType = GPlotSeries.LineType.LINES,
+                                                  logDevice = null)
 }

@@ -186,7 +186,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
     }
 
-    private fun setRangeFor(axisRange: Optional<Range<Double>>, axis: com.github.mikephil.charting.components.YAxis) {
+    private fun setRangeFor(axisRange: Optional<Range<Double>>, axis: YAxis) {
         if (axisRange.isPresent) {
             val range = axisRange.get()
             if (range.hasLowerBound()) {
@@ -254,7 +254,8 @@ class GraphActivity : AppCompatActivity(), Updateable {
             else
                 YAxis.AxisDependency.RIGHT
 
-            val seriesColor = theme.resolveColor(series.color.colorAttribute)
+            val seriesColor =
+                    theme.resolveColor((series.color ?: GPlotSeries.SeriesColor.RED).colorAttribute)
             color = seriesColor
             setCircleColor(seriesColor)
             fillColor = seriesColor
@@ -287,8 +288,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemId = item.itemId
-        when (itemId) {
+        when (item.itemId) {
             R.id.menu_changeStartEndDate -> {
                 startActivityForResult(Intent(this, ChartingDateSelectionActivity::class.java)
                         .putExtra(DEVICE_NAME, deviceName).putExtra(START_DATE, startDate)
