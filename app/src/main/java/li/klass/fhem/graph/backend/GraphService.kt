@@ -30,6 +30,7 @@ import com.google.common.base.Optional
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.gplot.GPlotSeries
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import org.joda.time.DateTime
@@ -42,7 +43,8 @@ import javax.inject.Singleton
 @Singleton
 class GraphService @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
-        private val graphIntervalProvider: GraphIntervalProvider
+        private val graphIntervalProvider: GraphIntervalProvider,
+        private val deviceListService: DeviceListService
 ) {
 
     /**
@@ -67,7 +69,8 @@ class GraphService @Inject constructor(
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.name, series.size)
 
         val data = series.map { plotSeries ->
-            val logDevice = plotSeries.logDevice ?: svgGraphDefinition.logDeviceName
+            val logDevice = deviceListService.getDeviceForName(
+                    plotSeries.logDevice ?: svgGraphDefinition.logDeviceName)!!
             plotSeries to getCurrentGraphEntriesFor(logDevice, connectionId, plotSeries, interval, svgGraphDefinition.plotfunction)
         }.toMap()
 
@@ -85,10 +88,11 @@ class GraphService @Inject constructor(
      * @param interval     Interval containing start and end date
      * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to [GraphEntry] objects.
      */
-    private fun getCurrentGraphEntriesFor(logDevice: String,
+    private fun getCurrentGraphEntriesFor(logDevice: FhemDevice,
                                           connectionId: String?, gPlotSeries: GPlotSeries,
                                           interval: Interval, plotfunction: List<String>): List<GraphEntry> {
-        val graphEntries = findGraphEntries(loadLogData(logDevice, connectionId, interval, gPlotSeries, plotfunction))
+        val graphEntries = findGraphEntries(
+                loadLogData(logDevice.name, connectionId, interval, gPlotSeries, plotfunction))
         LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size, logDevice)
         return graphEntries
     }

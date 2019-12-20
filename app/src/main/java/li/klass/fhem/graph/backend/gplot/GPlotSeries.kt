@@ -24,11 +24,13 @@
 package li.klass.fhem.graph.backend.gplot
 
 import li.klass.fhem.R
+import java.io.Serializable
 
 data class GPlotSeries(val title: String = "", val logDef: String? = null,
                        val lineType: LineType = LineType.LINES, val logDevice: String?,
                        val axis: Axis? = null, val color: SeriesColor? = null,
-                       val seriesType: SeriesType = SeriesType.DEFAULT, val lineWidth: Float = 1f) {
+                       val seriesType: SeriesType = SeriesType.DEFAULT, val lineWidth: Float = 1f) :
+        Serializable {
     enum class LineType {
         LINES,
         POINTS,
