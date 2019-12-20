@@ -26,6 +26,6 @@ package li.klass.fhem.graph.backend.gplot
 import com.google.common.collect.Range
 import java.io.Serializable
 
-class GPlotAxis(val label: String,
-                val range: Range<Double>?,
-                val series: List<GPlotSeries>) : Serializable
+data class GPlotAxis(val label: String,
+                     val range: Range<Double>?,
+                     val series: List<GPlotSeries>) : Serializable

@@ -31,5 +31,5 @@ object GPlotSeriesTestdataBuilder {
             lineWidth = 1F,
             seriesType = GPlotSeries.SeriesType.DEFAULT,
             color = GPlotSeries.SeriesColor.RED),
-            dataProvider = DataProvider(DataProviderSpec.FileLog("4::")))
+            dataProvider = GraphDataProvider(DataProviderSpec.FileLog("4::")))
 }

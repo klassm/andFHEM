@@ -30,10 +30,10 @@ data class ViewSpec(val title: String,
                     val lineType: GPlotSeries.LineType,
                     val axis: GPlotSeries.Axis? = null, val color: GPlotSeries.SeriesColor? = null,
                     val seriesType: GPlotSeries.SeriesType = GPlotSeries.SeriesType.DEFAULT,
-                    val lineWidth: Float = 1F)
+                    val lineWidth: Float = 1F) : Serializable
 
 
-sealed class DataProviderSpec() {
+sealed class DataProviderSpec : Serializable {
     abstract val pattern: String
 
     data class FileLog(override val pattern: String) : DataProviderSpec()
@@ -41,12 +41,11 @@ sealed class DataProviderSpec() {
     data class CustomLogDevice(override val pattern: String, val logDevice: String) : DataProviderSpec()
 }
 
-data class DataProvider(val fileLog: DataProviderSpec.FileLog? = null,
-                        val dbLog: DataProviderSpec.DbLog? = null,
-                        val customLogDevice: DataProviderSpec.CustomLogDevice? = null)
+data class GraphDataProvider(val fileLog: DataProviderSpec.FileLog? = null,
+                             val dbLog: DataProviderSpec.DbLog? = null,
+                             val customLogDevice: DataProviderSpec.CustomLogDevice? = null) : Serializable
 
-data class GPlotSeries(val viewSpec: ViewSpec, val dataProvider: DataProvider) :
-        Serializable {
+data class GPlotSeries(val viewSpec: ViewSpec, val dataProvider: GraphDataProvider) : Serializable {
     enum class LineType {
         LINES,
         POINTS,

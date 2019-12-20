@@ -24,26 +24,32 @@
 
 package li.klass.fhem.graph.backend
 
+import android.content.Context
 import com.google.common.base.Optional
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
-import li.klass.fhem.graph.backend.gplot.GPlotSeries
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.graph.backend.gplot.*
+import li.klass.fhem.graph.backend.gplot.DataProviderSpec.CustomLogDevice
+import li.klass.fhem.graph.backend.gplot.DataProviderSpec.FileLog
 import li.klass.fhem.testutil.MockitoRule
 import li.klass.fhem.testutil.ValueProvider
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
+import li.klass.fhem.update.backend.xmllist.DeviceNode
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.DateTime
 import org.joda.time.Interval
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.mock
 
 @RunWith(DataProviderRunner::class)
 class GraphServiceTest {
@@ -56,27 +62,35 @@ class GraphServiceTest {
     private lateinit var graphIntervalProvider: GraphIntervalProvider
     @Mock
     private lateinit var deviceListService: DeviceListService
+    @Mock
+    private lateinit var context: Context
 
     @InjectMocks
     private lateinit var graphService: GraphService
 
     private val valueProvider = ValueProvider()
 
-    @Test
-    fun testFindGraphEntries() {
-        val content = "\n" +
-                "2013-03-21_16:38:39 5.7\n" +
-                "2013-03-21_16:48:49 5.9\n" +
-                "2013-03-21_16:53:54 6.2\n" +
-                "2013-03-21_17:01:32 5.4\n" +
-                "2013-03-21_17:04:04 5.2\n" +
-                "#4::\n" +
-                "\n" +
-                "\n"
+    private val dummyResponse = "\n" +
+            "2013-03-21_16:38:39 5.7\n" +
+            "2013-03-21_16:48:49 5.9\n" +
+            "2013-03-21_16:53:54 6.2\n" +
+            "2013-03-21_17:01:32 5.4\n" +
+            "2013-03-21_17:04:04 5.2\n" +
+            "#4::\n" +
+            "\n" +
+            "\n"
+    private val dummyResponseDataCount = 5
 
-        val graphEntries = graphService.findGraphEntries(content)
+    private val from = valueProvider.dateTime()
+    private val to = from.plusDays(valueProvider.intValue(10))
+    private val fromDateFormatted = GraphService.DATE_TIME_FORMATTER.print(from)
+    private val toDateFormatted = GraphService.DATE_TIME_FORMATTER.print(to)
+    private val interval = Interval(from, to)
+    private val pattern = "4::"
 
-        assertThat(graphEntries).hasSize(5)
+    @Before
+    fun setUp() {
+        given(graphIntervalProvider.getIntervalFor(from, to, context)).willReturn(interval)
     }
 
     @Test
@@ -88,30 +102,107 @@ class GraphServiceTest {
     }
 
     @Test
-    fun should_load_graph_entries() {
+    fun should_load_graph_entries_for_custom_devices() {
         // given
-        val logDeviceName = valueProvider.lowercaseString(10)
-        val series = mock(GPlotSeries::class.java)
-        val spec1 = valueProvider.lowercaseString(10)
-        val spec2 = valueProvider.lowercaseString(10)
-        val plotfunction = listOf(spec1, spec2)
+        val device = getDeviceFor(name = "bla", type = "BLA")
+        val connectionId = valueProvider.lowercaseString(20)
+        val customLogDevice = valueProvider.lowercaseString(10)
 
-        val from = valueProvider.dateTime()
-        val to = from.plusDays(valueProvider.intValue(10))
-        val fromDateFormatted = GraphService.DATE_TIME_FORMATTER.print(from)
-        val toDateFormatted = GraphService.DATE_TIME_FORMATTER.print(to)
-
-        val command = String.format(GraphService.COMMAND_TEMPLATE, logDeviceName, fromDateFormatted, toDateFormatted, spec1)
-        val response = valueProvider.lowercaseString(20)
-        given(commandExecutionService.executeSync(Command(command.replace("<SPEC1>".toRegex(), spec1).replace("<SPEC2>".toRegex(), spec2), Optional.absent()))).willReturn(response)
-        val logDefinition = LogDataDefinition(logDeviceName, spec1, series)
+        val series = GPlotSeriesTestdataBuilder.defaultGPlotSeries().copy(
+                dataProvider = GraphDataProvider(customLogDevice = CustomLogDevice(pattern, customLogDevice))
+        )
+        val svgGraphDefinition = graphDefinitionWithSeries(series)
+        val command = String.format(GraphService.COMMAND_TEMPLATE, customLogDevice, fromDateFormatted, toDateFormatted, pattern)
+        given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
+        given(commandExecutionService.executeSync(Command(command, Optional.of(connectionId)))).willReturn(dummyResponse)
 
         // when
-        val result = graphService.loadLogData(logDefinition, null, Interval(from, to), plotfunction)
+        val result = graphService.getGraphData(
+                device = device,
+                connectionId = connectionId,
+                svgGraphDefinition = svgGraphDefinition,
+                startDate = from,
+                endDate = to,
+                context = context)
 
         // then
-        assertThat(result).isEqualToIgnoringCase("\n\r" + response)
+        assertThat(result.data.keys).containsOnly(series)
+        assertThat(result.data[series]).hasSize(dummyResponseDataCount)
     }
+
+    @Test
+    fun should_load_graph_entries_for_FileLog_graphs() {
+        // given
+
+        val connectionId = valueProvider.lowercaseString(20)
+
+        val series = GPlotSeriesTestdataBuilder.defaultGPlotSeries().copy(
+                dataProvider = GraphDataProvider(fileLog = FileLog(pattern), dbLog = DataProviderSpec.DbLog("blablub"))
+        )
+        val svgGraphDefinition = graphDefinitionWithSeries(series)
+        val device = getDeviceFor(name = svgGraphDefinition.logDeviceName, type = "FileLog")
+        val command = String.format(GraphService.COMMAND_TEMPLATE, svgGraphDefinition.logDeviceName, fromDateFormatted, toDateFormatted, pattern)
+        given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
+        given(commandExecutionService.executeSync(Command(command, Optional.of(connectionId)))).willReturn(dummyResponse)
+
+        // when
+        val result = graphService.getGraphData(
+                device = device,
+                connectionId = connectionId,
+                svgGraphDefinition = svgGraphDefinition,
+                startDate = from,
+                endDate = to,
+                context = context)
+
+        // then
+        assertThat(result.data.keys).containsOnly(series)
+        assertThat(result.data[series]).hasSize(dummyResponseDataCount)
+    }
+
+    @Test
+    fun should_load_graph_entries_for_DbLog_graphs() {
+        // given
+        val connectionId = valueProvider.lowercaseString(20)
+        val series = GPlotSeriesTestdataBuilder.defaultGPlotSeries().copy(
+                dataProvider = GraphDataProvider(dbLog = DataProviderSpec.DbLog(pattern), fileLog = FileLog("blablub"))
+        )
+        val svgGraphDefinition = graphDefinitionWithSeries(series)
+        val device = getDeviceFor(name = svgGraphDefinition.logDeviceName, type = "DbLog")
+        val command = String.format(GraphService.COMMAND_TEMPLATE, svgGraphDefinition.logDeviceName, fromDateFormatted, toDateFormatted, pattern)
+        given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
+        given(commandExecutionService.executeSync(Command(command, Optional.of(connectionId)))).willReturn(dummyResponse)
+
+        // when
+        val result = graphService.getGraphData(
+                device = device,
+                connectionId = connectionId,
+                svgGraphDefinition = svgGraphDefinition,
+                startDate = from,
+                endDate = to,
+                context = context)
+
+        // then
+        assertThat(result.data.keys).containsOnly(series)
+        assertThat(result.data[series]).hasSize(dummyResponseDataCount)
+    }
+
+    private fun graphDefinitionWithSeries(series: GPlotSeries) = SvgGraphDefinition(
+            name = "abc",
+            labels = emptyList(),
+            logDeviceName = valueProvider.lowercaseString(10),
+            plotDefinition = GPlotDefinitionTestdataBuilder.defaultGPlotDefinition().copy(
+                    leftAxis = GPlotAxisTestdataCreator.defaultGPlotAxis().copy(
+                            series = listOf(series)
+                    ),
+                    rightAxis = GPlotAxisTestdataCreator.defaultGPlotAxis().copy(series = emptyList())
+            ),
+            plotfunction = emptyList(),
+            title = "abc"
+    )
+
+    private fun getDeviceFor(name: String, type: String) = FhemDevice(XmlListDevice(type).apply {
+        internals["NAME"] = DeviceNode(DeviceNode.DeviceNodeType.INT, "NAME", name, null as DateTime?)
+    })
 
     data class GraphEntryParseTestCase(val value: String, val expected: GraphEntry?)
 

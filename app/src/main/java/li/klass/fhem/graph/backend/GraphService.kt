@@ -71,7 +71,7 @@ class GraphService @Inject constructor(
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.name, series.size)
 
         val data = series
-                .mapNotNull { getLogDefinitionFor(it, svgGraphDefinition) }
+                .mapNotNull { getLogDefinitionFor(it, svgGraphDefinition, connectionId) }
                 .map {
                     it.series to getCurrentGraphEntriesFor(it, connectionId, interval, svgGraphDefinition.plotfunction)
                 }.toMap()
@@ -79,7 +79,7 @@ class GraphService @Inject constructor(
         return GraphData(data, interval)
     }
 
-    private fun getLogDefinitionFor(series: GPlotSeries, svgGraphDefinition: SvgGraphDefinition): LogDataDefinition? {
+    private fun getLogDefinitionFor(series: GPlotSeries, svgGraphDefinition: SvgGraphDefinition, connectionId: String?): LogDataDefinition? {
         val dataProviders = series.dataProvider
         val custom = dataProviders.customLogDevice
         if (custom != null) {
@@ -87,7 +87,7 @@ class GraphService @Inject constructor(
         }
 
         val logDevice = svgGraphDefinition.logDeviceName
-        val device = deviceListService.getDeviceForName(logDevice) ?: return null
+        val device = deviceListService.getDeviceForName(logDevice, connectionId) ?: return null
         return when (device.xmlListDevice.type) {
             "FileLog" ->
                 dataProviders.fileLog?.pattern?.let { pattern -> LogDataDefinition(device.name, pattern, series) }
@@ -116,8 +116,8 @@ class GraphService @Inject constructor(
         return graphEntries
     }
 
-    internal fun loadLogData(logDefinition: LogDataDefinition, connectionId: String?, interval: Interval,
-                             plotfunction: List<String>): String {
+    private fun loadLogData(logDefinition: LogDataDefinition, connectionId: String?, interval: Interval,
+                            plotfunction: List<String>): String {
         val fromDateFormatted = DATE_TIME_FORMATTER.print(interval.start)
         val toDateFormatted = DATE_TIME_FORMATTER.print(interval.end)
 
@@ -127,9 +127,10 @@ class GraphService @Inject constructor(
             command = command.replace(("<SPEC" + (i + 1) + ">").toRegex(), plotfunction[i])
         }
 
-        return "\n\r" +
-                commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
-                        ?.replace("#[^\\\\]*\\\\[rn]".toRegex(), "")
+        val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
+                ?.replace("#[^\\\\]*\\\\[rn]".toRegex(), "")
+                ?: throw IllegalStateException("could not get a response for command $command")
+        return "\n\r$result"
     }
 
     internal fun findGraphEntries(content: String?): List<GraphEntry> {

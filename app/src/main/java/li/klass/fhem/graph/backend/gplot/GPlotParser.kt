@@ -108,7 +108,7 @@ class GPlotParser @Inject constructor() {
             val fileLog = fileLogProviders.getOrNull(index)
             val dbLog = dbLogProviders.getOrNull(index)
 
-            GPlotSeries(viewSpec = viewSpec, dataProvider = DataProvider(
+            GPlotSeries(viewSpec = viewSpec, dataProvider = GraphDataProvider(
                     fileLog, dbLog, custom
             ))
         }

@@ -56,13 +56,13 @@ class GPlotParserTest {
         assertThat(leftAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "Actuator (%)", color = SeriesColor.GREEN,
                         lineType = LineType.LINES, axis = Axis.LEFT, lineWidth = 1F, seriesType = SeriesType.DEFAULT),
-                        dataProvider = DataProvider(FileLog(pattern = "4:actuator.*[0-9]+%:0:int"))))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "4:actuator.*[0-9]+%:0:int"))))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.label).isEqualTo("Temperature in C")
         assertThat(rightAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "Measured temperature", color = SeriesColor.RED,
                         lineType = LineType.LINES, seriesType = SeriesType.DEFAULT, lineWidth = 1F, axis = Axis.RIGHT),
-                        dataProvider = DataProvider(FileLog(pattern = "4:measured:0:"))))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "4:measured:0:"))))
     }
 
     @Test
@@ -75,12 +75,12 @@ class GPlotParserTest {
         assertThat(leftAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "Temperature", color = SeriesColor.RED,
                         lineType = LineType.LINES, axis = Axis.LEFT),
-                        dataProvider = DataProvider(customLogDevice = CustomLogDevice(pattern = "4:IR:0:", logDevice = "FileLog_wetterstation"))))
+                        dataProvider = GraphDataProvider(customLogDevice = CustomLogDevice(pattern = "4:IR:0:", logDevice = "FileLog_wetterstation"))))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "Zisterne", color = SeriesColor.GREEN,
                         lineType = LineType.LINES, seriesType = SeriesType.FILL, axis = Axis.RIGHT),
-                        dataProvider = DataProvider(customLogDevice = CustomLogDevice(pattern = "4:zisterne.level\\x3a:0:", logDevice = "FileLog_zisterne"))))
+                        dataProvider = GraphDataProvider(customLogDevice = CustomLogDevice(pattern = "4:zisterne.level\\x3a:0:", logDevice = "FileLog_zisterne"))))
     }
 
     @Test
@@ -94,42 +94,42 @@ class GPlotParserTest {
         assertThat(leftAxis.series).containsExactly(
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "T", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.RED),
-                        dataProvider = DataProvider(FileLog(pattern = "4:::"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "4:::"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "H", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.GREEN),
-                        dataProvider = DataProvider(FileLog(pattern = "6:::"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "6:::"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "W", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.BLUE),
-                        dataProvider = DataProvider(FileLog(pattern = "8:::"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "8:::"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "R/h", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.MAGENTA),
-                        dataProvider = DataProvider(FileLog(pattern = "10::0:delta-h"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "10::0:delta-h"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "R/d", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.BROWN),
-                        dataProvider = DataProvider(FileLog(pattern = "10::0:delta-d"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "10::0:delta-d"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "IR", lineType = LineType.LINES, color = SeriesColor.WHITE, axis = Axis.LEFT),
-                        dataProvider = DataProvider(FileLog(pattern = "12::0:\$fld[11]=~\"32768\"?1:0"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "12::0:\$fld[11]=~\"32768\"?1:0"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "WD", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.OLIVE),
-                        dataProvider = DataProvider(FileLog(pattern = "14::0:"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "14::0:"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "WDR", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.GRAY),
-                        dataProvider = DataProvider(FileLog(pattern = "16::0:"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "16::0:"))
                 ),
                 GPlotSeries(
                         viewSpec = ViewSpec(title = "S", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.YELLOW),
-                        dataProvider = DataProvider(FileLog(pattern = "18::0:delta-h"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "18::0:delta-h"))
                 ),
                 GPlotSeries(viewSpec = ViewSpec(title = "B", lineType = LineType.LINES, axis = Axis.LEFT, color = SeriesColor.RED),
-                        dataProvider = DataProvider(FileLog(pattern = "20::0:"))
+                        dataProvider = GraphDataProvider(FileLog(pattern = "20::0:"))
                 )
         )
         val rightAxis = definition.rightAxis
@@ -148,7 +148,7 @@ class GPlotParserTest {
         assertThat(leftAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "", lineType = LineType.LINES,
                         axis = Axis.LEFT, color = SeriesColor.RED),
-                        dataProvider = DataProvider(FileLog("4::0:"))))
+                        dataProvider = GraphDataProvider(FileLog("4::0:"))))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.label).isEqualTo("Power (KW)")
         assertThat(rightAxis.series).isEmpty()
@@ -166,7 +166,7 @@ class GPlotParserTest {
                 GPlotSeries(ViewSpec(title = "Open/Closed", lineType = LineType.LINES,
                         color = SeriesColor.RED,
                         axis = Axis.LEFT),
-                        DataProvider(FileLog("4:Window:0:\$fld[3]=~\"Open\"?1:0"))))
+                        GraphDataProvider(FileLog("4:Window:0:\$fld[3]=~\"Open\"?1:0"))))
         assertThat(leftAxis.range)
                 .isEqualTo(Range.closed(-0.2, 1.2))
         val rightAxis = definition.rightAxis
@@ -196,16 +196,16 @@ class GPlotParserTest {
         assertThat(leftAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "RX", lineType = LineType.LINES,
                         axis = Axis.LEFT, color = SeriesColor.RED),
-                        dataProvider = DataProvider(dbLog = DbLog("<SPEC1>:eth0_diff:::\$val=~s/^RX..([\\d.]*).*/$1/eg"))),
+                        dataProvider = GraphDataProvider(dbLog = DbLog("<SPEC1>:eth0_diff:::\$val=~s/^RX..([\\d.]*).*/$1/eg"))),
                 GPlotSeries(viewSpec = ViewSpec(title = "TX", lineType = LineType.LINES,
                         color = SeriesColor.GREEN, axis = Axis.LEFT),
-                        dataProvider = DataProvider(dbLog = DbLog("<SPEC1>:eth0_diff:::\$val=~s/.*TX..([\\d.]*).*/$1/eg"))))
+                        dataProvider = GraphDataProvider(dbLog = DbLog("<SPEC1>:eth0_diff:::\$val=~s/.*TX..([\\d.]*).*/$1/eg"))))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.label).isEqualTo("Traffic Total")
         assertThat(rightAxis.series).containsExactly(
                 GPlotSeries(viewSpec = ViewSpec(title = "Total", lineType = LineType.LINES,
                         axis = Axis.RIGHT, color = SeriesColor.BLUE),
-                        dataProvider = DataProvider(dbLog = DbLog("<SPEC1>:eth0_diff:::\$val=~s/.*Total..([\\d.]*).*/$1/eg"))))
+                        dataProvider = GraphDataProvider(dbLog = DbLog("<SPEC1>:eth0_diff:::\$val=~s/.*Total..([\\d.]*).*/$1/eg"))))
     }
 
     @Test
@@ -220,18 +220,18 @@ class GPlotParserTest {
                 GPlotSeries(viewSpec = ViewSpec(title = "Rain/h", lineType = LineType.HISTEPS,
                         color = SeriesColor.GREEN,
                         seriesType = SeriesType.FILL, axis = Axis.LEFT),
-                        dataProvider = DataProvider(FileLog("10:IR\\x3a:0:delta-h"))),
+                        dataProvider = GraphDataProvider(FileLog("10:IR\\x3a:0:delta-h"))),
                 GPlotSeries(viewSpec = ViewSpec(title = "Rain/day", lineType = LineType.HISTEPS,
                         color = SeriesColor.BLUE,
                         seriesType = SeriesType.DEFAULT, axis = Axis.LEFT),
-                        dataProvider = DataProvider(FileLog("10:IR\\x3a:0:delta-d"))))
+                        dataProvider = GraphDataProvider(FileLog("10:IR\\x3a:0:delta-d"))))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.label).isEqualTo("Temperature in C")
         assertThat(rightAxis.series).containsExactly(
                 GPlotSeries(ViewSpec(title = "Temperature", lineType = LineType.LINES,
                         color = SeriesColor.RED,
                         seriesType = SeriesType.DEFAULT, axis = Axis.RIGHT),
-                        DataProvider(FileLog("4:IR\\x3a:0:"))))
+                        GraphDataProvider(FileLog("4:IR\\x3a:0:"))))
     }
 
     @Test
@@ -245,7 +245,7 @@ class GPlotParserTest {
                 GPlotSeries(viewSpec = ViewSpec(title = "Air quality (ppm)", lineType = LineType.LINES,
                         color = SeriesColor.WHITE,
                         seriesType = SeriesType.DEFAULT, axis = Axis.RIGHT, lineWidth = (0.2f)),
-                        dataProvider = DataProvider(FileLog("4:voc::"))))
+                        dataProvider = GraphDataProvider(FileLog("4:voc::"))))
     }
 
     @Test
@@ -264,7 +264,7 @@ class GPlotParserTest {
                 GPlotSeries(viewSpec = ViewSpec(title = "Stromzähler", lineType = LineType.LINES,
                         color = SeriesColor.RED,
                         seriesType = SeriesType.FILL, axis = Axis.RIGHT, lineWidth = (1f)),
-                        dataProvider = DataProvider(customLogDevice = CustomLogDevice(logDevice = "sumLog", pattern = "4:CUL_EM_22.Summe\\x3a:0:"))))
+                        dataProvider = GraphDataProvider(customLogDevice = CustomLogDevice(logDevice = "sumLog", pattern = "4:CUL_EM_22.Summe\\x3a:0:"))))
     }
 
     @Test
@@ -283,12 +283,12 @@ class GPlotParserTest {
                 GPlotSeries(viewSpec = ViewSpec(title = "Measured temperature", lineType = LineType.LINES,
                         color = SeriesColor.RED,
                         seriesType = SeriesType.DEFAULT, axis = Axis.RIGHT, lineWidth = (1f)),
-                        dataProvider = DataProvider(FileLog("4:temperature:10:"))))
+                        dataProvider = GraphDataProvider(FileLog("4:temperature:10:"))))
         assertThat(leftAxis.series).containsOnly(
                 GPlotSeries(viewSpec = ViewSpec(title = "Humidity (%)", lineType = LineType.LINES,
                         color = SeriesColor.GREEN,
                         seriesType = SeriesType.DEFAULT, axis = Axis.LEFT, lineWidth = 1f),
-                        dataProvider = DataProvider(FileLog("4:humidity:50:"))))
+                        dataProvider = GraphDataProvider(FileLog("4:humidity:50:"))))
     }
 
     @Test
@@ -307,16 +307,16 @@ class GPlotParserTest {
                 GPlotSeries(ViewSpec(title = "Soll-Temperatur (C)", lineType = LineType.LINES,
                         color = SeriesColor.RED,
                         seriesType = SeriesType.DEFAULT, axis = Axis.RIGHT, lineWidth = (2f)),
-                        DataProvider(FileLog("4:desiredTemperature:0:"))),
+                        GraphDataProvider(FileLog("4:desiredTemperature:0:"))),
                 GPlotSeries(ViewSpec(title = "Ist-Temperatur(ungenau)(C)", lineType = LineType.LINES,
                         color = SeriesColor.GREEN,
                         seriesType = SeriesType.DEFAULT, axis = Axis.RIGHT, lineWidth = (2f)),
-                        DataProvider(FileLog("4:temperature:0:"))))
+                        GraphDataProvider(FileLog("4:temperature:0:"))))
         assertThat(leftAxis.series).containsOnly(
                 GPlotSeries(ViewSpec(title = "Ventil (%)", lineType = LineType.LINES,
                         color = SeriesColor.BLUE,
                         seriesType = SeriesType.DEFAULT, axis = Axis.LEFT, lineWidth = (2f)),
-                        DataProvider(FileLog("4:valveposition:0:"))))
+                        GraphDataProvider(FileLog("4:valveposition:0:"))))
     }
 
     @Test
@@ -335,7 +335,7 @@ class GPlotParserTest {
                 GPlotSeries(ViewSpec(title = "Temperature", lineType = LineType.LINES,
                         color = SeriesColor.RED,
                         seriesType = SeriesType.FILL, axis = Axis.RIGHT, lineWidth = 1f),
-                        DataProvider(
+                        GraphDataProvider(
                                 fileLog = FileLog("4:temperature:10:"),
                                 dbLog = DbLog("<SPEC1>:temperature:10:")
                         )))
@@ -343,7 +343,7 @@ class GPlotParserTest {
                 GPlotSeries(ViewSpec(title = "Humidity", lineType = LineType.LINES,
                         color = SeriesColor.BLUE,
                         seriesType = SeriesType.DEFAULT, axis = Axis.LEFT, lineWidth = 1f),
-                        DataProvider(
+                        GraphDataProvider(
                                 fileLog = FileLog("6:humidity:50:"),
                                 dbLog = DbLog("<SPEC1>:humidity:50:")
                         )))
@@ -367,20 +367,20 @@ class GPlotParserTest {
                 GPlotSeries(ViewSpec(title = "Handy1", lineType = LineType.STEPS,
                         color = SeriesColor.GREEN, seriesType = SeriesType.FILL,
                         axis = Axis.LEFT, lineWidth = (1.5f)),
-                        DataProvider(customLogDevice = CustomLogDevice("Handy1:state:::\$val=(\$val=~'present'?50:0)", "logdb"))),
+                        GraphDataProvider(customLogDevice = CustomLogDevice("Handy1:state:::\$val=(\$val=~'present'?50:0)", "logdb"))),
                 GPlotSeries(ViewSpec(title = "Handy2", lineType = LineType.STEPS,
                         color = SeriesColor.MAGENTA, seriesType = SeriesType.FILL,
-                        axis = Axis.LEFT, lineWidth = (1.5f)), DataProvider(customLogDevice = CustomLogDevice("Handy2:state:::\$val=(\$val=~'present'?50:0)", "logdb"))))
+                        axis = Axis.LEFT, lineWidth = (1.5f)), GraphDataProvider(customLogDevice = CustomLogDevice("Handy2:state:::\$val=(\$val=~'present'?50:0)", "logdb"))))
         assertThat(rightAxis.series).containsOnly(
                 GPlotSeries(ViewSpec(title = "Tür", lineType = LineType.STEPS,
                         color = SeriesColor.BLUE, seriesType = SeriesType.DEFAULT,
-                        axis = Axis.RIGHT, lineWidth = (2f)), DataProvider(customLogDevice = CustomLogDevice("whg_tuer:onoff", "logdb"))),
+                        axis = Axis.RIGHT, lineWidth = (2f)), GraphDataProvider(customLogDevice = CustomLogDevice("whg_tuer:onoff", "logdb"))),
                 GPlotSeries(ViewSpec(title = "Fenster Küche", lineType = LineType.POINTS,
                         color = SeriesColor.RED, seriesType = SeriesType.DEFAULT,
-                        axis = Axis.RIGHT, lineWidth = (1f)), DataProvider(customLogDevice = CustomLogDevice("k_fenster:opened:::\$val=(\$val=~'opened'?1:0)", "logdb"))),
+                        axis = Axis.RIGHT, lineWidth = (1f)), GraphDataProvider(customLogDevice = CustomLogDevice("k_fenster:opened:::\$val=(\$val=~'opened'?1:0)", "logdb"))),
                 GPlotSeries(ViewSpec(title = "Fenster Schlafzimmer", lineType = LineType.POINTS,
                         color = SeriesColor.WHITE, seriesType = SeriesType.DEFAULT,
-                        axis = Axis.RIGHT, lineWidth = (1f)), DataProvider(customLogDevice = CustomLogDevice("sz_fenster:opened:::\$val=(\$val=~'opened'?1:0)", "logdb"))))
+                        axis = Axis.RIGHT, lineWidth = (1f)), GraphDataProvider(customLogDevice = CustomLogDevice("sz_fenster:opened:::\$val=(\$val=~'opened'?1:0)", "logdb"))))
     }
 
     @Throws(IOException::class)
