@@ -23,13 +23,6 @@
  */
 package li.klass.fhem.graph.backend.gplot
 
-object GPlotSeriesTestdataBuilder {
-    @JvmStatic
-    fun defaultGPlotSeries() = GPlotSeries(viewSpec = ViewSpec(axis = GPlotSeries.Axis.LEFT,
-            title = "mySeries",
-            lineType = GPlotSeries.LineType.LINES,
-            lineWidth = 1F,
-            seriesType = GPlotSeries.SeriesType.DEFAULT,
-            color = GPlotSeries.SeriesColor.RED),
-            dataProvider = DataProvider(DataProviderSpec.FileLog("4::")))
-}
+import java.io.Serializable
+
+data class GPlotDefinition(val leftAxis: GPlotAxis, val rightAxis: GPlotAxis) : Serializable

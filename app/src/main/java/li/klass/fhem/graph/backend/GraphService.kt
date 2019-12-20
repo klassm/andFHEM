@@ -40,6 +40,8 @@ import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
+data class LogDataDefinition(val logDevice: String, val pattern: String, val series: GPlotSeries)
+
 @Singleton
 class GraphService @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
@@ -68,13 +70,31 @@ class GraphService @Inject constructor(
 
         LOG.info("getGraphData - getting graph data for device {} and {} series", device.name, series.size)
 
-        val data = series.map { plotSeries ->
-            val logDevice = deviceListService.getDeviceForName(
-                    plotSeries.logDevice ?: svgGraphDefinition.logDeviceName)!!
-            plotSeries to getCurrentGraphEntriesFor(logDevice, connectionId, plotSeries, interval, svgGraphDefinition.plotfunction)
-        }.toMap()
+        val data = series
+                .mapNotNull { getLogDefinitionFor(it, svgGraphDefinition) }
+                .map {
+                    it.series to getCurrentGraphEntriesFor(it, connectionId, interval, svgGraphDefinition.plotfunction)
+                }.toMap()
 
         return GraphData(data, interval)
+    }
+
+    private fun getLogDefinitionFor(series: GPlotSeries, svgGraphDefinition: SvgGraphDefinition): LogDataDefinition? {
+        val dataProviders = series.dataProvider
+        val custom = dataProviders.customLogDevice
+        if (custom != null) {
+            return LogDataDefinition(logDevice = custom.logDevice, pattern = custom.pattern, series = series)
+        }
+
+        val logDevice = svgGraphDefinition.logDeviceName
+        val device = deviceListService.getDeviceForName(logDevice) ?: return null
+        return when (device.xmlListDevice.type) {
+            "FileLog" ->
+                dataProviders.fileLog?.pattern?.let { pattern -> LogDataDefinition(device.name, pattern, series) }
+            "DbLog" ->
+                dataProviders.dbLog?.pattern?.let { pattern -> LogDataDefinition(device.name, pattern, series) }
+            else -> null
+        }
     }
 
 
@@ -82,28 +102,27 @@ class GraphService @Inject constructor(
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * [GraphEntry] objects and be returned.
      *
-     * @param logDevice    logDevice to load graph entries from.
+     * @param logDefinition
      * @param connectionId id of the server or absent (absent will use the currently selected server)
-     * @param gPlotSeries  chart description
      * @param interval     Interval containing start and end date
      * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to [GraphEntry] objects.
      */
-    private fun getCurrentGraphEntriesFor(logDevice: FhemDevice,
-                                          connectionId: String?, gPlotSeries: GPlotSeries,
-                                          interval: Interval, plotfunction: List<String>): List<GraphEntry> {
+    private fun getCurrentGraphEntriesFor(logDefinition: LogDataDefinition,
+                                          connectionId: String?, interval: Interval,
+                                          plotfunction: List<String>): List<GraphEntry> {
         val graphEntries = findGraphEntries(
-                loadLogData(logDevice.name, connectionId, interval, gPlotSeries, plotfunction))
-        LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size, logDevice)
+                loadLogData(logDefinition, connectionId, interval, plotfunction))
+        LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size, logDefinition.logDevice)
         return graphEntries
     }
 
-    internal fun loadLogData(logDevice: String, connectionId: String?, interval: Interval,
-                             plotSeries: GPlotSeries, plotfunction: List<String>): String {
+    internal fun loadLogData(logDefinition: LogDataDefinition, connectionId: String?, interval: Interval,
+                             plotfunction: List<String>): String {
         val fromDateFormatted = DATE_TIME_FORMATTER.print(interval.start)
         val toDateFormatted = DATE_TIME_FORMATTER.print(interval.end)
 
 
-        var command = String.format(COMMAND_TEMPLATE, logDevice, fromDateFormatted, toDateFormatted, plotSeries.logDef)
+        var command = String.format(COMMAND_TEMPLATE, logDefinition.logDevice, fromDateFormatted, toDateFormatted, logDefinition.pattern)
         for (i in plotfunction.indices) {
             command = command.replace(("<SPEC" + (i + 1) + ">").toRegex(), plotfunction[i])
         }

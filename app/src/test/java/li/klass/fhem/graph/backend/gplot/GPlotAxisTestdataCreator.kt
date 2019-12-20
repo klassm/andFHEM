@@ -23,16 +23,19 @@
  */
 package li.klass.fhem.graph.backend.gplot
 
-import com.google.common.base.Optional
 import com.google.common.collect.Range
-import li.klass.fhem.graph.backend.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeriesBuilder
+import li.klass.fhem.graph.backend.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeries
 
 object GPlotAxisTestdataCreator {
     @JvmStatic
-    fun defaultGPlotAxis() = GPlotAxis("myLabel", Optional.of(Range.atLeast(10.0))).apply {
-        addSeries(defaultGPlotSeriesBuilder().copy(title = "series1", axis = GPlotSeries.Axis.LEFT,
-                                                   color = GPlotSeries.SeriesColor.RED))
-        addSeries(defaultGPlotSeriesBuilder().copy(title = "series2", axis = GPlotSeries.Axis.RIGHT,
-                                                   color = GPlotSeries.SeriesColor.GREEN))
+    fun defaultGPlotAxis(): GPlotAxis {
+        val defaultGPlotSeries = defaultGPlotSeries()
+        return GPlotAxis("myLabel", Range.atLeast(10.0), series = listOf(
+                defaultGPlotSeries.copy(viewSpec = defaultGPlotSeries.viewSpec.copy(title = "series1", axis = GPlotSeries.Axis.LEFT,
+                        color = GPlotSeries.SeriesColor.RED)),
+                defaultGPlotSeries.copy(viewSpec = defaultGPlotSeries.viewSpec.copy(title = "series2", axis = GPlotSeries.Axis.RIGHT,
+                        color = GPlotSeries.SeriesColor.GREEN))
+
+        ))
     }
 }

@@ -28,7 +28,8 @@ import com.google.common.base.Charsets
 import com.google.common.base.Optional
 import com.google.common.base.Preconditions
 import com.google.common.base.Strings
-import com.google.common.collect.*
+import com.google.common.collect.Maps
+import com.google.common.collect.Range
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.*
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -39,27 +40,8 @@ import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class TemporaryGPlotSeries {
-    var title = ""
-    var logDef: String? = null
-    var lineType = LineType.LINES
-    var logDevice: String? = null
-    var axis: Axis? = null
-    var color: SeriesColor? = null
-    var seriesType = SeriesType.DEFAULT
-    var lineWidth = 1f
-    fun toGPlotSeries(): GPlotSeries {
-        return GPlotSeries(title, logDef, lineType, logDevice, axis, color, seriesType, lineWidth)
-    }
-}
-
 @Singleton
 class GPlotParser @Inject constructor() {
-    private val TO_COLOR = ImmutableMap.builder<String, SeriesColor>().put("l0", SeriesColor.RED)
-            .put("l1", SeriesColor.GREEN).put("l2", SeriesColor.BLUE).put("l3", SeriesColor.MAGENTA)
-            .put("l4", SeriesColor.BROWN).put("l5", SeriesColor.WHITE).put("l6", SeriesColor.OLIVE)
-            .put("l7", SeriesColor.GRAY).put("l8", SeriesColor.YELLOW).build()
-
     fun parseSafe(content: String): Optional<GPlotDefinition> {
         return try {
             Optional.of(parse(content))
@@ -72,107 +54,116 @@ class GPlotParser @Inject constructor() {
     }
 
     fun parse(content: String): GPlotDefinition {
-        val lines = content.split("[\r\n]".toRegex()).map { it.trim() }
+        val lines = content
+                .split("[\r\n]".toRegex()).map { it.trim() }
         val setsDeclarations = extractSetsFrom(lines)
-        val definition = GPlotDefinition()
-        definition.leftAxis = createAxis(setsDeclarations, "y")
-        definition.rightAxis = createAxis(setsDeclarations, "y2")
-        val series = extractSeriesFrom(lines)
-        for (s in series) {
-            (if (s.axis === Axis.LEFT) definition.leftAxis else definition.rightAxis).addSeries(s)
-        }
-        return definition
+        val series = extractGPlotSeries(lines)
+        val leftAxisSeries = series.filter { it.viewSpec.axis == Axis.LEFT }
+        val rightAxisSeries = series.filter { it.viewSpec.axis == Axis.RIGHT }
+
+        return GPlotDefinition(
+                leftAxis = createAxis(setsDeclarations, "y", leftAxisSeries),
+                rightAxis = createAxis(setsDeclarations, "y2", rightAxisSeries)
+        )
     }
 
-    private fun createAxis(setsDeclarations: Map<String, String?>, prefix: String): GPlotAxis {
+    private fun createAxis(setsDeclarations: Map<String, String?>, prefix: String, series: List<GPlotSeries>): GPlotAxis {
         val labelKey = prefix + "label"
-        val rightLabel =
-                if (setsDeclarations.containsKey(labelKey)) setsDeclarations[labelKey] else ""
+        val label = setsDeclarations[labelKey] ?: ""
         val rangeKey = prefix + "range"
-        var optRange = Optional.absent<Range<Double?>?>()
-        val range = setsDeclarations[rangeKey]
-        if (range != null) {
+        val range = setsDeclarations[rangeKey]?.let {
             val rangeValue =
-                    range.replace("[\\[\\]]".toRegex(), "").replace("min", "").replace("max", "")
-                            .trim { it <= ' ' }
+                    it.replace("[\\[\\]]".toRegex(), "")
+                            .replace("min", "")
+                            .replace("max", "")
+                            .trim()
             val parts = rangeValue.split(":").toTypedArray()
-            optRange = calculateRange(rangeValue, parts)
+            calculateRange(rangeValue, parts)
         }
-        return GPlotAxis(rightLabel, optRange)
+        return GPlotAxis(label, range, series)
     }
 
     private fun calculateRange(rangeValue: String,
-                               parts: Array<String>): Optional<Range<Double?>?> {
+                               parts: Array<String>): Range<Double>? {
         return if (Strings.isNullOrEmpty(rangeValue) || rangeValue == ":") {
-            Optional.absent()
+            null
         } else if (rangeValue.startsWith(":")) {
-            Optional.of(Range.atMost(parts[0].toDouble()))
+            Range.atMost(parts[0].toDouble())
         } else if (rangeValue.endsWith(":")) {
-            Optional.of(Range.atLeast(parts[0].toDouble()))
+            Range.atLeast(parts[0].toDouble())
         } else {
-            Optional.of(Range.closed(parts[0].toDouble(), parts[1].toDouble()))
+            Range.closed(parts[0].toDouble(), parts[1].toDouble())
         }
     }
 
-    private fun extractSeriesFrom(lines: List<String>): List<GPlotSeries> {
-        val result: MutableList<GPlotSeries> = Lists.newArrayList()
-        val temporarySeries: Queue<TemporaryGPlotSeries> = LinkedList()
-        val colors: MutableList<SeriesColor> = SeriesColor.values().toMutableList()
-        var plotFound = false
-        for (line in lines) {
-            if (line.startsWith("plot")) {
-                plotFound = true
-            }
-            val spaceSeparatedParts = line.split(" ").toTypedArray()
-            if (line.startsWith(
-                            "#") && spaceSeparatedParts.size == 2 && !spaceSeparatedParts[0].matches(
-                            "[#]+[ ]*".toRegex()) && spaceSeparatedParts[1].contains(":")) {
-                val logDevice = spaceSeparatedParts[0].substring(1)
-                val newSeries = TemporaryGPlotSeries()
-                if (!logDevice.equals("FileLog", ignoreCase = true) && !logDevice.equals("DBLog",
-                                                                                         ignoreCase = true)) {
-                    newSeries.logDevice = logDevice
-                }
-                newSeries.logDef = spaceSeparatedParts[1]
-                temporarySeries.add(newSeries)
-            } else if (plotFound) {
-                val series = temporarySeries.peek()
-                if (series == null) {
-                    LOGGER.error("extractSeriesFrom - builder is null")
-                    break
-                }
-                var attributeFound = handleAxis(line, series)
-                attributeFound = handleTitle(line, series) or attributeFound
-                attributeFound = handleLineType(line, series) or attributeFound
-                attributeFound = handleSeriesType(line, series, colors) or attributeFound
-                attributeFound = handleLineWidth(line, series) or attributeFound
-                LOGGER.trace("extractSeriesFrom - builder is $series")
-                if (attributeFound) {
-                    if (series.color == null) {
-                        val color = Iterables.getFirst(colors, SeriesColor.RED)
-                        series.color = color
-                        colors.remove(color)
-                    }
-                    result.add(series.toGPlotSeries())
-                    temporarySeries.remove()
-                }
-            }
+    private fun extractGPlotSeries(lines: List<String>): List<GPlotSeries> {
+        val viewSpecs = extractViewSpecs(lines)
+        val dataProviderSpecs = extractDataProviderSpecs(lines)
+        val customProviders = dataProviderSpecs.filterIsInstance<DataProviderSpec.CustomLogDevice>()
+        val fileLogProviders = dataProviderSpecs.filterIsInstance<DataProviderSpec.FileLog>()
+        val dbLogProviders = dataProviderSpecs.filterIsInstance<DataProviderSpec.DbLog>()
+
+        return viewSpecs.mapIndexed { index, viewSpec ->
+            val custom = customProviders.getOrNull(index)
+            val fileLog = fileLogProviders.getOrNull(index)
+            val dbLog = dbLogProviders.getOrNull(index)
+
+            GPlotSeries(viewSpec = viewSpec, dataProvider = DataProvider(
+                    fileLog, dbLog, custom
+            ))
         }
-        return result
     }
 
-    private fun handleLineWidth(line: String, series: TemporaryGPlotSeries): Boolean {
+    private fun extractViewSpecs(lines: List<String>): List<ViewSpec> {
+        val plotLineIndex = lines.indexOfFirst { it.startsWith("plot ") }
+        val colors = SeriesColor.values().toMutableList()
+        val plotLines = lines.filterIndexed { index, _ -> index >= plotLineIndex }
+                .filter { it.contains("title ") }
+
+        return plotLines.mapNotNull { extractViewSpecFrom(it, colors) }
+    }
+
+    private fun extractViewSpecFrom(line: String, colors: MutableList<SeriesColor>): ViewSpec? {
+        val (seriesType, color) = handleSeriesType(line, colors)
+        return ViewSpec(
+                title = handleTitle(line) ?: "",
+                color = color,
+                axis = handleAxis(line),
+                seriesType = seriesType,
+                lineType = handleLineType(line) ?: LineType.LINES,
+                lineWidth = handleLineWidth(line) ?: 1f
+        )
+    }
+
+    private fun extractDataProviderSpecs(
+            lines: List<String>) = lines.asSequence()
+            .filter { it.startsWith("#") }
+            .map { it.split(" ") }
+            .filter { it.size == 2 }
+            .filterNot { it[0].matches("[#]+[ ]*".toRegex()) }
+            .filter { it[1].contains(":") }
+            .map { extractDataProviderSpecFrom(it) }
+            .toList()
+
+    private fun extractDataProviderSpecFrom(spaceSeparatedParts: List<String>): DataProviderSpec {
+        val pattern = spaceSeparatedParts[1]
+        return when (spaceSeparatedParts[0]) {
+            "#FileLog" -> DataProviderSpec.FileLog(pattern)
+            "#DbLog" -> DataProviderSpec.DbLog(pattern)
+            else -> DataProviderSpec.CustomLogDevice(pattern, logDevice = spaceSeparatedParts[0].substring(1))
+        }
+    }
+
+    private fun handleLineWidth(line: String): Float? {
         val matcher = LINE_WIDTH_PATTERN.matcher(line)
         if (matcher.find()) {
-            val lineWidth = matcher.group(1)!!.toFloat()
-            series.lineWidth = lineWidth
-            return true
+            return matcher.group(1)!!.toFloat()
         }
-        return false
+        return null
     }
 
-    private fun handleSeriesType(line: String, builder: TemporaryGPlotSeries,
-                                 colors: MutableList<SeriesColor>): Boolean {
+    private fun handleSeriesType(line: String,
+                                 colors: MutableList<SeriesColor>): Pair<SeriesType, SeriesColor> {
         val matcher = SERIES_TYPE_PATTERN.matcher(line)
         if (matcher.find()) {
             val colorDesc = matcher.group(1)!!
@@ -183,50 +174,45 @@ class GPlotParser @Inject constructor() {
             } else if (fillDesc.contains("dot")) {
                 seriesType = SeriesType.DOT
             }
-            val color = TO_COLOR[colorDesc]
+            val color = COLOR_MAPPING[colorDesc] ?: colors.getOrElse(0) { SeriesColor.RED }
             colors.remove(color)
-            builder.color = color
-            builder.seriesType = seriesType
-            return true
+            return seriesType to color
         }
-        return false
+
+        val color = colors.getOrElse(0) { SeriesColor.RED }
+        colors.remove(color)
+        return SeriesType.DEFAULT to color
     }
 
-    private fun handleLineType(line: String, builder: TemporaryGPlotSeries): Boolean {
+    private fun handleLineType(line: String): LineType? {
         val typeMatcher = TYPE_PATTERN.matcher(line)
         if (typeMatcher.find()) {
             try {
-                builder.lineType =
-                        LineType.valueOf(typeMatcher.group(1)!!.toUpperCase(Locale.getDefault()))
-                return true
+                return LineType.valueOf(typeMatcher.group(1)!!.toUpperCase(Locale.getDefault()))
             } catch (e: IllegalArgumentException) {
                 LOGGER.debug("cannot find type for {}", typeMatcher.group(1))
             }
         }
-        return false
+        return null
     }
 
-    private fun handleTitle(line: String, builder: TemporaryGPlotSeries): Boolean {
+    private fun handleTitle(line: String): String? {
         val titleMatcher = TITLE_PATTERN.matcher(line)
         if (titleMatcher.find()) {
-            builder.title = titleMatcher.group(1)!!
-            return true
+            return titleMatcher.group(1)!!
         }
-        return false
+        return null
     }
 
-    private fun handleAxis(line: String, builder: TemporaryGPlotSeries): Boolean {
+    private fun handleAxis(line: String): Axis {
         val axesMatcher = AXIS_PATTERN.matcher(line)
         return if (axesMatcher.find()) {
-            val axis = axesMatcher.group(1)
-            when (axis) {
-                "1" -> builder.axis = Axis.LEFT
-                "2" -> builder.axis = Axis.RIGHT
+            return when (axesMatcher.group(1)) {
+                "2" -> Axis.RIGHT
+                else -> Axis.LEFT // "1"
             }
-            true
         } else {
-            builder.axis = Axis.LEFT
-            false
+            Axis.LEFT
         }
     }
 
@@ -283,5 +269,16 @@ class GPlotParser @Inject constructor() {
         private val SERIES_TYPE_PATTERN = Pattern.compile("(l[0-9])((dot|fill(_stripe|_gyr)?)?)")
         private val LINE_WIDTH_PATTERN = Pattern.compile("lw ([0-9]+(\\.[0-9]+)?)")
         private val LOGGER = LoggerFactory.getLogger(GPlotParser::class.java)
+        private val COLOR_MAPPING = mapOf(
+                "l0" to SeriesColor.RED,
+                "l1" to SeriesColor.GREEN,
+                "l2" to SeriesColor.BLUE,
+                "l3" to SeriesColor.MAGENTA,
+                "l4" to SeriesColor.BROWN,
+                "l5" to SeriesColor.WHITE,
+                "l6" to SeriesColor.OLIVE,
+                "l7" to SeriesColor.GRAY,
+                "l8" to SeriesColor.YELLOW
+        )
     }
 }

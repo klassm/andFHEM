@@ -21,15 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.graph.backend.gplot
 
-package li.klass.fhem.graph.backend.gplot;
+import li.klass.fhem.graph.backend.gplot.GPlotAxisTestdataCreator.defaultGPlotAxis
 
-import static li.klass.fhem.graph.backend.gplot.GPlotAxisTestdataCreator.defaultGPlotAxis;
-
-public class GPlotDefinitionTestdataBuilder {
-    public static GPlotDefinition defaultGPlotDefinition() {
-        GPlotDefinition definition = new GPlotDefinition();
-        definition.setLeftAxis(defaultGPlotAxis());
-        return definition;
-    }
+object GPlotDefinitionTestdataBuilder {
+    @JvmStatic
+    fun defaultGPlotDefinition() =
+            GPlotDefinition(defaultGPlotAxis(), defaultGPlotAxis())
 }

@@ -31,6 +31,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider
 import li.klass.fhem.graph.backend.gplot.GPlotSeries
 import li.klass.fhem.testutil.MockitoRule
 import li.klass.fhem.testutil.ValueProvider
+import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import org.assertj.core.api.Assertions.assertThat
@@ -43,7 +44,6 @@ import org.mockito.BDDMockito.given
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.mock
-import java.util.*
 
 @RunWith(DataProviderRunner::class)
 class GraphServiceTest {
@@ -54,6 +54,8 @@ class GraphServiceTest {
     private lateinit var commandExecutionService: CommandExecutionService
     @Mock
     private lateinit var graphIntervalProvider: GraphIntervalProvider
+    @Mock
+    private lateinit var deviceListService: DeviceListService
 
     @InjectMocks
     private lateinit var graphService: GraphService
@@ -92,19 +94,20 @@ class GraphServiceTest {
         val series = mock(GPlotSeries::class.java)
         val spec1 = valueProvider.lowercaseString(10)
         val spec2 = valueProvider.lowercaseString(10)
-        val plotfunction = Arrays.asList(spec1, spec2)
+        val plotfunction = listOf(spec1, spec2)
 
         val from = valueProvider.dateTime()
         val to = from.plusDays(valueProvider.intValue(10))
         val fromDateFormatted = GraphService.DATE_TIME_FORMATTER.print(from)
         val toDateFormatted = GraphService.DATE_TIME_FORMATTER.print(to)
 
-        val command = String.format(GraphService.COMMAND_TEMPLATE, logDeviceName, fromDateFormatted, toDateFormatted, series.logDef)
+        val command = String.format(GraphService.COMMAND_TEMPLATE, logDeviceName, fromDateFormatted, toDateFormatted, spec1)
         val response = valueProvider.lowercaseString(20)
         given(commandExecutionService.executeSync(Command(command.replace("<SPEC1>".toRegex(), spec1).replace("<SPEC2>".toRegex(), spec2), Optional.absent()))).willReturn(response)
+        val logDefinition = LogDataDefinition(logDeviceName, spec1, series)
 
         // when
-        val result = graphService.loadLogData(logDeviceName, null, Interval(from, to), series, plotfunction)
+        val result = graphService.loadLogData(logDefinition, null, Interval(from, to), plotfunction)
 
         // then
         assertThat(result).isEqualToIgnoringCase("\n\r" + response)

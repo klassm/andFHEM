@@ -23,13 +23,9 @@
  */
 package li.klass.fhem.graph.backend.gplot
 
-object GPlotSeriesTestdataBuilder {
-    @JvmStatic
-    fun defaultGPlotSeries() = GPlotSeries(viewSpec = ViewSpec(axis = GPlotSeries.Axis.LEFT,
-            title = "mySeries",
-            lineType = GPlotSeries.LineType.LINES,
-            lineWidth = 1F,
-            seriesType = GPlotSeries.SeriesType.DEFAULT,
-            color = GPlotSeries.SeriesColor.RED),
-            dataProvider = DataProvider(DataProviderSpec.FileLog("4::")))
-}
+import com.google.common.collect.Range
+import java.io.Serializable
+
+class GPlotAxis(val label: String,
+                val range: Range<Double>?,
+                val series: List<GPlotSeries>) : Serializable

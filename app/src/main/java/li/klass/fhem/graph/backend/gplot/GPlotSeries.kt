@@ -26,10 +26,26 @@ package li.klass.fhem.graph.backend.gplot
 import li.klass.fhem.R
 import java.io.Serializable
 
-data class GPlotSeries(val title: String = "", val logDef: String? = null,
-                       val lineType: LineType = LineType.LINES, val logDevice: String?,
-                       val axis: Axis? = null, val color: SeriesColor? = null,
-                       val seriesType: SeriesType = SeriesType.DEFAULT, val lineWidth: Float = 1f) :
+data class ViewSpec(val title: String,
+                    val lineType: GPlotSeries.LineType,
+                    val axis: GPlotSeries.Axis? = null, val color: GPlotSeries.SeriesColor? = null,
+                    val seriesType: GPlotSeries.SeriesType = GPlotSeries.SeriesType.DEFAULT,
+                    val lineWidth: Float = 1F)
+
+
+sealed class DataProviderSpec() {
+    abstract val pattern: String
+
+    data class FileLog(override val pattern: String) : DataProviderSpec()
+    data class DbLog(override val pattern: String) : DataProviderSpec()
+    data class CustomLogDevice(override val pattern: String, val logDevice: String) : DataProviderSpec()
+}
+
+data class DataProvider(val fileLog: DataProviderSpec.FileLog? = null,
+                        val dbLog: DataProviderSpec.DbLog? = null,
+                        val customLogDevice: DataProviderSpec.CustomLogDevice? = null)
+
+data class GPlotSeries(val viewSpec: ViewSpec, val dataProvider: DataProvider) :
         Serializable {
     enum class LineType {
         LINES,

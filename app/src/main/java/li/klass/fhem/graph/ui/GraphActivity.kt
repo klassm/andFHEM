@@ -44,7 +44,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.common.base.Optional
 import com.google.common.collect.Range
 import kotlinx.android.synthetic.main.chart.*
 import kotlinx.coroutines.*
@@ -186,14 +185,13 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
     }
 
-    private fun setRangeFor(axisRange: Optional<Range<Double>>, axis: YAxis) {
-        if (axisRange.isPresent) {
-            val range = axisRange.get()
-            if (range.hasLowerBound()) {
-                axis.axisMinimum = range.lowerEndpoint().toFloat()
+    private fun setRangeFor(axisRange: Range<Double>?, axis: YAxis) {
+        if (axisRange != null) {
+            if (axisRange.hasLowerBound()) {
+                axis.axisMinimum = axisRange.lowerEndpoint().toFloat()
             }
-            if (range.hasUpperBound()) {
-                axis.axisMaximum = range.upperEndpoint().toFloat()
+            if (axisRange.hasUpperBound()) {
+                axis.axisMaximum = axisRange.upperEndpoint().toFloat()
             }
         }
     }
@@ -233,7 +231,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
     }
 
     private fun isDiscreteSeries(plotSeries: GPlotSeries): Boolean {
-        val lineType = plotSeries.lineType
+        val lineType = plotSeries.viewSpec.lineType
         return lineType == GPlotSeries.LineType.STEPS || lineType == GPlotSeries.LineType.FSTEPS || lineType == GPlotSeries.LineType.HISTEPS
     }
 
@@ -248,29 +246,30 @@ class GraphActivity : AppCompatActivity(), Updateable {
         val series = entry.key
         val yEntries = entry.value.map { Entry(it.date.millis.toFloat(), it.value) }.toList()
 
-        return LineDataSet(yEntries, series.title).apply {
-            axisDependency = if (series.axis == GPlotSeries.Axis.LEFT)
+        return LineDataSet(yEntries, series.viewSpec.title).apply {
+            axisDependency = if (series.viewSpec.axis == GPlotSeries.Axis.LEFT)
                 YAxis.AxisDependency.LEFT
             else
                 YAxis.AxisDependency.RIGHT
 
             val seriesColor =
-                    theme.resolveColor((series.color ?: GPlotSeries.SeriesColor.RED).colorAttribute)
+                    theme.resolveColor((series.viewSpec.color
+                            ?: GPlotSeries.SeriesColor.RED).colorAttribute)
             color = seriesColor
             setCircleColor(seriesColor)
             fillColor = seriesColor
             setDrawCircles(false)
             setDrawValues(false)
-            lineWidth = series.lineWidth
+            lineWidth = series.viewSpec.lineWidth
 
-            when (series.seriesType) {
+            when (series.viewSpec.seriesType) {
                 GPlotSeries.SeriesType.FILL -> setDrawFilled(true)
                 GPlotSeries.SeriesType.DOT -> enableDashedLine(3f, 2f, 1f)
                 else -> {
                 }
             }
 
-            when (series.lineType) {
+            when (series.viewSpec.lineType) {
                 GPlotSeries.LineType.POINTS -> enableDashedLine(3f, 2f, 1f)
                 else -> {
                 }

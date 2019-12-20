@@ -1,0 +1,26 @@
+# Created by FHEM/98_SVG.pm, 2015-02-05 17:43:13
+# THB 2016-06-12
+# THB_temp-hum_db_1
+
+set terminal png transparent size <SIZE> crop
+set output '<OUT>.png'
+set xdata time
+set timefmt "%Y-%m-%d_%H:%M:%S"
+set xlabel " "
+set title 'TEMP HUM <TL> <L1> '
+set ytics nomirror
+set y2tics
+set grid y2tics
+set ylabel "Humidity (%)"
+set y2label "Temperature in C"
+set yrange [0:100]
+set y2range [0:40]
+
+#FileLog 4:temperature:10:
+#FileLog 6:humidity:50:
+
+#DbLog <SPEC1>:temperature:10:
+#DbLog <SPEC1>:humidity:50:
+
+plot "<IN>" using 1:2 axes x1y2 title 'Temperature' ls l0fill lw 1 with lines,\
+     "<IN>" using 1:2 axes x1y1 title 'Humidity' ls l2 lw 1 with lines
