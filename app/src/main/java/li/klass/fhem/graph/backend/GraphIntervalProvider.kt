@@ -49,9 +49,9 @@ class GraphIntervalProvider @Inject constructor(
     }
 
     private fun getIntervalForTimespan(context: Context, endDate: DateTime): Interval {
-        var hoursToSubtract = getChartingDefaultTimespan(context)
+        val hoursToSubtract = getChartingDefaultTimespan(context)
         if (hoursToSubtract == CURRENT_DAY_TIMESPAN) {
-            hoursToSubtract = 24
+            return Interval(endDate.withHourOfDay(0).withMinuteOfHour(0), endDate)
         }
         return Interval(endDate.minusHours(hoursToSubtract), endDate)
     }
