@@ -95,7 +95,7 @@ class DeviceListUpdateService @Inject constructor(
             LOG.error("executeXmllistPartial - ignoring partial update as device list is broken, updating all devices instead")
             return updateAllDevices(connectionId)
         }
-        return executeXmllist(connectionId, " " + devSpec, object : UpdateHandler {
+        return executeXmllist(connectionId, " $devSpec", object : UpdateHandler {
             override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
                 beforeRoomListUpdateModifier.update(cached, parsed)
                 cached.addAllDevicesOf(parsed)
@@ -108,12 +108,11 @@ class DeviceListUpdateService @Inject constructor(
     private fun executeXmllist(connectionId: String?, xmllistSuffix: String, updateHandler: UpdateHandler):
             UpdateResult {
         val connection = Optional.fromNullable(connectionId)
-        val command = Command("xmllist" + xmllistSuffix, connection)
+        val command = Command("xmllist$xmllistSuffix", connection)
         val result = commandExecutionService.executeSync(command) ?: ""
         val roomDeviceList = parseResult(connectionId, applicationContext, result, updateHandler)
-        val success = update(connection, roomDeviceList)
 
-        return when (success) {
+        return when (update(connection, roomDeviceList)) {
             true -> {
                 updateIndex()
                 UpdateResult.Success(roomDeviceList)

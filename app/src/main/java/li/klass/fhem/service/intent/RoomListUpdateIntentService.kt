@@ -29,6 +29,7 @@ import android.os.ResultReceiver
 import com.google.common.base.Optional
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.Actions.DO_UPDATE
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -53,7 +54,7 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
             val connectionId = intent.getStringExtra(CONNECTION_ID)
             return doRemoteUpdate(deviceName, roomName, connectionId)
         } else {
-            return ConvenientIntentService.State.DONE
+            return State.DONE
         }
     }
 
@@ -66,14 +67,14 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
             else -> deviceListUpdateService.updateAllDevices(connectionId)
         }
         handleResult(result)
-        return ConvenientIntentService.State.DONE
+        return State.DONE
     }
 
     private fun handleResult(result: UpdateResult) {
         when (result) {
             is UpdateResult.Success -> {
                 LOG.info("doRemoteUpdate() - remote device list update finished")
-                sendBroadcast(Intent(DO_REFRESH))
+                sendBroadcast(Intent(DO_UPDATE))
                 widgetUpdateService.updateAllWidgets()
             }
             is UpdateResult.Error -> LOG.error("handleResult - update failed")
