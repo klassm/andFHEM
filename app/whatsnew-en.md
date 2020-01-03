@@ -1,1 +1,1 @@
-TODO
+Bugfix: UI was not updated correctly after sending a command

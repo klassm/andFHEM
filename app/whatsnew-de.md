@@ -1,1 +1,1 @@
-TODO
+Bugfix: Anzeige wurde nach Senden eines Kommandos nicht korrekt aktualisiert
