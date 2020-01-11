@@ -135,7 +135,7 @@
         style="@style/button"
         android:layout_width="@dimen/abc_action_button_min_width_material"
         android:layout_height="@dimen/abc_action_button_min_width_material"
-        android:src="@drawable/ic_action_search"
+        android:src="@android:drawable/ic_menu_search"
         android:text="@string/change"
         android:layout_above="@+id/clientCertificatePasswordLabel"
         android:layout_alignParentRight="true"
