@@ -125,7 +125,7 @@ dependencies {
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
-    implementation(group = "com.github.angads25", name = "filepicker", version = "1.1.0")
+    implementation(group = "com.github.angads25", name = "filepicker", version = "1.1.1")
     implementation(group = "joda-time", name = "joda-time", version = "2.9.9")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.12")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")

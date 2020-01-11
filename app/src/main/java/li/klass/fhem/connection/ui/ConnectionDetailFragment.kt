@@ -50,7 +50,6 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.*
 import javax.inject.Inject
 
 class ConnectionDetailFragment : BaseFragment() {
@@ -130,7 +129,7 @@ class ConnectionDetailFragment : BaseFragment() {
     private val serverTypes: List<ServerType>
         get() {
             val connectionTypes = newArrayList<ServerType>()
-            connectionTypes.addAll(Arrays.asList(*ServerType.values()))
+            connectionTypes.addAll(ServerType.values().toList())
             connectionTypes.remove(ServerType.DUMMY)
             return connectionTypes
         }
@@ -149,7 +148,7 @@ class ConnectionDetailFragment : BaseFragment() {
                 handleFHEMWEBView(view)
             }
             ServerType.TELNET -> view = activity.layoutInflater.inflate(R.layout.connection_telnet, null)
-            else -> throw IllegalArgumentException("cannot handle connection type " + connectionType)
+            else -> throw IllegalArgumentException("cannot handle connection type $connectionType")
         }
 
         assert(view != null)
@@ -213,11 +212,10 @@ class ConnectionDetailFragment : BaseFragment() {
     }
 
     private fun strategyFor(connectionType: ServerType?, context: Context): ConnectionStrategy {
-        val type = connectionType ?: ServerType.FHEMWEB
-        return when (type) {
+        return when (val type = connectionType ?: ServerType.FHEMWEB) {
             ServerType.FHEMWEB -> FhemWebStrategy(context)
             ServerType.TELNET -> TelnetStrategy(context)
-            else -> throw IllegalArgumentException("don't know what to do with " + type)
+            else -> throw IllegalArgumentException("don't know what to do with $type")
         }
     }
 
@@ -240,6 +238,8 @@ class ConnectionDetailFragment : BaseFragment() {
             val dialog = FilePickerDialog(activity, properties)
             dialog.setTitle(R.string.selectFile)
             dialog.setDialogSelectionListener { files ->
+                val selection = files.joinToString(separator = ", ")
+                LOG.info("handleFHEMWEBView - selected '$selection' as client certificate")
                 if (files.isNotEmpty()) {
                     clientCertificatePath.text = files[0]
                 }
