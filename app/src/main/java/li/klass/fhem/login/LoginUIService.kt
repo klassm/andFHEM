@@ -51,8 +51,8 @@ class LoginUIService @Inject constructor(
             StringUtils.trimToNull(applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_PASSWORD, null))
 
     companion object {
-        val sharedPreferenceName = "login"
-        val lastLogin = "lastLogin"
+        const val sharedPreferenceName = "login"
+        const val lastLogin = "lastLogin"
         val loginTime = minutes(3)!!
     }
 
