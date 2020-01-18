@@ -33,13 +33,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.availableTargetStates.DateTimeSetListEntryTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.GroupSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.MultipleSetListTargetStateHandler;
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.NoArgSetListTargetStateHandler;
@@ -69,7 +71,8 @@ public class AvailableTargetStatesDialogUtil {
             new TextFieldTargetStateHandler(),
             new MultipleSetListTargetStateHandler(),
             new SpecialButtonSecondsHandler(),
-            new SpecialButtonHandler()
+            new SpecialButtonHandler(),
+            new DateTimeSetListEntryTargetStateHandler()
     );
     private static final List<SetListTargetStateHandler<FhemDevice>> HANDLERS = ImmutableList.<SetListTargetStateHandler<FhemDevice>>builder()
             .addAll(HANDLERS_WITHOUT_NO_ARG)

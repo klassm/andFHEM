@@ -29,6 +29,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.DataProviders.testForEach
 import com.tngtech.java.junit.dataprovider.UseDataProvider
 import li.klass.fhem.domain.setlist.typeEntry.*
+import li.klass.fhem.domain.setlist.typeEntry.DateTimeSetListEntry.Companion.parseConfig
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -75,6 +76,8 @@ class SetListTest {
                              expected = mapOf("on" to NoArgSetListEntry("on"))),
                     TestCase(desc = "no arg defaults to noArg for off", setList = "off",
                              expected = mapOf("off" to NoArgSetListEntry("off"))),
+                    TestCase(desc = "dateTimePicker", setList = "from:datetime,timepicker:false,format:d.m.Y to:datetime,timepicker:false,format:d.m.Y",
+                            expected = mapOf("from" to DateTimeSetListEntry("from", parseConfig(listOf("datetime", "timepicker:false", "format:d.m.Y"))), "to" to DateTimeSetListEntry("to", parseConfig(listOf("datetime", "timepicker:false", "format:d.m.Y"))))),
                     TestCase(desc = "empty :textField",
                             setList = "0:noArg 1:noArg :textField",
                             expected = mapOf("0" to NoArgSetListEntry("0"), "1" to NoArgSetListEntry("1"), "state" to TextFieldSetListEntry("state"))),

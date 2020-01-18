@@ -25,6 +25,7 @@
 package li.klass.fhem.domain.setlist
 
 import li.klass.fhem.domain.setlist.typeEntry.*
+import li.klass.fhem.domain.setlist.typeEntry.DateTimeSetListEntry.Companion.parseConfig
 
 enum class SetListItemType(private val supportsType: SupportsType) {
     NO_ARG(SupportsType("noArg", 1)) {
@@ -71,9 +72,11 @@ enum class SetListItemType(private val supportsType: SupportsType) {
     KNOB(SupportsType("knob")) {
         override fun entryFor(key: String, parts: List<String>): SetListItem? = null
     },
-    GROUP(object : SupportsType("group_dummy_key") {
-
-    }) {
+    DATETIME(SupportsType("datetime.*")) {
+        override fun entryFor(key: String, parts: List<String>): SetListItem? =
+                DateTimeSetListEntry(key, parseConfig(parts))
+    },
+    GROUP(SupportsType("group_dummy_key")) {
         override fun entryFor(key: String, parts: List<String>): SetListItem? =
                 GroupSetListEntry(key, parts)
     },

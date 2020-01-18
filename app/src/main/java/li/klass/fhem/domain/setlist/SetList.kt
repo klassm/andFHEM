@@ -100,6 +100,7 @@ class SetList constructor(val entries: Map<String, SetListEntry>) : Serializable
         }
 
         private fun findType(parts: List<String>): SetListItemType {
+            println(parts)
             for (type in SetListItemType.values()) {
                 if (type.supports(parts)) {
                     return type
