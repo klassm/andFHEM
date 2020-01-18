@@ -51,9 +51,11 @@ open class WebCmdActionRow(
         val container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false)
 
         container.toggleButton.apply {
-            text = device.getEventMapStateFor(item)
-            textOn = device.getEventMapStateFor(item)
-            textOff = device.getEventMapStateFor(item)
+            val eventMapState = device.getEventMapStateFor(item)
+            text = eventMapState
+            textOn = eventMapState
+            textOff = eventMapState
+            isChecked = device.state == item || device.state == eventMapState
 
             setOnClickListener {
                 val setList = device.setList

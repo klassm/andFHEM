@@ -112,7 +112,7 @@ class ToggleDeviceActionRow(context: Context,
     }
 
     companion object {
-        val HOLDER_KEY = ToggleDeviceActionRow::class.java.name!!
+        val HOLDER_KEY = ToggleDeviceActionRow::class.java.name
         private val LOGGER = LoggerFactory.getLogger(ToggleDeviceActionRow::class.java)
         const val LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow
     }
