@@ -62,7 +62,7 @@ class ImportExportService @Inject constructor(
 
 
     private val backupFileName: String
-        get() = "andFHEM-" + DATE_TIME_FORMATTER.print(DateTime.now()) + ".backup"
+        get() = "andFHEM-" + dateTimeFormatter.print(DateTime.now()) + ".backup"
 
     val exportDirectory: File
         get() = fileSystemService.getOrCreateDirectoryIn(fileSystemService.documentsFolder, "andFHEM")
@@ -71,13 +71,13 @@ class ImportExportService @Inject constructor(
         SUCCESS, INVALID_FILE, WRONG_PASSWORD
     }
 
-    protected fun getSharedPreferencesExportKeys(context: Context): Map<String, String> {
+    private fun getSharedPreferencesExportKeys(context: Context): Map<String, String> {
         val builder = ImmutableMap.builder<String, String>()
                 .put("CONNECTIONS", ConnectionService.PREFERENCES_NAME)
                 .put("NOTIFICATIONS", NotificationService.PREFERENCES_NAME)
                 .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context))
         for (preferenceName in favoritesService.getPreferenceNames()) {
-            builder.put("FAVORITE_" + preferenceName, preferenceName)
+            builder.put("FAVORITE_$preferenceName", preferenceName)
         }
         return builder.build()
     }
@@ -87,17 +87,15 @@ class ImportExportService @Inject constructor(
 
         for ((key, value) in getSharedPreferencesExportKeys(context)) {
             val values = sharedPreferencesService.listAllFrom(value)
-            toExport.put(key, toExportValues(values))
+            toExport[key] = toExportValues(values)
         }
 
         return createZipFrom(toExport, password)
     }
 
-    fun toExportValues(values: Map<String, *>): Map<String, String> {
-        return values.entries
-                .map { it.key to it.value.toString() + "/" + (it.value as Any).javaClass.name }
-                .toMap()
-    }
+    fun toExportValues(values: Map<String, *>) = values.entries
+            .map { it.key to it.value.toString() + "/" + (it.value as Any).javaClass.name }
+            .toMap()
 
 
     fun toImportValues(values: Map<String, String>): Map<String, *> {
@@ -106,7 +104,7 @@ class ImportExportService @Inject constructor(
             val separator = value1.lastIndexOf("/")
             val clazz = ReflectionUtil.classForName(value1.substring(separator + 1))
             val value = value1.substring(0, separator)
-            toImport.put(key, typedValueFor(value, clazz))
+            toImport[key] = typedValueFor(value, clazz)
         }
         return toImport
     }
@@ -157,15 +155,13 @@ class ImportExportService @Inject constructor(
 
             zipFile.extractFile(SHARED_PREFERENCES_FILE_NAME, fileSystemService.getCacheDir(context).absolutePath)
 
-            val exportKeys = getSharedPreferencesExportKeys(context)
-            InputStreamReader(FileInputStream(File(fileSystemService.getCacheDir(context), SHARED_PREFERENCES_FILE_NAME)))
+            val content = InputStreamReader(FileInputStream(File(fileSystemService.getCacheDir(context), SHARED_PREFERENCES_FILE_NAME)))
                     .use { reader ->
-                        val content = Gson().fromJson<Map<String, Map<String, String>>>(reader, Map::class.java)
-                        content.entries
-                                .filter { exportKeys.containsKey(it.key) }
-                                .map { exportKeys.getValue(it.key) to toImportValues(it.value) }
-                                .forEach { sharedPreferencesService.writeAllIn(it.first, it.second) }
+                        Gson().fromJson<Map<String, Map<String, String>>>(reader, Map::class.java)
                     }
+
+            importNonFavorites(context, content)
+            importFavorites(context, content)
 
             return ImportStatus.SUCCESS
 
@@ -180,6 +176,22 @@ class ImportExportService @Inject constructor(
             LOGGER.error("importSettings(" + file.absolutePath + ") - cannot import", e)
             return ImportStatus.INVALID_FILE
         }
+    }
+
+    private fun importNonFavorites(context: Context, content: Map<String, Map<String, String>>) =
+            import(context, content) { !it.startsWith("FAVORITE")}
+
+    private fun importFavorites(context: Context, content: Map<String, Map<String, String>>) =
+            import(context, content) { it.startsWith("FAVORITE")}
+
+
+    private fun import(context: Context, content: Map<String, Map<String, String>>, predicate: (String) -> Boolean) {
+        val exportKeys = getSharedPreferencesExportKeys(context)
+        content.entries
+                .filter { predicate(it.key) }
+                .filter { exportKeys.containsKey(it.key) }
+                .map { exportKeys.getValue(it.key) to toImportValues(it.value) }
+                .forEach { sharedPreferencesService.writeAllIn(it.first, it.second) }
     }
 
     private fun createZipFrom(toExport: Map<String, Map<String, *>>, password: String?): File {
@@ -216,7 +228,7 @@ class ImportExportService @Inject constructor(
     }
 
     companion object {
-        val DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm")!!
-        val SHARED_PREFERENCES_FILE_NAME = "sharedPreferences.json"
+        private val dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm")!!
+        private const val SHARED_PREFERENCES_FILE_NAME = "sharedPreferences.json"
     }
 }

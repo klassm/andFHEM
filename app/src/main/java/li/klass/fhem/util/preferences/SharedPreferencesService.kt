@@ -52,7 +52,7 @@ constructor(val application: Application) {
                 is Float -> editor.putFloat(key, value)
                 is Boolean -> editor.putBoolean(key, value)
                 is String -> editor.putString(key, value)
-                else -> throw IllegalArgumentException("don't know how to handle " + value)
+                else -> throw IllegalArgumentException("don't know how to handle $value")
             }
 
             LOGGER.debug("writeAllIn({}) - imported key={}, value={}", preferenceName, key, value)
