@@ -38,10 +38,7 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Runnable
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -81,7 +78,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             hideConnectionError()
 
             GlobalScope.launch(Dispatchers.Main) {
-                launch {
+                withContext(Dispatchers.IO) {
                     resendLastFailedCommandService.resend(context)
                 }
             }
