@@ -1,1 +1,1 @@
-TODO
+* Repair possible error when resending commands

@@ -1,1 +1,1 @@
-TODO
+* Behebe möglichen Fehler beim erneuten Senden von Kommandos
