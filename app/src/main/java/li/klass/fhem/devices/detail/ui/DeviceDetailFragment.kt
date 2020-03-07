@@ -137,7 +137,7 @@ class DeviceDetailFragment : BaseFragment() {
         }
     }
 
-    private fun findScrollView(): ScrollView? = view!!.findViewById(R.id.deviceDetailView)
+    private fun findScrollView(): ScrollView? = view?.findViewById(R.id.deviceDetailView)
 
     override fun getTitle(context: Context): CharSequence? =
             arguments?.getString(DEVICE_DISPLAY_NAME)
