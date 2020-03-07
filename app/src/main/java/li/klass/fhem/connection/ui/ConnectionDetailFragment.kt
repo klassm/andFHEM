@@ -99,7 +99,7 @@ class ConnectionDetailFragment : BaseFragment() {
         connectionTypeSpinner.adapter = adapter
 
         connectionTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View?, position: Int, id: Long) {
                 handleConnectionTypeChange(connectionTypes[position])
             }
 

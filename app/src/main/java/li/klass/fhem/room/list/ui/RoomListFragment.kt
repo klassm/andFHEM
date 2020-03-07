@@ -94,12 +94,10 @@ open class RoomListFragment : BaseFragment() {
         val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
 
         val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList(), hiddenRooms)
-        val layout = inflater.inflate(R.layout.room_list, container, false)
+        val layout = inflater.inflate(R.layout.room_list, container, false) ?: return null
         advertisementService.addAd(layout, myActivity)
 
-        assert(layout != null)
-
-        val emptyView = layout!!.findViewById<LinearLayout>(R.id.emptyView)
+        val emptyView = layout.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, emptyTextId, container!!)
 
         roomList = layout.findViewById(R.id.roomList)
@@ -126,7 +124,7 @@ open class RoomListFragment : BaseFragment() {
             roomClickedCallback!!.onRoomClicked(roomName)
         } else {
             val intent = Intent(Actions.SHOW_FRAGMENT)
-            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.ROOM_DETAIL)
+            intent.putExtra(FRAGMENT, FragmentType.ROOM_DETAIL)
             intent.putExtra(ROOM_NAME, roomName)
 
             activity?.sendBroadcast(intent)
@@ -192,7 +190,7 @@ open class RoomListFragment : BaseFragment() {
     private fun handleUpdateData(roomNameList: List<String>) {
         val selectableRooms = roomNameList.filter { isRoomSelectable(it) }.toList()
 
-        val adapter = adapter!!
+        val adapter = adapter ?: return
         if (selectableRooms.isEmpty()) {
             showEmptyView()
             adapter.updateData(selectableRooms)

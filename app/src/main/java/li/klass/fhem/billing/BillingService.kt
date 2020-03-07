@@ -41,7 +41,7 @@ import javax.inject.Singleton
 class BillingService @Inject
 constructor() {
 
-    var iabHelper: IabHelper? = null
+    private var iabHelper: IabHelper? = null
     var inventory: Inventory = Inventory.empty()
         private set
 
@@ -82,7 +82,7 @@ constructor() {
                             callback.onComplete(info)
                         }
                     } else {
-                        LOG.error("requestPurchase() - purchase result: " + result.toString());
+                        LOG.error("requestPurchase() - purchase result: $result");
                     }
                 }, payload)
             }
@@ -94,18 +94,18 @@ constructor() {
 
     @Synchronized
     suspend fun loadInventory(context: Context): Boolean {
-        if (isLoaded) {
+        return if (isLoaded) {
             LOG.debug("loadInventory() - inventory is already setup and loaded, skipping load ($inventory)")
-            return true
+            true
         } else {
             val success = ensureSetup(context)
             if (success) {
                 LOG.debug("loadInventory() - calling load internal")
                 loadInternal()
-                return true
+                true
             } else {
                 LOG.debug("loadInventory() - won't load inventory, setup was not successful")
-                return false
+                false
             }
         }
     }
@@ -128,14 +128,14 @@ constructor() {
     private suspend fun setup(context: Context): Boolean {
         return awaitCallback { callback ->
             try {
-                LOG.debug("setup() - Starting setup " + this)
+                LOG.debug("setup() - Starting setup")
                 iabHelper = createIabHelper(context)
                 iabHelper!!.startSetup { result ->
                     try {
                         if (result.isSuccess) {
                             LOG.debug("setup() : setup was successful, setupIsDone=" + iabHelper!!.isSetupDone)
                         } else {
-                            LOG.error("setup() : ERROR " + result.toString())
+                            LOG.error("setup() : ERROR $result")
                         }
                         callback.onComplete(true)
                     } catch (e: Exception) {
