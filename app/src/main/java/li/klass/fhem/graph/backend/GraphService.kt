@@ -73,7 +73,7 @@ class GraphService @Inject constructor(
         val data = series
                 .mapNotNull { getLogDefinitionFor(it, svgGraphDefinition, connectionId) }
                 .map {
-                    it.series to getCurrentGraphEntriesFor(it, connectionId, interval, svgGraphDefinition.plotfunction)
+                    it.series to getCurrentGraphEntriesFor(it, connectionId, interval, svgGraphDefinition.plotReplace, svgGraphDefinition.plotfunction)
                 }.toMap()
 
         return GraphData(data, interval)
@@ -105,28 +105,35 @@ class GraphService @Inject constructor(
      * @param logDefinition
      * @param connectionId id of the server or absent (absent will use the currently selected server)
      * @param interval     Interval containing start and end date
+     * @param plotReplace  key=value pairs to replace
      * @param plotfunction SPEC parameters to replace      @return read logDevices entries converted to [GraphEntry] objects.
      */
     private fun getCurrentGraphEntriesFor(logDefinition: LogDataDefinition,
                                           connectionId: String?, interval: Interval,
+                                          plotReplace: Map<String, String>,
                                           plotfunction: List<String>): List<GraphEntry> {
         val graphEntries = findGraphEntries(
-                loadLogData(logDefinition, connectionId, interval, plotfunction))
+                loadLogData(logDefinition, connectionId, interval, plotReplace, plotfunction))
         LOG.info("getCurrentGraphEntriesFor - found {} graph entries for logDevice {}", graphEntries.size, logDefinition.logDevice)
         return graphEntries
     }
 
     private fun loadLogData(logDefinition: LogDataDefinition, connectionId: String?, interval: Interval,
+                            plotReplace: Map<String, String>,
                             plotfunction: List<String>): String {
         val fromDateFormatted = DATE_TIME_FORMATTER.print(interval.start)
         val toDateFormatted = DATE_TIME_FORMATTER.print(interval.end)
 
 
         var command = String.format(COMMAND_TEMPLATE, logDefinition.logDevice, fromDateFormatted, toDateFormatted, logDefinition.pattern)
+        for ((key, value) in plotReplace) {
+            LOG.trace("Replace {} by {}", key, value)
+            command = command.replace(("%" + key + "%").toRegex(), value)
+        }
         for (i in plotfunction.indices) {
             command = command.replace(("<SPEC" + (i + 1) + ">").toRegex(), plotfunction[i])
         }
-
+        LOG.trace("Command: {}", command)
         val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
                 ?.replace("#[^\\\\]*\\\\[rn]".toRegex(), "")
                 ?: throw IllegalStateException("could not get a response for command $command")
@@ -148,7 +155,7 @@ class GraphService @Inject constructor(
 
         val entryTime = parts[0]
         val entryValue = parts[1]
-
+        LOG.trace("Entry {}", entry);
         try {
             if (ENTRY_FORMAT.length == entryTime.length) {
                 val entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime)
@@ -156,7 +163,7 @@ class GraphService @Inject constructor(
 
                 return GraphEntry(entryDate, entryFloatValue)
             } else {
-                LOG.trace("silent ignore of {}, as having a wrong time format", entryTime)
+                LOG.debug("silent ignore of {}, as having a wrong time format", entryTime)
             }
         } catch (e: NumberFormatException) {
             Log.e(GraphService::class.java.name, "cannot parse date $entryTime", e)

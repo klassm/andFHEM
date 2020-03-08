@@ -32,6 +32,7 @@ import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.slf4j.LoggerFactory
+import java.util.*
 import javax.inject.Inject
 
 class GraphDefinitionsForDeviceService @Inject constructor(
@@ -72,9 +73,38 @@ class GraphDefinitionsForDeviceService @Inject constructor(
                 .dropLastWhile { it.isEmpty() }
                 .toList()
         val title = currentDevice.getAttribute("title") ?: ""
+        val plotReplace = plotReplaceMapFor(currentDevice)
         val plotfunction = plotfunctionListFor(currentDevice)
 
-        return SvgGraphDefinition(currentDevice.name, gPlotDefinition, logDeviceName, labels, title, plotfunction)
+        return SvgGraphDefinition(currentDevice.name, gPlotDefinition, logDeviceName, labels, title, plotReplace, plotfunction)
+    }
+
+    private fun plotReplaceMapFor(device: XmlListDevice): Map<String, String> {
+        val attr = (device.getAttribute("plotReplace") ?: "").trim()
+        val plotReplace = HashMap<String, String>()
+        // Split into single variable definitions respecting quotes and curly braces
+        var text = ""
+        var quoted = false;
+        var braceDepth = 0;
+        attr.forEach {
+            if (it.isWhitespace() && !quoted && braceDepth == 0) {
+                val char = text.indexOf('=')
+                plotReplace[text.substring(0, char).trim()] = text.substring(char + 1)
+            } else if (it == '"' && braceDepth == 0) {
+                quoted = !quoted
+            } else if (it == '{') {
+                braceDepth += 1
+            } else if (it == '}') {
+                braceDepth -= 1
+            } else {
+                text += it
+            }
+        }
+        if (text.isNotEmpty()) {
+            val char = text.indexOf('=')
+            plotReplace[text.substring(0, char).trim()] = text.substring(char + 1)
+        }
+        return plotReplace
     }
 
     private fun plotfunctionListFor(device: XmlListDevice): List<String> {

@@ -31,4 +31,5 @@ data class SvgGraphDefinition(val name: String,
                               val logDeviceName: String,
                               val labels: List<String>,
                               val title: String,
+                              val plotReplace: Map<String, String>,
                               val plotfunction: List<String>) : Serializable
