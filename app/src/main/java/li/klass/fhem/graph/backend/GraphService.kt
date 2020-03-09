@@ -62,7 +62,7 @@ class GraphService @Inject constructor(
      */
     fun getGraphData(device: FhemDevice, connectionId: String?, svgGraphDefinition: SvgGraphDefinition,
                      startDate: DateTime?, endDate: DateTime?, context: Context): GraphData {
-        val interval = graphIntervalProvider.getIntervalFor(startDate, endDate, context)
+        val interval = graphIntervalProvider.getIntervalFor(startDate, endDate, svgGraphDefinition.fixedrange, context)
 
         val series: Set<GPlotSeries> = svgGraphDefinition.plotDefinition.let {
             it.leftAxis.series + it.rightAxis.series
