@@ -153,7 +153,7 @@ class GraphService @Inject constructor(
         val parts = entry.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
         if (parts.size != 2) return null
 
-        val entryTime = parts[0]
+        val entryTime = parts[0] + DEFAULT_ENTRY_DATE.substring(parts[0].length)
         val entryValue = parts[1]
         LOG.trace("Entry {}", entry);
         try {
@@ -176,6 +176,7 @@ class GraphService @Inject constructor(
 
     companion object {
         private const val ENTRY_FORMAT = "yyyy-MM-dd_HH:mm:ss"
+        private const val DEFAULT_ENTRY_DATE = "1970-01-01_00:00:00"
         private val GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern(ENTRY_FORMAT)
         internal val DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm")
         internal const val COMMAND_TEMPLATE = "get %s - - %s %s %s"
