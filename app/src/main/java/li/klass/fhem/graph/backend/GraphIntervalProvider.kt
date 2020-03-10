@@ -51,7 +51,7 @@ class GraphIntervalProvider @Inject constructor(
 
     private fun getIntervalForTimespan(context: Context, fixedrange : Pair<ReadablePeriod, ReadablePeriod>?, endDate: DateTime): Interval {
         fixedrange?.let {
-            return Interval(endDate.minus(fixedrange.first).minus(fixedrange.second), endDate.minus(fixedrange.second))
+            return Interval(endDate.minus(fixedrange.first).plus(fixedrange.second), endDate.plus(fixedrange.second))
         }
         // App settings apply only if not overridden by server
         val hoursToSubtract = getChartingDefaultTimespan(context)
@@ -61,7 +61,7 @@ class GraphIntervalProvider @Inject constructor(
         return Interval(endDate.minusHours(hoursToSubtract), endDate)
     }
 
-    private fun getChartingDefaultTimespan(context: Context): Int {
+    fun getChartingDefaultTimespan(context: Context): Int {
         val timeSpan = PreferenceManager.getDefaultSharedPreferences(context).getString("GRAPH_DEFAULT_TIMESPAN", "24")
         return Integer.valueOf(timeSpan!!.trim { it <= ' ' })
     }
