@@ -128,7 +128,7 @@ class GraphService @Inject constructor(
         var command = String.format(COMMAND_TEMPLATE, logDefinition.logDevice, fromDateFormatted, toDateFormatted, logDefinition.pattern)
         for ((key, value) in plotReplace) {
             LOG.trace("Replace {} by {}", key, value)
-            command = command.replace(("%" + key + "%").toRegex(), value)
+            command = command.replace(("%$key%").toRegex(), value)
         }
         for (i in plotfunction.indices) {
             command = command.replace(("<SPEC" + (i + 1) + ">").toRegex(), plotfunction[i])
@@ -155,7 +155,7 @@ class GraphService @Inject constructor(
 
         val entryTime = parts[0] + DEFAULT_ENTRY_DATE.substring(parts[0].length)
         val entryValue = parts[1]
-        LOG.trace("Entry {}", entry);
+        LOG.trace("Entry {}", entry)
         try {
             if (ENTRY_FORMAT.length == entryTime.length) {
                 val entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime)

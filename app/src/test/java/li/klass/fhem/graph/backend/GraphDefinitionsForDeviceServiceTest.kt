@@ -1,17 +1,14 @@
 package li.klass.fhem.graph.backend;
 
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.DeviceNode
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.*
-import org.junit.Test;
-import java.util.*
-import kotlin.collections.HashMap
+import org.junit.Test
 
-public class GraphDefinitionsForDeviceServiceTest {
+class GraphDefinitionsForDeviceServiceTest {
 
-    private fun getDeviceFor(type: String, property: String, value: String?) = XmlListDevice(type).apply {
+    private fun getDeviceFor(property: String, value: String?) = XmlListDevice("SVG").apply {
         value?.let {
             attributes[property] = DeviceNode(DeviceNode.DeviceNodeType.ATTR, property, value, null as DateTime?)
         }
@@ -29,21 +26,21 @@ public class GraphDefinitionsForDeviceServiceTest {
                 null to null
         )
         for ((input, output) in testdata) {
-            assertThat(GraphDefinitionsForDeviceService.fixedrangeFor(getDeviceFor("SVG", "fixedrange", input))).isEqualTo(output)
+            assertThat(GraphDefinitionsForDeviceService.fixedrangeFor(getDeviceFor("fixedrange", input))).isEqualTo(output)
         }
     }
 
     @Test
     fun plotReplaceMapFor() {
         val testdata = mapOf(
-                "" to emptyMap<String, String>(),
-                null to emptyMap<String, String>(),
+                "" to emptyMap(),
+                null to emptyMap(),
                 "INTERVAL=month" to mapOf("INTERVAL" to "month"),
                 """A="test 2 3" B={"to do" } C="x {y} z" """ to mapOf("A" to "test 2 3", "B" to """"to do" """, "C" to "x {y} z"),
                 """"X=Y + 3"""" to mapOf("X" to "Y + 3")
         )
         for ((input, output) in testdata) {
-            assertThat(GraphDefinitionsForDeviceService.plotReplaceMapFor(getDeviceFor("SVG", "plotReplace", input))).isEqualTo(output)
+            assertThat(GraphDefinitionsForDeviceService.plotReplaceMapFor(getDeviceFor("plotReplace", input))).isEqualTo(output)
         }
     }
 }

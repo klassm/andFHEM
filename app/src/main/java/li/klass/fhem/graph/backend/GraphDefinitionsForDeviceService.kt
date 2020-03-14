@@ -35,7 +35,6 @@ import org.joda.time.*
 import org.slf4j.LoggerFactory
 import java.lang.Integer.parseInt
 import java.util.*
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 class GraphDefinitionsForDeviceService @Inject constructor(
@@ -57,7 +56,7 @@ class GraphDefinitionsForDeviceService @Inject constructor(
     private fun getGraphDefinitionsFor(allDevices: ImmutableSet<XmlListDevice>, device: XmlListDevice): Set<SvgGraphDefinition> =
             when (device.type) {
                 "SVG" -> setOf(toGraphDefinition(allDevices, device))
-                else  -> allDevices.asSequence()
+                else -> allDevices.asSequence()
                         .filter { it.type == "SVG" }
                         .filter { isSvgForDevice(allDevices, device, it) }
                         .filter { gplotDefinitionExists(allDevices, it) }
@@ -101,7 +100,7 @@ class GraphDefinitionsForDeviceService @Inject constructor(
         return plotfunctionListFor(svgDevice)
                 .map { it.split(":") }
                 .map { it.firstOrNull() }
-                .filter { it != null }
+                .filterNotNull()
                 .contains(inputDevice.name)
     }
 
@@ -124,28 +123,29 @@ class GraphDefinitionsForDeviceService @Inject constructor(
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(GraphDefinitionsForDeviceService::class.java)
+        private val fixedRangePattern = "([0-9]*)(hour|day|week|month|year)s?".toRegex()
 
-        fun fixedrangeFor(device : XmlListDevice): Pair<ReadablePeriod, ReadablePeriod>? {
-            val attr = (device.getAttribute("fixedrange") ?: "").trim().split(" ")
-            val range = attr[0]
-            val offset = if (attr.size > 1 ) { parseInt(attr[1]) } else { 0 }
-            val m = Pattern.compile("([0-9]*)(hour|day|week|month|year)s?").matcher(range)
-            return if (m.matches()) {
+        fun fixedrangeFor(device: XmlListDevice): Pair<ReadablePeriod, ReadablePeriod>? {
+            val fixedRangeAttribute = (device.getAttribute("fixedrange") ?: "").trim().split(" ")
+            val range = fixedRangeAttribute[0]
+            val offset = if (fixedRangeAttribute.size > 1) parseInt(fixedRangeAttribute[1]) else 0
+
+            val matcher = fixedRangePattern.matchEntire(range)
+            return if (matcher != null) {
+                val groups = matcher.groupValues
                 val count = when {
-                    m.group(1).isEmpty() -> 1
-                    else -> parseInt(m.group(1))
+                    groups[1].isEmpty() -> 1
+                    else -> parseInt(groups[1])
                 }
-                when (m.group(2)) {
-                    "hour" -> Pair(Hours.hours(count), Hours.hours(count * offset))
-                    "day" -> Pair(Days.days(count), Days.days(count * offset))
-                    "week" -> Pair(Weeks.weeks(count), Weeks.weeks(count * offset))
-                    "month" -> Pair(Months.months(count), Months.months(count * offset))
-                    "year" -> Pair(Years.years(count), Years.years(count * offset))
+                when (groups[2]) {
+                    "hour" -> Hours.hours(count) to Hours.hours(count * offset)
+                    "day" -> Days.days(count) to Days.days(count * offset)
+                    "week" -> Weeks.weeks(count) to Weeks.weeks(count * offset)
+                    "month" -> Months.months(count) to Months.months(count * offset)
+                    "year" -> Years.years(count) to Years.years(count * offset)
                     else -> null
                 }
-            } else {
-                null
-            }
+            } else null
         }
 
         fun plotReplaceMapFor(device: XmlListDevice): Map<String, String> {
