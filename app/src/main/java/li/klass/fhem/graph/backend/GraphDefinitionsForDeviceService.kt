@@ -31,7 +31,11 @@ import li.klass.fhem.graph.backend.gplot.GPlotHolder
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
+import org.joda.time.*
 import org.slf4j.LoggerFactory
+import java.lang.Integer.parseInt
+import java.util.*
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class GraphDefinitionsForDeviceService @Inject constructor(
@@ -72,9 +76,11 @@ class GraphDefinitionsForDeviceService @Inject constructor(
                 .dropLastWhile { it.isEmpty() }
                 .toList()
         val title = currentDevice.getAttribute("title") ?: ""
+        val fixedrange = fixedrangeFor(currentDevice)
+        val plotReplace = plotReplaceMapFor(currentDevice)
         val plotfunction = plotfunctionListFor(currentDevice)
 
-        return SvgGraphDefinition(currentDevice.name, gPlotDefinition, logDeviceName, labels, title, plotfunction)
+        return SvgGraphDefinition(currentDevice.name, gPlotDefinition, logDeviceName, labels, title, fixedrange, plotReplace, plotfunction)
     }
 
     private fun plotfunctionListFor(device: XmlListDevice): List<String> {
@@ -118,5 +124,57 @@ class GraphDefinitionsForDeviceService @Inject constructor(
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(GraphDefinitionsForDeviceService::class.java)
+
+        fun fixedrangeFor(device : XmlListDevice): Pair<ReadablePeriod, ReadablePeriod>? {
+            val attr = (device.getAttribute("fixedrange") ?: "").trim().split(" ")
+            val range = attr[0]
+            val offset = if (attr.size > 1 ) { parseInt(attr[1]) } else { 0 }
+            val m = Pattern.compile("([0-9]*)(hour|day|week|month|year)s?").matcher(range)
+            return if (m.matches()) {
+                val count = when {
+                    m.group(1).isEmpty() -> 1
+                    else -> parseInt(m.group(1))
+                }
+                when (m.group(2)) {
+                    "hour" -> Pair(Hours.hours(count), Hours.hours(count * offset))
+                    "day" -> Pair(Days.days(count), Days.days(count * offset))
+                    "week" -> Pair(Weeks.weeks(count), Weeks.weeks(count * offset))
+                    "month" -> Pair(Months.months(count), Months.months(count * offset))
+                    "year" -> Pair(Years.years(count), Years.years(count * offset))
+                    else -> null
+                }
+            } else {
+                null
+            }
+        }
+
+        fun plotReplaceMapFor(device: XmlListDevice): Map<String, String> {
+            val attr = (device.getAttribute("plotReplace") ?: "").trim()
+            val plotReplace = HashMap<String, String>()
+            // Split into single variable definitions respecting quotes and curly braces
+            var text = ""
+            var quoted = false;
+            var braceDepth = 0;
+            attr.forEach {
+                if (it.isWhitespace() && !quoted && braceDepth == 0) {
+                    val char = text.indexOf('=')
+                    plotReplace[text.substring(0, char).trim()] = text.substring(char + 1)
+                    text = ""
+                } else if (it == '"' && braceDepth == 0) {
+                    quoted = !quoted
+                } else if (it == '{' && !quoted) {
+                    braceDepth += 1
+                } else if (it == '}' && !quoted) {
+                    braceDepth -= 1
+                } else {
+                    text += it
+                }
+            }
+            if (text.isNotEmpty()) {
+                val char = text.indexOf('=')
+                plotReplace[text.substring(0, char).trim()] = text.substring(char + 1)
+            }
+            return plotReplace
+        }
     }
 }

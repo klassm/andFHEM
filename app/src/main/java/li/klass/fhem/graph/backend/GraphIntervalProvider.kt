@@ -31,24 +31,29 @@ import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.util.DateFormatUtil
 import org.joda.time.DateTime
 import org.joda.time.Interval
+import org.joda.time.ReadablePeriod
 import javax.inject.Inject
 
 class GraphIntervalProvider @Inject constructor(
         private val commandExecutionService: CommandExecutionService
 ) {
 
-    fun getIntervalFor(startDate: DateTime?, endDate: DateTime?, context: Context): Interval =
+    fun getIntervalFor(startDate: DateTime?, endDate: DateTime?, fixedrange : Pair<ReadablePeriod, ReadablePeriod>?, context: Context): Interval =
             if (startDate == null || endDate == null) {
-                getDefaultInterval(context)
+                getDefaultInterval(context, fixedrange)
             } else Interval(startDate, endDate)
 
-    private fun getDefaultInterval(context: Context): Interval {
+    private fun getDefaultInterval(context: Context, fixedrange : Pair<ReadablePeriod, ReadablePeriod>?): Interval {
         val result = commandExecutionService.executeSync(Command("{{ TimeNow() }}"))
-                ?: return getIntervalForTimespan(context, DateTime.now())
-        return getIntervalForTimespan(context, DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime(result))
+                ?: return getIntervalForTimespan(context, fixedrange, DateTime.now())
+        return getIntervalForTimespan(context, fixedrange, DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime(result))
     }
 
-    private fun getIntervalForTimespan(context: Context, endDate: DateTime): Interval {
+    private fun getIntervalForTimespan(context: Context, fixedrange : Pair<ReadablePeriod, ReadablePeriod>?, endDate: DateTime): Interval {
+        fixedrange?.let {
+            return Interval(endDate.minus(fixedrange.first).plus(fixedrange.second), endDate.plus(fixedrange.second))
+        }
+        // App settings apply only if not overridden by server
         val hoursToSubtract = getChartingDefaultTimespan(context)
         if (hoursToSubtract == CURRENT_DAY_TIMESPAN) {
             return Interval(endDate.withHourOfDay(0).withMinuteOfHour(0), endDate)
@@ -56,7 +61,7 @@ class GraphIntervalProvider @Inject constructor(
         return Interval(endDate.minusHours(hoursToSubtract), endDate)
     }
 
-    private fun getChartingDefaultTimespan(context: Context): Int {
+    fun getChartingDefaultTimespan(context: Context): Int {
         val timeSpan = PreferenceManager.getDefaultSharedPreferences(context).getString("GRAPH_DEFAULT_TIMESPAN", "24")
         return Integer.valueOf(timeSpan!!.trim { it <= ' ' })
     }

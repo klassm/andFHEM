@@ -24,6 +24,7 @@
 
 package li.klass.fhem.graph.backend.gplot
 
+import org.joda.time.ReadablePeriod
 import java.io.Serializable
 
 data class SvgGraphDefinition(val name: String,
@@ -31,4 +32,6 @@ data class SvgGraphDefinition(val name: String,
                               val logDeviceName: String,
                               val labels: List<String>,
                               val title: String,
+                              val fixedrange: Pair<ReadablePeriod, ReadablePeriod>?,
+                              val plotReplace: Map<String, String>,
                               val plotfunction: List<String>) : Serializable

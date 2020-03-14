@@ -90,7 +90,7 @@ class GraphServiceTest {
 
     @Before
     fun setUp() {
-        given(graphIntervalProvider.getIntervalFor(from, to, context)).willReturn(interval)
+        given(graphIntervalProvider.getIntervalFor(from, to, null, context)).willReturn(interval)
     }
 
     @Test
@@ -196,6 +196,8 @@ class GraphServiceTest {
                     ),
                     rightAxis = GPlotAxisTestdataCreator.defaultGPlotAxis().copy(series = emptyList())
             ),
+            fixedrange = null,
+            plotReplace = emptyMap(),
             plotfunction = emptyList(),
             title = "abc"
     )
@@ -212,11 +214,13 @@ class GraphServiceTest {
         @DataProvider
         fun graphEntryProvider(): List<GraphEntryParseTestCase> {
             val dateTime = DateTime(2013, 3, 21, 16, 38, 39)
+            val dateTime2 = DateTime(2013, 1, 1, 0, 0, 0)
             return listOf(
                     GraphEntryParseTestCase("2013-03-21_16:38:39 5.7\n", GraphEntry(dateTime, 5.7f)),
                     GraphEntryParseTestCase("2013-03-21_16:38:39 5.7", GraphEntry(dateTime, 5.7f)),
                     GraphEntryParseTestCase("2013-03-21_16:38:39 -5.7\n", GraphEntry(dateTime, -5.7f)),
-                    GraphEntryParseTestCase("2013-03-21_16:38 5.7\n", null),
+                    GraphEntryParseTestCase("2013 5.7\n", GraphEntry(dateTime2, 5.7f)),
+                    GraphEntryParseTestCase("2013_03_21_16:38:39 5.7\n", null),
                     GraphEntryParseTestCase("2013-03-21_16:38:39\n", null)
             )
         }
