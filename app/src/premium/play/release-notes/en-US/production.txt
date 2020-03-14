@@ -1,1 +1,1 @@
-* Repair possible error when resending commands
+* Support for plotreplace in gplots (thanks @ stephanritscher)

@@ -1,1 +1,1 @@
-* Behebe möglichen Fehler beim erneuten Senden von Kommandos
+* Support für plotreplace in gplots (Vielen Dank @ stephanritscher)
