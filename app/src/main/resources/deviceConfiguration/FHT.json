@@ -45,6 +45,7 @@
       "key": "desired-temp",
       "desc": "desiredTemperature",
       "showAfter": "temperature",
+      "showInOverview": true,
       "showDelayNotificationOnSwitch": true,
       "beforeCommandReplace": [
         {

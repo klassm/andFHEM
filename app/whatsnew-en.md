@@ -1,1 +1,1 @@
-TODO
+* Show FHT desired temperature in overview
