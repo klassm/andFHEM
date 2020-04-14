@@ -28,6 +28,7 @@ import android.content.Context
 import android.view.View
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
@@ -44,7 +45,7 @@ class GcmSendCardProvider @Inject constructor(
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }
@@ -67,7 +68,7 @@ class GcmSendCardProvider @Inject constructor(
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return listOf(object : ActionCardButton(R.string.gcmRegisterThis, context) {
-            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
+            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                 GlobalScope.launch(Dispatchers.Main) {
                     val result = withContext(Dispatchers.IO) { gcmSendDeviceService.addSelf(device) }
                     Toast.makeText(context, result.resultText, Toast.LENGTH_LONG).show()

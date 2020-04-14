@@ -38,7 +38,6 @@ import li.klass.fhem.floorplan.ui.FloorplanFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
 import li.klass.fhem.room.detail.ui.RoomDetailFragment;
@@ -59,7 +58,7 @@ public enum FragmentType {
     FLOORPLAN(FloorplanFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
     SEND_COMMAND(SendCommandFragment.class, R.id.send_command, null),
-    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
+    DEVICE_SELECTION(DeviceNameSelectionFragment.class, null),
     TIMER_OVERVIEW(TimerListFragment.class, R.id.timer, null),
     TIMER_DETAIL(TimerDetailFragment.class),
     CONNECTION_LIST(ConnectionListFragment.class),

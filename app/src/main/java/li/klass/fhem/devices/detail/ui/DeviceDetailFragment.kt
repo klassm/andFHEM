@@ -30,13 +30,14 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
-import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
@@ -48,56 +49,27 @@ import li.klass.fhem.util.device.DeviceActionUIService
 import li.klass.fhem.widget.notification.NotificationSettingView
 import javax.inject.Inject
 
-class DeviceDetailFragment : BaseFragment() {
-    @Inject
-    lateinit var favoritesService: FavoritesService
-    @Inject
-    lateinit var advertisementService: AdvertisementService
-    @Inject
-    lateinit var deviceListUpdateService: DeviceListUpdateService
-    @Inject
-    lateinit var deviceListService: DeviceListService
-    @Inject
-    lateinit var appWidgetUpdateService: AppWidgetUpdateService
-    @Inject
-    lateinit var genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter
-    @Inject
-    lateinit var deviceActionUIService: DeviceActionUIService
-
-    private var deviceName: String? = null
+class DeviceDetailFragment @Inject constructor(
+        private val favoritesService: FavoritesService,
+        private val advertisementService: AdvertisementService,
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val deviceListService: DeviceListService,
+        private val appWidgetUpdateService: AppWidgetUpdateService,
+        private val genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter,
+        private val deviceActionUIService: DeviceActionUIService
+) : BaseFragment() {
     private var device: FhemDevice? = null
-    private var connectionId: String? = null
+    val args: DeviceDetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        setArgumentsFrom(args)
-    }
-
-    private fun setArgumentsFrom(args: Bundle?) {
-        if (args == null) {
-            return
-        }
-        deviceName = args.getString(DEVICE_NAME)
-        connectionId = args.getString(CONNECTION_ID)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(DEVICE_NAME, deviceName)
-        outState.putString(CONNECTION_ID, connectionId)
-    }
-
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setArgumentsFrom(savedInstanceState)
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
         val myActivity = activity ?: return superView
@@ -110,7 +82,7 @@ class DeviceDetailFragment : BaseFragment() {
 
     override suspend fun update(refresh: Boolean) {
         hideEmptyView()
-        val name = deviceName ?: return
+        val name = args.deviceName
 
         val myActivity = activity ?: return
         if (refresh) myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
@@ -118,48 +90,48 @@ class DeviceDetailFragment : BaseFragment() {
         coroutineScope {
             val device = withContext(Dispatchers.IO) {
                 if (refresh) {
-                    deviceListUpdateService.updateSingleDevice(name, connectionId)
+                    deviceListUpdateService.updateSingleDevice(name, args.connectionId)
                     appWidgetUpdateService.updateAllWidgets()
                 }
-                deviceListService.getDeviceForName(name, connectionId)
+                deviceListService.getDeviceForName(name, args.connectionId)
             }
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             device?.let {
                 this@DeviceDetailFragment.device = it
-                val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, connectionId)
+                val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, args.connectionId, findNavController())
                 myActivity.invalidateOptionsMenu()
                 val scrollView = findScrollView()
                 if (scrollView != null) {
                     scrollView.removeAllViews()
                     scrollView.addView(detailView)
                 }
+                setTitle(device.aliasOrName)
             }
         }
     }
 
     private fun findScrollView(): ScrollView? = view?.findViewById(R.id.deviceDetailView)
 
-    override fun getTitle(context: Context): CharSequence? =
-            arguments?.getString(DEVICE_DISPLAY_NAME)
-                    ?: arguments?.getString(DEVICE_NAME)
+    override fun getTitle(context: Context) =
+            device?.aliasOrName ?: args.deviceName
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         if (device != null) {
-            inflater!!.inflate(R.menu.device_menu, menu)
-            if (favoritesService.isFavorite(deviceName ?: "")) {
-                menu!!.removeItem(R.id.menu_favorites_add)
+            inflater.inflate(R.menu.device_menu, menu)
+            if (favoritesService.isFavorite(args.deviceName ?: "")) {
+                menu.removeItem(R.id.menu_favorites_add)
             } else {
-                menu!!.removeItem(R.id.menu_favorites_remove)
+                menu.removeItem(R.id.menu_favorites_remove)
             }
             menu.removeItem(R.id.menu_rename)
             menu.removeItem(R.id.menu_delete)
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val context = activity ?: return false
-        when (item!!.itemId) {
+        when (item.itemId) {
 
             R.id.menu_favorites_add -> {
                 callUpdating(favoritesService::addFavorite, R.string.context_favoriteadded)
@@ -169,17 +141,16 @@ class DeviceDetailFragment : BaseFragment() {
             }
             R.id.menu_room -> deviceActionUIService.moveDevice(context, device!!)
             R.id.menu_alias -> deviceActionUIService.setAlias(context, device!!)
-            R.id.menu_notification -> NotificationSettingView(activity, deviceName).show(activity)
+            R.id.menu_notification -> NotificationSettingView(activity, args.deviceName).show(activity)
             else -> return false
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun callUpdating(actionToCall: (String) -> Unit, toastStringId: Int) {
-        deviceName ?: return
         GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
-                actionToCall(deviceName!!)
+                actionToCall(args.deviceName)
             }
             showToast(toastStringId)
             update(false)

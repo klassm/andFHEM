@@ -25,22 +25,19 @@
 package li.klass.fhem.ui
 
 import android.os.Bundle
+import androidx.navigation.fragment.navArgs
 
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
+import javax.inject.Inject
 
-class WebViewFragment : AbstractWebViewFragment() {
-    override var loadUrl: String = ""
-        private set
+class WebViewFragment @Inject constructor() : AbstractWebViewFragment() {
+    private val args: WebViewFragmentArgs by navArgs()
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
-
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        loadUrl = args?.getString(BundleExtraKeys.LOAD_URL)!!
     }
 
     override fun showProgressDialog(): Boolean = false
+
+    override fun getLoadUrl(): String = args.url
 }

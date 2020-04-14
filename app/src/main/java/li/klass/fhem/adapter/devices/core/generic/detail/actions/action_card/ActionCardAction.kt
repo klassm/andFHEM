@@ -21,12 +21,17 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card
 
-package li.klass.fhem.adapter.devices.core.detail
-
-import android.content.Intent
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.NavController
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
-interface DetailViewProvider {
-    fun getIntentFor(device: FhemDevice): Intent?
+interface ActionCardAction {
+    fun createView(device: XmlListDevice, connectionId: String?, context: Context, inflater: LayoutInflater, parent: ViewGroup, navController: NavController): View?
+    fun supports(device: FhemDevice): Boolean
 }

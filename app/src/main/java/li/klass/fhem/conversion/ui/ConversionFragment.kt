@@ -34,11 +34,11 @@ import li.klass.fhem.R
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.NumberSystemUtil
+import javax.inject.Inject
 
-class ConversionFragment : BaseFragment() {
+class ConversionFragment @Inject constructor(): BaseFragment() {
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -77,7 +77,7 @@ class ConversionFragment : BaseFragment() {
 
     override fun mayPullToRefresh(): Boolean = false
 
-    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.conversion)
+    override fun getTitle(context: Context) = context.getString(R.string.conversion)
 
     override suspend fun update(refresh: Boolean) {}
 }

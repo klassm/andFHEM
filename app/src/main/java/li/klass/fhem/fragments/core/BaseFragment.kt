@@ -38,13 +38,13 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
 import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys.STRING
-import li.klass.fhem.constants.BundleExtraKeys.STRING_ID
+import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
@@ -59,12 +59,14 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     @Transient
     private var broadcastReceiver: UIBroadcastReceiver? = null
     private var backPressCalled = false
+
     @Inject
     lateinit var resendLastFailedCommandService: ResendLastFailedCommandService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject((activity?.application as AndFHEMApplication).daggerComponent)
+        updateAsync(false)
     }
 
     protected abstract fun inject(applicationComponent: ApplicationComponent)
@@ -119,7 +121,12 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         broadcastReceiver!!.attach()
         backPressCalled = false
 
+        setTitle(getTitle(myActivity))
         updateAsync(false)
+    }
+
+    fun setTitle(title: String?) {
+        activity?.title = title ?: ""
     }
 
     override fun onDetach() {
@@ -129,10 +136,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             broadcastReceiver!!.detach()
             broadcastReceiver = null
         }
-    }
-
-    fun onBackPressResult() {
-        updateAsync(false)
     }
 
     fun invalidate() {
@@ -205,6 +208,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             addAction(TOP_LEVEL_BACK)
             addAction(CONNECTION_ERROR)
             addAction(CONNECTION_ERROR_HIDE)
+            addAction(DO_UPDATE)
         }
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -213,21 +217,21 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                 Log.v(UIBroadcastReceiver::class.java.name, "received action " + action!!)
 
                 try {
-                    if (action == TOP_LEVEL_BACK) {
-                        if (!isVisible) return@Runnable
-                        if (!backPressCalled) {
-                            backPressCalled = true
-                            onBackPressResult()
+                    when (action) {
+                        CONNECTION_ERROR -> {
+                            val content = if (intent.hasExtra(STRING_ID)) {
+                                context.getString(intent.getIntExtra(STRING_ID, -1))
+                            } else {
+                                intent.getStringExtra(STRING)
+                            }
+                            showConnectionError(content)
                         }
-                    } else if (action == CONNECTION_ERROR) {
-                        val content = if (intent.hasExtra(STRING_ID)) {
-                            context.getString(intent.getIntExtra(STRING_ID, -1))
-                        } else {
-                            intent.getStringExtra(STRING)
+                        CONNECTION_ERROR_HIDE -> {
+                            hideConnectionError()
                         }
-                        showConnectionError(content)
-                    } else if (action == CONNECTION_ERROR_HIDE) {
-                        hideConnectionError()
+                        DO_UPDATE -> {
+                            updateAsync(intent.getBooleanExtra(DO_REFRESH, false))
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e(UIBroadcastReceiver::class.java.name, "error occurred", e)
@@ -249,9 +253,5 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
     }
 
-    open fun getTitle(context: Context): CharSequence? = null
-
-    protected fun back() {
-        activity?.sendBroadcast(Intent(BACK))
-    }
+    open fun getTitle(context: Context): String? = null
 }

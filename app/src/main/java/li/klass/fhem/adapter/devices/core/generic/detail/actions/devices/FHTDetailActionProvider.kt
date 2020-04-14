@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices
 
 import android.content.Context
+import androidx.navigation.NavController
 import com.google.common.collect.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,8 +35,12 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailAct
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.FHTModeStateOverwrite
-import li.klass.fhem.adapter.uiservice.FragmentUiService
 import li.klass.fhem.devices.backend.GenericDeviceService
+import li.klass.fhem.devices.detail.ui.DeviceDetailFragmentDirections
+import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
+import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval
+import li.klass.fhem.fragments.weekprofile.HeatingConfigurationProvider
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,7 +48,6 @@ import javax.inject.Singleton
 @Singleton
 class FHTDetailActionProvider @Inject constructor(
         fhtModeStateOverwrite: FHTModeStateOverwrite,
-        val fragmentUiService: FragmentUiService,
         val genericDeviceService: GenericDeviceService
 ) : DeviceDetailActionProvider() {
 
@@ -54,11 +58,17 @@ class FHTDetailActionProvider @Inject constructor(
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return ImmutableList.of<ActionCardAction>(
                 object : ActionCardButton(R.string.timetable, context) {
-                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) =
-                            fragmentUiService.showFromToWeekProfileFor(device, connectionId, context)
+                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
+                        val provider = object : HeatingConfigurationProvider<FromToHeatingInterval> {
+                                override fun get(): HeatingConfiguration<FromToHeatingInterval, *> = FHTConfiguration()
+                            }
+                        navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToFromToWeekProfileFragment(
+                                    device.name, device.displayName(), provider
+                            ))
+                    }
                 },
                 object : ActionCardButton(R.string.requestRefresh, context) {
-                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
+                    override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                         GlobalScope.launch(Dispatchers.IO) {
                             genericDeviceService.setState(device, "refreshvalues", connectionId)
                         }

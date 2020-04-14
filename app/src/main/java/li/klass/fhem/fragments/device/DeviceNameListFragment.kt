@@ -27,7 +27,6 @@ package li.klass.fhem.fragments.device
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import android.os.ResultReceiver
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,52 +42,27 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import li.klass.fhem.util.ApplicationProperties
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.io.Serializable
-import javax.inject.Inject
 
-abstract class DeviceNameListFragment : BaseFragment() {
+abstract class DeviceNameListFragment(
+        private val deviceListService: DeviceListService,
+        private val viewableElementsCalculator: ViewableElementsCalculator,
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val appWidgetUpdateService: AppWidgetUpdateService
+) : BaseFragment() {
 
-    protected var resultReceiver: ResultReceiver? = null
-
-    @Inject
-    lateinit var applicationProperties: ApplicationProperties
-    @Inject
-    lateinit var deviceListService: DeviceListService
-    @Inject
-    lateinit var viewableElementsCalculator: ViewableElementsCalculator
-    @Inject
-    lateinit var deviceListUpdateService: DeviceListUpdateService
-    @Inject
-    lateinit var appWidgetUpdateService: AppWidgetUpdateService
-
-    private var roomName: String? = null
-    private var deviceName: String? = null
-    protected var callingFragment: FragmentType? = null
-    private var deviceFilter: DeviceFilter = object : DeviceFilter {
+    open val roomName: String? = null
+    open val deviceName: String? = null
+    open val deviceFilter: DeviceFilter = object : DeviceFilter {
         override fun isSelectable(device: FhemDevice) = true
     }
     private var emptyTextId: Int = R.string.devicelist_empty
-
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        args ?: return
-
-        roomName = args.getString(ROOM_NAME)
-        resultReceiver = args.getParcelable<ResultReceiver>(RESULT_RECEIVER)
-        deviceName = args.getString(DEVICE_NAME)
-        callingFragment = args.getSerializable(CALLING_FRAGMENT) as FragmentType?
-        if (args.containsKey(DEVICE_FILTER)) deviceFilter = args.getSerializable(DEVICE_FILTER) as DeviceFilter
-        emptyTextId = if (args.containsKey(EMPTY_TEXT_ID)) args.getInt(EMPTY_TEXT_ID) else R.string.devicelist_empty
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)

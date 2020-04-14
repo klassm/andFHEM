@@ -28,6 +28,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import androidx.fragment.app.Fragment;
+
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.room.list.ui.RoomListFragment;
 
@@ -38,7 +40,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 import static li.klass.fhem.ui.FragmentType.DEVICE_SELECTION;
 
-public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
+public class DeviceNameSelectionNavigationFragment extends Fragment { // TODO repair me
 
     private Parcelable resultReceiver;
 
@@ -48,17 +50,17 @@ public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
         resultReceiver = args.getParcelable(RESULT_RECEIVER);
     }
 
-    @Override
-    public void onClick(String roomName) {
-        getActivity().sendBroadcast(new Intent(SHOW_FRAGMENT)
-                .putExtra(FRAGMENT, DEVICE_SELECTION)
-                .putExtra(ROOM_NAME, roomName)
-                .putExtra(CALLING_FRAGMENT, getArguments().getSerializable(CALLING_FRAGMENT))
-                .putExtra(RESULT_RECEIVER, resultReceiver));
-    }
-
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
-    }
+//    @Override
+//    public void onClick(String roomName) {
+//        getActivity().sendBroadcast(new Intent(SHOW_FRAGMENT)
+//                .putExtra(FRAGMENT, DEVICE_SELECTION)
+//                .putExtra(ROOM_NAME, roomName)
+//                .putExtra(CALLING_FRAGMENT, getArguments().getSerializable(CALLING_FRAGMENT))
+//                .putExtra(RESULT_RECEIVER, resultReceiver));
+//    }
+//
+//    @Override
+//    protected void inject(ApplicationComponent applicationComponent) {
+//        applicationComponent.inject(this);
+//    }
 }

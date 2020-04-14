@@ -31,6 +31,9 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TableRow
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.common.base.Joiner
 import com.google.common.base.Preconditions.checkNotNull
 import com.google.common.base.Splitter
@@ -55,6 +58,7 @@ import li.klass.fhem.ui.FragmentType.DEVICE_SELECTION
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.FhemResultReceiver
+import li.klass.fhem.util.getNavigationResult
 import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
 import li.klass.fhem.widget.TimePickerWithSecondsDialog
 import org.apache.commons.lang3.StringUtils
@@ -62,27 +66,18 @@ import org.apache.commons.lang3.StringUtils.isBlank
 import org.joda.time.LocalTime
 import javax.inject.Inject
 
-class TimerDetailFragment : BaseFragment() {
+class TimerDetailFragment @Inject constructor(
+        private val deviceListService: DeviceListService,
+        private val atService: AtService
+) : BaseFragment() {
     private var timerDevice: TimerDevice? = null
 
     @Transient
     private var targetDevice: FhemDevice? = null
-    private var savedTimerDeviceName: String? = null
 
-    @Inject
-    lateinit var deviceListService: DeviceListService
-
-    @Inject
-    lateinit var atService: AtService
+    private val args: TimerDetailFragmentArgs by navArgs()
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
-
-    override fun setArguments(args: Bundle?) {
-        if (args?.containsKey(DEVICE_NAME) == true) {
-            savedTimerDeviceName = args.getString(DEVICE_NAME)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,8 +112,8 @@ class TimerDetailFragment : BaseFragment() {
         }
         view.targetDeviceName.text = ""
 
-        if (isModify && targetDevice == null && savedTimerDeviceName != null) {
-            setTimerDeviceValuesForName(savedTimerDeviceName!!)
+        if (isModify && targetDevice == null && args.deviceName != null) {
+            setTimerDeviceValuesForName(args.deviceName!!)
         }
 
         updateTargetDevice(targetDevice, view)
@@ -126,13 +121,13 @@ class TimerDetailFragment : BaseFragment() {
         updateTargetStateRowVisibility(view)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.timer_menu, menu)
+        inflater.inflate(R.menu.timer_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.reset -> {
                 timerDevice ?: return false
                 setValuesForCurrentTimerDevice(timerDevice!!)
@@ -166,20 +161,14 @@ class TimerDetailFragment : BaseFragment() {
     }
 
     private fun bindSelectDeviceButton(view: View) {
+        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, Observer { device ->
+            updateTargetDevice(device, view)
+        })
         view.targetDeviceSet.setOnClickListener {
-            activity?.sendBroadcast(Intent(SHOW_FRAGMENT)
-                    .putExtra(FRAGMENT, DEVICE_SELECTION)
-                    .putExtra(BundleExtraKeys.DEVICE_FILTER, DEVICE_FILTER)
-                    .putExtra(CALLING_FRAGMENT, FragmentType.TIMER_DETAIL)
-                    .putExtra(RESULT_RECEIVER, object : FhemResultReceiver() {
-                        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                            if (resultCode != ResultCodes.SUCCESS) return
-
-                            if (resultData == null || !resultData.containsKey(CLICKED_DEVICE)) return
-
-                            updateTargetDevice(resultData.get(CLICKED_DEVICE) as FhemDevice, view)
-                        }
-                    }))
+            findNavController()
+                    .navigate(TimerDetailFragmentDirections.actionTimerDetailFragmentToDeviceNameSelectionFragment(
+                            DEVICE_FILTER, null
+                    ))
         }
     }
 
@@ -265,7 +254,7 @@ class TimerDetailFragment : BaseFragment() {
                     atService.createNew(timerDevice)
                 }
             }
-            back()
+            findNavController().popBackStack()
         }
     }
 
@@ -379,10 +368,10 @@ class TimerDetailFragment : BaseFragment() {
 
     override suspend fun update(refresh: Boolean) {}
 
-    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.timer)
+    override fun getTitle(context: Context) = context.getString(R.string.timer)
 
     private val isModify: Boolean
-        get() = !Strings.isNullOrEmpty(savedTimerDeviceName)
+        get() = !Strings.isNullOrEmpty(args.deviceName)
 
     companion object {
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {

@@ -37,6 +37,10 @@ android {
         javaMaxHeapSize "3000M"
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     defaultConfig {
         targetSdkVersion 29
         minSdkVersion 15

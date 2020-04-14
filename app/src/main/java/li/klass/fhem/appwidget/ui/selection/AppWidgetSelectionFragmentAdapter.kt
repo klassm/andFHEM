@@ -50,8 +50,8 @@ internal class AppWidgetSelectionFragmentAdapter(fm: FragmentManager, private va
 
     override fun getItem(position: Int): Fragment {
         when (position) {
-            0 -> return devicesFragment()
-            1 -> return roomsFragment()
+//            0 -> return devicesFragment()
+//            1 -> return roomsFragment() // TODO repair me
             2 -> return othersFragment()
         }
         throw IllegalStateException("cannot handle position $position")
@@ -68,48 +68,48 @@ internal class AppWidgetSelectionFragmentAdapter(fm: FragmentManager, private va
         throw IllegalStateException("cannot handle position $position")
     }
 
+//
+//    private fun devicesFragment(): DeviceNameSelectionFragment {
+//        val bundle = Bundle().apply {
+//            putSerializable(BundleExtraKeys.DEVICE_FILTER, object : DeviceNameListFragment.DeviceFilter {
+//                override fun isSelectable(device: FhemDevice): Boolean =
+//                        widgetTypeProvider.getSupportedDeviceWidgetsFor(widgetSize, device).isNotEmpty()
+//            })
+//            putParcelable(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
+//                override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+//                    if (resultCode != ResultCodes.SUCCESS || !resultData!!.containsKey(BundleExtraKeys.CLICKED_DEVICE))
+//                        return
+//
+//                    val clickedDevice = resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE) as FhemDevice
+//                    selectionCompletedCallback.onDeviceSelect(clickedDevice)
+//                }
+//            })
+//            putInt(EMPTY_TEXT_ID, R.string.widgetNoDevices)
+//        }
+//
+//        return DeviceNameSelectionFragment().apply {
+//            arguments = bundle
+//        }
+//    }
 
-    private fun devicesFragment(): DeviceNameSelectionFragment {
-        val bundle = Bundle().apply {
-            putSerializable(BundleExtraKeys.DEVICE_FILTER, object : DeviceNameListFragment.DeviceFilter {
-                override fun isSelectable(device: FhemDevice): Boolean =
-                        widgetTypeProvider.getSupportedDeviceWidgetsFor(widgetSize, device).isNotEmpty()
-            })
-            putParcelable(BundleExtraKeys.RESULT_RECEIVER, object : FhemResultReceiver() {
-                override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                    if (resultCode != ResultCodes.SUCCESS || !resultData!!.containsKey(BundleExtraKeys.CLICKED_DEVICE))
-                        return
-
-                    val clickedDevice = resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE) as FhemDevice
-                    selectionCompletedCallback.onDeviceSelect(clickedDevice)
-                }
-            })
-            putInt(EMPTY_TEXT_ID, R.string.widgetNoDevices)
-        }
-
-        return DeviceNameSelectionFragment().apply {
-            arguments = bundle
-        }
-    }
-
-    private fun roomsFragment(): RoomListFragment {
-        val bundle = Bundle()
-        bundle.putSerializable(ROOM_SELECTABLE_CALLBACK, object : RoomListFragment.RoomSelectableCallback {
-            override fun isRoomSelectable(roomName: String): Boolean =
-                    widgetTypeProvider.getSupportedRoomWidgetsFor(widgetSize).isNotEmpty()
-        })
-        bundle.putSerializable(ON_CLICKED_CALLBACK, object : RoomListFragment.RoomClickedCallback {
-            override fun onRoomClicked(roomName: String) {
-                selectionCompletedCallback.onRoomSelect(roomName)
-            }
-        })
-        bundle.putInt(EMPTY_TEXT_ID, R.string.widgetNoRooms)
-
-        val fragment = RoomListFragment()
-        fragment.arguments = bundle
-
-        return fragment
-    }
+//    private fun roomsFragment(): RoomListFragment {
+//        val bundle = Bundle()
+//        bundle.putSerializable(ROOM_SELECTABLE_CALLBACK, object : RoomListFragment.RoomSelectableCallback {
+//            override fun isRoomSelectable(roomName: String): Boolean =
+//                    widgetTypeProvider.getSupportedRoomWidgetsFor(widgetSize).isNotEmpty()
+//        })
+//        bundle.putSerializable(ON_CLICKED_CALLBACK, object : RoomListFragment.RoomClickedCallback {
+//            override fun onRoomClicked(roomName: String) {
+//                selectionCompletedCallback.onRoomSelect(roomName)
+//            }
+//        })
+//        bundle.putInt(EMPTY_TEXT_ID, R.string.widgetNoRooms)
+//
+//        val fragment = RoomListFragment()
+//        fragment.arguments = bundle
+//
+//        return fragment
+//    }
 
     private fun othersFragment(): OtherWidgetsFragment {
         val arguments = Bundle()

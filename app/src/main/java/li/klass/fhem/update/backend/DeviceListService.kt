@@ -42,8 +42,6 @@ constructor(
         private val deviceListCacheService: DeviceListCacheService
 ) : AbstractService() {
 
-    private val remoteUpdateInProgress = AtomicBoolean(false)
-
     fun parseReceivedDeviceStateMap(deviceName: String, updateMap: Map<String, String>, connectionId: String) {
         getDeviceForName(deviceName, connectionId)?.let {
             deviceListParser.fillDeviceWith(it, updateMap)
@@ -89,7 +87,6 @@ constructor(
 
     fun resetUpdateProgress(context: Context) {
         LOG.debug("resetUpdateProgress()")
-        remoteUpdateInProgress.set(false)
         sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context)
     }
 

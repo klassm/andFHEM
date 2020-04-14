@@ -49,7 +49,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.connection.backend.ConnectionService;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.dagger.DatabaseModule;
 import li.klass.fhem.testsuite.category.DeviceTestBase;

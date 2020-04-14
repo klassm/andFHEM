@@ -24,29 +24,40 @@
 
 package li.klass.fhem.fragments.device
 
-import android.content.Intent
-import android.os.Bundle
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.ResultCodes
 import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
+import li.klass.fhem.util.setNavigationResult
+import javax.inject.Inject
 
-class DeviceNameSelectionFragment : DeviceNameListFragment() {
+class DeviceNameSelectionFragment @Inject constructor(
+        deviceListService: DeviceListService,
+        viewableElementsCalculator: ViewableElementsCalculator,
+        deviceListUpdateService: DeviceListUpdateService,
+        appWidgetUpdateService: AppWidgetUpdateService
+) : DeviceNameListFragment(
+    deviceListService, viewableElementsCalculator, deviceListUpdateService, appWidgetUpdateService
+) {
+    private val args: DeviceNameSelectionFragmentArgs by navArgs()
+
     override fun onDeviceNameClick(child: FhemDevice) {
-        if (resultReceiver != null) {
-            val result = Bundle()
-            result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, child)
-            resultReceiver!!.send(ResultCodes.SUCCESS, result)
-        }
-
-        activity?.sendBroadcast(Intent(Actions.BACK)
-                .putExtra(BundleExtraKeys.FRAGMENT, callingFragment)
-                .putExtra(BundleExtraKeys.CLICKED_DEVICE, child))
+        setNavigationResult(result = child)
+        findNavController().popBackStack()
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
         applicationComponent.inject(this)
     }
+
+    override val deviceFilter: DeviceFilter
+        get() = args.filter
+
+    override val roomName: String?
+        get() = args.room
 }

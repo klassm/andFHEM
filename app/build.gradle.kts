@@ -44,6 +44,7 @@ buildscript {
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
         classpath(group = "io.fabric.tools", name = "gradle", version = "1.25.4")
         classpath(group = "com.google.firebase", name = "firebase-plugins", version = "1.1.5")
+        classpath(group = "androidx.navigation", name="navigation-safe-args-gradle-plugin", version = "2.3.0-alpha04")
     }
 }
 
@@ -52,8 +53,9 @@ val kotlinSerializationVersion = "0.9.1"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.8.0"
-val daggerVersion = "2.19"
+val daggerVersion = "2.27"
 val coroutinesVersion = "1.0.1"
+val androidXNavigationVersion = "2.3.0-alpha04"
 
 plugins {
     id("net.researchgate.release") version "2.8.0"
@@ -81,6 +83,7 @@ apply(plugin = "co.riiid.gradle")
 apply(plugin = "com.github.triplet.play")
 apply(plugin = "kotlinx-serialization")
 apply(plugin = "io.fabric")
+apply(plugin = "androidx.navigation.safeargs.kotlin")
 
 configurations.all {
     exclude(group = "com.google.guava", module = "listenablefuture")
@@ -107,7 +110,9 @@ dependencies {
         exclude(group = "org.apache.httpcomponents")
     }
     implementation(group = "com.google.dagger", name = "dagger", version = daggerVersion)
+    implementation(group = "com.google.dagger", name = "dagger-android-support", version = daggerVersion)
     kapt(group = "com.google.dagger", name = "dagger-compiler", version = daggerVersion)
+    kapt(group = "com.google.dagger", name = "dagger-android-processor", version = daggerVersion)
     implementation(group = "com.google.errorprone", name = "error_prone_annotations", version = "2.2.0")
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "1.3")
 
@@ -118,6 +123,9 @@ dependencies {
     implementation(group = "androidx.annotation", name = "annotation", version = coroutinesVersion)
     implementation(group = "androidx.room", name = "room-runtime", version = "2.1.0-alpha03")
     kapt(group = "androidx.room", name = "room-compiler", version = "2.1.0-alpha03")
+    implementation(group = "androidx.navigation", name="navigation-fragment-ktx", version = androidXNavigationVersion)
+    implementation(group = "androidx.navigation", name = "navigation-ui-ktx", version = androidXNavigationVersion)
+    implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
 
     implementation(group = "commons-net", name = "commons-net", version = "3.3")
     implementation(group = "commons-codec", name = "commons-codec", version = "1.11")

@@ -28,6 +28,7 @@ import android.content.Context
 import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import kotlinx.android.synthetic.main.device_detail_card_fs20_zdr_player.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -44,7 +45,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         if (device.xmlListDevice.type != "fs20_zdr") {
             return null
         }

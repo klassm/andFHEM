@@ -114,8 +114,10 @@
         </activity>
 
         <activity
-            android:name=".search.SearchResultsActivity"
-            android:launchMode="singleTop">
+            android:name=".activities.AndFHEMMainActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="keyboardHidden|screenSize"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -124,13 +126,6 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity
-            android:name=".activities.AndFHEMMainActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="keyboardHidden|screenSize"
-            android:launchMode="singleTask">
-
-        </activity>
         <activity
             android:name=".activities.PremiumActivity"
             android:label="@string/premium" />

@@ -30,41 +30,35 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.AdapterView
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.timer_overview.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.timer.TimerListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.backend.at.AtService
 import li.klass.fhem.devices.backend.at.TimerDevice
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.ui.FragmentType
+import li.klass.fhem.timer.ui.TimerListFragmentDirections.Companion.actionTimerListFragmentToTimerDetailFragment
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUIService
 import javax.inject.Inject
 
-class TimerListFragment : BaseFragment() {
+class TimerListFragment @Inject constructor(
+     private val  atService: AtService,
+     private val  deviceListUpdateService: DeviceListUpdateService,
+     private val  appWidgetUpdateService: AppWidgetUpdateService,
+     private val  deviceActionUIService: DeviceActionUIService,
+     private val  deviceListService: DeviceListService
+) : BaseFragment() {
     private var contextMenuClickedDevice: TimerDevice? = null
 
     private var createNewDeviceCalled = false
 
-    @Inject
-    lateinit var atService: AtService
-    @Inject
-    lateinit var deviceListUpdateService: DeviceListUpdateService
-    @Inject
-    lateinit var appWidgetUpdateService: AppWidgetUpdateService
-    @Inject
-    lateinit var deviceActionUIService: DeviceActionUIService
-    @Inject
-    lateinit var deviceListService: DeviceListService
-
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,27 +76,25 @@ class TimerListFragment : BaseFragment() {
         registerForContextMenu(layout.list)
         layout.list.onItemClickListener = AdapterView.OnItemClickListener { _, myView, _, _ ->
             val device = myView.tag as TimerDevice
-            activity.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
-                    .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
-                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.name))
+            findNavController().navigate(actionTimerListFragmentToTimerDetailFragment(device.name))
         }
 
         return layout
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.timers_menu, menu)
+        inflater.inflate(R.menu.timers_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        item ?: return false
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.timer_add) {
             createNewDeviceCalled = true
 
-            val intent = Intent(Actions.SHOW_FRAGMENT)
-            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL)
-            activity?.sendBroadcast(intent)
+            findNavController().navigate(
+                    actionTimerListFragmentToTimerDetailFragment(null)
+            )
+
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -145,7 +137,7 @@ class TimerListFragment : BaseFragment() {
     private val adapter: TimerListAdapter?
         get() = view?.list?.let { it.adapter as TimerListAdapter? }
 
-    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo) {
+    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, view, menuInfo)
 
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
@@ -158,10 +150,10 @@ class TimerListFragment : BaseFragment() {
         this.contextMenuClickedDevice = atDevice
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
+    override fun onContextItemSelected(item: MenuItem): Boolean {
         val name = contextMenuClickedDevice?.name ?: return false
         val context = activity ?: return false
-        when (item!!.itemId) {
+        when (item.itemId) {
             CONTEXT_MENU_DELETE -> {
                 GlobalScope.launch(Dispatchers.Main) {
                     withContext(Dispatchers.IO) {
@@ -178,7 +170,7 @@ class TimerListFragment : BaseFragment() {
         return super.onContextItemSelected(item)
     }
 
-    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.timer)
+    override fun getTitle(context: Context) = context.getString(R.string.timer)
 
     companion object {
         private val TAG = TimerListFragment::class.java.name

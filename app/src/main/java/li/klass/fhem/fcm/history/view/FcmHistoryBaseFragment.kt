@@ -10,16 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fcm_history_updates.view.*
 import li.klass.fhem.R
-import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.DateFormatUtil
 import org.joda.time.LocalDate
-import javax.inject.Inject
 
-abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(val layoutId: Int) : BaseFragment() {
-
-    @Inject
-    lateinit var fcmHistoryService: FcmHistoryService
+abstract class FcmHistoryBaseFragment<out ADAPTER : RecyclerView.Adapter<*>>(
+        private val layoutId: Int) : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(layoutId, container, false)

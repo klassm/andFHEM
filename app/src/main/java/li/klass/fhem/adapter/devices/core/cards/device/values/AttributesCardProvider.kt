@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.core.cards.device.values
 
 import android.content.Context
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
@@ -38,7 +39,7 @@ class AttributesCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 40
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         return detailCardWithDeviceValuesProvider.createCard(device, connectionId,
                 R.string.detailAttributesSection, AttributesItemProvider(), context)
     }

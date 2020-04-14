@@ -46,13 +46,11 @@ import li.klass.fhem.util.ListViewUtil
 import org.apache.commons.lang3.StringUtils.isEmpty
 import javax.inject.Inject
 
-class SendCommandFragment : BaseFragment() {
-
-    @Inject
-    lateinit var sendCommandService: SendCommandService
+class SendCommandFragment @Inject constructor(
+        private val sendCommandService: SendCommandService
+) : BaseFragment() {
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -171,6 +169,5 @@ class SendCommandFragment : BaseFragment() {
         updateAsync(false)
     }
 
-    override fun getTitle(context: Context): CharSequence? =
-            context.getString(R.string.send_command)
+    override fun getTitle(context: Context) = context.getString(R.string.send_command)
 }

@@ -33,6 +33,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.ListView
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import kotlinx.android.synthetic.main.room_list.*
+import kotlinx.android.synthetic.main.room_list.view.*
+import kotlinx.android.synthetic.main.room_list.view.roomList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
@@ -40,7 +45,6 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.RoomListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
@@ -54,27 +58,22 @@ import java.io.Serializable
 import java.util.*
 import javax.inject.Inject
 
-open class RoomListFragment : BaseFragment() {
-
-    @Inject
-    lateinit var advertisementService: AdvertisementService
-    @Inject
-    lateinit var deviceListUpdateService: DeviceListUpdateService
-    @Inject
-    lateinit var roomListService: ViewableRoomListService
-    @Inject
-    lateinit var appWidgetUpdateService: AppWidgetUpdateService
-    @Inject
-    lateinit var fhemWebConfigurationService: FhemWebConfigurationService
+open class RoomListFragment @Inject constructor(
+        private val advertisementService: AdvertisementService,
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val roomListService: ViewableRoomListService,
+        private val appWidgetUpdateService: AppWidgetUpdateService,
+        private val fhemWebConfigurationService: FhemWebConfigurationService
+) : BaseFragment() {
 
     private var roomName: String? = null
     private var emptyTextId = R.string.noRooms
     private var roomSelectableCallback: RoomSelectableCallback? = null
     private var roomClickedCallback: RoomClickedCallback? = null
-    private var roomList: ListView? = null
+
+    private val viewModel by navGraphViewModels<RoomListViewModel>(R.id.nav_graph)
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun setArguments(args: Bundle?) {
@@ -90,6 +89,7 @@ open class RoomListFragment : BaseFragment() {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
         val myActivity = activity ?: return superView
+        retainInstance = true
 
         val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
 
@@ -100,16 +100,21 @@ open class RoomListFragment : BaseFragment() {
         val emptyView = layout.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, emptyTextId, container!!)
 
-        roomList = layout.findViewById(R.id.roomList)
-        Reject.ifNull<ListView>(roomList)
-        roomList!!.adapter = adapter
+        layout.roomList.adapter = adapter
 
-        roomList!!.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+        layout.roomList.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val roomName = view.tag.toString()
             onClick(roomName)
         }
 
+        updateAsync(false)
+
         return layout
+    }
+
+    override fun onDestroyView() {
+        viewModel.listState = roomList.onSaveInstanceState()
+        super.onDestroyView()
     }
 
     override fun canChildScrollUp(): Boolean {
@@ -123,11 +128,9 @@ open class RoomListFragment : BaseFragment() {
         if (roomClickedCallback != null) {
             roomClickedCallback!!.onRoomClicked(roomName)
         } else {
-            val intent = Intent(Actions.SHOW_FRAGMENT)
-            intent.putExtra(FRAGMENT, FragmentType.ROOM_DETAIL)
-            intent.putExtra(ROOM_NAME, roomName)
-
-            activity?.sendBroadcast(intent)
+            findNavController().navigate(
+                    RoomListFragmentDirections.actionRoomListFragmentToRoomDetailFragment(roomName)
+            )
         }
     }
 
@@ -150,7 +153,7 @@ open class RoomListFragment : BaseFragment() {
         }
     }
 
-    override fun getTitle(context: Context): CharSequence? = context.getString(R.string.roomList)
+    override fun getTitle(context: Context) = context.getString(R.string.roomList)
 
     private fun isRoomSelectable(roomName: String): Boolean =
             roomSelectableCallback == null || roomSelectableCallback!!.isRoomSelectable(roomName)
@@ -168,12 +171,10 @@ open class RoomListFragment : BaseFragment() {
 
         val view = view ?: return
 
-        val roomListView = view.findViewById<ListView>(R.id.roomList) as ListView
-
         for (i in roomList.indices) {
             val roomName = roomList[i]
             if (roomName == selectedRoom) {
-                roomListView.setSelection(i)
+                view.roomList.setSelection(i)
                 return
             }
         }
@@ -194,9 +195,14 @@ open class RoomListFragment : BaseFragment() {
         if (selectableRooms.isEmpty()) {
             showEmptyView()
             adapter.updateData(selectableRooms)
+
         } else {
             adapter.updateData(selectableRooms.toMutableList(), roomName)
             scrollToSelectedRoom(roomName, adapter.data)
+
+            if (roomName == null && viewModel.listState != null) {
+                roomList.onRestoreInstanceState(viewModel.listState)
+            }
         }
     }
 }

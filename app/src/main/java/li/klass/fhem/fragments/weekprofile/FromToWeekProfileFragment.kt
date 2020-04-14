@@ -24,15 +24,19 @@
 
 package li.klass.fhem.fragments.weekprofile
 
+import androidx.navigation.fragment.navArgs
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
 import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.heating.schedule.WeekProfile
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval
+import javax.inject.Inject
 
-class FromToWeekProfileFragment : BaseWeekProfileFragment<FromToHeatingInterval>() {
+class FromToWeekProfileFragment @Inject constructor() : BaseWeekProfileFragment<FromToHeatingInterval>() {
 
     private var myAdapter: FromToWeekProfileAdapter? = null
+    private val args: FromToWeekProfileFragmentArgs by navArgs()
 
     override fun updateAdapterWith(weekProfile: WeekProfile<FromToHeatingInterval, *>) {
         myAdapter!!.updateData(weekProfile)
@@ -46,6 +50,12 @@ class FromToWeekProfileFragment : BaseWeekProfileFragment<FromToHeatingInterval>
     override fun getAdapter(): BaseWeekProfileAdapter<*> = myAdapter!!
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
+
+    override val deviceName: String
+        get() = args.deviceName
+    override val deviceDisplayName: String
+        get() = args.deviceDisplayName
+    override val heatingConfigurationProvider: HeatingConfigurationProvider<FromToHeatingInterval>
+        get() = args.heatingConfigurationProvider as HeatingConfigurationProvider<FromToHeatingInterval>
 }

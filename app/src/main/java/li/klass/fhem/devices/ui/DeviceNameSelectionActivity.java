@@ -64,18 +64,19 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
             }
         });
 
-        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment();
-        deviceSelectionFragment.setArguments(bundle);
-
-        try {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(android.R.id.content, deviceSelectionFragment)
-                    .commitAllowingStateLoss();
-        } catch (IllegalStateException e) {
-            Log.e(getClass().getSimpleName(), "error while switching to fragment " +
-                    DeviceNameSelectionFragment.class.getName(), e);
-        }
+        // TODO repair me
+//        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment();
+//        deviceSelectionFragment.setArguments(bundle);
+//
+//        try {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(android.R.id.content, deviceSelectionFragment)
+//                    .commitAllowingStateLoss();
+//        } catch (IllegalStateException e) {
+//            Log.e(getClass().getSimpleName(), "error while switching to fragment " +
+//                    DeviceNameSelectionFragment.class.getName(), e);
+//        }
     }
 
     protected void deviceClicked(final FhemDevice device) {

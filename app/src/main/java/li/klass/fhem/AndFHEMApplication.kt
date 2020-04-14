@@ -30,16 +30,16 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.StrictMode
 import android.util.Log
-import androidx.multidex.MultiDexApplication
 import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
 import li.klass.fhem.alarm.clock.update.AlarmClockUpdateService
 import li.klass.fhem.dagger.ApplicationComponent
-import li.klass.fhem.dagger.ApplicationModule
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
 import li.klass.fhem.devices.ui.DeviceNameSelectionActivity
@@ -49,7 +49,7 @@ import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import javax.inject.Inject
 
-class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
+class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     @Inject
@@ -127,7 +127,7 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
     private fun createDaggerComponent(): ApplicationComponent =
             DaggerApplicationComponent.builder()
                     .databaseModule(DatabaseModule(this))
-                    .applicationModule(ApplicationModule(this))
+                    .application(this)
                     .build()
 
     private fun setApplicationInformation() {
@@ -140,14 +140,12 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
         }
     }
 
-    private fun findOutPackageApplicationVersion(): String {
-        try {
-            val pkg = packageName
-            return packageManager.getPackageInfo(pkg, 0).versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.d(AndFHEMApplication::class.java.name, "cannot find the application version", e)
-            return ""
-        }
+    private fun findOutPackageApplicationVersion(): String = try {
+        val pkg = packageName
+        packageManager.getPackageInfo(pkg, 0).versionName
+    } catch (e: PackageManager.NameNotFoundException) {
+        Log.d(AndFHEMApplication::class.java.name, "cannot find the application version", e)
+        ""
     }
 
     companion object {
@@ -175,4 +173,6 @@ class AndFHEMApplication : MultiDexApplication(), Phoenix.Callback {
         val androidSDKLevel: Int
             get() = Build.VERSION.SDK_INT
     }
+
+    override fun applicationInjector() = createDaggerComponent()
 }

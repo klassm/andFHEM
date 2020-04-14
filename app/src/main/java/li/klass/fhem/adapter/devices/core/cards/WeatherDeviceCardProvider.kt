@@ -30,6 +30,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -53,7 +54,7 @@ class WeatherDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 1
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         if (device.xmlListDevice.type != "Weather") {
             return null
         }

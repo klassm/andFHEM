@@ -38,6 +38,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import kotlinx.android.synthetic.main.device_view_header.*
@@ -46,9 +47,7 @@ import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
-import li.klass.fhem.adapter.devices.core.detail.DeviceDetailViewProvider
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
-import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
@@ -57,42 +56,28 @@ import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
+import li.klass.fhem.fragments.MainFragmentDirections
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.slf4j.LoggerFactory
-import javax.inject.Inject
 
 @Suppress("EXPERIMENTAL_FEATURE_WARNING")
-abstract class DeviceListFragment : BaseFragment() {
-
-    @Inject
-    lateinit var dataConnectionSwitch: DataConnectionSwitch
-    @Inject
-    lateinit var applicationProperties: ApplicationProperties
-    @Inject
-    lateinit var viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider
-    @Inject
-    lateinit var advertisementService: AdvertisementService
-    @Inject
-    lateinit var deviceListUpdateService: DeviceListUpdateService
-    @Inject
-    lateinit var favoritesService: FavoritesService
-    @Inject
-    lateinit var appWidgetUpdateService: AppWidgetUpdateService
-    @Inject
-    lateinit var deviceDetailViewProvider: DeviceDetailViewProvider
-    @Inject
-    lateinit var genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter
-    @Inject
-    lateinit var deviceActionUiService: DeviceActionUIService
+abstract class DeviceListFragment(
+        private val dataConnectionSwitch: DataConnectionSwitch,
+        private val applicationProperties: ApplicationProperties,
+        private val viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+        private val advertisementService: AdvertisementService,
+        private val favoritesService: FavoritesService,
+        private val genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+        private val deviceActionUiService: DeviceActionUIService
+) : BaseFragment() {
 
 
     private var actionMode: ActionMode? = null
@@ -212,9 +197,9 @@ abstract class DeviceListFragment : BaseFragment() {
         }
 
         configureServers.onClick {
-            context?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT).apply {
-                putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_LIST)
-            })
+            findNavController().navigate(
+                    MainFragmentDirections.actionToConnectionList()
+            )
         }
 
         LOGGER.debug("updateWith - update dummyConnectionNotification, time=${stopWatch.time}")
@@ -250,7 +235,7 @@ abstract class DeviceListFragment : BaseFragment() {
 
     private fun onClick(device: FhemDevice) {
         actionMode?.finish()
-        activity?.sendBroadcast(deviceDetailViewProvider.detailIntentFor(device))
+        navigateTo(device)
     }
 
     private fun onLongClick(device: FhemDevice): Boolean {
@@ -267,6 +252,8 @@ abstract class DeviceListFragment : BaseFragment() {
         }
         return true
     }
+
+    abstract fun navigateTo(device: FhemDevice)
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DeviceListFragment::class.java)
