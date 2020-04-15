@@ -85,7 +85,7 @@ public abstract class DeviceXMLParsingBase {
         AndFHEMApplication application = mock(AndFHEMApplication.class);
         when(application.getApplicationContext()).thenReturn(context);
         applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(application))
+                .application(application)
                 .databaseModule(new DatabaseModule(application)).build();
 
         DeviceListParser deviceListParser = new DeviceListParser(
