@@ -62,7 +62,7 @@ abstract class DeviceNameListFragment(
     open val deviceFilter: DeviceFilter = object : DeviceFilter {
         override fun isSelectable(device: FhemDevice) = true
     }
-    private var emptyTextId: Int = R.string.devicelist_empty
+    open val emptyTextId: Int = R.string.devicelist_empty
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)

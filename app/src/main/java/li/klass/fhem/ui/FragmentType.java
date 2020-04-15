@@ -25,8 +25,9 @@
 package li.klass.fhem.ui;
 
 import androidx.annotation.Nullable;
+
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
+import li.klass.fhem.appwidget.ui.selection.other.OtherWidgetsFragment;
 import li.klass.fhem.connection.ui.ConnectionDetailFragment;
 import li.klass.fhem.connection.ui.ConnectionListFragment;
 import li.klass.fhem.conversion.ui.ConversionFragment;

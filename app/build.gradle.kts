@@ -126,6 +126,7 @@ dependencies {
     implementation(group = "androidx.navigation", name="navigation-fragment-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-ui-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
+    implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.2.0")
 
     implementation(group = "commons-net", name = "commons-net", version = "3.3")
     implementation(group = "commons-codec", name = "commons-codec", version = "1.11")

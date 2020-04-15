@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_selection"
+    app:startDestination="@id/widgetDeviceSelectionFragment">
+
+    <fragment
+        android:id="@+id/otherWidgetsFragment"
+        android:name="li.klass.fhem.appwidget.ui.selection.other.OtherWidgetsFragment"
+        android:label="OtherWidgetsFragment" />
+    <fragment
+        android:id="@+id/widgetDeviceSelectionFragment"
+        android:name="li.klass.fhem.appwidget.ui.selection.device.WidgetDeviceSelectionFragment"
+        android:label="WidgetDeviceSelectionFragment" />
+    <fragment
+        android:id="@+id/roomWidgetSelectionFragment"
+        android:name="li.klass.fhem.appwidget.ui.selection.room.RoomWidgetSelectionFragment"
+        android:label="RoomWidgetSelectionFragment" />
+</navigation>

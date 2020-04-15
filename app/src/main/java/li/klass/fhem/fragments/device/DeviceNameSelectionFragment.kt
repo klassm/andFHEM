@@ -52,7 +52,6 @@ class DeviceNameSelectionFragment @Inject constructor(
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override val deviceFilter: DeviceFilter

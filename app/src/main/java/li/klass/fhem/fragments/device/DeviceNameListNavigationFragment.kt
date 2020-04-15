@@ -59,6 +59,5 @@ class DeviceNameListNavigationFragment @Inject constructor(
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 }

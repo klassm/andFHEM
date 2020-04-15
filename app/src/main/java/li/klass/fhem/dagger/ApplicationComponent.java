@@ -53,7 +53,6 @@ import li.klass.fhem.appwidget.ui.selection.BigWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.MediumWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.SmallWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.widget.base.RoomDetailLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.appwidget.ui.widget.big.BigWeatherForecastWidget;
 import li.klass.fhem.appwidget.ui.widget.medium.DimWidgetView;
 import li.klass.fhem.appwidget.ui.widget.medium.HeatingWidgetView;
@@ -76,10 +75,6 @@ import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.backup.ImportExportService;
 import li.klass.fhem.fcm.receiver.FcmIntentService;
-import li.klass.fhem.fragments.device.DeviceNameListFragment;
-import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.graph.backend.gplot.GPlotHolder;
 import li.klass.fhem.graph.ui.GraphActivity;
 import li.klass.fhem.search.MySearchSuggestionsProvider;
@@ -179,16 +174,6 @@ public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication
     void inject(MediumAppWidgetProvider object);
 
     void inject(BigAppWidgetProvider object);
-
-    void inject(DeviceNameListFragment object);
-
-    void inject(DeviceNameSelectionFragment object);
-
-    void inject(DeviceNameListNavigationFragment object);
-
-    void inject(OtherWidgetsFragment object);
-
-    void inject(DeviceNameSelectionNavigationFragment object);
 
     void inject(DeviceListUpdateService object);
 

@@ -22,46 +22,38 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.ui.widget.base.otherWidgets
+package li.klass.fhem.appwidget.ui.selection.other
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.other_widgets_list.view.*
 import li.klass.fhem.R
-import li.klass.fhem.appwidget.ui.widget.WidgetSize
+import li.klass.fhem.appwidget.ui.selection.WidgetSelectionViewModel
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
-import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
-import li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_SIZE
-import li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
-import java.io.Serializable
 import javax.inject.Inject
 
-class OtherWidgetsFragment : BaseFragment() {
-
-    lateinit var widgetSize: WidgetSize
-    lateinit var widgetClickedCallback: OnWidgetClickedCallback
+class OtherWidgetsFragment @Inject constructor() : BaseFragment() {
 
     @Inject
     lateinit var widgetTypeProvider: WidgetTypeProvider
 
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-
-        widgetSize = args?.getSerializable(APP_WIDGET_SIZE) as WidgetSize
-        widgetClickedCallback = args.getSerializable(ON_CLICKED_CALLBACK) as OnWidgetClickedCallback
-    }
+    private val viewModel by activityViewModels<WidgetSelectionViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.other_widgets_list, container, false)
-        val items = widgetTypeProvider.getOtherWidgetsFor(widgetSize)
+        val items = widgetTypeProvider.getOtherWidgetsFor(viewModel.widgetSize)
         view.list.layoutManager = LinearLayoutManager(activity)
-        view.list.adapter = OtherWidgetsAdapter(items, widgetClickedCallback).apply { notifyDataSetChanged() }
+        view.list.adapter = OtherWidgetsAdapter(items) {
+            viewModel.otherWidgetClicked.postValue(it)
+        }.apply { notifyDataSetChanged() }
 
         val emptyView = view.findViewById<View>(R.id.emptyView) as LinearLayout
         fillEmptyView(emptyView, R.string.widgetNoOther, container!!)
@@ -74,10 +66,7 @@ class OtherWidgetsFragment : BaseFragment() {
     }
 
     override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
-    interface OnWidgetClickedCallback : Serializable {
-        fun onWidgetClicked(widgetView: AppWidgetView)
-    }
+    override fun getTitle(context: Context): String? = context.getString(R.string.widget_others)
 }

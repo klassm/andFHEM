@@ -25,16 +25,9 @@
 package li.klass.fhem.appwidget.ui.selection;
 
 import li.klass.fhem.appwidget.ui.widget.WidgetSize;
-import li.klass.fhem.dagger.ApplicationComponent;
 
 public class SmallWidgetSelectionActivity extends AppWidgetSelectionActivity {
     public SmallWidgetSelectionActivity() {
         super(WidgetSize.SMALL);
-    }
-
-
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
     }
 }

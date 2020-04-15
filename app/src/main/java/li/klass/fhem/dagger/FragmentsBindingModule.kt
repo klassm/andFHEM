@@ -5,6 +5,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragment
+import li.klass.fhem.appwidget.ui.selection.device.WidgetDeviceSelectionFragment
+import li.klass.fhem.appwidget.ui.selection.other.OtherWidgetsFragment
+import li.klass.fhem.appwidget.ui.selection.room.RoomWidgetSelectionFragment
 import li.klass.fhem.connection.ui.ConnectionDetailFragment
 import li.klass.fhem.connection.ui.ConnectionListFragment
 import li.klass.fhem.conversion.ui.ConversionFragment
@@ -143,4 +146,19 @@ interface FragmentsBindingModule {
     @IntoMap
     @FragmentKey(DeviceNameListNavigationFragment::class)
     fun bindDeviceNameListNavigationFragment(fragment: DeviceNameListNavigationFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(WidgetDeviceSelectionFragment::class)
+    fun bindWidgetDeviceSelectionFragment(fragment: WidgetDeviceSelectionFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(OtherWidgetsFragment::class)
+    fun bindOtherWidgetsFragment(fragment: OtherWidgetsFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(RoomWidgetSelectionFragment::class)
+    fun bindRoomWidgetSelectionFragment(fragment: RoomWidgetSelectionFragment): Fragment
 }

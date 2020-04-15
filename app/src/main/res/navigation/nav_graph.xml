@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
     <action
@@ -43,12 +44,10 @@
         app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_to_conversion"
-        app:destination="@id/conversionFragment"
         app:launchSingleTop="true"
         app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_to_fcm_history"
-        app:destination="@id/fcmHistoryFragment"
         app:launchSingleTop="true"
         app:popUpToInclusive="true" />
     <action
@@ -60,19 +59,19 @@
     <fragment
         android:id="@+id/allDevicesFragment"
         android:name="li.klass.fhem.devices.list.all.ui.AllDevicesFragment"
-        android:label="AllDevicesFragment" >
+        android:label="AllDevicesFragment">
         <action
             android:id="@+id/action_allDevicesFragment_to_deviceDetailRedirectFragment"
             app:destination="@id/deviceDetailRedirectFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/connectionDetailFragment"
         android:name="li.klass.fhem.connection.ui.ConnectionDetailFragment"
-        android:label="ConnectionDetailFragment" >
+        android:label="ConnectionDetailFragment">
         <argument
             android:name="connectionId"
             app:argType="string"
@@ -81,19 +80,15 @@
     <fragment
         android:id="@+id/connectionListFragment"
         android:name="li.klass.fhem.connection.ui.ConnectionListFragment"
-        android:label="ConnectionListFragment" >
+        android:label="ConnectionListFragment">
         <action
             android:id="@+id/action_connectionListFragment_to_connectionDetailFragment"
             app:destination="@id/connectionDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/conversionFragment"
-        android:name="li.klass.fhem.conversion.ui.ConversionFragment"
-        android:label="ConversionFragment" />
-    <fragment
         android:id="@+id/deviceDetailFragment"
         android:name="li.klass.fhem.devices.detail.ui.DeviceDetailFragment"
-        android:label="DeviceDetailFragment" >
+        android:label="DeviceDetailFragment">
         <argument
             android:name="deviceName"
             app:argType="string" />
@@ -115,7 +110,7 @@
     <fragment
         android:id="@+id/deviceNameListNavigationFragment"
         android:name="li.klass.fhem.fragments.device.DeviceNameListNavigationFragment"
-        android:label="DeviceNameListNavigationFragment" >
+        android:label="DeviceNameListNavigationFragment">
         <argument
             android:name="room"
             app:argType="string" />
@@ -126,23 +121,19 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="li.klass.fhem.devices.list.favorites.ui.FavoritesFragment"
-        android:label="FavoritesFragment" >
+        android:label="FavoritesFragment">
         <action
             android:id="@+id/action_favoritesFragment_to_deviceDetailRedirectFragment"
             app:destination="@id/deviceDetailRedirectFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
-    <fragment
-        android:id="@+id/fcmHistoryFragment"
-        android:name="li.klass.fhem.fcm.history.view.FcmHistoryFragment"
-        android:label="FcmHistoryFragment" />
     <fragment
         android:id="@+id/floorplanFragment"
         android:name="li.klass.fhem.floorplan.ui.FloorplanFragment"
-        android:label="FloorplanFragment" >
+        android:label="FloorplanFragment">
         <argument
             android:name="deviceName"
             app:argType="string" />
@@ -150,7 +141,7 @@
     <fragment
         android:id="@+id/fromToWeekProfileFragment"
         android:name="li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment"
-        android:label="FromToWeekProfileFragment" >
+        android:label="FromToWeekProfileFragment">
         <argument
             android:name="deviceName"
             app:argType="string" />
@@ -164,7 +155,7 @@
     <fragment
         android:id="@+id/intervalWeekProfileFragment"
         android:name="li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment"
-        android:label="IntervalWeekProfileFragment" >
+        android:label="IntervalWeekProfileFragment">
         <argument
             android:name="deviceDisplayName"
             app:argType="string" />
@@ -178,38 +169,38 @@
     <fragment
         android:id="@+id/roomDetailFragment"
         android:name="li.klass.fhem.room.detail.ui.RoomDetailFragment"
-        android:label="RoomDetailFragment" >
+        android:label="RoomDetailFragment">
         <argument
             android:name="roomName"
             app:argType="string"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_roomDetailFragment_to_deviceDetailRedirectFragment"
             app:destination="@id/deviceDetailRedirectFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/roomListFragment"
         android:name="li.klass.fhem.room.list.ui.RoomListFragment"
-        android:label="RoomListFragment" >
+        android:label="RoomListFragment">
         <action
             android:id="@+id/action_roomListFragment_to_roomDetailFragment"
             app:destination="@id/roomDetailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/timerListFragment"
         android:name="li.klass.fhem.timer.ui.TimerListFragment"
-        android:label="TimerListFragment" >
+        android:label="TimerListFragment">
         <action
             android:id="@+id/action_timerListFragment_to_timerDetailFragment"
             app:destination="@id/timerDetailFragment" />
@@ -217,23 +208,19 @@
     <fragment
         android:id="@+id/searchResultsFragment"
         android:name="li.klass.fhem.search.SearchResultsFragment"
-        android:label="SearchResultsFragment" >
+        android:label="SearchResultsFragment">
         <action
             android:id="@+id/action_searchResultsFragment_to_deviceDetailRedirectFragment"
             app:destination="@id/deviceDetailRedirectFragment"
-            app:popUpToInclusive="false"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToInclusive="false" />
         <argument
             android:name="query"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/otherWidgetsFragment"
-        android:name="li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment"
-        android:label="OtherWidgetsFragment" />
     <fragment
         android:id="@+id/mainFragment"
         android:name="li.klass.fhem.fragments.MainFragment"
@@ -245,34 +232,34 @@
     <fragment
         android:id="@+id/deviceDetailRedirectFragment"
         android:name="li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragment"
-        android:label="DeviceDetailRedirectFragment" >
+        android:label="DeviceDetailRedirectFragment">
         <action
             android:id="@+id/action_deviceDetailRedirectFragment_to_deviceDetailFragment"
             app:destination="@id/deviceDetailFragment"
-            app:popUpTo="@id/deviceDetailRedirectFragment"
-            app:popUpToInclusive="true"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/deviceDetailRedirectFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_deviceDetailRedirectFragment_to_floorplanFragment"
             app:destination="@id/floorplanFragment"
-            app:popUpTo="@id/deviceDetailRedirectFragment"
-            app:popUpToInclusive="true"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/deviceDetailRedirectFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_deviceDetailRedirectFragment_to_webViewFragment"
             app:destination="@id/webViewFragment"
-            app:popUpTo="@id/deviceDetailRedirectFragment"
-            app:popUpToInclusive="true"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/deviceDetailRedirectFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="deviceName"
             app:argType="string" />
@@ -284,7 +271,7 @@
     <fragment
         android:id="@+id/webViewFragment"
         android:name="li.klass.fhem.ui.WebViewFragment"
-        android:label="WebViewFragment" >
+        android:label="WebViewFragment">
         <argument
             android:name="url"
             app:argType="string" />
@@ -292,7 +279,7 @@
     <fragment
         android:id="@+id/timerDetailFragment"
         android:name="li.klass.fhem.timer.ui.TimerDetailFragment"
-        android:label="TimerDetailFragment" >
+        android:label="TimerDetailFragment">
         <argument
             android:name="deviceName"
             app:argType="string"
@@ -308,7 +295,7 @@
     <fragment
         android:id="@+id/deviceNameSelectionFragment"
         android:name="li.klass.fhem.fragments.device.DeviceNameSelectionFragment"
-        android:label="DeviceNameSelectionFragment" >
+        android:label="DeviceNameSelectionFragment">
         <argument
             android:name="filter"
             app:argType="li.klass.fhem.fragments.device.DeviceNameListFragment$DeviceFilter" />
@@ -317,4 +304,12 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/conversionFragment"
+        android:name="li.klass.fhem.conversion.ui.ConversionFragment"
+        android:label="ConversionFragment" />
+    <fragment
+        android:id="@+id/fcmHistoryFragment"
+        android:name="li.klass.fhem.fcm.history.view.FcmHistoryFragment"
+        android:label="FcmHistoryFragment" />
 </navigation>
