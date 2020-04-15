@@ -6,7 +6,6 @@ import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.selection.WidgetSelectionViewModel
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.device.DeviceNameListFragment
@@ -25,9 +24,6 @@ class WidgetDeviceSelectionFragment @Inject constructor(
 
     override fun onDeviceNameClick(child: FhemDevice) {
         viewModel.deviceClicked.postValue(child)
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override val deviceFilter: DeviceFilter

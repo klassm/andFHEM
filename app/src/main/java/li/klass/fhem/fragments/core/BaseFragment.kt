@@ -38,14 +38,11 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.*
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
 import li.klass.fhem.widget.SwipeRefreshLayout
@@ -65,11 +62,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject((activity?.application as AndFHEMApplication).daggerComponent)
         updateAsync(false)
     }
-
-    protected abstract fun inject(applicationComponent: ApplicationComponent)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

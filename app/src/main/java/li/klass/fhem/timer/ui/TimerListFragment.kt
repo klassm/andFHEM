@@ -37,7 +37,6 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.timer.TimerListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.backend.at.AtService
 import li.klass.fhem.devices.backend.at.TimerDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -57,9 +56,6 @@ class TimerListFragment @Inject constructor(
     private var contextMenuClickedDevice: TimerDevice? = null
 
     private var createNewDeviceCalled = false
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

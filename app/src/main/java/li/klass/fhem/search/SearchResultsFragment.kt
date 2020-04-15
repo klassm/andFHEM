@@ -10,7 +10,6 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
@@ -62,9 +61,6 @@ class SearchResultsFragment @Inject constructor(
 
     override fun navigateTo(device: FhemDevice) {
         findNavController().navigate(SearchResultsFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override fun getTitle(context: Context): String = context.resources.getString(R.string.search_title)

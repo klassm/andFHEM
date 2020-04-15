@@ -30,13 +30,10 @@ import androidx.navigation.fragment.navArgs
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fragments.MainFragmentDirections
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_ROOM_OPEN
 import li.klass.fhem.update.backend.DeviceListService
@@ -67,9 +64,6 @@ class RoomDetailFragment @Inject constructor(
         if (updateOnRoomOpen) {
             updateAsync(true)
         }
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override fun getTitle(context: Context) = args.roomName

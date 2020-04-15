@@ -38,7 +38,6 @@ import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -64,9 +63,6 @@ class DeviceDetailFragment @Inject constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

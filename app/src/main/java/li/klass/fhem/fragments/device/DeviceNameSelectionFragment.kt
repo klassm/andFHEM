@@ -28,7 +28,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
@@ -49,9 +48,6 @@ class DeviceNameSelectionFragment @Inject constructor(
     override fun onDeviceNameClick(child: FhemDevice) {
         setNavigationResult(result = child)
         findNavController().popBackStack()
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override val deviceFilter: DeviceFilter

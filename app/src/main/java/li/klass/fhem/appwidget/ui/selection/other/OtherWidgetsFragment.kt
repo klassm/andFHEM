@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.other_widgets_list.view.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.selection.WidgetSelectionViewModel
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import javax.inject.Inject
 
@@ -63,9 +62,6 @@ class OtherWidgetsFragment @Inject constructor() : BaseFragment() {
     }
 
     override suspend fun update(refresh: Boolean) {
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override fun getTitle(context: Context): String? = context.getString(R.string.widget_others)

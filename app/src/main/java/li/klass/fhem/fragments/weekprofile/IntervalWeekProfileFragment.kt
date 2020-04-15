@@ -27,7 +27,6 @@ package li.klass.fhem.fragments.weekprofile
 import androidx.navigation.fragment.navArgs
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
 import li.klass.fhem.adapter.weekprofile.IntervalWeekProfileAdapter
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
 import li.klass.fhem.util.ApplicationProperties
@@ -51,9 +50,6 @@ class IntervalWeekProfileFragment @Inject constructor(
     }
 
     override fun getAdapter(): BaseWeekProfileAdapter<*> = adapter!!
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override val deviceName: String
         get() = args.deviceName

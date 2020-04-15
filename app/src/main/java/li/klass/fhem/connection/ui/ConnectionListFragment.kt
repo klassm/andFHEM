@@ -46,10 +46,8 @@ import li.klass.fhem.connection.ui.ConnectionListFragmentDirections.Companion.ac
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.Reject
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -66,9 +64,6 @@ class ConnectionListFragment @Inject constructor(
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         connectionId = args?.getString(CONNECTION_ID)
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

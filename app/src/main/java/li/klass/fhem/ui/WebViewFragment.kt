@@ -24,18 +24,12 @@
 
 package li.klass.fhem.ui
 
-import android.os.Bundle
 import androidx.navigation.fragment.navArgs
 
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import javax.inject.Inject
 
 class WebViewFragment @Inject constructor() : AbstractWebViewFragment() {
     private val args: WebViewFragmentArgs by navArgs()
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun showProgressDialog(): Boolean = false
 

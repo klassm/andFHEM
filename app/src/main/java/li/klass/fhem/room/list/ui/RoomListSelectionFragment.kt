@@ -42,7 +42,6 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.RoomListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
@@ -59,9 +58,6 @@ abstract class RoomListSelectionFragment constructor(
 ) : BaseFragment() {
 
     private var emptyTextId = R.string.noRooms
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

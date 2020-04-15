@@ -29,7 +29,6 @@ import androidx.navigation.navGraphViewModels
 import kotlinx.android.synthetic.main.room_list.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -45,9 +44,6 @@ open class RoomListFragment @Inject constructor(
 ) : RoomListSelectionFragment(advertisementService, deviceListUpdateService, roomListService, appWidgetUpdateService, fhemWebConfigurationService) {
 
     private val viewModel by navGraphViewModels<RoomListViewModel>(R.id.nav_graph)
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun onDestroyView() {
         viewModel.listState = roomList.onSaveInstanceState()

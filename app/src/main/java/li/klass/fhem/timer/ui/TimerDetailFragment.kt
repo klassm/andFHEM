@@ -44,20 +44,15 @@ import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.showSwitchOptionsMenu
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
-import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.constants.ResultCodes
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
+import li.klass.fhem.constants.Actions.SHOW_TOAST
+import li.klass.fhem.constants.BundleExtraKeys.STRING_ID
 import li.klass.fhem.devices.backend.at.*
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListFragment
-import li.klass.fhem.ui.FragmentType
-import li.klass.fhem.ui.FragmentType.DEVICE_SELECTION
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DialogUtil
-import li.klass.fhem.util.FhemResultReceiver
 import li.klass.fhem.util.getNavigationResult
 import li.klass.fhem.widget.TimePickerWithSeconds.getFormattedValue
 import li.klass.fhem.widget.TimePickerWithSecondsDialog
@@ -76,9 +71,6 @@ class TimerDetailFragment @Inject constructor(
     private var targetDevice: FhemDevice? = null
 
     private val args: TimerDetailFragmentArgs by navArgs()
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

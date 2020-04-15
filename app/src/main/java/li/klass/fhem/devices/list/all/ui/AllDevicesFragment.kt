@@ -30,13 +30,11 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.fragments.MainFragmentDirections
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -59,9 +57,6 @@ class AllDevicesFragment @Inject constructor(
         advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
 
     override fun getTitle(context: Context) = context.getString(R.string.alldevices)
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun executeRemoteUpdate(context: Context) {
         deviceListUpdateService.updateAllDevices()

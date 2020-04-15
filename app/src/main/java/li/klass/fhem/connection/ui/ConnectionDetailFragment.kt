@@ -46,7 +46,6 @@ import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
@@ -67,9 +66,6 @@ class ConnectionDetailFragment @Inject constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

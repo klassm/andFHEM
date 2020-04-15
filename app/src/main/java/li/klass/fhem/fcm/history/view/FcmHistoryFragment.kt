@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fcm_history.view.*
 import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import javax.inject.Inject
 
@@ -24,9 +23,6 @@ class FcmHistoryFragment @Inject constructor(
         view?.tabs?.setupWithViewPager(view.viewpager)
 
         return view
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
     }
 
     override suspend fun update(refresh: Boolean) {

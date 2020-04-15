@@ -38,7 +38,6 @@ import kotlinx.android.synthetic.main.command_execution.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.intent.SendCommandService
 import li.klass.fhem.util.DialogUtil
@@ -49,9 +48,6 @@ import javax.inject.Inject
 class SendCommandFragment @Inject constructor(
         private val sendCommandService: SendCommandService
 ) : BaseFragment() {
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)

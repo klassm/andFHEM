@@ -31,15 +31,11 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.conversion.view.*
 import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.NumberSystemUtil
 import javax.inject.Inject
 
 class ConversionFragment @Inject constructor(): BaseFragment() {
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)

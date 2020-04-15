@@ -31,7 +31,6 @@ import android.webkit.WebView
 import androidx.navigation.fragment.navArgs
 import com.google.common.io.Resources
 import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.ui.AbstractWebViewFragment
 import li.klass.fhem.util.BuildVersion
 import java.nio.charset.Charset
@@ -40,9 +39,6 @@ import javax.inject.Inject
 class FloorplanFragment @Inject constructor() : AbstractWebViewFragment() {
 
     private val args: FloorplanFragmentArgs by navArgs()
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun onPageLoadFinishedCallback(view: WebView, url: String) {
         if (url.contains("&XHR=1")) {

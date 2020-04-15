@@ -32,12 +32,10 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fragments.MainFragmentDirections
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
@@ -57,8 +55,6 @@ class FavoritesFragment @Inject constructor(
         private val appWidgetUpdateService: AppWidgetUpdateService
 ) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
         advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
-    override fun inject(applicationComponent: ApplicationComponent) {
-    }
 
     override fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val inflater = activity?.layoutInflater
