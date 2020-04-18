@@ -47,13 +47,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.content_view.*
 import kotlinx.android.synthetic.main.main_view.*
-import kotlinx.android.synthetic.main.main_view.refresh_layout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -69,12 +68,13 @@ import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ScopedFragmentFactory
-import li.klass.fhem.fragments.MainFragmentDirections
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.ui.FragmentType.*
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
+import li.klass.fhem.util.navigation.updateStartFragment
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
@@ -137,7 +137,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                             }
                         }
                     } catch (e: Exception) {
-                        LOGGER.error("exception occurred while receiving broadcast", e)
+                        logger.error("exception occurred while receiving broadcast", e)
                     }
                 })
             }
@@ -191,20 +191,48 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         try {
             saveInstanceStateCalled = false
             setContentView(R.layout.main_view)
+
+            navController()?.updateStartFragment(determineStartupFragmentFromProperties())
+
             broadcastReceiver = Receiver()
             registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
             initSwipeRefreshLayout()
-            showDrawerToggle(supportFragmentManager.backStackEntryCount == 0)
         } catch (e: Throwable) {
-            LOGGER.error("onCreate() : error during initialization", e)
+            logger.error("onCreate() : error during initialization", e)
         }
     }
 
+    private fun navController(): NavController? = (supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?)
+            ?.navController
+
+    private fun determineStartupFragmentFromProperties(): Int {
+        val hasFavorites = intent?.extras?.getBoolean(HAS_FAVORITES) ?: false
+        val startupView = applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_VIEW,
+                FAVORITES.name)
+        var preferencesStartupFragment: FragmentType? = forEnumName(startupView) ?: ALL_DEVICES
+        logger.debug("handleStartupFragment() : startup view is $preferencesStartupFragment")
+
+        if (preferencesStartupFragment == null) {
+            preferencesStartupFragment = ALL_DEVICES
+        }
+
+        var fragmentType: FragmentType = preferencesStartupFragment
+        if (fragmentType == FAVORITES && !hasFavorites) {
+            fragmentType = ALL_DEVICES
+        }
+
+        return when (fragmentType) {
+            FAVORITES -> R.id.favoritesFragment
+            ROOM_LIST -> R.id.roomListFragment
+            else -> R.id.allDevicesFragment
+        }
+    }
 
     private suspend fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
         val connectionSpinner = spinner as Spinner
         availableConnectionDataAdapter = AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged, connectionService, {
-            navController().navigate(MainFragmentDirections.actionToConnectionList())
+            navController()?.navigate(AndFHEMMainActivityDirections.actionToConnectionList())
         })
         connectionSpinner.adapter = availableConnectionDataAdapter
         connectionSpinner.onItemSelectedListener = availableConnectionDataAdapter
@@ -235,32 +263,35 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
         val fragmentType = getFragmentFor(menuItem.itemId) ?: return false
         val action = when (fragmentType) {
-            ROOM_LIST -> MainFragmentDirections.actionToRoomList()
-            FAVORITES -> MainFragmentDirections.actionToFavorites()
-            ALL_DEVICES -> MainFragmentDirections.actionToAllDevices()
-            CONNECTION_LIST -> MainFragmentDirections.actionToConnectionList()
-            TIMER_OVERVIEW -> MainFragmentDirections.actionToTimerList()
-            SEND_COMMAND -> MainFragmentDirections.actionToSendCommand()
-            CONVERSION -> MainFragmentDirections.actionToConversion()
-            FCM_HISTORY -> MainFragmentDirections.actionToFcmHistory()
+            ROOM_LIST -> AndFHEMMainActivityDirections.actionToRoomList()
+            FAVORITES -> AndFHEMMainActivityDirections.actionToFavorites()
+            ALL_DEVICES -> AndFHEMMainActivityDirections.actionToAllDevices()
+            CONNECTION_LIST -> AndFHEMMainActivityDirections.actionToConnectionList()
+            TIMER_OVERVIEW -> AndFHEMMainActivityDirections.actionToTimerList()
+            SEND_COMMAND -> AndFHEMMainActivityDirections.actionToSendCommand(cmd = null)
+            CONVERSION -> AndFHEMMainActivityDirections.actionToConversion()
+            FCM_HISTORY -> AndFHEMMainActivityDirections.actionToFcmHistory()
             else -> null
         }
 
-        action?.let { navController().navigate(it) }
+        val nav = navController() ?: return false
 
-        return true
+        return if (action != null) {
+            nav.navigate(action)
+            true
+        } else false
     }
 
-    private fun navController() = nav_host_fragment.findNavController()
 
     private fun showDrawerToggle(enable: Boolean) {
         actionBarDrawerToggle.isDrawerIndicatorEnabled = enable
     }
 
     private fun initDrawerLayout() {
+        val navController = navController() ?: return
         drawer_layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
 
-        nav_drawer.setupWithNavController(navController())
+        nav_drawer.setupWithNavController(navController)
         nav_drawer.setNavigationItemSelectedListener(this)
         if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
             nav_drawer.menu.removeItem(R.id.menu_premium)
@@ -315,6 +346,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         super.onPostCreate(savedInstanceState)
         initDrawerLayout()
         actionBarDrawerToggle.syncState()
+        showDrawerToggle(supportFragmentManager.backStackEntryCount == 0)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -338,7 +370,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
 
-        LOGGER.info("onResume() : resuming")
+        logger.info("onResume() : resuming")
         val activity = this
         GlobalScope.launch(Dispatchers.Main) {
             loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
@@ -383,18 +415,20 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         when(intent.action) {
             ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY) ?: ""
-                navController().navigate(
-                        MainFragmentDirections.actionToSearchResults(query)
+                navController()?.navigate(
+                        AndFHEMMainActivityDirections.actionToSearchResults(query)
                 )
             }
             ACTION_VIEW -> {
-                val query = intent.getStringExtra(SearchManager.QUERY) ?: ""
-                navController().navigate(
-                        MainFragmentDirections.actionToDeviceDetailRedirect(query, null)
-                )
+                intent.getStringExtra(SearchManager.QUERY)?.let { query ->
+                    navController()?.navigate(
+                            AndFHEMMainActivityDirections.actionToDeviceDetailRedirect(query, null)
+                    )
+                }
             }
         }
-        setIntent(intent)
+
+        navController()?.handleDeepLink(intent)
     }
 
     private fun handleTimerUpdates() {
@@ -411,7 +445,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
             if (updateInterval != -1) {
                 timer!!.scheduleAtFixedRate(UpdateTimerTask(this@AndFHEMMainActivity), updateInterval.toLong(), updateInterval.toLong())
-                LOGGER.info("handleTimerUpdates() - scheduling update every {} minutes", updateInterval / 1000 / 60)
+                logger.info("handleTimerUpdates() - scheduling update every {} minutes", updateInterval / 1000 / 60)
             }
         }
     }
@@ -433,7 +467,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         try {
             unregisterReceiver(broadcastReceiver)
         } catch (e: IllegalArgumentException) {
-            LOGGER.info("onStop() : receiver was not registered, ignore ...")
+            logger.info("onStop() : receiver was not registered, ignore ...")
         }
 
         refresh_layout?.isRefreshing = false
@@ -518,7 +552,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     companion object {
 
         @JvmStatic
-        private val LOGGER = LoggerFactory.getLogger(AndFHEMMainActivity::class.java)
+        private val logger = LoggerFactory.getLogger(AndFHEMMainActivity::class.java)
 
         private const val STATE_DRAWER_ID = "drawer_id"
     }

@@ -66,12 +66,12 @@ class RoomDetailFragment @Inject constructor(
         }
     }
 
-    override fun getTitle(context: Context) = args.roomName
+    override fun getTitle(context: Context) = args.name
 
-    override fun getRoomDeviceListForUpdate(context: Context) = deviceListService.getDeviceListForRoom(args.roomName)
+    override fun getRoomDeviceListForUpdate(context: Context) = deviceListService.getDeviceListForRoom(args.name)
 
     override fun executeRemoteUpdate(context: Context) {
-        deviceListUpdateService.updateRoom(args.roomName)
+        deviceListUpdateService.updateRoom(args.name)
         appWidgetUpdateService.updateAllWidgets()
     }
 

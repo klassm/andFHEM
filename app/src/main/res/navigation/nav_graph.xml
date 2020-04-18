@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/andFHEMMainActivity">
 
     <action
         android:id="@+id/action_to_all_devices"
@@ -44,10 +44,12 @@
         app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_to_conversion"
+        app:destination="@id/conversionFragment"
         app:launchSingleTop="true"
         app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_to_fcm_history"
+        app:destination="@id/fcmHistoryFragment"
         app:launchSingleTop="true"
         app:popUpToInclusive="true" />
     <action
@@ -67,6 +69,10 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <deepLink
+            android:id="@+id/allDevicesDeepLink"
+            android:autoVerify="true"
+            app:uri="andfhem.klass.li/app/allDevices" />
     </fragment>
     <fragment
         android:id="@+id/connectionDetailFragment"
@@ -95,7 +101,8 @@
         <argument
             android:name="connectionId"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_deviceDetailFragment_to_fromToWeekProfileFragment"
             app:destination="@id/fromToWeekProfileFragment" />
@@ -129,6 +136,10 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <deepLink
+            android:id="@+id/favoritesDeepLink"
+            android:autoVerify="true"
+            app:uri="andfhem.klass.li/app/favorites" />
     </fragment>
     <fragment
         android:id="@+id/floorplanFragment"
@@ -171,7 +182,7 @@
         android:name="li.klass.fhem.room.detail.ui.RoomDetailFragment"
         android:label="RoomDetailFragment">
         <argument
-            android:name="roomName"
+            android:name="name"
             app:argType="string"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -184,6 +195,11 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <deepLink
+            android:id="@+id/roomDetailDeepLink"
+            android:autoVerify="true"
+            app:uri="andfhem.klass.li/app/room/{name}" />
     </fragment>
     <fragment
         android:id="@+id/roomListFragment"
@@ -196,6 +212,10 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <deepLink
+            android:id="@+id/roomListDeepLink"
+            android:autoVerify="true"
+            app:uri="andfhem.klass.li/app/roomList" />
     </fragment>
     <fragment
         android:id="@+id/timerListFragment"
@@ -221,10 +241,6 @@
             android:name="query"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="li.klass.fhem.fragments.MainFragment"
-        android:label="MainFragment" />
     <activity
         android:id="@+id/andFHEMMainActivity"
         android:name="li.klass.fhem.activities.AndFHEMMainActivity"
@@ -266,7 +282,11 @@
         <argument
             android:name="connectionId"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <deepLink
+            android:id="@+id/deepLink8"
+            app:uri="andfhem.klass.li/app/device/{deviceName}" />
     </fragment>
     <fragment
         android:id="@+id/webViewFragment"
@@ -291,7 +311,20 @@
     <fragment
         android:id="@+id/sendCommandFragment"
         android:name="li.klass.fhem.sendCommand.ui.SendCommandFragment"
-        android:label="SendCommandFragment" />
+        android:label="SendCommandFragment">
+        <deepLink
+            android:id="@+id/sendCommandDeepLink1"
+            app:uri="andfhem.klass.li/app/sendCommand" />
+        <deepLink
+            android:id="@+id/sendCommandDeepLink2"
+            android:autoVerify="true"
+            app:uri="andfhem.klass.li/app/execute?cmd={cmd}" />
+        <argument
+            android:name="cmd"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/deviceNameSelectionFragment"
         android:name="li.klass.fhem.fragments.device.DeviceNameSelectionFragment"
@@ -307,7 +340,11 @@
     <fragment
         android:id="@+id/conversionFragment"
         android:name="li.klass.fhem.conversion.ui.ConversionFragment"
-        android:label="ConversionFragment" />
+        android:label="ConversionFragment">
+        <deepLink
+            android:id="@+id/conversionFragmentDeepLink"
+            app:uri="andfhem.klass.li/app/conversion" />
+    </fragment>
     <fragment
         android:id="@+id/fcmHistoryFragment"
         android:name="li.klass.fhem.fcm.history.view.FcmHistoryFragment"

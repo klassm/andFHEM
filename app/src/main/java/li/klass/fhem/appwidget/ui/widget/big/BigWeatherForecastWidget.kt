@@ -65,7 +65,7 @@ class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherSe
 
         view.setRemoteAdapter(R.id.forecastList, listIntent)
 
-        val pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration, context)
+        val pendingIntent = createOpenDeviceDetailPageIntent(device, widgetConfiguration, context)
         view.setOnClickPendingIntent(R.id.main, pendingIntent)
         view.setPendingIntentTemplate(R.id.forecastList, pendingIntent)
 

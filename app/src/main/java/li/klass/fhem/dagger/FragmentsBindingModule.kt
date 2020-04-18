@@ -18,7 +18,6 @@ import li.klass.fhem.fcm.history.view.FcmHistoryFragment
 import li.klass.fhem.fcm.history.view.FcmHistoryMessagesFragment
 import li.klass.fhem.fcm.history.view.FcmHistoryUpdatesFragment
 import li.klass.fhem.floorplan.ui.FloorplanFragment
-import li.klass.fhem.fragments.MainFragment
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment
@@ -33,11 +32,6 @@ import li.klass.fhem.ui.WebViewFragment
 
 @Module
 interface FragmentsBindingModule {
-    @Binds
-    @IntoMap
-    @FragmentKey(MainFragment::class)
-    fun bindMainFragment(fragment: MainFragment): Fragment
-
     @Binds
     @IntoMap
     @FragmentKey(RoomListFragment::class)

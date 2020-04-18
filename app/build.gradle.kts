@@ -55,11 +55,11 @@ val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.8.0"
 val daggerVersion = "2.27"
 val coroutinesVersion = "1.0.1"
-val androidXNavigationVersion = "2.3.0-alpha04"
+val androidXNavigationVersion = "2.3.0-alpha05"
 
 plugins {
     id("net.researchgate.release") version "2.8.0"
-    id("com.android.application") version "3.4.0"
+    id("com.android.application") version "3.5.2"
     kotlin("android").version("1.3.31")
     kotlin("android.extensions").version("1.3.31")
     kotlin("kapt").version("1.3.31")

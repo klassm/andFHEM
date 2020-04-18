@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.command_execution.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
@@ -48,6 +49,8 @@ import javax.inject.Inject
 class SendCommandFragment @Inject constructor(
         private val sendCommandService: SendCommandService
 ) : BaseFragment() {
+
+    val args: SendCommandFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -75,6 +78,11 @@ class SendCommandFragment @Inject constructor(
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sendCommandIntent(args.cmd)
     }
 
     override fun mayPullToRefresh(): Boolean = false
@@ -105,15 +113,15 @@ class SendCommandFragment @Inject constructor(
                 sendCommandService.getRecentCommands()
             }
 
-            if (view != null) {
+            view?.let { myView ->
                 @Suppress("UNCHECKED_CAST")
-                val adapter: ArrayAdapter<String> = view!!.command_history.adapter as ArrayAdapter<String>
+                val adapter: ArrayAdapter<String> = myView.command_history.adapter as ArrayAdapter<String>
                 adapter.clear()
 
                 adapter.addAll(recentCommands)
                 adapter.notifyDataSetChanged()
 
-                ListViewUtil.setHeightBasedOnChildren(view!!.command_history)
+                ListViewUtil.setHeightBasedOnChildren(myView.command_history)
 
                 myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             }

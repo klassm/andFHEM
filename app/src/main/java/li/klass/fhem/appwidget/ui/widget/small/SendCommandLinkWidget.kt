@@ -27,12 +27,10 @@ package li.klass.fhem.appwidget.ui.widget.small
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
-import li.klass.fhem.ui.FragmentType
 import javax.inject.Inject
 
 class SendCommandLinkWidget @Inject constructor() : SmallIconWidget() {
-    override val fragment: FragmentType
-        get() = FragmentType.SEND_COMMAND
+    override val destination = R.id.sendCommandFragment
 
     override val iconResource: Int
         get() = R.drawable.send_command

@@ -24,24 +24,20 @@
 
 package li.klass.fhem.appwidget.ui.widget.small
 
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.os.SystemClock
 import android.widget.RemoteViews
+import androidx.navigation.NavDeepLinkBuilder
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.base.OtherAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.ui.FragmentType
 
 abstract class SmallIconWidget : OtherAppWidgetView() {
 
-    protected abstract val fragment: FragmentType
-
+    protected abstract val destination: Int
     protected abstract val iconResource: Int
+
     override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
     }
@@ -51,13 +47,10 @@ abstract class SmallIconWidget : OtherAppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews, widgetConfiguration: WidgetConfiguration) {
         view.setImageViewResource(R.id.icon, iconResource)
 
-        val openIntent = Intent(context, AndFHEMMainActivity::class.java)
-        openIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        openIntent.putExtra(BundleExtraKeys.FRAGMENT, fragment)
-        openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
-
-        view.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(context,
-                widgetConfiguration.widgetId, openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT))
+        view.setOnClickPendingIntent(R.id.layout, NavDeepLinkBuilder(context)
+                .setComponentName(AndFHEMMainActivity::class.java)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(destination)
+                .createPendingIntent())
     }
 }

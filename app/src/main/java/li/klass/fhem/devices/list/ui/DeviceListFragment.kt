@@ -50,18 +50,16 @@ import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.fragments.MainFragmentDirections
 import li.klass.fhem.fragments.core.BaseFragment
+import li.klass.fhem.fragments.device.DeviceNameListFragmentDirections
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
@@ -87,12 +85,10 @@ abstract class DeviceListFragment(
         val myActivity = activity ?: return superView
         if (superView != null) return superView
 
-        val view = inflater.inflate(R.layout.room_detail, container, false)
+        val view = inflater.inflate(R.layout.room_detail, container, false) ?: return null
         advertisementService.addAd(view, myActivity)
 
-        assert(view != null)
-
-        val emptyView = view!!.findViewById<LinearLayout>(R.id.emptyView)
+        val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, container!!)
 
         if (!isNavigation) {
@@ -166,7 +162,7 @@ abstract class DeviceListFragment(
             }
 
             if (view != null) {
-                updateWith(elements, view!!)
+                updateWith(elements, requireView())
             }
         }
     }
@@ -198,7 +194,7 @@ abstract class DeviceListFragment(
 
         configureServers.onClick {
             findNavController().navigate(
-                    MainFragmentDirections.actionToConnectionList()
+                    DeviceNameListFragmentDirections.actionToConnectionList()
             )
         }
 
