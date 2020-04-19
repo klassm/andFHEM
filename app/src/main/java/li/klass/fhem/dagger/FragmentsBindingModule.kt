@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import li.klass.fhem.activities.locale.condition.query.ConditionQueryLocaleEditFragment
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragment
 import li.klass.fhem.appwidget.ui.selection.device.WidgetDeviceSelectionFragment
 import li.klass.fhem.appwidget.ui.selection.other.OtherWidgetsFragment
@@ -155,4 +156,9 @@ interface FragmentsBindingModule {
     @IntoMap
     @FragmentKey(RoomWidgetSelectionFragment::class)
     fun bindRoomWidgetSelectionFragment(fragment: RoomWidgetSelectionFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(ConditionQueryLocaleEditFragment::class)
+    fun bindConditionQueryLocaleEditFragment(fragment: ConditionQueryLocaleEditFragment): Fragment
 }

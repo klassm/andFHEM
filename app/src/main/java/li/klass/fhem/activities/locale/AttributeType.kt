@@ -11,7 +11,7 @@ enum class AttributeType(val description: String) {
         fun getFor(value: String) = values().firstOrNull { it.description == value }
 
         fun positionFor(value: String) =
-                getFor(value)?.let { AttributeType.values().indexOf(it) } ?: 0
+                getFor(value)?.let { values().indexOf(it) } ?: 0
 
         fun atPosition(position: Int) = AttributeType.values()[position]
     }

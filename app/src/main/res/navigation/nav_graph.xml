@@ -326,18 +326,6 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
-        android:id="@+id/deviceNameSelectionFragment"
-        android:name="li.klass.fhem.fragments.device.DeviceNameSelectionFragment"
-        android:label="DeviceNameSelectionFragment">
-        <argument
-            android:name="filter"
-            app:argType="li.klass.fhem.fragments.device.DeviceNameListFragment$DeviceFilter" />
-        <argument
-            android:name="room"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-    <fragment
         android:id="@+id/conversionFragment"
         android:name="li.klass.fhem.conversion.ui.ConversionFragment"
         android:label="ConversionFragment">
@@ -349,4 +337,17 @@
         android:id="@+id/fcmHistoryFragment"
         android:name="li.klass.fhem.fcm.history.view.FcmHistoryFragment"
         android:label="FcmHistoryFragment" />
+
+    <fragment
+        android:id="@+id/deviceNameSelectionFragment"
+        android:name="li.klass.fhem.fragments.device.DeviceNameSelectionFragment"
+        android:label="DeviceNameSelectionFragment">
+        <argument
+            android:name="filter"
+            app:argType="li.klass.fhem.fragments.device.DeviceNameListFragment$DeviceFilter" />
+        <argument
+            android:name="room"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

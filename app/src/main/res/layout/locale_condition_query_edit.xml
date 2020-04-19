@@ -55,8 +55,8 @@
                 <TextView android:layout_height="wrap_content"
                           android:layout_width="wrap_content"
                           android:id="@+id/deviceName"
-                          android:layout_toStartOf="@id/set"
-                          android:layout_toLeftOf="@id/set"
+                    android:layout_toStartOf="@id/setDevice"
+                    android:layout_toLeftOf="@id/setDevice"
                           android:layout_gravity="start|center_vertical"
                           android:paddingLeft="0dp"
                           android:paddingStart="0dp"
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:id="@+id/set"
+                    android:id="@+id/setDevice"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_horizontal|end"/>
             </RelativeLayout>

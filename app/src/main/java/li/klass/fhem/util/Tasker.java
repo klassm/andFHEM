@@ -27,9 +27,9 @@ package li.klass.fhem.util;
 import android.content.Context;
 import android.content.Intent;
 
-import li.klass.fhem.activities.locale.ConditionQueryLocaleSettingActivity;
 import li.klass.fhem.activities.locale.LocaleIntentConstants;
 import li.klass.fhem.activities.locale.TaskerPlugin;
+import li.klass.fhem.activities.locale.condition.query.ConditionQueryLocaleSettingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 

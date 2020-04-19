@@ -47,8 +47,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import dagger.android.AndroidInjection
@@ -74,6 +72,7 @@ import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.ui.FragmentType.*
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
+import li.klass.fhem.util.navigation.navController
 import li.klass.fhem.util.navigation.updateStartFragment
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -201,10 +200,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             logger.error("onCreate() : error during initialization", e)
         }
     }
-
-    private fun navController(): NavController? = (supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?)
-            ?.navController
 
     private fun determineStartupFragmentFromProperties(): Int {
         val hasFavorites = intent?.extras?.getBoolean(HAS_FAVORITES) ?: false

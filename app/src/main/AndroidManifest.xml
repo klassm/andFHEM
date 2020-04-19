@@ -257,7 +257,7 @@
 
         <activity android:name=".devices.ui.DeviceNameSelectionActivity" />
         <activity
-            android:name=".activities.locale.ConditionQueryLocaleSettingActivity"
+            android:name=".activities.locale.condition.query.ConditionQueryLocaleSettingActivity"
             android:exported="true"
             android:icon="@drawable/ic_launcher"
             android:label="@string/localeDeviceState">
