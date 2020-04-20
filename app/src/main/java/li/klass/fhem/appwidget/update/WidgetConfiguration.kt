@@ -37,8 +37,8 @@ data class WidgetConfiguration(val widgetId: Int, val widgetType: WidgetType, va
 
     fun toSaveString(): String? {
         val jsonObject = JSONObject()
-        try {
-            return jsonObject
+        return try {
+            jsonObject
                     .put(JSON_WIDGET_ID, widgetId)
                     .put(JSON_WIDGET_TYPE, widgetType)
                     .put(JSON_PAYLOAD, JSONArray(payload))
@@ -46,18 +46,18 @@ data class WidgetConfiguration(val widgetId: Int, val widgetType: WidgetType, va
                     .toString()
         } catch (e: JSONException) {
             LOGGER.error("cannot create widget configuration", e)
-            return null
+            null
         }
 
     }
 
     companion object {
-        private val SAVE_SEPARATOR = "#"
-        private val ESCAPED_HASH_REPLACEMENT = "\\\\@"
-        private val JSON_WIDGET_ID = "widgetId"
-        private val JSON_WIDGET_TYPE = "widgetType"
-        private val JSON_PAYLOAD = "payload"
-        private val JSON_CONNECTION_ID = "connectionId"
+        private const val SAVE_SEPARATOR = "#"
+        private const val ESCAPED_HASH_REPLACEMENT = "\\\\@"
+        private const val JSON_WIDGET_ID = "widgetId"
+        private const val JSON_WIDGET_TYPE = "widgetType"
+        private const val JSON_PAYLOAD = "payload"
+        private const val JSON_CONNECTION_ID = "connectionId"
 
         private val LOGGER = LoggerFactory.getLogger(WidgetConfiguration::class.java)
 
