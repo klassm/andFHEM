@@ -37,14 +37,6 @@
         android:layout_height="match_parent"
         android:background="?backgroundColorPrimary" />
 
-    <li.klass.fhem.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <FrameLayout
-            android:id="@+id/content"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent" />
-    </li.klass.fhem.widget.SwipeRefreshLayout>
+    <include layout="@layout/room_detail" />
 </LinearLayout>
+

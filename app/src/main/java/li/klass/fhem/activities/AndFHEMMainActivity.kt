@@ -196,6 +196,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             broadcastReceiver = Receiver()
             registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
             initSwipeRefreshLayout()
+            initDrawerLayout()
         } catch (e: Throwable) {
             logger.error("onCreate() : error during initialization", e)
         }
@@ -278,10 +279,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     }
 
 
-    private fun showDrawerToggle(enable: Boolean) {
-        actionBarDrawerToggle.isDrawerIndicatorEnabled = enable
-    }
-
     private fun initDrawerLayout() {
         val navController = navController() ?: return
         drawer_layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
@@ -295,6 +292,24 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         if (connectionService.getCurrentServer()?.serverType != ServerType.FHEMWEB) {
             nav_drawer.menu.removeItem(R.id.fhem_log)
         }
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+
+        actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawer_layout,
+                R.string.drawerOpen, R.string.drawerClose) {
+            override fun onDrawerClosed(view: View) {
+                invalidateOptionsMenu()
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                invalidateOptionsMenu()
+            }
+        }.apply {
+            syncState()
+            isDrawerIndicatorEnabled = supportFragmentManager.backStackEntryCount == 0
+        }
+        drawer_layout.addDrawerListener(actionBarDrawerToggle)
 
         GlobalScope.launch(Dispatchers.Main) {
             val isPremium = licenseService.isPremium()
@@ -311,20 +326,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                     })
         }
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeButtonEnabled(true)
-
-        actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawer_layout,
-                R.string.drawerOpen, R.string.drawerClose) {
-            override fun onDrawerClosed(view: View) {
-                invalidateOptionsMenu()
-            }
-
-            override fun onDrawerOpened(drawerView: View) {
-                invalidateOptionsMenu()
-            }
-        }
-        drawer_layout.addDrawerListener(actionBarDrawerToggle)
     }
 
     private fun initSwipeRefreshLayout() {
@@ -335,13 +336,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                     ContextCompat.getColor(activity, R.color.primary), 0,
                     ContextCompat.getColor(activity, R.color.accent), 0)
         }
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        initDrawerLayout()
-        actionBarDrawerToggle.syncState()
-        showDrawerToggle(supportFragmentManager.backStackEntryCount == 0)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

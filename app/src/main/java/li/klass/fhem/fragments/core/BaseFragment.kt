@@ -51,8 +51,6 @@ import javax.inject.Inject
 
 abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefreshLayout.ChildScrollDelegate {
 
-    var isNavigation = false
-
     @Transient
     private var broadcastReceiver: UIBroadcastReceiver? = null
     private var backPressCalled = false
@@ -90,16 +88,16 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     override suspend fun update(refresh: Boolean) {
         hideConnectionError()
-        updateInternal(refresh)
+        updateInternal(canUpdateRemotely && refresh)
     }
+
+    open val canUpdateRemotely = true
 
     fun updateAsync(refresh: Boolean = true) = GlobalScope.launch(Dispatchers.Main) {
         update(refresh)
     }
 
     private fun hideConnectionError() {
-        if (isNavigation) return
-
         val view = view ?: return
 
         val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
@@ -115,7 +113,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         broadcastReceiver!!.attach()
         backPressCalled = false
 
-        setTitle(getTitle(myActivity))
+        val title = getTitle(myActivity)
+        title?.let { setTitle(it) }
         updateAsync(false)
     }
 
@@ -149,8 +148,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     }
 
     protected fun showEmptyView() {
-        if (isNavigation || view == null) return
-
         val emptyView = view!!.findViewById<LinearLayout?>(R.id.emptyView) ?: return
         emptyView.visibility = View.VISIBLE
     }
@@ -166,9 +163,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     }
 
     private fun showConnectionError(content: String) {
-        if (isNavigation) return
-
-
         val view = view ?: return
 
         val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return

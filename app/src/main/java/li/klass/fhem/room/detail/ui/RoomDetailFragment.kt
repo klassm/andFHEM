@@ -25,8 +25,13 @@
 package li.klass.fhem.room.detail.ui
 
 import android.content.Context
+import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
+import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -34,6 +39,10 @@ import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.room.detail.ui.RoomDetailFragmentDirections.Companion.actionRoomDetailFragmentSelf
+import li.klass.fhem.room.detail.ui.RoomDetailFragmentDirections.Companion.actionToDeviceDetailRedirect
+import li.klass.fhem.room.list.ui.RoomListNavigationFragment
+import li.klass.fhem.room.list.ui.RoomListNavigationViewModel
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_ROOM_OPEN
 import li.klass.fhem.update.backend.DeviceListService
@@ -52,11 +61,28 @@ class RoomDetailFragment @Inject constructor(
         private val deviceListService: DeviceListService,
         private val applicationProperties: ApplicationProperties,
         private val deviceListUpdateService: DeviceListUpdateService,
-        private val appWidgetUpdateService: AppWidgetUpdateService
+        private val appWidgetUpdateService: AppWidgetUpdateService,
+        roomListNavigationFragment: RoomListNavigationFragment
 ) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
-        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
+        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService, roomListNavigationFragment) {
 
     val args: RoomDetailFragmentArgs by navArgs()
+    private val navigationViewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navigationViewModel.roomClicked.observe(viewLifecycleOwner, Observer {
+            if (args.name != it) {
+                findNavController().navigate(
+                        actionRoomDetailFragmentSelf(it)
+                )
+            } else {
+                updateAsync(false)
+            }
+            navigationViewModel.selectedRoom.value = args.name
+        })
+        navigationViewModel.selectedRoom.value = args.name
+    }
 
     override fun onResume() {
         super.onResume()
@@ -76,6 +102,6 @@ class RoomDetailFragment @Inject constructor(
     }
 
     override fun navigateTo(device: FhemDevice) {
-        findNavController().navigate(RoomDetailFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
+        findNavController().navigate(actionToDeviceDetailRedirect(device.name, null))
     }
 }

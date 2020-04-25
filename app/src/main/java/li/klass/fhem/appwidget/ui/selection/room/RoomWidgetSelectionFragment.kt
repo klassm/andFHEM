@@ -26,4 +26,6 @@ class RoomWidgetSelectionFragment @Inject constructor(
             widgetTypeProvider.getSupportedRoomWidgetsFor(viewModel.widgetSize).isNotEmpty()
 
     override fun onClick(roomName: String) = viewModel.roomClicked.postValue(roomName)
+
+    override val layout: Int = li.klass.fhem.R.layout.room_list_page
 }

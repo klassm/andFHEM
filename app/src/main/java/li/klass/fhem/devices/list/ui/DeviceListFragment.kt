@@ -38,11 +38,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import kotlinx.android.synthetic.main.device_view_header.*
 import kotlinx.android.synthetic.main.room_detail.view.*
+import kotlinx.android.synthetic.main.room_detail_page.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
@@ -59,9 +61,9 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListFragmentDirections
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
-import li.klass.fhem.settings.SettingsKeys.DEVICE_LIST_RIGHT_PADDING
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
+import li.klass.fhem.util.navigation.loadFragmentInto
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.slf4j.LoggerFactory
@@ -74,10 +76,9 @@ abstract class DeviceListFragment(
         private val advertisementService: AdvertisementService,
         private val favoritesService: FavoritesService,
         private val genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
-        private val deviceActionUiService: DeviceActionUIService
+        private val deviceActionUiService: DeviceActionUIService,
+        private val navigationFragment: Fragment? = null
 ) : BaseFragment() {
-
-
     private var actionMode: ActionMode? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,17 +86,11 @@ abstract class DeviceListFragment(
         val myActivity = activity ?: return superView
         if (superView != null) return superView
 
-        val view = inflater.inflate(R.layout.room_detail, container, false) ?: return null
+        val view = inflater.inflate(R.layout.room_detail_page, container, false) ?: return null
         advertisementService.addAd(view, myActivity)
 
         val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, container!!)
-
-        if (!isNavigation) {
-            val rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0)
-            view.setPadding(view.paddingLeft, view.paddingTop,
-                    rightPadding, view.paddingBottom)
-        }
 
         view.devices.adapter = DeviceGroupAdapter(emptyList(),
                 configuration = DeviceGroupAdapter.Configuration(
@@ -125,6 +120,15 @@ abstract class DeviceListFragment(
         super.onResume()
         val layoutManager = view?.devices?.layoutManager as StaggeredGridLayoutManager
         layoutManager.spanCount = getNumberOfColumns()
+
+        view?.navigation?.let {
+            when (navigationFragment == null) {
+                true -> it.visibility = View.GONE
+                false -> loadFragmentInto(R.id.navigation, navigationFragment)
+            }
+            navigationFragment?.view?.invalidate()
+        }
+
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
     }
 

@@ -31,8 +31,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.LinearLayout
 import android.widget.ListView
+import kotlinx.android.synthetic.main.device_view_header.view.*
 import kotlinx.android.synthetic.main.room_list.*
 import kotlinx.android.synthetic.main.room_list.view.*
 import kotlinx.coroutines.Dispatchers
@@ -69,11 +69,12 @@ abstract class RoomListSelectionFragment constructor(
         val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
 
         val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList(), hiddenRooms)
-        val layout = inflater.inflate(R.layout.room_list, container, false) ?: return null
+        val layout = inflater.inflate(layout, container, false) ?: return null
         advertisementService.addAd(layout, myActivity)
 
-        val emptyView = layout.findViewById<LinearLayout>(R.id.emptyView)
-        fillEmptyView(emptyView, emptyTextId, container!!)
+        layout.emptyView?.let {
+            fillEmptyView(it, emptyTextId, container!!)
+        }
 
         layout.roomList.adapter = adapter
 
@@ -86,6 +87,8 @@ abstract class RoomListSelectionFragment constructor(
 
         return layout
     }
+
+    abstract val layout: Int;
 
     override fun canChildScrollUp(): Boolean {
         if (roomList?.canScrollVertically(-1) == true) {
@@ -100,8 +103,9 @@ abstract class RoomListSelectionFragment constructor(
         if (view == null) return
 
         hideEmptyView()
-        if (refresh && !isNavigation)
+        if (refresh) {
             activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        }
 
         coroutineScope {
             val roomNameList = withContext(Dispatchers.IO) {
@@ -115,7 +119,7 @@ abstract class RoomListSelectionFragment constructor(
         }
     }
 
-    override fun getTitle(context: Context) = context.getString(R.string.roomList)
+    override fun getTitle(context: Context): String? = context.getString(R.string.roomList)
 
     open fun isRoomSelectable(roomName: String): Boolean = true
 

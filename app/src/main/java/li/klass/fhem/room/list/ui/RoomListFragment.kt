@@ -58,6 +58,10 @@ open class RoomListFragment @Inject constructor(
 
     override fun onUpdateDataFinished() {
         super.onUpdateDataFinished()
-        roomList.onRestoreInstanceState(viewModel.listState)
+        viewModel.listState?.let {
+            roomList.onRestoreInstanceState(it)
+        }
     }
+
+    override val layout: Int = R.layout.room_list_page
 }

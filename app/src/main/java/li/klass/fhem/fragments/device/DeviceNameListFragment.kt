@@ -41,7 +41,7 @@ import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
-import li.klass.fhem.constants.Actions.*
+import li.klass.fhem.constants.Actions.UPDATE_NAVIGATION
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -89,11 +89,7 @@ abstract class DeviceNameListFragment(
     override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         coroutineScope {
-            if (!isNavigation) {
-                myActivity.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
-            }
-
-            if (refresh && !isNavigation) {
+            if (refresh) {
                 withContext(Dispatchers.IO) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
@@ -112,9 +108,6 @@ abstract class DeviceNameListFragment(
                 elements
             }
 
-            if (!isNavigation) {
-                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
-            }
             deviceListReceived(elements)
         }
     }
@@ -122,7 +115,7 @@ abstract class DeviceNameListFragment(
     private fun deviceListReceived(elements: List<ViewableElementsCalculator.Element>) {
         val devicesView = view?.devices ?: return
         devicesView.adapter = DeviceGroupAdapter(elements, DeviceGroupAdapter.Configuration(
-                deviceResourceId = if (isNavigation) R.layout.device_name_selection_navigation else R.layout.device_name_selection,
+                deviceResourceId = R.layout.device_name_selection,
                 bind = { device, view ->
                     view.name.text = device.aliasOrName
                     view.onClick { onDeviceNameClick(device) }
@@ -155,7 +148,6 @@ abstract class DeviceNameListFragment(
         val displayMetrics = Resources.getSystem().displayMetrics
         val calculated = (dpFromPx(displayMetrics.widthPixels.toFloat()) / 250).toInt()
         return when {
-            isNavigation -> 1
             calculated < 1 -> 1
             else -> calculated
         }

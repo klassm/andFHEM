@@ -25,6 +25,7 @@ import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment
 import li.klass.fhem.room.detail.ui.RoomDetailFragment
 import li.klass.fhem.room.list.ui.RoomListFragment
+import li.klass.fhem.room.list.ui.RoomListNavigationFragment
 import li.klass.fhem.search.SearchResultsFragment
 import li.klass.fhem.sendCommand.ui.SendCommandFragment
 import li.klass.fhem.timer.ui.TimerDetailFragment
@@ -37,6 +38,11 @@ interface FragmentsBindingModule {
     @IntoMap
     @FragmentKey(RoomListFragment::class)
     fun bindRoomListFragment(fragment: RoomListFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(RoomListNavigationFragment::class)
+    fun bindRoomListNavigationFragment(fragment: RoomListNavigationFragment): Fragment
 
     @Binds
     @IntoMap
