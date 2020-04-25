@@ -45,7 +45,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
@@ -79,8 +78,7 @@ import java.util.*
 import javax.inject.Inject
 
 open class AndFHEMMainActivity : AppCompatActivity(),
-        NavigationView.OnNavigationItemSelectedListener,
-        androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener {
+        NavigationView.OnNavigationItemSelectedListener {
 
     inner class Receiver : BroadcastReceiver() {
 
@@ -104,14 +102,12 @@ open class AndFHEMMainActivity : AppCompatActivity(),
                     try {
                         val action = intent.action ?: return@Runnable
 
-                        when(action) {
+                        when (action) {
                             SHOW_EXECUTING_DIALOG -> {
-                                updateShowRefreshProgressIcon()
-                                refresh_layout?.isRefreshing = true
+                                updateShowRefreshProgressIcon(true)
                             }
                             DISMISS_EXECUTING_DIALOG -> {
-                                updateShowRefreshProgressIcon()
-                                refresh_layout?.isRefreshing = false
+                                updateShowRefreshProgressIcon(false)
                             }
                             SHOW_TOAST -> {
                                 var content: String? = intent.getStringExtra(CONTENT)
@@ -176,6 +172,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
     private var saveInstanceStateCalled: Boolean = false
     private var mSelectedDrawerId = -1
+    private var isRefreshing = false
 
     private var availableConnectionDataAdapter: AvailableConnectionDataAdapter? = null
 
@@ -195,7 +192,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
             broadcastReceiver = Receiver()
             registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
-            initSwipeRefreshLayout()
             initDrawerLayout()
         } catch (e: Throwable) {
             logger.error("onCreate() : error during initialization", e)
@@ -328,26 +324,9 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
     }
 
-    private fun initSwipeRefreshLayout() {
-        val activity = this
-        refresh_layout?.apply {
-            setOnRefreshListener(activity)
-            setColorSchemeColors(
-                    ContextCompat.getColor(activity, R.color.primary), 0,
-                    ContextCompat.getColor(activity, R.color.accent), 0)
-        }
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         actionBarDrawerToggle.onConfigurationChanged(newConfig)
-    }
-
-    override fun onRefresh() {
-        refresh_layout?.isRefreshing = true
-        val refreshIntent = Intent(DO_UPDATE)
-        refreshIntent.putExtra(DO_REFRESH, true)
-        sendBroadcast(refreshIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -401,7 +380,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        when(intent.action) {
+        when (intent.action) {
             ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY) ?: ""
                 navController()?.navigate(
@@ -459,12 +438,12 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             logger.info("onStop() : receiver was not registered, ignore ...")
         }
 
-        refresh_layout?.isRefreshing = false
         updateShowRefreshProgressIcon()
     }
 
-    private fun updateShowRefreshProgressIcon() {
+    private fun updateShowRefreshProgressIcon(isRefreshing: Boolean = false) {
         if (optionsMenu == null) return
+        this.isRefreshing = isRefreshing
 
         this.invalidateOptionsMenu()
     }
@@ -504,7 +483,7 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
         val refreshItem = menu.findItem(R.id.menu_refresh)
 
-        if (refresh_layout?.isRefreshing == true) {
+        if (isRefreshing) {
             refreshItem.setActionView(R.layout.actionbar_indeterminate_progress)
         } else {
             refreshItem.actionView = null

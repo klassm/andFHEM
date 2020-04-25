@@ -35,15 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <li.klass.fhem.widget.SwipeRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/backgroundColorPrimary">
-
-            <include layout="@layout/content_view" />
-
-        </li.klass.fhem.widget.SwipeRefreshLayout>
+        <include layout="@layout/content_view" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_drawer"
@@ -51,10 +43,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="?attr/backgroundColorSecondary"
-            app:itemIconTint="@color/navigation_item_text_color"
-            app:itemTextColor="@color/navigation_item_text_color"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/drawer_header"
+            app:itemIconTint="@color/navigation_item_text_color"
+            app:itemTextColor="@color/navigation_item_text_color"
             app:menu="@menu/drawer" />
     </androidx.drawerlayout.widget.RepairedDrawerLayout>
 </LinearLayout>

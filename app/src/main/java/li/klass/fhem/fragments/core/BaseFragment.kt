@@ -46,6 +46,7 @@ import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
 import li.klass.fhem.widget.SwipeRefreshLayout
+import org.jetbrains.anko.support.v4.onRefresh
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -75,6 +76,12 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                 withContext(Dispatchers.IO) {
                     resendLastFailedCommandService.resend(context)
                 }
+            }
+        }
+
+        view.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)?.let {
+            it.onRefresh {
+                updateAsync(true)
             }
         }
     }
@@ -148,7 +155,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     }
 
     protected fun showEmptyView() {
-        val emptyView = view!!.findViewById<LinearLayout?>(R.id.emptyView) ?: return
+        val emptyView = view?.findViewById<LinearLayout?>(R.id.emptyView) ?: return
         emptyView.visibility = View.VISIBLE
     }
 
@@ -197,6 +204,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             addAction(CONNECTION_ERROR)
             addAction(CONNECTION_ERROR_HIDE)
             addAction(DO_UPDATE)
+            addAction(DISMISS_EXECUTING_DIALOG)
         }
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -219,6 +227,12 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                         }
                         DO_UPDATE -> {
                             updateAsync(intent.getBooleanExtra(DO_REFRESH, false))
+                        }
+                        DISMISS_EXECUTING_DIALOG -> {
+                            view?.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
+                                    ?.let {
+                                        it.isRefreshing = false
+                                    }
                         }
                     }
                 } catch (e: Exception) {

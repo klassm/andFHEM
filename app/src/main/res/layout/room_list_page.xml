@@ -24,18 +24,25 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:animateLayoutChanges="true">
+<li.klass.fhem.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/device_view_header"
-        android:layout_above="@id/room_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:animateLayoutChanges="true">
 
-    <include
-        layout="@layout/room_list"
-        android:id="@+id/room_list" />
-</RelativeLayout>
+        <include
+            layout="@layout/device_view_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/room_list" />
+
+        <include
+            android:id="@+id/room_list"
+            layout="@layout/room_list" />
+
+    </RelativeLayout>
+</li.klass.fhem.widget.SwipeRefreshLayout>

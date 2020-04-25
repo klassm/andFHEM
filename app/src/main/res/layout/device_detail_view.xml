@@ -24,25 +24,31 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<li.klass.fhem.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <include layout="@layout/device_view_header"/>
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <ScrollView android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/errorHeader"
-        android:layout_above="@+id/adContainer"
-        android:id="@+id/deviceDetailView"
-        tools:ignore="UnknownIdInLayout">
-    </ScrollView>
+        <include layout="@layout/device_view_header" />
 
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/adContainer"
-        android:layout_alignParentBottom="true" />
+        <ScrollView
+            android:id="@+id/deviceDetailView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/adContainer"
+            android:layout_below="@+id/errorHeader"
+            tools:ignore="UnknownIdInLayout" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/adContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" />
+
+    </RelativeLayout>
+</li.klass.fhem.widget.SwipeRefreshLayout>
