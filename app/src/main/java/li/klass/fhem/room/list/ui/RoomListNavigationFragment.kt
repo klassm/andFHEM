@@ -20,7 +20,7 @@ class RoomListNavigationFragment @Inject constructor(
     private val viewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
 
     override fun onClick(roomName: String) {
-        viewModel.roomClicked.postValue(roomName)
+        viewModel.selectedRoom.postValue(roomName)
     }
 
     override val selectedRoomName: String?

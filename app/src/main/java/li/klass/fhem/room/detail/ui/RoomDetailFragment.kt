@@ -26,7 +26,6 @@ package li.klass.fhem.room.detail.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -68,20 +67,20 @@ class RoomDetailFragment @Inject constructor(
 
     val args: RoomDetailFragmentArgs by navArgs()
     private val navigationViewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navigationViewModel.roomClicked.observe(viewLifecycleOwner, Observer {
-            if (args.name != it) {
-                findNavController().navigate(
-                        actionRoomDetailFragmentSelf(it)
-                )
-            } else {
-                updateAsync(false)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        navigationViewModel.selectedRoom.postValue(args.name)
+        navigationViewModel.selectedRoom.observe(viewLifecycleOwner, Observer {
+            if (isResumed) {
+                if (args.name != it) {
+                    findNavController().navigate(
+                            actionRoomDetailFragmentSelf(it)
+                    )
+                } else {
+                    updateAsync(false)
+                }
             }
-            navigationViewModel.selectedRoom.value = args.name
         })
-        navigationViewModel.selectedRoom.value = args.name
     }
 
     override fun onResume() {

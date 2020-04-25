@@ -73,6 +73,9 @@
             android:id="@+id/allDevicesDeepLink"
             android:autoVerify="true"
             app:uri="andfhem.klass.li/app/allDevices" />
+        <action
+            android:id="@+id/action_allDevicesFragment_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/connectionDetailFragment"

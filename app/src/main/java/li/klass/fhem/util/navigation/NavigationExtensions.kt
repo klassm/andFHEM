@@ -18,15 +18,10 @@ fun AppCompatActivity.navController(): NavController? = (supportFragmentManager
         ?.navController
 
 fun Fragment.loadFragmentInto(id: Int, fragment: Fragment) {
-//    supportFragmentManager.beginTransaction()
-//            .apply {
-//                detach(fragment)
-//                commitNow()
-//            }
-
     childFragmentManager.beginTransaction()
             .apply {
                 replace(id, fragment)
+                disallowAddToBackStack()
                 commitAllowingStateLoss()
             }
 }

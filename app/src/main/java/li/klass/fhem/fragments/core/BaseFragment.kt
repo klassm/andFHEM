@@ -54,7 +54,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     @Transient
     private var broadcastReceiver: UIBroadcastReceiver? = null
-    private var backPressCalled = false
 
     @Inject
     lateinit var resendLastFailedCommandService: ResendLastFailedCommandService
@@ -82,6 +81,9 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         view.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)?.let {
             it.onRefresh {
                 updateAsync(true)
+            }
+            it.setChildScrollDelegate {
+                canChildScrollUp()
             }
         }
     }
@@ -118,7 +120,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             broadcastReceiver = UIBroadcastReceiver(myActivity)
         }
         broadcastReceiver!!.attach()
-        backPressCalled = false
 
         val title = getTitle(myActivity)
         title?.let { setTitle(it) }
@@ -200,7 +201,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     inner class UIBroadcastReceiver(private val activity: androidx.fragment.app.FragmentActivity) : BroadcastReceiver() {
 
         private val intentFilter: IntentFilter = IntentFilter().apply {
-            addAction(TOP_LEVEL_BACK)
             addAction(CONNECTION_ERROR)
             addAction(CONNECTION_ERROR_HIDE)
             addAction(DO_UPDATE)
