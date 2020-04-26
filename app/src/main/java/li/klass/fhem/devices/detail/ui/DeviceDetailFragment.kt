@@ -30,8 +30,10 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
@@ -41,6 +43,8 @@ import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
+import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment
+import li.klass.fhem.fragments.device.DeviceNameListNavigationFragmentViewModel
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -55,10 +59,18 @@ class DeviceDetailFragment @Inject constructor(
         private val deviceListService: DeviceListService,
         private val appWidgetUpdateService: AppWidgetUpdateService,
         private val genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter,
-        private val deviceActionUIService: DeviceActionUIService
+        private val deviceActionUIService: DeviceActionUIService,
+        deviceNameListNavigationFragment: DeviceNameListNavigationFragment
 ) : BaseFragment() {
     private var device: FhemDevice? = null
     val args: DeviceDetailFragmentArgs by navArgs()
+
+    private val navigationViewModel by navGraphViewModels<DeviceNameListNavigationFragmentViewModel>(R.id.nav_graph)
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        navigationViewModel.selectedDevice.value = args.deviceName
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +82,7 @@ class DeviceDetailFragment @Inject constructor(
         if (superView != null) return superView
         val myActivity = activity ?: return superView
 
-        val view = inflater.inflate(R.layout.device_detail_view, container, false)
+        val view = inflater.inflate(R.layout.device_detail_view_page, container, false)
         advertisementService.addAd(view, myActivity)
 
         return view
@@ -156,6 +168,8 @@ class DeviceDetailFragment @Inject constructor(
     private fun showToast(textStringId: Int) {
         Toast.makeText(activity, textStringId, Toast.LENGTH_SHORT).show()
     }
+
+    override val navigationFragment: Fragment? = deviceNameListNavigationFragment
 
     override fun canChildScrollUp(): Boolean =
             super.canChildScrollUp() || findScrollView()!!.scrollY > 0

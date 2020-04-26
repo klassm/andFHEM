@@ -26,6 +26,7 @@ package li.klass.fhem.room.detail.ui
 
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -63,10 +64,11 @@ class RoomDetailFragment @Inject constructor(
         private val appWidgetUpdateService: AppWidgetUpdateService,
         roomListNavigationFragment: RoomListNavigationFragment
 ) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
-        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService, roomListNavigationFragment) {
+        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
 
     val args: RoomDetailFragmentArgs by navArgs()
     private val navigationViewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         navigationViewModel.selectedRoom.postValue(args.name)
@@ -99,6 +101,8 @@ class RoomDetailFragment @Inject constructor(
         deviceListUpdateService.updateRoom(args.name)
         appWidgetUpdateService.updateAllWidgets()
     }
+
+    override val navigationFragment: Fragment = roomListNavigationFragment
 
     override fun navigateTo(device: FhemDevice) {
         findNavController().navigate(actionToDeviceDetailRedirect(device.name, null))

@@ -55,4 +55,6 @@ class DeviceNameSelectionFragment @Inject constructor(
 
     override val roomName: String?
         get() = args.room
+
+    override val layout: Int = li.klass.fhem.R.layout.device_name_list_page
 }

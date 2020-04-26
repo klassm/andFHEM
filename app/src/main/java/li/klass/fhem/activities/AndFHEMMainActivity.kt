@@ -84,7 +84,6 @@ open class AndFHEMMainActivity : AppCompatActivity(),
 
         val intentFilter = IntentFilter().apply {
             addAction(DO_UPDATE)
-            addAction(UPDATE_NAVIGATION)
             addAction(SHOW_EXECUTING_DIALOG)
             addAction(DISMISS_EXECUTING_DIALOG)
             addAction(SHOW_TOAST)

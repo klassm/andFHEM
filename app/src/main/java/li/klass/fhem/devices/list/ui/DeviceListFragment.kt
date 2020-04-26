@@ -38,13 +38,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import kotlinx.android.synthetic.main.device_view_header.*
 import kotlinx.android.synthetic.main.room_detail.view.*
-import kotlinx.android.synthetic.main.room_detail_page.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
@@ -63,7 +61,6 @@ import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
-import li.klass.fhem.util.navigation.loadFragmentInto
 import org.apache.commons.lang3.time.StopWatch
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.slf4j.LoggerFactory
@@ -76,8 +73,7 @@ abstract class DeviceListFragment(
         private val advertisementService: AdvertisementService,
         private val favoritesService: FavoritesService,
         private val genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
-        private val deviceActionUiService: DeviceActionUIService,
-        private val navigationFragment: Fragment? = null
+        private val deviceActionUiService: DeviceActionUIService
 ) : BaseFragment() {
     private var actionMode: ActionMode? = null
 
@@ -121,14 +117,6 @@ abstract class DeviceListFragment(
         val layoutManager = view?.devices?.layoutManager as StaggeredGridLayoutManager
         layoutManager.spanCount = getNumberOfColumns()
 
-        view?.navigation?.let {
-            when (navigationFragment == null) {
-                true -> it.visibility = View.GONE
-                false -> loadFragmentInto(R.id.navigation, navigationFragment)
-            }
-            navigationFragment?.view?.invalidate()
-        }
-
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
     }
 
@@ -158,7 +146,6 @@ abstract class DeviceListFragment(
                     executeRemoteUpdate(myActivity)
                 }
                 myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
-                myActivity.sendBroadcast(Intent(Actions.UPDATE_NAVIGATION))
             }
             val elements = withContext(Dispatchers.IO) {
                 val deviceList = getRoomDeviceListForUpdate(myActivity)

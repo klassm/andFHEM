@@ -25,25 +25,15 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingEnd="0dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="0dp"
+    android:paddingStart="5dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        app:cardBackgroundColor="?backgroundColorSecondary">
+    <include layout="@layout/device_view_header" />
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:textSize="15sp" />
-    </androidx.cardview.widget.CardView>
+    <include layout="@layout/device_name_list" />
 </LinearLayout>

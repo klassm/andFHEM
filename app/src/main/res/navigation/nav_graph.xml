@@ -9,54 +9,94 @@
         app:destination="@id/allDevicesFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/nav_graph"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_favorites"
         app:destination="@id/favoritesFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/nav_graph"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_roomList"
         app:destination="@id/roomListFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/nav_graph"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_deviceDetailRedirect"
         app:destination="@id/deviceDetailRedirectFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_connectionList"
         app:destination="@id/connectionListFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_timerList"
         app:destination="@id/timerListFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_sendCommand"
         app:destination="@id/sendCommandFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_conversion"
         app:destination="@id/conversionFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_fcm_history"
         app:destination="@id/fcmHistoryFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/action_to_search_results"
         app:destination="@id/searchResultsFragment"
         app:launchSingleTop="true"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     <fragment
         android:id="@+id/allDevicesFragment"
@@ -69,13 +109,17 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_allDevicesFragment_to_roomDetailFragment"
+            app:destination="@id/roomDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <deepLink
             android:id="@+id/allDevicesDeepLink"
             android:autoVerify="true"
             app:uri="andfhem.klass.li/app/allDevices" />
-        <action
-            android:id="@+id/action_allDevicesFragment_to_roomDetailFragment"
-            app:destination="@id/roomDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/connectionDetailFragment"
@@ -92,7 +136,11 @@
         android:label="ConnectionListFragment">
         <action
             android:id="@+id/action_connectionListFragment_to_connectionDetailFragment"
-            app:destination="@id/connectionDetailFragment" />
+            app:destination="@id/connectionDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/deviceDetailFragment"
@@ -108,10 +156,18 @@
             android:defaultValue="@null" />
         <action
             android:id="@+id/action_deviceDetailFragment_to_fromToWeekProfileFragment"
-            app:destination="@id/fromToWeekProfileFragment" />
+            app:destination="@id/fromToWeekProfileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_deviceDetailFragment_to_intervalWeekProfileFragment"
-            app:destination="@id/intervalWeekProfileFragment" />
+            app:destination="@id/intervalWeekProfileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/deviceNameListFragment"
@@ -121,12 +177,13 @@
         android:id="@+id/deviceNameListNavigationFragment"
         android:name="li.klass.fhem.fragments.device.DeviceNameListNavigationFragment"
         android:label="DeviceNameListNavigationFragment">
-        <argument
-            android:name="room"
-            app:argType="string" />
         <action
             android:id="@+id/action_deviceNameListNavigationFragment_to_deviceDetailRedirectFragment"
-            app:destination="@id/deviceDetailRedirectFragment" />
+            app:destination="@id/deviceDetailRedirectFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -233,7 +290,11 @@
         android:label="TimerListFragment">
         <action
             android:id="@+id/action_timerListFragment_to_timerDetailFragment"
-            app:destination="@id/timerDetailFragment" />
+            app:destination="@id/timerDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/searchResultsFragment"
@@ -316,7 +377,11 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_timerDetailFragment_to_deviceNameSelectionFragment"
-            app:destination="@id/deviceNameSelectionFragment" />
+            app:destination="@id/deviceNameSelectionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/sendCommandFragment"

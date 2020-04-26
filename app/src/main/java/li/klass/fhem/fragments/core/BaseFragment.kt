@@ -33,11 +33,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.room_detail_page.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -45,6 +43,7 @@ import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
+import li.klass.fhem.util.navigation.loadFragmentInto
 import li.klass.fhem.widget.SwipeRefreshLayout
 import org.jetbrains.anko.support.v4.onRefresh
 import java.io.Serializable
@@ -121,10 +120,21 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
         broadcastReceiver!!.attach()
 
+        view?.findViewById<FrameLayout>(R.id.navigation)?.navigation?.let {
+            val navFragment = navigationFragment
+            when (navFragment == null) {
+                true -> it.visibility = View.GONE
+                false -> loadFragmentInto(R.id.navigation, navFragment)
+            }
+            navFragment?.view?.invalidate()
+        }
+
         val title = getTitle(myActivity)
         title?.let { setTitle(it) }
         updateAsync(false)
     }
+
+    open val navigationFragment: Fragment? = null
 
     fun setTitle(title: String?) {
         activity?.title = title ?: ""

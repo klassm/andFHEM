@@ -24,7 +24,6 @@
 
 package li.klass.fhem.fragments.device
 
-import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,7 +40,6 @@ import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
-import li.klass.fhem.constants.Actions.UPDATE_NAVIGATION
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -69,10 +67,11 @@ abstract class DeviceNameListFragment(
         container ?: return superView
         if (superView != null) return superView
 
-        val view = inflater.inflate(R.layout.device_name_list, container, false)!!
+        val view = inflater.inflate(layout, container, false)!!
 
-        val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
-        fillEmptyView(emptyView, emptyTextId, container)
+        view.findViewById<LinearLayout>(R.id.emptyView)?.let {
+            fillEmptyView(it, emptyTextId, container)
+        }
 
         return view
     }
@@ -93,8 +92,6 @@ abstract class DeviceNameListFragment(
                 withContext(Dispatchers.IO) {
                     deviceListUpdateService.updateAllDevices()
                     appWidgetUpdateService.updateAllWidgets()
-
-                    myActivity.sendBroadcast(Intent(UPDATE_NAVIGATION))
                 }
             }
 
@@ -119,9 +116,9 @@ abstract class DeviceNameListFragment(
                 bind = { device, view ->
                     view.name.text = device.aliasOrName
                     view.onClick { onDeviceNameClick(device) }
-                    view.setBackgroundColor(when (deviceName?.equals(device.name)) {
+                    view.card.setBackgroundColor(when (deviceName?.equals(device.name)) {
                         true -> ContextCompat.getColor(devicesView.context, R.color.android_green)
-                        else -> ContextCompat.getColor(devicesView.context, android.R.color.transparent)
+                        else -> ContextCompat.getColor(devicesView.context, android.R.color.white)
                     })
                     view.tag = device.name
                 }
@@ -142,7 +139,7 @@ abstract class DeviceNameListFragment(
         }
     }
 
-    private fun getNumberOfColumns(): Int {
+    open fun getNumberOfColumns(): Int {
         fun dpFromPx(px: Float): Float = px / Resources.getSystem().displayMetrics.density
 
         val displayMetrics = Resources.getSystem().displayMetrics
@@ -152,6 +149,8 @@ abstract class DeviceNameListFragment(
             else -> calculated
         }
     }
+
+    abstract val layout: Int
 
     interface DeviceFilter : Serializable {
         fun isSelectable(device: FhemDevice): Boolean

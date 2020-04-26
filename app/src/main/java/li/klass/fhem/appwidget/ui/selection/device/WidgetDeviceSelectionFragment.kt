@@ -37,4 +37,6 @@ class WidgetDeviceSelectionFragment @Inject constructor(
         get() = R.string.widgetNoDevices
 
     override fun getTitle(context: Context): String? = context.getString(R.string.widget_devices)
+
+    override val layout: Int = R.layout.device_name_list_page
 }
