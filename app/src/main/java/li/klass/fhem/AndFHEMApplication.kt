@@ -32,17 +32,14 @@ import android.os.StrictMode
 import android.util.Log
 import com.alexfu.phoenix.Phoenix
 import com.google.firebase.FirebaseApp
-import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.activities.StartupActivity
 import li.klass.fhem.alarm.clock.update.AlarmClockUpdateService
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
-import li.klass.fhem.devices.ui.DeviceNameSelectionActivity
 import li.klass.fhem.graph.ui.GraphActivity
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -102,8 +99,6 @@ class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
                     .detectAll()
                     .setClassInstanceLimit(GraphActivity::class.java, 3)
                     .setClassInstanceLimit(StartupActivity::class.java, 3)
-                    .setClassInstanceLimit(AndFHEMMainActivity::class.java, 3)
-                    .setClassInstanceLimit(DeviceNameSelectionActivity::class.java, 3)
                     .penaltyLog()
                     .build())
 

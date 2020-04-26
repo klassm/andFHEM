@@ -43,7 +43,7 @@ import javax.inject.Inject
 
 class FhemLogDrawerAction @Inject constructor(
         private val fhemLogService: FhemLogService
-) : AbstractDrawerAction(R.id.fhem_log, returnHandle = false) {
+) : AbstractDrawerAction(R.id.fhem_log) {
     override fun execute(activity: AppCompatActivity) {
         if (!PermissionUtil.checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             DialogUtil.showAlertDialog(activity, R.string.fhem_log, R.string.fhem_log_error_permission_external_storage)

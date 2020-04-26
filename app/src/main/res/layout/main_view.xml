@@ -37,7 +37,7 @@
 
         <include layout="@layout/content_view" />
 
-        <com.google.android.material.navigation.NavigationView
+        <com.google.android.material.navigation.NavigationViewWithMultipleListeners
             android:id="@+id/nav_drawer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

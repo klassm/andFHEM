@@ -30,7 +30,7 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.PremiumActivity
 import javax.inject.Inject
 
-class PremiumDrawerAction @Inject constructor() : AbstractDrawerAction(R.id.menu_premium, returnHandle = false) {
+class PremiumDrawerAction @Inject constructor() : AbstractDrawerAction(R.id.menu_premium) {
     override fun execute(activity: AppCompatActivity) {
         val premiumIntent = Intent(activity, PremiumActivity::class.java)
         activity.startActivity(premiumIntent)

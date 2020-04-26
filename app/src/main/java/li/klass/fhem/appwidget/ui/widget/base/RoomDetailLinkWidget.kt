@@ -25,17 +25,13 @@
 package li.klass.fhem.appwidget.ui.widget.base
 
 import android.content.Context
-import android.content.Intent
-import android.os.SystemClock
 import android.widget.RemoteViews
 import androidx.navigation.NavDeepLinkBuilder
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.room.detail.ui.RoomDetailFragmentArgs
-import li.klass.fhem.ui.FragmentType
 
 abstract class RoomDetailLinkWidget : RoomAppWidgetView() {
     override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
@@ -48,13 +44,6 @@ abstract class RoomDetailLinkWidget : RoomAppWidgetView() {
         val roomName = widgetConfiguration.payload[0]
 
         view.setTextViewText(R.id.roomName, roomName)
-
-        val openIntent = Intent(context, AndFHEMMainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra(BundleExtraKeys.FRAGMENT, FragmentType.ROOM_DETAIL)
-            putExtra(BundleExtraKeys.ROOM_NAME, roomName)
-            putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
-        }
 
         view.setOnClickPendingIntent(R.id.layout, NavDeepLinkBuilder(context)
                 .setComponentName(AndFHEMMainActivity::class.java)

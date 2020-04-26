@@ -38,7 +38,6 @@ import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.ui.FragmentType
 import org.slf4j.LoggerFactory
 
 class AvailableConnectionDataAdapter(private val parent: Spinner,

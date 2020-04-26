@@ -47,7 +47,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
 import kotlinx.coroutines.Dispatchers
@@ -77,8 +76,7 @@ import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
 
-open class AndFHEMMainActivity : AppCompatActivity(),
-        NavigationView.OnNavigationItemSelectedListener {
+open class AndFHEMMainActivity : AppCompatActivity() {
 
     inner class Receiver : BroadcastReceiver() {
 
@@ -187,11 +185,14 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             saveInstanceStateCalled = false
             setContentView(R.layout.main_view)
 
-            navController()?.updateStartFragment(determineStartupFragmentFromProperties())
+            val navController = navController() ?: return
+            navController.updateStartFragment(determineStartupFragmentFromProperties())
 
             broadcastReceiver = Receiver()
             registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+
             initDrawerLayout()
+
         } catch (e: Throwable) {
             logger.error("onCreate() : error during initialization", e)
         }
@@ -245,47 +246,20 @@ open class AndFHEMMainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        drawer_layout.closeDrawer(GravityCompat.START)
-
-        if (drawerActions.handle(this, menuItem.itemId)) {
-            return true
-        }
-
-        val fragmentType = getFragmentFor(menuItem.itemId) ?: return false
-        val action = when (fragmentType) {
-            ROOM_LIST -> AndFHEMMainActivityDirections.actionToRoomList()
-            FAVORITES -> AndFHEMMainActivityDirections.actionToFavorites()
-            ALL_DEVICES -> AndFHEMMainActivityDirections.actionToAllDevices()
-            CONNECTION_LIST -> AndFHEMMainActivityDirections.actionToConnectionList()
-            TIMER_OVERVIEW -> AndFHEMMainActivityDirections.actionToTimerList()
-            SEND_COMMAND -> AndFHEMMainActivityDirections.actionToSendCommand(cmd = null)
-            CONVERSION -> AndFHEMMainActivityDirections.actionToConversion()
-            FCM_HISTORY -> AndFHEMMainActivityDirections.actionToFcmHistory()
-            else -> null
-        }
-
-        val nav = navController() ?: return false
-
-        return if (action != null) {
-            nav.navigate(action)
-            true
-        } else false
-    }
-
-
     private fun initDrawerLayout() {
         val navController = navController() ?: return
         drawer_layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
 
         nav_drawer.setupWithNavController(navController)
-        nav_drawer.setNavigationItemSelectedListener(this)
+        nav_drawer.setNavigationItemSelectedListener { item ->
+            val result = drawerActions.handle(this, item.itemId)
+            if (result) {
+                drawer_layout.closeDrawer(GravityCompat.START)
+            }
+            result
+        }
         if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
             nav_drawer.menu.removeItem(R.id.menu_premium)
-        }
-
-        if (connectionService.getCurrentServer()?.serverType != ServerType.FHEMWEB) {
-            nav_drawer.menu.removeItem(R.id.fhem_log)
         }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -302,16 +276,29 @@ open class AndFHEMMainActivity : AppCompatActivity(),
             }
         }.apply {
             syncState()
-            isDrawerIndicatorEnabled = supportFragmentManager.backStackEntryCount == 0
         }
+
+        val updateDrawerIndicator = {
+            val hasPrevious = navController.previousBackStackEntry != null
+            actionBarDrawerToggle.isDrawerIndicatorEnabled = !hasPrevious
+        }
+
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            updateDrawerIndicator()
+        }
+        updateDrawerIndicator()
+
+        if (connectionService.getCurrentServer()?.serverType != ServerType.FHEMWEB) {
+            nav_drawer.menu.removeItem(R.id.fhem_log)
+        }
+
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
 
         GlobalScope.launch(Dispatchers.Main) {
             val isPremium = licenseService.isPremium()
             if (!isPremium) {
-                nav_drawer.menu.removeItem(R.id.fcm_history)
+                nav_drawer.menu.removeItem(R.id.fcmHistoryFragment)
             }
-
 
             initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
                     Runnable {

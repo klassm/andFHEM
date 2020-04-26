@@ -4,32 +4,32 @@
         android:id="@+id/main_items"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/all_devices"
+            android:id="@+id/allDevicesFragment"
             android:checked="true"
             android:icon="@drawable/all_devices"
             android:title="@string/alldevices" />
         <item
-            android:id="@+id/favorites"
+            android:id="@+id/favoritesFragment"
             android:icon="@drawable/favorites"
             android:title="@string/favorites" />
         <item
-            android:id="@+id/rooms"
+            android:id="@+id/roomListFragment"
             android:icon="@drawable/room_list"
             android:title="@string/roomList" />
         <item
-            android:id="@+id/timer"
+            android:id="@+id/timerListFragment"
             android:icon="@drawable/timer"
             android:title="@string/timer" />
         <item
-            android:id="@+id/send_command"
+            android:id="@+id/sendCommandFragment"
             android:icon="@drawable/send_command"
             android:title="@string/send_command" />
         <item
-            android:id="@+id/conversion"
+            android:id="@+id/conversionFragment"
             android:icon="@drawable/conversion"
             android:title="@string/conversion" />
         <item
-            android:id="@+id/fcm_history"
+            android:id="@+id/fcmHistoryFragment"
             android:icon="@drawable/ic_menu_notification"
             android:title="@string/fcm_history" />
         <item

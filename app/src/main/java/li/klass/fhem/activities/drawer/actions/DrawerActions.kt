@@ -43,5 +43,5 @@ class DrawerActions @Inject constructor(
             fhemLogDrawerAction
     )
 
-    override fun handle(activity: AppCompatActivity, drawerId: Int) = allActions.any { it.handle(activity, drawerId) }
+    override fun handle(activity: AppCompatActivity, drawerId: Int): Boolean = allActions.any { it.handle(activity, drawerId) }
 }
