@@ -39,9 +39,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import kotlinx.android.synthetic.main.device_view_header.*
+import kotlinx.android.synthetic.main.room_detail.*
 import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.*
@@ -76,6 +78,8 @@ abstract class DeviceListFragment(
         private val deviceActionUiService: DeviceActionUIService
 ) : BaseFragment() {
     private var actionMode: ActionMode? = null
+
+    private val viewModel by navGraphViewModels<DeviceListFragmentViewModel>(R.id.nav_graph)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
@@ -116,7 +120,6 @@ abstract class DeviceListFragment(
         super.onResume()
         val layoutManager = view?.devices?.layoutManager as StaggeredGridLayoutManager
         layoutManager.spanCount = getNumberOfColumns()
-
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
     }
 
@@ -154,6 +157,11 @@ abstract class DeviceListFragment(
 
             if (view != null) {
                 updateWith(elements, requireView())
+            }
+
+            viewModel.listState?.let {
+                devices?.layoutManager?.onRestoreInstanceState(it)
+                viewModel.listState = null
             }
         }
     }
@@ -238,6 +246,11 @@ abstract class DeviceListFragment(
             actionMode = (activity as AppCompatActivity).startSupportActionMode(callback)
         }
         return true
+    }
+
+    override fun onDestroyView() {
+        viewModel.listState = devices.layoutManager?.onSaveInstanceState()
+        super.onDestroyView()
     }
 
     abstract fun navigateTo(device: FhemDevice)
