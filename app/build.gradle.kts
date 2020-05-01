@@ -56,6 +56,7 @@ val glideVersion = "4.8.0"
 val daggerVersion = "2.27"
 val coroutinesVersion = "1.1.0"
 val androidXNavigationVersion = "2.3.0-alpha05"
+val roomVersion = "2.2.5"
 
 plugins {
     id("net.researchgate.release") version "2.8.0"
@@ -121,8 +122,8 @@ dependencies {
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0-alpha01")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
     implementation(group = "androidx.annotation", name = "annotation", version = coroutinesVersion)
-    implementation(group = "androidx.room", name = "room-runtime", version = "2.1.0-alpha03")
-    kapt(group = "androidx.room", name = "room-compiler", version = "2.2.5")
+    implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
+    kapt(group = "androidx.room", name = "room-compiler", version = roomVersion)
     implementation(group = "androidx.navigation", name="navigation-fragment-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-ui-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
