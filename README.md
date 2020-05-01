@@ -5,5 +5,4 @@ AndFHEM is an Android frontend to control devices using an FHEM home automation 
 
 # Build State
 
-The current build state can be found at 
-[![Travis CI](https://api.travis-ci.org/klassm/andFHEM.svg?branch=master)](https://travis-ci.org/klassm/andFHEM)(https://travis-ci.org/klassm/andFHEM)
+![](https://github.com/klassm/andFHEM/workflows/Android%20CI/badge.svg)
