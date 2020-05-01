@@ -28,7 +28,6 @@ import android.content.Context
 import android.content.Intent
 import com.google.common.collect.Maps.newHashMap
 import li.klass.fhem.R
-import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.RequestResult
 import li.klass.fhem.connection.backend.RequestResultError
 import li.klass.fhem.constants.Actions
@@ -49,7 +48,6 @@ import javax.inject.Inject
  * Class responsible for reading the current xml list from FHEM.
  */
 class DeviceListParser @Inject constructor(
-        private val connectionService: ConnectionService,
         private val parser: XmlListParser,
         private val gPlotHolder: GPlotHolder,
         private val groupProvider: GroupProvider,
@@ -64,7 +62,7 @@ class DeviceListParser @Inject constructor(
                     .replace("<ATTR key=\"globalpassword\" value=\"[^\"]+\"/>".toRegex(), "")
                     .replace("<ATTR key=\"basicAuth\" value=\"[^\"]+\"/>".toRegex(), ""))
 
-            RequestResult<String>(error = RequestResultError.DEVICE_LIST_PARSE).handleErrors(context)
+            RequestResult.Error<Unit>(RequestResultError.DEVICE_LIST_PARSE).handleErrors(context)
             null
         }
     }
@@ -169,17 +167,13 @@ class DeviceListParser @Inject constructor(
     fun fillDeviceWith(device: FhemDevice, updates: Map<String, String>) {
         for (entry in updates.entries) {
             try {
-                device.xmlListDevice.states.put(entry.key,
-                        sanitiser.sanitise(device.xmlListDevice.type,
-                                DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.key, entry.value, DateTime.now())
-                        )
+                device.xmlListDevice.states[entry.key] = sanitiser.sanitise(device.xmlListDevice.type,
+                        DeviceNode(DeviceNode.DeviceNodeType.STATE, entry.key, entry.value, DateTime.now())
                 )
 
                 if ("STATE".equals(entry.key, ignoreCase = true)) {
-                    device.xmlListDevice.internals.put("STATE",
-                            sanitiser.sanitise(device.xmlListDevice.type,
-                                    DeviceNode(DeviceNode.DeviceNodeType.INT, "STATE", entry.value, DateTime.now())
-                            )
+                    device.xmlListDevice.internals["STATE"] = sanitiser.sanitise(device.xmlListDevice.type,
+                            DeviceNode(DeviceNode.DeviceNodeType.INT, "STATE", entry.value, DateTime.now())
                     )
                 }
             } catch (e: Exception) {

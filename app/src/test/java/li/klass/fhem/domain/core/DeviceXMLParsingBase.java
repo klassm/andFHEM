@@ -89,7 +89,7 @@ public abstract class DeviceXMLParsingBase {
                 .databaseModule(new DatabaseModule(application)).build();
 
         DeviceListParser deviceListParser = new DeviceListParser(
-                connectionService, applicationComponent.getXmllistParser(),
+                applicationComponent.getXmllistParser(),
                 applicationComponent.getGPlotHolder(), applicationComponent.getGroupProvider(),
                 applicationComponent.getSanitiser()
         );

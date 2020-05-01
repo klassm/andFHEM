@@ -21,32 +21,32 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
-
 package li.klass.fhem.connection.backend
 
 import android.content.Context
-import android.content.Intent
+import li.klass.fhem.error.ErrorHolder.setError
+import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.util.ApplicationProperties
 
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
+abstract class FHEMConnection(var server: FHEMServerSpec, protected var applicationProperties: ApplicationProperties) {
+    abstract fun executeCommand(command: String, context: Context): RequestResult<String>
 
-sealed class RequestResult<CONTENT> {
+    protected fun setErrorInErrorHolderFor(e: Exception?, host: String, suffix: String) {
+        val text = """
+            Error while accessing '$host' with suffix '$suffix'
+            $server
 
-    data class Success<CONTENT>(val success: CONTENT) : RequestResult<CONTENT>()
-    data class Error<CONTENT>(val error: RequestResultError) : RequestResult<CONTENT>() {
-        fun handleErrors(context: Context) {
-            context.sendBroadcast(Intent(Actions.CONNECTION_ERROR)
-                    .putExtra(BundleExtraKeys.STRING_ID, error.errorStringId))
-        }
+            """.trimIndent()
+        setError(e, text)
     }
 
-    fun <RESULT> fold(onSuccess: (content: CONTENT) -> RESULT, onError: (error: RequestResultError) -> RESULT): RESULT =
-            when (this) {
-                is Success -> onSuccess(success)
-                is Error -> onError(error)
-            }
+    val connectionTimeoutMilliSeconds: Int
+        get() = 1000 * applicationProperties.getIntegerSharedPreference(
+                SettingsKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
+        )
 
-    fun <RESULT> map(onSuccess: (content: CONTENT) -> RESULT): RequestResult<RESULT> = fold(
-            { Success(onSuccess(it)) }, { Error(it) }
-    )
+    companion object {
+        const val CONNECTION_TIMEOUT_DEFAULT_SECONDS = 4
+    }
+
 }
