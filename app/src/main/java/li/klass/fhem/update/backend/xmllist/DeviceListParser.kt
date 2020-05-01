@@ -28,7 +28,6 @@ import android.content.Context
 import android.content.Intent
 import com.google.common.collect.Maps.newHashMap
 import li.klass.fhem.R
-import li.klass.fhem.connection.backend.RequestResult
 import li.klass.fhem.connection.backend.RequestResultError
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
@@ -62,7 +61,7 @@ class DeviceListParser @Inject constructor(
                     .replace("<ATTR key=\"globalpassword\" value=\"[^\"]+\"/>".toRegex(), "")
                     .replace("<ATTR key=\"basicAuth\" value=\"[^\"]+\"/>".toRegex(), ""))
 
-            RequestResult.Error<Unit>(RequestResultError.DEVICE_LIST_PARSE).handleErrors(context)
+            RequestResultError.DEVICE_LIST_PARSE.handleError(context)
             null
         }
     }

@@ -61,10 +61,25 @@
         android:inputType="textUri"/>
 
     <TextView
+        android:id="@+id/csrfTokenLabel"
+        style="@style/formLabel"
+        android:layout_below="@+id/alternate_url"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/csrfTokenLabel" />
+
+    <EditText
+        android:id="@+id/csrfToken"
+        android:layout_width="match_parent"
+        style="@style/formInput"
+        android:layout_below="@+id/csrfTokenLabel"
+        android:inputType="text" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/connectionAlternateUrlDesc"
-        android:layout_below="@id/alternate_url"
+        android:layout_below="@id/csrfToken"
         android:id="@+id/alternateUrlDesc" />
 
     <TextView

@@ -136,6 +136,10 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     private fun findCsrfToken(serverUrl: String): String? {
+        if (server.csrfToken != null) {
+            LOG.info("using predefined csrf token from server spec")
+            return server.csrfToken
+        }
         return try {
             val response = doGet("$serverUrl?room=notExistingJustToLoadCsrfToken")
             val value = response.headers.getFirstHeaderStringValue("X-FHEM-csrfToken")

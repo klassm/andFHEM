@@ -125,6 +125,7 @@ class CommandExecutionService @Inject constructor(
                             val resendCommand = ResendCommand(command, currentTry + 1, applicationContext, resultListener)
                             schedule(timeoutForNextTry, resendCommand)
                         }
+                        it.handleError(applicationContext)
                     }
             )
         } finally {

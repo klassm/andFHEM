@@ -36,6 +36,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
     var username: String? = null
     var clientCertificatePath: String? = null
     var clientCertificatePassword: String? = null
+    var csrfToken: String? = null
 
     override fun compareTo(other: FHEMServerSpec): Int = name.compareTo(other.name)
 
@@ -58,6 +59,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
             return false
         if (serverType != that.serverType) return false
         if (if (url != null) url != that.url else that.url != null) return false
+        if (if (csrfToken != null) csrfToken != that.csrfToken else that.csrfToken != null) return false
         return !if (username != null) username != that.username else that.username != null
 
     }
@@ -72,6 +74,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
         result = 31 * result + if (username != null) username!!.hashCode() else 0
         result = 31 * result + if (clientCertificatePath != null) clientCertificatePath!!.hashCode() else 0
         result = 31 * result + if (clientCertificatePassword != null) clientCertificatePassword!!.hashCode() else 0
+        result = 31 * result + if (csrfToken != null) csrfToken!!.hashCode() else 0
         result = 31 * result + serverType.hashCode()
         return result
     }
@@ -89,6 +92,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
                 ", clientCertificatePath='" + clientCertificatePath + '\'' +
                 ", clientCertificatePassword='" + clientCertificatePassword + '\'' +
                 ", serverType=" + serverType +
+                ", csrfToken=" + csrfToken +
                 '}'
     }
 

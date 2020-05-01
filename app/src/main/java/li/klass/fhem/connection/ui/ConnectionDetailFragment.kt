@@ -75,9 +75,9 @@ class ConnectionDetailFragment @Inject constructor(
         }
         val context: Context = activity ?: return null
 
-        view = inflater.inflate(R.layout.connection_detail, container, false)
+        view = inflater.inflate(R.layout.connection_detail, container, false)!!
 
-        val connectionTypeSpinner = view!!.findViewById<Spinner>(R.id.connectionType)
+        val connectionTypeSpinner = view.findViewById<Spinner>(R.id.connectionType)
         connectionTypeSpinner.isEnabled = !isModify
 
         val connectionTypes = serverTypes
@@ -124,24 +124,22 @@ class ConnectionDetailFragment @Inject constructor(
 
     @SuppressLint("InflateParams")
     private fun handleConnectionTypeChange(connectionType: ServerType) {
-        if (view == null) return
-
         this.connectionType = checkNotNull(connectionType)
-        val activity = activity!!
+        val activity = activity ?: return
 
-        val view: View?
-        when (connectionType) {
+        val view = when (connectionType) {
             ServerType.FHEMWEB -> {
-                view = activity.layoutInflater.inflate(R.layout.connection_fhemweb, null)
-                handleFHEMWEBView(view)
+                activity.layoutInflater.inflate(R.layout.connection_fhemweb, null).apply {
+                    handleFHEMWEBView(this)
+                }
             }
-            ServerType.TELNET -> view = activity.layoutInflater.inflate(R.layout.connection_telnet, null)
+            ServerType.TELNET -> activity.layoutInflater.inflate(R.layout.connection_telnet, null)
             else -> throw IllegalArgumentException("cannot handle connection type $connectionType")
         }
 
         assert(view != null)
 
-        val showPasswordCheckbox = view!!.findViewById<CheckBox?>(R.id.showPasswordCheckbox)
+        val showPasswordCheckbox = view.findViewById<CheckBox?>(R.id.showPasswordCheckbox)
         val passwordView = view.findViewById<EditText?>(R.id.password)
         if (showPasswordCheckbox != null && passwordView != null) {
             showPasswordCheckbox.setOnClickListener { myView ->
@@ -181,11 +179,11 @@ class ConnectionDetailFragment @Inject constructor(
     }
 
     private suspend fun handleSave() {
-        view ?: return
+        val view = view ?: return
 
         val myContext = context ?: return
         val saveStrategy = strategyFor(connectionType ?: ServerType.FHEMWEB, myContext)
-        val saveData = saveStrategy.saveDataFor(view!!) ?: return
+        val saveData = saveStrategy.saveDataFor(view) ?: return
 
         coroutineScope {
             withContext(Dispatchers.IO) {
@@ -208,15 +206,15 @@ class ConnectionDetailFragment @Inject constructor(
         }
     }
 
-    private fun handleFHEMWEBView(view: View?) {
-        val setClientCertificate = view!!.findViewById<ImageButton>(R.id.setClientCertificatePath)
-        setClientCertificate.setOnClickListener(View.OnClickListener {
-            if (getView() == null) return@OnClickListener
+    private fun handleFHEMWEBView(view: View) {
+        val setClientCertificate = view.findViewById<ImageButton>(R.id.setClientCertificatePath)
+        setClientCertificate.setOnClickListener(View.OnClickListener { innerView ->
+            if (innerView == null) return@OnClickListener
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
             }
-            val clientCertificatePath = getView()!!.findViewById<TextView>(R.id.clientCertificatePath)
+            val clientCertificatePath = innerView.findViewById<TextView>(R.id.clientCertificatePath)
             val initialPath = File(clientCertificatePath.text.toString())
 
             val properties = DialogProperties()
@@ -287,9 +285,9 @@ class ConnectionDetailFragment @Inject constructor(
     }
 
     private fun fillDetail(fhemServerSpec: FHEMServerSpec) {
-        view ?: return
+        val v = view ?: return
         val myContext = context ?: return
-        strategyFor(connectionType, myContext).fillView(view!!, fhemServerSpec)
+        strategyFor(connectionType, myContext).fillView(v, fhemServerSpec)
     }
 
     private fun selectionIndexFor(serverType: ServerType): Int {

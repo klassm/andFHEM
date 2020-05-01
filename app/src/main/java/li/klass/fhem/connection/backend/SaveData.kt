@@ -39,6 +39,7 @@ sealed class SaveData(val name: String,
                           val clientCertificatePath: String?,
                           val clientCertificatePassword: String?,
                           val username: String?,
+                          val csrfToken: String?,
                           password: String?) : SaveData(name, password, ServerType.FHEMWEB) {
 
         override fun fillServer(server: FHEMServerSpec) {
@@ -47,6 +48,7 @@ sealed class SaveData(val name: String,
             server.alternateUrl = alternateUrl
             server.clientCertificatePath = clientCertificatePath
             server.clientCertificatePassword = clientCertificatePassword
+            server.csrfToken = csrfToken
             server.username = username
         }
     }

@@ -24,21 +24,10 @@
 
 package li.klass.fhem.connection.backend
 
-import android.content.Context
-import android.content.Intent
-
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
-
 sealed class RequestResult<CONTENT> {
 
     data class Success<CONTENT>(val success: CONTENT) : RequestResult<CONTENT>()
-    data class Error<CONTENT>(val error: RequestResultError) : RequestResult<CONTENT>() {
-        fun handleErrors(context: Context) {
-            context.sendBroadcast(Intent(Actions.CONNECTION_ERROR)
-                    .putExtra(BundleExtraKeys.STRING_ID, error.errorStringId))
-        }
-    }
+    data class Error<CONTENT>(val error: RequestResultError) : RequestResult<CONTENT>()
 
     fun <RESULT> fold(onSuccess: (content: CONTENT) -> RESULT, onError: (error: RequestResultError) -> RESULT): RESULT =
             when (this) {

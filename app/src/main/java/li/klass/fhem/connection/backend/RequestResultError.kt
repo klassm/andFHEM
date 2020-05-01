@@ -21,12 +21,15 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.connection.backend
 
-package li.klass.fhem.connection.backend;
+import android.content.Context
+import android.content.Intent
+import li.klass.fhem.R
+import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 
-import li.klass.fhem.R;
-
-public enum RequestResultError {
+enum class RequestResultError(val errorStringId: Int) {
     HOST_CONNECTION_ERROR(R.string.error_host_connection),
     AUTHENTICATION_ERROR(R.string.error_authentication),
     CONNECTION_TIMEOUT(R.string.error_timeout),
@@ -35,11 +38,10 @@ public enum RequestResultError {
     NOT_FOUND(R.string.error_not_found),
     INVALID_CONTENT(R.string.error_invalid_content),
     DEVICE_LIST_PARSE(R.string.error_device_list_parse),
-    INTERNAL_ERROR(R.string.error_internal),;
+    INTERNAL_ERROR(R.string.error_internal);
 
-    public final int errorStringId;
-
-    RequestResultError(int errorStringId) {
-        this.errorStringId = errorStringId;
+    fun handleError(context: Context) {
+        context.sendBroadcast(Intent(Actions.CONNECTION_ERROR)
+                .putExtra(BundleExtraKeys.STRING_ID, errorStringId))
     }
 }
