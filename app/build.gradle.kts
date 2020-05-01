@@ -100,7 +100,7 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-ads", version = "17.1.2")
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "16.2.2")
     implementation(group = "com.google.android.material", name = "material", version = "1.1.0-alpha02")
-    implementation(group = "com.google.code.gson", name = "gson", version = "2.8.5")
+    implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
     implementation(group = "com.google.guava", name = "guava", version = "23.4-android") {
         exclude(group = "com.google.code.findbugs")
     }
