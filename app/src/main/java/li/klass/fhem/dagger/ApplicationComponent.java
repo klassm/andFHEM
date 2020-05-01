@@ -26,11 +26,12 @@ package li.klass.fhem.dagger;
 
 import android.app.Application;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.PremiumActivity;
@@ -52,7 +53,6 @@ import li.klass.fhem.appwidget.ui.selection.BigWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.MediumWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.selection.SmallWidgetSelectionActivity;
 import li.klass.fhem.appwidget.ui.widget.base.RoomDetailLinkWidget;
-import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.appwidget.ui.widget.big.BigWeatherForecastWidget;
 import li.klass.fhem.appwidget.ui.widget.medium.DimWidgetView;
 import li.klass.fhem.appwidget.ui.widget.medium.HeatingWidgetView;
@@ -74,38 +74,16 @@ import li.klass.fhem.appwidget.ui.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.backup.ImportExportService;
-import li.klass.fhem.connection.ui.ConnectionDetailFragment;
-import li.klass.fhem.connection.ui.ConnectionListFragment;
-import li.klass.fhem.conversion.ui.ConversionFragment;
-import li.klass.fhem.devices.detail.ui.DeviceDetailFragment;
-import li.klass.fhem.devices.list.all.ui.AllDevicesFragment;
-import li.klass.fhem.devices.list.favorites.ui.FavoritesFragment;
-import li.klass.fhem.fcm.history.view.FcmHistoryMessagesFragment;
-import li.klass.fhem.fcm.history.view.FcmHistoryUpdatesFragment;
 import li.klass.fhem.fcm.receiver.FcmIntentService;
-import li.klass.fhem.floorplan.ui.FloorplanFragment;
-import li.klass.fhem.fragments.device.DeviceNameListFragment;
-import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
-import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
-import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
 import li.klass.fhem.graph.backend.gplot.GPlotHolder;
 import li.klass.fhem.graph.ui.GraphActivity;
-import li.klass.fhem.room.detail.ui.RoomDetailFragment;
-import li.klass.fhem.room.list.ui.RoomListFragment;
 import li.klass.fhem.search.MySearchSuggestionsProvider;
-import li.klass.fhem.search.SearchResultsFragment;
-import li.klass.fhem.sendCommand.ui.SendCommandFragment;
 import li.klass.fhem.service.intent.ExternalApiService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandService;
 import li.klass.fhem.settings.SettingsActivity;
 import li.klass.fhem.settings.SettingsFragment;
-import li.klass.fhem.timer.ui.TimerDetailFragment;
-import li.klass.fhem.timer.ui.TimerListFragment;
-import li.klass.fhem.ui.WebViewFragment;
 import li.klass.fhem.update.backend.DeviceListUpdateService;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
 import li.klass.fhem.update.backend.device.configuration.Sanitiser;
@@ -114,8 +92,8 @@ import li.klass.fhem.update.backend.xmllist.XmlListParser;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, DatabaseModule.class})
-public interface ApplicationComponent {
+@Component(modules = {ActivityModule.class, DatabaseModule.class, AndroidInjectionModule.class})
+public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication> {
 
     DeviceConfigurationProvider getDeviceConfigurationProvider();
 
@@ -126,8 +104,6 @@ public interface ApplicationComponent {
     GroupProvider getGroupProvider();
 
     Sanitiser getSanitiser();
-
-    Application getApplication();
 
     OnOffBehavior getOnOffBehavior();
 
@@ -199,47 +175,6 @@ public interface ApplicationComponent {
 
     void inject(BigAppWidgetProvider object);
 
-
-    void inject(FavoritesFragment object);
-
-    void inject(RoomListFragment object);
-
-    void inject(AllDevicesFragment object);
-
-    void inject(ConversionFragment object);
-
-    void inject(DeviceDetailFragment object);
-
-    void inject(FromToWeekProfileFragment object);
-
-    void inject(IntervalWeekProfileFragment object);
-
-    void inject(FloorplanFragment object);
-
-    void inject(RoomDetailFragment object);
-
-    void inject(SendCommandFragment object);
-
-    void inject(DeviceNameListFragment object);
-
-    void inject(DeviceNameSelectionFragment object);
-
-    void inject(DeviceNameListNavigationFragment object);
-
-    void inject(TimerListFragment object);
-
-    void inject(TimerDetailFragment object);
-
-    void inject(ConnectionListFragment object);
-
-    void inject(ConnectionDetailFragment object);
-
-    void inject(WebViewFragment object);
-
-    void inject(OtherWidgetsFragment object);
-
-    void inject(DeviceNameSelectionNavigationFragment object);
-
     void inject(DeviceListUpdateService object);
 
 
@@ -272,19 +207,21 @@ public interface ApplicationComponent {
 
     void inject(SendCommandLocaleSettingActivity sendCommandLocaleSettingActivity);
 
-    void inject(SearchResultsFragment searchResultsFragment);
-
     void inject(FireSettingLocaleReceiver fireSettingLocaleReceiver);
 
     void inject(MySearchSuggestionsProvider mySearchSuggestionsProvider);
-
-    void inject(FcmHistoryMessagesFragment fcmHistoryMessagesFragment);
-
-    void inject(FcmHistoryUpdatesFragment fcmHistoryUpdatesFragment);
 
     void inject(SettingsActivity settingsActivity);
 
     void inject(SettingsFragment settingsFragment);
 
-    void inject(@NotNull AppWidgetActionBroadcastReceiver appWidgetActionBroadcastReceiver);
+    void inject(AppWidgetActionBroadcastReceiver appWidgetActionBroadcastReceiver);
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        Builder application(Application application);
+        Builder databaseModule(DatabaseModule databaseModule);
+        ApplicationComponent build();
+    }
 }

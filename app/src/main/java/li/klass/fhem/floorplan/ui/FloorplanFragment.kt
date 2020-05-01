@@ -26,13 +26,11 @@ package li.klass.fhem.floorplan.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.webkit.WebView
+import androidx.navigation.fragment.navArgs
 import com.google.common.io.Resources
 import li.klass.fhem.R
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.ui.AbstractWebViewFragment
 import li.klass.fhem.util.BuildVersion
 import java.nio.charset.Charset
@@ -40,32 +38,11 @@ import javax.inject.Inject
 
 class FloorplanFragment @Inject constructor() : AbstractWebViewFragment() {
 
-    private lateinit var deviceName: String
-
-    override val loadUrl: String
-        get() {
-            val server = connectionService.getCurrentServer()
-            return server!!.url + "/floorplan/" + deviceName
-        }
-
-    override val alternateLoadUrl: String?
-        get() = connectionService.getCurrentServer()?.alternateUrl?.let {
-            "$it/floorplan/$deviceName"
-        }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
-
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        deviceName = args?.getString(BundleExtraKeys.DEVICE_NAME)!!
-    }
-
+    private val args: FloorplanFragmentArgs by navArgs()
 
     override fun onPageLoadFinishedCallback(view: WebView, url: String) {
         if (url.contains("&XHR=1")) {
-            view.loadUrl(loadUrl)
+            view.loadUrl(getLoadUrl())
             return
         }
 
@@ -89,16 +66,22 @@ class FloorplanFragment @Inject constructor() : AbstractWebViewFragment() {
 
     }
 
-    override fun getTitle(context: Context): CharSequence? {
-        return context.getString(R.string.functionalityFloorplan)
+    override fun getTitle(context: Context) = context.getString(R.string.functionalityFloorplan)
+
+    override fun canChildScrollUp(): Boolean = true
+
+    override fun getLoadUrl(): String {
+        val server = connectionService.getCurrentServer()
+        return server!!.url + "/floorplan/" + args.deviceName
     }
 
-    override fun canChildScrollUp(): Boolean {
-        return true
+    override fun getAlternateLoadUrl(): String? {
+        return connectionService.getCurrentServer()?.alternateUrl?.let {
+            "$it/floorplan/${args.deviceName}"
+        }
     }
 
     companion object {
-
         val TAG = FloorplanFragment::class.java.name
     }
 }

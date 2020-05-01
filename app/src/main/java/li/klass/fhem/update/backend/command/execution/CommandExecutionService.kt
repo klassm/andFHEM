@@ -27,11 +27,10 @@ package li.klass.fhem.update.backend.command.execution
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Optional
-import com.google.common.io.CharStreams
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
 import li.klass.fhem.connection.backend.RequestResult
+import li.klass.fhem.connection.backend.RequestResultError
 import li.klass.fhem.connection.backend.RequestResultError.CONNECTION_TIMEOUT
 import li.klass.fhem.connection.backend.RequestResultError.HOST_CONNECTION_ERROR
 import li.klass.fhem.constants.Actions
@@ -40,10 +39,8 @@ import li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG
 import li.klass.fhem.service.AbstractService
 import li.klass.fhem.settings.SettingsKeys.COMMAND_EXECUTION_RETRIES
 import li.klass.fhem.util.ApplicationProperties
-import li.klass.fhem.util.CloseableUtil
 import org.slf4j.LoggerFactory
 import java.io.IOException
-import java.io.InputStreamReader
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
@@ -99,12 +96,13 @@ class CommandExecutionService @Inject constructor(
         showExecutingDialog()
 
         val result = execute(command, currentTry, resultListener)
-        if (result.handleErrors(context)) {
-            lastFailedCommand = command
-            resultListener.onError()
-        } else {
-            resultListener.onResult(result.content!!)
-        }
+        result.fold(
+                onSuccess = { resultListener.onResult(it) },
+                onError = {
+                    lastFailedCommand = command
+                    resultListener.onError()
+                }
+        )
     }
 
     private fun showExecutingDialog() {
@@ -118,14 +116,18 @@ class CommandExecutionService @Inject constructor(
         LOG.info("execute() - executing command={}, try={}", command, currentTry)
 
         try {
-            if (result.error == null) {
-                sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE, applicationContext)
-            } else if (shouldTryResend(command.command, result, currentTry)) {
-                val timeoutForNextTry = secondsForTry(currentTry)
+            result.fold(
+                    onSuccess = { sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE, applicationContext) },
+                    onError = {
+                        if (shouldTryResend(command.command, it, currentTry)) {
+                            val timeoutForNextTry = secondsForTry(currentTry)
 
-                val resendCommand = ResendCommand(command, currentTry + 1, applicationContext, resultListener)
-                schedule(timeoutForNextTry, resendCommand)
-            }
+                            val resendCommand = ResendCommand(command, currentTry + 1, applicationContext, resultListener)
+                            schedule(timeoutForNextTry, resendCommand)
+                        }
+                        it.handleError(applicationContext)
+                    }
+            )
         } finally {
             hideExecutingDialog()
         }
@@ -137,12 +139,12 @@ class CommandExecutionService @Inject constructor(
         return getScheduledExecutorService().schedule(resendCommand, timeoutForNextTry.toLong(), SECONDS)
     }
 
-    private fun shouldTryResend(command: String, result: RequestResult<*>, currentTry: Int): Boolean {
-        if (!command.startsWith("set") && !command.startsWith("attr")) return false
-        if (result.error == null) return false
-        if (result.error != CONNECTION_TIMEOUT && result.error != HOST_CONNECTION_ERROR)
-            return false
-        return currentTry <= getNumberOfRetries()
+    private fun shouldTryResend(command: String, result: RequestResultError, currentTry: Int): Boolean {
+        return when {
+            !command.startsWith("set") && !command.startsWith("attr") -> false
+            result != CONNECTION_TIMEOUT && result != HOST_CONNECTION_ERROR -> false
+            else -> currentTry <= getNumberOfRetries()
+        }
     }
 
     private fun getScheduledExecutorService(): ScheduledExecutorService {
@@ -162,21 +164,21 @@ class CommandExecutionService @Inject constructor(
         )
     }
 
-    fun executeRequest(relativePath: String, context: Context): Optional<String> {
-        val provider = dataConnectionSwitch.getProviderFor() as? FHEMWEBConnection ?: return Optional.absent()
+    fun executeRequest(relativePath: String, context: Context): String? {
+        val provider = dataConnectionSwitch.getProviderFor() as? FHEMWEBConnection ?: return null
 
         val result = provider.executeRequest(relativePath, context)
-        if (result.handleErrors(context)) {
-            return Optional.absent()
-        }
-        return try {
-            Optional.of(CharStreams.toString(InputStreamReader(result.content)))
-        } catch (e: IOException) {
-            LOG.error("executeRequest() - cannot read stream", e)
-            Optional.absent()
-        } finally {
-            CloseableUtil.close(result.content)
-        }
+        return result.fold(
+                onSuccess = { stream ->
+                    try {
+                        stream.reader(Charsets.UTF_8).use { it.readText() }
+                    } catch (e: IOException) {
+                        LOG.error("executeRequest() - cannot read stream", e)
+                        null
+                    }
+                },
+                onError = { null }
+        )
     }
 
     private class SyncResultListener : SuccessfulResultListener() {

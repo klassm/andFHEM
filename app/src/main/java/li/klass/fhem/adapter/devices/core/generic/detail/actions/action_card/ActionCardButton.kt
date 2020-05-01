@@ -29,6 +29,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.NavController
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -37,15 +38,15 @@ abstract class ActionCardButton(buttonText: Int, context: Context) : ActionCardA
 
     private val buttonText: String = context.getString(buttonText)
 
-    override fun createView(device: XmlListDevice, connectionId: String?, context: Context, inflater: LayoutInflater, parent: ViewGroup): View {
+    override fun createView(device: XmlListDevice, connectionId: String?, context: Context, inflater: LayoutInflater, parent: ViewGroup, navController: NavController): View {
         val button = inflater.inflate(R.layout.button_device_detail, parent, false) as Button
         button.text = buttonText
-        button.setOnClickListener { this@ActionCardButton.onClick(device, connectionId, context) }
+        button.setOnClickListener { this@ActionCardButton.onClick(device, connectionId, context, navController) }
 
         return button
     }
 
-    protected abstract fun onClick(device: XmlListDevice, connectionId: String?, context: Context)
+    protected abstract fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController)
 
     override fun supports(device: FhemDevice): Boolean = true
 }

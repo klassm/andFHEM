@@ -28,6 +28,7 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import kotlinx.android.synthetic.main.device_detail_card_player.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -46,7 +47,7 @@ class PlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         val playerConfiguration = deviceConfigurationProvider.configurationFor(device).playerConfiguration
         if (playerConfiguration == null || playerConfiguration.hasAny()) {
             return null

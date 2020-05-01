@@ -33,6 +33,8 @@ import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.view.*
 import android.widget.*
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.github.angads25.filepicker.model.DialogConfigs
 import com.github.angads25.filepicker.model.DialogProperties
 import com.github.angads25.filepicker.view.FilePickerDialog
@@ -44,38 +46,26 @@ import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
 import java.io.File
 import javax.inject.Inject
 
-class ConnectionDetailFragment : BaseFragment() {
-    private var connectionId: String? = null
-    private var isModify = false
+class ConnectionDetailFragment @Inject constructor(
+        private val connectionService: ConnectionService
+) : BaseFragment() {
     private var connectionType: ServerType? = null
     private var detailChangedListener: ConnectionTypeDetailChangedListener? = null
 
-    @Inject
-    lateinit var connectionService: ConnectionService
+    private val args: ConnectionDetailFragmentArgs by navArgs()
+
+    private val isModify
+        get() = args.connectionId != null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        if (args?.containsKey(BundleExtraKeys.CONNECTION_ID) == true) {
-            connectionId = args.getString(BundleExtraKeys.CONNECTION_ID)
-            isModify = true
-        }
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,17 +75,15 @@ class ConnectionDetailFragment : BaseFragment() {
         }
         val context: Context = activity ?: return null
 
-        view = inflater.inflate(R.layout.connection_detail, container, false)
+        view = inflater.inflate(R.layout.connection_detail, container, false)!!
 
-        val connectionTypeSpinner = view!!.findViewById<Spinner>(R.id.connectionType)
-        if (isModify) {
-            connectionTypeSpinner.isEnabled = false
-        }
+        val connectionTypeSpinner = view.findViewById<Spinner>(R.id.connectionType)
+        connectionTypeSpinner.isEnabled = !isModify
 
         val connectionTypes = serverTypes
 
         val adapter = ArrayAdapter(context,
-                                   android.R.layout.simple_spinner_dropdown_item, connectionTypes)
+                android.R.layout.simple_spinner_dropdown_item, connectionTypes)
         connectionTypeSpinner.adapter = adapter
 
         connectionTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -109,13 +97,13 @@ class ConnectionDetailFragment : BaseFragment() {
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.connection_menu, menu)
+        inflater.inflate(R.menu.connection_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.save) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.save) {
             GlobalScope.launch(Dispatchers.Main) {
                 handleSave()
             }
@@ -136,24 +124,22 @@ class ConnectionDetailFragment : BaseFragment() {
 
     @SuppressLint("InflateParams")
     private fun handleConnectionTypeChange(connectionType: ServerType) {
-        if (view == null) return
-
         this.connectionType = checkNotNull(connectionType)
-        val activity = activity!!
+        val activity = activity ?: return
 
-        val view: View?
-        when (connectionType) {
+        val view = when (connectionType) {
             ServerType.FHEMWEB -> {
-                view = activity.layoutInflater.inflate(R.layout.connection_fhemweb, null)
-                handleFHEMWEBView(view)
+                activity.layoutInflater.inflate(R.layout.connection_fhemweb, null).apply {
+                    handleFHEMWEBView(this)
+                }
             }
-            ServerType.TELNET -> view = activity.layoutInflater.inflate(R.layout.connection_telnet, null)
+            ServerType.TELNET -> activity.layoutInflater.inflate(R.layout.connection_telnet, null)
             else -> throw IllegalArgumentException("cannot handle connection type $connectionType")
         }
 
         assert(view != null)
 
-        val showPasswordCheckbox = view!!.findViewById<CheckBox?>(R.id.showPasswordCheckbox)
+        val showPasswordCheckbox = view.findViewById<CheckBox?>(R.id.showPasswordCheckbox)
         val passwordView = view.findViewById<EditText?>(R.id.password)
         if (showPasswordCheckbox != null && passwordView != null) {
             showPasswordCheckbox.setOnClickListener { myView ->
@@ -193,21 +179,22 @@ class ConnectionDetailFragment : BaseFragment() {
     }
 
     private suspend fun handleSave() {
-        view ?: return
+        val view = view ?: return
 
         val myContext = context ?: return
         val saveStrategy = strategyFor(connectionType ?: ServerType.FHEMWEB, myContext)
-        val saveData = saveStrategy.saveDataFor(view!!) ?: return
+        val saveData = saveStrategy.saveDataFor(view) ?: return
 
         coroutineScope {
             withContext(Dispatchers.IO) {
                 if (isModify) {
-                    connectionService.update(connectionId!!, saveData)
+                    connectionService.update(args.connectionId!!, saveData)
                 } else {
                     connectionService.create(saveData)
                 }
             }
-            activity?.sendBroadcast(Intent(Actions.BACK))
+
+            findNavController().popBackStack()
         }
     }
 
@@ -219,15 +206,15 @@ class ConnectionDetailFragment : BaseFragment() {
         }
     }
 
-    private fun handleFHEMWEBView(view: View?) {
-        val setClientCertificate = view!!.findViewById<ImageButton>(R.id.setClientCertificatePath)
-        setClientCertificate.setOnClickListener(View.OnClickListener {
-            if (getView() == null) return@OnClickListener
+    private fun handleFHEMWEBView(view: View) {
+        val setClientCertificate = view.findViewById<ImageButton>(R.id.setClientCertificatePath)
+        setClientCertificate.setOnClickListener(View.OnClickListener { innerView ->
+            if (innerView == null) return@OnClickListener
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
             }
-            val clientCertificatePath = getView()!!.findViewById<TextView>(R.id.clientCertificatePath)
+            val clientCertificatePath = innerView.findViewById<TextView>(R.id.clientCertificatePath)
             val initialPath = File(clientCertificatePath.text.toString())
 
             val properties = DialogProperties()
@@ -248,8 +235,7 @@ class ConnectionDetailFragment : BaseFragment() {
         })
     }
 
-    override fun getTitle(context: Context): CharSequence? =
-            context.getString(R.string.connectionManageTitle)
+    override fun getTitle(context: Context) = context.getString(R.string.connectionManageTitle)
 
     override suspend fun update(refresh: Boolean) {
         if (!isModify) {
@@ -261,10 +247,10 @@ class ConnectionDetailFragment : BaseFragment() {
         val myContext = context ?: return
         coroutineScope {
             val result = withContext(Dispatchers.Default) {
-                connectionService.forId(connectionId!!)
+                connectionService.forId(args.connectionId!!)
             }
             if (result == null) {
-                LOG.error("update - cannot find server with ID $connectionId")
+                LOG.error("update - cannot find server with ID ${args.connectionId}")
                 myContext.sendBroadcast(Intent(Actions.BACK))
             } else {
                 setValuesForCurrentConnection(result)
@@ -299,9 +285,9 @@ class ConnectionDetailFragment : BaseFragment() {
     }
 
     private fun fillDetail(fhemServerSpec: FHEMServerSpec) {
-        view ?: return
+        val v = view ?: return
         val myContext = context ?: return
-        strategyFor(connectionType, myContext).fillView(view!!, fhemServerSpec)
+        strategyFor(connectionType, myContext).fillView(v, fhemServerSpec)
     }
 
     private fun selectionIndexFor(serverType: ServerType): Int {

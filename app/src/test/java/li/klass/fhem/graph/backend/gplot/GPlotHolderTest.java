@@ -94,7 +94,7 @@ public class GPlotHolderTest {
         GPlotDefinition definition = defaultGPlotDefinition();
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
+        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(gplotRawDefinition);
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
@@ -108,7 +108,7 @@ public class GPlotHolderTest {
     public void should_lookup_GPlot_file_without_success_if_current_map_does_not_yet_contain_corresponding_key() {
         // given
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
-        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
+        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(null);
 
         // when
         Optional<GPlotDefinition> garden = gPlotHolder.definitionFor("garden", false);
@@ -125,7 +125,7 @@ public class GPlotHolderTest {
         GPlotDefinition definition = defaultGPlotDefinition();
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.of(gplotRawDefinition));
+        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(gplotRawDefinition);
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
         gPlotHolder.definitionFor("garden", false);
 
@@ -142,7 +142,7 @@ public class GPlotHolderTest {
         GPlotDefinition definition = defaultGPlotDefinition();
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());
         String gplotRawDefinition = "myValue" + System.currentTimeMillis();
-        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(Optional.<String>absent());
+        given(commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(Context.class))).willReturn(null);
         given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(Optional.of(definition));
 
         // when
@@ -154,7 +154,7 @@ public class GPlotHolderTest {
     }
 
     @Test
-    public void should_handle_config_db() throws Exception {
+    public void should_handle_config_db() {
         // given
         GPlotDefinition definition = defaultGPlotDefinition();
         given(gPlotParser.getDefaultGPlotFiles()).willReturn(Collections.<String, GPlotDefinition>emptyMap());

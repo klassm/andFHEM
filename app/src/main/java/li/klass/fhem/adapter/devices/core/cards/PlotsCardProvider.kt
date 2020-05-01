@@ -29,6 +29,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +49,7 @@ class PlotsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 20
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 

@@ -29,6 +29,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.google.common.base.Supplier
 import com.google.common.collect.Lists.newArrayList
 import kotlinx.android.synthetic.main.weekprofile.*
@@ -56,11 +57,11 @@ interface HeatingConfigurationProvider<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
 abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>> : BaseFragment() {
 
-    private lateinit var deviceName: String
-    private lateinit var deviceDisplayName: String
-    private lateinit var heatingConfiguration: HeatingConfiguration<INTERVAL, *>
-    private lateinit var heatingConfigurationProvider: HeatingConfigurationProvider<INTERVAL>
+    abstract val deviceName: String
+    abstract val deviceDisplayName: String
+    abstract val heatingConfigurationProvider: HeatingConfigurationProvider<INTERVAL>
     private lateinit var weekProfile: WeekProfile<INTERVAL, *>
+    private lateinit var heatingConfiguration: HeatingConfiguration<INTERVAL, *>
 
     @Inject
     lateinit var deviceListService: DeviceListService
@@ -69,24 +70,13 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     @Inject
     lateinit var genericDeviceService: GenericDeviceService
 
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        args ?: return
-
-        deviceName = args.getString(DEVICE_NAME)!!
-        deviceDisplayName = args.getString(DEVICE_DISPLAY_NAME) ?: deviceName
-
-        @Suppress("UNCHECKED_CAST") heatingConfigurationProvider = args.getSerializable(
-                HEATING_CONFIGURATION)!! as HeatingConfigurationProvider<INTERVAL>
-        heatingConfiguration = heatingConfigurationProvider.get()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
 
         beforeCreateView()
+        heatingConfiguration = heatingConfigurationProvider.get()
         return inflater.inflate(R.layout.weekprofile, container, false)
     }
 
@@ -153,7 +143,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     private fun backToDevice() {
         val context = activity ?: return
         DialogUtil.showAlertDialog(context, R.string.doneTitle, R.string.switchDelayNotification,
-                                   Runnable { back() })
+                                   Runnable {
+                                       findNavController().popBackStack()
+                                   })
     }
 
     override suspend fun update(refresh: Boolean) {

@@ -34,11 +34,11 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.command_execution.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.intent.SendCommandService
 import li.klass.fhem.util.DialogUtil
@@ -46,14 +46,11 @@ import li.klass.fhem.util.ListViewUtil
 import org.apache.commons.lang3.StringUtils.isEmpty
 import javax.inject.Inject
 
-class SendCommandFragment : BaseFragment() {
+class SendCommandFragment @Inject constructor(
+        private val sendCommandService: SendCommandService
+) : BaseFragment() {
 
-    @Inject
-    lateinit var sendCommandService: SendCommandService
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    val args: SendCommandFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -81,6 +78,11 @@ class SendCommandFragment : BaseFragment() {
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sendCommandIntent(args.cmd)
     }
 
     override fun mayPullToRefresh(): Boolean = false
@@ -111,15 +113,15 @@ class SendCommandFragment : BaseFragment() {
                 sendCommandService.getRecentCommands()
             }
 
-            if (view != null) {
+            view?.let { myView ->
                 @Suppress("UNCHECKED_CAST")
-                val adapter: ArrayAdapter<String> = view!!.command_history.adapter as ArrayAdapter<String>
+                val adapter: ArrayAdapter<String> = myView.command_history.adapter as ArrayAdapter<String>
                 adapter.clear()
 
                 adapter.addAll(recentCommands)
                 adapter.notifyDataSetChanged()
 
-                ListViewUtil.setHeightBasedOnChildren(view!!.command_history)
+                ListViewUtil.setHeightBasedOnChildren(myView.command_history)
 
                 myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             }
@@ -171,6 +173,5 @@ class SendCommandFragment : BaseFragment() {
         updateAsync(false)
     }
 
-    override fun getTitle(context: Context): CharSequence? =
-            context.getString(R.string.send_command)
+    override fun getTitle(context: Context) = context.getString(R.string.send_command)
 }

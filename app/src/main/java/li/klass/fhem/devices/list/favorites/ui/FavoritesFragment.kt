@@ -27,15 +27,34 @@ package li.klass.fhem.devices.list.favorites.ui
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.navigation.fragment.findNavController
 import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.connection.backend.DataConnectionSwitch
+import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
+import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
+import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.service.advertisement.AdvertisementService
+import li.klass.fhem.update.backend.DeviceListUpdateService
+import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.Reject
+import li.klass.fhem.util.device.DeviceActionUIService
+import javax.inject.Inject
 
-class FavoritesFragment : DeviceListFragment() {
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+class FavoritesFragment @Inject constructor(
+        dataConnectionSwitch: DataConnectionSwitch,
+        applicationProperties: ApplicationProperties,
+        viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+        advertisementService: AdvertisementService,
+        genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+        deviceActionUiService: DeviceActionUIService,
+        private val favoritesService: FavoritesService,
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val appWidgetUpdateService: AppWidgetUpdateService
+) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
+        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
 
     override fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val inflater = activity?.layoutInflater
@@ -43,12 +62,16 @@ class FavoritesFragment : DeviceListFragment() {
         view.addView(inflater?.inflate(R.layout.favorites_empty_view, viewGroup, false))
     }
 
-    override fun getTitle(context: Context): CharSequence = context.getString(R.string.favorites)
+    override fun getTitle(context: Context) = context.getString(R.string.favorites)
 
     override fun getRoomDeviceListForUpdate(context: Context) = favoritesService.getFavorites()
 
     override fun executeRemoteUpdate(context: Context) {
         deviceListUpdateService.updateAllDevices()
         appWidgetUpdateService.updateAllWidgets()
+    }
+
+    override fun navigateTo(device: FhemDevice) {
+        findNavController().navigate(FavoritesFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
     }
 }

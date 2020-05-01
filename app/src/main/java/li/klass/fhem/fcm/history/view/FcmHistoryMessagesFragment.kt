@@ -9,14 +9,13 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.fcm.history.data.FcmHistoryService
 import org.joda.time.LocalDate
+import javax.inject.Inject
 
-class FcmHistoryMessagesFragment : FcmHistoryBaseFragment<FcmMessagesAdapter>(R.layout.fcm_history_messages) {
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+class FcmHistoryMessagesFragment @Inject constructor(
+        private val fcmHistoryService: FcmHistoryService
+): FcmHistoryBaseFragment<FcmMessagesAdapter>(R.layout.fcm_history_messages) {
 
     override fun getAdapter() = FcmMessagesAdapter(emptyList())
 

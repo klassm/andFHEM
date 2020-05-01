@@ -40,6 +40,9 @@ class XmlListDevice(
     val creationTime = DateTime.now()!!
     val name: String get() = internals["NAME"]?.value ?: "??"
 
+    fun displayName() =
+            getAttribute("alias") ?: name
+
     fun containsState(state: String): Boolean = containsAnyOfStates(setOf(state))
 
     fun containsAnyOfStates(toFind: Collection<String>): Boolean =

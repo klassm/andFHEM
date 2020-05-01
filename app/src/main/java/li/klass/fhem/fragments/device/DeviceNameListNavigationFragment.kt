@@ -24,36 +24,47 @@
 
 package li.klass.fhem.fragments.device
 
-import android.content.Intent
-import android.os.Bundle
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys.*
-import li.klass.fhem.dagger.ApplicationComponent
+import android.content.Context
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import li.klass.fhem.R
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.ui.FragmentType
+import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
+import javax.inject.Inject
 
-/**
- * Show all devices for a specific room and switch to the device detail when the name is clicked.
- */
-class DeviceNameListNavigationFragment : DeviceNameListFragment() {
+class DeviceNameListNavigationFragment @Inject constructor(
+        deviceListService: DeviceListService,
+        viewableElementsCalculator: ViewableElementsCalculator,
+        deviceListUpdateService: DeviceListUpdateService,
+        appWidgetUpdateService: AppWidgetUpdateService
+) : DeviceNameListFragment(deviceListService, viewableElementsCalculator, deviceListUpdateService, appWidgetUpdateService) {
 
-    private var roomName: String? = null
-
-    override fun setArguments(args: Bundle?) {
-        super.setArguments(args)
-        roomName = args?.getString(ROOM_NAME)
-    }
+    private val navigationViewModel by navGraphViewModels<DeviceNameListNavigationFragmentViewModel>(R.id.nav_graph)
 
     override fun onDeviceNameClick(child: FhemDevice) {
-        activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
-                .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
-                .putExtra(DEVICE_NAME, child.name)
-                .putExtra(DEVICE_DISPLAY_NAME, child.aliasOrName)
-                .putExtra(CALLING_FRAGMENT, arguments?.getSerializable(CALLING_FRAGMENT))
-                .putExtra(ROOM_NAME, roomName))
+        if (isResumed) {
+            findNavController().navigate(
+                    DeviceNameListNavigationFragmentDirections.actionToDeviceDetailRedirect(
+                            child.name,
+                            null
+                    )
+            )
+        }
     }
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
-    }
+    override val layout: Int = R.layout.device_name_list
+
+    override fun mayPullToRefresh(): Boolean = false
+
+    override val canUpdateRemotely: Boolean = false
+
+    override fun getTitle(context: Context): String? = null
+
+    override fun getNumberOfColumns(): Int = 1
+
+    override val deviceName: String?
+        get() = navigationViewModel.selectedDevice.value
 }

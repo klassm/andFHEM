@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/widgetDeviceSelectionFragment"
+        android:title="@string/widget_devices"
+        app:showAsAction="always"
+        android:orderInCategory="2"
+        android:icon="@drawable/all_devices"
+        android:checked="true" />
+    <item
+        android:id="@+id/roomWidgetSelectionFragment"
+        android:title="@string/widget_rooms"
+        app:showAsAction="always"
+        android:orderInCategory="2"
+        android:icon="@drawable/room_list" />
+    <item
+        android:id="@+id/otherWidgetsFragment"
+        android:title="@string/widget_others"
+        app:showAsAction="always"
+        android:orderInCategory="2"
+        android:icon="@drawable/room_list" />
+</menu>

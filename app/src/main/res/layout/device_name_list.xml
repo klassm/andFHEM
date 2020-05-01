@@ -24,20 +24,8 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingEnd="0dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="0dp"
-    android:paddingStart="5dp">
-
-    <include layout="@layout/device_view_header" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/devices"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/listView" />
-</LinearLayout>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/devices"
+    style="@style/listView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

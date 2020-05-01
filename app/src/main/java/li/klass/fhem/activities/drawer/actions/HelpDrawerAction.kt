@@ -31,7 +31,7 @@ import li.klass.fhem.ApplicationUrls
 import li.klass.fhem.R
 import javax.inject.Inject
 
-class HelpDrawerAction @Inject constructor() : AbstractDrawerAction(R.id.menu_help, returnHandle = false) {
+class HelpDrawerAction @Inject constructor() : AbstractDrawerAction(R.id.menu_help) {
     override fun execute(activity: AppCompatActivity) {
         val helpUri = Uri.parse(ApplicationUrls.HELP_PAGE)
         val helpIntent = Intent(Intent.ACTION_VIEW, helpUri)

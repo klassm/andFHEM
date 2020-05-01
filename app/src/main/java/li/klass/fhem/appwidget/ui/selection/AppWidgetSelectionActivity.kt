@@ -29,11 +29,14 @@ import android.app.AlertDialog
 import android.appwidget.AppWidgetManager.*
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.appwidget_selection.*
 import kotlinx.coroutines.*
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
@@ -42,29 +45,35 @@ import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.dagger.ScopedFragmentFactory
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import javax.inject.Inject
 
-abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : AppCompatActivity(), SelectionCompletedCallback {
+abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : AppCompatActivity() {
     @Inject
     lateinit var appWidgetInstanceManager: AppWidgetInstanceManager
+
     @Inject
     lateinit var applicationProperties: ApplicationProperties
+
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+
     @Inject
     lateinit var widgetTypeProvider: WidgetTypeProvider
+
+    @Inject
+    lateinit var scopedFragmentFactory: ScopedFragmentFactory
 
     private var widgetId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        inject((application as AndFHEMApplication).daggerComponent)
+        AndroidInjection.inject(this)
+        supportFragmentManager.fragmentFactory = scopedFragmentFactory
 
         widgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID)
 
@@ -79,14 +88,28 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
                 finish()
                 setResult(Activity.RESULT_CANCELED)
             })
-        } else {
-            setContentView(R.layout.appwidget_selection)
-            val viewPager = findViewById<ViewPager>(R.id.viewpager)!!
-            viewPager.adapter = AppWidgetSelectionFragmentAdapter(supportFragmentManager, widgetTypeProvider, this, widgetSize, this)
-
-            val tabLayout = findViewById<TabLayout>(R.id.sliding_tabs)!!
-            tabLayout.setupWithViewPager(viewPager)
         }
+        val model: WidgetSelectionViewModel by viewModels()
+        model.widgetSize = widgetSize
+        model.roomClicked.observe(this, Observer {
+            onRoomSelect(it)
+        })
+        model.deviceClicked.observe(this, Observer {
+            onDeviceSelect(it)
+        })
+        model.otherWidgetClicked.observe(this, Observer {
+            onOtherWidgetSelect(it)
+        })
+
+        setContentView(R.layout.appwidget_selection)
+        setUpNavigation()
+    }
+
+    private fun setUpNavigation() {
+        val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        val navController = navHostFragment!!.navController
+        NavigationUI.setupWithNavController(bottom_navigation, navController)
     }
 
     private fun openWidgetSelection(widgets: List<AppWidgetView>, vararg payload: String) {
@@ -118,17 +141,17 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         }, *payload)
     }
 
-    override fun onRoomSelect(roomName: String) {
+    private fun onRoomSelect(roomName: String) {
         val widgets = widgetTypeProvider.getSupportedRoomWidgetsFor(widgetSize)
         openWidgetSelection(widgets, roomName)
     }
 
-    override fun onDeviceSelect(clickedDevice: FhemDevice) {
+    private fun onDeviceSelect(clickedDevice: FhemDevice) {
         val widgetTypes = widgetTypeProvider.getSupportedDeviceWidgetsFor(widgetSize, clickedDevice)
         openWidgetSelection(widgetTypes, clickedDevice.name)
     }
 
-    override fun onOtherWidgetSelect(widgetType: AppWidgetView) {
+    private fun onOtherWidgetSelect(widgetType: AppWidgetView) {
         createWidget(widgetType)
     }
 
@@ -136,6 +159,4 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         super.onPause()
         finish()
     }
-
-    protected abstract fun inject(applicationComponent: ApplicationComponent)
 }

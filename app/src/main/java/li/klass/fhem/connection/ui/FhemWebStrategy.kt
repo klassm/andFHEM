@@ -42,6 +42,7 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
         val clientCertificatePassword = trimToNull(view.clientCertificatePassword.text.toString())
         val clientCertificatePath = trimToNull(view.clientCertificatePath.text.toString())
         val password = trimToNull(view.password.text.toString())
+        val csrfToken = trimToNull(view.csrfToken.text.toString())
 
         if (!enforceNotEmpty(R.string.connectionName, name)
                 || !enforceUrlStartsWithHttp(url)) {
@@ -54,7 +55,8 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
                 url = url,
                 alternateUrl = alternateUrl,
                 clientCertificatePassword = clientCertificatePassword,
-                clientCertificatePath = clientCertificatePath
+                clientCertificatePath = clientCertificatePath,
+                csrfToken = csrfToken
         )
     }
 
@@ -66,6 +68,7 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
         view.password.setText(fhemServerSpec.password)
         view.clientCertificatePath.setText(fhemServerSpec.clientCertificatePath)
         view.clientCertificatePassword.setText(fhemServerSpec.clientCertificatePassword)
+        view.csrfToken.setText(fhemServerSpec.csrfToken)
     }
 
     private fun enforceUrlStartsWithHttp(url: String?): Boolean {

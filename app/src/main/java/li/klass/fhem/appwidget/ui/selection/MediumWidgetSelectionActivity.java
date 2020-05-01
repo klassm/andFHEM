@@ -25,15 +25,9 @@
 package li.klass.fhem.appwidget.ui.selection;
 
 import li.klass.fhem.appwidget.ui.widget.WidgetSize;
-import li.klass.fhem.dagger.ApplicationComponent;
 
 public class MediumWidgetSelectionActivity extends AppWidgetSelectionActivity {
     public MediumWidgetSelectionActivity() {
         super(WidgetSize.MEDIUM);
-    }
-
-    @Override
-    protected void inject(ApplicationComponent applicationComponent) {
-        applicationComponent.inject(this);
     }
 }

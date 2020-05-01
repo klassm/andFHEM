@@ -67,6 +67,6 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        val TAG = FireSettingLocaleReceiver::class.java.name!!
+        val TAG = FireSettingLocaleReceiver::class.java.name
     }
 }

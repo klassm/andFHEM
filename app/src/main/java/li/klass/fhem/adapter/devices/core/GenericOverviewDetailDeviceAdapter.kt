@@ -28,6 +28,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
+import androidx.navigation.NavController
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
 import li.klass.fhem.adapter.devices.strategy.StrategyProvider
@@ -47,13 +48,13 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
     }
 
     @SuppressLint("InflateParams")
-    suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?): View {
+    suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?, navController: NavController): View {
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
         genericDetailCardProviders.providers.sortedBy { it.ordering() }
                 .map {
                     try {
-                        it.provideCard(device, context, connectionId)
+                        it.provideCard(device, context, connectionId, navController)
                     } catch (e: Exception) {
                         logger.error("getDeviceDetailView(device=${device.name}) - error while providing card of ${it.javaClass.name}", e)
                         null

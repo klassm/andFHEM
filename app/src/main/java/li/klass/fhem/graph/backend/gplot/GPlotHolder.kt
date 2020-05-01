@@ -67,14 +67,14 @@ class GPlotHolder @Inject constructor(
         LOGGER.info("definitionFor(name={}, isConfigDb={}) - loading definition from remote", name, isConfigDb)
 
         val result = if (isConfigDb)
-            Optional.fromNullable(commandExecutionService.executeSync(Command("configdb fileshow ./www/gplot/$name.gplot")))
+            commandExecutionService.executeSync(Command("configdb fileshow ./www/gplot/$name.gplot"))
         else
             commandExecutionService.executeRequest("/gplot/$name.gplot", applicationContext)
 
-        if (result.isPresent) {
+        if (result != null) {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - done loading, putting to cache", name, isConfigDb)
-            val gplot = gPlotParser.parseSafe(result.get())
-            definitions.put(name, gplot)
+            val gplot = gPlotParser.parseSafe(result)
+            definitions[name] = gplot
             return gplot
         } else {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - could not execute request, putting nothing to cache", name, isConfigDb)

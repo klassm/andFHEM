@@ -25,96 +25,27 @@
 package li.klass.fhem.ui;
 
 import androidx.annotation.Nullable;
-import li.klass.fhem.R;
-import li.klass.fhem.appwidget.ui.widget.base.otherWidgets.OtherWidgetsFragment;
-import li.klass.fhem.connection.ui.ConnectionDetailFragment;
-import li.klass.fhem.connection.ui.ConnectionListFragment;
-import li.klass.fhem.conversion.ui.ConversionFragment;
-import li.klass.fhem.devices.detail.ui.DeviceDetailFragment;
-import li.klass.fhem.devices.list.all.ui.AllDevicesFragment;
-import li.klass.fhem.devices.list.favorites.ui.FavoritesFragment;
-import li.klass.fhem.fcm.history.view.FcmHistoryFragment;
-import li.klass.fhem.floorplan.ui.FloorplanFragment;
-import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
-import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
-import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
-import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
-import li.klass.fhem.room.detail.ui.RoomDetailFragment;
-import li.klass.fhem.room.list.ui.RoomListFragment;
-import li.klass.fhem.search.SearchResultsFragment;
-import li.klass.fhem.sendCommand.ui.SendCommandFragment;
-import li.klass.fhem.timer.ui.TimerDetailFragment;
-import li.klass.fhem.timer.ui.TimerListFragment;
 
 public enum FragmentType {
-    FAVORITES(FavoritesFragment.class, R.id.favorites, null),
-    ROOM_LIST(RoomListFragment.class, R.id.rooms, null),
-    ALL_DEVICES(AllDevicesFragment.class, R.id.all_devices, RoomListFragment.class),
-    CONVERSION(ConversionFragment.class, R.id.conversion, null),
-    DEVICE_DETAIL(DeviceDetailFragment.class, DeviceNameListNavigationFragment.class),
-    FROM_TO_WEEK_PROFILE(FromToWeekProfileFragment.class),
-    INTERVAL_WEEK_PROFILE(IntervalWeekProfileFragment.class),
-    FLOORPLAN(FloorplanFragment.class),
-    ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
-    SEND_COMMAND(SendCommandFragment.class, R.id.send_command, null),
-    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
-    TIMER_OVERVIEW(TimerListFragment.class, R.id.timer, null),
-    TIMER_DETAIL(TimerDetailFragment.class),
-    CONNECTION_LIST(ConnectionListFragment.class),
-    CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class),
-    WEB_VIEW(WebViewFragment.class),
-    OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class),
-    SEARCH(SearchResultsFragment.class),
-    FCM_HISTORY(FcmHistoryFragment.class, R.id.fcm_history, null);
-
-    private Class<? extends BaseFragment> fragmentClass;
-    private Class<? extends BaseFragment> navigationFragment;
-    private int fragmentDrawerId;
-
-    FragmentType(Class<? extends BaseFragment> fragmentClass) {
-        this(fragmentClass, -1, null);
-    }
-
-    FragmentType(Class<? extends BaseFragment> fragmentClass, int fragmentDrawerId,
-                 Class<? extends BaseFragment> navigationFragment) {
-        this.fragmentClass = fragmentClass;
-        this.fragmentDrawerId = fragmentDrawerId;
-        this.navigationFragment = navigationFragment;
-    }
-
-    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass) {
-        this(fragmentClass, -1, navigationClass);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static FragmentType getFragmentFor(String name) {
-        try {
-            Class<? extends BaseFragment> fragmentType = (Class<? extends BaseFragment>) Class.forName(name);
-            return FragmentType.getFragmentFor(fragmentType);
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
-    public static FragmentType getFragmentFor(int drawerId) {
-        for (FragmentType fragmentType : FragmentType.values()) {
-            if (fragmentType.fragmentDrawerId == drawerId) {
-                return fragmentType;
-            }
-        }
-        return null;
-    }
-
-    public static FragmentType getFragmentFor(Class<? extends BaseFragment> clazz) {
-        for (FragmentType fragmentType : FragmentType.values()) {
-            if (fragmentType.fragmentClass.isAssignableFrom(clazz)) {
-                return fragmentType;
-            }
-        }
-        return null;
-    }
+    FAVORITES,
+    ROOM_LIST,
+    ALL_DEVICES,
+    CONVERSION,
+    DEVICE_DETAIL,
+    FROM_TO_WEEK_PROFILE,
+    INTERVAL_WEEK_PROFILE,
+    FLOORPLAN,
+    ROOM_DETAIL,
+    SEND_COMMAND,
+    DEVICE_SELECTION,
+    TIMER_OVERVIEW,
+    TIMER_DETAIL,
+    CONNECTION_LIST,
+    CONNECTION_DETAIL,
+    WEB_VIEW,
+    OTHER_WIDGETS_FRAGMENT,
+    SEARCH,
+    FCM_HISTORY;
 
     @Nullable
     public static FragmentType forEnumName(String name) {
@@ -124,20 +55,4 @@ public enum FragmentType {
             return null;
         }
     }
-
-    public Class<? extends BaseFragment> getNavigationClass() {
-        return navigationFragment;
-    }
-
-    public Class<? extends BaseFragment> getContentClass() {
-        return fragmentClass;
-    }
-
-    public boolean isTopLevelFragment() {
-        return fragmentDrawerId != -1;
-    }
-
-    public int getDrawerMenuId() {
-        return fragmentDrawerId;
-    }
-    }
+}

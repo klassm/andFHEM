@@ -650,4 +650,5 @@
     </string>
 
     <string name="chooseDevice">Gerät auswählen</string>
+    <string name="csrfTokenLabel">CSRF Token (optional)</string>
 </resources>

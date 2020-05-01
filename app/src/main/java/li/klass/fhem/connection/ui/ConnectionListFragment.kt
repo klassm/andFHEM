@@ -32,6 +32,7 @@ import android.widget.AdapterView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.connection_list.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
@@ -41,25 +42,21 @@ import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
+import li.klass.fhem.connection.ui.ConnectionListFragmentDirections.Companion.actionConnectionListFragmentToConnectionDetailFragment
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
-import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.Reject
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
-class ConnectionListFragment : BaseFragment() {
-
-    @Inject
-    lateinit var advertisementService: AdvertisementService
-    @Inject
-    lateinit var connectionService: ConnectionService
-    @Inject
-    lateinit var licenseService: LicenseService
+class ConnectionListFragment @Inject constructor(
+       private val advertisementService: AdvertisementService,
+       private val connectionService: ConnectionService,
+       private val licenseService: LicenseService
+) : BaseFragment() {
 
     private var clickedConnectionId: String? = null
     private var connectionId: String? = null
@@ -67,10 +64,6 @@ class ConnectionListFragment : BaseFragment() {
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         connectionId = args?.getString(CONNECTION_ID)
-    }
-
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,13 +96,13 @@ class ConnectionListFragment : BaseFragment() {
         return layout
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.connections_menu, menu)
+        inflater.inflate(R.menu.connections_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.connection_add) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.connection_add) {
             val size = adapter.data.size
 
             GlobalScope.launch(Dispatchers.Main) {
@@ -121,8 +114,11 @@ class ConnectionListFragment : BaseFragment() {
                             .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
                 } else {
                     logger.info("onOptionsItemSelected - showing connection detail for a new connection")
-                    activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
-                            .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL))
+                    findNavController().navigate(
+                            actionConnectionListFragmentToConnectionDetailFragment(
+                                    null
+                            )
+                    )
                 }
             }
             return true
@@ -131,8 +127,7 @@ class ConnectionListFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun getTitle(context: Context): CharSequence? =
-            context.getString(R.string.connectionManageTitle)
+    override fun getTitle(context: Context) = context.getString(R.string.connectionManageTitle)
 
     private fun fillEmptyView(view: LinearLayout) {
         val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, view)!!
@@ -140,11 +135,8 @@ class ConnectionListFragment : BaseFragment() {
         emptyText.setText(R.string.noConnections)
     }
 
-    private fun onClick(connectionId: String) {
-        activity?.sendBroadcast(Intent(Actions.SHOW_FRAGMENT)
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL)
-                .putExtra(CONNECTION_ID, connectionId))
-    }
+    private fun onClick(connectionId: String) =
+            findNavController().navigate(actionConnectionListFragmentToConnectionDetailFragment(connectionId))
 
     private val adapter: ConnectionListAdapter
         get() {
@@ -152,7 +144,7 @@ class ConnectionListFragment : BaseFragment() {
             return listView.adapter as ConnectionListAdapter
         }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
 
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
@@ -165,11 +157,11 @@ class ConnectionListFragment : BaseFragment() {
         menu.add(0, CONTEXT_MENU_DELETE, 0, R.string.context_delete)
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
+    override fun onContextItemSelected(item: MenuItem): Boolean {
         super.onContextItemSelected(item)
 
         if (clickedConnectionId == null) return false
-        when (item!!.itemId) {
+        when (item.itemId) {
             CONTEXT_MENU_DELETE -> {
                 GlobalScope.launch(Dispatchers.Main) {
                     withContext(Dispatchers.IO) {

@@ -30,6 +30,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TableLayout
 import android.widget.TableRow
+import androidx.navigation.NavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
@@ -52,7 +53,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): androidx.cardview.widget.CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): androidx.cardview.widget.CardView? {
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }

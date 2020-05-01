@@ -33,41 +33,34 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.room_detail_page.view.*
 import kotlinx.coroutines.*
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
 import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys.STRING
-import li.klass.fhem.constants.BundleExtraKeys.STRING_ID
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
+import li.klass.fhem.util.navigation.loadFragmentInto
 import li.klass.fhem.widget.SwipeRefreshLayout
+import org.jetbrains.anko.support.v4.onRefresh
 import java.io.Serializable
 import javax.inject.Inject
 
 abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefreshLayout.ChildScrollDelegate {
 
-    var isNavigation = false
-
     @Transient
     private var broadcastReceiver: UIBroadcastReceiver? = null
-    private var backPressCalled = false
+
     @Inject
     lateinit var resendLastFailedCommandService: ResendLastFailedCommandService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject((activity?.application as AndFHEMApplication).daggerComponent)
+        updateAsync(false)
     }
-
-    protected abstract fun inject(applicationComponent: ApplicationComponent)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,6 +76,15 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                 }
             }
         }
+
+        view.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)?.let {
+            it.onRefresh {
+                updateAsync(true)
+            }
+            it.setChildScrollDelegate {
+                canChildScrollUp()
+            }
+        }
     }
 
     override fun canChildScrollUp(): Boolean {
@@ -94,16 +96,16 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
     override suspend fun update(refresh: Boolean) {
         hideConnectionError()
-        updateInternal(refresh)
+        updateInternal(canUpdateRemotely && refresh)
     }
+
+    open val canUpdateRemotely = true
 
     fun updateAsync(refresh: Boolean = true) = GlobalScope.launch(Dispatchers.Main) {
         update(refresh)
     }
 
     private fun hideConnectionError() {
-        if (isNavigation) return
-
         val view = view ?: return
 
         val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
@@ -117,9 +119,25 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             broadcastReceiver = UIBroadcastReceiver(myActivity)
         }
         broadcastReceiver!!.attach()
-        backPressCalled = false
 
+        view?.findViewById<FrameLayout>(R.id.navigation)?.navigation?.let {
+            val navFragment = navigationFragment
+            when (navFragment == null) {
+                true -> it.visibility = View.GONE
+                false -> loadFragmentInto(R.id.navigation, navFragment)
+            }
+            navFragment?.view?.invalidate()
+        }
+
+        val title = getTitle(myActivity)
+        title?.let { setTitle(it) }
         updateAsync(false)
+    }
+
+    open val navigationFragment: Fragment? = null
+
+    fun setTitle(title: String?) {
+        activity?.title = title ?: ""
     }
 
     override fun onDetach() {
@@ -129,10 +147,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             broadcastReceiver!!.detach()
             broadcastReceiver = null
         }
-    }
-
-    fun onBackPressResult() {
-        updateAsync(false)
     }
 
     fun invalidate() {
@@ -152,9 +166,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     }
 
     protected fun showEmptyView() {
-        if (isNavigation || view == null) return
-
-        val emptyView = view!!.findViewById<LinearLayout?>(R.id.emptyView) ?: return
+        val emptyView = view?.findViewById<LinearLayout?>(R.id.emptyView) ?: return
         emptyView.visibility = View.VISIBLE
     }
 
@@ -169,9 +181,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     }
 
     private fun showConnectionError(content: String) {
-        if (isNavigation) return
-
-
         val view = view ?: return
 
         val errorLayout = view.findViewById<RelativeLayout?>(R.id.errorLayout) ?: return
@@ -202,9 +211,10 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     inner class UIBroadcastReceiver(private val activity: androidx.fragment.app.FragmentActivity) : BroadcastReceiver() {
 
         private val intentFilter: IntentFilter = IntentFilter().apply {
-            addAction(TOP_LEVEL_BACK)
             addAction(CONNECTION_ERROR)
             addAction(CONNECTION_ERROR_HIDE)
+            addAction(DO_UPDATE)
+            addAction(DISMISS_EXECUTING_DIALOG)
         }
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -213,21 +223,27 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                 Log.v(UIBroadcastReceiver::class.java.name, "received action " + action!!)
 
                 try {
-                    if (action == TOP_LEVEL_BACK) {
-                        if (!isVisible) return@Runnable
-                        if (!backPressCalled) {
-                            backPressCalled = true
-                            onBackPressResult()
+                    when (action) {
+                        CONNECTION_ERROR -> {
+                            val content = if (intent.hasExtra(STRING_ID)) {
+                                context.getString(intent.getIntExtra(STRING_ID, -1))
+                            } else {
+                                intent.getStringExtra(STRING)
+                            }
+                            showConnectionError(content)
                         }
-                    } else if (action == CONNECTION_ERROR) {
-                        val content = if (intent.hasExtra(STRING_ID)) {
-                            context.getString(intent.getIntExtra(STRING_ID, -1))
-                        } else {
-                            intent.getStringExtra(STRING)
+                        CONNECTION_ERROR_HIDE -> {
+                            hideConnectionError()
                         }
-                        showConnectionError(content)
-                    } else if (action == CONNECTION_ERROR_HIDE) {
-                        hideConnectionError()
+                        DO_UPDATE -> {
+                            updateAsync(intent.getBooleanExtra(DO_REFRESH, false))
+                        }
+                        DISMISS_EXECUTING_DIALOG -> {
+                            view?.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
+                                    ?.let {
+                                        it.isRefreshing = false
+                                    }
+                        }
                     }
                 } catch (e: Exception) {
                     Log.e(UIBroadcastReceiver::class.java.name, "error occurred", e)
@@ -249,9 +265,5 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
     }
 
-    open fun getTitle(context: Context): CharSequence? = null
-
-    protected fun back() {
-        activity?.sendBroadcast(Intent(BACK))
-    }
+    open fun getTitle(context: Context): String? = null
 }

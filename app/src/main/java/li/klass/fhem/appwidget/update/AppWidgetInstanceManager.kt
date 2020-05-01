@@ -110,7 +110,7 @@ class AppWidgetInstanceManager @Inject constructor(
     private val appWidgetManager: AppWidgetManager get() = AppWidgetManager.getInstance(applicationContext)
 
     companion object {
-        val SAVE_PREFERENCE_NAME = "li.klass.fhem.appwidget.AppWidgetDataHolder"
+        const val SAVE_PREFERENCE_NAME = "li.klass.fhem.appwidget.AppWidgetDataHolder"
         private val LOG = LoggerFactory.getLogger(AppWidgetInstanceManager::class.java)!!
     }
 }

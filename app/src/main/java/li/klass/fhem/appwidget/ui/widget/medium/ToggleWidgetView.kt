@@ -87,7 +87,7 @@ open class ToggleWidgetView @Inject constructor(
                                 .putExtra(DEVICE_TARGET_STATE, onOffBehavior.getOnStateName(device))
                         ButtonHook.OFF_DEVICE -> setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
                                 .putExtra(DEVICE_TARGET_STATE, onOffBehavior.getOffStateName(device))
-                        else -> setAction(Actions.DEVICE_WIDGET_TOGGLE)
+                        else -> action = Actions.DEVICE_WIDGET_TOGGLE
                     }
                 }
     }

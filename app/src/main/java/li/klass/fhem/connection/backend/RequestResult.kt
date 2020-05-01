@@ -24,21 +24,18 @@
 
 package li.klass.fhem.connection.backend
 
-import android.content.Context
-import android.content.Intent
+sealed class RequestResult<CONTENT> {
 
-import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
+    data class Success<CONTENT>(val success: CONTENT) : RequestResult<CONTENT>()
+    data class Error<CONTENT>(val error: RequestResultError) : RequestResult<CONTENT>()
 
-data class RequestResult<CONTENT> @JvmOverloads constructor(val content: CONTENT? = null,
-                                                            val error: RequestResultError? = null) {
+    fun <RESULT> fold(onSuccess: (content: CONTENT) -> RESULT, onError: (error: RequestResultError) -> RESULT): RESULT =
+            when (this) {
+                is Success -> onSuccess(success)
+                is Error -> onError(error)
+            }
 
-    fun handleErrors(context: Context): Boolean {
-        if (error == null) return false
-
-        context.sendBroadcast(Intent(Actions.CONNECTION_ERROR)
-                .putExtra(BundleExtraKeys.STRING_ID, error.errorStringId))
-
-        return true
-    }
+    fun <RESULT> map(onSuccess: (content: CONTENT) -> RESULT): RequestResult<RESULT> = fold(
+            { Success(onSuccess(it)) }, { Error(it) }
+    )
 }

@@ -29,6 +29,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
+import androidx.navigation.NavController
 import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
@@ -37,8 +38,8 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.HeatingModeDetailAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow
-import li.klass.fhem.adapter.uiservice.FragmentUiService
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.devices.detail.ui.DeviceDetailFragmentDirections
 import li.klass.fhem.domain.CulHmHeatingMode
 import li.klass.fhem.domain.CulHmHeatingMode.heatingModeFor
 import li.klass.fhem.domain.core.FhemDevice
@@ -55,7 +56,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CulHmDetailActionProvider @Inject constructor(
-        private val fragmentUiService: FragmentUiService, stateUiService: StateUiService) :
+        stateUiService: StateUiService) :
         DeviceDetailActionProvider() {
 
     init {
@@ -68,12 +69,14 @@ class CulHmDetailActionProvider @Inject constructor(
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return ImmutableList.of<ActionCardAction>(object : ActionCardButton(R.string.timetable,
                                                                             context) {
-            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
+            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                 val provider = object : HeatingConfigurationProvider<FilledTemperatureInterval> {
                     override fun get(): HeatingConfiguration<FilledTemperatureInterval, *> = CULHMConfiguration()
                 }
-                fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context,
-                                                             provider)
+
+                navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToIntervalWeekProfileFragment(
+                        device.displayName(), device.name, provider
+                ))
             }
 
             override fun supports(device: FhemDevice): Boolean = supportsHeating(

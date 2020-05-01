@@ -31,6 +31,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.startup.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -39,6 +40,7 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.startup.actions.StartupActions
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.dagger.ScopedFragmentFactory
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.login.LoginUIService
@@ -69,11 +71,12 @@ class StartupActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
+
         if (intent.flags and Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT != 0) {
             finish()
             return
         }
-        (application as AndFHEMApplication).daggerComponent.inject(this)
 
         setContentView(R.layout.startup)
     }

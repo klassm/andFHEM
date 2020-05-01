@@ -49,7 +49,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.connection.backend.ConnectionService;
 import li.klass.fhem.dagger.ApplicationComponent;
-import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.dagger.DaggerApplicationComponent;
 import li.klass.fhem.dagger.DatabaseModule;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
@@ -86,11 +85,11 @@ public abstract class DeviceXMLParsingBase {
         AndFHEMApplication application = mock(AndFHEMApplication.class);
         when(application.getApplicationContext()).thenReturn(context);
         applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(application))
+                .application(application)
                 .databaseModule(new DatabaseModule(application)).build();
 
         DeviceListParser deviceListParser = new DeviceListParser(
-                connectionService, applicationComponent.getXmllistParser(),
+                applicationComponent.getXmllistParser(),
                 applicationComponent.getGPlotHolder(), applicationComponent.getGroupProvider(),
                 applicationComponent.getSanitiser()
         );

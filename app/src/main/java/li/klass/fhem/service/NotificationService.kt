@@ -25,17 +25,15 @@
 package li.klass.fhem.service
 
 import android.app.Activity
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.os.SystemClock
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.common.base.Joiner
 import com.google.common.collect.Maps.newHashMap
+import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
-import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.util.NotificationUtil
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -79,14 +77,12 @@ constructor() {
 
     private fun generateNotification(device: FhemDevice, updateMap: Map<String, String>, vibrate: Boolean, context: Context) {
         val deviceName = device.name
-
-        val openIntent = Intent(context, AndFHEMMainActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
-        val pendingIntent = PendingIntent.getActivity(context, deviceName.hashCode(), openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = NavDeepLinkBuilder(context)
+                .setComponentName(AndFHEMMainActivity::class.java)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.deviceDetailRedirectFragment)
+                .setArguments(DeviceDetailRedirectFragmentArgs(device.name, null).toBundle())
+                .createPendingIntent()
 
         val text: String = if (updateMap.size == 1 && updateMap.containsKey("state")) {
             updateMap["state"]!!

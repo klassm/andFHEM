@@ -26,18 +26,16 @@ package li.klass.fhem.appwidget.ui.widget.base
 
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.os.SystemClock
 import android.widget.RemoteViews
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
+import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.connection.backend.ConnectionService
-import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import org.slf4j.LoggerFactory
@@ -60,15 +58,13 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
     private fun supportsFromJsonConfiguration(device: FhemDevice): Boolean {
         val configuration = deviceConfigurationProvider.configurationFor(device)
         val supportedWidgets = configuration.supportedWidgets
-        supportedWidgets
-                .filter { javaClass.simpleName.equals(it, ignoreCase = true) }
-                .forEach { return true }
-        return false
+        return supportedWidgets
+                .any { javaClass.simpleName.equals(it, ignoreCase = true) }
     }
 
     override fun createView(context: Context, widgetConfiguration: WidgetConfiguration): RemoteViews {
         val views = super.createView(context, widgetConfiguration)
-        logger.info("createView - creating appwidget view for " + widgetConfiguration)
+        logger.info("createView - creating appwidget view for $widgetConfiguration")
 
         if (shouldSetDeviceName()) {
             val deviceName = deviceNameFrom(widgetConfiguration)
@@ -93,25 +89,18 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
             deviceListService.getDeviceForName(deviceName, connectionId)
 
     protected fun openDeviceDetailPageWhenClicking(viewId: Int, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context) {
-        val pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration, context)
+        val pendingIntent = createOpenDeviceDetailPageIntent(device, widgetConfiguration, context)
 
         view.setOnClickPendingIntent(viewId, pendingIntent)
     }
 
-    protected fun createOpenDeviceDetailPagePendingIntent(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): PendingIntent {
-        val openIntent = createOpenDeviceDetailPageIntent(device, widgetConfiguration, context)
-        return PendingIntent.getActivity(context, widgetConfiguration.widgetId, openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun createOpenDeviceDetailPageIntent(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): Intent {
-        return Intent(context, AndFHEMMainActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(FRAGMENT, FragmentType.DEVICE_DETAIL)
-                .putExtra(DEVICE_NAME, device.name)
-                .putExtra(CONNECTION_ID, widgetConfiguration.connectionId)
-                .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
-    }
+    fun createOpenDeviceDetailPageIntent(device: FhemDevice, widgetConfiguration: WidgetConfiguration, context: Context): PendingIntent =
+            NavDeepLinkBuilder(context)
+                    .setComponentName(AndFHEMMainActivity::class.java)
+                    .setGraph(R.navigation.nav_graph)
+                    .setDestination(R.id.deviceDetailRedirectFragment)
+                    .setArguments(DeviceDetailRedirectFragmentArgs(device.name, widgetConfiguration.connectionId).toBundle())
+                    .createPendingIntent()
 
     override fun createWidgetConfiguration(context: Context, appWidgetId: Int,
                                            callback: WidgetConfigurationCreatedCallback, vararg payload: String) {

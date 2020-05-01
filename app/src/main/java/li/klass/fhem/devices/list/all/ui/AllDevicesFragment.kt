@@ -25,22 +25,65 @@
 package li.klass.fhem.devices.list.all.ui
 
 import android.content.Context
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import li.klass.fhem.R
-import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.connection.backend.DataConnectionSwitch
+import li.klass.fhem.devices.list.all.ui.AllDevicesFragmentDirections.Companion.actionAllDevicesFragmentToRoomDetailFragment
+import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
+import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
+import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
+import li.klass.fhem.room.list.ui.RoomListNavigationFragment
+import li.klass.fhem.room.list.ui.RoomListNavigationViewModel
+import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListService
+import li.klass.fhem.update.backend.DeviceListUpdateService
+import li.klass.fhem.util.ApplicationProperties
+import li.klass.fhem.util.device.DeviceActionUIService
 import javax.inject.Inject
 
-class AllDevicesFragment : DeviceListFragment() {
-    @Inject
-    lateinit var deviceListService: DeviceListService
+class AllDevicesFragment @Inject constructor(
+        dataConnectionSwitch: DataConnectionSwitch,
+        applicationProperties: ApplicationProperties,
+        viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+        advertisementService: AdvertisementService,
+        favoritesService: FavoritesService,
+        genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+        deviceActionUiService: DeviceActionUIService,
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val appWidgetUpdateService: AppWidgetUpdateService,
+        private val deviceListService: DeviceListService,
+        private val roomListNavigationFragment: RoomListNavigationFragment
+) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
+        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
 
-    override fun getTitle(context: Context): CharSequence = context.getString(R.string.alldevices)
+    private val navigationViewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
 
-    override fun inject(applicationComponent: ApplicationComponent) {
-        applicationComponent.inject(this)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        navigationViewModel.selectedRoom.observe(viewLifecycleOwner, Observer {
+            if (it != null && isResumed) {
+                findNavController().navigate(
+                        actionAllDevicesFragmentToRoomDetailFragment(it)
+                )
+            }
+        })
     }
+
+    override fun onResume() {
+        navigationViewModel.selectedRoom.postValue(null)
+        super.onResume()
+
+    }
+
+    override fun getTitle(context: Context) = context.getString(R.string.alldevices)
 
     override fun executeRemoteUpdate(context: Context) {
         deviceListUpdateService.updateAllDevices()
@@ -49,4 +92,10 @@ class AllDevicesFragment : DeviceListFragment() {
 
     override fun getRoomDeviceListForUpdate(context: Context): RoomDeviceList =
             deviceListService.getAllRoomsDeviceList()
+
+    override val navigationFragment: Fragment = roomListNavigationFragment
+
+    override fun navigateTo(device: FhemDevice) {
+        findNavController().navigate(AllDevicesFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
+    }
 }

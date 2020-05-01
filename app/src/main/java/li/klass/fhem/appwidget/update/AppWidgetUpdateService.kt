@@ -49,6 +49,15 @@ class AppWidgetUpdateService @Inject constructor(
                 .forEach { updateWidget(it) }
     }
 
+    fun updateWidgetsFor(deviceName: String) {
+        appWidgetInstanceManager.getExistingWidgetIds().mapNotNull { appWidgetInstanceManager.getConfigurationFor(it) }
+                .filter {
+                    val deviceAppWidgetView = widgetTypeProvider.widgetFor(it.widgetType) as? DeviceAppWidgetView
+                    deviceAppWidgetView?.deviceNameFrom(it) == deviceName
+                }
+                .forEach { updateWidget(it.widgetId) }
+    }
+
     fun updateWidget(appWidgetId: Int) {
         LOG.info("updateWidget - appWidgetId=$appWidgetId")
         appWidgetInstanceManager.update(appWidgetId)

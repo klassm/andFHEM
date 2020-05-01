@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/conditionQueryLocaleEditFragment">
+
+    <fragment
+        android:id="@+id/conditionQueryLocaleEditFragment"
+        android:name="li.klass.fhem.activities.locale.condition.query.ConditionQueryLocaleEditFragment"
+        android:label="ConditionQueryLocaleEditFragment">
+        <action
+            android:id="@+id/action_conditionQueryLocaleEditFragment_to_deviceNameSelectionFragment"
+            app:destination="@id/deviceNameSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/deviceNameSelectionFragment"
+        android:name="li.klass.fhem.fragments.device.DeviceNameSelectionFragment"
+        android:label="DeviceNameSelectionFragment">
+        <argument
+            android:name="filter"
+            app:argType="li.klass.fhem.fragments.device.DeviceNameListFragment$DeviceFilter" />
+        <argument
+            android:name="room"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+</navigation>

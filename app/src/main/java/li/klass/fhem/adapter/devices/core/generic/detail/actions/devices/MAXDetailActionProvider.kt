@@ -25,11 +25,12 @@
 package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices
 
 import android.content.Context
+import androidx.navigation.NavController
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton
-import li.klass.fhem.adapter.uiservice.FragmentUiService
+import li.klass.fhem.devices.detail.ui.DeviceDetailFragmentDirections
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
@@ -39,17 +40,17 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MAXDetailActionProvider @Inject constructor(
-        private val fragmentUiService: FragmentUiService) : DeviceDetailActionProvider() {
+class MAXDetailActionProvider @Inject constructor() : DeviceDetailActionProvider() {
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return listOf<ActionCardAction>(object : ActionCardButton(R.string.timetable, context) {
-            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context) {
+            override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                 val provider = object : HeatingConfigurationProvider<FilledTemperatureInterval> {
                     override fun get(): HeatingConfiguration<FilledTemperatureInterval, *> = MAXConfiguration()
                 }
-                fragmentUiService.showIntervalWeekProfileFor(device, connectionId, context,
-                                                             provider)
+                navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToIntervalWeekProfileFragment(
+                        device.displayName(), device.name, provider
+                ))
             }
         })
     }

@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
 import androidx.cardview.widget.CardView
+import androidx.navigation.NavController
 import kotlinx.android.synthetic.main.device_detail_card_actions.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -44,7 +45,7 @@ class ActionsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 30
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
         if (device.setList.isEmpty()) {
             return null
         }
@@ -60,7 +61,7 @@ class ActionsCardProvider @Inject constructor(
                         .filter { it.supports(device.xmlListDevice) }
                         .flatMap { it.actionsFor(context) }
                         .filter { it.supports(device) }
-                        .map { it.createView(device.xmlListDevice, connectionId, context, layoutInflater, actionsList) }
+                        .map { it.createView(device.xmlListDevice, connectionId, context, layoutInflater, actionsList, navController) }
             }.forEach { actionsList.addView(it) }
         }
         return card

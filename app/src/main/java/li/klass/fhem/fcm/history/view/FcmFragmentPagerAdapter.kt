@@ -6,10 +6,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import li.klass.fhem.R
 
-class FcmFragmentPagerAdapter(val context: Context, fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
+class FcmFragmentPagerAdapter(
+        val context: Context, fragmentManager: FragmentManager,
+        private val fcmHistoryMessagesFragment: FcmHistoryMessagesFragment,
+        private val fcmHistoryUpdatesFragment: FcmHistoryUpdatesFragment
+) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment = when (position) {
-        0 -> FcmHistoryMessagesFragment()
-        else -> FcmHistoryUpdatesFragment()
+        0 -> fcmHistoryMessagesFragment
+        else -> fcmHistoryUpdatesFragment
     }
 
     override fun getPageTitle(position: Int): CharSequence = when (position) {

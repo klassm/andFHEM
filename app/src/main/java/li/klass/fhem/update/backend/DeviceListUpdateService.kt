@@ -32,6 +32,7 @@ import com.google.common.base.Optional
 import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
+import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
@@ -61,7 +62,7 @@ class DeviceListUpdateService @Inject constructor(
 
     fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult {
         val toUpdate = if (roomName == "Unsorted") "" else roomName
-        return executeXmllistPartial(connectionId, "room=" + toUpdate, object : BeforeRoomListUpdateModifier {
+        return executeXmllistPartial(connectionId, "room=$toUpdate", object : BeforeRoomListUpdateModifier {
             override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
                 cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
             }
@@ -107,17 +108,23 @@ class DeviceListUpdateService @Inject constructor(
     @Synchronized
     private fun executeXmllist(connectionId: String?, xmllistSuffix: String, updateHandler: UpdateHandler):
             UpdateResult {
-        val connection = Optional.fromNullable(connectionId)
-        val command = Command("xmllist$xmllistSuffix", connection)
-        val result = commandExecutionService.executeSync(command) ?: ""
-        val roomDeviceList = parseResult(connectionId, applicationContext, result, updateHandler)
 
-        return when (update(connection, roomDeviceList)) {
-            true -> {
-                updateIndex()
-                UpdateResult.Success(roomDeviceList)
+        applicationContext.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        try {
+            val connection = Optional.fromNullable(connectionId)
+            val command = Command("xmllist$xmllistSuffix", connection)
+            val result = commandExecutionService.executeSync(command) ?: ""
+            val roomDeviceList = parseResult(connectionId, applicationContext, result, updateHandler)
+
+            return when (update(connection, roomDeviceList)) {
+                true -> {
+                    updateIndex()
+                    UpdateResult.Success(roomDeviceList)
+                }
+                else -> UpdateResult.Error()
             }
-            else -> UpdateResult.Error()
+        } finally {
+            applicationContext.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }
 

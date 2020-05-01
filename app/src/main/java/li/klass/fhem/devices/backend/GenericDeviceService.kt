@@ -31,6 +31,7 @@ import android.content.Context
 import android.content.Intent
 import com.google.common.base.Optional
 import com.google.common.collect.Iterables.partition
+import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
 import li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME
@@ -50,7 +51,8 @@ class GenericDeviceService @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
         private val application: Application,
         private val deviceConfigurationProvider: DeviceConfigurationProvider,
-        private val deviceListUpdateService: DeviceListUpdateService
+        private val deviceListUpdateService: DeviceListUpdateService,
+        private val widgetUpdateService: AppWidgetUpdateService
 ) {
     private val applicationContext get() = application.applicationContext
 
@@ -89,9 +91,10 @@ class GenericDeviceService @Inject constructor(
                     update(device, connectionId)
                 }
 
+                device.setState(stateName, toSet)
+                widgetUpdateService.updateWidgetsFor(device.name)
                 Tasker.sendTaskerNotifyIntent(applicationContext, device.name, stateName, toSet)
                 Tasker.requestQuery(applicationContext)
-                device.setState(stateName, toSet)
             }
         }
     }

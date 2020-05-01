@@ -52,10 +52,6 @@ abstract class AbstractWebViewFragment : BaseFragment() {
     @Inject
     lateinit var connectionService: ConnectionService
 
-    protected abstract val loadUrl: String
-
-    protected open val alternateLoadUrl: String? = null
-
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
@@ -149,7 +145,7 @@ abstract class AbstractWebViewFragment : BaseFragment() {
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
                 if ("about:blank".equals(url, ignoreCase = true)) {
-                    val alternativeUrl = alternateLoadUrl
+                    val alternativeUrl = getAlternateLoadUrl()
                     if (alternativeUrl != null) {
                         webView.loadUrl(handleUrl(connectionService.getCurrentServer()!!.alternateUrl, alternativeUrl))
                     }
@@ -202,7 +198,7 @@ abstract class AbstractWebViewFragment : BaseFragment() {
                 }
             }
 
-            webView.loadUrl(handleUrl(connectionService.getCurrentServer()!!.url, loadUrl))
+            webView.loadUrl(handleUrl(connectionService.getCurrentServer()!!.url, getLoadUrl()))
         } catch (e: MalformedURLException) {
             val intent = Intent(Actions.SHOW_TOAST)
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection)
@@ -213,6 +209,10 @@ abstract class AbstractWebViewFragment : BaseFragment() {
     }
 
     open fun showProgressDialog(): Boolean = true
+
+    abstract fun getLoadUrl(): String
+
+    open fun getAlternateLoadUrl(): String? = null
 
     companion object {
         private val LOG = LoggerFactory.getLogger(AbstractWebViewFragment::class.java)

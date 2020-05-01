@@ -32,14 +32,13 @@ import kotlinx.serialization.toUtf8Bytes
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
+import li.klass.fhem.connection.backend.RequestResult
 import li.klass.fhem.update.backend.DeviceListService
-import li.klass.fhem.util.DateFormatUtil
 import li.klass.fhem.util.io.FileSystemService
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataConnectionSwitch,
@@ -73,11 +72,11 @@ class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataC
             val content = fhemWebConnection.request(
                     applicationContext,
                     "/FileLog_logWrapper?dev=Logfile&type=text&file=$logfileName"
-            ).content
+            ) as? RequestResult.Success
 
-            content?.let {
+            content?.success.let {
                 val todayWithDots = today.toString(yearMonthDateFormatWithDot)
-                it
+                it ?: ""
                         .replace(Regex("<br/>.+?(?=</html>)</html>"), "")
                         .replace(Regex("^.+?(?=<br>${todayWithDots})<br>", RegexOption.DOT_MATCHES_ALL), "")
             }

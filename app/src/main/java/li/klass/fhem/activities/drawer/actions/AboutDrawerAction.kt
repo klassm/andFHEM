@@ -30,7 +30,7 @@ import li.klass.fhem.R
 import li.klass.fhem.util.DialogUtil
 import javax.inject.Inject
 
-class AboutDrawerAction @Inject constructor() : AbstractDrawerAction(R.id.menu_about, returnHandle = false) {
+class AboutDrawerAction @Inject constructor() : AbstractDrawerAction(R.id.menu_about) {
     override fun execute(activity: AppCompatActivity) {
         val version = try {
             activity.packageManager.getPackageInfo(activity.packageName, 0).versionName

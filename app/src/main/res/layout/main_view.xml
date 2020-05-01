@@ -26,37 +26,27 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    tools:ignore="InconsistentLayout">
+    android:orientation="horizontal">
 
     <androidx.drawerlayout.widget.RepairedDrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <li.klass.fhem.widget.SwipeRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/backgroundColorPrimary">
+        <include layout="@layout/content_view" />
 
-            <include layout="@layout/content_view" />
-
-        </li.klass.fhem.widget.SwipeRefreshLayout>
-
-        <com.google.android.material.navigation.NavigationView
+        <com.google.android.material.navigation.NavigationViewWithMultipleListeners
             android:id="@+id/nav_drawer"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="?attr/backgroundColorSecondary"
-            app:itemIconTint="@color/navigation_item_text_color"
-            app:itemTextColor="@color/navigation_item_text_color"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/drawer_header"
+            app:itemIconTint="@color/navigation_item_text_color"
+            app:itemTextColor="@color/navigation_item_text_color"
             app:menu="@menu/drawer" />
     </androidx.drawerlayout.widget.RepairedDrawerLayout>
 </LinearLayout>

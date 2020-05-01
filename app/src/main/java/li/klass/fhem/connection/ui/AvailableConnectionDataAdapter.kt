@@ -38,12 +38,12 @@ import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.ui.FragmentType
 import org.slf4j.LoggerFactory
 
 class AvailableConnectionDataAdapter(private val parent: Spinner,
                                      private val onConnectionChanged: Runnable,
-                                     private val connectionService: ConnectionService
+                                     private val connectionService: ConnectionService,
+                                     private val onConnectionManagementSelected: () -> Unit
 )
     : ListDataAdapter<FHEMServerSpec>(parent.context, R.layout.connection_spinner_item, ArrayList()), AdapterView.OnItemSelectedListener {
     private var currentlySelectedPosition = -1
@@ -101,10 +101,7 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         if (pos == data.size - 1) {
             parent.setSelection(currentlySelectedPosition)
-
-            val intent = Intent(Actions.SHOW_FRAGMENT)
-            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_LIST)
-            context.sendBroadcast(intent)
+            onConnectionManagementSelected()
         } else if (currentlySelectedPosition != pos) {
             LOG.info("onItemSelected - changing from $currentlySelectedPosition to $pos")
             currentlySelectedPosition = pos

@@ -50,22 +50,22 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     val basicAuthHeaders: HttpHeaders
         get() {
-            val password = Optional.fromNullable(serverSpec.password).or("")
-            val username = Optional.fromNullable(serverSpec.username).or("")
+            val password = Optional.fromNullable(server.password).or("")
+            val username = Optional.fromNullable(server.username).or("")
             return HttpHeaders().setBasicAuthentication(username, password)
         }
 
     val password: String
-        get() = serverSpec?.password ?: ""
+        get() = server.password ?: ""
 
     override fun executeCommand(command: String, context: Context): RequestResult<String> {
         LOG.info("executeTask command $command")
         val urlSuffix = generateCommandUrlSuffix(command)
         val result = request(context, urlSuffix)
-        if (result.content != null && (result.content.contains("<title>") || result.content.contains("<div id="))) {
-            LOG.error("found strange content: ${result.content}")
-            ErrorHolder.setError("found strange content in URL $urlSuffix: \r\n\r\n${result.content}")
-            return RequestResult(error = INVALID_CONTENT)
+        if (result is RequestResult.Success && (result.success.contains("<title>") || result.success.contains("<div id="))) {
+            LOG.error("found strange content: ${result.success}")
+            ErrorHolder.setError("found strange content in URL $urlSuffix: \r\n\r\n${result.success}")
+            return RequestResult.Error(INVALID_CONTENT)
         }
         return result
     }
@@ -77,18 +77,16 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             LOG.error("cannot install play providers", e)
         }
 
-        try {
+        return try {
             val response = executeRequest(urlSuffix, context)
-            if (response.error != null) {
-                return RequestResult(error = response.error)
-            }
-
-            InputStreamReader(response.content, Charsets.UTF_8).use {
-                return RequestResult(it.readText())
+            response.map { success ->
+                InputStreamReader(success, Charsets.UTF_8).use {
+                    it.readText()
+                }
             }
         } catch (e: Exception) {
             LOG.error("cannot handle result", e)
-            return RequestResult(error = INTERNAL_ERROR)
+            RequestResult.Error(INTERNAL_ERROR)
         }
     }
 
@@ -102,7 +100,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     fun executeRequest(urlSuffix: String?, context: Context): RequestResult<InputStream> =
-            executeRequest(serverSpec!!.url!!, urlSuffix, false, context)
+            executeRequest(server.url!!, urlSuffix, false, context)
 
     private fun executeRequest(serverUrl: String, urlSuffix: String?, isRetry: Boolean, context: Context): RequestResult<InputStream> {
         TrafficStats.setThreadStatsTag(1)
@@ -120,7 +118,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             LOG.debug("response status code is " + response.statusCode)
 
 
-            return RequestResult(BufferedInputStream(response.content) as InputStream)
+            return RequestResult.Success(BufferedInputStream(response.content) as InputStream)
         } catch (e: HttpResponseException) {
             val errorResult = handleHttpStatusCode(e.statusCode)
             val msg = "found error " + (errorResult?.error?.declaringClass?.simpleName
@@ -128,7 +126,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
                     "status code " + e.statusCode
             LOG.debug(msg)
             ErrorHolder.setError(null, msg)
-            return errorResult ?: RequestResult(error = INTERNAL_ERROR)
+            return errorResult ?: RequestResult.Error(INTERNAL_ERROR)
 
         } catch (e: Exception) {
             LOG.info("error while loading data", e)
@@ -138,6 +136,10 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     private fun findCsrfToken(serverUrl: String): String? {
+        if (server.csrfToken != null) {
+            LOG.info("using predefined csrf token from server spec")
+            return server.csrfToken
+        }
         return try {
             val response = doGet("$serverUrl?room=notExistingJustToLoadCsrfToken")
             val value = response.headers.getFirstHeaderStringValue("X-FHEM-csrfToken")
@@ -165,25 +167,25 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
                 .execute()
     }
 
-    private fun handleError(urlSuffix: String, isRetry: Boolean, url: String?, e: Exception, context: Context): RequestResult<InputStream> {
+    private fun handleError(urlSuffix: String, isRetry: Boolean, url: String, e: Exception, context: Context): RequestResult<InputStream> {
         setErrorInErrorHolderFor(e, url, urlSuffix)
-        return handleRetryIfRequired(isRetry, RequestResult(error = HOST_CONNECTION_ERROR), urlSuffix, context)
+        return handleRetryIfRequired(isRetry, RequestResult.Error(HOST_CONNECTION_ERROR), urlSuffix, context)
     }
 
     private fun handleRetryIfRequired(isCurrentRequestRetry: Boolean, previousResult: RequestResult<InputStream>,
                                       urlSuffix: String, context: Context): RequestResult<InputStream> {
-        return if (!serverSpec.canRetry() || isCurrentRequestRetry || serverSpec.alternateUrl == null) {
+        return if (!server.canRetry() || isCurrentRequestRetry || server.alternateUrl == null) {
             previousResult
         } else retryRequest(urlSuffix, context)
     }
 
     private fun retryRequest(urlSuffix: String, context: Context): RequestResult<InputStream> {
         LOG.info("retrying request for alternate URL")
-        return executeRequest(serverSpec.alternateUrl!!, urlSuffix, true, context)
+        return executeRequest(server.alternateUrl!!, urlSuffix, true, context)
     }
 
     private fun initSslContext(context: Context) {
-        MemorizingTrustManagerContextInitializer().init(context, serverSpec)
+        MemorizingTrustManagerContextInitializer().init(context, server)
                 ?.let {
                     HttpsURLConnection.setDefaultSSLSocketFactory(it.socketFactory)
                     HttpsURLConnection.setDefaultHostnameVerifier(it.hostnameVerifier)
@@ -191,7 +193,7 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     }
 
     companion object {
-        val SOCKET_TIMEOUT = 60000
+        const val SOCKET_TIMEOUT = 60000
         private val LOG = LoggerFactory.getLogger(FHEMWEBConnection::class.java)
         private val STATUS_CODE_MAP: Map<Int, RequestResultError> = ImmutableMap.builder<Int, RequestResultError>()
                 .put(400, BAD_REQUEST)
@@ -205,11 +207,11 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
             HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory())
         }
 
-        private fun handleHttpStatusCode(statusCode: Int): RequestResult<InputStream>? {
+        private fun handleHttpStatusCode(statusCode: Int): RequestResult.Error<InputStream>? {
             val error = STATUS_CODE_MAP[statusCode] ?: return null
 
             LOG.info("handleHttpStatusCode() : encountered http status code {}", statusCode)
-            return RequestResult(error = error)
+            return RequestResult.Error(error)
         }
     }
 }
