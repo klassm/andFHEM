@@ -122,7 +122,7 @@ dependencies {
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
     implementation(group = "androidx.annotation", name = "annotation", version = coroutinesVersion)
     implementation(group = "androidx.room", name = "room-runtime", version = "2.1.0-alpha03")
-    kapt(group = "androidx.room", name = "room-compiler", version = "2.1.0-alpha03")
+    kapt(group = "androidx.room", name = "room-compiler", version = "2.2.5")
     implementation(group = "androidx.navigation", name="navigation-fragment-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-ui-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
