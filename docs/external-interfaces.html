@@ -93,6 +93,7 @@ bigimg: /images/external-interfaces.jpg
 
   AndFHEM can be started from your local web browser when providing a link in a distinct format. Whenever a URL starts with fhem://, andFHEM will try to interprete the content:
 
+    <h3>From 5.7.7 onwards</h3>
   <table>
     <tr>
       <td>https://andfhem.klass.li/app/room/bathroom</td>
@@ -126,11 +127,41 @@ bigimg: /images/external-interfaces.jpg
       <td>https://andfhem.klass.li/app/execute?cmd=set%20mat_halogen%20on</td>
       <td>Switches a device called mat_halogen to on (%20 is the escape sequence for space)</td>
     </tr>
-    </tr>
-    <tr>
-      <td>https://andfhem.klass.li/app/execute?cmd=set%20mat_halogen%20on</td>
-      <td>Deprecated: Old functionality to switch devices. Do not used that one</td>
-    </tr>
-    </tr>
   </table>
+
+    <h3>Up to version 5.7.6</h3>
+
+    <table>
+        <tr>
+            <td>fhem://room=bathroom</td>
+            <td>Opens a room called "bathroom"</td>
+        </tr>
+        <tr>
+            <td>fhem://device=light</td>
+            <td>Opens a device called "light"</td>
+        </tr>
+        <tr>
+            <td>fhem://all_devices</td>
+            <td>Shows the all devices list</td>
+        </tr>
+        <tr>
+            <td>fhem://room_list</td>
+            <td>Shows the list of all rooms</td>
+        </tr>
+        <tr>
+            <td>fhem://favorites</td>
+            <td>Shows all favorites</td>
+        </tr>
+        <tr>
+            <td>fhem://cmd=set%20mat_halogen%20on</td>
+            <td>Switches a device called mat_halogen to on (%20 is the escape sequence for space)
+            </td>
+        </tr>
+        </tr>
+        <tr>
+            <td>fhem://set%20mat_halogen%20on</td>
+            <td>Deprecated: Old functionality to switch devices. Do not used that one</td>
+        </tr>
+        </tr>
+    </table>
 </div>
