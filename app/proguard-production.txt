@@ -13,6 +13,9 @@
 -keep class android.** { *; }
 -keep class li.klass.fhem.update.backend.device.configuration.DevicesConfiguration.**$* { *; }
 -keeppackagenames li.klass.fhem.update.backend.device.configuration
+-keep class * extends android.support.v4.app.Fragment{}
+-keep class * extends androidx.fragment.app.Fragment{}
+-keepnames class androidx.navigation.fragment.NavHostFragment
 
 -keep public class com.google.android.gms.**
 -dontwarn com.google.android.gms.**
