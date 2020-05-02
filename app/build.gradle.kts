@@ -58,7 +58,7 @@ val roomVersion = "2.2.5"
 
 plugins {
     id("net.researchgate.release") version "2.8.0"
-    id("com.android.application") version "3.5.2"
+    id("com.android.application") version "3.6.0"
     kotlin("android").version("1.3.31")
     kotlin("android.extensions").version("1.3.31")
     kotlin("kapt").version("1.3.31")
