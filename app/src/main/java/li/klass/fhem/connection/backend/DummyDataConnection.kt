@@ -24,7 +24,6 @@
 package li.klass.fhem.connection.backend
 
 import android.content.Context
-import com.google.common.base.Charsets
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DateFormatUtil
 import org.joda.time.DateTime

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import java.io.Serializable
 
@@ -37,26 +36,20 @@ data class ViewItemConfig(
         val desc: String,
 
         @SerialName("showAfter")
-        @Optional
         val showAfter: String? = null,
 
         @SerialName("showDelayNotificationOnSwitch")
-        @Optional
         val isShowDelayNotificationOnSwitch: Boolean = false,
 
         @SerialName("showInOverview")
-        @Optional
         val isShowInOverview: Boolean = false,
 
         @SerialName("showInDetail")
-        @Optional
         val isShowInDetail: Boolean = false,
 
         @SerialName("markers")
-        @Optional
         val markers: Set<String> = emptySet(),
 
         @SerialName("beforeCommandReplace")
-        @Optional
         val beforeCommandReplacement: Set<Replacement> = emptySet()
 ) : Serializable

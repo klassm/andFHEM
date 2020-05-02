@@ -30,14 +30,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.google.common.base.Supplier
-import com.google.common.collect.Lists.newArrayList
 import kotlinx.android.synthetic.main.weekprofile.*
 import kotlinx.android.synthetic.main.weekprofile.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
-import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.ui.DeviceNameSelectionAlert
 import li.klass.fhem.domain.core.FhemDevice
@@ -52,8 +49,9 @@ import org.slf4j.LoggerFactory
 import java.io.Serializable
 import javax.inject.Inject
 
-interface HeatingConfigurationProvider<INTERVAL : BaseHeatingInterval<INTERVAL>> :
-        Supplier<HeatingConfiguration<INTERVAL, *>>, Serializable
+interface HeatingConfigurationProvider<INTERVAL : BaseHeatingInterval<INTERVAL>> : Serializable {
+    fun get(): HeatingConfiguration<INTERVAL, *>
+}
 
 abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>> : BaseFragment() {
 
@@ -101,7 +99,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     private fun onSave() {
-        val commands = newArrayList(weekProfile.statesToSet)
+        val commands = weekProfile.statesToSet.toList()
         GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
                 deviceListService.getDeviceForName(deviceName)?.xmlListDevice?.let {

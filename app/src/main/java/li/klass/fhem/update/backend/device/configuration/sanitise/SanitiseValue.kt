@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import li.klass.fhem.update.backend.device.configuration.Replacement
 import java.io.Serializable
@@ -32,22 +31,17 @@ import java.io.Serializable
 @kotlinx.serialization.Serializable
 data class SanitiseValue(
         @SerialName("extract")
-        @Optional
         val extract: String? = null,
 
         @SerialName("append")
-        @Optional
         val append: String? = null,
 
         @SerialName("replaceAll")
-        @Optional
         val replaceAll: Set<Replacement> = emptySet(),
 
         @SerialName("extractDigits")
-        @Optional
         val extractDigits: Int? = null,
 
         @SerialName("extractDivideBy")
-        @Optional
         val extractDivideBy: Int? = null
 ) : Serializable

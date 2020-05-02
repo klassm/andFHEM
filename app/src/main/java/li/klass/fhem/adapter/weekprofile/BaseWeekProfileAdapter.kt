@@ -34,8 +34,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
-import com.google.common.collect.FluentIterable
-import com.google.common.collect.Lists.newArrayList
 import li.klass.fhem.R
 import li.klass.fhem.domain.heating.schedule.DayProfile
 import li.klass.fhem.domain.heating.schedule.WeekProfile
@@ -91,8 +89,7 @@ abstract class BaseWeekProfileAdapter<INTERVAL : BaseHeatingInterval<INTERVAL>> 
         val contextMenu = AlertDialog.Builder(context)
         contextMenu.setTitle(context.resources.getString(R.string.switchDevice))
         val parents = parents
-        val selectOptions =
-                FluentIterable.from(parents).transform { input -> getParentTextFor(input) }.toList()
+        val selectOptions = parents.map { getParentTextFor(it) }
 
         val clickListener = DialogInterface.OnClickListener { dialog, position ->
             val source = parents[position]
@@ -115,7 +112,7 @@ abstract class BaseWeekProfileAdapter<INTERVAL : BaseHeatingInterval<INTERVAL>> 
     }
 
     override fun getParents(): List<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>> {
-        val parents = newArrayList<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>>()
+        val parents = mutableListOf<DayProfile<INTERVAL, HeatingIntervalConfiguration<INTERVAL>>>()
         if (weekProfile == null) return parents
 
         val sortedDayProfiles = weekProfile!!.sortedDayProfiles
@@ -144,7 +141,7 @@ abstract class BaseWeekProfileAdapter<INTERVAL : BaseHeatingInterval<INTERVAL>> 
     fun timeToTimeString(hourOfDay: Int, minuteOfDay: Int): String {
         var myHour = hourOfDay
         val intervalMinutesMustBeDivisibleBy =
-                weekProfile!!.configuration.getIntervalMinutesMustBeDivisibleBy()
+                weekProfile!!.configuration.intervalMinutesMustBeDivisibleBy
         var minutes =
                 (minuteOfDay + intervalMinutesMustBeDivisibleBy - 1) / intervalMinutesMustBeDivisibleBy * intervalMinutesMustBeDivisibleBy
         if (minutes == 60) minutes = 0

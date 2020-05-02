@@ -24,8 +24,6 @@
 
 package li.klass.fhem.adapter.devices.hook
 
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Maps
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
@@ -105,10 +103,10 @@ class DeviceHookProviderTest {
             val value = if (isActive) "true" else "false"
 
             val xmlListDevice = XmlListDevice("Bla",
-                    Maps.newHashMap(),
-                    Maps.newHashMap(),
-                    Maps.newHashMap(),
-                    ImmutableMap.of("sets", DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, "")))
+                    mutableMapOf(),
+                    mutableMapOf(),
+                    mutableMapOf(),
+                    mutableMapOf("sets" to DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, "")))
             xmlListDevice.attributes.put(hookAttribute, DeviceNode(ATTR, hookAttribute, value, null as DateTime?))
             xmlListDevice.setInternal("NAME", "name")
 

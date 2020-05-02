@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseConfiguration
 import java.io.Serializable
@@ -35,53 +34,42 @@ data class DeviceConfiguration(
         val defaultGroup: String,
 
         @SerialName("sensorDevice")
-        @Optional
         val isSensorDevice: Boolean = false,
 
         @SerialName("supportedWidgets")
-        @Optional
         val supportedWidgets: Set<String> = emptySet(),
 
         @SerialName("states")
-        @Optional
         val states: Set<ViewItemConfig> = emptySet(),
 
         @SerialName("attributes")
-        @Optional
         val attributes: Set<ViewItemConfig> = emptySet(),
 
         @SerialName("internals")
-        @Optional
         val internals: Set<ViewItemConfig> = emptySet(),
 
         @SerialName("additionalOnStateNames")
-        @Optional
         val additionalOnStateNames: Set<String> = emptySet(),
 
         @SerialName("additionalOffStateNames")
-        @Optional
         val additionalOffStateNames: Set<String> = emptySet(),
 
         @SerialName("showStateInOverview")
-        @Optional
         val isShowStateInOverview: Boolean = true,
 
         @SerialName("showMeasuredInOverview")
-        @Optional
         val isShowMeasuredInOverview: Boolean = true,
 
         @SerialName("delayForUpdateAfterCommand")
-        @Optional
         val delayForUpdateAfterCommand: Int = 0,
 
-        @SerialName("stateAttributeName") @Optional val stateAttributeName: String = "state",
+        @SerialName("stateAttributeName")
+        val stateAttributeName: String = "state",
 
         @SerialName("player")
-        @Optional
         val playerConfiguration: PlayerConfiguration? = null,
 
         @SerialName("sanitise")
-        @Optional
         val sanitiseConfiguration: SanitiseConfiguration? = null
 
 ) : Serializable {

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.appwidget.update
 
-import com.google.common.collect.ImmutableList
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.DataProviders.testForEach
@@ -67,10 +66,10 @@ class WidgetConfigurationTest {
         @JvmStatic
         fun serializationProvider(): Array<Array<Any>> {
             return testForEach(
-                    WidgetConfiguration(5, WidgetType.DIM, "connectionId", ImmutableList.of("abc")),
-                    WidgetConfiguration(5, WidgetType.DIM, null, ImmutableList.of("abc")),
-                    WidgetConfiguration(50000, WidgetType.STATUS, "connectionIdla", ImmutableList.of("d#ef")),
-                    WidgetConfiguration(50000, WidgetType.STATUS, "connectionIdBlo", ImmutableList.of("def", "hello"))
+                    WidgetConfiguration(5, WidgetType.DIM, "connectionId", listOf("abc")),
+                    WidgetConfiguration(5, WidgetType.DIM, null, listOf("abc")),
+                    WidgetConfiguration(50000, WidgetType.STATUS, "connectionIdla", listOf("d#ef")),
+                    WidgetConfiguration(50000, WidgetType.STATUS, "connectionIdBlo", listOf("def", "hello"))
             )
         }
     }

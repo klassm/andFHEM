@@ -30,7 +30,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.TableRow
 import android.widget.TextView
-import com.google.api.client.repackaged.com.google.common.base.Objects
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.widget.CheckableButton
@@ -79,12 +78,12 @@ abstract class AbstractOnOffActionRow(protected val layoutId: Int,
 
     protected open fun getOnStateName(device: FhemDevice, context: Context): String {
         val state = device.setList.getFirstPresentStateOf("on", "ON")
-        return Objects.firstNonNull(state, "on")
+        return state ?: "on"
     }
 
     protected open fun getOffStateName(device: FhemDevice, context: Context): String {
         val state = device.setList.getFirstPresentStateOf("off", "OFF")
-        return Objects.firstNonNull(state, "off")
+        return state ?: "off"
     }
 
     protected open fun getOnStateText(device: FhemDevice, context: Context): String {

@@ -28,7 +28,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.widget.RemoteViews
 import androidx.navigation.NavDeepLinkBuilder
-import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
@@ -124,7 +123,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
     protected open fun createDeviceWidgetConfiguration(context: Context, appWidgetId: Int, device: FhemDevice,
                                                        callback: WidgetConfigurationCreatedCallback) {
         val connectionId = connectionService.getSelectedId()
-        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, ImmutableList.of(device.name)))
+        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, listOf(device.name)))
     }
 
     protected fun getCurrentConnectionId(): String =

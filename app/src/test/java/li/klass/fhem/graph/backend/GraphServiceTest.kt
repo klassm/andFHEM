@@ -25,7 +25,6 @@
 package li.klass.fhem.graph.backend
 
 import android.content.Context
-import com.google.common.base.Optional
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
@@ -114,7 +113,7 @@ class GraphServiceTest {
         val svgGraphDefinition = graphDefinitionWithSeries(series)
         val command = String.format(GraphService.COMMAND_TEMPLATE, customLogDevice, fromDateFormatted, toDateFormatted, pattern)
         given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
-        given(commandExecutionService.executeSync(Command(command, Optional.of(connectionId)))).willReturn(dummyResponse)
+        given(commandExecutionService.executeSync(Command(command, connectionId))).willReturn(dummyResponse)
 
         // when
         val result = graphService.getGraphData(
@@ -143,7 +142,7 @@ class GraphServiceTest {
         val device = getDeviceFor(name = svgGraphDefinition.logDeviceName, type = "FileLog")
         val command = String.format(GraphService.COMMAND_TEMPLATE, svgGraphDefinition.logDeviceName, fromDateFormatted, toDateFormatted, pattern)
         given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
-        given(commandExecutionService.executeSync(Command(command, Optional.of(connectionId)))).willReturn(dummyResponse)
+        given(commandExecutionService.executeSync(Command(command, connectionId))).willReturn(dummyResponse)
 
         // when
         val result = graphService.getGraphData(
@@ -170,7 +169,7 @@ class GraphServiceTest {
         val device = getDeviceFor(name = svgGraphDefinition.logDeviceName, type = "DbLog")
         val command = String.format(GraphService.COMMAND_TEMPLATE, svgGraphDefinition.logDeviceName, fromDateFormatted, toDateFormatted, pattern)
         given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
-        given(commandExecutionService.executeSync(Command(command, Optional.of(connectionId)))).willReturn(dummyResponse)
+        given(commandExecutionService.executeSync(Command(command, connectionId))).willReturn(dummyResponse)
 
         // when
         val result = graphService.getGraphData(

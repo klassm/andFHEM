@@ -24,18 +24,15 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import java.io.Serializable
 
 @kotlinx.serialization.Serializable
 data class SanitiseConfiguration(
         @SerialName("deviceValues")
-        @Optional
         val values: Map<String, SanitiseValue> = emptyMap(),
 
         @SerialName("__general__")
-        @Optional
         val general: SanitiseGeneral? = null
 ) : Serializable {
     operator fun plus(toAdd: SanitiseConfiguration?): SanitiseConfiguration {

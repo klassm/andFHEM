@@ -32,7 +32,6 @@ import java.io.File;
 
 import li.klass.fhem.testutil.MockitoRule;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileSystemServiceTest {
@@ -55,14 +54,14 @@ public class FileSystemServiceTest {
         assertThat(newDirectory).exists();
         assertThat(newDirectory).isDirectory();
         assertThat(newDirectory.getAbsolutePath()).isEqualToIgnoringCase(tempDir.getAbsolutePath() + File.separator + "someDirectory");
-        checkArgument(newDirectory.delete());
+        newDirectory.delete();
     }
 
     @Test
     public void should_return_an_existing_directory_with_the_same_name() {
         // given
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        checkArgument(prepare(new File(tempDir, "someValue")).mkdir());
+        prepare(new File(tempDir, "someValue")).mkdir();
 
         // when
         File newDirectory = fileSystemService.getOrCreateDirectoryIn(tempDir, "someValue");
@@ -70,12 +69,12 @@ public class FileSystemServiceTest {
         // then
         assertThat(newDirectory).exists();
         assertThat(newDirectory).isDirectory();
-        checkArgument(newDirectory.delete());
+        newDirectory.delete();
     }
 
     private File prepare(File file) {
         if (file.exists()) {
-            checkArgument(file.delete());
+            file.delete();
         }
         file.deleteOnExit();
         return file;

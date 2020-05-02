@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.core
 
-import com.google.common.collect.Lists.newArrayList
 import li.klass.fhem.domain.EventMap
 import li.klass.fhem.domain.EventMapParser
 import li.klass.fhem.domain.setlist.SetList
@@ -85,7 +84,7 @@ class FhemDevice(val xmlListDevice: XmlListDevice) : Serializable, Comparable<Fh
     val availableTargetStatesEventMapTexts: Array<String>
         get() {
             val sortedKeys = setList.sortedKeys
-            val eventMapKeys = newArrayList<String>()
+            val eventMapKeys = mutableListOf<String>()
             sortedKeys.mapTo(eventMapKeys) { eventMap.getKeyOr(it, it) }
             return eventMapKeys.toTypedArray()
         }

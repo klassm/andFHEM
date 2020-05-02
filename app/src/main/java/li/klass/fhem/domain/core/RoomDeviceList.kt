@@ -24,11 +24,6 @@
 
 package li.klass.fhem.domain.core
 
-import com.google.common.collect.FluentIterable.from
-import com.google.common.collect.ImmutableSet
-import com.google.common.collect.Lists.newArrayList
-import com.google.common.collect.Maps.newHashMap
-import com.google.common.collect.Sets.newHashSet
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import java.io.Serializable
 import java.util.*
@@ -40,7 +35,7 @@ class RoomDeviceList(val roomName: String) : Serializable {
     /**
      * Actual devices.
      */
-    private val deviceMap = newHashMap<String, MutableSet<FhemDevice>>()
+    private val deviceMap = mutableMapOf<String, MutableSet<FhemDevice>>()
 
     constructor(roomDeviceList: RoomDeviceList?) : this(roomDeviceList?.roomName ?: "") {
 
@@ -79,16 +74,16 @@ class RoomDeviceList(val roomName: String) : Serializable {
 
     val allDevices: Set<FhemDevice>
         get() {
-            val devices = newHashSet<FhemDevice>()
-            val devicesCollection = newArrayList(deviceMap.values)
+            val devices = mutableSetOf<FhemDevice>()
+            val devicesCollection = deviceMap.values
             for (deviceHashSet in devicesCollection) {
                 devices.addAll(deviceHashSet)
             }
             return Collections.unmodifiableSet(devices)
         }
 
-    val allDevicesAsXmllistDevice: ImmutableSet<XmlListDevice>
-        get() = from(allDevices).transform { it?.xmlListDevice }.toSet()
+    val allDevicesAsXmllistDevice: Set<XmlListDevice>
+        get() = allDevices.map { it.xmlListDevice }.toSet()
 
     fun removeDevice(device: FhemDevice) {
         val groups = device.internalDeviceGroupOrGroupAttributes

@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
 import android.app.AlertDialog
 import android.content.Context
-import com.google.common.collect.Iterables
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -46,7 +45,7 @@ class GroupSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
 
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + groupSetListEntry.key)
-                .setItems(Iterables.toArray(groupSetListEntry.groupStates, CharSequence::class.java)) { dialog, which ->
+                .setItems(groupSetListEntry.groupStates.toTypedArray()) { dialog, which ->
                     val subState = groupSetListEntry.groupStates[which]
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onSubStateSelected(device, groupSetListEntry.key, subState)

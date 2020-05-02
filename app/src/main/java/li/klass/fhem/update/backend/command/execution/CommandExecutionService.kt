@@ -110,7 +110,7 @@ class CommandExecutionService @Inject constructor(
     }
 
     private fun execute(command: Command, currentTry: Int, resultListener: ResultListener): RequestResult<String> {
-        val currentProvider = dataConnectionSwitch.getProviderFor(command.connectionId.orNull())
+        val currentProvider = dataConnectionSwitch.getProviderFor(command.connectionId)
         val result = currentProvider.executeCommand(command.command, applicationContext)
 
         LOG.info("execute() - executing command={}, try={}", command, currentTry)

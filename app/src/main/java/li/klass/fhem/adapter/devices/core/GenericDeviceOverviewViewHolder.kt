@@ -30,9 +30,6 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 
-import com.google.common.collect.Lists
-import com.google.common.collect.Maps
-
 import li.klass.fhem.R
 
 class GenericDeviceOverviewViewHolder(convertView: View) {
@@ -40,8 +37,8 @@ class GenericDeviceOverviewViewHolder(convertView: View) {
     val tableLayout: TableLayout = convertView.findViewById(R.id.device_overview_generic)
     val deviceName: TextView = convertView.findViewById(R.id.deviceName)
     private val deviceNameRow: TableRow = convertView.findViewById(R.id.overviewRow)
-    private val tableRows = Lists.newArrayList<GenericDeviceTableRowHolder>()
-    private val additionalHolders = Maps.newHashMap<String, Any>()
+    private val tableRows = ArrayList<GenericDeviceTableRowHolder>()
+    private val additionalHolders = HashMap<String, Any>()
 
     val tableRowCount: Int
         get() = tableRows.size
