@@ -1,12 +1,10 @@
 package li.klass.fhem.domain.log;
 
-import com.google.api.client.repackaged.com.google.common.base.Predicate;
-
 import java.util.regex.Pattern;
 
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
-public class ConcernsDevicePredicate implements Predicate<XmlListDevice> {
+public class ConcernsDevicePredicate {
 
     private final Pattern concerningDeviceRegexp;
 
@@ -14,7 +12,6 @@ public class ConcernsDevicePredicate implements Predicate<XmlListDevice> {
         this.concerningDeviceRegexp = Pattern.compile(concerningDeviceRegexp);
     }
 
-    @Override
     public boolean apply(XmlListDevice xmlListDevice) {
         if (xmlListDevice == null) {
             return false;
