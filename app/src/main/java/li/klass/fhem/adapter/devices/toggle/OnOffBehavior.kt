@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.toggle
 
-import com.google.common.base.Optional
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
@@ -85,7 +84,8 @@ class OnOffBehavior
         val offStateNameByHook = hookProvider.getOffStateName(device)
         val offStateNames = availableOffStateNames + eventMapNamesFor(availableOffStateNames, device)
         val existingOffStateNames = existingStatesOfIncludingEventMap(device, offStateNames)
-        return Optional.fromNullable(offStateNameByHook).asSet().toList() +
+
+        return listOfNotNull(offStateNameByHook) +
                 existingOffStateNames +
                 deviceConfigurationProvider.configurationFor(device).additionalOffStateNames
     }
@@ -99,7 +99,7 @@ class OnOffBehavior
         val onStateNameByHook = hookProvider.getOnStateName(device)
         val onStateNames = availableOnStateNames + eventMapNamesFor(availableOnStateNames, device)
         val existingOnStateNames = existingStatesOfIncludingEventMap(device, onStateNames)
-        return Optional.fromNullable(onStateNameByHook).asSet().toList() +
+        return listOfNotNull(onStateNameByHook) +
                 existingOnStateNames +
                 deviceConfigurationProvider.configurationFor(device).additionalOnStateNames
     }

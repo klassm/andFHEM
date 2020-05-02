@@ -25,7 +25,6 @@
 package li.klass.fhem.fcm.receiver
 
 import android.content.Context
-import com.google.common.base.Strings
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.receiver.data.FcmMessageData
@@ -61,7 +60,7 @@ class FcmService @Inject constructor(
         val type = decrypted["type"]
         if ("message".equals(type!!, ignoreCase = true)) {
             fcmMessageHandler.handleMessage(FcmMessageData(decrypted, sentTime), context)
-        } else if ("notify".equals(type, ignoreCase = true) || Strings.isNullOrEmpty(type)) {
+        } else if ("notify".equals(type, ignoreCase = true) || type.isNullOrEmpty()) {
             fcmNotifyHandler.handleNotify(FcmNotifyData(decrypted, sentTime, connection), context)
         } else {
             LOG.error("onMessage - unknown type: {}", type)

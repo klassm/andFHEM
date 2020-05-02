@@ -32,9 +32,6 @@ import com.google.api.client.http.GenericUrl
 import com.google.api.client.http.HttpHeaders
 import com.google.api.client.http.HttpResponse
 import com.google.api.client.http.HttpResponseException
-import com.google.common.base.Charsets
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableMap
 import li.klass.fhem.connection.backend.RequestResultError.*
 import li.klass.fhem.connection.backend.ssl.MemorizingTrustManagerContextInitializer
 import li.klass.fhem.error.ErrorHolder
@@ -50,8 +47,8 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
 
     val basicAuthHeaders: HttpHeaders
         get() {
-            val password = Optional.fromNullable(server.password).or("")
-            val username = Optional.fromNullable(server.username).or("")
+            val password = server.password ?: ""
+            val username = server.username ?: ""
             return HttpHeaders().setBasicAuthentication(username, password)
         }
 
@@ -195,13 +192,13 @@ class FHEMWEBConnection(fhemServerSpec: FHEMServerSpec, applicationProperties: A
     companion object {
         const val SOCKET_TIMEOUT = 60000
         private val LOG = LoggerFactory.getLogger(FHEMWEBConnection::class.java)
-        private val STATUS_CODE_MAP: Map<Int, RequestResultError> = ImmutableMap.builder<Int, RequestResultError>()
-                .put(400, BAD_REQUEST)
-                .put(401, AUTHENTICATION_ERROR)
-                .put(403, AUTHENTICATION_ERROR)
-                .put(404, NOT_FOUND)
-                .put(500, INTERNAL_SERVER_ERROR)
-                .build()
+        private val STATUS_CODE_MAP: Map<Int, RequestResultError> = mapOf(
+                400 to BAD_REQUEST,
+                401 to AUTHENTICATION_ERROR,
+                403 to AUTHENTICATION_ERROR,
+                404 to NOT_FOUND,
+                500 to INTERNAL_SERVER_ERROR
+        )
 
         init {
             HttpsURLConnection.setDefaultSSLSocketFactory(NoSSLv3Factory())

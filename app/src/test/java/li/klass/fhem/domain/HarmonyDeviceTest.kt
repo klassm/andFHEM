@@ -32,7 +32,7 @@ class HarmonyDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun should_read_device() {
-        val device = getDeviceFor("hub")
+        val device = getDeviceFor("hub")!!
 
         assertThat(stateValueFor(device, "activity")).isEqualTo("PowerOff")
     }

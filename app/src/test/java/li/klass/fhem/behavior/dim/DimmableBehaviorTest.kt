@@ -24,7 +24,6 @@
 
 package li.klass.fhem.behavior.dim
 
-import com.google.common.collect.ImmutableMap
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.DeviceNode
@@ -69,7 +68,7 @@ class DimmableBehaviorTest {
     private fun deviceFor(setList: String): FhemDevice {
         return FhemDevice(XmlListDevice(
                 "generic", HashMap(), HashMap(), HashMap(),
-                ImmutableMap.of("sets", DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, ""))
+                mutableMapOf("sets" to DeviceNode(DeviceNode.DeviceNodeType.HEADER, "sets", setList, ""))
         ))
     }
 }

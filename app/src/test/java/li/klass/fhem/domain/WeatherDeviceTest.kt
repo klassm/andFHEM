@@ -34,7 +34,7 @@ import org.junit.Test
 class WeatherDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributes() {
-        val device = getDefaultDevice()
+        val device = defaultDevice!!
 
         assertThat(device.name).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME)
         assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)

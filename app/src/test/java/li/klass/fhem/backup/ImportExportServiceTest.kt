@@ -24,7 +24,6 @@
 
 package li.klass.fhem.backup
 
-import com.google.common.collect.ImmutableMap
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.testutil.MockitoRule
 import li.klass.fhem.util.ApplicationProperties
@@ -44,10 +43,13 @@ class ImportExportServiceTest {
 
     @Mock
     lateinit var applicationProperties: ApplicationProperties
+
     @Mock
     lateinit var favoritesService: FavoritesService
+
     @Mock
     lateinit var sharedPreferencesService: SharedPreferencesService
+
     @Mock
     lateinit var fileSystemService: FileSystemService
 
@@ -57,16 +59,16 @@ class ImportExportServiceTest {
     @Test
     fun should_match_export_and_import_values() {
         // given
-        val values = ImmutableMap.builder<String, Any>()
-                .put("a", "1")
-                .put("b", 1)
-                .put("c", 1.0)
-                .put("f", 1f)
-                .put("d", "1.0")
-                .put("e", "anc")
-                .put("g", "anc/bas")
-                .put("h", true)
-                .build()
+        val values = mapOf<String, Any>(
+                "a" to "1",
+                "b" to 1,
+                "c" to 1.0,
+                "f" to 1f,
+                "d" to "1.0",
+                "e" to "anc",
+                "g" to "anc/bas",
+                "h" to true
+        )
 
         // when
         val converted = importExportService.toImportValues(importExportService.toExportValues(values)) as Map<*, *>
@@ -78,59 +80,63 @@ class ImportExportServiceTest {
     @Test
     fun should_export_values() {
         // given
-        val values = ImmutableMap.builder<String, Any>()
-                .put("a", "1")
-                .put("b", 1)
-                .put("c", 1.0)
-                .put("f", 1.0f)
-                .put("d", "1.0")
-                .put("e", "anc")
-                .put("g", "anc/bas")
-                .put("h", true).put("l", 1L)
-                .build()
+        val values = mapOf<String, Any>(
+                "a" to "1",
+                "b" to 1,
+                "c" to 1.0,
+                "f" to 1.0f,
+                "d" to "1.0",
+                "e" to "anc",
+                "g" to "anc/bas",
+                "h" to true,
+                "l" to 1L
+        )
 
         // when
         val exported = importExportService.toExportValues(values)
 
         // then
-        assertThat(exported).isEqualTo(ImmutableMap.builder<String, String>()
-                .put("a", "1/java.lang.String")
-                .put("b", "1/java.lang.Integer")
-                .put("c", "1.0/java.lang.Double")
-                .put("f", "1.0/java.lang.Float")
-                .put("d", "1.0/java.lang.String")
-                .put("e", "anc/java.lang.String")
-                .put("g", "anc/bas/java.lang.String")
-                .put("h", "true/java.lang.Boolean").put("l", "1/java.lang.Long")
-                .build())
+        assertThat(exported).isEqualTo(mapOf(
+                "a" to "1/java.lang.String",
+                "b" to "1/java.lang.Integer",
+                "c" to "1.0/java.lang.Double",
+                "f" to "1.0/java.lang.Float",
+                "d" to "1.0/java.lang.String",
+                "e" to "anc/java.lang.String",
+                "g" to "anc/bas/java.lang.String",
+                "h" to "true/java.lang.Boolean",
+                "l" to "1/java.lang.Long"
+        ))
     }
 
     @Test
     fun should_import_values() {
-        val values = ImmutableMap.builder<String, String>()
-                .put("a", "1/java.lang.String")
-                .put("b", "1/java.lang.Integer")
-                .put("c", "1.0/java.lang.Double")
-                .put("f", "1.0/java.lang.Float")
-                .put("d", "1.0/java.lang.String")
-                .put("e", "anc/java.lang.String")
-                .put("g", "anc/bas/java.lang.String")
-                .put("h", "true/java.lang.Boolean").put("l", "1/java.lang.Long")
-                .build()
+        val values = mapOf(
+                "a" to "1/java.lang.String",
+                "b" to "1/java.lang.Integer",
+                "c" to "1.0/java.lang.Double",
+                "f" to "1.0/java.lang.Float",
+                "d" to "1.0/java.lang.String",
+                "e" to "anc/java.lang.String",
+                "g" to "anc/bas/java.lang.String",
+                "h" to "true/java.lang.Boolean",
+                "l" to "1/java.lang.Long"
+        )
 
         // when
         val imported = importExportService.toImportValues(values) as Map<*, *>
 
         // then
-        assertThat(imported).isEqualTo(ImmutableMap.builder<String, Any>()
-                .put("a", "1")
-                .put("b", 1)
-                .put("c", 1.0)
-                .put("f", 1.0f)
-                .put("d", "1.0")
-                .put("e", "anc")
-                .put("g", "anc/bas")
-                .put("h", true).put("l", 1L)
-                .build())
+        assertThat(imported).isEqualTo(mapOf(
+                "a" to "1",
+                "b" to 1,
+                "c" to 1.0,
+                "f" to 1.0f,
+                "d" to "1.0",
+                "e" to "anc",
+                "g" to "anc/bas",
+                "h" to true,
+                "l" to 1L
+        ))
     }
 }

@@ -29,11 +29,9 @@ import android.content.Context
 import android.util.Log
 import android.webkit.WebView
 import androidx.navigation.fragment.navArgs
-import com.google.common.io.Resources
 import li.klass.fhem.R
 import li.klass.fhem.ui.AbstractWebViewFragment
 import li.klass.fhem.util.BuildVersion
-import java.nio.charset.Charset
 import javax.inject.Inject
 
 class FloorplanFragment @Inject constructor() : AbstractWebViewFragment() {
@@ -48,7 +46,7 @@ class FloorplanFragment @Inject constructor() : AbstractWebViewFragment() {
 
         val modifyJsUrl = FloorplanFragment::class.java.getResource("floorplan-modify.js")
         try {
-            val modifyJs = Resources.toString(modifyJsUrl!!, Charset.forName("UTF-8"))
+            val modifyJs = modifyJsUrl?.readText(Charsets.UTF_8)
             BuildVersion.execute(object : BuildVersion.VersionDependent {
                 override fun ifBelow() {
                     view.loadUrl("javascript:$modifyJs")

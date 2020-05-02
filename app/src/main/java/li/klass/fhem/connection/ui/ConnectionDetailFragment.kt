@@ -38,8 +38,6 @@ import androidx.navigation.fragment.navArgs
 import com.github.angads25.filepicker.model.DialogConfigs
 import com.github.angads25.filepicker.model.DialogProperties
 import com.github.angads25.filepicker.view.FilePickerDialog
-import com.google.common.base.Preconditions.checkNotNull
-import com.google.common.collect.Lists.newArrayList
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
@@ -116,7 +114,7 @@ class ConnectionDetailFragment @Inject constructor(
 
     private val serverTypes: List<ServerType>
         get() {
-            val connectionTypes = newArrayList<ServerType>()
+            val connectionTypes = mutableListOf<ServerType>()
             connectionTypes.addAll(ServerType.values().toList())
             connectionTypes.remove(ServerType.DUMMY)
             return connectionTypes
@@ -124,8 +122,8 @@ class ConnectionDetailFragment @Inject constructor(
 
     @SuppressLint("InflateParams")
     private fun handleConnectionTypeChange(connectionType: ServerType) {
-        this.connectionType = checkNotNull(connectionType)
         val activity = activity ?: return
+        this.connectionType = connectionType
 
         val view = when (connectionType) {
             ServerType.FHEMWEB -> {

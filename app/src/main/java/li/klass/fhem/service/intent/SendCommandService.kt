@@ -25,8 +25,6 @@
 package li.klass.fhem.service.intent
 
 import android.content.SharedPreferences
-import com.google.common.base.Optional
-import com.google.common.base.Preconditions.checkArgument
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
@@ -44,7 +42,7 @@ class SendCommandService @Inject constructor(
         val sharedPreferencesService: SharedPreferencesService
 ) {
     fun executeCommand(command: String, connectionId: String? = null): String? {
-        val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
+        val result = commandExecutionService.executeSync(Command(command, connectionId))
         storeRecentCommand(command)
         return result
     }
@@ -52,7 +50,6 @@ class SendCommandService @Inject constructor(
     fun editCommand(oldCommand: String, newCommand: String) {
         val commands = getRecentCommands()
         val index = commands.indexOf(oldCommand)
-        checkArgument(index != -1)
         commands.add(index, newCommand)
         commands.remove(oldCommand)
         storeRecentCommands(commands)

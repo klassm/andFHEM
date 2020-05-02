@@ -28,7 +28,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.google.common.base.Strings.isNullOrEmpty
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -56,7 +55,7 @@ constructor(private val application: Application) {
     fun getStringSharedPreference(key: String, defaultValue: String? = null): String? {
         val preferences = preferences
         val value = if (preferences == null) defaultValue else preferences.getString(key, defaultValue)
-        return if (isNullOrEmpty(value)) {
+        return if (value.isNullOrEmpty()) {
             defaultValue
         } else {
             value

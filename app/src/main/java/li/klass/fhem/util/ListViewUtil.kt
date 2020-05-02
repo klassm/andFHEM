@@ -21,27 +21,24 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.util
 
-package li.klass.fhem.util;
+import android.view.View
+import android.widget.ListView
 
-import com.google.common.base.Preconditions;
-
-public class BuildVersion {
-    public interface VersionDependent {
-        void ifBelow();
-
-        void ifAboveOrEqual();
-    }
-
-    public static void execute(VersionDependent versionDependent, int buildVersion) {
-        Preconditions.checkNotNull(versionDependent);
-        Preconditions.checkArgument(buildVersion > 0);
-
-        int apiVersion = android.os.Build.VERSION.SDK_INT;
-        if (apiVersion >= buildVersion) {
-            versionDependent.ifAboveOrEqual();
-        } else {
-            versionDependent.ifBelow();
+object ListViewUtil {
+    fun setHeightBasedOnChildren(listView: ListView) {
+        val listAdapter = listView.adapter
+        var totalHeight = 0
+        val desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.width, View.MeasureSpec.AT_MOST)
+        for (i in 0 until listAdapter.count) {
+            val listItem = listAdapter.getView(i, null, listView)
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED)
+            totalHeight += listItem.measuredHeight
         }
+        val params = listView.layoutParams
+        params.height = totalHeight + listView.dividerHeight * (listAdapter.count - 1) + 20
+        listView.layoutParams = params
+        listView.requestLayout()
     }
 }
