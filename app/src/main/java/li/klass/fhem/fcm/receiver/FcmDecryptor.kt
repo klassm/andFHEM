@@ -24,8 +24,6 @@
 
 package li.klass.fhem.fcm.receiver
 
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.codec.binary.Hex
 import org.slf4j.LoggerFactory
@@ -42,16 +40,10 @@ class FcmDecryptor @Inject constructor() {
     }
 
     private fun decrypt(data: Map<String, String>, cryptKey: String): Map<String, String> {
-        val cipherOptional = cipherFor(cryptKey)
-        if (!cipherOptional.isPresent) {
-            return data
-        }
-
-        val cipher = cipherOptional.get()
         return data.entries
                 .map {
                     if (DECRYPT_KEYS.contains(it.key)) {
-                        it.key to decrypt(cipher, it.value)
+                        it.key to decrypt(cipherFor(cryptKey) ?: return data, it.value)
                     } else it.key to it.value
                 }.toMap()
     }
@@ -67,17 +59,17 @@ class FcmDecryptor @Inject constructor() {
 
     }
 
-    private fun cipherFor(key: String): Optional<Cipher> {
+    private fun cipherFor(key: String): Cipher? {
         return try {
             val keyBytes = key.toByteArray()
             val skey = SecretKeySpec(keyBytes, "AES")
             val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
             val ivSpec = IvParameterSpec(keyBytes)
             cipher.init(Cipher.DECRYPT_MODE, skey, ivSpec)
-            Optional.of(cipher)
+            cipher
         } catch (e: Exception) {
             LOG.error("cipherFor - cannot create cipher", e)
-            Optional.absent<Cipher>()
+            null
         }
 
     }
@@ -85,7 +77,7 @@ class FcmDecryptor @Inject constructor() {
     companion object {
         private val LOG = LoggerFactory.getLogger(FcmDecryptor::class.java)
 
-        private val DECRYPT_KEYS = ImmutableSet.of("type", "notifyId", "changes",
+        private val DECRYPT_KEYS = setOf("type", "notifyId", "changes",
                 "deviceName", "tickerText", "contentText", "contentTitle")
     }
 }

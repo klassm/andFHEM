@@ -23,8 +23,6 @@
  */
 package li.klass.fhem.graph.backend.gplot
 
-import com.google.common.base.Charsets
-import com.google.common.collect.Range
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import li.klass.fhem.graph.backend.gplot.DataProviderSpec.*
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.*
@@ -168,7 +166,7 @@ class GPlotParserTest {
                         axis = Axis.LEFT),
                         GraphDataProvider(FileLog("4:Window:0:\$fld[3]=~\"Open\"?1:0"))))
         assertThat(leftAxis.range)
-                .isEqualTo(Range.closed(-0.2, 1.2))
+                .isEqualTo(Range.closed(-0.2F, 1.2.toFloat()))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.series).isEmpty()
     }
@@ -180,9 +178,9 @@ class GPlotParserTest {
         val definition = gPlotParser.parse(content)
 
         assertThat(definition.leftAxis.range)
-                .isEqualTo(Range.atLeast(0.0))
+                .isEqualTo(Range.atLeast(0.0F))
         assertThat(definition.rightAxis.range)
-                .isEqualTo(Range.atLeast(0.0))
+                .isEqualTo(Range.atLeast(0.0F))
     }
 
     @Test
@@ -327,10 +325,10 @@ class GPlotParserTest {
 
         val leftAxis = definition.leftAxis
         assertThat(leftAxis.label).isEqualTo("Humidity (%)")
-        assertThat(leftAxis.range).isEqualTo(Range.closed(0.0, 100.0))
+        assertThat(leftAxis.range).isEqualTo(Range.closed(0.0F, 100.0F))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.label).isEqualTo("Temperature in C")
-        assertThat(rightAxis.range).isEqualTo(Range.closed(0.0, 40.0))
+        assertThat(rightAxis.range).isEqualTo(Range.closed(0.0F, 40.0F))
         assertThat(rightAxis.series).containsOnly(
                 GPlotSeries(ViewSpec(title = "Temperature", lineType = LineType.LINES,
                         color = SeriesColor.RED,
@@ -358,11 +356,11 @@ class GPlotParserTest {
         val leftAxis = definition.leftAxis
         assertThat(leftAxis.label).isEqualTo("Anwesenheit")
         assertThat(leftAxis.range)
-                .isEqualTo(Range.closed(0.0, 100.0))
+                .isEqualTo(Range.closed(0.0F, 100.0F))
         val rightAxis = definition.rightAxis
         assertThat(rightAxis.label).isEqualTo("Tür/Fenster")
         assertThat(rightAxis.range)
-                .isEqualTo(Range.closed(0.0, 1.0))
+                .isEqualTo(Range.closed(0.0F, 1.0F))
         assertThat(leftAxis.series).containsOnly(
                 GPlotSeries(ViewSpec(title = "Handy1", lineType = LineType.STEPS,
                         color = SeriesColor.GREEN, seriesType = SeriesType.FILL,

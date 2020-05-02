@@ -21,33 +21,22 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.util
 
-package li.klass.fhem.util;
+import android.os.Build
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-
-public class ListViewUtil {
-    public static void setHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-
-        checkNotNull(listAdapter);
-
-        int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
+object BuildVersion {
+    fun execute(versionDependent: VersionDependent, buildVersion: Int) {
+        val apiVersion = Build.VERSION.SDK_INT
+        if (apiVersion >= buildVersion) {
+            versionDependent.ifAboveOrEqual()
+        } else {
+            versionDependent.ifBelow()
         }
+    }
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1)) + 20;
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+    interface VersionDependent {
+        fun ifBelow()
+        fun ifAboveOrEqual()
     }
 }

@@ -30,7 +30,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import androidx.navigation.NavController
-import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
@@ -41,7 +40,7 @@ import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.devices.detail.ui.DeviceDetailFragmentDirections
 import li.klass.fhem.domain.CulHmHeatingMode
-import li.klass.fhem.domain.CulHmHeatingMode.heatingModeFor
+import li.klass.fhem.domain.CulHmHeatingMode.Companion.heatingModeFor
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration
@@ -67,7 +66,7 @@ class CulHmDetailActionProvider @Inject constructor(
     override fun getDeviceType() = "CUL_HM"
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
-        return ImmutableList.of<ActionCardAction>(object : ActionCardButton(R.string.timetable,
+        return listOf(object : ActionCardButton(R.string.timetable,
                                                                             context) {
             override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                 val provider = object : HeatingConfigurationProvider<FilledTemperatureInterval> {
@@ -91,7 +90,7 @@ class CulHmDetailActionProvider @Inject constructor(
             get() = CulHmHeatingMode.values()
 
         override fun getCurrentModeFor(device: XmlListDevice): CulHmHeatingMode = heatingModeFor(
-                device.getState(MODE_STATE_NAME, false)).get()
+                device.getState(MODE_STATE_NAME, false))!!
 
         override fun supports(xmlListDevice: XmlListDevice): Boolean = supportsHeating(
                 xmlListDevice)
@@ -147,7 +146,7 @@ class CulHmDetailActionProvider @Inject constructor(
 
         private fun supportsHeating(xmlListDevice: XmlListDevice): Boolean {
             val controlMode = xmlListDevice.getState(MODE_STATE_NAME, false)
-            return controlMode != null && heatingModeFor(controlMode).isPresent
+            return controlMode != null && heatingModeFor(controlMode) != null
         }
     }
 }

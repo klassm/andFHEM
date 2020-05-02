@@ -41,7 +41,6 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.settings.SettingsKeys.DEVICE_FUNCTIONALITY_ORDER_VISIBLE;
 import static li.klass.fhem.settings.SettingsKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE;
 
@@ -57,7 +56,6 @@ public class DeviceGroupHolder {
 
     @Inject
     public DeviceGroupHolder(ApplicationProperties applicationProperties) {
-        checkNotNull(applicationProperties);
         this.applicationProperties = applicationProperties;
     }
 
@@ -79,8 +77,8 @@ public class DeviceGroupHolder {
 
         available = getAvailable(context);
 
-        visible = loadVisibleDeviceTypes(context);
-        invisible = loadInvisibleDeviceTypes(context);
+        visible = loadVisibleDeviceTypes();
+        invisible = loadInvisibleDeviceTypes();
 
         isLoaded = true;
     }
@@ -98,14 +96,14 @@ public class DeviceGroupHolder {
         return functionalityList;
     }
 
-    private List<DeviceFunctionality> loadVisibleDeviceTypes(Context context) {
+    private List<DeviceFunctionality> loadVisibleDeviceTypes() {
         String persistedValue = applicationProperties
                 .getStringSharedPreference(DEVICE_FUNCTIONALITY_ORDER_VISIBLE, null);
 
         return parsePersistedValue(persistedValue, available);
     }
 
-    private List<DeviceFunctionality> loadInvisibleDeviceTypes(Context context) {
+    private List<DeviceFunctionality> loadInvisibleDeviceTypes() {
         String persistedValue = applicationProperties
                 .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null);
         return parsePersistedValue(persistedValue, new ArrayList<DeviceFunctionality>());

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.core.deviceItems
 
-import com.google.common.collect.Lists.newArrayList
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,7 +33,7 @@ import kotlin.collections.HashMap
 class DeviceViewItemSorter @Inject constructor() {
 
     fun sortedViewItemsFrom(items: Iterable<XmlDeviceViewItem>): List<XmlDeviceViewItem> {
-        val result = newArrayList(items)
+        val result = items.toMutableList()
 
         val fieldNameMapping = HashMap<String, String>()
         for (item in items) {
@@ -46,13 +45,13 @@ class DeviceViewItemSorter @Inject constructor() {
                     fieldNameMapping.put(lowerCaseName, "___" + lowerCaseName)
                 } else {
                     fieldNameMapping.put(lowerCaseName,
-                            showAfterValue!!.toLowerCase(Locale.getDefault()))
+                            showAfterValue.toLowerCase(Locale.getDefault()))
                 }
             }
         }
 
         val fieldNameMappingRecursive = handleRecursiveMappings(fieldNameMapping)
-        Collections.sort(result) { lhs, rhs ->
+        result.sortWith(Comparator { lhs, rhs ->
             val sortKeyLeft = lhs.sortKey.toLowerCase(Locale.getDefault())
             val sortKeyRight = rhs.sortKey.toLowerCase(Locale.getDefault())
 
@@ -60,7 +59,7 @@ class DeviceViewItemSorter @Inject constructor() {
             val right = fieldNameMappingRecursive[sortKeyRight] ?: sortKeyRight
 
             left.compareTo(right)
-        }
+        })
 
         return result
     }

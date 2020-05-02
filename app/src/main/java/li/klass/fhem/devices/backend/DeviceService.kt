@@ -26,7 +26,6 @@ package li.klass.fhem.devices.backend
 
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Strings
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
@@ -81,10 +80,11 @@ constructor(
      * @param alias   new alias to set
      */
     fun setAlias(device: FhemDevice, alias: String) {
-        val command = if (Strings.isNullOrEmpty(alias))
+        val command = if (alias.isEmpty()) {
             "deleteattr " + device.name + " alias"
-        else
+        } else {
             "attr " + device.name + " alias " + alias
+        }
         commandExecutionService.executeSafely(Command(command), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 device.xmlListDevice.setAttribute("alias", alias)

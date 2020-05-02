@@ -29,8 +29,6 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.google.common.base.Optional
-import com.google.common.collect.Iterables.partition
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
@@ -58,7 +56,7 @@ class GenericDeviceService @Inject constructor(
 
     @JvmOverloads
     fun setState(device: XmlListDevice, targetState: String, connectionId: String?, invokeUpdate: Boolean = true) {
-        commandExecutionService.executeSafely(Command("set ${device.name} $targetState", Optional.fromNullable(connectionId)), invokePostCommandActions(device, invokeUpdate, "state", targetState, connectionId))
+        commandExecutionService.executeSafely(Command("set ${device.name} $targetState", connectionId), invokePostCommandActions(device, invokeUpdate, "state", targetState, connectionId))
 
         device.setState("STATE", targetState)
         device.setInternal("STATE", targetState)
@@ -77,7 +75,7 @@ class GenericDeviceService @Inject constructor(
             v.replace(("([ ,])" + replacement.search).toRegex(), "$1${replacement.replaceBy}")
                     .replace(("^" + replacement.search).toRegex(), replacement.replaceBy)
         })
-        val command = Command("set " + device.name + " " + subStateName + " " + valueToSet, Optional.fromNullable(connectionId))
+        val command = Command("set " + device.name + " " + subStateName + " " + valueToSet, connectionId)
         commandExecutionService.executeSafely(command, invokePostCommandActions(device, invokeDeviceUpdate, subStateName, valueToSet, connectionId))
     }
 
@@ -122,8 +120,7 @@ class GenericDeviceService @Inject constructor(
     }
 
     private fun setSubStatesForFHT(device: XmlListDevice, statesToSet: List<StateToSet>, connectionId: String?) {
-        val partitions = partition(statesToSet, 8)
-        partitions.map { fhtConcat(it) }
+        statesToSet.chunked(8).map { fhtConcat(it) }
                 .forEach { setState(device, it, connectionId, false) }
     }
 

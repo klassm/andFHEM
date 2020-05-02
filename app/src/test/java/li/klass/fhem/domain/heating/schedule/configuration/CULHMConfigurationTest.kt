@@ -31,22 +31,16 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.DayUtil
 import li.klass.fhem.util.Reject
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Test
 import java.util.*
 
 class CULHMConfigurationTest {
     private val configuration = CULHMConfiguration()
-    private var weekProfile: WeekProfile<FilledTemperatureInterval, CULHMConfiguration>? = null
-
-    @Before
-    fun before() {
-        weekProfile = WeekProfile(configuration)
-    }
+    private val weekProfile: WeekProfile<FilledTemperatureInterval, CULHMConfiguration> = WeekProfile(configuration)
 
     @Test
     fun testDayRead() {
-        configuration.readNode(weekProfile!!, "tempListSat", "08:00 16.5 19:30 20 24:00 16.0")
+        configuration.readNode(weekProfile, "tempListSat", "08:00 16.5 19:30 20 24:00 16.0")
 
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).switchTime).isEqualTo("08:00")
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).switchTime).isEqualTo("19:30")
@@ -59,7 +53,7 @@ class CULHMConfigurationTest {
     }
 
     private fun getHeatingIntervalAt(saturday: DayUtil.Day, position: Int): FilledTemperatureInterval {
-        val dayProfile = weekProfile!!.getDayProfileFor(saturday)
+        val dayProfile = weekProfile.getDayProfileFor(saturday)
         Reject.ifNull(dayProfile)
 
         val interval = dayProfile.getHeatingIntervalAt(position)
@@ -69,13 +63,13 @@ class CULHMConfigurationTest {
 
     @Test
     fun shouldIgnoreR_0_Pefixes() {
-        configuration.readNode(weekProfile!!, "R_0_tempListSat", "08:00 16.5 19:30 20 24:00 16.0")
-        assertThat(weekProfile!!.getDayProfileFor(DayUtil.Day.SATURDAY)).isNotNull()
+        configuration.readNode(weekProfile, "R_0_tempListSat", "08:00 16.5 19:30 20 24:00 16.0")
+        assertThat(weekProfile.getDayProfileFor(DayUtil.Day.SATURDAY)).isNotNull()
     }
 
     @Test
     fun testGenerateCommand() {
-        configuration.readNode(weekProfile!!, "tempListSat", "24:00 16.0 08:00 16.0 19:30 20")
+        configuration.readNode(weekProfile, "tempListSat", "24:00 16.0 08:00 16.0 19:30 20")
 
         val xmlListDevice = XmlListDevice("dummy", HashMap(), HashMap(), HashMap(), HashMap())
         xmlListDevice.setInternal("NAME", "name")
@@ -90,7 +84,7 @@ class CULHMConfigurationTest {
 
     @Test
     fun testSetPrefixCanBeStillRead() {
-        configuration.readNode(weekProfile!!, "tempListSat", "set_  05:45 17.0 07:00 21.0 18:00 17.0 23:00 21.0 24:00 17.0")
+        configuration.readNode(weekProfile, "tempListSat", "set_  05:45 17.0 07:00 21.0 18:00 17.0 23:00 21.0 24:00 17.0")
 
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).temperature).isEqualTo(17.0)
     }

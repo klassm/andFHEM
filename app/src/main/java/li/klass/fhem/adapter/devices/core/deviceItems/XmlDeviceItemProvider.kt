@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.core.deviceItems
 
 import android.content.Context
-import com.google.common.base.Optional
 import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.resources.ResourceIdMapper
@@ -41,7 +40,7 @@ import javax.inject.Singleton
 
 @Singleton
 class XmlDeviceItemProvider @Inject constructor(
-        val deviceDescMapping: DeviceDescMapping,
+        private val deviceDescMapping: DeviceDescMapping,
         val deviceConfigurationProvider: DeviceConfigurationProvider
 ) {
 
@@ -95,16 +94,21 @@ class XmlDeviceItemProvider @Inject constructor(
     private fun genericItemFor(deviceNode: DeviceNode, context: Context): XmlDeviceViewItem {
         val desc = deviceDescMapping.descFor(deviceNode.key, context)
 
-        return XmlDeviceViewItem(deviceNode.key, desc,
-                deviceNode.value, null, true, false)
+        return XmlDeviceViewItem(
+                deviceNode.key,
+                desc,
+                deviceNode.value,
+                null,
+                isShowInDetail = true,
+                isShowInOverview = false
+        )
     }
 
     private fun itemFor(config: ViewItemConfig, deviceNode: DeviceNode, context: Context): XmlDeviceViewItem {
         val jsonDesc = StringUtils.trimToNull(config.desc)
-        val resource = getResourceIdFor(jsonDesc)
-        val desc = when {
-            resource.isPresent -> deviceDescMapping.descFor(resource.get(), context)
-            else -> deviceDescMapping.descFor(deviceNode.key, context)
+        val desc = when (val resource = getResourceIdFor(jsonDesc)) {
+            null -> deviceDescMapping.descFor(deviceNode.key, context)
+            else -> deviceDescMapping.descFor(resource, context)
         }
 
         val showAfter = config.showAfter ?: XmlDeviceViewItem.FIRST
@@ -112,14 +116,14 @@ class XmlDeviceItemProvider @Inject constructor(
                 deviceNode.value, showAfter, config.isShowInDetail, config.isShowInOverview)
     }
 
-    private fun getResourceIdFor(jsonDesc: String?): Optional<ResourceIdMapper> {
+    private fun getResourceIdFor(jsonDesc: String?): ResourceIdMapper? {
         return try {
             if (jsonDesc == null) {
-                Optional.absent()
-            } else Optional.of(ResourceIdMapper.valueOf(jsonDesc))
+                null
+            } else ResourceIdMapper.valueOf(jsonDesc)
         } catch (e: Exception) {
             LOGGER.error("getResourceIdFor(jsonDesc=$jsonDesc): cannot find jsonDesc", e)
-            Optional.absent()
+            null
         }
     }
 
@@ -133,7 +137,7 @@ class XmlDeviceItemProvider @Inject constructor(
                 mostRecent = node
             }
         }
-        return mostRecent?.measured?.let { XmlDeviceViewItem("measured", context.getString(R.string.measured), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(it), null, false, false) }
+        return mostRecent?.measured?.let { XmlDeviceViewItem("measured", context.getString(R.string.measured), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(it), null, isShowInDetail = false, isShowInOverview = false) }
     }
 
 

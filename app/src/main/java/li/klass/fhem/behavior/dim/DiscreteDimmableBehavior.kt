@@ -25,16 +25,13 @@
 package li.klass.fhem.behavior.dim
 
 import android.content.Context
-import com.google.common.base.Predicate
-import com.google.common.collect.FluentIterable.from
-import com.google.common.collect.ImmutableList
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
 import java.util.*
 import java.util.regex.Pattern
 
-class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : DimmableTypeBehavior {
+class DiscreteDimmableBehavior(val foundDimStates: List<String>) : DimmableTypeBehavior {
 
     override fun getDimLowerBound(): Double = 0.0
 
@@ -75,8 +72,8 @@ class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : Dimm
 
     companion object {
 
-        private val dimStatePattern = Pattern.compile("dim[0-9]+[%]?")!!
-        private val dimmableState = Predicate<String> { input -> dimStatePattern.matcher(input!!).matches() }
+        private val dimStatePattern = Pattern.compile("dim[0-9]+[%]?")
+        private val dimmableState: (input: String) -> Boolean = { input -> dimStatePattern.matcher(input).matches() }
         private val compareByDimValue: Comparator<String> = Comparator { lhs, rhs ->
             val leftToCompare = lhs.replace("dim", "").replace("%", "")
             val rightToCompare = rhs.replace("dim", "").replace("%", "")
@@ -89,7 +86,7 @@ class DiscreteDimmableBehavior(val foundDimStates: ImmutableList<String>) : Dimm
         fun behaviorFor(setList: SetList): DiscreteDimmableBehavior? {
 
             val keys = setList.sortedKeys
-            val foundDimStates = from(keys).filter(dimmableState).toSortedList(compareByDimValue)
+            val foundDimStates = keys.filter(dimmableState).toSortedSet(compareByDimValue).toList()
 
             return when {
                 foundDimStates.isEmpty() -> null

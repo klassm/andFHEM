@@ -26,7 +26,6 @@ package li.klass.fhem.service.intent
 
 import android.content.Intent
 import android.os.ResultReceiver
-import com.google.common.base.Optional
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.DO_UPDATE
@@ -45,25 +44,25 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
     @Inject
     lateinit var widgetUpdateService: AppWidgetUpdateService
 
-    override fun handleIntent(intent: Intent, updatePeriod: Long, resultReceiver: ResultReceiver?): ConvenientIntentService.State {
+    override fun handleIntent(intent: Intent, updatePeriod: Long, resultReceiver: ResultReceiver?): State {
         val action = intent.action
 
-        if (action == Actions.DO_REMOTE_UPDATE) {
-            val deviceName = Optional.fromNullable(intent.getStringExtra(DEVICE_NAME))
-            val roomName = Optional.fromNullable(intent.getStringExtra(ROOM_NAME))
+        return if (action == Actions.DO_REMOTE_UPDATE) {
+            val deviceName = intent.getStringExtra(DEVICE_NAME)
+            val roomName = intent.getStringExtra(ROOM_NAME)
             val connectionId = intent.getStringExtra(CONNECTION_ID)
-            return doRemoteUpdate(deviceName, roomName, connectionId)
+            doRemoteUpdate(deviceName, roomName, connectionId)
         } else {
-            return State.DONE
+            State.DONE
         }
     }
 
-    private fun doRemoteUpdate(deviceName: Optional<String>, roomName: Optional<String>, connectionId: String?): ConvenientIntentService.State {
+    private fun doRemoteUpdate(deviceName: String?, roomName: String?, connectionId: String?): State {
         LOG.info("doRemoteUpdate() - starting remote update")
 
         val result = when {
-            deviceName.isPresent -> deviceListUpdateService.updateSingleDevice(deviceName.get(), connectionId)
-            roomName.isPresent -> deviceListUpdateService.updateRoom(roomName.get(), connectionId)
+            deviceName != null -> deviceListUpdateService.updateSingleDevice(deviceName, connectionId)
+            roomName != null -> deviceListUpdateService.updateRoom(roomName, connectionId)
             else -> deviceListUpdateService.updateAllDevices(connectionId)
         }
         handleResult(result)

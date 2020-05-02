@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.google.common.io.Resources
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
@@ -43,7 +42,7 @@ class DeviceConfigurationProviderTest {
     @UseDataProvider("allFilesProvider")
     fun should_parse_all_json_files(file: File) {
 
-        val content = Resources.toString(file.toURI().toURL(), Charsets.UTF_8)
+        val content = file.readText(Charsets.UTF_8)
         val result = JSON.parse(DeviceConfiguration::class.serializer(), content)
 
         assertThat(result).`as`(file.name).isNotNull()

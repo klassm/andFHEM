@@ -44,7 +44,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.common.collect.Range
 import kotlinx.android.synthetic.main.chart.*
 import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
@@ -56,6 +55,7 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphEntry
 import li.klass.fhem.graph.backend.GraphService
 import li.klass.fhem.graph.backend.gplot.GPlotSeries
+import li.klass.fhem.graph.backend.gplot.Range
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
@@ -185,13 +185,13 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
     }
 
-    private fun setRangeFor(axisRange: Range<Double>?, axis: YAxis) {
+    private fun setRangeFor(axisRange: Range?, axis: YAxis) {
         if (axisRange != null) {
-            if (axisRange.hasLowerBound()) {
-                axis.axisMinimum = axisRange.lowerEndpoint().toFloat()
+            if (axisRange.lowerInclusive != null) {
+                axis.axisMinimum = axisRange.lowerInclusive
             }
-            if (axisRange.hasUpperBound()) {
-                axis.axisMaximum = axisRange.upperEndpoint().toFloat()
+            if (axisRange.upperInclusive != null) {
+                axis.axisMaximum = axisRange.upperInclusive
             }
         }
     }

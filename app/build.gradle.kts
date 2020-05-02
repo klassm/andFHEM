@@ -84,11 +84,6 @@ apply(plugin = "kotlinx-serialization")
 apply(plugin = "io.fabric")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
 
-configurations.all {
-    exclude(group = "com.google.guava", module = "listenablefuture")
-    // exclude, due to https://issuetracker.google.com/issues/116154359
-}
-
 val unmock = configurations.findByName("unmock")!!
 dependencies {
     unmock(group = "org.robolectric", name = "android-all", version = "7.1.0_r7-robolectric-0")
@@ -101,9 +96,6 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "16.2.2")
     implementation(group = "com.google.android.material", name = "material", version = "1.1.0-alpha02")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
-    implementation(group = "com.google.guava", name = "guava", version = "23.4-android") {
-        exclude(group = "com.google.code.findbugs")
-    }
     implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.22.0") {
         exclude(group = "com.google.code.findbugs")
         exclude(group = "org.apache.httpcomponents")
@@ -170,9 +162,6 @@ dependencies {
     testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.15.0")
-    testImplementation(group = "org.assertj", name = "assertj-guava", version = "3.4.0") {
-        exclude(group = "com.google.guava")
-    }
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.1.1")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.1.1")
