@@ -109,8 +109,8 @@ def setNewReleaseVersion(value) {
     }
 }
 
-if (project.hasProperty('andFHEMReleasePK12')) {
-    play.serviceAccountCredentials = file(andFHEMReleasePK12)
+if (project.hasProperty('andFHEMReleaseP12')) {
+    play.serviceAccountCredentials = file(andFHEMReleaseP12)
 }
 if (project.hasProperty('andFHEMReleaseAccount')) {
     play.serviceAccountEmail = andFHEMReleaseAccount

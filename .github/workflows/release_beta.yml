@@ -1,0 +1,37 @@
+name: Release Beta
+on:
+  repository_dispatch:
+    types: [deploy_beta]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    if: github.actor == github.event.repository.owner.login
+
+    steps:
+      - name: Configure SSH keys
+        env:
+          deployment_private_key: ${{ secrets.deployment_private_key }}
+        run: |
+          mkdir ~/.ssh
+          echo "${{ secrets.deployment_private_key }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Checkout
+        run: git clone git@github.com:klassm/andFHEM.git
+
+      - name: Release
+        env:
+          ORG_GRADLE_PROJECT_andFHEMGithubToken: ${{ secrets.andFHEMGithubToken }}
+          ORG_GRADLE_PROJECT_andFHEMPlayUploadP12Base64: ${{ secrets.andFHEMPlayUploadP12Base64 }}
+          ORG_GRADLE_PROJECT_andFHEMReleaseAliasPassword: ${{ secrets.andFHEMReleaseAliasPassword }}
+          ORG_GRADLE_PROJECT_andFHEMReleaseStorePassword: ${{ secrets.andFHEMReleaseStorePassword }}
+        run: |
+          PWD="$(pwd)"
+          echo "${{ secrets.andFHEMPlayUploadP12Base64 }}" | base64 --decode > "${PWD}/play-store.p12"
+          cd andFHEM
+          git config user.email "andFHEM@klass.i"
+          git config user.name "AndFHEM"
+          ./gradlew clean release -Dstage=beta

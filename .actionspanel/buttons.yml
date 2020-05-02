@@ -1,0 +1,5 @@
+buttons:
+  - title: Deploy Beta
+    action: "deploy_beta"
+    description: Create Beta Release
+    confirm: true
