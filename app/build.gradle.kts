@@ -86,8 +86,6 @@ apply(plugin = "androidx.navigation.safeargs.kotlin")
 
 val unmock = configurations.findByName("unmock")!!
 dependencies {
-    unmock(group = "org.robolectric", name = "android-all", version = "7.1.0_r7-robolectric-0")
-
     implementation(project(":external-dep"))
 
     implementation("com.google.firebase", name = "firebase-appindexing", version = "19.1.0")
