@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.setlist.typeEntry
 
-import com.google.common.base.Preconditions
 import li.klass.fhem.domain.setlist.SetListItem
 import li.klass.fhem.domain.setlist.SetListItemType
 import org.apache.commons.lang3.StringUtils
@@ -43,11 +42,6 @@ abstract class BaseGroupSetListEntry(
         return key + ":" + join(groupStates, ",")
     }
 
-
-    fun asType(): String {
-        Preconditions.checkArgument(groupStates.size == 1)
-        return groupStates[0]
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

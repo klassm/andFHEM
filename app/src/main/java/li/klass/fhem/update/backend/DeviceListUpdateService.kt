@@ -28,7 +28,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import com.crashlytics.android.Crashlytics
-import com.google.common.base.Optional
 import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
@@ -78,9 +77,9 @@ class DeviceListUpdateService @Inject constructor(
     fun getLastUpdate(connectionId: String?): DateTime? =
             deviceListCacheService.getLastUpdate(connectionId)
 
-    private fun update(connectionId: Optional<String>, result: RoomDeviceList?): Boolean = when {
+    private fun update(connectionId: String?, result: RoomDeviceList?): Boolean = when {
         result != null -> {
-            val success = deviceListCacheService.storeDeviceListMap(result, connectionId.orNull())
+            val success = deviceListCacheService.storeDeviceListMap(result, connectionId)
             if (success) LOG.info("update - update was successful, sending result")
             success
         }
@@ -111,12 +110,11 @@ class DeviceListUpdateService @Inject constructor(
 
         applicationContext.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         try {
-            val connection = Optional.fromNullable(connectionId)
-            val command = Command("xmllist$xmllistSuffix", connection)
+            val command = Command("xmllist$xmllistSuffix", connectionId)
             val result = commandExecutionService.executeSync(command) ?: ""
             val roomDeviceList = parseResult(connectionId, applicationContext, result, updateHandler)
 
-            return when (update(connection, roomDeviceList)) {
+            return when (update(connectionId, roomDeviceList)) {
                 true -> {
                     updateIndex()
                     UpdateResult.Success(roomDeviceList)
@@ -139,10 +137,10 @@ class DeviceListUpdateService @Inject constructor(
     }
 
     private fun parseResult(connectionId: String?, context: Context, result: String, updateHandler: UpdateHandler): RoomDeviceList? {
-        val parsed = Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, context))
+        val parsed = deviceListParser.parseAndWrapExceptions(result, context)
         val cached = deviceListCacheService.getCachedRoomDeviceListMap(connectionId)
-        if (parsed.isPresent) {
-            val newDeviceList = updateHandler.handle(cached ?: parsed.get(), parsed.get())
+        if (parsed != null) {
+            val newDeviceList = updateHandler.handle(cached ?: parsed, parsed)
             deviceListCacheService.storeDeviceListMap(newDeviceList, connectionId)
             return newDeviceList
         }

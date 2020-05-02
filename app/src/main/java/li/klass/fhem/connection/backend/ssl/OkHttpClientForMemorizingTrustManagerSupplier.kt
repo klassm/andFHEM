@@ -26,14 +26,13 @@ package li.klass.fhem.connection.backend.ssl
 
 import android.content.Context
 import android.net.TrafficStats
-import com.google.common.base.Supplier
 import li.klass.fhem.util.DelegatingSocketFactory
 import okhttp3.OkHttpClient
 import java.net.Socket
 
 
-class OkHttpClientForMemorizingTrustManagerSupplier(val context: Context) : Supplier<OkHttpClient> {
-    override fun get(): OkHttpClient {
+class OkHttpClientForMemorizingTrustManagerSupplier(val context: Context) {
+    fun get(): OkHttpClient {
         // Install the all-trusting trust manager
         MemorizingTrustManagerContextInitializer().init(context)
 

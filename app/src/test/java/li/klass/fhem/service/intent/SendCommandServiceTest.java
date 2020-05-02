@@ -27,7 +27,6 @@ package li.klass.fhem.service.intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.common.collect.ImmutableList;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -39,6 +38,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,7 +79,7 @@ public class SendCommandServiceTest {
     @DataProvider
     public static Object[][] recentCommandsProvider() {
         return $$(
-                $(String.format("{%s: %s}", Companion.getCOMMANDS_JSON_PROPERTY(), "['a', 'b', 'c']"), ImmutableList.of("a", "b", "c")),
+                $(String.format("{%s: %s}", Companion.getCOMMANDS_JSON_PROPERTY(), "['a', 'b', 'c']"), Arrays.asList("a", "b", "c")),
                 $(null, Collections.<String>emptyList()),
                 $("{", Collections.<String>emptyList())
         );

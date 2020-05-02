@@ -163,13 +163,10 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
                                             item: XmlDeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
         val xmlListDevice = device.xmlListDevice
 
-        val attributeActions = providers
-                .map { it.stateAttributeActionFor(item) }
-                .filter { it.isPresent }
-                .map { it.get() }
+        val attributeActions = providers.mapNotNull { it.stateAttributeActionFor(item) }
                 .toList()
 
-        if (!attributeActions.isEmpty()) {
+        if (attributeActions.isNotEmpty()) {
             attributeActions
                     .filter { it.supports(xmlListDevice) }
                     .forEach { addRow(table, it.createRow(xmlListDevice, connectionId, item.key, item.value, context, table)) }
@@ -181,7 +178,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
             } else if (toggleableStrategy.supports(device)) {
                 addRow(table, toggleableStrategy.createDetailView(device, context, connectionId))
             }
-            if (!device.webCmd.isEmpty()) {
+            if (device.webCmd.isNotEmpty()) {
                 addRow(table, WebCmdActionRow(stateUiService, context, HolderActionRow.LAYOUT_DETAIL).createRow(context, table, device, connectionId))
             }
             return
@@ -191,7 +188,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
 
         if (setListEntry is SliderSetListEntry) {
             addRow(table, StateChangingSeekBarFullWidth(
-                    context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.key, connectionId).get(), row)
+                    context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.key, connectionId)!!, row)
                     .createRow(LayoutInflater.from(context), device))
         } else if (setListEntry is GroupSetListEntry) {
             val groupStates = setListEntry.groupStates

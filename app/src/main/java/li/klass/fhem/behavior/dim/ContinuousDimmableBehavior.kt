@@ -25,8 +25,6 @@
 package li.klass.fhem.behavior.dim
 
 import android.content.Context
-import com.google.common.base.Joiner
-import com.google.common.collect.ImmutableList
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
@@ -73,7 +71,7 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
 
     override fun getPositionForDimState(dimState: String): Double {
         val state = dimState.toLowerCase(Locale.getDefault())
-                .replace(Joiner.on("|").join(DIM_ATTRIBUTES).toRegex(), "")
+                .replace(DIM_ATTRIBUTES.joinToString(separator = "|").toRegex(), "")
                 .replace("%".toRegex(), "")
                 .trim { it <= ' ' }
         if (UPPER_BOUND_STATES.contains(state)) {
@@ -91,9 +89,9 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
     }
 
     companion object {
-        private val DIM_ATTRIBUTES = ImmutableList.of("state", "dim", "level", "pct", "position", "value")
-        private val UPPER_BOUND_STATES = ImmutableList.of("on", "close", "closed")
-        private val LOWER_BOUND_STATES = ImmutableList.of("off", "open", "opened")
+        private val DIM_ATTRIBUTES = listOf("state", "dim", "level", "pct", "position", "value")
+        private val UPPER_BOUND_STATES = listOf("on", "close", "closed")
+        private val LOWER_BOUND_STATES = listOf("off", "open", "opened")
 
         fun supports(device: FhemDevice) = behaviorFor(device.setList) != null
 

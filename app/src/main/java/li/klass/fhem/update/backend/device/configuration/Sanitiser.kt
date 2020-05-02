@@ -25,7 +25,6 @@
 package li.klass.fhem.update.backend.device.configuration
 
 import com.crashlytics.android.Crashlytics
-import com.google.common.base.Strings.isNullOrEmpty
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseConfiguration
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseGeneral
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseToAdd
@@ -53,7 +52,7 @@ class Sanitiser @Inject constructor(
             sanitise(deviceNode, sanitiseConfiguration)
         } catch (e: Exception) {
             Crashlytics.logException(e)
-            LOGGER.error("cannot sanitise {}", deviceNode)
+            LOGGER.error("cannot sanitise {}", deviceNode, e)
             deviceNode
         }
     }
@@ -94,7 +93,7 @@ class Sanitiser @Inject constructor(
                 .filter { !deviceValues.containsKey(it.key) }
                 .forEach { config ->
                     val toSet = config.value ?: config.withValueOf?.let { deviceValues[it]?.value } ?: ""
-                    deviceValues.put(config.key, DeviceNode(nodeType, config.key, toSet, null as DateTime?))
+                    deviceValues[config.key] = DeviceNode(nodeType, config.key, toSet, null as DateTime?)
                 }
     }
 
@@ -125,13 +124,13 @@ class Sanitiser @Inject constructor(
 
     private fun handleAppend(attributeOptions: SanitiseValue, value: String): String {
         return StringUtils.trimToNull(attributeOptions.append)
-                ?.let { ValueDescriptionUtil.append(value, attributeOptions.append) }
+                ?.let { ValueDescriptionUtil.append(value, it) }
                 ?: value
     }
 
     private fun handleExtract(attributeOptions: SanitiseValue, value: String): String {
         val extract = attributeOptions.extract
-        if (!isNullOrEmpty(extract)) {
+        if (!extract.isNullOrEmpty()) {
             when (extract) {
                 "double" -> {
                     val extractDigits = attributeOptions.extractDigits ?: 0
