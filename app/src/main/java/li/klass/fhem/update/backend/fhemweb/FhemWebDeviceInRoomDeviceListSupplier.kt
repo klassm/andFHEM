@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import com.google.common.base.Supplier
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
@@ -40,9 +39,9 @@ class FhemWebDeviceInRoomDeviceListSupplier
         private val applicationProperties: ApplicationProperties,
         private val connectionService: ConnectionService,
         private val deviceListService: DeviceListService
-) : Supplier<FhemDevice?> {
+) {
 
-    override fun get(): FhemDevice? {
+    fun get(): FhemDevice? {
         val deviceList = deviceListService.getAllRoomsDeviceList(connectionService.getSelectedId())
         val fhemWebDevices = deviceList.getDevicesOfType("FHEMWEB")
         return findFhemWebDevice(fhemWebDevices)

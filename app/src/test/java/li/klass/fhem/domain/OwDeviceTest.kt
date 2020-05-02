@@ -31,7 +31,7 @@ import org.junit.Test
 class OwDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun should_read_temperatures_correctly() {
-        val device = getDeviceFor("Aussentemperatur")
+        val device = getDeviceFor("Aussentemperatur")!!
 
         assertThat(device.name).isEqualTo("Aussentemperatur")
         assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
@@ -42,27 +42,27 @@ class OwDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun should_read_counter_values_correctly() {
-        val device = getDeviceFor("DS2413A")
+        val device = getDeviceFor("DS2413A")!!
         assertThat(stateValueFor(device, "PIO.A")).isEqualTo("2")
         assertThat(stateValueFor(device, "PIO.B")).isEqualTo("3")
     }
 
     @Test
     fun should_handle_switch_devices() {
-        val device = getDeviceFor("Relais1")
+        val device = getDeviceFor("Relais1")!!
         assertThat(device.state).isEqualTo("ein")
         assertThat(device.internalState).isEqualTo("PIO 1")
     }
 
     @Test
     fun should_handle_single_counter_devices() {
-        val device = getDeviceFor("Relais2")
+        val device = getDeviceFor("Relais2")!!
         assertThat(stateValueFor(device, "PIO")).isEqualTo("0")
     }
 
     @Test
     fun should_handle_devices_with_more_than_two_PIOs() {
-        val device = getDeviceFor("OWSw")
+        val device = getDeviceFor("OWSw")!!
         assertThat(stateValueFor(device, "PIO.0")).isEqualTo("0")
         assertThat(stateValueFor(device, "PIO.1")).isEqualTo("1")
         assertThat(stateValueFor(device, "PIO.2")).isEqualTo("0")

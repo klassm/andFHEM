@@ -26,7 +26,6 @@ package li.klass.fhem.fcm.receiver
 
 import android.content.Context
 import android.content.Intent
-import com.google.common.collect.Maps
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.FhemDevice
@@ -64,7 +63,7 @@ class FcmNotifyHandler @Inject constructor(
     private fun extractChanges(deviceName: String, changesText: String, context: Context): Map<String, String> {
         val changes = changesText.split("<\\|>".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-        val changeMap = Maps.newHashMap<String, String>()
+        val changeMap = mutableMapOf<String, String>()
         for (change in changes) {
             val parts = change.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (parts.size < 2) continue

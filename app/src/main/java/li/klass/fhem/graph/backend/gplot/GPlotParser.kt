@@ -24,7 +24,6 @@
 package li.klass.fhem.graph.backend.gplot
 
 import com.crashlytics.android.Crashlytics
-import com.google.common.collect.Range
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.*
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -79,15 +78,15 @@ class GPlotParser @Inject constructor() {
     }
 
     private fun calculateRange(rangeValue: String,
-                               parts: Array<String>): Range<Double>? {
+                               parts: Array<String>): Range? {
         return if (rangeValue.isEmpty() || rangeValue == ":") {
             null
         } else if (rangeValue.startsWith(":")) {
-            Range.atMost(parts[0].toDouble())
+            Range.atMost(parts[0].toFloat())
         } else if (rangeValue.endsWith(":")) {
-            Range.atLeast(parts[0].toDouble())
+            Range.atLeast(parts[0].toFloat())
         } else {
-            Range.closed(parts[0].toDouble(), parts[1].toDouble())
+            Range.closed(parts[0].toFloat(), parts[1].toFloat())
         }
     }
 

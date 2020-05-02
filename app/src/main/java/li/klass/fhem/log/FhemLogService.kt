@@ -27,8 +27,6 @@ package li.klass.fhem.log
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import com.google.common.io.Files
-import kotlinx.serialization.toUtf8Bytes
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
@@ -47,14 +45,11 @@ class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataC
                                          private val deviceListService: DeviceListService) {
 
     @SuppressLint("SetWorldReadable")
-    fun getLogAndWriteToTemporaryFile(): File? {
-        return getLog()?.let { content: String ->
-            val outputFile = File(directory, "fhem.log")
-            outputFile.setReadable(true, false)
-            outputFile.deleteOnExit()
-
-            Files.write(content.toUtf8Bytes(), outputFile)
-            outputFile
+    fun getLogAndWriteToTemporaryFile(): File? = getLog()?.let { content: String ->
+        File(directory, "fhem.log").apply {
+            setReadable(true, false)
+            deleteOnExit()
+            writeText(content, Charsets.UTF_8)
         }
     }
 

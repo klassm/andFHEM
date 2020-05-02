@@ -21,40 +21,42 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
-
 package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.json.JSON
-import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import org.json.JSONException
+import android.content.Context
+import com.crashlytics.android.Crashlytics
+import li.klass.fhem.resources.ResourceIdMapper
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DeviceConfigurationProvider @Inject
-constructor() {
-    private val configurations: Map<String, DeviceConfiguration> by lazy {
-        val jsonAsString = DeviceConfigurationProvider::class.java.getResource("/deviceConfiguration.json")
-                ?.readText(Charsets.UTF_8) ?: ""
-
-        JSON.parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
+class DeviceDescMapping @Inject constructor() {
+    private var mapping: JSONObject? = null
+    fun descFor(key: String, context: Context): String {
+        val value = mapping!!.optString(key, key)
+        return resourceFor(value, context)
     }
 
-    fun configurationFor(device: FhemDevice): DeviceConfiguration =
-            configurationFor(device.xmlListDevice)
+    fun descFor(resourceId: ResourceIdMapper, context: Context): String {
+        return context.getString(resourceId.id)
+    }
 
-    fun configurationFor(device: XmlListDevice): DeviceConfiguration {
+    private fun resourceFor(value: String, context: Context): String {
         return try {
-            configurationFor(device.type)
-        } catch (e: JSONException) {
-            throw RuntimeException(e)
+            context.getString(ResourceIdMapper.valueOf(value).id)
+        } catch (e: IllegalArgumentException) {
+            value
         }
     }
 
-    fun configurationFor(type: String): DeviceConfiguration {
-        val default = configurations["defaults"]!!
-        val forType = configurations[type]
-        return forType?.plus(default) ?: default
+    init {
+        try {
+            mapping = JSONObject(DeviceDescMapping::class.java.getResource("/deviceDescMapping.json")?.readText(Charsets.UTF_8)
+                    ?: "")
+        } catch (e: Exception) {
+            Crashlytics.logException(e)
+            throw RuntimeException(e)
+        }
     }
 }

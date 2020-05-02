@@ -34,11 +34,6 @@ import android.widget.TableRow
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.common.base.Joiner
-import com.google.common.base.Preconditions.checkNotNull
-import com.google.common.base.Splitter
-import com.google.common.base.Strings
-import com.google.common.collect.ImmutableList
 import kotlinx.android.synthetic.main.timer_detail.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
@@ -319,7 +314,7 @@ class TimerDetailFragment @Inject constructor(
         view.isActive.isChecked = timerDevice.isActive
         setSwitchTime(definition.switchTime, view)
         setTimerName(timerDevice.name, view)
-        setTargetState(Joiner.on(" ").skipNulls().join(definition.targetState, definition.targetStateAppendix), view)
+        setTargetState(listOfNotNull(definition.targetState, definition.targetStateAppendix).joinToString(" "), view)
     }
 
     private fun setTimerName(timerDeviceName: String, view: View) {
@@ -340,7 +335,7 @@ class TimerDetailFragment @Inject constructor(
 
     private fun getSwitchTime(view: View): LocalTime? {
         val text = view.switchTimeContent.text.toString()
-        val parts = ImmutableList.copyOf(Splitter.on(":").split(text))
+        val parts = text.split(":").toList()
         if (parts.size != 3) {
             return null
         }
@@ -369,7 +364,7 @@ class TimerDetailFragment @Inject constructor(
     override fun getTitle(context: Context) = context.getString(R.string.timer)
 
     private val isModify: Boolean
-        get() = !Strings.isNullOrEmpty(args.deviceName)
+        get() = args.deviceName?.isNotEmpty() ?: false
 
     companion object {
         private val DEVICE_FILTER = object : DeviceNameListFragment.DeviceFilter {

@@ -24,14 +24,13 @@
 
 package li.klass.fhem.adapter.devices.core.generic.detail.actions
 
-import com.google.common.collect.Maps
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import java.util.*
 
 abstract class DeviceDetailActionProvider : GenericDetailActionProvider {
-    private val stateAttributeActionMap = Maps.newHashMap<String, StateAttributeAction>()
+    private val stateAttributeActionMap = mutableMapOf<String, StateAttributeAction>()
 
     protected abstract fun getDeviceType(): String
 

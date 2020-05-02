@@ -32,7 +32,7 @@ import org.junit.Test
 class LightSceneDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributes() {
-        val device = defaultDevice
+        val device = defaultDevice!!
 
         val scene = device.setList["scene", false] as GroupSetListEntry
         assertThat(scene.groupStates).contains("on", "off")
@@ -40,7 +40,7 @@ class LightSceneDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testDeviceWithOnlyOneScene() {
-        val device = getDeviceFor("device1")
+        val device = getDeviceFor("device1")!!
 
         val scene = device.setList["scene", false] as GroupSetListEntry
         assertThat(scene.groupStates).contains("absent")

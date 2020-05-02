@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
-import com.google.common.collect.ImmutableList;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -136,7 +134,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         char firstChar = shortName.charAt(0);
         shortName = ((char) (firstChar - 'a' + 'A')) + shortName.substring(1);
 
-        return ImmutableList.of(new StateToSet("weekProfile", shortName + " " + builder.toString()));
+        return Collections.singletonList(new StateToSet("weekProfile", shortName + " " + builder.toString()));
     }
 
     @Override

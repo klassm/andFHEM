@@ -24,11 +24,10 @@
 
 package com.android.vending.billing;
 
-import com.google.common.collect.Sets;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,7 +76,7 @@ public class Inventory implements Serializable {
 
     /** Returns a list of all owned product IDs. */
     public Set<String> getAllOwnedSkus() {
-        return Sets.newHashSet(mPurchaseMap.keySet());
+        return new HashSet<>(mPurchaseMap.keySet());
     }
 
     /** Returns a list of all owned product IDs of a given type */

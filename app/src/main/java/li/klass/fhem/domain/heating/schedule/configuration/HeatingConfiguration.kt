@@ -24,7 +24,6 @@
 package li.klass.fhem.domain.heating.schedule.configuration
 
 import android.content.Context
-import com.google.common.collect.Lists
 import li.klass.fhem.domain.heating.schedule.DayProfile
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval
@@ -68,7 +67,7 @@ abstract class HeatingConfiguration<H : BaseHeatingInterval<H>, C : HeatingConfi
     abstract fun readNode(weekProfile: WeekProfile<H, C>, key: String, value: String)
     fun generateScheduleCommands(deviceName: String, weekProfile: WeekProfile<H, C>): List<String> {
         val statesToSet = generatedStatesToSet(weekProfile)
-        val result: MutableList<String> = Lists.newArrayList()
+        val result: MutableList<String> = mutableListOf()
         for (state in statesToSet) {
             result.add("set " + deviceName + " " + state.key + " " + state.value)
         }
@@ -77,7 +76,7 @@ abstract class HeatingConfiguration<H : BaseHeatingInterval<H>, C : HeatingConfi
     }
 
     fun generatedStatesToSet(weekProfile: WeekProfile<H, C>): List<StateToSet> {
-        val result: MutableList<StateToSet> = Lists.newArrayList()
+        val result: MutableList<StateToSet> = mutableListOf()
         val changedDayProfiles: List<DayProfile<H, HeatingIntervalConfiguration<H>>> = weekProfile.changedDayProfiles
         LOG.info("generateScheduleCommands - {} day(s) contain changes", changedDayProfiles.size)
         for (dayProfile in changedDayProfiles) {

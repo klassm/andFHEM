@@ -33,7 +33,7 @@ class RemoteControlDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testAttributesDefaultDevice() {
-        val device = getDefaultDevice()
+        val device = defaultDevice!!
 
         assertThat(device).isNotNull()
 
