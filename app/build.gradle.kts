@@ -34,7 +34,7 @@ buildscript {
     }
 
     dependencies {
-        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.6.4")
+        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.7.6")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.3")
