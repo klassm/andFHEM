@@ -34,13 +34,13 @@ buildscript {
     }
 
     dependencies {
-        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.6.4")
+        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.7.6")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.3")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.7.5")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
-        classpath(group = "io.fabric.tools", name = "gradle", version = "1.25.4")
+        classpath(group = "io.fabric.tools", name = "gradle", version = "1.31.2")
         classpath(group = "com.google.firebase", name = "firebase-plugins", version = "1.2.0")
         classpath(group = "androidx.navigation", name="navigation-safe-args-gradle-plugin", version = "2.3.0-alpha06")
     }
@@ -91,7 +91,7 @@ configurations.all {
 
 val unmock = configurations.findByName("unmock")!!
 dependencies {
-    unmock(group = "org.robolectric", name = "android-all", version = "7.0.0_r1-robolectric-0")
+    unmock(group = "org.robolectric", name = "android-all", version = "7.1.0_r7-robolectric-0")
 
     implementation(project(":external-dep"))
 
@@ -127,19 +127,19 @@ dependencies {
     implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
     implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.2.0")
 
-    implementation(group = "commons-net", name = "commons-net", version = "3.3")
+    implementation(group = "commons-net", name = "commons-net", version = "3.6")
     implementation(group = "commons-codec", name = "commons-codec", version = "1.11")
-    implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.7")
+    implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.10")
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
     implementation(group = "com.github.angads25", name = "filepicker", version = "1.1.1")
-    implementation(group = "joda-time", name = "joda-time", version = "2.9.9")
+    implementation(group = "joda-time", name = "joda-time", version = "2.10.6")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.12")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
-    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "1.3.2")
+    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "1.3.3")
     implementation(group = "com.github.PhilJay", name = "MPAndroidChart", version = "3.0.3")
-    implementation(group = "com.squareup.picasso", name = "picasso", version = "2.5.1")
+    implementation(group = "com.squareup.picasso", name = "picasso", version = "2.5.2")
     implementation(group = "com.github.alexfu", name = "Phoenix", version = "1.0.0")
     implementation(group = "com.github.bumptech.glide", name = "glide", version = glideVersion)
     kapt(group = "com.github.bumptech.glide", name = "compiler", version = glideVersion)
@@ -166,10 +166,10 @@ dependencies {
 
 
     testImplementation(group = "junit", name = "junit", version = "4.12")
-    testImplementation(group = "org.mockito", name = "mockito-core", version = "2.23.4")
-    testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.5.0")
-    testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.12.0")
-    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.11.1")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "2.28.2")
+    testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
+    testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
+    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.15.0")
     testImplementation(group = "org.assertj", name = "assertj-guava", version = "1.3.1") {
         exclude(group = "com.google.guava")
     }
