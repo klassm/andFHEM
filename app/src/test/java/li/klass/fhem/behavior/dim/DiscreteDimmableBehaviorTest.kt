@@ -24,7 +24,6 @@
 
 package li.klass.fhem.behavior.dim
 
-import com.google.common.collect.ImmutableList
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
@@ -70,9 +69,9 @@ class DiscreteDimmableBehaviorTest {
         @JvmStatic
         @DataProvider
         fun discreteBehaviorProvider() = listOf(
-                DiscreteBehaviorProviderTestCase(SetList.parse("dim10% dim20% dim30%"), ImmutableList.of("dim10%", "dim20%", "dim30%")),
-                DiscreteBehaviorProviderTestCase(SetList.parse("dim1 dim20 dim30"), ImmutableList.of("dim1", "dim20", "dim30")),
-                DiscreteBehaviorProviderTestCase(SetList.parse("dim30 dim10 dim80"), ImmutableList.of("dim10", "dim30", "dim80"))
+                DiscreteBehaviorProviderTestCase(SetList.parse("dim10% dim20% dim30%"), listOf("dim10%", "dim20%", "dim30%")),
+                DiscreteBehaviorProviderTestCase(SetList.parse("dim1 dim20 dim30"), listOf("dim1", "dim20", "dim30")),
+                DiscreteBehaviorProviderTestCase(SetList.parse("dim30 dim10 dim80"), listOf("dim10", "dim30", "dim80"))
         )
 
         @JvmStatic
@@ -105,5 +104,5 @@ class DiscreteDimmableBehaviorTest {
     data class PositionProviderTestCase(val setList: SetList, val state: String, val position: Int)
     data class UpperBoundProviderTestCase(val setList: SetList, val expectedUpperBound: Int)
     data class NonDiscreteBehaviorProviderTestCase(val setList: SetList)
-    data class DiscreteBehaviorProviderTestCase(val setList: SetList, val expectedStates: ImmutableList<String>)
+    data class DiscreteBehaviorProviderTestCase(val setList: SetList, val expectedStates: List<String>)
 }

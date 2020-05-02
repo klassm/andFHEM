@@ -55,7 +55,5 @@ class MAXDetailActionProvider @Inject constructor() : DeviceDetailActionProvider
         })
     }
 
-    override fun getDeviceType(): String {
-        return "MAX"
-    }
+    override fun getDeviceType(): String = "MAX"
 }

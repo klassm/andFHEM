@@ -32,7 +32,7 @@ class GCMSendDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testAttributesProperlySet() {
-        val device = getDeviceFor("gcm")
+        val device = getDeviceFor("gcm")!!
         assertThat(attributeValueFor(device, "apiKey")).isEqualTo("AIzaSyCs7OxUcPp5")
         assertThat(attributeValueFor(device, "regIds"))
                 .contains("APA91bHTAy8Xp4uE4FyCJuMnAn")

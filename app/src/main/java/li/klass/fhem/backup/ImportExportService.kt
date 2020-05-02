@@ -25,10 +25,6 @@
 package li.klass.fhem.backup
 
 import android.content.Context
-import com.google.common.base.Charsets
-import com.google.common.base.Preconditions.checkArgument
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.Maps
 import com.google.gson.Gson
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
@@ -38,11 +34,11 @@ import li.klass.fhem.util.CloseableUtil
 import li.klass.fhem.util.ReflectionUtil
 import li.klass.fhem.util.io.FileSystemService
 import li.klass.fhem.util.preferences.SharedPreferencesService
-import net.lingala.zip4j.core.ZipFile
+import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.exception.ZipException
-import net.lingala.zip4j.exception.ZipExceptionConstants
 import net.lingala.zip4j.model.ZipParameters
-import net.lingala.zip4j.util.Zip4jConstants
+import net.lingala.zip4j.model.enums.CompressionMethod
+import net.lingala.zip4j.model.enums.EncryptionMethod
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.slf4j.LoggerFactory
@@ -58,8 +54,7 @@ class ImportExportService @Inject constructor(
         private val favoritesService: FavoritesService,
         private val applicationProperties: ApplicationProperties
 ) {
-    private val LOGGER = LoggerFactory.getLogger(ImportExportService::class.java)
-
+    private val logger = LoggerFactory.getLogger(ImportExportService::class.java)
 
     private val backupFileName: String
         get() = "andFHEM-" + dateTimeFormatter.print(DateTime.now()) + ".backup"
@@ -72,25 +67,26 @@ class ImportExportService @Inject constructor(
     }
 
     private fun getSharedPreferencesExportKeys(context: Context): Map<String, String> {
-        val builder = ImmutableMap.builder<String, String>()
-                .put("CONNECTIONS", ConnectionService.PREFERENCES_NAME)
-                .put("NOTIFICATIONS", NotificationService.PREFERENCES_NAME)
-                .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context))
+        val builder = mutableMapOf(
+                "CONNECTIONS" to ConnectionService.PREFERENCES_NAME,
+                "NOTIFICATIONS" to NotificationService.PREFERENCES_NAME,
+                "DEFAULT" to applicationProperties.getApplicationSharedPreferencesName(context)
+        )
         for (preferenceName in favoritesService.getPreferenceNames()) {
-            builder.put("FAVORITE_$preferenceName", preferenceName)
+            builder["FAVORITE_$preferenceName"] = preferenceName
         }
-        return builder.build()
+        return builder.toMap()
     }
 
     fun exportSettings(password: String?, context: Context): File {
-        val toExport = Maps.newHashMap<String, Map<String, *>>()
+        val toExport = mutableMapOf<String, Map<String, *>>()
 
         for ((key, value) in getSharedPreferencesExportKeys(context)) {
             val values = sharedPreferencesService.listAllFrom(value)
             toExport[key] = toExportValues(values)
         }
 
-        return createZipFrom(toExport, password)
+        return createZipFrom(toExport.toMap(), password)
     }
 
     fun toExportValues(values: Map<String, *>) = values.entries
@@ -99,7 +95,7 @@ class ImportExportService @Inject constructor(
 
 
     fun toImportValues(values: Map<String, String>): Map<String, *> {
-        val toImport = Maps.newHashMap<String, Any>()
+        val toImport = mutableMapOf<String, Any>()
         for ((key, value1) in values) {
             val separator = value1.lastIndexOf("/")
             val clazz = ReflectionUtil.classForName(value1.substring(separator + 1))
@@ -131,10 +127,12 @@ class ImportExportService @Inject constructor(
     fun isEncryptedFile(file: File): Boolean {
         try {
             val zipFile = ZipFile(file)
-            checkArgument(zipFile.isValidZipFile)
+            if (!zipFile.isValidZipFile) {
+                throw IllegalArgumentException("not a valid zip file")
+            }
             return zipFile.isEncrypted
         } catch (e: ZipException) {
-            LOGGER.error("error while reading zip file", e)
+            logger.error("error while reading zip file", e)
             throw IllegalArgumentException(e)
         }
 
@@ -146,7 +144,7 @@ class ImportExportService @Inject constructor(
         try {
             zipFile = ZipFile(file)
             if (zipFile.isEncrypted) {
-                zipFile.setPassword(password ?: "")
+                zipFile.setPassword((password ?: "").toCharArray())
             }
 
             if (zipFile.getFileHeader(SHARED_PREFERENCES_FILE_NAME) == null) {
@@ -166,14 +164,15 @@ class ImportExportService @Inject constructor(
             return ImportStatus.SUCCESS
 
         } catch (e: ZipException) {
-            LOGGER.error("importSettings(" + file.absolutePath + ") - cannot import", e)
-            return if (e.code == ZipExceptionConstants.WRONG_PASSWORD || (e.message ?: "").contains("Wrong Password")) {
+            logger.error("importSettings(" + file.absolutePath + ") - cannot import", e)
+            return if (e.type == ZipException.Type.WRONG_PASSWORD || (e.message
+                            ?: "").contains("Wrong Password")) {
                 ImportStatus.WRONG_PASSWORD
             } else {
                 ImportStatus.INVALID_FILE
             }
         } catch (e: Exception) {
-            LOGGER.error("importSettings(" + file.absolutePath + ") - cannot import", e)
+            logger.error("importSettings(" + file.absolutePath + ") - cannot import", e)
             return ImportStatus.INVALID_FILE
         }
     }
@@ -201,18 +200,16 @@ class ImportExportService @Inject constructor(
             val exportedJson = Gson().toJson(toExport)
 
             val exportFile = File(exportDirectory, backupFileName)
-            LOGGER.info("export file location is {}", exportFile.absolutePath)
-            val zipFile = ZipFile(exportFile)
+            logger.info("export file location is {}", exportFile.absolutePath)
+            val zipFile = ZipFile(exportFile, password?.toCharArray())
 
 
             val parameters = ZipParameters()
-            parameters.compressionMethod = Zip4jConstants.COMP_DEFLATE
+            parameters.compressionMethod = CompressionMethod.DEFLATE
             parameters.fileNameInZip = SHARED_PREFERENCES_FILE_NAME
-            parameters.isSourceExternalStream = true
             if (password != null) {
                 parameters.isEncryptFiles = true
-                parameters.encryptionMethod = Zip4jConstants.ENC_METHOD_STANDARD
-                parameters.setPassword(password)
+                parameters.encryptionMethod = EncryptionMethod.ZIP_STANDARD
             }
 
             stream = ByteArrayInputStream(exportedJson.toByteArray(Charsets.UTF_8))
@@ -220,7 +217,7 @@ class ImportExportService @Inject constructor(
 
             return exportFile
         } catch (e: ZipException) {
-            LOGGER.error("cannot create zip", e)
+            logger.error("cannot create zip", e)
             throw IllegalStateException(e)
         } finally {
             CloseableUtil.close(stream)

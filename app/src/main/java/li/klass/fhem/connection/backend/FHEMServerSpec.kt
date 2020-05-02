@@ -24,7 +24,6 @@
 
 package li.klass.fhem.connection.backend
 
-import com.google.common.base.Strings.isNullOrEmpty
 import java.io.Serializable
 
 open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: String) : Comparable<FHEMServerSpec>, Serializable {
@@ -83,7 +82,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
         return "FHEMServerSpec{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", password='" + (if (isNullOrEmpty(password)) "empty" else "*****") + '\'' +
+                ", password='" + (if (password.isNullOrEmpty()) "empty" else "*****") + '\'' +
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", url='" + url + '\'' +
@@ -96,5 +95,5 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
                 '}'
     }
 
-    fun canRetry(): Boolean = !isNullOrEmpty(alternateUrl)
+    fun canRetry(): Boolean = !alternateUrl.isNullOrEmpty()
 }

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.devices.backend.at
 
-import com.google.common.base.Strings
 import li.klass.fhem.util.NumberUtil.toTwoDecimalDigits
 import org.apache.commons.lang3.StringUtils.trimToNull
 import org.joda.time.LocalTime
@@ -150,7 +149,7 @@ class AtDefinitionParser @Inject constructor() {
             definition.repetition.weekdayOrdinate != -1 -> ifContent = addToIf(ifContent, "\$wday == " + definition.repetition.weekdayOrdinate)
         }
 
-        if (!Strings.isNullOrEmpty(ifContent)) {
+        if (!ifContent.isEmpty()) {
             command += " if ($ifContent)"
         }
 
@@ -160,7 +159,7 @@ class AtDefinitionParser @Inject constructor() {
     }
 
     private fun addToIf(ifContent: String, newPart: String): String = when {
-        Strings.isNullOrEmpty(ifContent) -> newPart
+        ifContent.isEmpty() -> newPart
         else -> "$ifContent && $newPart"
     }
 

@@ -33,7 +33,7 @@ import org.junit.Test
 class StructureDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributesInOnOffDummy() {
-        val device = defaultDevice
+        val device = defaultDevice!!
 
         assertThat(device.name).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME)
         assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
@@ -45,14 +45,14 @@ class StructureDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testDeviceWithSetList() {
-        val device = getDeviceFor("deviceWithSetlist")
+        val device = getDeviceFor("deviceWithSetlist")!!
 
         assertThat(device.setList["state", false] as GroupSetListEntry).isEqualTo(GroupSetListEntry("state", listOf("17", "18", "19", "20", "21", "21.5", "22")))
     }
 
     @Test
     fun testSlider() {
-        val device = getDeviceFor("slider")
+        val device = getDeviceFor("slider")!!
         assertThat(device).isNotNull()
 
         val value = device.setList["pct", false]

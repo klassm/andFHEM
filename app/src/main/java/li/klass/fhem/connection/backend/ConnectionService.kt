@@ -28,9 +28,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.common.base.Preconditions.checkArgument
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.Lists.newArrayList
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -67,7 +64,7 @@ constructor(private val applicationProperties: ApplicationProperties,
         if (exists(saveData.name)) return
         GlobalScope.launch(Dispatchers.Main) {
             val isPremium = licenseService.isPremium()
-            if (isPremium || getCountWithoutDummy() < AndFHEMApplication.Companion.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+            if (isPremium || getCountWithoutDummy() < AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
                 val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
                 saveData.fillServer(server)
@@ -139,7 +136,7 @@ constructor(private val applicationProperties: ApplicationProperties,
             ArrayList(getAllIncludingDummies())
 
     private fun getAll(): List<FHEMServerSpec> {
-        val servers = newArrayList<FHEMServerSpec>()
+        val servers = mutableListOf<FHEMServerSpec>()
 
         val preferences = getPreferences() ?: return servers
 
@@ -155,14 +152,13 @@ constructor(private val applicationProperties: ApplicationProperties,
 
     private fun getAllIncludingDummies(): List<FHEMServerSpec> {
         val all = getAll()
-        var builder: ImmutableList.Builder<FHEMServerSpec> = ImmutableList.builder<FHEMServerSpec>()
-                .addAll(all)
+        val builder = all.toMutableList()
         if (mayShowDummyConnections(all)) {
-            builder = builder.add(dummyData)
+            builder.add(dummyData)
             val testData = getTestData()
-            if (testData != null) builder = builder.add(testData)
+            if (testData != null) builder.add(testData)
         }
-        return builder.build()
+        return builder.toList()
     }
 
     fun mayShowInCurrentConnectionType(deviceType: String, connectionId: String? = null): Boolean {
@@ -210,7 +206,9 @@ constructor(private val applicationProperties: ApplicationProperties,
     }
 
     private fun getPortOfFHEMWEBSpec(spec: FHEMServerSpec): Int {
-        checkArgument(spec.serverType == FHEMWEB)
+        if (spec.serverType != FHEMWEB) {
+            throw IllegalArgumentException("expected FHEMWEB, got " + spec.serverType)
+        }
         val explicitPortPattern = Pattern.compile(":([\\d]+)")
         val url = spec.url
         val matcher = explicitPortPattern.matcher(url)
@@ -225,10 +223,10 @@ constructor(private val applicationProperties: ApplicationProperties,
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
-        private val TEST_DATA_ID = "-2"
-        val DUMMY_DATA_ID = "-1"
-        val MANAGEMENT_DATA_ID = "-3"
-        val PREFERENCES_NAME = "fhemConnections"
+        private const val TEST_DATA_ID = "-2"
+        const val DUMMY_DATA_ID = "-1"
+        const val MANAGEMENT_DATA_ID = "-3"
+        const val PREFERENCES_NAME = "fhemConnections"
 
         private val deviceTypeVisibility = mapOf(
                 "FLOORPLAN" to DeviceVisibility.FHEMWEB_ONLY,

@@ -24,8 +24,6 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.google.common.base.Charsets
-import com.google.common.io.Resources
 import kotlinx.serialization.json.JSON
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -37,8 +35,8 @@ import javax.inject.Singleton
 class DeviceConfigurationProvider @Inject
 constructor() {
     private val configurations: Map<String, DeviceConfiguration> by lazy {
-        val jsonAsString = Resources.toString(Resources.getResource(
-                DeviceConfigurationProvider::class.java, "/deviceConfiguration.json"), Charsets.UTF_8)
+        val jsonAsString = DeviceConfigurationProvider::class.java.getResource("/deviceConfiguration.json")
+                ?.readText(Charsets.UTF_8) ?: ""
 
         JSON.parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
     }

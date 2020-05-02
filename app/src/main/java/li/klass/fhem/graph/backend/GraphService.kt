@@ -26,7 +26,6 @@ package li.klass.fhem.graph.backend
 
 import android.content.Context
 import android.util.Log
-import com.google.common.base.Optional
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.gplot.GPlotSeries
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
@@ -134,7 +133,7 @@ class GraphService @Inject constructor(
             command = command.replace(("<SPEC" + (i + 1) + ">").toRegex(), plotfunction[i])
         }
         LOG.trace("Command: {}", command)
-        val result = commandExecutionService.executeSync(Command(command, Optional.fromNullable(connectionId)))
+        val result = commandExecutionService.executeSync(Command(command, connectionId))
                 ?.replace("#[^\\\\]*\\\\[rn]".toRegex(), "")
                 ?: throw IllegalStateException("could not get a response for command $command")
         return "\n\r$result"

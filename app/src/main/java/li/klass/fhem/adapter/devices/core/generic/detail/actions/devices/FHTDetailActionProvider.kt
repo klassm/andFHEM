@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices
 
 import android.content.Context
 import androidx.navigation.NavController
-import com.google.common.collect.ImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -56,7 +55,7 @@ class FHTDetailActionProvider @Inject constructor(
     }
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
-        return ImmutableList.of<ActionCardAction>(
+        return listOf(
                 object : ActionCardButton(R.string.timetable, context) {
                     override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                         val provider = object : HeatingConfigurationProvider<FromToHeatingInterval> {

@@ -26,8 +26,6 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
 import android.app.AlertDialog
 import android.content.Context
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.Iterables
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,13 +43,10 @@ class MultipleSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> 
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
         val groupSetListEntry = entry as GroupSetListEntry
 
-        val states = ImmutableList.builder<String>()
-                .add(context.getString(R.string.customText))
-                .addAll(groupSetListEntry.groupStates)
-                .build()
+        val states = listOf(context.getString(R.string.customText)) + groupSetListEntry.groupStates
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + groupSetListEntry.key)
-                .setItems(Iterables.toArray(states, CharSequence::class.java)) { dialog, which ->
+                .setItems(states.toTypedArray()) { dialog, which ->
                     if (which == 0) {
                         TextFieldTargetStateHandler().handle(entry, context, device, callback)
                     } else {

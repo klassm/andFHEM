@@ -28,8 +28,6 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class ReflectionUtil {
     public static final String TAG = ReflectionUtil.class.getName();
 

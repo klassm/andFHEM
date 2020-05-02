@@ -25,7 +25,6 @@
 package li.klass.fhem.behavior.dim
 
 import android.content.Context
-import com.google.common.base.Optional
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
@@ -81,13 +80,13 @@ class DimmableBehavior private constructor(
             return null
         }
 
-        fun continuousBehaviorFor(device: FhemDevice, attribute: String, connectionId: String?): Optional<DimmableBehavior> {
+        fun continuousBehaviorFor(device: FhemDevice, attribute: String, connectionId: String?): DimmableBehavior? {
             val setList = device.setList
             if (!setList.contains(attribute)) {
-                return Optional.absent()
+                return null
             }
             val setListSliderValue = setList[attribute, true] as SliderSetListEntry
-            return Optional.of(DimmableBehavior(device, connectionId, ContinuousDimmableBehavior(setListSliderValue, attribute)))
+            return DimmableBehavior(device, connectionId, ContinuousDimmableBehavior(setListSliderValue, attribute))
         }
 
 

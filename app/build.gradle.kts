@@ -34,13 +34,13 @@ buildscript {
     }
 
     dependencies {
-        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.6.4")
+        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.7.6")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.3")
-        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.2.0")
+        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.7.5")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
-        classpath(group = "io.fabric.tools", name = "gradle", version = "1.25.4")
+        classpath(group = "io.fabric.tools", name = "gradle", version = "1.31.2")
         classpath(group = "com.google.firebase", name = "firebase-plugins", version = "1.2.0")
         classpath(group = "androidx.navigation", name="navigation-safe-args-gradle-plugin", version = "2.3.0-alpha06")
     }
@@ -58,7 +58,7 @@ val roomVersion = "2.2.5"
 
 plugins {
     id("net.researchgate.release") version "2.8.0"
-    id("com.android.application") version "3.5.2"
+    id("com.android.application") version "3.6.0"
     kotlin("android").version("1.3.31")
     kotlin("android.extensions").version("1.3.31")
     kotlin("kapt").version("1.3.31")
@@ -84,14 +84,9 @@ apply(plugin = "kotlinx-serialization")
 apply(plugin = "io.fabric")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
 
-configurations.all {
-    exclude(group = "com.google.guava", module = "listenablefuture")
-    // exclude, due to https://issuetracker.google.com/issues/116154359
-}
-
 val unmock = configurations.findByName("unmock")!!
 dependencies {
-    unmock(group = "org.robolectric", name = "android-all", version = "7.0.0_r1-robolectric-0")
+    unmock(group = "org.robolectric", name = "android-all", version = "7.1.0_r7-robolectric-0")
 
     implementation(project(":external-dep"))
 
@@ -101,9 +96,6 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "16.2.2")
     implementation(group = "com.google.android.material", name = "material", version = "1.1.0-alpha02")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
-    implementation(group = "com.google.guava", name = "guava", version = "23.4-android") {
-        exclude(group = "com.google.code.findbugs")
-    }
     implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.22.0") {
         exclude(group = "com.google.code.findbugs")
         exclude(group = "org.apache.httpcomponents")
@@ -128,16 +120,16 @@ dependencies {
     implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.2.0")
 
     implementation(group = "commons-net", name = "commons-net", version = "3.6")
-    implementation(group = "commons-codec", name = "commons-codec", version = "1.11")
-    implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.7")
+    implementation(group = "commons-codec", name = "commons-codec", version = "1.14")
+    implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.10")
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
     implementation(group = "com.github.angads25", name = "filepicker", version = "1.1.1")
-    implementation(group = "joda-time", name = "joda-time", version = "2.9.9")
-    implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.12")
+    implementation(group = "joda-time", name = "joda-time", version = "2.10.6")
+    implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
-    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "1.3.2")
+    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "2.5.2")
     implementation(group = "com.github.PhilJay", name = "MPAndroidChart", version = "3.0.3")
     implementation(group = "com.squareup.picasso", name = "picasso", version = "2.5.2")
     implementation(group = "com.github.alexfu", name = "Phoenix", version = "1.0.0")
@@ -165,14 +157,11 @@ dependencies {
     implementation(group = "org.jetbrains.anko", name = "anko-coroutines", version = ankoVersion)
 
 
-    testImplementation(group = "junit", name = "junit", version = "4.12")
-    testImplementation(group = "org.mockito", name = "mockito-core", version = "2.23.4")
+    testImplementation(group = "junit", name = "junit", version = "4.13")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")
     testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
-    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.11.1")
-    testImplementation(group = "org.assertj", name = "assertj-guava", version = "1.3.1") {
-        exclude(group = "com.google.guava")
-    }
+    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.15.0")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.1.1")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.1.1")

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.hook
 
-import com.google.common.collect.ImmutableMap
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -57,23 +56,23 @@ constructor() {
 
     companion object {
 
-        val HOOK_ON_OFF = "onOffDevice"
-        val HOOK_ON = "onDevice"
-        val HOOK_OFF = "offDevice"
-        val HOOK_WEBCMD = "webcmdDevice"
-        val WIDGET_OVERRIDE = "widgetOverride"
-        val WIDGET_OVERRIDE_NOARG = ":noArg"
-        val HOOK_TOGGLE = "toggleDevice"
-        val ON_STATE_NAME = "onStateName"
-        val OFF_STATE_NAME = "offStateName"
-        private val INVERT_STATE = "invertState"
+        const val HOOK_ON_OFF = "onOffDevice"
+        const val HOOK_ON = "onDevice"
+        const val HOOK_OFF = "offDevice"
+        const val HOOK_WEBCMD = "webcmdDevice"
+        const val WIDGET_OVERRIDE = "widgetOverride"
+        const val WIDGET_OVERRIDE_NOARG = ":noArg"
+        const val HOOK_TOGGLE = "toggleDevice"
+        const val ON_STATE_NAME = "onStateName"
+        const val OFF_STATE_NAME = "offStateName"
+        private const val INVERT_STATE = "invertState"
 
-        private val HOOK_MAPPING = ImmutableMap.builder<String, ButtonHook>()
-                .put(HOOK_ON_OFF, ButtonHook.ON_OFF_DEVICE)
-                .put(HOOK_ON, ButtonHook.ON_DEVICE)
-                .put(HOOK_OFF, ButtonHook.OFF_DEVICE)
-                .put(HOOK_WEBCMD, ButtonHook.WEBCMD_DEVICE)
-                .put(HOOK_TOGGLE, ButtonHook.TOGGLE_DEVICE)
-                .build()
+        private val HOOK_MAPPING = mapOf(
+                HOOK_ON_OFF to ButtonHook.ON_OFF_DEVICE,
+                HOOK_ON to ButtonHook.ON_DEVICE,
+                HOOK_OFF to ButtonHook.OFF_DEVICE,
+                HOOK_WEBCMD to ButtonHook.WEBCMD_DEVICE,
+                HOOK_TOGGLE to ButtonHook.TOGGLE_DEVICE
+        )
     }
 }
