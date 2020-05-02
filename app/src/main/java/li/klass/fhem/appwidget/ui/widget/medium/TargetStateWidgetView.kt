@@ -80,7 +80,7 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback))
     }
 
-    private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback<*> {
+    private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback<FhemDevice> {
         return object : OnTargetStateSelectedCallback<FhemDevice> {
             override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
@@ -89,7 +89,7 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
             override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, state + " " + subState)))
+                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, "$state $subState")))
             }
 
             override suspend fun onNothingSelected(device: FhemDevice) {}
@@ -97,7 +97,7 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
     }
 
     override fun supports(device: FhemDevice): Boolean =
-            !device.setList.entries.isEmpty()
+            device.setList.entries.isNotEmpty()
 
     override val widgetType = WidgetType.TARGET_STATE
     override val widgetSize = WidgetSize.MEDIUM

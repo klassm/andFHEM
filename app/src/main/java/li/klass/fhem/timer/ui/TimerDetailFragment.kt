@@ -135,21 +135,27 @@ class TimerDetailFragment @Inject constructor(
     }
 
     private fun bindTargetStateButton(view: View) {
-        view.targetStateSet.setOnClickListener { _ ->
-            showSwitchOptionsMenu<FhemDevice>(activity, targetDevice, object : OnTargetStateSelectedCallback<FhemDevice> {
-                override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
-                    setTargetState(targetState, view)
-                }
-
-                override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
-                    coroutineScope {
-                        onStateSelected(device, "$state $subState")
-                    }
-                }
-
-                override suspend fun onNothingSelected(device: FhemDevice) {}
-            })
+        view.targetStateSet.setOnClickListener {
+            onTargetStateClick(view)
         }
+    }
+
+    private fun onTargetStateClick(view: View) {
+        val context = activity ?: return
+        val device = targetDevice ?: return
+        showSwitchOptionsMenu(context, device, object : OnTargetStateSelectedCallback<FhemDevice> {
+            override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
+                setTargetState(targetState, view)
+            }
+
+            override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
+                coroutineScope {
+                    onStateSelected(device, "$state $subState")
+                }
+            }
+
+            override suspend fun onNothingSelected(device: FhemDevice) {}
+        })
     }
 
     private fun bindSelectDeviceButton(view: View) {
