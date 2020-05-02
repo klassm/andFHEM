@@ -31,7 +31,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import androidx.core.content.FileProvider.getUriForFile
-import com.google.common.base.Charsets
 import li.klass.fhem.AndFHEMApplication.Companion.ANDFHEM_MAIL
 import li.klass.fhem.AndFHEMApplication.Companion.application
 import li.klass.fhem.R
@@ -91,8 +90,7 @@ object ErrorHolder {
                 return
             }
             val attachment = writeToDisk(lastError, activity)
-            sendMail(activity, "Send last error", "Error encountered!", deviceInformation(),
-                     uriFrom(attachment, activity))
+            sendMail(activity, "Error encountered!", deviceInformation(), uriFrom(attachment, activity))
         } catch (e: Exception) {
             logger.error("error while sending last error")
         }
@@ -102,8 +100,8 @@ object ErrorHolder {
         if (!handleExternalStorageState(activity)) return
         try {
             val file = writeApplicationLogToDisk(activity)
-            sendMail(activity, activity.getString(R.string.application_log_send), "Send app log",
-                     deviceInformation(), uriFrom(file, activity))
+            sendMail(activity, "Send app log", deviceInformation(),
+                    uriFrom(file, activity))
         } catch (e: Exception) {
             logger.error("Error while reading application log", e)
         }
@@ -114,8 +112,7 @@ object ErrorHolder {
                                                                            file)
 
     @Throws(IOException::class)
-    private fun sendMail(activity: Activity?, chooserText: String, subject: String, text: String,
-                         attachment: Uri) {
+    private fun sendMail(activity: Activity?, subject: String, text: String, attachment: Uri) {
         if (activity == null) return
         val intent = Intent(Intent.ACTION_SEND).setType("text/plain")
                 .setFlags(FLAG_GRANT_READ_URI_PERMISSION)

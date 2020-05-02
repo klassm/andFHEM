@@ -138,7 +138,7 @@ public class ExternalApiService extends Service {
 
                                 @Override
                                 protected String doInBackground(String... params) {
-                                    Command command = new Command(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
+                                    Command command = new Command(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), null);
                                     return externalApiService.commandExecutionService.executeSync(command);
                                 }
 

@@ -25,7 +25,6 @@
 package li.klass.fhem.connection.backend.ssl
 
 import android.content.Context
-import com.google.common.base.MoreObjects
 import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import org.slf4j.LoggerFactory
@@ -48,7 +47,8 @@ class MemorizingTrustManagerContextInitializer {
                 if (clientCertificate.exists() && clientCertificate.canRead()) {
                     val keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword)
                     val keyManagerFactory = KeyManagerFactory.getInstance("X509")
-                    keyManagerFactory.init(keyStore, MoreObjects.firstNonNull(clientCertificatePassword, "").toCharArray())
+                    keyManagerFactory.init(keyStore, (clientCertificatePassword
+                            ?: "").toCharArray())
                     clientKeys = keyManagerFactory.keyManagers
                 }
             } else {

@@ -24,8 +24,6 @@
 
 package li.klass.fhem.graph.backend
 
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableSet
 import li.klass.fhem.domain.log.ConcernsDevicePredicate
 import li.klass.fhem.graph.backend.gplot.GPlotHolder
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
@@ -41,19 +39,19 @@ class GraphDefinitionsForDeviceService @Inject constructor(
         private val deviceListService: DeviceListService,
         private val gPlotHolder: GPlotHolder) {
 
-    fun graphDefinitionsFor(device: XmlListDevice, connectionId: Optional<String>): Set<SvgGraphDefinition> {
-        val allDevices = deviceListService.getAllRoomsDeviceList(connectionId.orNull()).allDevicesAsXmllistDevice
+    fun graphDefinitionsFor(device: XmlListDevice, connectionId: String?): Set<SvgGraphDefinition> {
+        val allDevices = deviceListService.getAllRoomsDeviceList(connectionId).allDevicesAsXmllistDevice
 
-        LOGGER.info("graphDefinitionsFor(name={},connection={})", device.name, connectionId.or("--"))
+        LOGGER.info("graphDefinitionsFor(name={},connection={})", device.name, connectionId ?: "--")
         val graphDefinitions = getGraphDefinitionsFor(allDevices, device)
         for (svgGraphDefinition in graphDefinitions) {
             LOGGER.info("graphDefinitionsFor(name={},connection={}) - found SVG with name {}",
-                    device.name, connectionId.or("--"), svgGraphDefinition.name)
+                    device.name, connectionId ?: "--", svgGraphDefinition.name)
         }
         return graphDefinitions
     }
 
-    private fun getGraphDefinitionsFor(allDevices: ImmutableSet<XmlListDevice>, device: XmlListDevice): Set<SvgGraphDefinition> =
+    private fun getGraphDefinitionsFor(allDevices: Set<XmlListDevice>, device: XmlListDevice): Set<SvgGraphDefinition> =
             when (device.type) {
                 "SVG" -> setOf(toGraphDefinition(allDevices, device))
                 else -> allDevices.asSequence()
@@ -64,10 +62,10 @@ class GraphDefinitionsForDeviceService @Inject constructor(
                         .toSet()
             }
 
-    private fun toGraphDefinition(allDevices: ImmutableSet<XmlListDevice>, currentDevice: XmlListDevice): SvgGraphDefinition {
+    private fun toGraphDefinition(allDevices: Set<XmlListDevice>, currentDevice: XmlListDevice): SvgGraphDefinition {
         val logDeviceName = currentDevice.getInternal("LOGDEVICE")!!
         val gplotFileName = currentDevice.getInternal("GPLOTFILE")!!
-        val gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)).get()
+        val gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices))!!
 
         val labels = (currentDevice.getAttribute("label") ?: "")
                 .replace("\"".toRegex(), "")
@@ -88,23 +86,21 @@ class GraphDefinitionsForDeviceService @Inject constructor(
                 .filter { it.isNotEmpty() }
     }
 
-    private fun gplotDefinitionExists(allDevices: ImmutableSet<XmlListDevice>, currentDevice: XmlListDevice): Boolean {
+    private fun gplotDefinitionExists(allDevices: Set<XmlListDevice>, currentDevice: XmlListDevice): Boolean {
         val gplotFileName = currentDevice.getInternal("GPLOTFILE")
-        return gplotFileName != null && gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)).isPresent
+        return gplotFileName != null && gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)) != null
     }
 
-    private fun isSvgForDevice(allDevices: ImmutableSet<XmlListDevice>, inputDevice: XmlListDevice, svgDevice: XmlListDevice) =
+    private fun isSvgForDevice(allDevices: Set<XmlListDevice>, inputDevice: XmlListDevice, svgDevice: XmlListDevice) =
             isRelevantViaLogDevice(svgDevice, allDevices, inputDevice) || isRelevantViaPlotFunction(inputDevice, svgDevice)
 
     private fun isRelevantViaPlotFunction(inputDevice: XmlListDevice, svgDevice: XmlListDevice): Boolean {
         return plotfunctionListFor(svgDevice)
-                .map { it.split(":") }
-                .map { it.firstOrNull() }
-                .filterNotNull()
+                .map { it.split(":") }.mapNotNull { it.firstOrNull() }
                 .contains(inputDevice.name)
     }
 
-    private fun isRelevantViaLogDevice(svgDevice: XmlListDevice, allDevices: ImmutableSet<XmlListDevice>, inputDevice: XmlListDevice): Boolean {
+    private fun isRelevantViaLogDevice(svgDevice: XmlListDevice, allDevices: Set<XmlListDevice>, inputDevice: XmlListDevice): Boolean {
         val logDeviceName = svgDevice.getInternal("LOGDEVICE")
         val logDevice = allDevices.firstOrNull { it.name == logDeviceName ?: "" }
 
@@ -116,9 +112,9 @@ class GraphDefinitionsForDeviceService @Inject constructor(
         return logDeviceRegexp != null && ConcernsDevicePredicate.forPattern(logDeviceRegexp).apply(inputDevice)
     }
 
-    private fun isConfigDb(allDevices: ImmutableSet<XmlListDevice>): Boolean {
+    private fun isConfigDb(allDevices: Set<XmlListDevice>): Boolean {
         return allDevices
-                .any { it != null && "configDB" == it.getAttribute("configfile") }
+                .any { "configDB" == it.getAttribute("configfile") }
     }
 
     companion object {
@@ -153,8 +149,8 @@ class GraphDefinitionsForDeviceService @Inject constructor(
             val plotReplace = HashMap<String, String>()
             // Split into single variable definitions respecting quotes and curly braces
             var text = ""
-            var quoted = false;
-            var braceDepth = 0;
+            var quoted = false
+            var braceDepth = 0
             attr.forEach {
                 if (it.isWhitespace() && !quoted && braceDepth == 0) {
                     val char = text.indexOf('=')

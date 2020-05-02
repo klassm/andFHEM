@@ -34,7 +34,7 @@ class HM485DeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testDim() {
-        val device = getDeviceFor("dim")
+        val device = getDeviceFor("dim")!!
         val dimmableBehavior = DimmableBehavior.behaviorFor(device, null)
         assertThat(dimmableBehavior!!.currentDimPosition).isEqualTo(5.0, Offset.offset(0.01))
     }
@@ -48,7 +48,7 @@ class HM485DeviceTest : DeviceXMLParsingBase() {
     @Test
     @Throws(Exception::class)
     fun testDeviceWithState() {
-        val device = getDeviceFor("WZ.Terrassentuer_links")
+        val device = getDeviceFor("WZ.Terrassentuer_links")!!
         assertThat(device.state).isEqualTo("closed")
     }
 

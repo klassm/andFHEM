@@ -33,10 +33,10 @@ import org.junit.Test
 class DummyDeviceTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributesInOnOffDummy() {
-        val device = defaultDevice
+        val device = defaultDevice!!
 
-        assertThat(device.name).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME)
-        assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
+        assertThat(device.name).isEqualTo(DEFAULT_TEST_DEVICE_NAME)
+        assertThat(device.roomConcatenated).isEqualTo(DEFAULT_TEST_ROOM_NAME)
 
         assertThat(device.state).isEqualTo("on")
 
@@ -45,17 +45,17 @@ class DummyDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testForCorrectlySetAttributesInCommonDummy() {
-        val device = getDeviceFor("device1")
+        val device = getDeviceFor("device1")!!
 
         assertThat(device.name).isEqualTo("device1")
-        assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
+        assertThat(device.roomConcatenated).isEqualTo(DEFAULT_TEST_ROOM_NAME)
 
         assertThat(device.state).isEqualTo("??")
     }
 
     @Test
     fun testDeviceWithSetList() {
-        val device = getDeviceFor("deviceWithSetlist")
+        val device = getDeviceFor("deviceWithSetlist")!!
 
         assertThat(device.setList["state", false] as GroupSetListEntry)
                 .isEqualTo(GroupSetListEntry("state", listOf("17", "18", "19", "20", "21", "21.5", "22")))
@@ -69,7 +69,7 @@ class DummyDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testSliderDevice() {
-        val device = getDeviceFor("sliderDevice")
+        val device = getDeviceFor("sliderDevice")!!
         val behavior = DimmableBehavior.behaviorFor(device, null)
         assertThat(behavior!!.dimUpperBound).isEqualTo(50.0)
         assertThat(behavior.dimLowerBound).isEqualTo(10.0)
@@ -78,7 +78,7 @@ class DummyDeviceTest : DeviceXMLParsingBase() {
 
     @Test
     fun testEventMapDevice() {
-        val device = getDeviceFor("eventMapDevice")
+        val device = getDeviceFor("eventMapDevice")!!
 
         val eventMapStates = device.availableTargetStatesEventMapTexts
         assertThat(eventMapStates).isNotNull

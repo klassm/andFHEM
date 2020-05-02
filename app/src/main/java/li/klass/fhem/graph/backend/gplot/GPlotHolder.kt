@@ -26,8 +26,6 @@ package li.klass.fhem.graph.backend.gplot
 
 import android.app.Application
 import android.content.Context
-import com.google.common.base.Optional
-import com.google.common.collect.Maps.*
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import org.slf4j.LoggerFactory
@@ -41,7 +39,7 @@ class GPlotHolder @Inject constructor(
         private val application: Application
 ) {
 
-    private val definitions = newHashMap<String, Optional<GPlotDefinition>>()
+    private val definitions = mutableMapOf<String, GPlotDefinition?>()
 
     private var areDefaultFilesLoaded = false
 
@@ -51,11 +49,10 @@ class GPlotHolder @Inject constructor(
         }
         areDefaultFilesLoaded = true
 
-        val defaultFiles = transformEntries(gPlotParser.defaultGPlotFiles, TO_OPTIONAL_DEFINITION)
-        definitions.putAll(defaultFiles)
+        definitions.putAll(gPlotParser.defaultGPlotFiles)
     }
 
-    fun definitionFor(name: String, isConfigDb: Boolean): Optional<GPlotDefinition> {
+    fun definitionFor(name: String, isConfigDb: Boolean): GPlotDefinition? {
         loadDefaultGPlotFiles()
 
         LOGGER.info("definitionFor(name={}, isConfigDb={})", name, isConfigDb)
@@ -71,14 +68,14 @@ class GPlotHolder @Inject constructor(
         else
             commandExecutionService.executeRequest("/gplot/$name.gplot", applicationContext)
 
-        if (result != null) {
+        return if (result != null) {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - done loading, putting to cache", name, isConfigDb)
             val gplot = gPlotParser.parseSafe(result)
             definitions[name] = gplot
-            return gplot
+            gplot
         } else {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - could not execute request, putting nothing to cache", name, isConfigDb)
-            return Optional.absent()
+            null
         }
     }
 
@@ -90,8 +87,6 @@ class GPlotHolder @Inject constructor(
     private val applicationContext: Context get() = application.applicationContext
 
     companion object {
-        private val TO_OPTIONAL_DEFINITION = EntryTransformer<String, GPlotDefinition, Optional<GPlotDefinition>> { _, value -> Optional.of(value!!) }
-
         private val LOGGER = LoggerFactory.getLogger(GPlotHolder::class.java)
     }
 }

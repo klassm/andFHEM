@@ -24,10 +24,6 @@
 
 package li.klass.fhem.update.backend.xmllist
 
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.Iterables
-import com.google.common.collect.Lists.newArrayList
-import com.google.common.collect.Maps
 import li.klass.fhem.update.backend.device.configuration.Sanitiser
 import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType
 import org.joda.time.DateTime
@@ -51,7 +47,7 @@ class XmlListParser @Inject constructor(
 
     @Throws(Exception::class)
     fun parse(xmlList: String): Map<String, List<XmlListDevice>> {
-        val result = Maps.newHashMap<String, List<XmlListDevice>>()
+        val result = mutableMapOf<String, List<XmlListDevice>>()
 
         // replace device tag extensions
         val list = xmlList
@@ -79,9 +75,9 @@ class XmlListParser @Inject constructor(
                     // existing lists. FHEM will not send out those lists, but we replace
                     // i.e. SWAP_123_LIST by SWAP_LIST, resulting in two same list names.
                     val existing = result[deviceType] ?: emptySet<XmlListDevice>()
-                    result.put(deviceType, ImmutableList.copyOf(Iterables.concat(existing, devices)))
+                    result[deviceType] = existing + devices
                 } else {
-                    result.put(deviceType, devices)
+                    result[deviceType] = devices
                 }
             }
         }
@@ -108,7 +104,7 @@ class XmlListParser @Inject constructor(
     }
 
     private fun handleListNode(node: Node): List<XmlListDevice> {
-        val devices = newArrayList<XmlListDevice>()
+        val devices = mutableListOf<XmlListDevice>()
 
         val childNodes = node.childNodes
         for (i in 0 until childNodes.length) {
@@ -140,9 +136,9 @@ class XmlListParser @Inject constructor(
 
             val key = deviceNode.key
             when (deviceNode.type) {
-                DeviceNode.DeviceNodeType.ATTR -> attributes.put(key, deviceNode)
-                DeviceNode.DeviceNodeType.INT -> internals.put(key, deviceNode)
-                DeviceNode.DeviceNodeType.STATE -> states.put(key, deviceNode)
+                DeviceNodeType.ATTR -> attributes.put(key, deviceNode)
+                DeviceNodeType.INT -> internals.put(key, deviceNode)
+                DeviceNodeType.STATE -> states.put(key, deviceNode)
                 else -> {
                 }
             }

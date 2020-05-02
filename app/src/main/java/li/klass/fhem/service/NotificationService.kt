@@ -28,13 +28,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.navigation.NavDeepLinkBuilder
-import com.google.common.base.Joiner
-import com.google.common.collect.Maps.newHashMap
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.NotificationUtil
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -61,8 +60,8 @@ constructor() {
         if (isValueAllUpdates(value)) {
             generateNotification(device, updateMap, vibrate, context)
         } else if (isValueStateUpdates(value) && updateMap.containsKey("STATE")) {
-            val values = newHashMap<String, String>()
-            values.put("STATE", updateMap["STATE"])
+            val values = mutableMapOf<String, String>()
+            values["STATE"] = updateMap["STATE"] ?: ""
             generateNotification(device, values, vibrate, context)
         }
     }
@@ -85,11 +84,11 @@ constructor() {
                 .createPendingIntent()
 
         val text: String = if (updateMap.size == 1 && updateMap.containsKey("state")) {
-            updateMap["state"]!!
+            updateMap["state"] ?: ""
         } else if (updateMap.size == 1 && updateMap.containsKey("STATE")) {
-            updateMap["STATE"]!!
+            updateMap["STATE"] ?: ""
         } else {
-            Joiner.on(",").withKeyValueSeparator(" : ").join(updateMap)
+            updateMap.map { "${it.key} : ${it.value}" }.joinToString(separator = ",")
         }
 
         logger.info("generateNotification(device=$deviceName) - text=$text, vibrate=$vibrate")
@@ -102,11 +101,11 @@ constructor() {
             context.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE)
 
     companion object {
-        val NO_UPDATES = 0
-        val ALL_UPDATES = 1
-        val STATE_UPDATES = 2
+        const val NO_UPDATES = 0
+        const val ALL_UPDATES = 1
+        const val STATE_UPDATES = 2
 
-        val PREFERENCES_NAME = "deviceNotifications"
-        val logger = LoggerFactory.getLogger(NotificationService::class.java)
+        const val PREFERENCES_NAME = "deviceNotifications"
+        val logger: Logger = LoggerFactory.getLogger(NotificationService::class.java)
     }
 }

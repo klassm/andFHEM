@@ -25,7 +25,6 @@
 package li.klass.fhem.devices.list.favorites.backend
 
 import android.content.SharedPreferences
-import com.google.common.collect.FluentIterable.from
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.DeviceListService
@@ -68,7 +67,7 @@ constructor(private val deviceListService: DeviceListService,
             sharedPreferencesService.getPreferences(name)
 
     fun getPreferenceNames(): Set<String> =
-            from(connectionService.listAll()).transform { input -> preferenceNameFor(input!!.id) }.toSet()
+            connectionService.listAll().map { preferenceNameFor(it.id) }.toSet()
 
     private fun preferenceNameFor(id: String): String = PREFERENCES_NAME + "_" + id
 

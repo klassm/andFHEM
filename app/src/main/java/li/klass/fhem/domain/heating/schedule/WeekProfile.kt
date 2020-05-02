@@ -68,7 +68,7 @@ class WeekProfile<INTERVAL : BaseHeatingInterval<INTERVAL>, C : HeatingConfigura
         get() = configuration.generatedStatesToSet(this)
 
     val intervalType: IntervalType
-        get() = configuration.intervalType
+        get() = configuration.getIntervalType()
 
     init {
         for (day in Day.values()) {

@@ -47,12 +47,12 @@ buildscript {
 }
 
 val kotlinVersion: String by project
-val kotlinSerializationVersion = "0.9.1"
+val kotlinSerializationVersion = "0.20.0"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.11.0"
 val daggerVersion = "2.27"
-val coroutinesVersion = "1.1.0"
+val coroutinesVersion = "1.3.5"
 val androidXNavigationVersion = "2.3.0-alpha05"
 val roomVersion = "2.2.5"
 
@@ -84,11 +84,6 @@ apply(plugin = "kotlinx-serialization")
 apply(plugin = "io.fabric")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
 
-configurations.all {
-    exclude(group = "com.google.guava", module = "listenablefuture")
-    // exclude, due to https://issuetracker.google.com/issues/116154359
-}
-
 val unmock = configurations.findByName("unmock")!!
 dependencies {
     unmock(group = "org.robolectric", name = "android-all", version = "10-robolectric-5803371")
@@ -101,10 +96,7 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "16.2.2")
     implementation(group = "com.google.android.material", name = "material", version = "1.1.0-alpha02")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
-    implementation(group = "com.google.guava", name = "guava", version = "23.4-android") {
-        exclude(group = "com.google.code.findbugs")
-    }
-    implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.22.0") {
+    implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.35.0") {
         exclude(group = "com.google.code.findbugs")
         exclude(group = "org.apache.httpcomponents")
     }
@@ -119,7 +111,7 @@ dependencies {
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0-alpha01")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
-    implementation(group = "androidx.annotation", name = "annotation", version = coroutinesVersion)
+    implementation(group = "androidx.annotation", name = "annotation", version = "1.1.0")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
     kapt(group = "androidx.room", name = "room-compiler", version = roomVersion)
     implementation(group = "androidx.navigation", name="navigation-fragment-ktx", version = androidXNavigationVersion)
@@ -137,7 +129,7 @@ dependencies {
     implementation(group = "joda-time", name = "joda-time", version = "2.10.6")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
-    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "1.3.3")
+    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "2.5.2")
     implementation(group = "com.github.PhilJay", name = "MPAndroidChart", version = "3.0.3")
     implementation(group = "com.squareup.picasso", name = "picasso", version = "2.5.2")
     implementation(group = "com.github.alexfu", name = "Phoenix", version = "1.0.0")
@@ -166,13 +158,10 @@ dependencies {
 
 
     testImplementation(group = "junit", name = "junit", version = "4.13")
-    testImplementation(group = "org.mockito", name = "mockito-core", version = "2.28.2")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")
     testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.15.0")
-    testImplementation(group = "org.assertj", name = "assertj-guava", version = "3.4.0") {
-        exclude(group = "com.google.guava")
-    }
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.1.1")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.1.1")

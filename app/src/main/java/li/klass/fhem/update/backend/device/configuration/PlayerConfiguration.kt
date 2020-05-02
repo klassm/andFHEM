@@ -24,29 +24,23 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import java.io.Serializable
 
 @kotlinx.serialization.Serializable
 data class PlayerConfiguration(
-        @Optional
         @SerialName("previousCommand")
         val previousCommand: String? = null,
 
-        @Optional
         @SerialName("pauseCommand")
         val pauseCommand: String? = null,
 
-        @Optional
         @SerialName("stopCommand")
         val stopCommand: String? = null,
 
-        @Optional
         @SerialName("playCommand")
         val playCommand: String? = null,
 
-        @Optional
         @SerialName("nextCommand")
         val nextCommand: String? = null
 ) : Serializable {

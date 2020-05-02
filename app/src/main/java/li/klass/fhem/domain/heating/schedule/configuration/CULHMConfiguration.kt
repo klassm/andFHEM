@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration
 
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.Lists.newArrayList
 import li.klass.fhem.domain.heating.schedule.DayProfile
 import li.klass.fhem.domain.heating.schedule.WeekProfile
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
@@ -66,8 +64,7 @@ class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHM
 
     public override fun generateStateToSetFor(dayProfile: DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>): List<StateToSet> {
 
-        val heatingIntervals = newArrayList(dayProfile.getHeatingIntervals())
-        heatingIntervals.sort()
+        val heatingIntervals = dayProfile.getHeatingIntervals().toSortedSet().toList()
 
         val command = heatingIntervals.joinToString(
                 separator = " ") { "${it.changedSwitchTime} ${it.changedTemperature}" }
@@ -77,7 +74,7 @@ class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHM
 
         val shortNameToSet = (shortName[0].toUpperCase()) + shortName.substring(1)
 
-        return ImmutableList.of(StateToSet("tempList$shortNameToSet", command))
+        return listOf(StateToSet("tempList$shortNameToSet", command))
     }
 
     override fun afterXMLRead(weekProfile: WeekProfile<FilledTemperatureInterval, CULHMConfiguration>) {

@@ -24,12 +24,6 @@
 package li.klass.fhem.graph.backend.gplot
 
 import com.crashlytics.android.Crashlytics
-import com.google.common.base.Charsets
-import com.google.common.base.Optional
-import com.google.common.base.Preconditions
-import com.google.common.base.Strings
-import com.google.common.collect.Maps
-import com.google.common.collect.Range
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.*
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -42,14 +36,14 @@ import javax.inject.Singleton
 
 @Singleton
 class GPlotParser @Inject constructor() {
-    fun parseSafe(content: String): Optional<GPlotDefinition> {
+    fun parseSafe(content: String): GPlotDefinition? {
         return try {
-            Optional.of(parse(content))
+            parse(content)
         } catch (e: Exception) {
             LOGGER.warn("parseSafe() - cannot parse: \r\n$content", e)
             Crashlytics.setString("content", content)
             Crashlytics.logException(e)
-            Optional.absent()
+            null
         }
     }
 
@@ -84,15 +78,15 @@ class GPlotParser @Inject constructor() {
     }
 
     private fun calculateRange(rangeValue: String,
-                               parts: Array<String>): Range<Double>? {
-        return if (Strings.isNullOrEmpty(rangeValue) || rangeValue == ":") {
+                               parts: Array<String>): Range? {
+        return if (rangeValue.isEmpty() || rangeValue == ":") {
             null
         } else if (rangeValue.startsWith(":")) {
-            Range.atMost(parts[0].toDouble())
+            Range.atMost(parts[0].toFloat())
         } else if (rangeValue.endsWith(":")) {
-            Range.atLeast(parts[0].toDouble())
+            Range.atLeast(parts[0].toFloat())
         } else {
-            Range.closed(parts[0].toDouble(), parts[1].toDouble())
+            Range.closed(parts[0].toFloat(), parts[1].toFloat())
         }
     }
 
@@ -217,7 +211,7 @@ class GPlotParser @Inject constructor() {
     }
 
     private fun extractSetsFrom(lines: List<String>): Map<String, String?> {
-        val out: MutableMap<String, String?> = Maps.newHashMap()
+        val out: MutableMap<String, String?> = mutableMapOf()
         for (line in lines) {
             val matcher = SETS_PATTERN.matcher(line)
             if (!matcher.matches()) {
@@ -232,8 +226,7 @@ class GPlotParser @Inject constructor() {
         get() {
             try {
                 val url = GPlotParser::class.java.getResource("dummy.txt")
-                val scheme = url!!.protocol
-                Preconditions.checkArgument(scheme == "jar")
+                url!!.protocol
                 return readDefinitionsFromJar(url)
             } catch (e: Exception) {
                 LOGGER.error("loadDefaultGPlotFiles() - cannot load default files", e)
@@ -243,7 +236,7 @@ class GPlotParser @Inject constructor() {
 
     @Throws(IOException::class)
     private fun readDefinitionsFromJar(url: URL?): Map<String, GPlotDefinition> {
-        val result: MutableMap<String, GPlotDefinition> = Maps.newHashMap()
+        val result: MutableMap<String, GPlotDefinition> = mutableMapOf()
         val con = url!!.openConnection() as JarURLConnection
         val archive = con.jarFile
         val entries = archive.entries()

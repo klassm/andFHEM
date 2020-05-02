@@ -31,7 +31,7 @@ import org.junit.Test
 class ESPEasyTest : DeviceXMLParsingBase() {
     @Test
     fun testForCorrectlySetAttributes() {
-        val device = defaultDevice
+        val device = defaultDevice!!
 
         assertThat(device.state).isEqualTo("off")
         assertThat(applicationComponent.onOffBehavior.isOn(device)).isFalse()

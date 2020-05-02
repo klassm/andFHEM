@@ -28,6 +28,7 @@ import android.content.Context;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,10 +40,8 @@ import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.StateToSet;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, FHTConfiguration> {
-    public static final String OFF_TIME = "24:00";
+    private static final String OFF_TIME = "24:00";
 
     public FHTConfiguration() {
         super(OFF_TIME, 2, NumberOfIntervalsType.FIXED, 10);
@@ -77,7 +76,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     protected List<StateToSet> generateStateToSetFor(DayProfile<FromToHeatingInterval, HeatingIntervalConfiguration<FromToHeatingInterval>> dayProfile) {
         DayUtil.Day day = dayProfile.getDay();
         String shortDayName = DayUtil.getShortNameFor(day);
-        List<StateToSet> result = newArrayList();
+        List<StateToSet> result = new ArrayList<>();
 
         for (int i = 0; i < dayProfile.getNumberOfHeatingIntervals(); i++) {
             FromToHeatingInterval heatingInterval = dayProfile.getHeatingIntervalAt(i);

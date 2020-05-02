@@ -33,18 +33,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.google.common.collect.Maps.newHashMap;
-
 public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements ListAdapter {
 
-    protected Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<NestedListView.NestedListViewOnClickObserver>();
+    Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<>();
     protected LayoutInflater layoutInflater;
-    private Map<Integer, P> parentPositions = newHashMap();
+    private Map<Integer, P> parentPositions = new HashMap<>();
     private int totalItems = 0;
 
     public NestedListViewAdapter(Context context) {
@@ -143,7 +142,7 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
     }
 
     public void updateParentPositions() {
-        parentPositions = newHashMap();
+        parentPositions = new HashMap<>();
 
         int currentPosition = 0;
         for (P item : getParents()) {
@@ -155,14 +154,6 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
     }
 
     protected abstract int getChildrenCountForParent(P parent);
-
-    public void addParentChildObserver(NestedListView.NestedListViewOnClickObserver observer) {
-        parentChildClickObservers.add(observer);
-    }
-
-    public void removeParentChildObserver(NestedListView.NestedListViewOnClickObserver observer) {
-        parentChildClickObservers.remove(observer);
-    }
 
     @Override
     public boolean isEmpty() {

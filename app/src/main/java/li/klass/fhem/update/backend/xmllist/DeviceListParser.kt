@@ -26,7 +26,6 @@ package li.klass.fhem.update.backend.xmllist
 
 import android.content.Context
 import android.content.Intent
-import com.google.common.collect.Maps.newHashMap
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.RequestResultError
 import li.klass.fhem.constants.Actions
@@ -79,7 +78,7 @@ class DeviceListParser @Inject constructor(
         gPlotHolder.reset()
         val parsedDevices = parser.parse(list)
 
-        val allDevices = newHashMap<String, FhemDevice>()
+        val allDevices = mutableMapOf<String, FhemDevice>()
 
         val parseErrors = mutableMapOf<XmlListDevice, Exception>()
 
