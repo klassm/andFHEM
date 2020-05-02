@@ -91,7 +91,7 @@ configurations.all {
 
 val unmock = configurations.findByName("unmock")!!
 dependencies {
-    unmock(group = "org.robolectric", name = "android-all", version = "7.1.0_r7-robolectric-0")
+    unmock(group = "org.robolectric", name = "android-all", version = "10-robolectric-5803371")
 
     implementation(project(":external-dep"))
 
