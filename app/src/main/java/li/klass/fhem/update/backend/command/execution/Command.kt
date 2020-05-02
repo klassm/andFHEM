@@ -21,25 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.update.backend.command.execution
 
-package li.klass.fhem.adapter.devices.core.generic.detail.actions
+data class Command constructor(private val commandIn: String, val connectionId: String? = null) {
+    val command = commandIn.replace(" {2}".toRegex(), " ")
 
-import android.content.Context
-import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
-import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
-import li.klass.fhem.update.backend.xmllist.XmlListDevice
-
-interface GenericDetailActionProvider {
-    fun supports(xmlListDevice: XmlListDevice): Boolean
-
-    /**
-     * Actions that show up within the actions view.
-     *
-     * @param context context
-     * @return list of actions
-     */
-    fun actionsFor(context: Context): List<ActionCardAction>
-
-    fun stateAttributeActionFor(item: XmlDeviceViewItem): StateAttributeAction?
+    override fun toString(): String {
+        return """Command{command='$command', connectionId=$connectionId}"""
+    }
 }

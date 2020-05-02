@@ -28,7 +28,6 @@ import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Build
 import android.widget.RemoteViewsService
-import com.google.common.base.Optional
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
@@ -56,8 +55,8 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
         val appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1)
         val widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME))
         val deviceName = intent.getStringExtra(DEVICE_NAME)
-        val connectionId = Optional.fromNullable(intent.getStringExtra(CONNECTION_ID))
-        val device = deviceListService.getDeviceForName(deviceName, connectionId.orNull())
+        val connectionId = intent.getStringExtra(CONNECTION_ID)
+        val device = deviceListService.getDeviceForName(deviceName, connectionId)
         if (device == null) {
             LOG.error("device is null, at least in the current connection")
             return null

@@ -30,7 +30,6 @@ import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
-import com.google.common.base.Optional
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -61,7 +60,7 @@ class PlotsCardProvider @Inject constructor(
     private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
         coroutineScope {
             val graphs = withContext(Dispatchers.IO) {
-                graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, Optional.fromNullable(connectionId))
+                graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, connectionId)
             }
             fillPlotsCard(cardView, device, graphs, connectionId, context)
 

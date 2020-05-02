@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.core.generic.detail.actions
 
-import com.google.common.base.Optional
 import com.google.common.collect.Maps
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.state.StateAttributeAction
@@ -39,12 +38,12 @@ abstract class DeviceDetailActionProvider : GenericDetailActionProvider {
     override fun supports(xmlListDevice: XmlListDevice): Boolean =
             xmlListDevice.type.equals(getDeviceType(), ignoreCase = true)
 
-    override fun stateAttributeActionFor(item: XmlDeviceViewItem): Optional<StateAttributeAction> {
+    override fun stateAttributeActionFor(item: XmlDeviceViewItem): StateAttributeAction? {
         val key = item.sortKey.toLowerCase(Locale.getDefault())
-        return Optional.fromNullable(stateAttributeActionMap[key])
+        return stateAttributeActionMap[key]
     }
 
     protected fun addStateAttributeAction(key: String, stateAttributeAction: StateAttributeAction) {
-        stateAttributeActionMap.put(key, stateAttributeAction)
+        stateAttributeActionMap[key] = stateAttributeAction
     }
 }

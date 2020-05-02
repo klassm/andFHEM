@@ -29,7 +29,6 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import com.google.common.collect.ImmutableList
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetStateSelectedCallback
@@ -84,12 +83,12 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
         return object : OnTargetStateSelectedCallback<FhemDevice> {
             override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, targetState)))
+                        widgetType, getCurrentConnectionId(), listOf(device.name, targetState)))
             }
 
             override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), ImmutableList.of(device.name, "$state $subState")))
+                        widgetType, getCurrentConnectionId(), listOf(device.name, "$state $subState")))
             }
 
             override suspend fun onNothingSelected(device: FhemDevice) {}
