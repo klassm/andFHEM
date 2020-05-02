@@ -24,7 +24,8 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import kotlinx.serialization.json.JSON
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.json.JSONException
@@ -38,7 +39,7 @@ constructor() {
         val jsonAsString = DeviceConfigurationProvider::class.java.getResource("/deviceConfiguration.json")
                 ?.readText(Charsets.UTF_8) ?: ""
 
-        JSON.parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
+        Json(JsonConfiguration.Stable).parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
     }
 
     fun configurationFor(device: FhemDevice): DeviceConfiguration =

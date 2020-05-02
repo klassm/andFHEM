@@ -24,7 +24,6 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import java.io.Serializable
 
@@ -34,10 +33,8 @@ data class SanitiseToAdd(
         val key: String,
 
         @SerialName("value")
-        @Optional
         val value: String? = null,
 
         @SerialName("withValueOf")
-        @Optional
         val withValueOf: String? = null
 ) : Serializable

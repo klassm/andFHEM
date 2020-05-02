@@ -28,7 +28,8 @@ import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
 import kotlinx.serialization.ImplicitReflectionSerializer
-import kotlinx.serialization.json.JSON
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.serializer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -37,13 +38,13 @@ import java.io.File
 
 @RunWith(DataProviderRunner::class)
 class DeviceConfigurationProviderTest {
-    @UseExperimental(ImplicitReflectionSerializer::class)
+    @OptIn(ImplicitReflectionSerializer::class)
     @Test
     @UseDataProvider("allFilesProvider")
     fun should_parse_all_json_files(file: File) {
 
         val content = file.readText(Charsets.UTF_8)
-        val result = JSON.parse(DeviceConfiguration::class.serializer(), content)
+        val result = Json(JsonConfiguration.Stable).parse(DeviceConfiguration::class.serializer(), content)
 
         assertThat(result).`as`(file.name).isNotNull()
     }

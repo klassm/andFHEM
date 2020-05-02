@@ -35,8 +35,8 @@ class StructureDeviceTest : DeviceXMLParsingBase() {
     fun testForCorrectlySetAttributesInOnOffDummy() {
         val device = defaultDevice!!
 
-        assertThat(device.name).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME)
-        assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
+        assertThat(device.name).isEqualTo(DEFAULT_TEST_DEVICE_NAME)
+        assertThat(device.roomConcatenated).isEqualTo(DEFAULT_TEST_ROOM_NAME)
 
         assertThat(device.state).isEqualTo("on")
 
