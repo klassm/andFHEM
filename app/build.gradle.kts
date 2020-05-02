@@ -135,7 +135,7 @@ dependencies {
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
     implementation(group = "com.github.angads25", name = "filepicker", version = "1.1.1")
     implementation(group = "joda-time", name = "joda-time", version = "2.10.6")
-    implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.12")
+    implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
     implementation(group = "net.lingala.zip4j", name = "zip4j", version = "1.3.3")
     implementation(group = "com.github.PhilJay", name = "MPAndroidChart", version = "3.0.3")
