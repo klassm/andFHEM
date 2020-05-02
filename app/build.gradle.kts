@@ -38,7 +38,7 @@ buildscript {
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.3")
-        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.2.0")
+        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.7.5")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
         classpath(group = "io.fabric.tools", name = "gradle", version = "1.31.2")
         classpath(group = "com.google.firebase", name = "firebase-plugins", version = "1.2.0")
@@ -58,7 +58,7 @@ val roomVersion = "2.2.5"
 
 plugins {
     id("net.researchgate.release") version "2.8.0"
-    id("com.android.application") version "3.5.2"
+    id("com.android.application") version "3.6.0"
     kotlin("android").version("1.3.31")
     kotlin("android.extensions").version("1.3.31")
     kotlin("kapt").version("1.3.31")
