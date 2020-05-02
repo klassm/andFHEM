@@ -157,11 +157,11 @@ dependencies {
     implementation(group = "org.jetbrains.anko", name = "anko-coroutines", version = ankoVersion)
 
 
-    testImplementation(group = "junit", name = "junit", version = "4.12")
-    testImplementation(group = "org.mockito", name = "mockito-core", version = "2.23.4")
-    testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.5.0")
-    testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.12.0")
-    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.11.1")
+    testImplementation(group = "junit", name = "junit", version = "4.13")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")
+    testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
+    testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
+    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.15.0")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.1.1")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.1.1")
