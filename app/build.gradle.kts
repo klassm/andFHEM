@@ -41,8 +41,8 @@ buildscript {
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.7.5")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
         classpath(group = "io.fabric.tools", name = "gradle", version = "1.31.2")
-        classpath(group = "com.google.firebase", name = "firebase-plugins", version = "1.2.0")
-        classpath(group = "androidx.navigation", name="navigation-safe-args-gradle-plugin", version = "2.3.0-alpha06")
+        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.0-alpha06")
+        classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.3.1")
     }
 }
 
@@ -90,10 +90,10 @@ dependencies {
 
     implementation(project(":external-dep"))
 
-    implementation("com.google.firebase", name = "firebase-appindexing", version = "17.1.0")
-    implementation(group = "com.google.firebase", name = "firebase-messaging", version = "17.3.4")
+    implementation("com.google.firebase", name = "firebase-appindexing", version = "19.1.0")
+    implementation(group = "com.google.firebase", name = "firebase-messaging", version = "20.1.6")
     implementation(group = "com.google.firebase", name = "firebase-ads", version = "17.1.2")
-    implementation(group = "com.google.firebase", name = "firebase-perf", version = "16.2.2")
+    implementation(group = "com.google.firebase", name = "firebase-perf", version = "19.0.7")
     implementation(group = "com.google.android.material", name = "material", version = "1.1.0-alpha02")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
     implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.35.0") {
@@ -114,7 +114,7 @@ dependencies {
     implementation(group = "androidx.annotation", name = "annotation", version = "1.1.0")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
     kapt(group = "androidx.room", name = "room-compiler", version = roomVersion)
-    implementation(group = "androidx.navigation", name="navigation-fragment-ktx", version = androidXNavigationVersion)
+    implementation(group = "androidx.navigation", name = "navigation-fragment-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-ui-ktx", version = androidXNavigationVersion)
     implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
     implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.2.0")

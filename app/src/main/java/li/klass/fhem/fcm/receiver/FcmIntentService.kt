@@ -40,11 +40,11 @@ class FcmIntentService : FirebaseMessagingService() {
         (application as AndFHEMApplication).daggerComponent.inject(this)
     }
 
-    override fun onMessageReceived(message: RemoteMessage?) {
+    override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val sentTime = message?.sentTime?.let { DateTime(it) } ?: DateTime.now()
-        val data = message?.data?.toMap() ?: return
+        val sentTime = DateTime(message.sentTime)
+        val data = message.data.toMap()
         fcmService.onMessageReceived(data, sentTime, this)
     }
 }
