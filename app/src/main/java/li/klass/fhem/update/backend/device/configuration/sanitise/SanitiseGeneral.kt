@@ -24,26 +24,21 @@
 
 package li.klass.fhem.update.backend.device.configuration.sanitise
 
-import kotlinx.serialization.Optional
 import kotlinx.serialization.SerialName
 import java.io.Serializable
 
 @kotlinx.serialization.Serializable
 data class SanitiseGeneral(
         @SerialName("addAttributesIfNotPresent")
-        @Optional
         val addAttributesIfNotPresent: Set<SanitiseToAdd> = emptySet(),
 
         @SerialName("addStatesIfNotPresent")
-        @Optional
         val addStatesIfNotPresent: Set<SanitiseToAdd> = emptySet(),
 
         @SerialName("addInternalsIfNotPresent")
-        @Optional
         val addInternalsIfNotPresent: Set<SanitiseToAdd> = emptySet(),
 
         @SerialName("addAttributeIfModelDoesNotMatch")
-        @Optional
         val addAttributeIfModelDoesNotMatch: AddAttributeIfModelDoesNotMatch? = null
 ) : Serializable {
     operator fun plus(toAdd: SanitiseGeneral?): SanitiseGeneral {
