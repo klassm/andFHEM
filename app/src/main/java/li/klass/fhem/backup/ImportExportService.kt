@@ -38,11 +38,11 @@ import li.klass.fhem.util.CloseableUtil
 import li.klass.fhem.util.ReflectionUtil
 import li.klass.fhem.util.io.FileSystemService
 import li.klass.fhem.util.preferences.SharedPreferencesService
-import net.lingala.zip4j.core.ZipFile
+import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.exception.ZipException
-import net.lingala.zip4j.exception.ZipExceptionConstants
 import net.lingala.zip4j.model.ZipParameters
-import net.lingala.zip4j.util.Zip4jConstants
+import net.lingala.zip4j.model.enums.CompressionMethod
+import net.lingala.zip4j.model.enums.EncryptionMethod
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.slf4j.LoggerFactory
@@ -146,7 +146,7 @@ class ImportExportService @Inject constructor(
         try {
             zipFile = ZipFile(file)
             if (zipFile.isEncrypted) {
-                zipFile.setPassword(password ?: "")
+                zipFile.setPassword((password ?: "").toCharArray())
             }
 
             if (zipFile.getFileHeader(SHARED_PREFERENCES_FILE_NAME) == null) {
@@ -167,7 +167,8 @@ class ImportExportService @Inject constructor(
 
         } catch (e: ZipException) {
             LOGGER.error("importSettings(" + file.absolutePath + ") - cannot import", e)
-            return if (e.code == ZipExceptionConstants.WRONG_PASSWORD || (e.message ?: "").contains("Wrong Password")) {
+            return if (e.type == ZipException.Type.WRONG_PASSWORD || (e.message
+                            ?: "").contains("Wrong Password")) {
                 ImportStatus.WRONG_PASSWORD
             } else {
                 ImportStatus.INVALID_FILE
@@ -202,17 +203,15 @@ class ImportExportService @Inject constructor(
 
             val exportFile = File(exportDirectory, backupFileName)
             LOGGER.info("export file location is {}", exportFile.absolutePath)
-            val zipFile = ZipFile(exportFile)
+            val zipFile = ZipFile(exportFile, password?.toCharArray())
 
 
             val parameters = ZipParameters()
-            parameters.compressionMethod = Zip4jConstants.COMP_DEFLATE
+            parameters.compressionMethod = CompressionMethod.DEFLATE
             parameters.fileNameInZip = SHARED_PREFERENCES_FILE_NAME
-            parameters.isSourceExternalStream = true
             if (password != null) {
                 parameters.isEncryptFiles = true
-                parameters.encryptionMethod = Zip4jConstants.ENC_METHOD_STANDARD
-                parameters.setPassword(password)
+                parameters.encryptionMethod = EncryptionMethod.ZIP_STANDARD
             }
 
             stream = ByteArrayInputStream(exportedJson.toByteArray(Charsets.UTF_8))
