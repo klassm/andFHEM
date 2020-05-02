@@ -137,7 +137,7 @@ dependencies {
     implementation(group = "joda-time", name = "joda-time", version = "2.10.6")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
-    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "1.3.3")
+    implementation(group = "net.lingala.zip4j", name = "zip4j", version = "2.5.2")
     implementation(group = "com.github.PhilJay", name = "MPAndroidChart", version = "3.0.3")
     implementation(group = "com.squareup.picasso", name = "picasso", version = "2.5.2")
     implementation(group = "com.github.alexfu", name = "Phoenix", version = "1.0.0")
