@@ -44,8 +44,8 @@ class ThemeInitializer @Inject constructor(val applicationProperties: Applicatio
                     when (it) {
                         "DARK" -> AppCompatDelegate.MODE_NIGHT_YES
                         "LIGHT" -> AppCompatDelegate.MODE_NIGHT_NO
-                        else -> AppCompatDelegate.MODE_NIGHT_AUTO
+                        else -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                     }
-                } ?: AppCompatDelegate.MODE_NIGHT_AUTO
+                } ?: AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
     }
 }

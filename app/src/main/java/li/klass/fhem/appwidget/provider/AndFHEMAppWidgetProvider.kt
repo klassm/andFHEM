@@ -69,6 +69,6 @@ abstract class AndFHEMAppWidgetProvider protected constructor() : AppWidgetProvi
     }
 
     companion object {
-        val logger = Logger.getLogger(AndFHEMAppWidgetProvider::class.java.name)!!
+        val logger = Logger.getLogger(AndFHEMAppWidgetProvider::class.java.name)
     }
 }

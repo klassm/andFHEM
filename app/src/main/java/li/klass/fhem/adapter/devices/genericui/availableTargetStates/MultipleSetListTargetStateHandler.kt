@@ -40,7 +40,7 @@ class MultipleSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> 
         return entry is GroupSetListEntry || entry is MultipleStrictSetListEntry
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val groupSetListEntry = entry as GroupSetListEntry
 
         val states = listOf(context.getString(R.string.customText)) + groupSetListEntry.groupStates
@@ -56,7 +56,7 @@ class MultipleSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> 
                     }
                     dialog.dismiss()
                 }
-                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onNothingSelected(device)
                     }

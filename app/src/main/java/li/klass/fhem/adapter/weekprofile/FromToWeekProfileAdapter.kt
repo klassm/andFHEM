@@ -84,9 +84,9 @@ class FromToWeekProfileAdapter(context: Context) : BaseWeekProfileAdapter<FromTo
 
         val setTimeButton = view.findViewById<Button>(buttonId)
         setTimeButton.setOnClickListener {
-            var hours = Integer.valueOf(currentTime.substring(0, 2))!!
+            var hours = Integer.valueOf(currentTime.substring(0, 2))
             if (hours == 24) hours = 0
-            val minutes = Integer.valueOf(currentTime.substring(3, 5))!!
+            val minutes = Integer.valueOf(currentTime.substring(3, 5))
 
             val timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minuteOfDay ->
                 val time = timeToTimeString(hourOfDay, minuteOfDay)

@@ -41,18 +41,18 @@ class TextFieldTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         return entry is TextFieldSetListEntry || entry is TextFieldLongSetListEntry
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val editText = EditText(context)
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + entry.key)
                 .setView(editText)
-                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onNothingSelected(device)
                     }
                     dialog.dismiss()
                 }
-                .setPositiveButton(R.string.okButton) { dialog, which ->
+                .setPositiveButton(R.string.okButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onSubStateSelected(device, entry.key, editText.text.toString())
                     }

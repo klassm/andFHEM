@@ -51,10 +51,11 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
         (application as AndFHEMApplication).daggerComponent.inject(this)
     }
 
-    override fun onGetViewFactory(intent: Intent): RemoteViewsService.RemoteViewsFactory? {
+    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory? {
         val appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1)
-        val widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME))
-        val deviceName = intent.getStringExtra(DEVICE_NAME)
+        val widgetTypeName = intent.getStringExtra(APP_WIDGET_TYPE_NAME) ?: return null
+        val widgetType = WidgetType.valueOf(widgetTypeName)
+        val deviceName = intent.getStringExtra(DEVICE_NAME) ?: return null
         val connectionId = intent.getStringExtra(CONNECTION_ID)
         val device = deviceListService.getDeviceForName(deviceName, connectionId)
         if (device == null) {

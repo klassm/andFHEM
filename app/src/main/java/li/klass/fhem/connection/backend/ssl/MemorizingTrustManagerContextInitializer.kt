@@ -40,11 +40,11 @@ class MemorizingTrustManagerContextInitializer {
             var clientKeys: Array<KeyManager>? = null
             if (serverSpec?.clientCertificatePath != null) {
                 logger.info("init - using client certificate at ${serverSpec.clientCertificatePath}")
-                val clientCertificate = File(serverSpec.clientCertificatePath)
+                val clientCertificate = serverSpec.clientCertificatePath?.let { File(it) }
                 val clientCertificatePassword = serverSpec.clientCertificatePassword
 
-                logger.info("init - client certificate exists=${clientCertificate.exists()}, canRead=${clientCertificate.canRead()}")
-                if (clientCertificate.exists() && clientCertificate.canRead()) {
+                logger.info("init - client certificate exists=${clientCertificate?.exists()}, canRead=${clientCertificate?.canRead()}")
+                if (clientCertificate != null && clientCertificate.exists() && clientCertificate.canRead()) {
                     val keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword)
                     val keyManagerFactory = KeyManagerFactory.getInstance("X509")
                     keyManagerFactory.init(keyStore, (clientCertificatePassword

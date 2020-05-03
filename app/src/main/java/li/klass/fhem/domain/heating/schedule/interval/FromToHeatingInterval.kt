@@ -76,9 +76,9 @@ class FromToHeatingInterval : BaseHeatingInterval<FromToHeatingInterval> {
 
     override fun copy(): FromToHeatingInterval = FromToHeatingInterval(this)
 
-    override fun compareTo(interval: BaseHeatingInterval<*>): Int {
-        if (interval !is FromToHeatingInterval) return 1
-        val compare = changedFromTime.compareTo(interval.changedFromTime)
-        return if (compare != 0) compare else changedToTime.compareTo(interval.changedToTime)
+    override fun compareTo(other: BaseHeatingInterval<*>): Int {
+        if (other !is FromToHeatingInterval) return 1
+        val compare = changedFromTime.compareTo(other.changedFromTime)
+        return if (compare != 0) compare else changedToTime.compareTo(other.changedToTime)
     }
 }

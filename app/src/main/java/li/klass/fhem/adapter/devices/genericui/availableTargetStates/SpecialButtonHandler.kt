@@ -44,7 +44,7 @@ class SpecialButtonHandler : SetListTargetStateHandler<FhemDevice> {
         return entry is NoArgSetListEntry && DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.key) != null
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val additionalInformation = DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(entry.key)
         val type = additionalInformation.additionalType
         if (type == DeviceStateAdditionalInformationType.TIME) {
@@ -56,13 +56,13 @@ class SpecialButtonHandler : SetListTargetStateHandler<FhemDevice> {
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + entry.key)
                 .setView(editText)
-                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
                     dialog.dismiss()
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onNothingSelected(device)
                     }
                 }
-                .setPositiveButton(R.string.okButton) { dialog, which ->
+                .setPositiveButton(R.string.okButton) { dialog, _ ->
                     val value = editText.text.toString()
                     if (!type.matches(value)) {
                         DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput)

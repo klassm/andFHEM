@@ -37,7 +37,7 @@ class NoArgSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
     override fun canHandle(entry: SetListEntry): Boolean = entry is NoArgSetListEntry
 
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice,
-                        callback: OnTargetStateSelectedCallback<FhemDevice>) {
+                        callback: OnTargetStateSelectedCallback) {
         val noArgSetListEntry = entry as NoArgSetListEntry
         GlobalScope.launch(Dispatchers.Main) {
             callback.onStateSelected(device, noArgSetListEntry.key)

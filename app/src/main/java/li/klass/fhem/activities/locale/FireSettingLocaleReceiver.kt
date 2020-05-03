@@ -50,8 +50,8 @@ class FireSettingLocaleReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.getStringExtra(BundleExtraKeys.ACTION)
-        val command = intent.getStringExtra(BundleExtraKeys.COMMAND)
-        val connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID)
+        val command = intent.getStringExtra(BundleExtraKeys.COMMAND) ?: return
+        val connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID) ?: return
 
         Log.i(TAG, "action=$action,command=$command,connectionId=$connectionId")
 

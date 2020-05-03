@@ -44,7 +44,7 @@ class SpecialButtonSecondsHandler : SetListTargetStateHandler<FhemDevice> {
                 && additionalInformation != null && additionalInformation.additionalType == DeviceStateAdditionalInformationType.SECONDS)
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val timePicker = TimePickerWithSeconds(context)
         timePicker.hours = 0
         timePicker.minutes = 0
@@ -54,13 +54,13 @@ class SpecialButtonSecondsHandler : SetListTargetStateHandler<FhemDevice> {
                 .setTitle(device.aliasOrName + " " + entry.key)
                 .setMessage(R.string.blank)
                 .setView(timePicker)
-                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onNothingSelected(device)
                     }
                     dialog.dismiss()
                 }
-                .setPositiveButton(R.string.okButton) { dialog, which ->
+                .setPositiveButton(R.string.okButton) { _, _ ->
                     val seconds = 60 * (timePicker.hours * 60 + timePicker.minutes) + timePicker.seconds
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onSubStateSelected(device, entry.key, seconds.toString())

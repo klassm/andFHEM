@@ -48,9 +48,10 @@ class ConditionQueryLocaleReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         LOG.info("onReceive - " + intent.action)
 
-        val deviceName = intent.getStringExtra(DEVICE_NAME)
+        val deviceName = intent.getStringExtra(DEVICE_NAME) ?: return
         val attributeValue = intent.getStringExtra(DEVICE_TARGET_STATE)
-        val attributeType = AttributeType.getFor(intent.getStringExtra(ATTRIBUTE_TYPE))
+        val attributeType = intent.getStringExtra(ATTRIBUTE_TYPE)
+                ?.let { AttributeType.getFor(it) }
                 ?: AttributeType.STATE
         val attributeName = intent.getStringExtra(ATTRIBUTE_NAME) ?: "state"
 

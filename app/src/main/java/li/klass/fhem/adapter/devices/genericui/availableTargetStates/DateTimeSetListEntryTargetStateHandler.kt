@@ -23,7 +23,7 @@ class DateTimeSetListEntryTargetStateHandler : SetListTargetStateHandler<FhemDev
         return (0 until iterations).map { it * stepSize }
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val config = (entry as DateTimeSetListEntry).config
         val view = context.layoutInflater.inflate(R.layout.setlist_datepicker, null)
         view.timePicker.visibility = if (config.timePicker) View.VISIBLE else View.GONE
@@ -33,13 +33,13 @@ class DateTimeSetListEntryTargetStateHandler : SetListTargetStateHandler<FhemDev
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + entry.key)
                 .setView(view)
-                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onNothingSelected(device)
                     }
                     dialog.dismiss()
                 }
-                .setPositiveButton(R.string.okButton) { dialog, which ->
+                .setPositiveButton(R.string.okButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         val dateTime = DateTime(
                                 view.datePicker.year,

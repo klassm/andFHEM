@@ -40,7 +40,7 @@ class RGBTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         return entry is RGBSetListEntry
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val rgbSetListEntry = entry as RGBSetListEntry
         val initial = device.xmlListDevice.getState(rgbSetListEntry.key, true) ?: "0xFFF"
 

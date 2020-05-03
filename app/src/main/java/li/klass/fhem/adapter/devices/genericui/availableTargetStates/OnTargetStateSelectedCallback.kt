@@ -26,11 +26,11 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
 import li.klass.fhem.domain.core.FhemDevice
 
-interface OnTargetStateSelectedCallback<D : FhemDevice> {
+interface OnTargetStateSelectedCallback {
 
-    suspend fun onStateSelected(device: D, targetState: String)
+    suspend fun onStateSelected(device: FhemDevice, targetState: String)
 
-    suspend fun onSubStateSelected(device: D, state: String, subState: String)
+    suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String)
 
-    suspend fun onNothingSelected(device: D)
+    suspend fun onNothingSelected(device: FhemDevice)
 }

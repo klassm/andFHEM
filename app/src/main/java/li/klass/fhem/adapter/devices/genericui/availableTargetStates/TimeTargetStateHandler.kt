@@ -42,7 +42,7 @@ class TimeTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         return entry is TimeSetListEntry
     }
 
-    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback<FhemDevice>) {
+    override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val timePicker = TimePicker(context)
         val now = DateTime.now()
         timePicker.currentHour = now.hourOfDay
@@ -52,13 +52,13 @@ class TimeTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         AlertDialog.Builder(context)
                 .setTitle(device.aliasOrName + " " + entry.key)
                 .setView(timePicker)
-                .setNegativeButton(R.string.cancelButton) { dialog, which ->
+                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onNothingSelected(device)
                     }
                     dialog.dismiss()
                 }
-                .setPositiveButton(R.string.okButton) { dialog, which ->
+                .setPositiveButton(R.string.okButton) { _, _ ->
                     val hourOut = StringUtils.leftPad("" + timePicker.currentHour, 2, '0')
                     val minuteOut = StringUtils.leftPad("" + timePicker.currentMinute, 2, '0')
                     GlobalScope.launch(Dispatchers.Main) {

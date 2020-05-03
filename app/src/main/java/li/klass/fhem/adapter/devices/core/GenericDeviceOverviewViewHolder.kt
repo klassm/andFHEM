@@ -62,6 +62,7 @@ class GenericDeviceOverviewViewHolder(convertView: View) {
 
     fun getTableRowAt(index: Int): GenericDeviceTableRowHolder = tableRows[index]
 
+    @Suppress("UNCHECKED_CAST")
     fun <T> getAdditionalHolderFor(key: String): T = additionalHolders[key] as T
 
     fun putAdditionalHolder(key: String, value: Any) {

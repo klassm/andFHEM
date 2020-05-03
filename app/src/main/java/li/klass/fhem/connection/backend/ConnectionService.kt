@@ -79,7 +79,7 @@ constructor(private val applicationProperties: ApplicationProperties,
         saveToPreferences(server)
     }
 
-    fun exists(id: String?): Boolean =
+    private fun exists(id: String?): Boolean =
             mayShowDummyConnections(getAll()) && (DUMMY_DATA_ID == id
                     || TEST_DATA_ID == id)
                     || getPreferences()!!.contains(id)
@@ -211,9 +211,9 @@ constructor(private val applicationProperties: ApplicationProperties,
         }
         val explicitPortPattern = Pattern.compile(":([\\d]+)")
         val url = spec.url
-        val matcher = explicitPortPattern.matcher(url)
-        if (matcher.find()) {
-            return Integer.valueOf(matcher.group(1))!!
+        val matcher = url?.let { explicitPortPattern.matcher(it) }
+        if (matcher?.find() == true) {
+            return Integer.valueOf(matcher.group(1)!!)
         }
 
         if (url?.startsWith("https://") == true) return 443

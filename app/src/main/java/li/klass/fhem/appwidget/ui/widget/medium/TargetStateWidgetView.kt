@@ -79,8 +79,8 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback))
     }
 
-    private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback<FhemDevice> {
-        return object : OnTargetStateSelectedCallback<FhemDevice> {
+    private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback {
+        return object : OnTargetStateSelectedCallback {
             override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
                         widgetType, getCurrentConnectionId(), listOf(device.name, targetState)))

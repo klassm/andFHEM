@@ -138,7 +138,7 @@ class TimerDetailFragment @Inject constructor(
     private fun onTargetStateClick(view: View) {
         val context = activity ?: return
         val device = targetDevice ?: return
-        showSwitchOptionsMenu(context, device, object : OnTargetStateSelectedCallback<FhemDevice> {
+        showSwitchOptionsMenu(context, device, object : OnTargetStateSelectedCallback {
             override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                 setTargetState(targetState, view)
             }

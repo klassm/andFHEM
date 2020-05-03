@@ -33,7 +33,7 @@ class StateChangingTargetStateSelectedCallback(
         private val context: Context,
         private val stateUiService: StateUiService,
         private val connectionId: String?
-) : OnTargetStateSelectedCallback<FhemDevice> {
+) : OnTargetStateSelectedCallback {
 
     override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
         stateUiService.setState(device.xmlListDevice, targetState, context, connectionId)
