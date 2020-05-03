@@ -25,13 +25,12 @@ description: Automate your home
 
 # List of links in the navigation bar
 navbar-links:
-  FAQ: "faq"
-  Screenshots: "screenshots"
   Changelog: "changelog"
-  Contribute: "contribute"
   Data Privacy: "data-privacy"
   Premium: "premium"
   App Manual:
+    - Screenshots: "screenshots"
+    - FAQ: "faq"
     - Installation: "installation"
     - Hooks: "hooks"
     - External Interfaces: "external-interfaces"
