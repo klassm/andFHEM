@@ -35,3 +35,9 @@ If your Pull Request resolves an issue, please add a respective line to the end,
 ```
 Resolves #123
 ```
+
+### Deployment
+
+Can be only done by the repository owner. Deployment is done via Github actions.
+
+[![Actions Panel](https://img.shields.io/badge/actionspanel-enabled-brightgreen)](https://www.actionspanel.app/app/klassm/andFHEM)
