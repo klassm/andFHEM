@@ -4,5 +4,11 @@ import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 
 class DeviceListFragmentViewModel : ViewModel() {
-    var listState: Parcelable? = null
+    var listState = mutableMapOf<String, Parcelable?>()
+
+    fun setState(saveKey: String, state: Parcelable?) {
+        listState[saveKey] = state
+    }
+
+    fun getState(saveKey: String) = listState[saveKey]
 }

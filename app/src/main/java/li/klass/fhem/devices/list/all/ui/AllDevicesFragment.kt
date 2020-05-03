@@ -98,4 +98,6 @@ class AllDevicesFragment @Inject constructor(
     override fun navigateTo(device: FhemDevice) {
         findNavController().navigate(AllDevicesFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
     }
+
+    override val roomNameSaveKey: String = "all_devices"
 }

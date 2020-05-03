@@ -159,10 +159,13 @@ abstract class DeviceListFragment(
                 updateWith(elements, requireView())
             }
 
-            viewModel.listState?.let {
-                devices?.layoutManager?.onRestoreInstanceState(it)
-                viewModel.listState = null
+            roomNameSaveKey?.let { saveKey ->
+                viewModel.getState(saveKey)?.let {
+                    devices?.layoutManager?.onRestoreInstanceState(it)
+                    viewModel.setState(saveKey, null)
+                }
             }
+
         }
     }
 
@@ -249,11 +252,16 @@ abstract class DeviceListFragment(
     }
 
     override fun onDestroyView() {
-        viewModel.listState = devices.layoutManager?.onSaveInstanceState()
+        roomNameSaveKey?.let { saveKey ->
+            viewModel.setState(saveKey, devices.layoutManager?.onSaveInstanceState())
+        }
+
         super.onDestroyView()
     }
 
     abstract fun navigateTo(device: FhemDevice)
+
+    abstract val roomNameSaveKey: String?
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DeviceListFragment::class.java)

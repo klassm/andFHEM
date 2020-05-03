@@ -63,5 +63,7 @@ class SearchResultsFragment @Inject constructor(
         findNavController().navigate(SearchResultsFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
     }
 
+    override val roomNameSaveKey: String? = null
+
     override fun getTitle(context: Context): String = context.resources.getString(R.string.search_title)
 }

@@ -74,4 +74,6 @@ class FavoritesFragment @Inject constructor(
     override fun navigateTo(device: FhemDevice) {
         findNavController().navigate(FavoritesFragmentDirections.actionToDeviceDetailRedirect(device.name, null))
     }
+
+    override val roomNameSaveKey: String = "favorites"
 }
