@@ -28,11 +28,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
-import android.widget.TextView
 import androidx.cardview.widget.CardView
+import kotlinx.android.synthetic.main.device_detail_card_table.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -72,43 +71,45 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
 
     suspend fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
                            itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler): CardView {
-        val card = context.layoutInflater.inflate(R.layout.device_detail_card_table, null)
+        val card = context.layoutInflater.inflate(R.layout.device_detail_card_table, null) as CardView
 
+        val captionTextView = card.cardCaption
+        captionTextView.setText(caption)
+
+        fillTableWithButton(device, connectionId, caption, itemProvider, context, expandHandler, card)
+
+        return card
+    }
+
+    private suspend fun fillTableWithButton(device: FhemDevice, connectionId: String?, caption: Int,
+                                            itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler,
+                                            card: View) {
+        val expandSaveKey = caption.toString()
+        val limitedItems = getSortedClassItems(device, itemProvider, false, context)
+        val allItems = getSortedClassItems(device, itemProvider, true, context)
+        val canExpand = limitedItems.isNotEmpty() && limitedItems.size != allItems.size
+        val isExpanded = expandHandler.isExpanded(expandSaveKey)
+        val table = card.table
         val providers = detailActionProviders.providers
                 .filter { it.supports(device.xmlListDevice) }
                 .toList()
 
-
-        val captionTextView = card.findViewById<TextView>(R.id.cardCaption)
-        captionTextView.setText(caption)
-
-        val table = card.findViewById<TableLayout>(R.id.table)
-
-        var itemsToShow = getSortedClassItems(device, itemProvider, false, context)
-        val allItems = getSortedClassItems(device, itemProvider, true, context)
-        val expandSaveKey = caption.toString()
-        var showExpandButton = !expandHandler.isExpanded(expandSaveKey)
-        if (!showExpandButton || itemsToShow.isEmpty() || itemsToShow.size == allItems.size) {
-            itemsToShow = allItems
-            showExpandButton = false
-        }
-        fillTable(device, connectionId, table, itemsToShow, providers, context)
-
-        val button = card.findViewById<Button>(R.id.expandButton)
-        button.visibility = if (showExpandButton) View.VISIBLE else View.GONE
-        button.setOnClickListener {
-            expandHandler.setExpanded(expandSaveKey, true)
-            GlobalScope.launch(Dispatchers.Main) {
-                fillTable(device, connectionId, table, getSortedClassItems(device, itemProvider, true, context), providers, context)
-                button.visibility = View.GONE
+        card.expandButton.apply {
+            visibility = if (canExpand) View.VISIBLE else View.GONE
+            text = context.getString(if (isExpanded) R.string.detailCardUnexpand else R.string.detailCardExpand)
+            setOnClickListener {
+                expandHandler.setExpanded(expandSaveKey, !expandHandler.isExpanded(expandSaveKey))
+                GlobalScope.launch(Dispatchers.Main) {
+                    fillTableWithButton(device, connectionId, caption, itemProvider, context, expandHandler, card)
+                }
             }
         }
+
+        fillTable(device, connectionId, table, if (isExpanded) allItems else limitedItems, providers, context)
 
         if (table.childCount == 0) {
             card.visibility = View.GONE
         }
-
-        return card as CardView
     }
 
     private suspend fun fillTable(device: FhemDevice, connectionId: String?, table: TableLayout, items: List<XmlDeviceViewItem>, providers: List<GenericDetailActionProvider>, context: Context) {

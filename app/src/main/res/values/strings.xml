@@ -658,6 +658,7 @@
     <string name="selectFile">Select file</string>
 
     <string name="detailCardExpand">More …</string>
+    <string name="detailCardUnexpand">Less …</string>
     <string name="detailStatesSection">States</string>
     <string name="detailAttributesSection">Attributes</string>
     <string name="detailInternalsSection">Internals</string>
