@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import org.jetbrains.anko.layoutInflater
@@ -47,7 +48,7 @@ class PlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         val playerConfiguration = deviceConfigurationProvider.configurationFor(device).playerConfiguration
         if (playerConfiguration == null || playerConfiguration.hasAny()) {
             return null

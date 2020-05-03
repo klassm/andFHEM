@@ -34,6 +34,7 @@ import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
 import li.klass.fhem.adapter.devices.strategy.StrategyProvider
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy
 import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
@@ -48,19 +49,19 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
     }
 
     @SuppressLint("InflateParams")
-    suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?, navController: NavController): View {
+    suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): View {
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
-        genericDetailCardProviders.providers.sortedBy { it.ordering() }
-                .map {
+        genericDetailCardProviders.providers
+                .sortedBy { it.ordering() }
+                .mapNotNull {
                     try {
-                        it.provideCard(device, context, connectionId, navController)
+                        it.provideCard(device, context, connectionId, navController, expandHandler)
                     } catch (e: Exception) {
                         logger.error("getDeviceDetailView(device=${device.name}) - error while providing card of ${it.javaClass.name}", e)
                         null
                     }
                 }
-                .filter { it != null }
                 .forEach { linearLayout.addView(it) }
 
         return linearLayout

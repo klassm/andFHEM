@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.GenericDeviceService
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         if (device.xmlListDevice.type != "fs20_zdr") {
             return null
         }

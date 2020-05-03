@@ -35,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import li.klass.fhem.R
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
@@ -48,7 +49,7 @@ class PlotsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 20
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 

@@ -29,6 +29,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -66,6 +67,7 @@ class DeviceDetailFragment @Inject constructor(
     val args: DeviceDetailFragmentArgs by navArgs()
 
     private val navigationViewModel by navGraphViewModels<DeviceNameListNavigationFragmentViewModel>(R.id.nav_graph)
+    private val deviceDetailViewModel by navGraphViewModels<DeviceDetailFragmentViewModel>(R.id.nav_graph)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -75,6 +77,7 @@ class DeviceDetailFragment @Inject constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        deviceDetailViewModel.reset()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -106,7 +109,7 @@ class DeviceDetailFragment @Inject constructor(
             myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
             device?.let {
                 this@DeviceDetailFragment.device = it
-                val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, args.connectionId, findNavController())
+                val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, args.connectionId, findNavController(), deviceDetailViewModel.expandHandler())
                 myActivity.invalidateOptionsMenu()
                 val contentView = findContentView()
                 if (contentView != null) {
@@ -175,5 +178,6 @@ class DeviceDetailFragment @Inject constructor(
     override val navigationFragment: Fragment? = deviceNameListNavigationFragment
 
     override fun canChildScrollUp(): Boolean =
-            super.canChildScrollUp() || findContentView()!!.scrollY > 0
+            super.canChildScrollUp() || (view?.findViewById<ScrollView>(R.id.scrollView)?.scrollY
+                    ?: 0) > 0
 }

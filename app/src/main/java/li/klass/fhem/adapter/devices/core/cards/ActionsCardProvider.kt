@@ -35,6 +35,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class ActionsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 30
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         if (device.setList.isEmpty()) {
             return null
         }

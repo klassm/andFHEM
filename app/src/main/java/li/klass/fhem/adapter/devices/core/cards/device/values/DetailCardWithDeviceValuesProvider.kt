@@ -51,6 +51,7 @@ import li.klass.fhem.adapter.devices.strategy.DimmableStrategy
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.behavior.dim.DimmableBehavior
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
@@ -70,7 +71,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         private val detailActionProviders: GenericDetailActionProviders) {
 
     suspend fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
-                           itemProvider: ItemProvider, context: Context): CardView {
+                           itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler): CardView {
         val card = context.layoutInflater.inflate(R.layout.device_detail_card_table, null)
 
         val providers = detailActionProviders.providers
@@ -85,8 +86,9 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
 
         var itemsToShow = getSortedClassItems(device, itemProvider, false, context)
         val allItems = getSortedClassItems(device, itemProvider, true, context)
-        var showExpandButton = true
-        if (itemsToShow.isEmpty() || itemsToShow.size == allItems.size) {
+        val expandSaveKey = caption.toString()
+        var showExpandButton = !expandHandler.isExpanded(expandSaveKey)
+        if (!showExpandButton || itemsToShow.isEmpty() || itemsToShow.size == allItems.size) {
             itemsToShow = allItems
             showExpandButton = false
         }
@@ -95,6 +97,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         val button = card.findViewById<Button>(R.id.expandButton)
         button.visibility = if (showExpandButton) View.VISIBLE else View.GONE
         button.setOnClickListener {
+            expandHandler.setExpanded(expandSaveKey, true)
             GlobalScope.launch(Dispatchers.Main) {
                 fillTable(device, connectionId, table, getSortedClassItems(device, itemProvider, true, context), providers, context)
                 button.visibility = View.GONE

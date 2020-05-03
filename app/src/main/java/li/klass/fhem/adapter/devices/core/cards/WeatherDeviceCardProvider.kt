@@ -43,6 +43,7 @@ import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.devices.backend.WeatherService
 import li.klass.fhem.devices.backend.WeatherService.WeatherForecastInformation
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import li.klass.fhem.util.view.setTextOrHide
@@ -54,7 +55,7 @@ class WeatherDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 1
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         if (device.xmlListDevice.type != "Weather") {
             return null
         }

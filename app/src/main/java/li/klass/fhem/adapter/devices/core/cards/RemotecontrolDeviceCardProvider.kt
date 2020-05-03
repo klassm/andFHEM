@@ -42,6 +42,7 @@ import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
@@ -53,7 +54,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): androidx.cardview.widget.CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): androidx.cardview.widget.CardView? {
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }

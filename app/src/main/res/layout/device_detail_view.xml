@@ -36,7 +36,7 @@
         <include layout="@layout/device_view_header" />
 
         <ScrollView
-
+            android:id="@+id/scrollView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/adContainer"

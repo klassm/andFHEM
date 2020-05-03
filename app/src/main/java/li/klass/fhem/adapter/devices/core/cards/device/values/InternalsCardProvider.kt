@@ -31,6 +31,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
@@ -39,9 +40,9 @@ class InternalsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 50
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         return detailCardWithDeviceValuesProvider.createCard(device, connectionId,
-                R.string.detailInternalsSection, InternalsItemProvider(), context)
+                R.string.detailInternalsSection, InternalsItemProvider(), context, expandHandler)
     }
 
     class InternalsItemProvider : ItemProvider {

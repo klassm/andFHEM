@@ -34,6 +34,7 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton
+import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.receiver.GCMSendDeviceService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
@@ -45,7 +46,7 @@ class GcmSendCardProvider @Inject constructor(
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
         if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }
