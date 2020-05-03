@@ -28,7 +28,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ScrollView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -108,17 +108,20 @@ class DeviceDetailFragment @Inject constructor(
                 this@DeviceDetailFragment.device = it
                 val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, args.connectionId, findNavController())
                 myActivity.invalidateOptionsMenu()
-                val scrollView = findScrollView()
-                if (scrollView != null) {
-                    scrollView.removeAllViews()
-                    scrollView.addView(detailView)
+                val contentView = findContentView()
+                if (contentView != null) {
+                    contentView.addView(detailView)
+                    if (contentView.childCount > 1) {
+                        contentView.removeViewAt(0)
+                    }
                 }
                 setTitle(device.aliasOrName)
+
             }
         }
     }
 
-    private fun findScrollView(): ScrollView? = view?.findViewById(R.id.deviceDetailView)
+    private fun findContentView(): LinearLayout? = view?.findViewById(R.id.deviceDetailView)
 
     override fun getTitle(context: Context) =
             device?.aliasOrName ?: args.deviceName
@@ -127,7 +130,7 @@ class DeviceDetailFragment @Inject constructor(
         super.onCreateOptionsMenu(menu, inflater)
         if (device != null) {
             inflater.inflate(R.menu.device_menu, menu)
-            if (favoritesService.isFavorite(args.deviceName ?: "")) {
+            if (favoritesService.isFavorite(args.deviceName)) {
                 menu.removeItem(R.id.menu_favorites_add)
             } else {
                 menu.removeItem(R.id.menu_favorites_remove)
@@ -172,5 +175,5 @@ class DeviceDetailFragment @Inject constructor(
     override val navigationFragment: Fragment? = deviceNameListNavigationFragment
 
     override fun canChildScrollUp(): Boolean =
-            super.canChildScrollUp() || findScrollView()!!.scrollY > 0
+            super.canChildScrollUp() || findContentView()!!.scrollY > 0
 }
