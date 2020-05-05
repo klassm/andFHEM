@@ -122,7 +122,7 @@ dependencies {
     implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.10")
 
 
-    compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
+    compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0-20050927.133100")
     implementation(group = "com.github.angads25", name = "filepicker", version = "1.1.1")
     implementation(group = "joda-time", name = "joda-time", version = "2.10.6")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
