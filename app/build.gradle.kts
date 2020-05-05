@@ -159,7 +159,7 @@ dependencies {
     testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")
     testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
-    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.15.0")
+    testImplementation(group = "org.assertj", name = "assertj-core", version = "3.16.0")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.1.1")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.1.1")
