@@ -42,7 +42,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.android.synthetic.main.chart.*
 import kotlinx.coroutines.*
@@ -161,7 +161,10 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
         chart.apply {
             xAxis.apply {
-                valueFormatter = IAxisValueFormatter { value, _ -> ANDFHEM_DATE_TIME_FORMAT.print(value.toLong()) }
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String =
+                            ANDFHEM_DATE_TIME_FORMAT.print(value.toLong())
+                }
                 labelRotationAngle = 300f
                 val labelCount = DisplayUtil.getWidthInDP(applicationContext) / 150
                 setLabelCount(if (labelCount < 2) 2 else labelCount, true)
