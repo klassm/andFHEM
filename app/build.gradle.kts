@@ -107,7 +107,7 @@ dependencies {
 
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.0")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
-    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0-alpha01")
+    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
     implementation(group = "androidx.annotation", name = "annotation", version = "1.1.0")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
