@@ -53,7 +53,7 @@ val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.11.0"
 val daggerVersion = "2.27"
 val coroutinesVersion = "1.3.5"
-val androidXNavigationVersion = "2.3.0-alpha05"
+val androidXNavigationVersion = "2.3.0-alpha06"
 val roomVersion = "2.2.5"
 
 plugins {
@@ -107,7 +107,7 @@ dependencies {
 
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.0")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
-    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0-alpha01")
+    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.1.0")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
     implementation(group = "androidx.annotation", name = "annotation", version = "1.1.0")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
@@ -129,7 +129,7 @@ dependencies {
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
     implementation(group = "net.lingala.zip4j", name = "zip4j", version = "2.5.2")
     implementation(group = "com.github.PhilJay", name = "MPAndroidChart", version = "3.1.0")
-    implementation(group = "com.squareup.picasso", name = "picasso", version = "2.5.2")
+    implementation(group = "com.squareup.picasso", name = "picasso", version = "2.71828")
     implementation(group = "com.github.alexfu", name = "Phoenix", version = "1.0.0")
     implementation(group = "com.github.bumptech.glide", name = "glide", version = glideVersion)
     kapt(group = "com.github.bumptech.glide", name = "compiler", version = glideVersion)
