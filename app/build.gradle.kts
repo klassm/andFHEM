@@ -162,7 +162,7 @@ dependencies {
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.16.0")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.1.1")
-    androidTestImplementation(group = "androidx.test", name = "rules", version = "1.1.1")
+    androidTestImplementation(group = "androidx.test", name = "rules", version = "1.2.0")
     androidTestImplementation(group = "androidx.test.espresso", name = "espresso-core", version = "3.2.0")
     androidTestImplementation(group = "androidx.test.espresso", name = "espresso-contrib", version = "3.1.1")
 }
