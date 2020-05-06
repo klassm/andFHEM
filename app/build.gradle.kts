@@ -136,7 +136,7 @@ dependencies {
     implementation(group = "com.github.bumptech.glide", name = "okhttp3-integration", version = glideVersion) {
         exclude(group = "glide-parent")
     }
-    implementation(group = "com.crashlytics.sdk.android", name = "crashlytics", version = "2.9.7")
+    implementation(group = "com.crashlytics.sdk.android", name = "crashlytics", version = "2.10.1")
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-runtime", version = kotlinSerializationVersion) {
