@@ -2,3 +2,4 @@
 * New navigation infrastructure according to Google's recommendations (looks quite the same)
 * Maintain the scroll state when navigating back to the room and device list
 * FHEMWEB CSRF token can be specified explicitly
+* Support for PROLANTA devices
