@@ -34,4 +34,4 @@ jobs:
           cd andFHEM
           git config user.email "andFHEM@klass.i"
           git config user.name "AndFHEM"
-          ./gradlew clean release -Dstage=prod
+          ./gradlew clean release -Dstage=production
