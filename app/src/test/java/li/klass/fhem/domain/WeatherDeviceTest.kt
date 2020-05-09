@@ -36,8 +36,8 @@ class WeatherDeviceTest : DeviceXMLParsingBase() {
     fun testForCorrectlySetAttributes() {
         val device = defaultDevice!!
 
-        assertThat(device.name).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_DEVICE_NAME)
-        assertThat(device.roomConcatenated).isEqualTo(DeviceXMLParsingBase.DEFAULT_TEST_ROOM_NAME)
+        assertThat(device.name).isEqualTo(DEFAULT_TEST_DEVICE_NAME)
+        assertThat(device.roomConcatenated).isEqualTo(DEFAULT_TEST_ROOM_NAME)
 
         assertThat(stateValueFor(device, "icon")).isEqualTo("cloudy")
         assertThat(stateValueFor(device, "condition")).isEqualTo("Bewölkt")

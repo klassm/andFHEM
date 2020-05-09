@@ -34,7 +34,7 @@ class WeatherService @Inject constructor() {
 
     fun iconFor(device: FhemDevice): String? =
             when (device.xmlListDevice.type) {
-                "WEATHER" -> device.xmlListDevice.stateValueFor("icon")
+                "Weather" -> device.xmlListDevice.stateValueFor("icon")
                         ?.let { iconForName(it) }
                 else -> null
             }
@@ -63,7 +63,7 @@ class WeatherService @Inject constructor() {
         val type = device.xmlListDevice.type
         return device.xmlListDevice.states.let {
             when (type) {
-                "WEATHER" -> {
+                "Weather" -> {
                     WeatherForecastInformation(
                             date = today,
                             weekday = it.getValue("day_of_week").value,
@@ -96,7 +96,7 @@ class WeatherService @Inject constructor() {
         val type = device.xmlListDevice.type
         val day = today.plusDays(index)
         return when (type) {
-            "WEATHER" -> {
+            "Weather" -> {
                 val weekday = values.first { it.key == "day_of_week" }.value
                 val tempLow = appendTemperature(values.first { it.key == "low_c" }.value)
                 val tempHigh = appendTemperature(values.first { it.key == "high_c" }.value)
