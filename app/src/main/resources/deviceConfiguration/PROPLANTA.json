@@ -1,0 +1,54 @@
+{
+  "sensorDevice": true,
+  "defaultGroup": "WEATHER",
+  "showStateInOverview": false,
+  "supportedWidgets": [
+    "TemperatureWidgetView",
+    "MediumInformationWidgetView"
+  ],
+  "states": [
+    {
+      "key": "temperature",
+      "desc": "temperature",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureField",
+        "WidgetMediumLine1"
+      ]
+    },
+    {
+      "key": "humidity",
+      "desc": "humidity",
+      "showInOverview": true,
+      "markers": [
+        "WidgetTemperatureAdditionalField",
+        "WidgetMediumLine2"
+      ]
+    },
+    {
+      "key": "wind",
+      "desc": "windSpeed",
+      "showInOverview": true
+    },
+    {
+      "key": "windDir",
+      "desc": "windDirection",
+      "showInOverview": true
+    },
+    {
+      "key": "dewPoint",
+      "desc": "dewpoint",
+      "showInOverview": true
+    }
+  ],
+  "sanitise": {
+    "deviceValues": {
+      "dewPoint": {
+        "append": "°C"
+      },
+      "windDir": {
+        "append": "°"
+      }
+    }
+  }
+}

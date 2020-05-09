@@ -34,7 +34,7 @@ import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
-import li.klass.fhem.devices.backend.WeatherService
+import li.klass.fhem.devices.backend.weather.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 import javax.inject.Singleton

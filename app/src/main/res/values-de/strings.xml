@@ -30,6 +30,8 @@
     <string name="deviceName">Name</string>
     <string name="temperature">Temperatur</string>
     <string name="wind">Wind</string>
+    <string name="moonRise">Mond-Aufgang</string>
+    <string name="moonSet">Mond-Untergang</string>
     <string name="windChill">Windkälte</string>
     <string name="rain">Regen</string>
     <string name="humidity">Luftfeuchtigkeit</string>

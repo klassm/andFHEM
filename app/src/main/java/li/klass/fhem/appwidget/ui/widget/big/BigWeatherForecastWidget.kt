@@ -30,6 +30,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.view.View
 import android.widget.RemoteViews
 import com.bumptech.glide.Glide
 import li.klass.fhem.AndFHEMApplication
@@ -40,7 +41,7 @@ import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.devices.backend.WeatherService
+import li.klass.fhem.devices.backend.weather.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import javax.inject.Inject
@@ -75,7 +76,7 @@ class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherSe
 
     override fun supports(device: FhemDevice): Boolean {
         return AndFHEMApplication.androidSDKLevel >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
-                && device.xmlListDevice.type == "Weather"
+                && (device.xmlListDevice.type == "Weather" || device.xmlListDevice.type == "PROPLANTA")
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -83,14 +84,19 @@ class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherSe
         val view = RemoteViews(context.packageName,
                 R.layout.appwidget_forecast_big_item)
 
-        view.setTextViewText(R.id.day_description, item.weekday + ", " + DateFormatUtil.ANDFHEM_DATE_FORMAT.print(item.date))
+        view.setTextViewText(R.id.day_description, listOfNotNull(item.weekday?.let { "$it." }, DateFormatUtil.ANDFHEM_DATE_FORMAT.print(item.date)).joinToString(separator = " "))
         view.setTextViewText(R.id.day_condition, item.condition)
         view.setTextViewText(R.id.day_temperature, item.temperature)
-        val bitmap = Glide.with(context)
-                .asBitmap()
-                .load(item.icon)
-                .submit().get()
-        view.setImageViewBitmap(R.id.day_image, bitmap)
+        if (item.icon == null) {
+            view.setViewVisibility(R.id.day_image, View.GONE)
+        } else {
+            val bitmap = Glide.with(context)
+                    .asBitmap()
+                    .load(item.icon)
+                    .submit().get()
+            view.setImageViewBitmap(R.id.day_image, bitmap)
+            view.setViewVisibility(R.id.day_image, View.VISIBLE)
+        }
         view.setOnClickFillInIntent(R.id.forecastItem, Intent())
         return view
     }

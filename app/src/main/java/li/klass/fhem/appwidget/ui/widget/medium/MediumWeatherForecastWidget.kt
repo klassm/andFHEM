@@ -33,13 +33,13 @@ import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.devices.backend.WeatherService
+import li.klass.fhem.devices.backend.weather.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import javax.inject.Inject
 
 class MediumWeatherForecastWidget @Inject constructor(
-        val weatherService: WeatherService
+        private val weatherService: WeatherService
 ) : DeviceAppWidgetView() {
 
     override fun getWidgetName(): Int = R.string.widget_weather_forecast
@@ -61,7 +61,7 @@ class MediumWeatherForecastWidget @Inject constructor(
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
 
-    override fun supports(device: FhemDevice): Boolean = device.xmlListDevice.type == "Weather"
+    override fun supports(device: FhemDevice): Boolean = device.xmlListDevice.type == "Weather" || device.xmlListDevice.type == "PROPLANTA"
 
     override val widgetSize = WidgetSize.MEDIUM
 

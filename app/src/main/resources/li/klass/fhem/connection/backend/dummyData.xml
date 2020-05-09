@@ -265,6 +265,923 @@
             <STATE key="voltage" value="230.014 V" measured="2013-04-07 18:20:51" />
         </FBDECT>
     </FBDECT_LIST>
+    <PROPLANTA_LIST>
+        <PROPLANTA name="Wetter_Stadt" state="Tmin: 3 Tmax: 15" sets="update:noArg "
+            attrs="alias comment:textField-long eventMap:textField-long group room suppressReading userReadings:textField-long verbose:0,1,2,3,4,5 INTERVAL URL disable:0,1 forecastDays:4,7,11,14 event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading cmdIcon devStateIcon devStateIcon:textField-long devStateStyle fp_Erdgeschoss fp_Keller fp_Obergeschoss fp_Spitzboden icon sortby webCmd webCmdLabel:textField-long widgetOverride userattr">
+            <INT key="DEF" value="Stadt de" />
+            <INT key="FUUID" value="5e95f1a2-f33f-d419-965b-35da13cb1690fcb6" />
+            <INT key="INTERVAL" value="3600" />
+            <INT key="NAME" value="Wetter_Stadt" />
+            <INT key="NR" value="257" />
+            <INT key="STATE" value="Tmin: 3 Tmax: 15" />
+            <INT key="TYPE" value="PROPLANTA" />
+            <INT key="URL"
+                value="https://www.proplanta.de/Wetter/profi-wetter.php?SITEID=60&amp;PLZ=Stadt&amp;STADT=Stadt&amp;WETTERaufrufen=stadt&amp;Wtp=&amp;SUCHE=Wetter&amp;wT=" />
+            <ATTR key="room" value="Wetter" />
+            <STATE key="dewPoint" value="-0.1" measured="2020-05-05 15:13:31" />
+            <STATE key="durationFetchReadings" value="25.00" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain09" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRainDay" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_chOfRainNight" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud09" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_cloud21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_date" value="05.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_dew" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_frost" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust00" value="28.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust03" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust06" value="28.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust09" value="21.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust12" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust15" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust18" value="21.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_gust21" value="21.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_moonRise" value="18:22" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_moonSet" value="05:33" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rad" value="7.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_sun" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp00" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp03" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp06" value="6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp09" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp12" value="13" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp15" value="14" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp18" value="11" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_temp21" value="7" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_tempMax" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_tempMin" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_uv" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather00" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather03" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather06" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather09" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather12" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather15" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather18" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather21" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherDay" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherEvening" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherMorning" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherNight" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind00" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind03" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind06" value="21.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind09" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind12" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind15" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind18" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_wind21" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir00" value="44" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir03" value="52" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir06" value="59" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir09" value="61" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir12" value="57" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir15" value="43" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir18" value="29" measured="2020-05-05 15:13:31" />
+            <STATE key="fc0_windDir21" value="48" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_date" value="15.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_moonRise" value="03:41" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_moonSet" value="13:20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_tempMax" value="22" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_tempMin" value="7" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_weather" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc10_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_date" value="16.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_moonRise" value="04:00" measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_moonSet" value="14:28" measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_tempMax" value="22" measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_tempMin" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_weather" value="Regen" measured="2020-05-05 15:13:31" />
+            <STATE key="fc11_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t7.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_date" value="17.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_moonRise" value="04:17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_moonSet" value="15:35" measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_tempMax" value="23" measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_tempMin" value="12" measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_weather" value="Regenschauer" measured="2020-05-05 15:13:31" />
+            <STATE key="fc12_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t6.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_date" value="18.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_moonRise" value="04:33" measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_moonSet" value="16:41" measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_tempMax" value="22" measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_tempMin" value="14" measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_weather" value="Regenschauer" measured="2020-05-05 15:13:31" />
+            <STATE key="fc13_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t6.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRainDay" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_chOfRainNight" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_cloud21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_date" value="06.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_dew" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_frost" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust00" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust03" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust06" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust09" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust12" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust15" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust18" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_gust21" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_moonRise" value="19:49" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_moonSet" value="05:54" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rad" value="7.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_sun" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp00" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp03" value="4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp06" value="6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp09" value="12" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp12" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp15" value="16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp18" value="13" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_temp21" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_tempMax" value="17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_tempMin" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_uv" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather00" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather03" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather06" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather09" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather12" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather15" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather18" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather21" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherDay" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherEvening" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherMorning" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherNight" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind00" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind03" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind06" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind09" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind12" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind15" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind18" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_wind21" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir00" value="49" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir03" value="55" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir06" value="63" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir09" value="68" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir12" value="32" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir15" value="16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir18" value="42" measured="2020-05-05 15:13:31" />
+            <STATE key="fc1_windDir21" value="19" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain18" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRain21" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRainDay" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_chOfRainNight" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud18" value="25" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_cloud21" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_date" value="07.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_dew" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_frost" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust00" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust03" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust06" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust09" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust12" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust15" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust18" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_gust21" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_moonRise" value="21:17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_moonSet" value="06:16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rad" value="7.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_sun" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp00" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp03" value="4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp06" value="7" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp09" value="13" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp12" value="16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp15" value="17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp18" value="14" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_temp21" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_tempMax" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_tempMin" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_uv" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather00" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather03" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather06" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather09" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather12" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather15" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather18" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather21" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherDay" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherEvening" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherMorning" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherNight" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind00" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind03" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind06" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind09" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind12" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind15" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind18" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_wind21" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir00" value="46" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir03" value="47" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir06" value="42" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir09" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir12" value="48" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir15" value="42" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir18" value="40" measured="2020-05-05 15:13:31" />
+            <STATE key="fc2_windDir21" value="27" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain00" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain03" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain06" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain09" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain12" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain15" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain18" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRainDay" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_chOfRainNight" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud00" value="50" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud03" value="62.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud06" value="87.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud09" value="87.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud12" value="75" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud15" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud18" value="62.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_cloud21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_date" value="08.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_dew" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_frost" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust00" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust03" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust06" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust09" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust12" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust15" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust18" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_gust21" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_moonRise" value="22:42" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_moonSet" value="06:43" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rad" value="6.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_sun" value="25" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp00" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp03" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp06" value="11" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp09" value="16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp12" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp15" value="19" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp18" value="16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_temp21" value="11" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_tempMax" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_tempMin" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_uv" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather00" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather03" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather06" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather09" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather12" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather15" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather18" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather21" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherDay" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherEvening" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherMorning" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherNight" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind00" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind03" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind06" value="3.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind09" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind12" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind15" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind18" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_wind21" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir00" value="41" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir03" value="41" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir06" value="37" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir09" value="9" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir12" value="358" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir15" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir18" value="52" measured="2020-05-05 15:13:31" />
+            <STATE key="fc3_windDir21" value="35" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain00" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain03" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain12" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain15" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain18" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRain21" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRainDay" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_chOfRainNight" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud00" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud03" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud12" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud15" value="37.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud18" value="50" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_cloud21" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_date" value="09.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_dew" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_frost" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust00" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust03" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust06" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust09" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust12" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust15" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust18" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_gust21" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_moonRise" value="--:--" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_moonSet" value="07:17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rad" value="7" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_sun" value="75" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp00" value="9" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp03" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp06" value="12" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp09" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp12" value="22" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp15" value="22" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp18" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_temp21" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_tempMax" value="23" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_tempMin" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_uv" value="6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather00" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather03" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather06" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather09" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather12" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather15" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather18" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather21" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherDay" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherEvening" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherMorning" value="sonnig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherNight" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind00" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind03" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind06" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind09" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind12" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind15" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind18" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_wind21" value="10.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir00" value="55" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir03" value="62" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir06" value="77" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir09" value="77" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir12" value="66" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir15" value="39" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir18" value="37" measured="2020-05-05 15:13:31" />
+            <STATE key="fc4_windDir21" value="53" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain00" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain03" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain06" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain09" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain12" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain15" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain18" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRain21" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRainDay" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_chOfRainNight" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud00" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud03" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud06" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud09" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud12" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud15" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud18" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_cloud21" value="100" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_date" value="10.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_dew" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_frost" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust00" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust03" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust06" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust09" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust12" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust15" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust18" value="39.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_gust21" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_moonRise" value="00:01" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_moonSet" value="07:59" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rad" value="4.7" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_sun" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp00" value="14" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp03" value="12" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp06" value="11" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp09" value="12" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp12" value="14" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp15" value="11" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp18" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_temp21" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_tempMax" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_tempMin" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_uv" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather00" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather03" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather06" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather09" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather12" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather15" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather18" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather21" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherDay" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherEvening" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherMorning" value="bedeckt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t5.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherNight" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind00" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind03" value="14.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind06" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind09" value="28.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind12" value="28.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind15" value="28.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind18" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_wind21" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir00" value="26" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir03" value="32" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir06" value="30" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir09" value="31" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir12" value="29" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir15" value="27" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir18" value="30" measured="2020-05-05 15:13:31" />
+            <STATE key="fc5_windDir21" value="33" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain00" value="15" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain03" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain06" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain09" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain12" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain15" value="10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain18" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRainDay" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_chOfRainNight" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud00" value="75" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud03" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud06" value="25" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud09" value="37.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud12" value="25" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud15" value="37.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud18" value="12.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_cloud21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_date" value="11.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_dew" value="1" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_evapor" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_frost" value="1" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust00" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust03" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust06" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust09" value="39.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust12" value="39.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust15" value="39.6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust18" value="36" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_gust21" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_moonRise" value="01:09" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_moonSet" value="08:52" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rad" value="7.5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain00" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain03" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain06" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain09" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain12" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain15" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain18" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_rain21" value="0" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_sun" value="75" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp00" value="3" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp03" value="1" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp06" value="5" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp09" value="9" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp12" value="12" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp15" value="11" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp18" value="8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_temp21" value="4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_tempMax" value="13" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_tempMin" value="1" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_uv" value="6" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather00" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather00Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather03" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather03Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather06" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather06Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather09" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather09Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather12" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather12Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather15" value="wolkig" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather15Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t3.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather18" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather18Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather21" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weather21Icon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherDay" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherDayIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherEvening" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherEveningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherMorning" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherMorningIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherNight" value="klar" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_weatherNightIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/n1.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind00" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind03" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind06" value="28.8" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind09" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind12" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind15" value="32.4" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind18" value="25.2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_wind21" value="18" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir00" value="33" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir03" value="28" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir06" value="40" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir09" value="37" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir12" value="29" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir15" value="26" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir18" value="23" measured="2020-05-05 15:13:31" />
+            <STATE key="fc6_windDir21" value="17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_date" value="12.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_moonRise" value="02:03" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_moonSet" value="09:54" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_tempMax" value="13" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_tempMin" value="1" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_weather" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc7_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_date" value="13.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_moonRise" value="02:44" measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_moonSet" value="11:01" measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_tempMax" value="17" measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_tempMin" value="2" measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_weather" value="heiter" measured="2020-05-05 15:13:31" />
+            <STATE key="fc8_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t2.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_date" value="14.05.2020" measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_moonRise" value="03:16" measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_moonSet" value="12:10" measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_tempMax" value="20" measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_tempMin" value="7" measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_weather" value="stark bewölkt" measured="2020-05-05 15:13:31" />
+            <STATE key="fc9_weatherIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/t4.gif"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="humidity" value="37" measured="2020-05-05 15:13:31" />
+            <STATE key="lastConnection" value="715 values captured in 25.00 s"
+                measured="2020-05-05 15:13:31" />
+            <STATE key="obsTime" value="14:00" measured="2020-05-05 15:13:31" />
+            <STATE key="state" value="Tmin: 3 Tmax: 15" measured="2020-05-05 15:13:31" />
+            <STATE key="temperature" value="14.3" measured="2020-05-05 15:13:31" />
+            <STATE key="wind" value="7.2" measured="2020-05-05 15:13:31" />
+            <STATE key="windDir" value="45" measured="2020-05-05 15:13:31" />
+            <STATE key="windDirIcon"
+                value="https://www.proplanta.de/wetterdaten/images/symbole/w32.gif"
+                measured="2020-05-05 15:13:31" />
+        </PROPLANTA>
+    </PROPLANTA_LIST>
     <FRM_OUT_LIST>
         <FRM_OUT name="Alarm" state="on"
             sets="Wechseln on off blink on-for-timer on-till off-for-timer intervals off-till"

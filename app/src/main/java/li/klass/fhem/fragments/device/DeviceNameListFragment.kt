@@ -118,7 +118,7 @@ abstract class DeviceNameListFragment(
                     view.onClick { onDeviceNameClick(device) }
                     view.card.setBackgroundColor(when (deviceName?.equals(device.name)) {
                         true -> ContextCompat.getColor(devicesView.context, R.color.android_green)
-                        else -> ContextCompat.getColor(devicesView.context, android.R.color.white)
+                        else -> ContextCompat.getColor(devicesView.context, android.R.color.transparent)
                     })
                     view.tag = device.name
                 }

@@ -41,8 +41,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
-import li.klass.fhem.devices.backend.WeatherService
-import li.klass.fhem.devices.backend.WeatherService.WeatherForecastInformation
+import li.klass.fhem.devices.backend.weather.WeatherService
+import li.klass.fhem.devices.backend.weather.WeatherService.WeatherForecastInformation
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
@@ -56,7 +56,8 @@ class WeatherDeviceCardProvider @Inject constructor(
     override fun ordering(): Int = 1
 
     override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
-        if (device.xmlListDevice.type != "Weather") {
+        val type = device.xmlListDevice.type
+        if (type != "Weather" && type != "PROPLANTA") {
             return null
         }
         val view = context.layoutInflater.inflate(R.layout.device_detail_card_weather, null, false)
@@ -91,12 +92,15 @@ class WeatherDeviceCardProvider @Inject constructor(
             holder.apply {
                 val element = elements[position]
                 holder.view.apply {
-                    date.text = "${element.weekday}. ${DateFormatUtil.ANDFHEM_DATE_FORMAT.print(element.date)}"
+                    date.text = listOfNotNull(element.weekday?.let { "$it." }, DateFormatUtil.ANDFHEM_DATE_FORMAT.print(element.date)).joinToString(separator = " ")
                     temperature.text = element.temperature
-                    condition.text = element.condition
 
+                    condition.setTextOrHide(element.condition, tableRowCondition)
                     windChill.setTextOrHide(element.windChill, tableRowWindChill)
                     humidity.setTextOrHide(element.humidity, tableRowHumidity)
+                    wind.setTextOrHide(element.wind, tableRowWind)
+                    moonRise.setTextOrHide(element.moonRise, tableRowMoonRise)
+                    moonSet.setTextOrHide(element.moonRise, tableRowMoonSet)
                     visibilityCondition.setTextOrHide(element.visibility, tableRowVisibilityCondition)
 
                     GlideApp.with(context)

@@ -24,8 +24,8 @@
 
 package li.klass.fhem.domain
 
-import li.klass.fhem.devices.backend.WeatherService
-import li.klass.fhem.devices.backend.WeatherService.WeatherForecastInformation
+import li.klass.fhem.devices.backend.weather.WeatherService
+import li.klass.fhem.devices.backend.weather.WeatherService.WeatherForecastInformation
 import li.klass.fhem.domain.core.DeviceXMLParsingBase
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.LocalDate

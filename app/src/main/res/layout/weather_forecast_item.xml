@@ -111,6 +111,42 @@
                     android:text="@string/dummy_percentage" />
             </TableRow>
 
+            <TableRow android:id="@+id/tableRowWind">
+
+                <TextView
+                    style="@style/deviceDetailDescription"
+                    android:text="@string/wind" />
+
+                <TextView
+                    android:id="@+id/wind"
+                    style="@style/deviceDetailContent"
+                    android:text="@string/dummy_speed" />
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowMoonRise">
+
+                <TextView
+                    style="@style/deviceDetailDescription"
+                    android:text="@string/moonRise" />
+
+                <TextView
+                    android:id="@+id/moonRise"
+                    style="@style/deviceDetailContent"
+                    android:text="@string/dummy_time" />
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowMoonSet">
+
+                <TextView
+                    style="@style/deviceDetailDescription"
+                    android:text="@string/moonSet" />
+
+                <TextView
+                    android:id="@+id/moonSet"
+                    style="@style/deviceDetailContent"
+                    android:text="@string/dummy_time" />
+            </TableRow>
+
             <TableRow android:id="@+id/tableRowVisibilityCondition">
 
                 <TextView

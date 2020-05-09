@@ -30,6 +30,8 @@
     <string name="deviceName">Name</string>
     <string name="temperature">Temperature</string>
     <string name="wind">Wind</string>
+    <string name="moonRise">Moon Rise</string>
+    <string name="moonSet">Moon Set</string>
     <string name="windChill">Windchill</string>
     <string name="rain">Rain</string>
     <string name="humidity">Humidity</string>
