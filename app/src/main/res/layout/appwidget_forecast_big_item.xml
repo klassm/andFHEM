@@ -77,5 +77,14 @@
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/day_chanceOfRain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rain"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:maxLines="1" />
     </LinearLayout>
 </RelativeLayout>

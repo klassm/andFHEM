@@ -1,1 +1,1 @@
-TODO
+* Zeige Regenwahrscheinlich für PROPLANTA Geräte

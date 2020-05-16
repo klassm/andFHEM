@@ -101,6 +101,7 @@ class WeatherDeviceCardProvider @Inject constructor(
                     wind.setTextOrHide(element.wind, tableRowWind)
                     moonRise.setTextOrHide(element.moonRise, tableRowMoonRise)
                     moonSet.setTextOrHide(element.moonRise, tableRowMoonSet)
+                    chanceOfRain.setTextOrHide(element.chanceOfRain, tableRowChanceOfRain)
                     visibilityCondition.setTextOrHide(element.visibility, tableRowVisibilityCondition)
 
                     GlideApp.with(context)

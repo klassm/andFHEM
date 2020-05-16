@@ -147,6 +147,18 @@
                     android:text="@string/dummy_time" />
             </TableRow>
 
+            <TableRow android:id="@+id/tableRowChanceOfRain">
+
+                <TextView
+                    style="@style/deviceDetailDescription"
+                    android:text="@string/rain" />
+
+                <TextView
+                    android:id="@+id/chanceOfRain"
+                    style="@style/deviceDetailContent"
+                    android:text="@string/dummy_percentage" />
+            </TableRow>
+
             <TableRow android:id="@+id/tableRowVisibilityCondition">
 
                 <TextView

@@ -26,7 +26,9 @@ package li.klass.fhem.devices.backend.weather
 
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.DeviceNode
+import li.klass.fhem.util.ValueDescriptionUtil
 import li.klass.fhem.util.ValueDescriptionUtil.appendTemperature
+import org.apache.commons.lang3.StringUtils
 import org.joda.time.LocalDate
 import javax.inject.Inject
 
@@ -94,6 +96,7 @@ class WeatherService @Inject constructor() {
 
     private fun toForecastDayInformation(device: FhemDevice, values: List<ForecastLineEntry>, today: LocalDate, index: Int): WeatherForecastInformation? {
         val type = device.xmlListDevice.type
+        if (index == 0) return null
         val day = today.plusDays(index)
         return when (type) {
             "Weather" -> {
@@ -118,6 +121,10 @@ class WeatherService @Inject constructor() {
                 val moonRise = values.first { it.key == "moonRise" }.value
                 val moonSet = values.first { it.key == "moonSet" }.value
 
+                val chanceOfRain = values.filter { it.key.contains("chOfRain") }
+                val chanceOfRainMin = chanceOfRain.minBy { it.value }?.value
+                val chanceOfRainMax = chanceOfRain.maxBy { it.value }?.value
+
                 WeatherForecastInformation(
                         date = day,
                         weekday = null,
@@ -125,11 +132,19 @@ class WeatherService @Inject constructor() {
                         temperature = "$tempLow - $tempHigh",
                         moonRise = moonRise,
                         moonSet = moonSet,
-                        icon = icon
+                        icon = icon,
+                        chanceOfRain = formatChanceOfRain(chanceOfRainMin, chanceOfRainMax)
                 )
             }
             else -> null
         }
+    }
+
+    private fun formatChanceOfRain(min: String?, max: String?): String? {
+        val formattedMin = min?.let { ValueDescriptionUtil.appendPercent(it) }
+        val formattedMax = max?.let { ValueDescriptionUtil.appendPercent(it) }
+
+        return StringUtils.trimToNull(listOfNotNull(formattedMin, formattedMax).joinToString(" - "))
     }
 
     private fun toForecastLineEntry(node: DeviceNode): ForecastLineEntry? =
@@ -156,7 +171,8 @@ class WeatherService @Inject constructor() {
                                           val visibility: String? = null,
                                           val moonRise: String? = null,
                                           val moonSet: String? = null,
-                                          val wind: String? = null
+                                          val wind: String? = null,
+                                          val chanceOfRain: String? = null
     )
 
     companion object {

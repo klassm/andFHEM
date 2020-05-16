@@ -44,6 +44,7 @@ import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.devices.backend.weather.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
+import li.klass.fhem.util.view.setTextViewTextOrHide
 import javax.inject.Inject
 
 class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherService) : DeviceListAppWidgetView<WeatherService.WeatherForecastInformation>() {
@@ -84,9 +85,11 @@ class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherSe
         val view = RemoteViews(context.packageName,
                 R.layout.appwidget_forecast_big_item)
 
-        view.setTextViewText(R.id.day_description, listOfNotNull(item.weekday?.let { "$it." }, DateFormatUtil.ANDFHEM_DATE_FORMAT.print(item.date)).joinToString(separator = " "))
-        view.setTextViewText(R.id.day_condition, item.condition)
-        view.setTextViewText(R.id.day_temperature, item.temperature)
+        view.setTextViewTextOrHide(R.id.day_description, listOfNotNull(item.weekday?.let { "$it." }, DateFormatUtil.ANDFHEM_DATE_FORMAT.print(item.date)).joinToString(separator = " "))
+        view.setTextViewTextOrHide(R.id.day_condition, item.condition)
+        view.setTextViewTextOrHide(R.id.day_temperature, item.temperature)
+        view.setTextViewTextOrHide(R.id.day_chanceOfRain, item.chanceOfRain?.let { listOfNotNull(context.getText(R.string.rain), it).joinToString(": ") })
+
         if (item.icon == null) {
             view.setViewVisibility(R.id.day_image, View.GONE)
         } else {
