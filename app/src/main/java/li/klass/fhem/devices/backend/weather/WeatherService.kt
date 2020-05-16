@@ -96,7 +96,6 @@ class WeatherService @Inject constructor() {
 
     private fun toForecastDayInformation(device: FhemDevice, values: List<ForecastLineEntry>, today: LocalDate, index: Int): WeatherForecastInformation? {
         val type = device.xmlListDevice.type
-        if (index == 0) return null
         val day = today.plusDays(index)
         return when (type) {
             "Weather" -> {
@@ -115,6 +114,8 @@ class WeatherService @Inject constructor() {
                 )
             }
             "PROPLANTA" -> {
+                if (index == 0) return null
+
                 val tempLow = appendTemperature(values.first { it.key == "tempMin" }.value)
                 val tempHigh = appendTemperature(values.first { it.key == "tempMax" }.value)
                 val icon = values.firstOrNull { it.key == "weatherIcon" }?.value
