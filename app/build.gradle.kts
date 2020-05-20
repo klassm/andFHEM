@@ -41,7 +41,7 @@ buildscript {
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.7.5")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
         classpath(group = "io.fabric.tools", name = "gradle", version = "1.31.2")
-        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.0-alpha06")
+        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.0-beta01")
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.3.1")
     }
 }
