@@ -1,1 +1,1 @@
-TODO
+* Repair webcmd display in device details

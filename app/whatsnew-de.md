@@ -1,1 +1,1 @@
-TODO
+* Repariere webcmd Anzeige in den Gerätedetails

@@ -42,7 +42,6 @@
         style="@style/deviceDetailContent"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:orientation="horizontal"
         android:gravity="end" />
 
