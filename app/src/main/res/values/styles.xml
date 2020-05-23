@@ -231,7 +231,7 @@
     <style name="deviceOverviewLayoutDeviceName" parent="textPrimary">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">10</item>
+        <item name="android:layout_weight">2</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textSize">16sp</item>
         <item name="android:singleLine">true</item>

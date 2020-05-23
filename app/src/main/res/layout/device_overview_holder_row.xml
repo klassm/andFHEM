@@ -35,7 +35,6 @@
     <TextView
             android:id="@+id/description"
             style="@style/deviceOverviewLayoutDeviceName"
-            android:layout_weight="1"
             android:paddingTop="15dp"
             android:text="@string/dummy_text"
             />
