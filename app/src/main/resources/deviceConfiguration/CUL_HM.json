@@ -1,7 +1,7 @@
 {
   "defaultGroup": "UNKNOWN",
   "sensorDevice": true,
-  "showStateInOverview": true,
+  "showStateInOverview": false,
   "delayForUpdateAfterCommand": 2,
   "supportedWidgets": [
     "TemperatureWidgetView"
