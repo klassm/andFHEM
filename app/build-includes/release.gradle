@@ -93,6 +93,7 @@ task uploadToPlayStore {
     dependsOn(tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") })
     outputs.upToDateWhen { false }
 }
+uploadToPlayStore.outputs.upToDateWhen { false }
 
 def getNewReleaseVersion() {
     return System.getProperty("release.releaseVersion")
