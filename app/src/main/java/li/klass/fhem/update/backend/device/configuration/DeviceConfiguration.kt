@@ -57,9 +57,6 @@ data class DeviceConfiguration(
         @SerialName("showStateInOverview")
         val isShowStateInOverview: Boolean = true,
 
-        @SerialName("showMeasuredInOverview")
-        val isShowMeasuredInOverview: Boolean = true,
-
         @SerialName("delayForUpdateAfterCommand")
         val delayForUpdateAfterCommand: Int = 0,
 

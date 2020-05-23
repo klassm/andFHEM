@@ -1,7 +1,6 @@
 {
   "defaultGroup": "PRESENCE",
   "showStateInOverview": false,
-  "showMeasuredInOverview": true,
   "states": [
     {
       "key": "location",

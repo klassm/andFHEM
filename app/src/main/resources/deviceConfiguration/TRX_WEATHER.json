@@ -1,7 +1,6 @@
 {
   "defaultGroup": "WEATHER",
   "sensorDevice": true,
-  "showMeasuredInOverview": true,
   "showStateInOverview": false,
   "supportedWidgets": [
     "MediumInformationWidgetView",

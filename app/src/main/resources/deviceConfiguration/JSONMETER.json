@@ -1,6 +1,5 @@
 {
   "defaultGroup": "USAGE",
-  "showMeasuredInOverview": true,
   "supportedWidgets": [
     "MediumInformationWidgetView"
   ],

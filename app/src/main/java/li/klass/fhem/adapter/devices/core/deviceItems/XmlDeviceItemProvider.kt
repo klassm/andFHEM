@@ -48,11 +48,9 @@ class XmlDeviceItemProvider @Inject constructor(
         val xmlListDevice = fhemDevice.xmlListDevice
 
         val configuration = deviceConfigurationProvider.configurationFor(fhemDevice)
-        val measuredAsList = mostRecentlyMeasuredNode(fhemDevice, context)?.let { setOf(it) } ?: emptySet()
         return itemsFor(configuration.states, xmlListDevice.states, false, context) +
                 itemsFor(configuration.attributes, xmlListDevice.attributes, false, context) +
-                itemsFor(configuration.internals, xmlListDevice.internals, false, context) +
-                measuredAsList
+                itemsFor(configuration.internals, xmlListDevice.internals, false, context)
 
     }
 
@@ -140,6 +138,9 @@ class XmlDeviceItemProvider @Inject constructor(
         return mostRecent?.measured?.let { XmlDeviceViewItem("measured", context.getString(R.string.measured), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(it), null, isShowInDetail = false, isShowInOverview = false) }
     }
 
+    fun getMostRecentMeasureTime(fhemDevice: FhemDevice, context: Context): String? =
+            mostRecentlyMeasuredNode(fhemDevice, context)
+                    ?.value
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(XmlDeviceItemProvider::class.java)

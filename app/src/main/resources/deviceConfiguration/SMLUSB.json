@@ -2,7 +2,6 @@
   "defaultGroup": "USAGE",
   "sensorDevice": true,
   "showStateInOverview": false,
-  "showMeasuredInOverview": true,
   "supportedWidgets": [
     "MediumInformationWidgetView"
   ],

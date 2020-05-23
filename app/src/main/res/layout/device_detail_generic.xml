@@ -23,11 +23,45 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/detailLayout"
+
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:animateLayoutChanges="true" />
+    android:animateLayoutChanges="true">
+
+    <RelativeLayout
+        android:id="@+id/measureTimeRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            style="@style/textSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/measured"
+            android:id="@+id/measureText"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:textSize="12sp" />
+
+        <TextView
+            style="@style/textSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_time"
+            android:id="@+id/measureTime"
+            android:layout_toEndOf="@id/measureText"
+            android:layout_toRightOf="@id/measureText"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/detailLayout"
+        android:orientation="vertical" />
+</LinearLayout>

@@ -47,8 +47,7 @@ class OnOffActionRowForToggleables(layoutId: Int,
         val onButton = findOnButton(tableRow)
         val offButton = findOffButton(tableRow)
 
-        val buttonHook = hookProvider.buttonHookFor(device)
-        when (buttonHook) {
+        when (hookProvider.buttonHookFor(device)) {
             ButtonHook.ON_DEVICE -> {
                 offButton.visibility = View.GONE
                 onButton.visibility = View.VISIBLE

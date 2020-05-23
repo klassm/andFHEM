@@ -1,7 +1,6 @@
 {
   "defaultGroup": "WEATHER",
   "sensorDevice": false,
-  "showMeasuredInOverview": true,
   "showStateInOverview": false,
   "states": [
     {

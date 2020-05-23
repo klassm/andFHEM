@@ -123,7 +123,6 @@
   "attributes": [],
   "internals": [],
   "showStateInOverview": true,
-  "showMeasuredInOverview": true,
   "delayForUpdateAfterCommand": 0,
   "player": null,
   "sanitise": {

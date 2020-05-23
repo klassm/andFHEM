@@ -29,6 +29,7 @@ import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
 import androidx.navigation.NavController
+import kotlinx.android.synthetic.main.device_detail_generic.view.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
 import li.klass.fhem.adapter.devices.strategy.StrategyProvider
@@ -52,6 +53,14 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
     suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): View {
         val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
 
+        val measureTime = xmlDeviceItemProvider.getMostRecentMeasureTime(device, context)
+        if (measureTime != null) {
+            linearLayout.measureTime.text = measureTime
+            linearLayout.measureTimeRow.visibility = View.VISIBLE
+        } else {
+            linearLayout.measureTimeRow.visibility = View.VISIBLE
+        }
+
         genericDetailCardProviders.providers
                 .sortedBy { it.ordering() }
                 .mapNotNull {
@@ -62,7 +71,7 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
                         null
                     }
                 }
-                .forEach { linearLayout.addView(it) }
+                .forEach { linearLayout.detailLayout.addView(it) }
 
         return linearLayout
     }

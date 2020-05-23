@@ -80,7 +80,6 @@ constructor(
             for (item in items) {
                 // STATE as this refers to the internal "STATE", for which the stateFormat attribute is evaluated
                 val isShowInOverview = (item.key == "STATE" && config.isShowStateInOverview)
-                        || (item.sortKey == "measured") && config.isShowMeasuredInOverview
                         || item.isShowInOverview
 
                 if (isShowInOverview) {

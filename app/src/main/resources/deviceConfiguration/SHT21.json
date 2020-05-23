@@ -2,7 +2,6 @@
   "defaultGroup": "TEMPERATURE",
   "sensorDevice": true,
   "showStateInOverview": false,
-  "showMeasuredInOverview": true,
   "supportedWidgets": [
     "MediumInformationWidgetView",
     "TemperatureWidgetView"

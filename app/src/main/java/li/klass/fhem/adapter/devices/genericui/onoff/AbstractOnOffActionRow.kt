@@ -34,7 +34,7 @@ import li.klass.fhem.R
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.widget.CheckableButton
 
-abstract class AbstractOnOffActionRow(protected val layoutId: Int,
+abstract class AbstractOnOffActionRow(private val layoutId: Int,
                                       protected val description: Int?,
                                       protected var connectionId: String?) {
 
