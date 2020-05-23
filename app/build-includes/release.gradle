@@ -89,9 +89,9 @@ def setStage(stage) {
     }
 }
 
-task uploadToPlayStore
-uploadToPlayStore.dependsOn {
-    tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") }
+task uploadToPlayStore {
+    dependsOn(tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") })
+    outputs.upToDateWhen { false }
 }
 
 def getNewReleaseVersion() {
