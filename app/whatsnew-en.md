@@ -1,1 +1,1 @@
-TODO
+* Fix styling for long device overview texts

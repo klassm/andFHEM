@@ -1,1 +1,1 @@
-TODO
+* Repariere Darstellung für lange Texte in der Geräteübersicht
