@@ -1,1 +1,1 @@
-* Repariere webcmd Anzeige in den Gerätedetails
+* Lade Graphen bei mehreren Verbindungen von der richtigen Verbindung
