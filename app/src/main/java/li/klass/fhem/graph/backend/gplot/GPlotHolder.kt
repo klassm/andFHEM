@@ -75,11 +75,8 @@ class GPlotHolder @Inject constructor(
     }
 
     fun reset(connectionId: String) {
-        definitions.keys.forEach {
-            if (it.connectionId == connectionId) {
-                definitions.remove(it)
-            }
-        }
+        val toRemove = definitions.keys.filter { it.connectionId == connectionId }
+        toRemove.forEach { definitions.remove(it) }
     }
 
     private val applicationContext: Context get() = application.applicationContext
