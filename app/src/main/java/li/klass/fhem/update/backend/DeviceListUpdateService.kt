@@ -30,6 +30,7 @@ import android.content.Intent
 import com.crashlytics.android.Crashlytics
 import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.domain.core.RoomDeviceList
@@ -47,6 +48,7 @@ class DeviceListUpdateService @Inject constructor(
         private val deviceListParser: DeviceListParser,
         private val deviceListCacheService: DeviceListCacheService,
         private val connectionService: ConnectionService,
+        private val dataConnectionSwitch: DataConnectionSwitch,
         private val application: Application
 ) {
 
@@ -137,7 +139,8 @@ class DeviceListUpdateService @Inject constructor(
     }
 
     private fun parseResult(connectionId: String?, context: Context, result: String, updateHandler: UpdateHandler): RoomDeviceList? {
-        val parsed = deviceListParser.parseAndWrapExceptions(result, context)
+        val connection = dataConnectionSwitch.getProviderFor(connectionId).server.id
+        val parsed = deviceListParser.parseAndWrapExceptions(result, context, connection)
         val cached = deviceListCacheService.getCachedRoomDeviceListMap(connectionId)
         if (parsed != null) {
             val newDeviceList = updateHandler.handle(cached ?: parsed, parsed)

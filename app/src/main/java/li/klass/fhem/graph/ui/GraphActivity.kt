@@ -126,7 +126,7 @@ class GraphActivity : AppCompatActivity(), Updateable {
         coroutineScope {
             showDialog(DIALOG_EXECUTING)
             val result = withContext(Dispatchers.IO) {
-                graphService.getGraphData(device, null, svgGraphDefinition, startDate, endDate, myContext)
+                graphService.getGraphData(device, connectionId, svgGraphDefinition, startDate, endDate, myContext)
             }
             dismissDialog(DIALOG_EXECUTING)
 

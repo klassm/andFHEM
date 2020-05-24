@@ -49,7 +49,7 @@ class PlotsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 20
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 
@@ -58,7 +58,7 @@ class PlotsCardProvider @Inject constructor(
         return cardView
     }
 
-    private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String?, context: Context) {
+    private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String, context: Context) {
         coroutineScope {
             val graphs = withContext(Dispatchers.IO) {
                 graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, connectionId)

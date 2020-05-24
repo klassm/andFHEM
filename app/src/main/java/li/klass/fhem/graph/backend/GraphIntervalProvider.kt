@@ -38,13 +38,13 @@ class GraphIntervalProvider @Inject constructor(
         private val commandExecutionService: CommandExecutionService
 ) {
 
-    fun getIntervalFor(startDate: DateTime?, endDate: DateTime?, fixedrange : Pair<ReadablePeriod, ReadablePeriod>?, context: Context): Interval =
+    fun getIntervalFor(startDate: DateTime?, endDate: DateTime?, fixedrange: Pair<ReadablePeriod, ReadablePeriod>?, context: Context, connectionId: String?): Interval =
             if (startDate == null || endDate == null) {
-                getDefaultInterval(context, fixedrange)
+                getDefaultInterval(context, connectionId, fixedrange)
             } else Interval(startDate, endDate)
 
-    private fun getDefaultInterval(context: Context, fixedrange : Pair<ReadablePeriod, ReadablePeriod>?): Interval {
-        val result = commandExecutionService.executeSync(Command("{{ TimeNow() }}"))
+    private fun getDefaultInterval(context: Context, connectionId: String?, fixedrange: Pair<ReadablePeriod, ReadablePeriod>?): Interval {
+        val result = commandExecutionService.executeSync(Command("{{ TimeNow() }}", connectionId))
                 ?: return getIntervalForTimespan(context, fixedrange, DateTime.now())
         return getIntervalForTimespan(context, fixedrange, DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime(result))
     }

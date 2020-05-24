@@ -82,7 +82,7 @@ class CommandExecutionService @Inject constructor(
     private fun executeSafely(command: Command, delay: Int, resultListener: ResultListener) {
         LOG.info("executeSafely(command={}, delay={})", command, delay)
         if (delay == 0) {
-            executeImmediately(command, 0, applicationContext, resultListener)
+            executeImmediately(command, 0, resultListener)
         } else {
             executeDelayed(command, delay, applicationContext, resultListener)
         }
@@ -92,7 +92,7 @@ class CommandExecutionService @Inject constructor(
         schedule(delay, ResendCommand(command, 0, context, callback))
     }
 
-    private fun executeImmediately(command: Command, currentTry: Int, context: Context, resultListener: ResultListener) {
+    private fun executeImmediately(command: Command, currentTry: Int, resultListener: ResultListener) {
         showExecutingDialog()
 
         val result = execute(command, currentTry, resultListener)
@@ -164,8 +164,9 @@ class CommandExecutionService @Inject constructor(
         )
     }
 
-    fun executeRequest(relativePath: String, context: Context): String? {
-        val provider = dataConnectionSwitch.getProviderFor() as? FHEMWEBConnection ?: return null
+    fun executeRequest(relativePath: String, context: Context, connectionId: String?): String? {
+        val provider = dataConnectionSwitch.getProviderFor(connectionId) as? FHEMWEBConnection
+                ?: return null
 
         val result = provider.executeRequest(relativePath, context)
         return result.fold(
@@ -194,7 +195,7 @@ class CommandExecutionService @Inject constructor(
     inner class ResendCommand internal constructor(internal var command: Command, private var currentTry: Int, private val context: Context, private val resultListener: ResultListener) : Runnable {
 
         override fun run() {
-            executeImmediately(command, currentTry, context, resultListener)
+            executeImmediately(command, currentTry, resultListener)
         }
 
         override fun toString(): String {

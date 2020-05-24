@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
+data class DefinitionKey(val name: String, val connectionId: String?)
+
 @Singleton
 class GPlotHolder @Inject constructor(
         private val commandExecutionService: CommandExecutionService,
@@ -39,39 +41,32 @@ class GPlotHolder @Inject constructor(
         private val application: Application
 ) {
 
-    private val definitions = mutableMapOf<String, GPlotDefinition?>()
+    private val definitions = mutableMapOf<DefinitionKey, GPlotDefinition?>()
 
-    private var areDefaultFilesLoaded = false
-
-    private fun loadDefaultGPlotFiles() {
-        if (areDefaultFilesLoaded) {
-            return
+    fun definitionFor(name: String, isConfigDb: Boolean, connectionId: String): GPlotDefinition? {
+        if (gPlotParser.defaultGPlotFiles.containsKey(name)) {
+            return gPlotParser.defaultGPlotFiles[name]
         }
-        areDefaultFilesLoaded = true
 
-        definitions.putAll(gPlotParser.defaultGPlotFiles)
-    }
-
-    fun definitionFor(name: String, isConfigDb: Boolean): GPlotDefinition? {
-        loadDefaultGPlotFiles()
+        val key = DefinitionKey(name, connectionId)
 
         LOGGER.info("definitionFor(name={}, isConfigDb={})", name, isConfigDb)
-        if (definitions.containsKey(name)) {
+        if (definitions.containsKey(key)) {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - definition found in cache", name, isConfigDb)
-            return definitions[name]!!
+            return definitions[key]!!
         }
 
         LOGGER.info("definitionFor(name={}, isConfigDb={}) - loading definition from remote", name, isConfigDb)
 
         val result = if (isConfigDb)
-            commandExecutionService.executeSync(Command("configdb fileshow ./www/gplot/$name.gplot"))
+            commandExecutionService.executeSync(Command("configdb fileshow ./www/gplot/$name.gplot", connectionId))
         else
-            commandExecutionService.executeRequest("/gplot/$name.gplot", applicationContext)
+            commandExecutionService.executeRequest("/gplot/$name.gplot", applicationContext, connectionId)
 
         return if (result != null) {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - done loading, putting to cache", name, isConfigDb)
             val gplot = gPlotParser.parseSafe(result)
-            definitions[name] = gplot
+            definitions[key] = gplot
             gplot
         } else {
             LOGGER.info("definitionFor(name={}, isConfigDb={}) - could not execute request, putting nothing to cache", name, isConfigDb)
@@ -79,9 +74,12 @@ class GPlotHolder @Inject constructor(
         }
     }
 
-    fun reset() {
-        definitions.clear()
-        areDefaultFilesLoaded = false
+    fun reset(connectionId: String) {
+        definitions.keys.forEach {
+            if (it.connectionId == connectionId) {
+                definitions.remove(it)
+            }
+        }
     }
 
     private val applicationContext: Context get() = application.applicationContext

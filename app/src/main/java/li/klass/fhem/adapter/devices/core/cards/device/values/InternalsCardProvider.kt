@@ -40,7 +40,7 @@ class InternalsCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 50
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
         return detailCardWithDeviceValuesProvider.createCard(device, connectionId,
                 R.string.detailInternalsSection, InternalsItemProvider(), context, expandHandler)
     }

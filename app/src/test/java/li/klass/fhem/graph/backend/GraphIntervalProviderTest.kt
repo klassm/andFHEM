@@ -8,7 +8,6 @@ import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.util.DateFormatUtil
 import org.assertj.core.api.Assertions.assertThat
-import org.joda.time.DateTime
 import org.joda.time.Hours
 import org.joda.time.Interval
 import org.junit.Before
@@ -17,7 +16,6 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import org.mockito.Spy
 
 class GraphIntervalProviderTest {
     @Mock
@@ -49,7 +47,7 @@ class GraphIntervalProviderTest {
                 DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-09 10:58:41"),
                 DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-10 20:57:40"),
                 null,
-                context)
+                context, null)
         ).isEqualTo(
                 Interval(
                         DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-09 10:58:41"),
@@ -60,14 +58,14 @@ class GraphIntervalProviderTest {
 
     @Test
     fun getIntervalFromContext() {
-        assertThat(graphIntervalProvider.getIntervalFor(null, null, null, context)).isEqualTo(
+        assertThat(graphIntervalProvider.getIntervalFor(null, null, null, context, null)).isEqualTo(
                 Interval(DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-09 20:57:40"),
                         DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-10 20:57:40")))
     }
 
     @Test
     fun getIntervalFromFixedRange() {
-        assertThat(graphIntervalProvider.getIntervalFor(null, null, Pair(Hours.hours(3), Hours.hours(-6)), context)).isEqualTo(
+        assertThat(graphIntervalProvider.getIntervalFor(null, null, Pair(Hours.hours(3), Hours.hours(-6)), context, null)).isEqualTo(
                 Interval(DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-10 11:57:40"),
                         DateFormatUtil.FHEM_DATE_FORMAT.parseDateTime("2020-03-10 14:57:40")))
     }

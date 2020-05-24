@@ -48,7 +48,7 @@ class PlayerCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
         val playerConfiguration = deviceConfigurationProvider.configurationFor(device).playerConfiguration
         if (playerConfiguration == null || playerConfiguration.hasAny()) {
             return null

@@ -222,17 +222,16 @@ class GPlotParser @Inject constructor() {
         return out
     }
 
-    val defaultGPlotFiles: Map<String, GPlotDefinition>
-        get() {
+    val defaultGPlotFiles: Map<String, GPlotDefinition> by lazy {
             try {
                 val url = GPlotParser::class.java.getResource("dummy.txt")
                 url!!.protocol
-                return readDefinitionsFromJar(url)
+                readDefinitionsFromJar(url)
             } catch (e: Exception) {
                 LOGGER.error("loadDefaultGPlotFiles() - cannot load default files", e)
+                emptyMap<String, GPlotDefinition>()
             }
-            return emptyMap()
-        }
+    }
 
     @Throws(IOException::class)
     private fun readDefinitionsFromJar(url: URL?): Map<String, GPlotDefinition> {

@@ -39,33 +39,33 @@ class GraphDefinitionsForDeviceService @Inject constructor(
         private val deviceListService: DeviceListService,
         private val gPlotHolder: GPlotHolder) {
 
-    fun graphDefinitionsFor(device: XmlListDevice, connectionId: String?): Set<SvgGraphDefinition> {
+    fun graphDefinitionsFor(device: XmlListDevice, connectionId: String): Set<SvgGraphDefinition> {
         val allDevices = deviceListService.getAllRoomsDeviceList(connectionId).allDevicesAsXmllistDevice
 
-        LOGGER.info("graphDefinitionsFor(name={},connection={})", device.name, connectionId ?: "--")
-        val graphDefinitions = getGraphDefinitionsFor(allDevices, device)
+        LOGGER.info("graphDefinitionsFor(name={},connection={})", device.name, connectionId)
+        val graphDefinitions = getGraphDefinitionsFor(allDevices, device, connectionId)
         for (svgGraphDefinition in graphDefinitions) {
             LOGGER.info("graphDefinitionsFor(name={},connection={}) - found SVG with name {}",
-                    device.name, connectionId ?: "--", svgGraphDefinition.name)
+                    device.name, connectionId, svgGraphDefinition.name)
         }
         return graphDefinitions
     }
 
-    private fun getGraphDefinitionsFor(allDevices: Set<XmlListDevice>, device: XmlListDevice): Set<SvgGraphDefinition> =
+    private fun getGraphDefinitionsFor(allDevices: Set<XmlListDevice>, device: XmlListDevice, connectionId: String): Set<SvgGraphDefinition> =
             when (device.type) {
-                "SVG" -> setOf(toGraphDefinition(allDevices, device))
+                "SVG" -> setOf(toGraphDefinition(allDevices, device, connectionId))
                 else -> allDevices.asSequence()
                         .filter { it.type == "SVG" }
                         .filter { isSvgForDevice(allDevices, device, it) }
-                        .filter { gplotDefinitionExists(allDevices, it) }
-                        .map { toGraphDefinition(allDevices, it) }
+                        .filter { gplotDefinitionExists(allDevices, it, connectionId) }
+                        .map { toGraphDefinition(allDevices, it, connectionId) }
                         .toSet()
             }
 
-    private fun toGraphDefinition(allDevices: Set<XmlListDevice>, currentDevice: XmlListDevice): SvgGraphDefinition {
+    private fun toGraphDefinition(allDevices: Set<XmlListDevice>, currentDevice: XmlListDevice, connectionId: String): SvgGraphDefinition {
         val logDeviceName = currentDevice.getInternal("LOGDEVICE")!!
         val gplotFileName = currentDevice.getInternal("GPLOTFILE")!!
-        val gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices))!!
+        val gPlotDefinition = gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices), connectionId)!!
 
         val labels = (currentDevice.getAttribute("label") ?: "")
                 .replace("\"".toRegex(), "")
@@ -86,9 +86,9 @@ class GraphDefinitionsForDeviceService @Inject constructor(
                 .filter { it.isNotEmpty() }
     }
 
-    private fun gplotDefinitionExists(allDevices: Set<XmlListDevice>, currentDevice: XmlListDevice): Boolean {
+    private fun gplotDefinitionExists(allDevices: Set<XmlListDevice>, currentDevice: XmlListDevice, connectionId: String): Boolean {
         val gplotFileName = currentDevice.getInternal("GPLOTFILE")
-        return gplotFileName != null && gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices)) != null
+        return gplotFileName != null && gPlotHolder.definitionFor(gplotFileName, isConfigDb(allDevices), connectionId) != null
     }
 
     private fun isSvgForDevice(allDevices: Set<XmlListDevice>, inputDevice: XmlListDevice, svgDevice: XmlListDevice) =

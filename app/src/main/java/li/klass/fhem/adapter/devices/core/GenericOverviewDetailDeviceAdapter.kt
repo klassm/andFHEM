@@ -60,12 +60,14 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
         } else {
             linearLayout.measureTimeRow.visibility = View.VISIBLE
         }
+        val connection = dataConnectionSwitch.getProviderFor(connectionId)
 
         genericDetailCardProviders.providers
                 .sortedBy { it.ordering() }
                 .mapNotNull {
                     try {
-                        it.provideCard(device, context, connectionId, navController, expandHandler)
+
+                        it.provideCard(device, context, connection.server.id, navController, expandHandler)
                     } catch (e: Exception) {
                         logger.error("getDeviceDetailView(device=${device.name}) - error while providing card of ${it.javaClass.name}", e)
                         null

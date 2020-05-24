@@ -32,6 +32,7 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.gplot.*
 import li.klass.fhem.graph.backend.gplot.DataProviderSpec.CustomLogDevice
 import li.klass.fhem.graph.backend.gplot.DataProviderSpec.FileLog
+import li.klass.fhem.graph.backend.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeries
 import li.klass.fhem.testutil.MockitoRule
 import li.klass.fhem.testutil.ValueProvider
 import li.klass.fhem.update.backend.DeviceListService
@@ -86,10 +87,11 @@ class GraphServiceTest {
     private val toDateFormatted = GraphService.DATE_TIME_FORMATTER.print(to)
     private val interval = Interval(from, to)
     private val pattern = "4::"
+    private val connectionId = valueProvider.lowercaseString(20)
 
     @Before
     fun setUp() {
-        given(graphIntervalProvider.getIntervalFor(from, to, null, context)).willReturn(interval)
+        given(graphIntervalProvider.getIntervalFor(from, to, null, context, connectionId)).willReturn(interval)
     }
 
     @Test
@@ -104,10 +106,9 @@ class GraphServiceTest {
     fun should_load_graph_entries_for_custom_devices() {
         // given
         val device = getDeviceFor(name = "bla", type = "BLA")
-        val connectionId = valueProvider.lowercaseString(20)
         val customLogDevice = valueProvider.lowercaseString(10)
 
-        val series = GPlotSeriesTestdataBuilder.defaultGPlotSeries().copy(
+        val series = defaultGPlotSeries().copy(
                 dataProvider = GraphDataProvider(customLogDevice = CustomLogDevice(pattern, customLogDevice))
         )
         val svgGraphDefinition = graphDefinitionWithSeries(series)
@@ -133,9 +134,7 @@ class GraphServiceTest {
     fun should_load_graph_entries_for_FileLog_graphs() {
         // given
 
-        val connectionId = valueProvider.lowercaseString(20)
-
-        val series = GPlotSeriesTestdataBuilder.defaultGPlotSeries().copy(
+        val series = defaultGPlotSeries().copy(
                 dataProvider = GraphDataProvider(fileLog = FileLog(pattern), dbLog = DataProviderSpec.DbLog("blablub"))
         )
         val svgGraphDefinition = graphDefinitionWithSeries(series)
@@ -161,8 +160,7 @@ class GraphServiceTest {
     @Test
     fun should_load_graph_entries_for_DbLog_graphs() {
         // given
-        val connectionId = valueProvider.lowercaseString(20)
-        val series = GPlotSeriesTestdataBuilder.defaultGPlotSeries().copy(
+        val series = defaultGPlotSeries().copy(
                 dataProvider = GraphDataProvider(dbLog = DataProviderSpec.DbLog(pattern), fileLog = FileLog("blablub"))
         )
         val svgGraphDefinition = graphDefinitionWithSeries(series)

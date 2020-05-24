@@ -69,15 +69,15 @@ abstract class DeviceXMLParsingBase {
                 .application(application)
                 .databaseModule(DatabaseModule(application)).build()
         val deviceListParser = DeviceListParser(
-                applicationComponent.getXmllistParser(),
-                applicationComponent.getGPlotHolder(), applicationComponent.getGroupProvider(),
-                applicationComponent.getSanitiser()
+                applicationComponent.xmllistParser,
+                applicationComponent.gPlotHolder, applicationComponent.groupProvider,
+                applicationComponent.sanitiser
         )
         Mockito.`when`(connectionService.mayShowInCurrentConnectionType(ArgumentMatchers.anyString(), ArgumentMatchers.eq<String?>(null))).thenReturn(true)
         mockStrings()
 
         val content = testFileBaseClass.getResource(getFileName())?.readText(Charsets.UTF_8)!!
-        roomDeviceList = deviceListParser.parseXMLListUnsafe(content, context)
+        roomDeviceList = deviceListParser.parseXMLListUnsafe(content, context, "abc")
     }
 
     private fun mockStrings() {

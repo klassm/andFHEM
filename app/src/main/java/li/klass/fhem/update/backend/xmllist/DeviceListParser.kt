@@ -51,9 +51,9 @@ class DeviceListParser @Inject constructor(
         private val groupProvider: GroupProvider,
         private val sanitiser: Sanitiser
 ) {
-    fun parseAndWrapExceptions(xmlList: String, context: Context): RoomDeviceList? {
+    fun parseAndWrapExceptions(xmlList: String, context: Context, connectionId: String): RoomDeviceList? {
         return try {
-            parseXMLListUnsafe(xmlList, context)
+            parseXMLListUnsafe(xmlList, context, connectionId)
         } catch (e: Exception) {
             LOG.error("cannot parse xmllist", e)
             ErrorHolder.setError(e, "cannot parse xmllist, xmllist was: \r\n" + xmlList
@@ -66,7 +66,7 @@ class DeviceListParser @Inject constructor(
     }
 
     @Throws(Exception::class)
-    fun parseXMLListUnsafe(xmlList: String?, context: Context): RoomDeviceList {
+    fun parseXMLListUnsafe(xmlList: String?, context: Context, connectionId: String): RoomDeviceList {
         val list = (xmlList ?: "").trim { it <= ' ' }
         val allDevicesRoom = RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM)
 
@@ -75,7 +75,7 @@ class DeviceListParser @Inject constructor(
             return allDevicesRoom
         }
 
-        gPlotHolder.reset()
+        gPlotHolder.reset(connectionId)
         val parsedDevices = parser.parse(list)
 
         val allDevices = mutableMapOf<String, FhemDevice>()

@@ -54,7 +54,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
 ) : GenericDetailCardProvider {
     override fun ordering(): Int = 29
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): androidx.cardview.widget.CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): androidx.cardview.widget.CardView? {
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }

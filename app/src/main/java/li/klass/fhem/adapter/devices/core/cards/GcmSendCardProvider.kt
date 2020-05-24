@@ -46,7 +46,7 @@ class GcmSendCardProvider @Inject constructor(
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
-    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView? {
+    override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
         if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }

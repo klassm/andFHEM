@@ -33,5 +33,5 @@ import li.klass.fhem.domain.core.FhemDevice
 interface GenericDetailCardProvider {
     fun ordering(): Int
 
-    suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): CardView?
+    suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView?
 }

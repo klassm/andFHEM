@@ -1,1 +1,1 @@
-TODO
+* Lade Graphen bei mehreren Verbindungen von der richtigen Verbindung
