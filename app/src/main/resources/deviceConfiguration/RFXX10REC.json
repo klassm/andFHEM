@@ -1,6 +1,5 @@
 {
   "defaultGroup": "WINDOW",
-  "showStateInOverview": true,
   "states": [
     {
       "key": "stateChange",

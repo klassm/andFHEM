@@ -1,7 +1,6 @@
 {
   "defaultGroup": "REMOTE_CONTROL",
   "sensorDevice": false,
-  "showStateInOverview": false,
   "states": [
     {
       "key": "Volume",

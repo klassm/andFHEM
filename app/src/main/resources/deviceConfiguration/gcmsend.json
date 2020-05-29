@@ -1,7 +1,6 @@
 {
   "defaultGroup": "FHEM",
   "sensorDevice": false,
-  "showStateInOverview": true,
   "attributes": [
     {
       "key": "apiKey",

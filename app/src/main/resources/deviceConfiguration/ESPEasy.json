@@ -1,7 +1,6 @@
 {
   "defaultGroup": "SWITCH",
   "sensorDevice": true,
-  "showStateInOverview": true,
   "delayForUpdateAfterCommand": 2,
   "supportedWidgets": [
     "TemperatureWidgetView",

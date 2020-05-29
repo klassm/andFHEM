@@ -1,7 +1,6 @@
 {
   "defaultGroup": "WEATHER",
   "sensorDevice": true,
-  "showStateInOverview": false,
   "supportedWidgets": [
     "MediumInformationWidgetView",
     "TemperatureWidgetView"

@@ -1,7 +1,6 @@
 {
   "sensorDevice": false,
   "defaultGroup": "HEATING",
-  "showStateInOverview": false,
   "supportedWidgets": [
     "TemperatureWidgetView"
   ],

@@ -54,9 +54,6 @@ data class DeviceConfiguration(
         @SerialName("additionalOffStateNames")
         val additionalOffStateNames: Set<String> = emptySet(),
 
-        @SerialName("showStateInOverview")
-        val isShowStateInOverview: Boolean = true,
-
         @SerialName("delayForUpdateAfterCommand")
         val delayForUpdateAfterCommand: Int = 0,
 

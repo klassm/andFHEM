@@ -1,6 +1,5 @@
 {
   "defaultGroup": "USAGE",
-  "showStateInOverview": false,
   "supportedWidgets": [
     "MediumInformationWidgetView"
   ],

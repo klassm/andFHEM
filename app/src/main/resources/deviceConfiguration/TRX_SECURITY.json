@@ -1,4 +1,3 @@
 {
-  "defaultGroup": "SMOKE_DETECTOR",
-  "showStateInOverview": true
+  "defaultGroup": "SMOKE_DETECTOR"
 }

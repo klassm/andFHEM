@@ -1,7 +1,6 @@
 {
   "defaultGroup": "HEATING",
   "sensorDevice": true,
-  "showStateInOverview": false,
   "states": [
     {
       "key": "day-temp",

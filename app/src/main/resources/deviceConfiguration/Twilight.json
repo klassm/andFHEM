@@ -1,7 +1,6 @@
 {
   "defaultGroup": "WEATHER",
   "sensorDevice": false,
-  "showStateInOverview": false,
   "states": [
     {
       "key": "nextEvent",

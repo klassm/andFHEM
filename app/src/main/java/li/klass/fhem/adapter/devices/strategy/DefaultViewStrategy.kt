@@ -32,7 +32,6 @@ import li.klass.fhem.adapter.devices.DevStateIconAdder
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -42,10 +41,8 @@ import javax.inject.Singleton
 @Singleton
 open class DefaultViewStrategy @Inject
 constructor(
-        private val devStateIconAdder: DevStateIconAdder,
-        private val deviceConfigurationProvider: DeviceConfigurationProvider
+        private val devStateIconAdder: DevStateIconAdder
 ) : ViewStrategy() {
-
 
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
         var myView = convertView
@@ -75,31 +72,29 @@ constructor(
         setTextView(viewHolder.deviceName, device.aliasOrName)
 
         try {
-            val config = deviceConfigurationProvider.configurationFor(device)
             var currentGenericRow = 0
-            for (item in items) {
-                // STATE as this refers to the internal "STATE", for which the stateFormat attribute is evaluated
-                val isShowInOverview = (item.key == "STATE" && config.isShowStateInOverview)
-                        || item.isShowInOverview
 
-                if (isShowInOverview) {
-                    currentGenericRow++
-                    val rowHolder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder
-                    if (currentGenericRow <= viewHolder.tableRowCount) {
-                        rowHolder = viewHolder.getTableRowAt(currentGenericRow - 1)
-                    } else {
-                        rowHolder = createTableRow(layoutInflater, R.layout.device_overview_generic_table_row)
-                        viewHolder.addTableRow(rowHolder)
-                    }
-                    fillTableRow(rowHolder, item, device)
-                    viewHolder.tableLayout.addView(rowHolder.row)
+            val overviewItems = items.filter { it.isShowInOverview }
+            val state = items.firstOrNull { it.key == "STATE" }
+            val stateToAdd = if (overviewItems.isEmpty()) state else null
+
+            val toShow = listOfNotNull(stateToAdd) + overviewItems
+
+            toShow.forEach { item ->
+                currentGenericRow++
+                val rowHolder: GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder
+                if (currentGenericRow <= viewHolder.tableRowCount) {
+                    rowHolder = viewHolder.getTableRowAt(currentGenericRow - 1)
+                } else {
+                    rowHolder = createTableRow(layoutInflater, R.layout.device_overview_generic_table_row)
+                    viewHolder.addTableRow(rowHolder)
                 }
+                fillTableRow(rowHolder, item, device)
+                viewHolder.tableLayout.addView(rowHolder.row)
             }
-
         } catch (e: Exception) {
             LOGGER.error("exception occurred while setting device overview values", e)
         }
-
     }
 
     private fun createTableRow(inflater: LayoutInflater, resource: Int): GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder {

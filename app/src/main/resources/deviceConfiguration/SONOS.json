@@ -1,4 +1,3 @@
 {
-  "defaultGroup": "FHEM",
-  "showStateInOverview": true
+  "defaultGroup": "FHEM"
 }

@@ -1,6 +1,5 @@
 {
   "sensorDevice": true,
-  "showStateInOverview": true,
   "defaultGroup": "WINDOW",
   "states": [
     {

@@ -45,7 +45,7 @@ constructor(
         private val stateUiService: StateUiService,
         devStateIconAdder: DevStateIconAdder,
         deviceConfigurationProvider: DeviceConfigurationProvider) :
-        DefaultViewStrategy(devStateIconAdder, deviceConfigurationProvider) {
+        DefaultViewStrategy(devStateIconAdder) {
 
     override fun fillDeviceOverviewView(view: View, device: FhemDevice, viewHolder: GenericDeviceOverviewViewHolder, items: List<XmlDeviceViewItem>, layoutInflater: LayoutInflater) {
         super.fillDeviceOverviewView(view, device, viewHolder, items, layoutInflater)

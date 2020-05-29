@@ -1,6 +1,5 @@
 {
   "defaultGroup": "NETWORK",
-  "showStateInOverview": true,
   "supportedWidgets": [
     "SmallPresenceWidget"
   ],

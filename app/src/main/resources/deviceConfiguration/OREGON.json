@@ -122,7 +122,6 @@
   ],
   "attributes": [],
   "internals": [],
-  "showStateInOverview": true,
   "delayForUpdateAfterCommand": 0,
   "player": null,
   "sanitise": {

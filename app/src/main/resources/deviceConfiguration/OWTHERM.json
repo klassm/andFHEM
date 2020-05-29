@@ -1,6 +1,5 @@
 {
   "defaultGroup": "TEMPERATURE",
-  "showStateInOverview": false,
   "supportedWidgets": [
     "TemperatureWidgetView"
   ],
