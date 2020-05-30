@@ -91,7 +91,11 @@ def setStage(stage) {
 
 task uploadToPlayStore
 uploadToPlayStore.dependsOn {
-    tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") }
+    def publishReleaseTasks = tasks.findAll { it.name.startsWith('publish') && it.name.endsWith("Release") }
+    if (publishReleaseTasks.isEmpty()) {
+        throw new IllegalArgumentException("Could not find any publish release tasks")
+    }
+    publishReleaseTasks
 }
 uploadToPlayStore.outputs.upToDateWhen { false }
 
