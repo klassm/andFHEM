@@ -23,14 +23,19 @@ jobs:
         run: git clone git@github.com:klassm/andFHEM.git
 
       - name: Release
-        env:
-          ORG_GRADLE_PROJECT_andFHEMGithubToken: ${{ secrets.andFHEMGithubToken }}
-          ORG_GRADLE_PROJECT_andFHEMPlayUploadP12Base64: ${{ secrets.andFHEMPlayUploadP12Base64 }}
-          ORG_GRADLE_PROJECT_andFHEMReleaseAliasPassword: ${{ secrets.andFHEMReleaseAliasPassword }}
-          ORG_GRADLE_PROJECT_andFHEMReleaseStorePassword: ${{ secrets.andFHEMReleaseStorePassword }}
         run: |
           PWD="$(pwd)"
-          echo "${{ secrets.andFHEMPlayUploadP12Base64 }}" | base64 --decode > "${PWD}/play-store.p12"
+          mkdir -p ~/.gradle
+          touch ~/.gradle/gradle.properties
+          P12_FILE="${PWD}/play-store.p12"
+          echo "${{ secrets.andFHEMPlayUploadP12Base64 }}" | base64 --decode > "${P12_FILE}"
+
+          echo "andFHEMReleaseStorePassword=${{ secrets.andFHEMReleaseStorePassword }}" >> ~/.gradle/gradle.properties
+          echo "andFHEMReleaseAliasPassword=${{ secrets.andFHEMReleaseAliasPassword }}" >> ~/.gradle/gradle.properties
+          echo "andFHEMGithubToken=${{ secrets.andFHEMGithubToken }}" >> ~/.gradle/gradle.properties
+          echo "andFHEMReleaseAccount=${{ secrets.andFHEMReleaseAccount }}" >> ~/.gradle/gradle.properties
+          echo "andFHEMReleaseP12=${P12_FILE}" >> ~/.gradle/gradle.properties
+
           cd andFHEM
           git config user.email "andFHEM@klass.i"
           git config user.name "AndFHEM"
