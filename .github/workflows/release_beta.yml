@@ -34,7 +34,7 @@ jobs:
           echo "andFHEMReleaseAliasPassword=${{ secrets.andFHEMReleaseAliasPassword }}" >> ~/.gradle/gradle.properties
           echo "andFHEMGithubToken=${{ secrets.andFHEMGithubToken }}" >> ~/.gradle/gradle.properties
           echo "andFHEMReleaseAccount=${{ secrets.andFHEMReleaseAccount }}" >> ~/.gradle/gradle.properties
-          echo "andFHEMReleaseP12=${${P12_FILE}" >> ~/.gradle/gradle.properties
+          echo "andFHEMReleaseP12=${P12_FILE}" >> ~/.gradle/gradle.properties
 
           cd andFHEM
           git config user.email "andFHEM@klass.i"
