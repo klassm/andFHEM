@@ -25,9 +25,10 @@ jobs:
       - name: Release
         env:
           ORG_GRADLE_PROJECT_andFHEMGithubToken: ${{ secrets.andFHEMGithubToken }}
-          ORG_GRADLE_PROJECT_andFHEMPlayUploadP12Base64: ${{ secrets.andFHEMPlayUploadP12Base64 }}
+          ORG_GRADLE_PROJECT_andFHEMPlayUploadP12Base64: "./play-store.p12"
           ORG_GRADLE_PROJECT_andFHEMReleaseAliasPassword: ${{ secrets.andFHEMReleaseAliasPassword }}
           ORG_GRADLE_PROJECT_andFHEMReleaseStorePassword: ${{ secrets.andFHEMReleaseStorePassword }}
+          ORG_GRADLE_PROJECT_andFHEMReleaseAccount: ${{ secrets.andFHEMReleaseAccount }}
         run: |
           PWD="$(pwd)"
           echo "${{ secrets.andFHEMPlayUploadP12Base64 }}" | base64 --decode > "${PWD}/play-store.p12"
