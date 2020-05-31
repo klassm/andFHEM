@@ -80,7 +80,8 @@
     {
       "key": "actuator",
       "desc": "actuator",
-      "showAfter": "temperature"
+      "showAfter": "temperature",
+      "showInOverview": true
     }
   ],
   "sanitise": {
