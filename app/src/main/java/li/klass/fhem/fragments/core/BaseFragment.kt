@@ -140,9 +140,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         activity?.title = title ?: ""
     }
 
-    override fun onDetach() {
-        super.onDetach()
-
+    override fun onPause() {
+        super.onPause()
         if (broadcastReceiver != null) {
             broadcastReceiver!!.detach()
             broadcastReceiver = null

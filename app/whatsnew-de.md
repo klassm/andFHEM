@@ -1,1 +1,1 @@
-TODO
+* Bugfix: Aktualisiere Geräteliste nur einmal, nicht für jede View, die geöffnet wurde

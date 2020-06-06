@@ -1,1 +1,1 @@
-TODO
+* Bugfix: Update only once, not for every view that had been opened before
