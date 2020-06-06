@@ -91,6 +91,7 @@
     <string name="lastState">Last State</string>
     <string name="powerState">Power State</string>
     <string name="power">Power</string>
+    <string name="stopReason">Stop Reason</string>
     <string name="audio">Audio</string>
     <string name="audioMode">Audio mode</string>
     <string name="input">Input</string>

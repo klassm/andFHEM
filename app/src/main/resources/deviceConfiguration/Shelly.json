@@ -1,0 +1,21 @@
+{
+  "defaultGroup": "UNKNOWN",
+  "states": [
+    {
+      "key": "state",
+      "desc": "state"
+    },
+    {
+      "key": "position",
+      "desc": "position"
+    },
+    {
+      "key": "power",
+      "desc": "powerState"
+    },
+    {
+      "key": "stop_reason",
+      "desc": "stopReason"
+    }
+  ]
+}
