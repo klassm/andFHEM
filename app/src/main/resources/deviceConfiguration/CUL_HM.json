@@ -58,7 +58,7 @@
     {
       "key": "ValvePosition",
       "desc": "actuator",
-      "showInOverview": false
+      "showInOverview": true
     },
     {
       "key": "battery",
