@@ -34,6 +34,8 @@
     <string name="moonSet">Mond-Untergang</string>
     <string name="windChill">Windkälte</string>
     <string name="rain">Regen</string>
+    <string name="rainToday">Regen Heute</string>
+    <string name="rainYesterday">Regen Gestern</string>
     <string name="humidity">Luftfeuchtigkeit</string>
     <string name="actuator">Regler</string>
     <string name="state">Zustand</string>

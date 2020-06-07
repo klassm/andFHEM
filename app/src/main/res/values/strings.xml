@@ -34,6 +34,8 @@
     <string name="moonSet">Moon Set</string>
     <string name="windChill">Windchill</string>
     <string name="rain">Rain</string>
+    <string name="rainToday">Regen Today</string>
+    <string name="rainYesterday">Regen Yesterday</string>
     <string name="humidity">Humidity</string>
     <string name="actuator">Actuator</string>
     <string name="state">State</string>

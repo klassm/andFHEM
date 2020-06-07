@@ -154,6 +154,14 @@
       "key": "lock",
       "desc": "lock",
       "showInOverview": true
+    },
+    {
+      "key": "rain_d_curr",
+      "desc": "rainToday"
+    },
+    {
+      "key": "rain_d_last",
+      "desc": "rainYesterday"
     }
   ],
   "attributes": [
@@ -189,6 +197,14 @@
         "extract": "double"
       },
       "rain": {
+        "append": "l/m²",
+        "extract": "double"
+      },
+      "rain_d_last": {
+        "append": "l/m²",
+        "extract": "double"
+      },
+      "rain_d_curr": {
         "append": "l/m²",
         "extract": "double"
       },
