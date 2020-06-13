@@ -38,22 +38,20 @@
         tools:ignore="UselessParent">
 
         <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
             style="@style/deviceDetailContentSeek"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
+            android:id="@+id/seekBar"
+            android:layout_width="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@id/button"
-            android:layout_toStartOf="@id/button" />
+            android:layout_toStartOf="@id/button"/>
 
         <Button
             android:id="@+id/button"
             style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:text="@string/set" />
     </RelativeLayout>
 </TableRow>
