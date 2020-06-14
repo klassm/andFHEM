@@ -1,1 +1,1 @@
-TODO
+* Update data for device details only once (to increase speed)

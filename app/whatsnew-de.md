@@ -1,1 +1,1 @@
-TODO
+* Aktualisiere Daten für Geräte-Details nur einmal beim Öffnen
