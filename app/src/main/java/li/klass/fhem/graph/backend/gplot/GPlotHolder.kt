@@ -43,6 +43,7 @@ class GPlotHolder @Inject constructor(
 
     private val definitions = mutableMapOf<DefinitionKey, GPlotDefinition?>()
 
+    @Synchronized
     fun definitionFor(name: String, isConfigDb: Boolean, connectionId: String): GPlotDefinition? {
         if (gPlotParser.defaultGPlotFiles.containsKey(name)) {
             return gPlotParser.defaultGPlotFiles[name]

@@ -57,11 +57,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     @Inject
     lateinit var resendLastFailedCommandService: ResendLastFailedCommandService
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        updateAsync(false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -85,6 +80,8 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                 canChildScrollUp()
             }
         }
+
+        updateAsync(false)
     }
 
     override fun canChildScrollUp(): Boolean {

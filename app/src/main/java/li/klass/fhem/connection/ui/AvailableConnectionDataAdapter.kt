@@ -99,6 +99,9 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+        if (connectionService.getSelectedId() == data[pos].id) {
+            return
+        }
         if (pos == data.size - 1) {
             parent.setSelection(currentlySelectedPosition)
             onConnectionManagementSelected()
