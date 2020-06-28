@@ -35,4 +35,6 @@
     <color name="seriesColorWHITE">@android:color/white</color>
 
     <color name="errorBackground">#B14300</color>
+    <color name="accent">#DCAF5F</color>
+    <color name="link">#AFDAAD</color>
 </resources>

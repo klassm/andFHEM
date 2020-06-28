@@ -26,7 +26,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:bottom="0dp">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <shape>
             <corners android:radius="3dp" />
             <solid android:color="@color/lightGrey" />
             <stroke

@@ -53,6 +53,7 @@
 
     <color name="errorBackground">#FFDB9C</color>
 
+    <color name="link">#079400</color>
 
     <color name="primary">#FF079400</color>
     <color name="accent">#FFB84100</color>

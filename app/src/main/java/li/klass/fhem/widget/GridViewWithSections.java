@@ -59,12 +59,7 @@ public class GridViewWithSections extends GridView {
     }
 
     public void setOnLongClickListener(final OnClickListener listener) {
-        setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return performParentChildItemClick(view, position, listener);
-            }
-        });
+        setOnItemLongClickListener((parent, view, position, id) -> performParentChildItemClick(view, position, listener));
     }
 
     public void setOnClickListener(final OnClickListener listener) {
