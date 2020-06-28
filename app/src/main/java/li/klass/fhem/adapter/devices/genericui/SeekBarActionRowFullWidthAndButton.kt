@@ -27,14 +27,16 @@ package li.klass.fhem.adapter.devices.genericui
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TableRow
+import kotlinx.android.synthetic.main.device_detail_seekbarrow_with_button.view.*
 import li.klass.fhem.R
 import li.klass.fhem.settings.SettingsKeys.SHOW_SET_VALUE_BUTTONS
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.NumberUtil.isDecimalNumber
+import org.jetbrains.anko.alignParentEnd
 
 abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context,
                                                   initialProgress: Double, step: Double,
@@ -42,7 +44,7 @@ abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context
                                                   updateRow: TableRow,
                                                   val applicationProperties: ApplicationProperties)
     : SeekBarActionRowFullWidth(initialProgress, minimumProgress, step,
-        maximumProgress, LAYOUT_DETAIL, updateRow) {
+        maximumProgress, R.layout.device_detail_seekbarrow_with_button, updateRow) {
 
     override fun createRow(inflater: LayoutInflater, device: XmlListDevice?) =
             super.createRow(inflater, device).apply {
@@ -50,7 +52,8 @@ abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context
             }
 
     private fun applySetButtonIfRequired(row: TableRow, device: XmlListDevice?) {
-        val button = row.findViewById<View>(R.id.button) as Button
+        val button = row.button
+        val seekBar = row.seekBar
         button.setOnClickListener {
             val title = context.getString(R.string.set_value)
 
@@ -70,12 +73,19 @@ abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context
         if (!showButton()) {
             button.visibility = View.GONE
         }
+        seekBar.layoutParams ?.let {
+            it as RelativeLayout.LayoutParams
+        }?.let {
+            if (showButton()) {
+                it.removeRule(RelativeLayout.ALIGN_PARENT_END)
+            } else {
+                it.addRule(RelativeLayout.ALIGN_PARENT_END)
+            }
+        }
+
     }
 
     protected open fun showButton(): Boolean =
             applicationProperties.getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false)
 
-    companion object {
-        const val LAYOUT_DETAIL = R.layout.device_detail_seekbarrow_with_button
-    }
 }
