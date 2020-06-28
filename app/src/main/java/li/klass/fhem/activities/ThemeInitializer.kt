@@ -24,7 +24,6 @@
 
 package li.klass.fhem.activities
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
@@ -36,15 +35,12 @@ class ThemeInitializer @Inject constructor(val applicationProperties: Applicatio
     }
 
     private fun getMode(): Int {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return AppCompatDelegate.MODE_NIGHT_NO;
-        }
         return applicationProperties.getStringSharedPreference(SettingsKeys.THEME)
                 ?.let {
                     when (it) {
                         "DARK" -> AppCompatDelegate.MODE_NIGHT_YES
                         "LIGHT" -> AppCompatDelegate.MODE_NIGHT_NO
-                        else -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                     }
                 } ?: AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
     }
