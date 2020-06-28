@@ -83,7 +83,7 @@
     {
       "key": "motion",
       "desc": "motion",
-      "showInOverview": false
+      "showInOverview": true
     },
     {
       "key": "windSpeed",
