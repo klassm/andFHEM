@@ -128,7 +128,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
         val title = getTitle(myActivity)
         title?.let { setTitle(it) }
-        updateAsync(false)
     }
 
     open val navigationFragment: Fragment? = null

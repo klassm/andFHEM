@@ -59,14 +59,12 @@ class PlotsCardProvider @Inject constructor(
     }
 
     private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String, context: Context) {
-        coroutineScope {
-            val graphs = withContext(Dispatchers.IO) {
-                graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, connectionId)
-            }
-            fillPlotsCard(cardView, device, graphs, connectionId, context)
-
-            cardView.invalidate()
+        val graphs = withContext(Dispatchers.IO) {
+            graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, connectionId)
         }
+        fillPlotsCard(cardView, device, graphs, connectionId, context)
+
+        cardView.invalidate()
     }
 
     private fun fillPlotsCard(plotsCard: CardView, device: FhemDevice,
