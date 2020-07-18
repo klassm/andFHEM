@@ -1,1 +1,1 @@
-TODO
+* Repair device rotation, staying on the same fragment as before

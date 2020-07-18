@@ -1,1 +1,1 @@
-TODO
+* Beim Rotieren des Gerätes stürzt die App nicht mehr ab / bleibt auf der gleichen Ansicht
