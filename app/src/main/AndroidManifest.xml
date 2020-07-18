@@ -116,7 +116,7 @@
         <activity
             android:name=".activities.AndFHEMMainActivity"
             android:alwaysRetainTaskState="true"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
             android:launchMode="singleTask">
 
             <intent-filter>
