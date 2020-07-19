@@ -3,6 +3,9 @@ on:
   repository_dispatch:
     types: [deploy_beta]
 
+  workflow_dispatch:
+    inputs:
+
 jobs:
   build:
 
