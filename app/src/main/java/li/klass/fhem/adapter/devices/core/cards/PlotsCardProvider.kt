@@ -31,9 +31,7 @@ import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
 import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
@@ -43,6 +41,7 @@ import li.klass.fhem.graph.ui.GraphActivity
 import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class PlotsCardProvider @Inject constructor(
         private val graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
@@ -53,7 +52,9 @@ class PlotsCardProvider @Inject constructor(
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
         cardView.visibility = View.GONE
 
-        loadGraphs(device, cardView, connectionId, context)
+        GlobalScope.launch(Dispatchers.Main) {
+            loadGraphs(device, cardView, connectionId, context)
+        }
 
         return cardView
     }
