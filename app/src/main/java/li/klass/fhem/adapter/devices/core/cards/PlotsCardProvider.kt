@@ -41,7 +41,6 @@ import li.klass.fhem.graph.ui.GraphActivity
 import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 class PlotsCardProvider @Inject constructor(
         private val graphDefinitionsForDeviceService: GraphDefinitionsForDeviceService
@@ -50,7 +49,7 @@ class PlotsCardProvider @Inject constructor(
 
     override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
         val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
-        cardView.visibility = View.GONE
+        cardView.card_progress.visibility = View.VISIBLE
 
         GlobalScope.launch(Dispatchers.Main) {
             loadGraphs(device, cardView, connectionId, context)
@@ -64,7 +63,7 @@ class PlotsCardProvider @Inject constructor(
             graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, connectionId)
         }
         fillPlotsCard(cardView, device, graphs, connectionId, context)
-
+        cardView.card_progress.visibility = View.GONE
         cardView.invalidate()
     }
 
@@ -81,9 +80,6 @@ class PlotsCardProvider @Inject constructor(
             logger.error("fillPlotsCard - cannot find graphLayout, is null")
             return
         }
-
-        plotsCard.visibility = View.VISIBLE
-
 
         graphLayout.removeAllViews()
         definitions.forEach { svgGraphDefinition ->

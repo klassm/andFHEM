@@ -41,6 +41,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            />
+
         <LinearLayout
             android:background="?backgroundColorSecondary"
             android:layout_width="match_parent"
