@@ -1,1 +1,1 @@
-TODO
+* Graphen werden asynchron nachgeladen (Hier werden .gplot Dateien vom Server geladen, was einige Zeit dauern kann)
