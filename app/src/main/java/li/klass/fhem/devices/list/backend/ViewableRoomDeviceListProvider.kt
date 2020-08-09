@@ -30,8 +30,8 @@ import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import javax.inject.Inject
 
 class ViewableRoomDeviceListProvider @Inject constructor(
-        val viewableElementsCalculator: ViewableElementsCalculator,
-        val hiddenRoomsDeviceFilter: HiddenRoomsDeviceFilter,
+        private val viewableElementsCalculator: ViewableElementsCalculator,
+        private val hiddenRoomsDeviceFilter: HiddenRoomsDeviceFilter,
         val fhemWebConfigurationService: FhemWebConfigurationService
 ) {
     fun provideFor(context: Context, roomDeviceList: RoomDeviceList): List<ViewableElementsCalculator.Element> {
