@@ -28,7 +28,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.view.*
@@ -38,6 +37,7 @@ import androidx.navigation.fragment.navArgs
 import com.github.angads25.filepicker.model.DialogConfigs
 import com.github.angads25.filepicker.model.DialogProperties
 import com.github.angads25.filepicker.view.FilePickerDialog
+import kotlinx.android.synthetic.main.connection_fhemweb.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
@@ -209,11 +209,9 @@ class ConnectionDetailFragment @Inject constructor(
         setClientCertificate.setOnClickListener(View.OnClickListener { innerView ->
             if (innerView == null) return@OnClickListener
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-            val clientCertificatePath = innerView.findViewById<TextView>(R.id.clientCertificatePath)
-            val initialPath = File(clientCertificatePath.text.toString())
+            PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+            val clientCertificatePath = view.clientCertificatePath
+            val initialPath = clientCertificatePath.text?.toString()?.let { File(it) }
 
             val properties = DialogProperties()
             properties.selection_mode = DialogConfigs.SINGLE_MODE
@@ -226,7 +224,7 @@ class ConnectionDetailFragment @Inject constructor(
                 val selection = files.joinToString(separator = ", ")
                 LOG.info("handleFHEMWEBView - selected '$selection' as client certificate")
                 if (files.isNotEmpty()) {
-                    clientCertificatePath.text = files[0]
+                    clientCertificatePath.setText(files[0], TextView.BufferType.NORMAL)
                 }
             }
             dialog.show()

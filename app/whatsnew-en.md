@@ -1,1 +1,1 @@
-TODO
+* Repair an appcrash when selecting a client certificate

@@ -42,7 +42,8 @@
         style="@style/formInput"
         android:layout_below="@+id/urlLabel"
         android:hint="@string/connectionURLDesc"
-        android:inputType="textUri"/>
+        android:inputType="textUri"
+        android:autofillHints="@string/connectionURL" />
 
     <TextView
         android:id="@+id/alternateUrlLabel"
@@ -58,7 +59,8 @@
         style="@style/formInput"
         android:layout_below="@+id/alternateUrlLabel"
         android:hint="@string/connectionAlternateUrlPlaceholder"
-        android:inputType="textUri"/>
+        android:inputType="textUri"
+        android:autofillHints="@string/connectionAlternateUrlDesc" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,14 +75,16 @@
         android:layout_below="@+id/alternateUrlDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/csrfTokenLabel" />
+        android:text="@string/csrfTokenLabel"
+        android:labelFor="@id/csrfToken" />
 
     <EditText
         android:id="@+id/csrfToken"
         android:layout_width="match_parent"
         style="@style/formInput"
         android:layout_below="@+id/csrfTokenLabel"
-        android:inputType="text" />
+        android:inputType="text"
+        android:autofillHints="@string/csrfTokenLabel" />
 
     <TextView
         android:id="@+id/usernameLabel"
@@ -96,7 +100,8 @@
         style="@style/formInput"
         android:inputType="text"
         android:layout_below="@id/usernameLabel"
-        android:hint="@string/connectionUsernameDesc"/>
+        android:hint="@string/connectionUsernameDesc"
+        android:autofillHints="@string/connectionUsername" />
 
     <TextView
         android:id="@+id/passwordLabel"
@@ -112,17 +117,15 @@
         style="@style/formInput"
         android:layout_below="@id/passwordLabel"
         android:inputType="textPassword"
-        android:layout_toLeftOf="@+id/showPasswordCheckbox"
         android:layout_toStartOf="@+id/showPasswordCheckbox"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="@string/connectionPasswordDesc"/>
+        android:hint="@string/connectionPasswordDesc"
+        android:autofillHints="@string/password" />
     <CheckBox
         android:id="@+id/showPasswordCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordLabel"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="@string/connectionShowPassword"/>
 
@@ -139,11 +142,12 @@
         android:layout_width="fill_parent"
         style="@style/formInput"
         android:layout_below="@+id/clientCertificatePathLabel"
-        android:layout_toLeftOf="@+id/setClientCertificatePath"
         android:layout_toStartOf="@+id/setClientCertificatePath"
         android:ellipsize="start"
         android:singleLine="true"
-        android:hint="@string/connectionClientCertificateDesc"/>
+        android:hint="@string/connectionClientCertificateDesc"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <ImageButton
         android:id="@+id/setClientCertificatePath"
@@ -153,7 +157,6 @@
         android:src="@android:drawable/ic_menu_search"
         android:text="@string/change"
         android:layout_above="@+id/clientCertificatePasswordLabel"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/connectionClientCertificateDesc"/>
 
@@ -170,19 +173,17 @@
         style="@style/formInput"
         android:layout_width="fill_parent"
         android:layout_below="@+id/clientCertificatePasswordLabel"
-        android:layout_toLeftOf="@+id/showCertificatePasswordCheckbox"
         android:layout_toStartOf="@+id/showCertificatePasswordCheckbox"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:inputType="textPassword"
-        android:hint="@string/connectionClientCertificatePasswordDesc"/>
+        android:hint="@string/connectionClientCertificatePasswordDesc"
+        android:importantForAutofill="no" />
 
     <CheckBox
         android:id="@+id/showCertificatePasswordCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/clientCertificatePasswordLabel"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="@string/connectionShowPassword"/>
 

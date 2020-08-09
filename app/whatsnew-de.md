@@ -1,1 +1,1 @@
-TODO
+* Repariere einen Absturz bei der Auswahl eines Client-Zertifikats
