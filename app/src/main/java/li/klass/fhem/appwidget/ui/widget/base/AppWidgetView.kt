@@ -38,7 +38,7 @@ abstract class AppWidgetView {
     protected abstract fun getContentView(): Int
     abstract fun getWidgetName(): Int
 
-    abstract fun createWidgetConfiguration(context: Context, appWidgetId: Int,
+    abstract fun createWidgetConfiguration(context: Context, appWidgetId: Int, connectionId: String,
                                            callback: WidgetConfigurationCreatedCallback, vararg payload: String)
 
     open fun createView(context: Context, widgetConfiguration: WidgetConfiguration): RemoteViews {

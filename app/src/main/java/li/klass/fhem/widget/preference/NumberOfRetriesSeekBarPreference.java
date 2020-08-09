@@ -44,18 +44,18 @@ public class NumberOfRetriesSeekBarPreference extends SeekBarPreference {
     }
 
     private String createText(int tries) {
-        String text = "";
+        StringBuilder text = new StringBuilder();
 
         Context context = getContext();
         String template = context.getString(R.string.settingsCommandExecutionRetriesTimeDialogEntry);
         template += "\r\n";
 
-        text += String.format(template, 0, 0);
+        text.append(String.format(template, 0, 0));
 
         for (int i = 1; i <= tries; i++) {
-            text += String.format(template, i, CommandExecutionService.Companion.secondsForTry(i));
+            text.append(String.format(template, i, CommandExecutionService.Companion.secondsForTry(i)));
         }
 
-        return text;
+        return text.toString();
     }
 }

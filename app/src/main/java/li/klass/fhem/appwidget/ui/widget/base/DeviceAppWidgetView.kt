@@ -33,7 +33,6 @@ import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
 import li.klass.fhem.appwidget.update.WidgetConfiguration
-import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
@@ -47,9 +46,6 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
 
     @Inject
     lateinit var deviceConfigurationProvider: DeviceConfigurationProvider
-
-    @Inject
-    lateinit var connectionService: ConnectionService
 
     open fun supports(device: FhemDevice): Boolean =
             supportsFromJsonConfiguration(device)
@@ -101,11 +97,11 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                     .setArguments(DeviceDetailRedirectFragmentArgs(device.name, widgetConfiguration.connectionId).toBundle())
                     .createPendingIntent()
 
-    override fun createWidgetConfiguration(context: Context, appWidgetId: Int,
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, connectionId: String,
                                            callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
         val device = deviceListService.getDeviceForName(payload[0])
         if (device != null) {
-            createDeviceWidgetConfiguration(context, appWidgetId, device, callback)
+            createDeviceWidgetConfiguration(context, appWidgetId, connectionId, device, callback)
         } else {
             logger.info("cannot find device for " + payload[0])
         }
@@ -120,14 +116,10 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                 .firstOrNull()
     }
 
-    protected open fun createDeviceWidgetConfiguration(context: Context, appWidgetId: Int, device: FhemDevice,
+    protected open fun createDeviceWidgetConfiguration(context: Context, appWidgetId: Int, connectionId: String, device: FhemDevice,
                                                        callback: WidgetConfigurationCreatedCallback) {
-        val connectionId = connectionService.getSelectedId()
         callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, listOf(device.name)))
     }
-
-    protected fun getCurrentConnectionId(): String =
-            connectionService.getSelectedId()
 
     override fun fillWidgetView(context: Context, view: RemoteViews,
                                 widgetConfiguration: WidgetConfiguration) {

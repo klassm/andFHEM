@@ -41,8 +41,8 @@ import li.klass.fhem.constants.BundleExtraKeys
 import javax.inject.Inject
 
 class DeviceListUpdateWidget @Inject constructor() : OtherAppWidgetView() {
-    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
-        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, connectionId: String, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
+        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, payload.toList()))
     }
 
     override fun getWidgetName(): Int = R.string.widget_device_list_update

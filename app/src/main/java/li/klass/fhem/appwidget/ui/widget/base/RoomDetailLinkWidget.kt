@@ -34,8 +34,8 @@ import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.room.detail.ui.RoomDetailFragmentArgs
 
 abstract class RoomDetailLinkWidget : RoomAppWidgetView() {
-    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
-        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, connectionId: String, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
+        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, payload.toList()))
     }
 
     override fun getWidgetName(): Int = R.string.widget_room_detail
@@ -49,7 +49,7 @@ abstract class RoomDetailLinkWidget : RoomAppWidgetView() {
                 .setComponentName(AndFHEMMainActivity::class.java)
                 .setGraph(R.navigation.nav_graph)
                 .setDestination(R.id.roomDetailFragment)
-                .setArguments(RoomDetailFragmentArgs(roomName).toBundle())
+                .setArguments(RoomDetailFragmentArgs(roomName, widgetConfiguration.connectionId).toBundle())
                 .createPendingIntent()
         )
     }

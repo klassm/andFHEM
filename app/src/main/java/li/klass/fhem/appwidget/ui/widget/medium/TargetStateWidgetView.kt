@@ -73,22 +73,22 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
 
     override fun createDeviceWidgetConfiguration(context: Context,
-                                                 appWidgetId: Int, device: FhemDevice,
+                                                 appWidgetId: Int, connectionId: String, device: FhemDevice,
                                                  callback: WidgetConfigurationCreatedCallback) {
 
-        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, callback))
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, widgetCreatingCallback(widgetType, appWidgetId, connectionId, callback))
     }
 
-    private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback {
+    private fun widgetCreatingCallback(widgetType: WidgetType, appWidgetId: Int, connectionId: String, callback: WidgetConfigurationCreatedCallback): OnTargetStateSelectedCallback {
         return object : OnTargetStateSelectedCallback {
             override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), listOf(device.name, targetState)))
+                        widgetType, connectionId, listOf(device.name, targetState)))
             }
 
             override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
                 callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId,
-                        widgetType, getCurrentConnectionId(), listOf(device.name, "$state $subState")))
+                        widgetType, connectionId, listOf(device.name, "$state $subState")))
             }
 
             override suspend fun onNothingSelected(device: FhemDevice) {}

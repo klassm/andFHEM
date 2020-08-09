@@ -248,6 +248,11 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="connectionId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_roomDetailFragment_to_deviceDetailRedirectFragment"
             app:destination="@id/deviceDetailRedirectFragment"

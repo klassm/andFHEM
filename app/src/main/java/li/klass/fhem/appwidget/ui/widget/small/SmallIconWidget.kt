@@ -38,8 +38,8 @@ abstract class SmallIconWidget : OtherAppWidgetView() {
     protected abstract val destination: Int
     protected abstract val iconResource: Int
 
-    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
-        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, null, payload.toList()))
+    override fun createWidgetConfiguration(context: Context, appWidgetId: Int, connectionId: String, callback: WidgetConfigurationCreatedCallback, vararg payload: String) {
+        callback.widgetConfigurationCreated(WidgetConfiguration(appWidgetId, widgetType, connectionId, payload.toList()))
     }
 
     override fun getContentView(): Int = R.layout.appwidget_icon_small

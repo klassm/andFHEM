@@ -45,6 +45,7 @@ import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
+import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.dagger.ScopedFragmentFactory
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys
@@ -67,6 +68,9 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
 
     @Inject
     lateinit var scopedFragmentFactory: ScopedFragmentFactory
+
+    @Inject
+    lateinit var connectionService: ConnectionService
 
     private var widgetId: Int = 0
 
@@ -125,7 +129,7 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
     }
 
     private fun createWidget(widget: AppWidgetView, vararg payload: String) {
-        widget.createWidgetConfiguration(this, widgetId, object : WidgetConfigurationCreatedCallback {
+        widget.createWidgetConfiguration(this, widgetId, connectionService.getSelectedId(), object : WidgetConfigurationCreatedCallback {
             override fun widgetConfigurationCreated(widgetConfiguration: WidgetConfiguration) {
                 appWidgetInstanceManager.save(widgetConfiguration)
 
