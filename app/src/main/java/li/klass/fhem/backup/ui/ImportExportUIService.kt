@@ -39,6 +39,7 @@ import li.klass.fhem.backup.ImportExportService
 import li.klass.fhem.backup.ImportExportService.ImportStatus
 import li.klass.fhem.util.DialogUtil.DISMISSING_LISTENER
 import li.klass.fhem.util.PermissionUtil
+import net.lingala.zip4j.ZipFile
 import org.apache.commons.lang3.StringUtils
 import java.io.File
 import javax.inject.Inject
@@ -70,18 +71,26 @@ class ImportExportUIService @Inject constructor(private val importExportService:
     }
 
     private fun onImportFileSelected(file: File, activity: Activity) {
-        if (importExportService.isEncryptedFile(file)) {
+        val zipFile = importExportService.toZipFile(file)
+        if (zipFile == null) {
+            AlertDialog.Builder(activity).setTitle(R.string.error)
+                    .setMessage(R.string.errorNotAValidBackupFile)
+                    .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+                    .show()
+            return
+        }
+        if (zipFile.isEncrypted) {
             selectPasswordWith(activity, object : OnBackupPasswordSelected {
                 override fun backupPasswordSelected(password: String?) {
-                    importWith(activity, file, password, activity)
+                    importWith(activity, zipFile, password, activity)
                 }
             }, R.string.importPasswordDescription)
         } else {
-            importWith(activity, file, null, activity)
+            importWith(activity, zipFile, null, activity)
         }
     }
 
-    private fun importWith(activity: Activity, file: File, password: String?, context: Context) {
+    private fun importWith(activity: Activity, file: ZipFile, password: String?, context: Context) {
         val status = importExportService.importSettings(file, password, context)
         if (status === ImportStatus.SUCCESS) {
             onImportSuccess(activity)

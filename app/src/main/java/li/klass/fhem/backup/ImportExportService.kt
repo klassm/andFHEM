@@ -31,6 +31,7 @@ import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.service.NotificationService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.CloseableUtil
+import li.klass.fhem.util.Logging
 import li.klass.fhem.util.ReflectionUtil
 import li.klass.fhem.util.io.FileSystemService
 import li.klass.fhem.util.preferences.SharedPreferencesService
@@ -41,7 +42,6 @@ import net.lingala.zip4j.model.enums.CompressionMethod
 import net.lingala.zip4j.model.enums.EncryptionMethod
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -53,9 +53,7 @@ class ImportExportService @Inject constructor(
         private val fileSystemService: FileSystemService,
         private val favoritesService: FavoritesService,
         private val applicationProperties: ApplicationProperties
-) {
-    private val logger = LoggerFactory.getLogger(ImportExportService::class.java)
-
+) : Logging {
     private val backupFileName: String
         get() = "andFHEM-" + dateTimeFormatter.print(DateTime.now()) + ".backup"
 
@@ -124,25 +122,19 @@ class ImportExportService @Inject constructor(
         }
     }
 
-    fun isEncryptedFile(file: File): Boolean {
-        try {
-            val zipFile = ZipFile(file)
-            if (!zipFile.isValidZipFile) {
-                throw IllegalArgumentException("not a valid zip file")
+    fun toZipFile(file: File): ZipFile? {
+        return try {
+            ZipFile(file).takeIf {
+                it.isValidZipFile
             }
-            return zipFile.isEncrypted
         } catch (e: ZipException) {
-            logger.error("error while reading zip file", e)
-            throw IllegalArgumentException(e)
+            logger.error("error while reading zip file ${file.absolutePath}", e)
+            null
         }
-
     }
 
-    fun importSettings(file: File, password: String?, context: Context): ImportStatus {
-        val zipFile: ZipFile
-
+    fun importSettings(zipFile: ZipFile, password: String?, context: Context): ImportStatus {
         try {
-            zipFile = ZipFile(file)
             if (zipFile.isEncrypted) {
                 zipFile.setPassword((password ?: "").toCharArray())
             }
@@ -164,7 +156,7 @@ class ImportExportService @Inject constructor(
             return ImportStatus.SUCCESS
 
         } catch (e: ZipException) {
-            logger.error("importSettings(" + file.absolutePath + ") - cannot import", e)
+            logger.error("importSettings(${zipFile.file.absolutePath}) - cannot import", e)
             return if (e.type == ZipException.Type.WRONG_PASSWORD || (e.message
                             ?: "").contains("Wrong Password")) {
                 ImportStatus.WRONG_PASSWORD
@@ -172,7 +164,7 @@ class ImportExportService @Inject constructor(
                 ImportStatus.INVALID_FILE
             }
         } catch (e: Exception) {
-            logger.error("importSettings(" + file.absolutePath + ") - cannot import", e)
+            logger.error("importSettings(${zipFile.file.absolutePath}) - cannot import", e)
             return ImportStatus.INVALID_FILE
         }
     }
