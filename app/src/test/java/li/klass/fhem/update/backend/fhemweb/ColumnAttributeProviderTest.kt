@@ -58,6 +58,14 @@ class ColumnAttributeProviderTest {
         assertThat(provider.getFor(device, "Blub")).containsExactly("FS20", "notify", "FHZ", "IT")
     }
 
+
+    @Test
+    fun should_ignore_invalid_regular_expressions() {
+        val device = deviceWithColumn("*.Heizen:FS20,notify")
+
+        assertThat(provider.getFor(device, "Lub")).isEmpty()
+    }
+
     private fun deviceWithColumn(column: String): FhemDevice {
         val xmlListDevice = XmlListDevice("FHEMWEB", mutableMapOf(), mutableMapOf(), mutableMapOf(), mutableMapOf())
         xmlListDevice.setAttribute(XmllistKey.Attribute.FhemWeb.column, column)

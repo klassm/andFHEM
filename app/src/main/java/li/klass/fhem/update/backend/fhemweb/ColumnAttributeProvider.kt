@@ -26,16 +26,16 @@ package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.util.Logging
 import javax.inject.Inject
 
-class ColumnAttributeProvider @Inject constructor() {
+class ColumnAttributeProvider @Inject constructor() : Logging {
     fun getFor(fhemwebDevice: FhemDevice, room: String): List<String> {
 
-        val attribute = fhemwebDevice.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.column) ?: ""
+        val attribute = fhemwebDevice.xmlListDevice.getAttribute(XmllistKey.Attribute.FhemWeb.column)
+                ?: ""
         return attribute.split(" ")
-                .map { handleRoom(it) }
-                .filter { it != null }
-                .map { it!! }
+                .mapNotNull { handleRoom(it) }
                 .filter { it.first.matches(room) }
                 .flatMap { it.second }
                 .distinct()
@@ -47,6 +47,11 @@ class ColumnAttributeProvider @Inject constructor() {
         }
 
         val (name, value) = room.split(":")
-        return Regex(name) to value.replace(Regex("\\|"), ",").split(",")
+        return try {
+            Regex(name) to value.replace(Regex("\\|"), ",").split(",")
+        } catch (e: Exception) {
+            logger.info("error during conversion to a regex, got '$name' and '$value'")
+            null
+        }
     }
 }
