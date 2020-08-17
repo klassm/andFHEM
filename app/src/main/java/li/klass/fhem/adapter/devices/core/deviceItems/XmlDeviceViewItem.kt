@@ -29,9 +29,9 @@ import java.util.*
 data class XmlDeviceViewItem(val key: String,
                              val desc: String,
                              val value: String,
-                             val showAfter: String?,
-                             val isShowInDetail: Boolean,
-                             val isShowInOverview: Boolean) {
+                             val showAfter: String? = null,
+                             val isShowInDetail: Boolean = false,
+                             val isShowInOverview: Boolean = false) {
 
     val sortKey = key.toLowerCase(Locale.getDefault())
 

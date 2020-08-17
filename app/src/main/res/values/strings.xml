@@ -336,6 +336,9 @@
     <string name="settingsShowHiddenDevices">Show hidden devices</string>
     <string name="settingsShowHiddenDevicesSummaryOn">Show devices from room \'hidden\'</string>
     <string name="settingsShowHiddenDevicesSummaryOff">Don\'t show devices from room \'hidden\'</string>
+    <string name="settingsShowMeasuredInOverview">Show measure time in overview</string>
+    <string name="settingsShowMeasuredInOverviewOn">Show measure time for each device in the overview (if applicable)</string>
+    <string name="settingsShowMeasuredInOverviewOff">Don\'t show measure time in the overview.</string>
     <string name="settingsDefaultTimespan">Graph Timespan</string>
     <string name="settingsDefaultTimespanSummary">By default a timespan of \'%1$s\' will be shown</string>
     <string name="settingsAutoUpdate">Auto Update</string>

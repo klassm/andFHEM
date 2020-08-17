@@ -1,1 +1,1 @@
-TODO
+* Add option to show measure date in overview

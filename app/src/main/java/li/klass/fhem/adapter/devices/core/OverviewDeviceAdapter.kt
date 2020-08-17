@@ -27,6 +27,7 @@ package li.klass.fhem.adapter.devices.core
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.deviceItems.DeviceViewItemSorter
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
@@ -36,11 +37,11 @@ import li.klass.fhem.adapter.devices.strategy.ViewStrategy
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.update.backend.device.configuration.DeviceDescMapping
 import li.klass.fhem.util.ApplicationProperties
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
-import java.util.*
 import javax.inject.Inject
 
 abstract class OverviewDeviceAdapter : DeviceAdapter() {
@@ -71,7 +72,7 @@ abstract class OverviewDeviceAdapter : DeviceAdapter() {
     private val overviewStrategies: List<ViewStrategy> by lazy {
         val strategies = mutableListOf<ViewStrategy>()
         fillOverviewStrategies(strategies)
-        Collections.reverse(strategies)
+        strategies.reverse()
         strategies.toList()
     }
 
@@ -92,9 +93,21 @@ abstract class OverviewDeviceAdapter : DeviceAdapter() {
     fun createOverviewView(convertView: View?, rawDevice: FhemDevice, context: Context): View {
         val stopWatch = StopWatch()
         stopWatch.start()
+
+        val showMeasuredInOverview = applicationProperties.getBooleanSharedPreference(SettingsKeys.SHOW_MEASURED_IN_OVERVIEW, false)
+        val measured = xmlDeviceItemProvider.getMostRecentMeasureTime(rawDevice, context)
+        val measuredViewItem = if (measured != null && showMeasuredInOverview) XmlDeviceViewItem(
+                key = "measured",
+                desc = context.getString(R.string.measured),
+                value = measured,
+                isShowInOverview = true
+        ) else null
+        val items = (getSortedAnnotatedClassItems(rawDevice, context) + measuredViewItem).filterNotNull()
+
         val viewStrategy = getMostSpecificOverviewStrategy(rawDevice)
         LOGGER.debug("createOverviewView - viewStrategy=" + viewStrategy.javaClass.simpleName + ",time=" + stopWatch.time)
-        val view = viewStrategy.createOverviewView(LayoutInflater.from(context), convertView, rawDevice, getSortedAnnotatedClassItems(rawDevice, context), null)
+
+        val view = viewStrategy.createOverviewView(LayoutInflater.from(context), convertView, rawDevice, items, null)
         LOGGER.debug("createOverviewView - finished, time=" + stopWatch.time)
         return view
     }

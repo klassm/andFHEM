@@ -26,6 +26,7 @@ package li.klass.fhem.settings
 
 object SettingsKeys {
     const val SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices"
+    const val SHOW_MEASURED_IN_OVERVIEW = "prefShowMeasuredInOverview"
     const val DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH"
     const val APPLICATION_VERSION = "APPLICATION_VERSION"
     const val UPDATE_ON_ROOM_OPEN = "UPDATE_ON_ROOM_OPEN"

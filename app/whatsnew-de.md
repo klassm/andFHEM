@@ -1,1 +1,1 @@
-TODO
+* Option zur Anzeige der Messzeit in der Übersicht

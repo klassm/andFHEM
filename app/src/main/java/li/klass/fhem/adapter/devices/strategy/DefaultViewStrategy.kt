@@ -76,7 +76,8 @@ constructor(
 
             val overviewItems = items.filter { it.isShowInOverview }
             val state = items.firstOrNull { it.key == "STATE" }
-            val stateToAdd = if (overviewItems.isEmpty()) state else null
+            val addState = overviewItems.none { it.desc != view.context.getString(R.string.measured) }
+            val stateToAdd = if (addState) state else null
 
             val toShow = listOfNotNull(stateToAdd) + overviewItems
 

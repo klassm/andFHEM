@@ -59,6 +59,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefShowMeasuredInOverview"
+            android:title="@string/settingsShowMeasuredInOverview"
+            android:summaryOn="@string/settingsShowMeasuredInOverviewOn"
+            android:summaryOff="@string/settingsShowMeasuredInOverviewOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <li.klass.fhem.widget.preference.SeekBarPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

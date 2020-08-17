@@ -334,6 +334,9 @@
     <string name="settingsShowHiddenDevices">Versteckte Geräte anzeigen</string>
     <string name="settingsShowHiddenDevicesSummaryOn">Geräte des Raumes \'hidden\' werden angezeigt</string>
     <string name="settingsShowHiddenDevicesSummaryOff">Geräte des Raumes \'hidden\' werden nicht angezeigt</string>
+    <string name="settingsShowMeasuredInOverview">Zeige die Geräte-Messzeit in der Übersicht</string>
+    <string name="settingsShowMeasuredInOverviewOn">Zeige die Messzeit in der Übersicht (soweit verfügbar)</string>
+    <string name="settingsShowMeasuredInOverviewOff">Zeige keine Messzeit in der Übersicht</string>
     <string name="settingsDefaultTimespan">Graph-Zeitspanne</string>
     <string name="settingsDefaultTimespanSummary">Standardmäßig wird eine Zeitspanne von \'%1$s\' angezeigt</string>
     <string name="settingsAutoUpdate">Automatisches Update</string>
