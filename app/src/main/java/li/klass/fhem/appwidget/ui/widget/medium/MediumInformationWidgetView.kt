@@ -36,6 +36,7 @@ import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.util.toHtml
 import javax.inject.Inject
 
 class MediumInformationWidgetView @Inject constructor() : DeviceAppWidgetView() {
@@ -48,9 +49,9 @@ class MediumInformationWidgetView @Inject constructor() : DeviceAppWidgetView() 
         val line2 = valueForMarker(device, WidgetMediumLine2::class.java)
         val line3 = valueForMarker(device, WidgetMediumLine3::class.java)
 
-        setTextViewOrHide(view, R.id.line1, line1)
-        setTextViewOrHide(view, R.id.line2, line2)
-        setTextViewOrHide(view, R.id.line3, line3)
+        setTextViewOrHide(view, R.id.line1, line1?.toHtml())
+        setTextViewOrHide(view, R.id.line2, line2?.toHtml())
+        setTextViewOrHide(view, R.id.line3, line3?.toHtml())
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }

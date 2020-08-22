@@ -33,6 +33,7 @@ import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.util.toHtml
 import javax.inject.Inject
 
 class StatusWidgetView @Inject constructor() : DeviceAppWidgetView() {
@@ -41,7 +42,7 @@ class StatusWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun getContentView(): Int = R.layout.appwidget_state
 
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
-        setTextViewOrHide(view, R.id.status, device.state)
+        setTextViewOrHide(view, R.id.status, device.state.toHtml())
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
 

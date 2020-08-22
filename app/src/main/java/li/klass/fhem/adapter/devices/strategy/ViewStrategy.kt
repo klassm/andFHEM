@@ -24,23 +24,20 @@
 
 package li.klass.fhem.adapter.devices.strategy
 
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TableRow
 import android.widget.TextView
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.util.toHtml
 
 abstract class ViewStrategy {
     abstract fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View
 
     protected fun setTextView(textView: TextView?, value: String?) {
-        val myValue = if (value == null) "" else value
-        @Suppress("DEPRECATION")
-        val toSet = if (myValue.contains("<")) Html.fromHtml(myValue) else myValue
         if (textView != null) {
-            textView.text = toSet
+            textView.text = (value ?: "").toHtml()
         }
     }
 

@@ -54,7 +54,7 @@ abstract class AppWidgetView {
     protected abstract fun fillWidgetView(context: Context, view: RemoteViews,
                                           widgetConfiguration: WidgetConfiguration)
 
-    protected fun setTextViewOrHide(view: RemoteViews, viewId: Int, value: String?) {
+    protected fun setTextViewOrHide(view: RemoteViews, viewId: Int, value: CharSequence?) {
         if (value != null) {
             view.setTextViewText(viewId, value)
             view.setViewVisibility(viewId, View.VISIBLE)

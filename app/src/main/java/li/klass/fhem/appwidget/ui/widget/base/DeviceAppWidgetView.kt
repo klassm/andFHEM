@@ -36,6 +36,7 @@ import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
+import li.klass.fhem.util.toHtml
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -68,7 +69,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
             if (device == null) {
                 logger.info("createView - device is null, ignoring update", device)
             } else {
-                views.setTextViewText(R.id.deviceName, device.widgetName)
+                views.setTextViewText(R.id.deviceName, device.widgetName.toHtml())
             }
         }
 
@@ -125,7 +126,7 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
                                 widgetConfiguration: WidgetConfiguration) {
         val device = getDeviceFor(deviceNameFrom(widgetConfiguration), widgetConfiguration.connectionId)
         if (device != null) {
-            view.setTextViewText(R.id.deviceName, device.widgetName)
+            view.setTextViewText(R.id.deviceName, device.widgetName.toHtml())
             fillWidgetView(context, view, device, widgetConfiguration)
         } else {
             logger.info("cannot find device for " + deviceNameFrom(widgetConfiguration))

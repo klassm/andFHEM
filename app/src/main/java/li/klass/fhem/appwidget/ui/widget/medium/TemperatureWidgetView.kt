@@ -35,6 +35,7 @@ import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.domain.core.FhemDevice
+import li.klass.fhem.util.toHtml
 import javax.inject.Inject
 
 class TemperatureWidgetView @Inject constructor() : DeviceAppWidgetView() {
@@ -50,7 +51,7 @@ class TemperatureWidgetView @Inject constructor() : DeviceAppWidgetView() {
         val additionalFieldValue = valueForMarker(device, WidgetTemperatureAdditionalField::class.java)
         setTextViewOrHide(view, R.id.additional, additionalFieldValue)
 
-        view.setTextViewText(R.id.temperature, temperature)
+        view.setTextViewText(R.id.temperature, temperature?.toHtml())
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
     }
