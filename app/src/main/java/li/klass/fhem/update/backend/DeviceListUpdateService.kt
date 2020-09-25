@@ -123,6 +123,9 @@ class DeviceListUpdateService @Inject constructor(
                 }
                 else -> UpdateResult.Error()
             }
+        } catch (e: Exception) {
+            LOG.warn("Error while updating", e)
+            return UpdateResult.Error()
         } finally {
             applicationContext.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
