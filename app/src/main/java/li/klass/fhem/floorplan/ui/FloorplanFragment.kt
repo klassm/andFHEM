@@ -46,7 +46,7 @@ class FloorplanFragment @Inject constructor() : AbstractWebViewFragment() {
 
         val modifyJsUrl = FloorplanFragment::class.java.getResource("floorplan-modify.js")
         try {
-            val modifyJs = modifyJsUrl?.readText(Charsets.UTF_8)
+            val modifyJs = modifyJsUrl?.readText(Charsets.UTF_8) ?: return
             BuildVersion.execute(object : BuildVersion.VersionDependent {
                 override fun ifBelow() {
                     view.loadUrl("javascript:$modifyJs")

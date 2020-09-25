@@ -224,7 +224,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
                                 context.getString(intent.getIntExtra(STRING_ID, -1))
                             } else {
                                 intent.getStringExtra(STRING)
-                            }
+                            } ?: "unknown error"
                             showConnectionError(content)
                         }
                         CONNECTION_ERROR_HIDE -> {

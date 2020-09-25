@@ -24,8 +24,8 @@
 
 android {
     flavorDimensions "default"
-    compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    compileSdkVersion 30
+    buildToolsVersion '29.0.3'
     testBuildType 'debug'
     compileOptions.incremental = true
 
@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        targetSdkVersion 29
+        targetSdkVersion 30
         minSdkVersion 21
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
