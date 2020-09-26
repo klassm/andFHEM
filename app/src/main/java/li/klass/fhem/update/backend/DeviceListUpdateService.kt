@@ -113,10 +113,10 @@ class DeviceListUpdateService @Inject constructor(
         applicationContext.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
         try {
             val command = Command("xmllist$xmllistSuffix", connectionId)
-            val result = commandExecutionService.executeSync(command) ?: ""
-            val roomDeviceList = parseResult(connectionId, applicationContext, result, updateHandler)
+            val result = commandExecutionService.executeSync(command)
+            val roomDeviceList = result?.let { parseResult(connectionId, applicationContext, it, updateHandler) }
 
-            return when (update(connectionId, roomDeviceList)) {
+            return when (roomDeviceList != null && update(connectionId, roomDeviceList)) {
                 true -> {
                     updateIndex()
                     UpdateResult.Success(roomDeviceList)
