@@ -41,9 +41,11 @@ class StatusWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     override fun getContentView(): Int = R.layout.appwidget_state
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
-        setTextViewOrHide(view, R.id.status, device.state.toHtml())
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        setTextViewOrHide(view, R.id.status, device?.state?.toHtml())
+        if (device != null) {
+            openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
+        }
     }
 
     override fun supports(device: FhemDevice): Boolean = true

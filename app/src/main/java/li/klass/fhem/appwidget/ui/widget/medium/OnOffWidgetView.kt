@@ -27,6 +27,7 @@ package li.klass.fhem.appwidget.ui.widget.medium
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
 import li.klass.fhem.R
@@ -51,7 +52,12 @@ class OnOffWidgetView @Inject constructor(
 
     override fun getContentView(): Int = R.layout.appwidget_on_off
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        if (device == null) {
+            view.setViewVisibility(R.id.widgetOnButton, View.GONE)
+            view.setViewVisibility(R.id.widgetOffButton, View.GONE)
+            return
+        }
         val isOn = onOffBehavior.isOn(device)
 
         val onStateName = onOffBehavior.getOnStateName(device)!!

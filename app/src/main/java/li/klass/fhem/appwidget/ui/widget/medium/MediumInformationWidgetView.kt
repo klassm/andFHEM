@@ -25,6 +25,7 @@
 package li.klass.fhem.appwidget.ui.widget.medium
 
 import android.content.Context
+import android.view.View
 import android.widget.RemoteViews
 
 import li.klass.fhem.R
@@ -44,7 +45,13 @@ class MediumInformationWidgetView @Inject constructor() : DeviceAppWidgetView() 
 
     override fun getContentView(): Int = R.layout.appwidget_information_medium
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        if (device == null) {
+            view.setViewVisibility(R.id.line1, View.GONE)
+            view.setViewVisibility(R.id.line2, View.GONE)
+            view.setViewVisibility(R.id.line3, View.GONE)
+            return
+        }
         val line1 = valueForMarker(device, WidgetMediumLine1::class.java)
         val line2 = valueForMarker(device, WidgetMediumLine2::class.java)
         val line3 = valueForMarker(device, WidgetMediumLine3::class.java)

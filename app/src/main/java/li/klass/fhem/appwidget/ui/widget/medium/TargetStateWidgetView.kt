@@ -28,6 +28,7 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil
@@ -48,7 +49,12 @@ class TargetStateWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     override fun getContentView(): Int = R.layout.appwidget_targetstate
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        if (device == null) {
+            view.setViewVisibility(R.id.button, View.GONE)
+            return
+        }
+
         val payload = widgetConfiguration.payload[1]
         val state = device.getEventMapStateFor(payload)
 

@@ -25,6 +25,7 @@
 package li.klass.fhem.appwidget.ui.widget.medium
 
 import android.content.Context
+import android.view.View
 import android.widget.RemoteViews
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.AppWidgetTarget
@@ -46,7 +47,12 @@ class MediumWeatherForecastWidget @Inject constructor(
 
     override fun getContentView(): Int = R.layout.appwidget_weather
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        if (device == null) {
+            view.setViewVisibility(R.id.weaterContent, View.GONE)
+            return
+        }
+
         val forecast = weatherService.forecastsFor(device)[0]
 
         view.setTextViewText(R.id.day_description, forecast.weekday + ", " + DateFormatUtil.ANDFHEM_DATE_FORMAT.print(forecast.date))

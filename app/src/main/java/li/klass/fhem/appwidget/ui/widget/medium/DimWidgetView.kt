@@ -27,6 +27,7 @@ package li.klass.fhem.appwidget.ui.widget.medium
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
@@ -45,13 +46,20 @@ class DimWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     override fun getContentView(): Int = R.layout.appwidget_dim
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
         update(context, device, view, widgetConfiguration.widgetId, widgetConfiguration.connectionId)
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
+        if (device != null) {
+            openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
+        }
     }
 
-    private fun update(context: Context, device: FhemDevice, view: RemoteViews, widgetId: Int, connectionId: String?) {
+    private fun update(context: Context, device: FhemDevice?, view: RemoteViews, widgetId: Int, connectionId: String?) {
+        if (device == null) {
+            view.setViewVisibility(R.id.dimUp, View.GONE)
+            view.setViewVisibility(R.id.dimDown, View.GONE)
+            return
+        }
         val behavior = DimmableBehavior.behaviorFor(device, connectionId)!!
         view.setTextViewText(R.id.state, behavior.getDimStateForPosition(behavior.currentDimPosition))
 

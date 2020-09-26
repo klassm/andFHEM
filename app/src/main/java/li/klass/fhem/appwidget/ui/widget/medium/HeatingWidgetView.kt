@@ -42,7 +42,12 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     override fun getContentView(): Int = R.layout.appwidget_heating
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        if (device == null) {
+            view.setViewVisibility(R.id.heatingContent, View.GONE)
+            return
+        }
+
         val xmlListDevice = device.xmlListDevice
 
         val warnings = xmlListDevice.getState("warnings", false)

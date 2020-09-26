@@ -25,6 +25,7 @@
 package li.klass.fhem.appwidget.ui.widget.medium
 
 import android.content.Context
+import android.view.View
 import android.widget.RemoteViews
 
 import li.klass.fhem.R
@@ -46,7 +47,12 @@ class TemperatureWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
     public override fun getContentView() = R.layout.appwidget_temperature
 
-    public override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    public override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+        if (device == null) {
+            view.setViewVisibility(R.id.additional, View.GONE)
+            view.setViewVisibility(R.id.temperature, View.GONE)
+            return
+        }
         val temperature = valueForMarker(device, WidgetTemperatureField::class.java)
         val additionalFieldValue = valueForMarker(device, WidgetTemperatureAdditionalField::class.java)
         setTextViewOrHide(view, R.id.additional, additionalFieldValue)

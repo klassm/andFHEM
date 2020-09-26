@@ -41,11 +41,11 @@ class SmallToggleWidget @Inject constructor(
         deviceHookProvider: DeviceHookProvider,
         onOffBehavior: OnOffBehavior
 ) : ToggleWidgetView(deviceHookProvider, onOffBehavior) {
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
         super.fillWidgetView(context, view, device, widgetConfiguration)
 
-        view.setTextViewText(R.id.toggleOff, device.widgetName)
-        view.setTextViewText(R.id.toggleOn, device.widgetName)
+        view.setTextViewText(R.id.toggleOff, device?.widgetName)
+        view.setTextViewText(R.id.toggleOn, device?.widgetName)
     }
 
     override fun getContentView(): Int = R.layout.appwidget_toggle_small

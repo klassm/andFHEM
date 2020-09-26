@@ -52,7 +52,13 @@ open class ToggleWidgetView @Inject constructor(
 
     override fun getContentView(): Int = R.layout.appwidget_toggle
 
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+
+        if (device == null) {
+            view.setViewVisibility(R.id.toggleOn, View.GONE)
+            view.setViewVisibility(R.id.toggleOff, View.GONE)
+            return
+        }
         val isOn = onOffBehavior.isOnConsideringHooks(device)
         val actionIntent = actionIntentFor(device, widgetConfiguration, context)
 

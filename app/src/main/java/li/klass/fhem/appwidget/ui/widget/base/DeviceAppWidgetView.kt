@@ -65,12 +65,8 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
         if (shouldSetDeviceName()) {
             val deviceName = deviceNameFrom(widgetConfiguration)
 
-            val device = getDeviceFor(deviceName, widgetConfiguration.connectionId)
-            if (device == null) {
-                logger.info("createView - device is null, ignoring update", device)
-            } else {
-                views.setTextViewText(R.id.deviceName, device.widgetName.toHtml())
-            }
+            val widgetName = getDeviceFor(deviceName, widgetConfiguration.connectionId)?.widgetName?.toHtml()
+            views.setTextViewText(R.id.deviceName, widgetName ?: "???")
         }
 
         return views
@@ -125,15 +121,11 @@ abstract class DeviceAppWidgetView : AppWidgetView() {
     override fun fillWidgetView(context: Context, view: RemoteViews,
                                 widgetConfiguration: WidgetConfiguration) {
         val device = getDeviceFor(deviceNameFrom(widgetConfiguration), widgetConfiguration.connectionId)
-        if (device != null) {
-            view.setTextViewText(R.id.deviceName, device.widgetName.toHtml())
-            fillWidgetView(context, view, device, widgetConfiguration)
-        } else {
-            logger.info("cannot find device for " + deviceNameFrom(widgetConfiguration))
-        }
+        view.setTextViewText(R.id.deviceName, device?.widgetName?.toHtml() ?: "???")
+        fillWidgetView(context, view, device, widgetConfiguration)
     }
 
-    protected abstract fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice,
+    protected abstract fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?,
                                           widgetConfiguration: WidgetConfiguration)
 
     companion object {

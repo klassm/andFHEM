@@ -54,8 +54,10 @@ class BigWeatherForecastWidget @Inject constructor(val weatherService: WeatherSe
     override fun getContentView(): Int = R.layout.appwidget_forecast_big
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice,
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?,
                                 widgetConfiguration: WidgetConfiguration) {
+
+        device ?: return
 
         val listIntent = Intent(context, AppWidgetListViewUpdateRemoteViewsService::class.java)
                 .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetConfiguration.widgetId)

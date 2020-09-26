@@ -36,7 +36,14 @@ import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
 class SmallPresenceWidget @Inject constructor() : DeviceAppWidgetView() {
-    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice, widgetConfiguration: WidgetConfiguration) {
+    override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
+
+        if (device == null) {
+            view.setViewVisibility(R.id.present, View.GONE)
+            view.setViewVisibility(R.id.absent, View.GONE)
+            return
+        }
+
         view.setTextViewText(R.id.present, device.widgetName)
         view.setTextViewText(R.id.absent, device.widgetName)
 

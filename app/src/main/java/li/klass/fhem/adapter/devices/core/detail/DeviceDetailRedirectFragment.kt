@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentDirections.Companion.actionDeviceDetailRedirectFragmentToAllDevicesFragment
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentDirections.Companion.actionDeviceDetailRedirectFragmentToDeviceDetailFragment
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentDirections.Companion.actionDeviceDetailRedirectFragmentToFloorplanFragment
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentDirections.Companion.actionDeviceDetailRedirectFragmentToWebViewFragment
 import li.klass.fhem.update.backend.DeviceListService
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class DeviceDetailRedirectFragment @Inject constructor(
@@ -20,9 +22,12 @@ class DeviceDetailRedirectFragment @Inject constructor(
         super.onCreate(savedInstanceState)
 
         val device = deviceListService.getDeviceForName(args.deviceName, args.connectionId)
-        device ?: throw RuntimeException("cannot find device for name $args")
 
-        val action = when(device.xmlListDevice.type) {
+        val action = when (device?.xmlListDevice?.type) {
+            null -> {
+                logger.warn("onCreate - cannot find device ${args.deviceName} in connection ${args.connectionId} - redirecting to all devices")
+                actionDeviceDetailRedirectFragmentToAllDevicesFragment()
+            }
             "weblink" -> {
                 actionDeviceDetailRedirectFragmentToWebViewFragment(
                         device.xmlListDevice.getInternal("LINK")!!
@@ -43,5 +48,10 @@ class DeviceDetailRedirectFragment @Inject constructor(
 
         val navController = findNavController()
         navController.navigate(action)
+    }
+
+    companion object {
+        @JvmStatic
+        private val logger = LoggerFactory.getLogger(DeviceDetailRedirectFragment::class.java)
     }
 }
