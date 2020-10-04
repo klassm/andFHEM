@@ -105,7 +105,7 @@ class RoomDetailFragment @Inject constructor(
     override val navigationFragment: Fragment = roomListNavigationFragment
 
     override fun navigateTo(device: FhemDevice) {
-        findNavController().navigate(actionToDeviceDetailRedirect(device.name, null))
+        findNavController().navigate(actionToDeviceDetailRedirect(device.name, args.connectionId))
     }
 
     override val roomNameSaveKey: String
