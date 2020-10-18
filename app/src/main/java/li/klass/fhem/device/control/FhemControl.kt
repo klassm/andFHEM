@@ -13,7 +13,7 @@ data class FhemControl(
         val title: String,
         val structure: String?,
         val zone: String?,
-        val action: DeviceAction,
+        val deviceControl: DeviceControl,
         val device: FhemDevice
 ) {
     fun toStatelessControl(pendingIntent: PendingIntent): Control =
@@ -21,7 +21,7 @@ data class FhemControl(
                     .setTitle(title)
                     .setStructure(structure)
                     .setZone(zone)
-                    .setDeviceType(action.deviceType)
+                    .setDeviceType(deviceControl.deviceType)
                     .build()
 
     fun toStatefulControl(pendingIntent: PendingIntent, controlContext: ControlContext): Control =
@@ -29,21 +29,21 @@ data class FhemControl(
                     .setTitle(title)
                     .setStructure(structure)
                     .setZone(zone)
-                    .setDeviceType(action.deviceType)
-                    .setControlTemplate(action.controlTemplateFor(device, controlContext))
+                    .setDeviceType(deviceControl.deviceType)
+                    .setControlTemplate(deviceControl.controlTemplate)
                     .setStatus(Control.STATUS_OK)
                     .build()
 }
 
 @RequiresApi(Build.VERSION_CODES.R)
 fun FhemDevice.toControl(controlContext: ControlContext, connection: FHEMServerSpec): FhemControl? {
-    val action = DeviceAction.actionFor(this, controlContext) ?: return null
+    val deviceControl = DeviceAction.controlFor(this, controlContext) ?: return null
     return FhemControl(
             controlId = ControlId(connection.id, name),
             title = aliasOrName,
             structure = connection.name,
             zone = getRooms().firstOrNull(),
-            action = action,
+            deviceControl = deviceControl,
             device = this
     )
 }

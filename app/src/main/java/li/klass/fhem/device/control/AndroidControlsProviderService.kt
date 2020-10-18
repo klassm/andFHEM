@@ -15,15 +15,11 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.NavDeepLinkBuilder
 import io.reactivex.Flowable
 import io.reactivex.processors.ReplayProcessor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
 import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
-import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.behavior.dim.DimmableBehavior
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
@@ -127,16 +123,23 @@ class AndroidControlsProviderService : ControlsProviderService() {
 
     override fun performControlAction(androidControlId: String, action: ControlAction, consumer: Consumer<Int>) {
         val controlId = ControlId.fromAndroid(androidControlId)
-        val device = deviceListService.getDeviceForName(controlId.deviceName, controlId.connectionId) ?: return
+        val device = deviceListService.getDeviceForName(controlId.deviceName, controlId.connectionId)
+                ?: return
         when (action) {
             is BooleanAction -> {
                 val newState = if (action.newState) "on" else "off"
                 genericDeviceService.setState(device.xmlListDevice, newState, controlId.connectionId, true)
             }
             is FloatAction -> {
-                val dimmable = DimmableBehavior.behaviorFor(device, connectionId = null) ?: return
-                GlobalScope.launch(Dispatchers.Main) {
-                    dimmable.switchTo(StateUiService(genericDeviceService), applicationContext, action.newValue.toDouble())
+                if (action.templateId.startsWith("temperature_")) {
+                    val state = device.setList.getFirstPresentStateOf("desired-temp", "desiredTemp")
+                            ?: return
+                    genericDeviceService.setSubState(device.xmlListDevice, state, action.newValue.toString(), controlId.connectionId, true)
+                } else {
+                    val dimmable = DimmableBehavior.behaviorFor(device, connectionId = null)
+                            ?: return
+                    val stateName = dimmable.behavior.getStateName()
+                    genericDeviceService.setSubState(device.xmlListDevice, stateName, action.newValue.toString(), controlId.connectionId, true)
                 }
             }
         }
