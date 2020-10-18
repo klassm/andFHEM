@@ -246,6 +246,16 @@
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".device.control.AndroidControlsProviderService"
+            android:permission="android.permission.BIND_CONTROLS">
+            <intent-filter>
+                <action android:name="android.service.controls.ControlsProviderService" />
+                <action android:name="li.klass.fhem.constants.Actions.REMOTE_DEVICES_UPDATED" />
+            </intent-filter>
+        </service>
+
         <service
             android:name=".appindex.AppIndexIntentService"
             android:exported="true"
