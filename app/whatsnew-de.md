@@ -1,1 +1,1 @@
-TODO
+* Erste Implementierung für Android 11 Gerätekontrolle
