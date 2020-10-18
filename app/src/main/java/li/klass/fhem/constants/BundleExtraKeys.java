@@ -60,4 +60,7 @@ public class BundleExtraKeys {
     public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";
 
     public static final String CONNECTION_ID = "CONNECTION_ID";
+
+    public static final String UPDATED_DEVICE_NAMES = "UPDATED_DEVICE_NAMES";
+
 }
