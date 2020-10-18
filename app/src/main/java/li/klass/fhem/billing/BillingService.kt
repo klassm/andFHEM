@@ -133,7 +133,7 @@ constructor() {
                 iabHelper!!.startSetup { result ->
                     try {
                         if (result.isSuccess) {
-                            LOG.debug("setup() : setup was successful, setupIsDone=" + iabHelper!!.isSetupDone)
+                            LOG.debug("setup() : setup was successful, setupIsDone=" + iabHelper?.isSetupDone)
                         } else {
                             LOG.error("setup() : ERROR $result")
                         }

@@ -154,6 +154,8 @@ dependencies {
     implementation(group = "org.jetbrains.anko", name = "anko-appcompat-v7-coroutines", version = ankoVersion)
     implementation(group = "org.jetbrains.anko", name = "anko-coroutines", version = ankoVersion)
 
+    implementation(group = "org.reactivestreams", name = "reactive-streams", version = "1.0.3")
+    implementation(group = "io.reactivex.rxjava2", name = "rxjava", version = "2.2.0")
 
     testImplementation(group = "junit", name = "junit", version = "4.13")
     testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")

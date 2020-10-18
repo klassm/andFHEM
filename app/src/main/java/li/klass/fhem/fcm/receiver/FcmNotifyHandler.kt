@@ -27,7 +27,9 @@ package li.klass.fhem.fcm.receiver
 import android.content.Context
 import android.content.Intent
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.fcm.receiver.data.FcmNotifyData
@@ -44,7 +46,8 @@ class FcmNotifyHandler @Inject constructor(
         private val fcmHistoryService: FcmHistoryService,
         private val appWidgetUpdateService: AppWidgetUpdateService,
         private val applicationProperties: ApplicationProperties,
-        private val notificationService: NotificationService
+        private val notificationService: NotificationService,
+        private val connectionService: ConnectionService
 ) {
     fun handleNotify(data: FcmNotifyData, context: Context) {
         val changesText = data.changes ?: return
@@ -57,6 +60,7 @@ class FcmNotifyHandler @Inject constructor(
         fcmHistoryService.addChanges(deviceName, changes, data.sentTime)
         updateWidgets()
         updateUI(context)
+        sendUpdatedBroadcastFor(context, deviceName, data.connection)
         showNotification(deviceName, changes, data.shouldVibrate(), context)
     }
 
@@ -88,6 +92,15 @@ class FcmNotifyHandler @Inject constructor(
     private fun updateUI(context: Context) {
         context.sendBroadcast(Intent(Actions.DO_UPDATE))
     }
+
+
+    private fun sendUpdatedBroadcastFor(context: Context, deviceName: String, connectionId: String?) {
+        val connection = connectionId ?: connectionService.getSelectedId()
+        context.sendBroadcast(Intent(Actions.DEVICES_UPDATED)
+                .putExtra(BundleExtraKeys.UPDATED_DEVICE_NAMES, ArrayList(listOf(deviceName)))
+                .putExtra(BundleExtraKeys.CONNECTION_ID, connection))
+    }
+
 
     private fun updateWidgets() {
         val updateWidgets = applicationProperties.getBooleanSharedPreference(SettingsKeys.GCM_WIDGET_UPDATE, false)

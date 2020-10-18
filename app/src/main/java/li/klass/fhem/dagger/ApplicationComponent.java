@@ -74,6 +74,7 @@ import li.klass.fhem.appwidget.ui.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.ui.widget.small.TimersLinkWidget;
 import li.klass.fhem.appwidget.update.AppWidgetListViewUpdateRemoteViewsService;
 import li.klass.fhem.backup.ImportExportService;
+import li.klass.fhem.device.control.AndroidControlsProviderService;
 import li.klass.fhem.fcm.receiver.FcmIntentService;
 import li.klass.fhem.graph.backend.gplot.GPlotHolder;
 import li.klass.fhem.graph.ui.GraphActivity;
@@ -217,11 +218,15 @@ public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication
 
     void inject(AppWidgetActionBroadcastReceiver appWidgetActionBroadcastReceiver);
 
+    void inject(AndroidControlsProviderService androidControlsProviderService);
+
     @Component.Builder
     interface Builder {
         @BindsInstance
         Builder application(Application application);
+
         Builder databaseModule(DatabaseModule databaseModule);
+
         ApplicationComponent build();
     }
 }

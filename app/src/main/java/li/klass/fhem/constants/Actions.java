@@ -41,7 +41,7 @@ public class Actions {
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
     public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";
-    public static final String UPDATE_NAVIGATION = prefix + "UPDATE_NAVIGATION";
+    public static final String DEVICES_UPDATED = prefix + "REMOTE_DEVICES_UPDATED";
     public static final String REDRAW = prefix + "REDRAW";
 
     public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";

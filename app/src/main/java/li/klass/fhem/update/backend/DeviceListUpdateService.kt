@@ -33,6 +33,7 @@ import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
@@ -56,6 +57,7 @@ class DeviceListUpdateService @Inject constructor(
             executeXmllistPartial(connectionId, deviceName, object : BeforeRoomListUpdateModifier {
                 override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
                     if (newlyLoaded.getDeviceFor(deviceName) != null) {
+                        sendUpdatedBroadcastFor(newlyLoaded, connectionId)
                         cached.getDeviceFor(deviceName)?.let { cached.removeDevice(it) }
                     }
                 }
@@ -65,6 +67,7 @@ class DeviceListUpdateService @Inject constructor(
         val toUpdate = if (roomName == "Unsorted") "" else roomName
         return executeXmllistPartial(connectionId, "room=$toUpdate", object : BeforeRoomListUpdateModifier {
             override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
+                sendUpdatedBroadcastFor(newlyLoaded, connectionId)
                 cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
             }
         })
@@ -72,7 +75,10 @@ class DeviceListUpdateService @Inject constructor(
 
     fun updateAllDevices(connectionId: String? = null): UpdateResult {
         return executeXmllist(connectionId, "", object : UpdateHandler {
-            override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList = parsed
+            override fun handle(cached: RoomDeviceList, parsed: RoomDeviceList): RoomDeviceList {
+                sendUpdatedBroadcastFor(parsed, connectionId)
+                return parsed
+            }
         })
     }
 
@@ -116,16 +122,17 @@ class DeviceListUpdateService @Inject constructor(
             val result = commandExecutionService.executeSync(command)
             val roomDeviceList = result?.let { parseResult(connectionId, applicationContext, it, updateHandler) }
 
+
             return when (roomDeviceList != null && update(connectionId, roomDeviceList)) {
                 true -> {
                     updateIndex()
                     UpdateResult.Success(roomDeviceList)
                 }
-                else -> UpdateResult.Error()
+                else -> UpdateResult.Error
             }
         } catch (e: Exception) {
             LOG.warn("Error while updating", e)
-            return UpdateResult.Error()
+            return UpdateResult.Error
         } finally {
             applicationContext.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
@@ -170,6 +177,14 @@ class DeviceListUpdateService @Inject constructor(
         }
     }
 
+    private fun sendUpdatedBroadcastFor(roomDeviceList: RoomDeviceList, connectionId: String?) {
+        val updatedDevices = roomDeviceList.allDevices.map { it.name }
+        val connection = connectionId ?: connectionService.getSelectedId()
+        application.sendBroadcast(Intent(Actions.DEVICES_UPDATED)
+                .putExtra(BundleExtraKeys.UPDATED_DEVICE_NAMES, ArrayList(updatedDevices))
+                .putExtra(BundleExtraKeys.CONNECTION_ID, connection))
+    }
+
     private val applicationContext: Context get() = application.applicationContext
 
     private interface UpdateHandler {
@@ -183,7 +198,7 @@ class DeviceListUpdateService @Inject constructor(
 
     sealed class UpdateResult {
         class Success(val roomDeviceList: RoomDeviceList?) : UpdateResult()
-        class Error : UpdateResult()
+        object Error : UpdateResult()
     }
 
     companion object {
