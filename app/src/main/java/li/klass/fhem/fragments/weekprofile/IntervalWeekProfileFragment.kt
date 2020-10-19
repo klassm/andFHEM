@@ -53,6 +53,8 @@ class IntervalWeekProfileFragment @Inject constructor(
 
     override val deviceName: String
         get() = args.deviceName
+    override val connectionId: String?
+        get() = args.connectionId
     override val deviceDisplayName: String
         get() = args.deviceDisplayName
     override val heatingConfigurationProvider: HeatingConfigurationProvider<FilledTemperatureInterval>

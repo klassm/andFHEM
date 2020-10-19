@@ -59,11 +59,11 @@ class FHTDetailActionProvider @Inject constructor(
                 object : ActionCardButton(R.string.timetable, context) {
                     override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                         val provider = object : HeatingConfigurationProvider<FromToHeatingInterval> {
-                                override fun get(): HeatingConfiguration<FromToHeatingInterval, *> = FHTConfiguration()
-                            }
+                            override fun get(): HeatingConfiguration<FromToHeatingInterval, *> = FHTConfiguration()
+                        }
                         navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToFromToWeekProfileFragment(
-                                    device.name, device.displayName(), provider
-                            ))
+                                device.name, connectionId, device.displayName(), provider
+                        ))
                     }
                 },
                 object : ActionCardButton(R.string.requestRefresh, context) {

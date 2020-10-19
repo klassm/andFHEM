@@ -67,14 +67,14 @@ class CulHmDetailActionProvider @Inject constructor(
 
     override fun actionsFor(context: Context): List<ActionCardAction> {
         return listOf(object : ActionCardButton(R.string.timetable,
-                                                                            context) {
+                context) {
             override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                 val provider = object : HeatingConfigurationProvider<FilledTemperatureInterval> {
                     override fun get(): HeatingConfiguration<FilledTemperatureInterval, *> = CULHMConfiguration()
                 }
 
                 navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToIntervalWeekProfileFragment(
-                        device.displayName(), device.name, provider
+                        device.displayName(), device.name, connectionId, provider
                 ))
             }
 

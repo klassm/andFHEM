@@ -56,6 +56,7 @@ interface HeatingConfigurationProvider<INTERVAL : BaseHeatingInterval<INTERVAL>>
 abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>> : BaseFragment() {
 
     abstract val deviceName: String
+    abstract val connectionId: String?
     abstract val deviceDisplayName: String
     abstract val heatingConfigurationProvider: HeatingConfigurationProvider<INTERVAL>
     private lateinit var weekProfile: WeekProfile<INTERVAL, *>
@@ -102,7 +103,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         val commands = weekProfile.statesToSet.toList()
         GlobalScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
-                deviceListService.getDeviceForName(deviceName)?.xmlListDevice?.let {
+                deviceListService.getDeviceForName(deviceName, connectionId)?.xmlListDevice?.let {
                     genericDeviceService.setSubStates(it, commands, connectionId = null)
                 }
             }
@@ -115,8 +116,8 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     }
 
     private fun onCopyFromDevice() {
-        val givenDevice = deviceListService.getDeviceForName(deviceName) ?: return
-        val devices = deviceListService.getAllRoomsDeviceList().allDevices.filter {
+        val givenDevice = deviceListService.getDeviceForName(deviceName, connectionId) ?: return
+        val devices = deviceListService.getAllRoomsDeviceList(connectionId).allDevices.filter {
             it.xmlListDevice.type == givenDevice.xmlListDevice.type && it.xmlListDevice.getAttribute(
                     "model") == givenDevice.xmlListDevice.getAttribute("model")
         }
@@ -153,7 +154,7 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
                 if (refresh) {
                     deviceListUpdateService.updateSingleDevice(deviceName)
                 }
-                deviceListService.getDeviceForName(deviceName)
+                deviceListService.getDeviceForName(deviceName, connectionId)
             }?.let {
                 weekProfile = heatingConfiguration.fillWith(it.xmlListDevice)
                 updateChangeButtonsHolderVisibility(weekProfile)

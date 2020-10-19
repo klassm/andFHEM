@@ -217,6 +217,11 @@
             android:name="deviceName"
             app:argType="string" />
         <argument
+            android:name="connectionId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
             android:name="deviceDisplayName"
             app:argType="string" />
         <argument
@@ -233,6 +238,11 @@
         <argument
             android:name="deviceName"
             app:argType="string" />
+        <argument
+            android:name="connectionId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <argument
             android:name="heatingConfigurationProvider"
             app:argType="java.io.Serializable" />
