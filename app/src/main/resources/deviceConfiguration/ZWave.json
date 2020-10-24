@@ -36,8 +36,18 @@
       "showInOverview": true
     },
     {
-      "key": "battery",
+      "key": "thermostatMode",
+      "desc": "mode",
+      "showInOverview": false
+    },
+    {
+      "key": "batteryPercent",
       "desc": "battery",
+      "showInOverview": false
+    },
+    {
+      "key": "setpointTemp",
+      "desc": "desiredTemperature",
       "showInOverview": false
     }
   ],
@@ -46,6 +56,14 @@
       "power": {
         "append": "W",
         "extract": "double"
+      },
+      "setpointTemp": {
+        "append": "°",
+        "extract": "double"
+      },
+      "batteryPercent": {
+        "append": "%",
+        "extract": "int"
       },
       "energy": {
         "append": "kWh",

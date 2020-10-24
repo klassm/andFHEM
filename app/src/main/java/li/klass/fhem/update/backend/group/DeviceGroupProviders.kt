@@ -28,7 +28,8 @@ import javax.inject.Inject
 
 class DeviceGroupProviders @Inject constructor(
         culHmDeviceGroupProvider: CulHmDeviceGroupProvider,
-        owDeviceGroupProvider: OWDeviceGroupProvider
+        owDeviceGroupProvider: OWDeviceGroupProvider,
+        zWaveDeviceGroupProvider: ZWaveDeviceGroupProvider
 ) {
-    val providers = setOf(culHmDeviceGroupProvider, owDeviceGroupProvider)
+    val providers = setOf(culHmDeviceGroupProvider, owDeviceGroupProvider, zWaveDeviceGroupProvider)
 }
