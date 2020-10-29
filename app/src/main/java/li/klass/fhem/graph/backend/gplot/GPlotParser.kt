@@ -23,7 +23,7 @@
  */
 package li.klass.fhem.graph.backend.gplot
 
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.*
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -41,8 +41,10 @@ class GPlotParser @Inject constructor() {
             parse(content)
         } catch (e: Exception) {
             LOGGER.warn("parseSafe() - cannot parse: \r\n$content", e)
-            Crashlytics.setString("content", content)
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().apply {
+                setCustomKey("content", content)
+                recordException(e)
+            }
             null
         }
     }

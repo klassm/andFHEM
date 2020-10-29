@@ -29,7 +29,6 @@ buildscript {
         google()
         mavenCentral()
         maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
-        maven { setUrl("https://maven.fabric.io/public") }
         jcenter()
     }
 
@@ -40,9 +39,9 @@ buildscript {
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.3")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "2.7.5")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
-        classpath(group = "io.fabric.tools", name = "gradle", version = "1.31.2")
         classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.0-beta01")
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.3.1")
+        classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.3.0")
     }
 }
 
@@ -81,8 +80,8 @@ apply(plugin = "de.mobilej.unmock")
 apply(plugin = "co.riiid.gradle")
 apply(plugin = "com.github.triplet.play")
 apply(plugin = "kotlinx-serialization")
-apply(plugin = "io.fabric")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
+apply(plugin = "com.google.firebase.crashlytics")
 
 val unmock = configurations.findByName("unmock")!!
 dependencies {
@@ -136,7 +135,7 @@ dependencies {
     implementation(group = "com.github.bumptech.glide", name = "okhttp3-integration", version = glideVersion) {
         exclude(group = "glide-parent")
     }
-    implementation(group = "com.crashlytics.sdk.android", name = "crashlytics", version = "2.10.1")
+    implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "17.2.2")
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-runtime", version = kotlinSerializationVersion) {

@@ -24,7 +24,7 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseConfiguration
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseGeneral
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseToAdd
@@ -51,7 +51,7 @@ class Sanitiser @Inject constructor(
             val sanitiseConfiguration = sanitiseConfigurationFor(deviceType) ?: return deviceNode
             sanitise(deviceNode, sanitiseConfiguration)
         } catch (e: Exception) {
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
             LOGGER.error("cannot sanitise {}", deviceNode, e)
             deviceNode
         }
@@ -64,7 +64,7 @@ class Sanitiser @Inject constructor(
 
             handleGeneral(xmlListDevice, generalOptions)
         } catch (e: JSONException) {
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
             throw RuntimeException(e)
         }
     }
