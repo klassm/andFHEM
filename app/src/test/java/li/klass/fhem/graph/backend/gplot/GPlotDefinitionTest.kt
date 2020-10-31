@@ -1,9 +1,9 @@
 package li.klass.fhem.graph.backend.gplot
 
-import kotlinx.io.ByteArrayOutputStream
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
