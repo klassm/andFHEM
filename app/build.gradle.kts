@@ -46,7 +46,7 @@ buildscript {
 }
 
 val kotlinVersion: String by project
-val kotlinSerializationVersion = "0.20.0"
+val kotlinSerializationVersion = "1.0.1"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.11.0"
@@ -61,6 +61,7 @@ plugins {
     kotlin("android").version("1.3.31")
     kotlin("android.extensions").version("1.3.31")
     kotlin("kapt").version("1.3.31")
+    kotlin("plugin.serialization") version "1.4.10"
 }
 
 repositories {
@@ -79,7 +80,6 @@ repositories {
 apply(plugin = "de.mobilej.unmock")
 apply(plugin = "co.riiid.gradle")
 apply(plugin = "com.github.triplet.play")
-apply(plugin = "kotlinx-serialization")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
 apply(plugin = "com.google.firebase.crashlytics")
 
@@ -138,9 +138,7 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "17.2.2")
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-runtime", version = kotlinSerializationVersion) {
-        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
-    }
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.0.1")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)
 

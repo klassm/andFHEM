@@ -25,7 +25,6 @@
 package li.klass.fhem.update.backend.device.configuration
 
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.json.JSONException
@@ -35,11 +34,13 @@ import javax.inject.Singleton
 @Singleton
 class DeviceConfigurationProvider @Inject
 constructor() {
+    val format = Json { isLenient = true }
+
     private val configurations: Map<String, DeviceConfiguration> by lazy {
         val jsonAsString = DeviceConfigurationProvider::class.java.getResource("/deviceConfiguration.json")
                 ?.readText(Charsets.UTF_8) ?: ""
 
-        Json(JsonConfiguration.Stable).parse(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
+        format.decodeFromString(DevicesConfiguration.serializer(), jsonAsString).deviceConfigurations
     }
 
     fun configurationFor(device: FhemDevice): DeviceConfiguration =
