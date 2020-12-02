@@ -39,7 +39,7 @@ buildscript {
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.4")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.0.0")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
-        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.1")
+        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.2")
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.3.4")
         classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.4.1")
     }
