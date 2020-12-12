@@ -221,6 +221,7 @@ class ConnectionDetailFragment @Inject constructor(
                     .withFilterDirectories(false)
                     .withRequestCode(filePickerRequestCode)
                     .start()
+        })
     }
 
     override fun getTitle(context: Context) = context.getString(R.string.connectionManageTitle)
@@ -278,27 +279,27 @@ class ConnectionDetailFragment @Inject constructor(
         strategyFor(connectionType, myContext).fillView(v, fhemServerSpec)
     }
 
-                private fun selectionIndexFor(serverType: ServerType): Int {
-            val serverTypes = serverTypes
-            return serverTypes.indices.firstOrNull { serverType == serverTypes[it] } ?: -1
-        }
+    private fun selectionIndexFor(serverType: ServerType): Int {
+        val serverTypes = serverTypes
+        return serverTypes.indices.firstOrNull { serverType == serverTypes[it] } ?: -1
+    }
 
-                private interface ConnectionTypeDetailChangedListener {
-            fun onChanged()
-        }
+    private interface ConnectionTypeDetailChangedListener {
+        fun onChanged()
+    }
 
-                override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-            if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
-                val filePath = data!!.getStringExtra(FilePickerActivity.RESULT_FILE_PATH)
-                LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
-                clientCertificatePath.setText(filePath, TextView.BufferType.NORMAL)
-            }
+        if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
+            val filePath = data!!.getStringExtra(FilePickerActivity.RESULT_FILE_PATH)
+            LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
+            clientCertificatePath.setText(filePath, TextView.BufferType.NORMAL)
         }
+    }
 
-                companion object {
-            private val LOG = LoggerFactory.getLogger(ConnectionDetailFragment::class.java)
-            private const val filePickerRequestCode = 1337
-        }
+    companion object {
+        private val LOG = LoggerFactory.getLogger(ConnectionDetailFragment::class.java)
+        private const val filePickerRequestCode = 1337
+    }
 }
