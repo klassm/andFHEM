@@ -75,4 +75,9 @@
     <color name="seriesColorOLIVE">#FF556B2F</color>
     <color name="seriesColorGRAY">#FF5A5A5A</color>
     <color name="seriesColorYELLOW">#FFFFFF00</color>
+
+    <!-- Colors for file picker ...-->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>

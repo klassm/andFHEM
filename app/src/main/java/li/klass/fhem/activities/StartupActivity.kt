@@ -35,12 +35,10 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.startup.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.startup.actions.StartupActions
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.BundleExtraKeys
-import li.klass.fhem.dagger.ScopedFragmentFactory
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.login.LoginUIService

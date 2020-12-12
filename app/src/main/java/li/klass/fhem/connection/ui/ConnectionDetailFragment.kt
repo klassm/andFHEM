@@ -26,6 +26,7 @@ package li.klass.fhem.connection.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -34,9 +35,9 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.github.angads25.filepicker.model.DialogConfigs
-import com.github.angads25.filepicker.model.DialogProperties
-import com.github.angads25.filepicker.view.FilePickerDialog
+import com.nbsp.materialfilepicker.MaterialFilePicker
+import com.nbsp.materialfilepicker.ui.FilePickerActivity
+import kotlinx.android.synthetic.main.connection_fhemweb.*
 import kotlinx.android.synthetic.main.connection_fhemweb.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
@@ -49,6 +50,7 @@ import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
 import java.io.File
 import javax.inject.Inject
+
 
 class ConnectionDetailFragment @Inject constructor(
         private val connectionService: ConnectionService
@@ -135,8 +137,6 @@ class ConnectionDetailFragment @Inject constructor(
             else -> throw IllegalArgumentException("cannot handle connection type $connectionType")
         }
 
-        assert(view != null)
-
         val showPasswordCheckbox = view.findViewById<CheckBox?>(R.id.showPasswordCheckbox)
         val passwordView = view.findViewById<EditText?>(R.id.password)
         if (showPasswordCheckbox != null && passwordView != null) {
@@ -213,22 +213,14 @@ class ConnectionDetailFragment @Inject constructor(
             val clientCertificatePath = view.clientCertificatePath
             val initialPath = clientCertificatePath.text?.toString()?.let { File(it) }
 
-            val properties = DialogProperties()
-            properties.selection_mode = DialogConfigs.SINGLE_MODE
-            properties.selection_type = DialogConfigs.FILE_SELECT
-            properties.root = initialPath
 
-            val dialog = FilePickerDialog(activity, properties)
-            dialog.setTitle(R.string.selectFile)
-            dialog.setDialogSelectionListener { files ->
-                val selection = files.joinToString(separator = ", ")
-                LOG.info("handleFHEMWEBView - selected '$selection' as client certificate")
-                if (files.isNotEmpty()) {
-                    clientCertificatePath.setText(files[0], TextView.BufferType.NORMAL)
-                }
-            }
-            dialog.show()
-        })
+            MaterialFilePicker()
+                    .withSupportFragment(this)
+                    .withCloseMenu(true)
+                    .withPath(initialPath?.absolutePath)
+                    .withFilterDirectories(false)
+                    .withRequestCode(filePickerRequestCode)
+                    .start()
     }
 
     override fun getTitle(context: Context) = context.getString(R.string.connectionManageTitle)
@@ -286,16 +278,27 @@ class ConnectionDetailFragment @Inject constructor(
         strategyFor(connectionType, myContext).fillView(v, fhemServerSpec)
     }
 
-    private fun selectionIndexFor(serverType: ServerType): Int {
-        val serverTypes = serverTypes
-        return serverTypes.indices.firstOrNull { serverType == serverTypes[it] } ?: -1
-    }
+                private fun selectionIndexFor(serverType: ServerType): Int {
+            val serverTypes = serverTypes
+            return serverTypes.indices.firstOrNull { serverType == serverTypes[it] } ?: -1
+        }
 
-    private interface ConnectionTypeDetailChangedListener {
-        fun onChanged()
-    }
+                private interface ConnectionTypeDetailChangedListener {
+            fun onChanged()
+        }
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(ConnectionDetailFragment::class.java)
-    }
+                override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
+                val filePath = data!!.getStringExtra(FilePickerActivity.RESULT_FILE_PATH)
+                LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
+                clientCertificatePath.setText(filePath, TextView.BufferType.NORMAL)
+            }
+        }
+
+                companion object {
+            private val LOG = LoggerFactory.getLogger(ConnectionDetailFragment::class.java)
+            private const val filePickerRequestCode = 1337
+        }
 }
