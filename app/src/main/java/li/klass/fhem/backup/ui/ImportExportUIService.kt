@@ -31,9 +31,7 @@ import android.content.Context
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import com.github.angads25.filepicker.model.DialogConfigs
-import com.github.angads25.filepicker.model.DialogProperties
-import com.github.angads25.filepicker.view.FilePickerDialog
+import com.nbsp.materialfilepicker.MaterialFilePicker
 import li.klass.fhem.R
 import li.klass.fhem.backup.ImportExportService
 import li.klass.fhem.backup.ImportExportService.ImportStatus
@@ -42,6 +40,7 @@ import li.klass.fhem.util.PermissionUtil
 import net.lingala.zip4j.ZipFile
 import org.apache.commons.lang3.StringUtils
 import java.io.File
+import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -55,23 +54,19 @@ class ImportExportUIService @Inject constructor(private val importExportService:
         if (!PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return
         }
-        val properties = DialogProperties()
-        properties.selection_mode = DialogConfigs.SINGLE_MODE
-        properties.selection_type = DialogConfigs.FILE_SELECT
-        properties.extensions = arrayOf("backup")
-        properties.root = importExportService.exportDirectory
-        val dialog = FilePickerDialog(activity, properties)
-        dialog.setTitle(R.string.selectFile)
-        dialog.setDialogSelectionListener { files ->
-            if (files.isNotEmpty()) {
-                onImportFileSelected(File(files[0]), activity)
-            }
-        }
-        dialog.show()
+
+        MaterialFilePicker()
+                .withActivity(activity)
+                .withCloseMenu(true)
+                .withFilter(Pattern.compile(".*.backup"))
+                .withFilterDirectories(false)
+                .withPath(importExportService.exportDirectory.absolutePath)
+                .withRequestCode(importBackupFilePickerRequestCode)
+                .start()
     }
 
-    private fun onImportFileSelected(file: File, activity: Activity) {
-        val zipFile = importExportService.toZipFile(file)
+    fun onImportFileSelected(file: String, activity: Activity) {
+        val zipFile = importExportService.toZipFile(File(file))
         if (zipFile == null) {
             AlertDialog.Builder(activity).setTitle(R.string.error)
                     .setMessage(R.string.errorNotAValidBackupFile)
@@ -152,5 +147,6 @@ class ImportExportUIService @Inject constructor(private val importExportService:
                 ImportStatus.WRONG_PASSWORD to R.string.wrongPassword,
                 ImportStatus.INVALID_FILE to R.string.importErrorInvalidFile
         )
+        const val importBackupFilePickerRequestCode = 1337
     }
 }

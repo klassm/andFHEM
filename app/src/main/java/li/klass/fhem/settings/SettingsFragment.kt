@@ -67,4 +67,5 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         super.onPause()
     }
+
 }
