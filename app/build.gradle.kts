@@ -39,7 +39,7 @@ buildscript {
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.4")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.0.0")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
-        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.2")
+        classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.1")
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.3.4")
         classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.4.1")
     }
@@ -52,7 +52,7 @@ val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.11.0"
 val daggerVersion = "2.30.1"
 val coroutinesVersion = "1.4.2"
-val androidXNavigationVersion = "2.3.2"
+val androidXNavigationVersion = "2.3.1"
 val roomVersion = "2.2.5"
 
 plugins {
