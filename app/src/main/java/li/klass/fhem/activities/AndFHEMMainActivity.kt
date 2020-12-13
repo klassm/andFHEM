@@ -24,6 +24,7 @@
 
 package li.klass.fhem.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.SearchManager
@@ -70,6 +71,7 @@ import li.klass.fhem.ui.FragmentType
 import li.klass.fhem.ui.FragmentType.*
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
+import li.klass.fhem.util.PermissionUtil
 import li.klass.fhem.util.navigation.navController
 import li.klass.fhem.util.navigation.updateStartFragment
 import org.slf4j.LoggerFactory
@@ -175,6 +177,7 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
+        PermissionUtil.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         supportFragmentManager.fragmentFactory = scopedFragmentFactory
 
         themeInitializer.init()

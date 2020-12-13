@@ -28,10 +28,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import com.nbsp.materialfilepicker.MaterialFilePicker
+import androidx.core.app.ActivityCompat.startActivityForResult
 import li.klass.fhem.R
 import li.klass.fhem.backup.ImportExportService
 import li.klass.fhem.backup.ImportExportService.ImportStatus
@@ -40,7 +42,6 @@ import li.klass.fhem.util.PermissionUtil
 import net.lingala.zip4j.ZipFile
 import org.apache.commons.lang3.StringUtils
 import java.io.File
-import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -55,18 +56,26 @@ class ImportExportUIService @Inject constructor(private val importExportService:
             return
         }
 
-        MaterialFilePicker()
-                .withActivity(activity)
-                .withCloseMenu(true)
-                .withFilter(Pattern.compile(".*.backup"))
-                .withFilterDirectories(false)
-                .withPath(importExportService.exportDirectory.absolutePath)
-                .withRequestCode(importBackupFilePickerRequestCode)
-                .start()
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            type = "*/."
+            addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("application/octet-stream", "application/x-zip"))
+            putExtra("android.provider.extra.INITIAL_URI", Uri.fromFile(importExportService.exportDirectory));
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+        }
+        startActivityForResult(activity, intent, importBackupFilePickerRequestCode, null)
     }
 
-    fun onImportFileSelected(file: String, activity: Activity) {
-        val zipFile = importExportService.toZipFile(File(file))
+    fun onImportFileSelected(file: Uri, activity: Activity) {
+        val zipOutputFile = File(activity.cacheDir, "backup.zip").apply {
+            deleteOnExit()
+        }
+
+        activity.contentResolver.openInputStream(file)?.use {
+            it.copyTo(zipOutputFile.outputStream())
+        }
+
+        val zipFile = importExportService.toZipFile(zipOutputFile)
         if (zipFile == null) {
             AlertDialog.Builder(activity).setTitle(R.string.error)
                     .setMessage(R.string.errorNotAValidBackupFile)

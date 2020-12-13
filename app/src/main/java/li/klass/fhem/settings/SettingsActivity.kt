@@ -2,10 +2,10 @@ package li.klass.fhem.settings
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.preference.PreferenceActivity
-import com.nbsp.materialfilepicker.ui.FilePickerActivity
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.ThemeInitializer
@@ -43,8 +43,8 @@ class SettingsActivity : PreferenceActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         AndFHEMApplication.application?.daggerComponent?.inject(this)
         if (requestCode == ImportExportUIService.importBackupFilePickerRequestCode && resultCode == Activity.RESULT_OK) {
-            val filePath = data!!.getStringExtra(FilePickerActivity.RESULT_FILE_PATH)
-            importExportUIService.onImportFileSelected(filePath!!, this)
+            val filePath = (data?.clipData ?: data?.data) as Uri
+            importExportUIService.onImportFileSelected(filePath, this)
         }
     }
 }

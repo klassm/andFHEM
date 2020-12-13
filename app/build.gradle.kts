@@ -122,7 +122,6 @@ dependencies {
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
-    implementation(group = "com.nbsp", name = "materialfilepicker", version = "1.9.1")
     implementation(group = "joda-time", name = "joda-time", version = "2.10.8")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")

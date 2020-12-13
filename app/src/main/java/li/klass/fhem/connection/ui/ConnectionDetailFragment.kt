@@ -29,14 +29,13 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.nbsp.materialfilepicker.MaterialFilePicker
-import com.nbsp.materialfilepicker.ui.FilePickerActivity
 import kotlinx.android.synthetic.main.connection_fhemweb.*
 import kotlinx.android.synthetic.main.connection_fhemweb.view.*
 import kotlinx.coroutines.*
@@ -48,7 +47,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
-import java.io.File
 import javax.inject.Inject
 
 
@@ -210,17 +208,12 @@ class ConnectionDetailFragment @Inject constructor(
             if (innerView == null) return@OnClickListener
 
             PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
-            val clientCertificatePath = view.clientCertificatePath
-            val initialPath = clientCertificatePath.text?.toString()?.let { File(it) }
-
-
-            MaterialFilePicker()
-                    .withSupportFragment(this)
-                    .withCloseMenu(true)
-                    .withPath(initialPath?.absolutePath)
-                    .withFilterDirectories(false)
-                    .withRequestCode(filePickerRequestCode)
-                    .start()
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "*/*"
+                addCategory(Intent.CATEGORY_OPENABLE)
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            }
+            startActivityForResult(intent, filePickerRequestCode)
         })
     }
 
@@ -292,9 +285,9 @@ class ConnectionDetailFragment @Inject constructor(
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
-            val filePath = data!!.getStringExtra(FilePickerActivity.RESULT_FILE_PATH)
+            val filePath = (data?.clipData ?: data?.data) as Uri
             LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
-            clientCertificatePath.setText(filePath, TextView.BufferType.NORMAL)
+            clientCertificatePath.setText(filePath.toString(), TextView.BufferType.NORMAL)
         }
     }
 

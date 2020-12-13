@@ -25,11 +25,10 @@
 package li.klass.fhem.connection.backend.ssl
 
 import android.content.Context
+import android.net.Uri
 import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import org.slf4j.LoggerFactory
-import java.io.File
-import java.io.FileInputStream
 import java.security.KeyStore
 import javax.net.ssl.*
 
@@ -38,19 +37,16 @@ class MemorizingTrustManagerContextInitializer {
         try {
             val sslContext = SSLContext.getInstance("TLS")
             var clientKeys: Array<KeyManager>? = null
-            if (serverSpec?.clientCertificatePath != null) {
-                logger.info("init - using client certificate at ${serverSpec.clientCertificatePath}")
-                val clientCertificate = serverSpec.clientCertificatePath?.let { File(it) }
+            val clientCertificatePath = serverSpec?.clientCertificatePath?.let { Uri.parse(it) }
+            if (clientCertificatePath != null) {
+                logger.info("init - using client certificate at $clientCertificatePath")
                 val clientCertificatePassword = serverSpec.clientCertificatePassword
 
-                logger.info("init - client certificate exists=${clientCertificate?.exists()}, canRead=${clientCertificate?.canRead()}")
-                if (clientCertificate != null && clientCertificate.exists() && clientCertificate.canRead()) {
-                    val keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword)
-                    val keyManagerFactory = KeyManagerFactory.getInstance("X509")
-                    keyManagerFactory.init(keyStore, (clientCertificatePassword
-                            ?: "").toCharArray())
-                    clientKeys = keyManagerFactory.keyManagers
-                }
+                val keyStore = loadPKCS12KeyStore(context, clientCertificatePath, clientCertificatePassword)
+                val keyManagerFactory = KeyManagerFactory.getInstance("X509")
+                keyManagerFactory.init(keyStore, (clientCertificatePassword
+                        ?: "").toCharArray())
+                clientKeys = keyManagerFactory.keyManagers
             } else {
                 logger.info("init - client certificate path is not configured")
             }
@@ -67,10 +63,10 @@ class MemorizingTrustManagerContextInitializer {
 
 
     @Throws(Exception::class)
-    private fun loadPKCS12KeyStore(certificateFile: File, clientCertPassword: String?): KeyStore? =
-            FileInputStream(certificateFile).use {
+    private fun loadPKCS12KeyStore(context: Context, certificateUri: Uri, certificatePassword: String?): KeyStore? =
+            context.contentResolver.openInputStream(certificateUri)?.use {
                 KeyStore.getInstance("PKCS12").apply {
-                    load(it, clientCertPassword?.toCharArray() ?: CharArray(0))
+                    load(it, certificatePassword?.toCharArray() ?: CharArray(0))
                 }
             }
 
