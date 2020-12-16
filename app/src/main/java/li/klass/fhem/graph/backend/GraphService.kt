@@ -117,22 +117,28 @@ class GraphService @Inject constructor(
         return graphEntries
     }
 
-    private fun loadLogData(logDefinition: LogDataDefinition, connectionId: String?, interval: Interval,
-                            plotReplace: Map<String, String>,
-                            plotfunction: List<String>): String {
+    fun getLoadLogDataCommand(logDefinition: LogDataDefinition, interval: Interval,
+                                      plotReplace: Map<String, String>,
+                                      plotfunction: List<String>): String {
         val fromDateFormatted = DATE_TIME_FORMATTER.print(interval.start)
         val toDateFormatted = DATE_TIME_FORMATTER.print(interval.end)
 
-
         var command = String.format(COMMAND_TEMPLATE, logDefinition.logDevice, fromDateFormatted, toDateFormatted, logDefinition.pattern)
         for ((key, value) in plotReplace) {
-            LOG.trace("Replace {} by {}", key, value)
+            LOG.debug("getLoadLogDataCommand: Replace {} by {}", key, value)
             command = command.replace(("%$key%").toRegex(), value)
         }
         for (i in plotfunction.indices) {
             command = command.replace(("<SPEC" + (i + 1) + ">").toRegex(), plotfunction[i])
         }
-        LOG.trace("Command: {}", command)
+        LOG.info("getLoadLogDataCommand: {}", command)
+        return command
+    }
+
+    private fun loadLogData(logDefinition: LogDataDefinition, connectionId: String?, interval: Interval,
+                            plotReplace: Map<String, String>,
+                            plotfunction: List<String>): String {
+        var command = getLoadLogDataCommand(logDefinition, interval, plotReplace, plotfunction)
         val result = commandExecutionService.executeSync(Command(command, connectionId))
                 ?.replace("#[^\\\\]*\\\\[rn]".toRegex(), "")
                 ?: throw IllegalStateException("could not get a response for command $command")
