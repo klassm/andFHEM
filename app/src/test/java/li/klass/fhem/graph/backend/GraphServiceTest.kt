@@ -43,6 +43,8 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.DateTime
 import org.joda.time.Interval
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -221,5 +223,24 @@ class GraphServiceTest {
                     GraphEntryParseTestCase("2013-03-21_16:38:39\n", null)
             )
         }
+    }
+
+    @Test
+    fun getLoadLogDataCommand() {
+        val formatter: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+        assertThat(graphService.getLoadLogDataCommand(
+                LogDataDefinition("PowerDB", "%SOURCE%:%READING%::",
+                        GPlotSeries(viewSpec = ViewSpec(title = "RX", lineType = GPlotSeries.LineType.LINES,
+                                axis = GPlotSeries.Axis.LEFT, color = GPlotSeries.SeriesColor.RED),
+                                dataProvider = GraphDataProvider(dbLog = DataProviderSpec.DbLog
+                                ("<SPEC1>:eth0_diff:::\$val=~s/^RX..([\\d.]*).*/$1/eg")))
+                ),
+                Interval(
+                        formatter.parseDateTime("2020-11-15 21:59:00"),
+                        formatter.parseDateTime("2020-12-15 21:59:00")
+                ),
+                mapOf("SOURCE" to "PowerDay", "READING" to "1.8.1_1.8.2_sum", "UNIT" to "kWh"),
+                emptyList(),
+        )).isEqualTo("get PowerDB - - 2020-11-15_21:59 2020-12-15_21:59 PowerDay:1.8.1_1.8.2_sum::")
     }
 }

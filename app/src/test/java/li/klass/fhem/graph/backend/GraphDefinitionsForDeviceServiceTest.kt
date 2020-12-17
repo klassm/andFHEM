@@ -37,7 +37,8 @@ class GraphDefinitionsForDeviceServiceTest {
                 null to emptyMap(),
                 "INTERVAL=month" to mapOf("INTERVAL" to "month"),
                 """A="test 2 3" B={"to do" } C="x {y} z" """ to mapOf("A" to "test 2 3", "B" to """"to do" """, "C" to "x {y} z"),
-                """"X=Y + 3"""" to mapOf("X" to "Y + 3")
+                """"X=Y + 3"""" to mapOf("X" to "Y + 3"),
+                "SOURCE=PowerDay UNIT=kWh" to mapOf("SOURCE" to "PowerDay", "UNIT" to "kWh")
         )
         for ((input, output) in testdata) {
             assertThat(GraphDefinitionsForDeviceService.plotReplaceMapFor(getDeviceFor("plotReplace", input))).isEqualTo(output)
