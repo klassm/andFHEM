@@ -52,7 +52,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
                 { preferenceKey: String -> findPreference(preferenceKey) }, activity)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         val preference = preferenceManager.findPreference(key)
         preference ?: return
         typeHandler.onPreferenceChange(sharedPreferences, preference)
