@@ -36,7 +36,7 @@ sealed class SaveData(val name: String,
     class FhemWebSaveData(name: String,
                           val url: String,
                           val alternateUrl: String?,
-                          val clientCertificatePath: String?,
+                          val clientCertificateContent: String?,
                           val clientCertificatePassword: String?,
                           val username: String?,
                           val csrfToken: String?,
@@ -46,7 +46,7 @@ sealed class SaveData(val name: String,
             super.fillServer(server)
             server.url = url
             server.alternateUrl = alternateUrl
-            server.clientCertificatePath = clientCertificatePath
+            server.clientCertificateContent = clientCertificateContent
             server.clientCertificatePassword = clientCertificatePassword
             server.csrfToken = csrfToken
             server.username = username

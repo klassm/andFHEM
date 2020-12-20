@@ -79,6 +79,8 @@ constructor(private val applicationProperties: ApplicationProperties,
         saveToPreferences(server)
     }
 
+    fun update(connection: FHEMServerSpec) = saveToPreferences(connection)
+
     private fun exists(id: String?): Boolean =
             mayShowDummyConnections(getAll()) && (DUMMY_DATA_ID == id
                     || TEST_DATA_ID == id)
@@ -196,9 +198,8 @@ constructor(private val applicationProperties: ApplicationProperties,
 
     fun getPortOfSelectedConnection(): Int {
         val spec = getCurrentServer()
-        val serverType = spec!!.serverType
 
-        return when (serverType) {
+        return when (spec!!.serverType) {
             TELNET -> spec.port
             DUMMY -> 0
             FHEMWEB -> getPortOfFHEMWEBSpec(spec)

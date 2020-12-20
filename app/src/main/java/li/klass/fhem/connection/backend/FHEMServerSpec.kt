@@ -34,6 +34,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
     var alternateUrl: String? = null
     var username: String? = null
     var clientCertificatePath: String? = null
+    var clientCertificateContent: String? = null
     var clientCertificatePassword: String? = null
     var csrfToken: String? = null
 
@@ -49,6 +50,8 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
         if (if (alternateUrl != null) alternateUrl != that.alternateUrl else that.alternateUrl != null)
             return false
         if (if (clientCertificatePassword != null) clientCertificatePassword != that.clientCertificatePassword else that.clientCertificatePassword != null)
+            return false
+        if (if (clientCertificateContent != null) clientCertificateContent != that.clientCertificateContent else that.clientCertificateContent != null)
             return false
         if (if (clientCertificatePath != null) clientCertificatePath != that.clientCertificatePath else that.clientCertificatePath != null)
             return false
@@ -72,6 +75,7 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
         result = 31 * result + if (alternateUrl != null) alternateUrl!!.hashCode() else 0
         result = 31 * result + if (username != null) username!!.hashCode() else 0
         result = 31 * result + if (clientCertificatePath != null) clientCertificatePath!!.hashCode() else 0
+        result = 31 * result + if (clientCertificateContent != null) clientCertificateContent!!.hashCode() else 0
         result = 31 * result + if (clientCertificatePassword != null) clientCertificatePassword!!.hashCode() else 0
         result = 31 * result + if (csrfToken != null) csrfToken!!.hashCode() else 0
         result = 31 * result + serverType.hashCode()
@@ -79,20 +83,19 @@ open class FHEMServerSpec(val id: String, val serverType: ServerType, var name: 
     }
 
     override fun toString(): String {
-        return "FHEMServerSpec{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + (if (password.isNullOrEmpty()) "empty" else "*****") + '\'' +
-                ", ip='" + ip + '\'' +
-                ", port=" + port +
-                ", url='" + url + '\'' +
-                ", alternateUrl='" + alternateUrl + '\'' +
-                ", username='" + username + '\'' +
-                ", clientCertificatePath='" + clientCertificatePath + '\'' +
-                ", clientCertificatePassword='" + clientCertificatePassword + '\'' +
-                ", serverType=" + serverType +
-                ", csrfToken=" + csrfToken +
-                '}'
+        return """FHEMServerSpec{id='$id',
+            | name='$name',
+            | password='${if (password.isNullOrEmpty()) "empty" else "*****"}',
+            | ip='$ip',
+            | port=$port,
+            | url='$url',
+            | alternateUrl='$alternateUrl',
+            | username='$username',
+            | clientCertificatePath='$clientCertificatePath',
+            | clientCertificateContent='${clientCertificateContent?.let { "***" }}',
+            | clientCertificatePassword='${clientCertificatePassword?.let { "***" }}',
+            | serverType=$serverType,
+            | csrfToken=$csrfToken}""".trimMargin()
     }
 
     fun canRetry(): Boolean = !alternateUrl.isNullOrEmpty()

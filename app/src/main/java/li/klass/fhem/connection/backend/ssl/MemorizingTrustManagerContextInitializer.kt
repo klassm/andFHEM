@@ -25,10 +25,10 @@
 package li.klass.fhem.connection.backend.ssl
 
 import android.content.Context
-import android.net.Uri
 import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import org.slf4j.LoggerFactory
+import java.io.ByteArrayInputStream
 import java.security.KeyStore
 import javax.net.ssl.*
 
@@ -37,12 +37,12 @@ class MemorizingTrustManagerContextInitializer {
         try {
             val sslContext = SSLContext.getInstance("TLS")
             var clientKeys: Array<KeyManager>? = null
-            val clientCertificatePath = serverSpec?.clientCertificatePath?.let { Uri.parse(it) }
-            if (clientCertificatePath != null) {
-                logger.info("init - using client certificate at $clientCertificatePath")
+            val clientCertificateContent = serverSpec?.clientCertificateContent
+            if (clientCertificateContent != null) {
+                logger.info("init - using client certificate")
                 val clientCertificatePassword = serverSpec.clientCertificatePassword
 
-                val keyStore = loadPKCS12KeyStore(context, clientCertificatePath, clientCertificatePassword)
+                val keyStore = loadPKCS12KeyStore(clientCertificateContent, clientCertificatePassword)
                 val keyManagerFactory = KeyManagerFactory.getInstance("X509")
                 keyManagerFactory.init(keyStore, (clientCertificatePassword
                         ?: "").toCharArray())
@@ -63,11 +63,10 @@ class MemorizingTrustManagerContextInitializer {
 
 
     @Throws(Exception::class)
-    private fun loadPKCS12KeyStore(context: Context, certificateUri: Uri, certificatePassword: String?): KeyStore? =
-            context.contentResolver.openInputStream(certificateUri)?.use {
-                KeyStore.getInstance("PKCS12").apply {
-                    load(it, certificatePassword?.toCharArray() ?: CharArray(0))
-                }
+    private fun loadPKCS12KeyStore(content: String, certificatePassword: String?): KeyStore? =
+            KeyStore.getInstance("PKCS12").apply {
+                load(ByteArrayInputStream(content.toByteArray(Charsets.UTF_8)), certificatePassword?.toCharArray()
+                        ?: CharArray(0))
             }
 
     data class Initialized(val socketFactory: SSLSocketFactory, val hostnameVerifier: HostnameVerifier, val trustManager: X509TrustManager)

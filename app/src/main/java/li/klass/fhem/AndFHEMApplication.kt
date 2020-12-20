@@ -37,6 +37,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.activities.StartupActivity
 import li.klass.fhem.alarm.clock.update.AlarmClockUpdateService
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
@@ -44,15 +46,21 @@ import li.klass.fhem.graph.ui.GraphActivity
 import li.klass.fhem.settings.SettingsKeys.APPLICATION_VERSION
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
+import java.io.File
 import javax.inject.Inject
 
 class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
     @Inject
     lateinit var applicationProperties: ApplicationProperties
+
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
+
     @Inject
     lateinit var alarmClockUpdateService: AlarmClockUpdateService
+
+    @Inject
+    lateinit var connectionService: ConnectionService
 
     var isUpdate = false
         private set
@@ -89,6 +97,30 @@ class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
     override fun onUpdate(oldVersion: Int, newVersion: Int) {
         GlobalScope.launch {
             deviceListUpdateService.checkForCorruptedDeviceList()
+            migrateClientCertPathToContent()
+        }
+    }
+
+    private fun migrateClientCertPathToContent() {
+        val connections = connectionService.listAll()
+        connections
+                .filter { it.clientCertificatePath != null }
+                .filter { it.serverType == ServerType.FHEMWEB }
+                .forEach {
+                    val certContent = tryRead(it.clientCertificatePath)
+                    it.clientCertificateContent = certContent
+                    it.clientCertificatePath = null
+                    connectionService.update(it)
+                }
+    }
+
+    private fun tryRead(path: String?): String? {
+        path ?: return null
+        return try {
+            File(path).readText(Charsets.UTF_8)
+        } catch (e: Exception) {
+            Log.w(TAG, "could not read $path for certificate migration")
+            null
         }
     }
 

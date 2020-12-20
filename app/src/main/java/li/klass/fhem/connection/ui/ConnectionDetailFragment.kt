@@ -203,8 +203,7 @@ class ConnectionDetailFragment @Inject constructor(
     }
 
     private fun handleFHEMWEBView(view: View) {
-        val setClientCertificate = view.findViewById<ImageButton>(R.id.setClientCertificatePath)
-        setClientCertificate.setOnClickListener(View.OnClickListener { innerView ->
+        view.setClientCertificatePath.setOnClickListener(View.OnClickListener { innerView ->
             if (innerView == null) return@OnClickListener
 
             PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -287,7 +286,10 @@ class ConnectionDetailFragment @Inject constructor(
         if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
             val filePath = (data?.clipData ?: data?.data) as Uri
             LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
-            clientCertificatePath.setText(filePath.toString(), TextView.BufferType.NORMAL)
+            val text = context?.contentResolver?.openInputStream(filePath)?.bufferedReader(Charsets.UTF_8)?.use {
+                it.readText()
+            } ?: ""
+            clientCertificateContent.setText(text, TextView.BufferType.NORMAL)
         }
     }
 
