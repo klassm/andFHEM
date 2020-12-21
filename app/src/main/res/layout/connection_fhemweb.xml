@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordLabel"
         android:layout_alignParentEnd="true"
-        android:text="@string/connectionShowPassword"/>
+        android:text="@string/connectionShowPassword" />
 
     <TextView
         android:id="@+id/clientCertificateContentLabel"
@@ -137,18 +137,16 @@
         android:layout_below="@+id/password"
         android:text="@string/connectionClientCertificate" />
 
-    <EditText
-        android:id="@+id/clientCertificateContent"
+    <TextView
+        android:id="@+id/clientCertificatePath"
         android:layout_width="fill_parent"
         style="@style/formInput"
         android:layout_below="@+id/clientCertificateContentLabel"
         android:layout_toStartOf="@+id/setClientCertificatePath"
-        android:ellipsize="end"
-        android:singleLine="false"
+        android:ellipsize="start"
+        android:singleLine="true"
         android:gravity="top"
-        android:maxLines="4"
         android:hint="@string/connectionClientCertificateDesc"
-        android:inputType="textMultiLine"
         android:importantForAutofill="no" />
 
     <ImageButton
@@ -167,7 +165,7 @@
         style="@style/formLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/clientCertificateContent"
+        android:layout_below="@id/clientCertificatePath"
         android:text="@string/connectionClientCertificatePassword" />
 
     <EditText

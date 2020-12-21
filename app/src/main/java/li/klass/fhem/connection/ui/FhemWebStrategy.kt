@@ -39,8 +39,8 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
         val username = trimToNull(view.username.text.toString())
         val url = trimToNull(view.url.text.toString())
         val alternateUrl = trimToNull(view.alternate_url.text.toString())
+        val clientCertificatePath = trimToNull(view.clientCertificatePath.text.toString())
         val clientCertificatePassword = trimToNull(view.clientCertificatePassword.text.toString())
-        val clientCertificateContent = trimToNull(view.clientCertificateContent.text.toString())
         val password = trimToNull(view.password.text.toString())
         val csrfToken = trimToNull(view.csrfToken.text.toString())
 
@@ -54,8 +54,8 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
                 password = password,
                 url = url,
                 alternateUrl = alternateUrl,
+                clientCertificatePath = clientCertificatePath,
                 clientCertificatePassword = clientCertificatePassword,
-                clientCertificateContent = clientCertificateContent,
                 csrfToken = csrfToken
         )
     }
@@ -66,8 +66,8 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
         view.alternate_url.setText(fhemServerSpec.alternateUrl)
         view.username.setText(fhemServerSpec.username)
         view.password.setText(fhemServerSpec.password)
-        view.clientCertificateContent.setText(fhemServerSpec.clientCertificateContent)
         view.clientCertificatePassword.setText(fhemServerSpec.clientCertificatePassword)
+        view.clientCertificatePath.text = fhemServerSpec.clientCertificatePath
         view.csrfToken.setText(fhemServerSpec.csrfToken)
     }
 

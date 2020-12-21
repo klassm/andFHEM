@@ -47,6 +47,8 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
+import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 
@@ -282,14 +284,19 @@ class ConnectionDetailFragment @Inject constructor(
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val context = context ?: return
 
         if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
             val filePath = (data?.clipData ?: data?.data) as Uri
+            val filename = filePath.path?.split("/")?.last()
+                    ?: UUID.randomUUID().toString() + ".cert"
             LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
-            val text = context?.contentResolver?.openInputStream(filePath)?.bufferedReader(Charsets.UTF_8)?.use {
-                it.readText()
-            } ?: ""
-            clientCertificateContent.setText(text, TextView.BufferType.NORMAL)
+            val baseDir = context.getDir("certificates", Context.MODE_PRIVATE)
+            val certificateFile = File(baseDir, filename)
+
+            context.contentResolver?.openInputStream(filePath)?.copyTo(certificateFile.outputStream())
+
+            view?.clientCertificatePath?.text = certificateFile.absolutePath
         }
     }
 

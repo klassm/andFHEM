@@ -29,6 +29,7 @@ import de.duenndns.ssl.MemorizingTrustManager
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
+import java.io.File
 import java.security.KeyStore
 import javax.net.ssl.*
 
@@ -37,10 +38,11 @@ class MemorizingTrustManagerContextInitializer {
         try {
             val sslContext = SSLContext.getInstance("TLS")
             var clientKeys: Array<KeyManager>? = null
-            val clientCertificateContent = serverSpec?.clientCertificateContent
-            if (clientCertificateContent != null) {
+            val clientCertificate = serverSpec?.clientCertificatePath?.let { File(it) }
+            if (clientCertificate != null && clientCertificate.exists() && clientCertificate.canRead()) {
                 logger.info("init - using client certificate")
                 val clientCertificatePassword = serverSpec.clientCertificatePassword
+                val clientCertificateContent = clientCertificate.readBytes()
 
                 val keyStore = loadPKCS12KeyStore(clientCertificateContent, clientCertificatePassword)
                 val keyManagerFactory = KeyManagerFactory.getInstance("X509")
@@ -63,9 +65,9 @@ class MemorizingTrustManagerContextInitializer {
 
 
     @Throws(Exception::class)
-    private fun loadPKCS12KeyStore(content: String, certificatePassword: String?): KeyStore? =
+    private fun loadPKCS12KeyStore(content: ByteArray, certificatePassword: String?): KeyStore? =
             KeyStore.getInstance("PKCS12").apply {
-                load(ByteArrayInputStream(content.toByteArray(Charsets.UTF_8)), certificatePassword?.toCharArray()
+                load(ByteArrayInputStream(content), certificatePassword?.toCharArray()
                         ?: CharArray(0))
             }
 
