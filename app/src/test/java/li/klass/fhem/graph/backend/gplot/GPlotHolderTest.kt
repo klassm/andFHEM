@@ -25,54 +25,52 @@ package li.klass.fhem.graph.backend.gplot
 
 import android.app.Application
 import android.content.Context
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.given
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.verify
 import li.klass.fhem.graph.backend.gplot.GPlotDefinitionTestdataBuilder.defaultGPlotDefinition
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
 
 class GPlotHolderTest {
     @get:Rule
-    val mockitoRule = MockitoRule()
+    val mockitoRule = MockRule()
 
-    @InjectMocks
-    private lateinit var gPlotHolder: GPlotHolder
+    @InjectMockKs
+    lateinit var gPlotHolder: GPlotHolder
 
-    @Mock
-    private lateinit var gPlotParser: GPlotParser
+    @MockK
+    lateinit var gPlotParser: GPlotParser
 
-    @Mock
-    private lateinit var application: Application
+    @MockK
+    lateinit var application: Application
 
-    @Mock
-    private lateinit var context: Context
+    @MockK
+    lateinit var context: Context
 
-    @Mock
-    private val commandExecutionService: CommandExecutionService? = null
+    @MockK
+    lateinit var commandExecutionService: CommandExecutionService
 
     private val connectionId = "abc"
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        Mockito.`when`(application.applicationContext).thenReturn(context)
+        every { application.applicationContext } returns context
     }
 
     @Test
     fun should_get_default_definition_for_name() {
         // given
         val definition = defaultGPlotDefinition()
-        given(gPlotParser.defaultGPlotFiles).willReturn(mapOf("abc" to definition))
+        every { gPlotParser.defaultGPlotFiles } returns mapOf("abc" to definition)
+        every { commandExecutionService.executeRequest(any(), any(), any()) } returns null
 
         // when
         val foundDefinition = gPlotHolder.definitionFor("abc", false, connectionId)
@@ -85,10 +83,10 @@ class GPlotHolderTest {
     fun should_successfully_lookup_GPlot_file_if_current_map_does_not_yet_contain_corresponding_key() {
         // given
         val definition = defaultGPlotDefinition()
-        given(gPlotParser.defaultGPlotFiles).willReturn(emptyMap())
+        every { gPlotParser.defaultGPlotFiles } returns emptyMap()
         val gplotRawDefinition = "myValue" + System.currentTimeMillis()
-        given(commandExecutionService!!.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId))).willReturn(gplotRawDefinition)
-        given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(definition)
+        every { commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId)) } returns gplotRawDefinition
+        every { gPlotParser.parseSafe(gplotRawDefinition) } returns definition
 
         // when
         val garden = gPlotHolder.definitionFor("garden", false, connectionId)
@@ -100,59 +98,59 @@ class GPlotHolderTest {
     @Test
     fun should_lookup_GPlot_file_without_success_if_current_map_does_not_yet_contain_corresponding_key() {
         // given
-        given(gPlotParser.defaultGPlotFiles).willReturn(emptyMap())
-        given(commandExecutionService!!.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId))).willReturn(null)
+        every { gPlotParser.defaultGPlotFiles } returns emptyMap()
+        every { commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId)) } returns null
 
         // when
         val garden = gPlotHolder.definitionFor("garden", false, connectionId)
 
         // then
         assertThat(garden).isEqualTo(null)
-        Mockito.verify(gPlotParser, Mockito.never()).parseSafe(ArgumentMatchers.anyString())
+        verify(exactly = 0) { gPlotParser.parseSafe(any()) }
     }
 
     @Test
     fun should_lookup_GPlot_file_only_once_if_previous_request_was_successful() {
         // given
         val definition = defaultGPlotDefinition()
-        given(gPlotParser.defaultGPlotFiles).willReturn(emptyMap())
+        every { gPlotParser.defaultGPlotFiles } returns emptyMap()
         val gplotRawDefinition = "myValue" + System.currentTimeMillis()
-        given(commandExecutionService!!.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId))).willReturn(gplotRawDefinition)
-        given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(definition)
+        every { commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId)) } returns gplotRawDefinition
+        every { gPlotParser.parseSafe(gplotRawDefinition) } returns definition
         gPlotHolder.definitionFor("garden", false, connectionId)
 
         // when
         gPlotHolder.definitionFor("garden", false, connectionId)
 
         // then
-        Mockito.verify(gPlotParser, Mockito.times(1)).parseSafe(ArgumentMatchers.anyString())
+        verify(exactly = 1) { gPlotParser.parseSafe(any()) }
     }
 
     @Test
     fun should_lookup_GPlot_file_only_once_if_previous_request_was_not_successful() {
         // given
         val definition = defaultGPlotDefinition()
-        given(gPlotParser.defaultGPlotFiles).willReturn(emptyMap())
+        every { gPlotParser.defaultGPlotFiles } returns emptyMap()
         val gplotRawDefinition = "myValue" + System.currentTimeMillis()
-        given(commandExecutionService!!.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId))).willReturn(null)
-        given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(definition)
+        every { commandExecutionService.executeRequest(eq("/gplot/garden.gplot"), any(), eq(connectionId)) } returns null
+        every { gPlotParser.parseSafe(gplotRawDefinition) } returns null
 
         // when
         assertThat(gPlotHolder.definitionFor("garden", false, connectionId) != null).isFalse()
 
         // then
-        Mockito.verify(commandExecutionService, Mockito.times(1)).executeRequest(ArgumentMatchers.anyString(), any(), eq(connectionId))
-        Mockito.verify(gPlotParser, Mockito.never()).parseSafe(ArgumentMatchers.anyString())
+        verify(exactly = 1) { commandExecutionService.executeRequest(any(), any(), connectionId) }
+        verify(exactly = 0) { gPlotParser.parseSafe(any()) }
     }
 
     @Test
     fun should_handle_config_db() {
         // given
         val definition = defaultGPlotDefinition()
-        given(gPlotParser.defaultGPlotFiles).willReturn(emptyMap())
+        every { gPlotParser.defaultGPlotFiles } returns emptyMap()
         val gplotRawDefinition = "myValue" + System.currentTimeMillis()
-        given(commandExecutionService!!.executeSync(eq(Command("configdb fileshow ./www/gplot/garden.gplot", connectionId)))).willReturn(gplotRawDefinition)
-        given(gPlotParser.parseSafe(gplotRawDefinition)).willReturn(definition)
+        every { commandExecutionService.executeSync(eq(Command("configdb fileshow ./www/gplot/garden.gplot", connectionId))) } returns gplotRawDefinition
+        every { gPlotParser.parseSafe(gplotRawDefinition) } returns definition
 
         // when
         val garden = gPlotHolder.definitionFor("garden", true, connectionId)

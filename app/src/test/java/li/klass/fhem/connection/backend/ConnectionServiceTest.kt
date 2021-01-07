@@ -28,14 +28,14 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.nhaarman.mockito_kotlin.doReturn
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
+import io.mockk.every
+import io.mockk.mockk
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService.Companion.DUMMY_DATA_ID
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
-import li.klass.fhem.testutil.mock
 import li.klass.fhem.util.ApplicationProperties
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.`is`
@@ -45,21 +45,18 @@ import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
 
 @RunWith(DataProviderRunner::class)
 class ConnectionServiceTest {
-    private val licenseService: LicenseService = mock()
-    private val applicationProperties: ApplicationProperties = mock()
-    private val applicationContext: Context = mock()
+    private val licenseService: LicenseService = mockk()
+    private val applicationProperties: ApplicationProperties = mockk()
+    private val applicationContext: Context = mockk()
+    private val application: Application = mockk()
     private lateinit var connectionService: ConnectionService
 
     @Before
     fun setUp() {
-        val application = com.nhaarman.mockito_kotlin.mock<Application> {
-            on { applicationContext } doReturn applicationContext
-        }
+        every { application.applicationContext } returns applicationContext
         connectionService = ConnectionService(applicationProperties, licenseService, application)
     }
 
@@ -90,11 +87,13 @@ class ConnectionServiceTest {
     @UseDataProvider("portDataProvider")
     fun should_extract_port(spec: FHEMServerSpec, expectedPort: Int) {
         // given
-        val sharedPreferences = mock(SharedPreferences::class.java)
-        given(applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID)).willReturn("a")
-        given(applicationContext.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE)).willReturn(sharedPreferences)
-        given(sharedPreferences.contains("a")).willReturn(true)
-        given(sharedPreferences.getString("a", null)).willReturn(ConnectionService.serialize(spec))
+        val sharedPreferences: SharedPreferences = mockk()
+        every { applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID) } returns "a"
+        every { applicationContext.getSharedPreferences(ConnectionService.PREFERENCES_NAME, Activity.MODE_PRIVATE) } returns sharedPreferences
+        every { sharedPreferences.contains("a") } returns true
+        every { sharedPreferences.getString("a", null) } returns ConnectionService.serialize(spec)
+        every { sharedPreferences.all } returns emptyMap()
+        every { licenseService.isDebug() } returns false
 
         // when
         val port = connectionService.getPortOfSelectedConnection()

@@ -26,8 +26,8 @@ package li.klass.fhem.devices.list.backend
 
 import android.app.Application
 import android.content.Context
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
+import io.mockk.every
+import io.mockk.mockk
 import li.klass.fhem.domain.core.DeviceFunctionality.*
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
@@ -41,27 +41,26 @@ class ParentsProviderTest {
         // given
         val room = "myRoom"
 
-        val context = mock<Context> {
-            on { getString(DIMMER.captionId) } doReturn "dimmer"
-            on { getString(SWITCH.captionId) } doReturn "switch"
-            on { getString(FHEM.captionId) } doReturn "fhem"
-            on { getString(UNKNOWN.captionId) } doReturn "unknown"
-        }
-        val application = mock<Application> { on { applicationContext } doReturn context }
+        val context: Context = mockk()
+        every { context.getString(DIMMER.captionId) } returns "dimmer"
+        every { context.getString(SWITCH.captionId) } returns "switch"
+        every { context.getString(FHEM.captionId) } returns "fhem"
+        every { context.getString(UNKNOWN.captionId) } returns "unknown"
 
-        val deviceGroupHolder = mock<DeviceGroupHolder> {
-            on { getVisible(context) } doReturn listOf(DIMMER, SWITCH)
-            on { getInvisible(context) } doReturn listOf(FHEM, UNKNOWN)
-        }
+        val application: Application = mockk()
+        every { application.applicationContext }.returns(context)
 
-        val fhemWebConfigurationService = mock<FhemWebConfigurationService> {
-            on { getColumnAttributeFor(room) } doReturn listOf("fhem", "switch", "blub")
-        }
 
-        val roomDeviceList = mock<RoomDeviceList> {
-            on { roomName } doReturn room
-            on { getDeviceGroups() } doReturn setOf("blub", "blö", "abc")
-        }
+        val deviceGroupHolder: DeviceGroupHolder = mockk()
+        every { deviceGroupHolder.getVisible(context) } returns listOf(DIMMER, SWITCH)
+        every { deviceGroupHolder.getInvisible(context) } returns listOf(FHEM, UNKNOWN)
+
+        val fhemWebConfigurationService: FhemWebConfigurationService = mockk()
+        every { fhemWebConfigurationService.getColumnAttributeFor(room) } returns listOf("fhem", "switch", "blub")
+
+        val roomDeviceList: RoomDeviceList = mockk()
+        every { roomDeviceList.roomName } returns room
+        every { roomDeviceList.getDeviceGroups() } returns setOf("blub", "blö", "abc")
 
         // when
         val result = ParentsProvider(deviceGroupHolder, fhemWebConfigurationService, application)

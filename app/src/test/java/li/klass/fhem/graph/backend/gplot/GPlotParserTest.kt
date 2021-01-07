@@ -24,23 +24,23 @@
 package li.klass.fhem.graph.backend.gplot
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
+import io.mockk.impl.annotations.InjectMockKs
 import li.klass.fhem.graph.backend.gplot.DataProviderSpec.*
 import li.klass.fhem.graph.backend.gplot.GPlotSeries.*
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
 import java.io.IOException
 
 @RunWith(DataProviderRunner::class)
 class GPlotParserTest {
     @Rule
     @JvmField
-    val mockitoRule = MockitoRule()
+    val mockitoRule = MockRule()
 
-    @InjectMocks
+    @InjectMockKs
     private lateinit var gPlotParser: GPlotParser
 
     @Test

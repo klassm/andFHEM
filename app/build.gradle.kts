@@ -154,10 +154,9 @@ dependencies {
     implementation(group = "io.reactivex.rxjava2", name = "rxjava", version = "2.2.20")
 
     testImplementation(group = "junit", name = "junit", version = "4.13.1")
-    testImplementation(group = "org.mockito", name = "mockito-core", version = "3.7.0")
-    testImplementation(group = "com.nhaarman", name = "mockito-kotlin", version = "1.6.0")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.18.1")
+    testImplementation(group = "io.mockk", name = "mockk", version = "1.10.3-jdk8")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.3.0")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.3.0")

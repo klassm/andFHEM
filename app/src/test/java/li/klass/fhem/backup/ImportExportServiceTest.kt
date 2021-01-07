@@ -24,36 +24,36 @@
 
 package li.klass.fhem.backup
 
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.io.FileSystemService
 import li.klass.fhem.util.preferences.SharedPreferencesService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
 
 @Suppress("unused")
 class ImportExportServiceTest {
     @Rule
     @JvmField
-    var mockitoRule = MockitoRule()
+    var mockitoRule = MockRule()
 
-    @Mock
+    @MockK
     lateinit var applicationProperties: ApplicationProperties
 
-    @Mock
+    @MockK
     lateinit var favoritesService: FavoritesService
 
-    @Mock
+    @MockK
     lateinit var sharedPreferencesService: SharedPreferencesService
 
-    @Mock
+    @MockK
     lateinit var fileSystemService: FileSystemService
 
-    @InjectMocks
+    @InjectMockKs
     lateinit var importExportService: ImportExportService
 
     @Test

@@ -24,6 +24,9 @@
 package li.klass.fhem.domain.core
 
 import android.content.Context
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
@@ -31,16 +34,12 @@ import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.DaggerApplicationComponent
 import li.klass.fhem.dagger.DatabaseModule
 import li.klass.fhem.testsuite.category.DeviceTestBase
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.update.backend.xmllist.DeviceListParser
 import li.klass.fhem.update.backend.xmllist.DeviceNode
 import org.junit.Before
 import org.junit.Rule
 import org.junit.experimental.categories.Category
-import org.mockito.ArgumentMatchers
-import org.mockito.BDDMockito
-import org.mockito.Mock
-import org.mockito.Mockito
 import java.io.File
 import java.util.regex.Pattern
 
@@ -49,22 +48,22 @@ abstract class DeviceXMLParsingBase {
     @JvmField
     protected var roomDeviceList: RoomDeviceList? = null
 
-    @Mock
-    protected lateinit var context: Context
+    @MockK
+    lateinit var context: Context
 
-    @Mock
-    private lateinit var connectionService: ConnectionService
+    @MockK
+    lateinit var connectionService: ConnectionService
 
     @get:Rule
-    var mockitoRule = MockitoRule()
+    var mockitoRule = MockRule()
 
     protected lateinit var applicationComponent: ApplicationComponent
 
     @Before
     @Throws(Exception::class)
     open fun before() {
-        val application = Mockito.mock(AndFHEMApplication::class.java)
-        Mockito.`when`(application.applicationContext).thenReturn(context)
+        val application: AndFHEMApplication = mockk()
+        every { application.applicationContext } returns context
         applicationComponent = DaggerApplicationComponent.builder()
                 .application(application)
                 .databaseModule(DatabaseModule(application)).build()
@@ -73,7 +72,7 @@ abstract class DeviceXMLParsingBase {
                 applicationComponent.gPlotHolder, applicationComponent.groupProvider,
                 applicationComponent.sanitiser
         )
-        Mockito.`when`(connectionService.mayShowInCurrentConnectionType(ArgumentMatchers.anyString(), ArgumentMatchers.eq<String?>(null))).thenReturn(true)
+        every { connectionService.mayShowInCurrentConnectionType(any(), null) } returns true
         mockStrings()
 
         val content = testFileBaseClass.getResource(getFileName())?.readText(Charsets.UTF_8)!!
@@ -91,7 +90,7 @@ abstract class DeviceXMLParsingBase {
             }
             for (field in R.string::class.java.declaredFields) {
                 val value = field[R.string::class.java] as Int
-                BDDMockito.given(context.getString(value)).willReturn(values[field.name])
+                every { context.getString(value) } returns (values[field.name] ?: "")
             }
         } catch (e: Exception) {
             throw RuntimeException(e)

@@ -27,6 +27,8 @@ package li.klass.fhem.behavior.dim
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
+import io.mockk.every
+import io.mockk.mockk
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
@@ -35,8 +37,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.data.Offset
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
 import java.util.*
 
 @RunWith(DataProviderRunner::class)
@@ -60,7 +60,8 @@ class ContinuousDimmableBehaviorTest {
         val behavior = ContinuousDimmableBehavior.behaviorFor(SetList.parse("position:slider,0,5,100"))
 
         assertThat(behavior!!.getPositionForDimState(testCase.text)).isEqualTo(testCase.position.toDouble())
-        assertThat(behavior.getDimStateForPosition(mock(FhemDevice::class.java), testCase.position.toDouble()))
+        val device: FhemDevice = mockk()
+        assertThat(behavior.getDimStateForPosition(device, testCase.position.toDouble()))
                 .isEqualTo(testCase.state)
     }
 
@@ -68,10 +69,10 @@ class ContinuousDimmableBehaviorTest {
     @UseDataProvider("prefixDimProvider")
     fun should_handle_states_with_prefix(testCase: PrefixTestCase) {
         val behavior = ContinuousDimmableBehavior.behaviorFor(SetList.parse("position:slider,0,5,100"))
-        val device = mock(FhemDevice::class.java)
+        val device: FhemDevice = mockk()
         val xmlListDevice = XmlListDevice("BLA", HashMap(), HashMap(), HashMap(), HashMap())
         xmlListDevice.setState("state", testCase.state)
-        given(device.xmlListDevice).willReturn(xmlListDevice)
+        every { device.xmlListDevice } returns xmlListDevice
 
         val position = behavior!!.getCurrentDimPosition(device)
 

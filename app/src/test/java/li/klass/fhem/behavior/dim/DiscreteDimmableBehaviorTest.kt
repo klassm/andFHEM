@@ -27,12 +27,12 @@ package li.klass.fhem.behavior.dim
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
+import io.mockk.mockk
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetList
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
 
 @RunWith(DataProviderRunner::class)
 class DiscreteDimmableBehaviorTest {
@@ -60,8 +60,9 @@ class DiscreteDimmableBehaviorTest {
     @UseDataProvider("positionProvider")
     fun should_calculate_position(testCase: PositionProviderTestCase) {
         val behavior = DiscreteDimmableBehavior.behaviorFor(testCase.setList)
+        val device: FhemDevice = mockk()
 
-        assertThat(behavior!!.getDimStateForPosition(mock(FhemDevice::class.java), testCase.position.toDouble())).isEqualTo(testCase.state)
+        assertThat(behavior!!.getDimStateForPosition(device, testCase.position.toDouble())).isEqualTo(testCase.state)
         assertThat(behavior.getPositionForDimState(testCase.state)).isEqualTo(testCase.position.toDouble())
     }
 

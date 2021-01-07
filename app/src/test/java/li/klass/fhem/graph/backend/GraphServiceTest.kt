@@ -28,12 +28,15 @@ import android.content.Context
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.gplot.*
 import li.klass.fhem.graph.backend.gplot.DataProviderSpec.CustomLogDevice
 import li.klass.fhem.graph.backend.gplot.DataProviderSpec.FileLog
 import li.klass.fhem.graph.backend.gplot.GPlotSeriesTestdataBuilder.defaultGPlotSeries
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.testutil.ValueProvider
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.command.execution.Command
@@ -49,25 +52,25 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.BDDMockito.given
-import org.mockito.InjectMocks
-import org.mockito.Mock
 
 @RunWith(DataProviderRunner::class)
 class GraphServiceTest {
     @get:Rule
-    var mockitoRule = MockitoRule()
+    var mockitoRule = MockRule()
 
-    @Mock
+    @MockK
     private lateinit var commandExecutionService: CommandExecutionService
-    @Mock
+
+    @MockK
     private lateinit var graphIntervalProvider: GraphIntervalProvider
-    @Mock
+
+    @MockK
     private lateinit var deviceListService: DeviceListService
-    @Mock
+
+    @MockK
     private lateinit var context: Context
 
-    @InjectMocks
+    @InjectMockKs
     private lateinit var graphService: GraphService
 
     private val valueProvider = ValueProvider()
@@ -93,7 +96,7 @@ class GraphServiceTest {
 
     @Before
     fun setUp() {
-        given(graphIntervalProvider.getIntervalFor(from, to, null, context, connectionId)).willReturn(interval)
+        every { graphIntervalProvider.getIntervalFor(from, to, null, context, connectionId) } returns interval
     }
 
     @Test
@@ -115,8 +118,8 @@ class GraphServiceTest {
         )
         val svgGraphDefinition = graphDefinitionWithSeries(series)
         val command = String.format(GraphService.COMMAND_TEMPLATE, customLogDevice, fromDateFormatted, toDateFormatted, pattern)
-        given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
-        given(commandExecutionService.executeSync(Command(command, connectionId))).willReturn(dummyResponse)
+        every { deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId) } returns device
+        every { commandExecutionService.executeSync(Command(command, connectionId)) } returns dummyResponse
 
         // when
         val result = graphService.getGraphData(
@@ -142,8 +145,8 @@ class GraphServiceTest {
         val svgGraphDefinition = graphDefinitionWithSeries(series)
         val device = getDeviceFor(name = svgGraphDefinition.logDeviceName, type = "FileLog")
         val command = String.format(GraphService.COMMAND_TEMPLATE, svgGraphDefinition.logDeviceName, fromDateFormatted, toDateFormatted, pattern)
-        given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
-        given(commandExecutionService.executeSync(Command(command, connectionId))).willReturn(dummyResponse)
+        every { deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId) } returns device
+        every { commandExecutionService.executeSync(Command(command, connectionId)) } returns dummyResponse
 
         // when
         val result = graphService.getGraphData(
@@ -168,8 +171,8 @@ class GraphServiceTest {
         val svgGraphDefinition = graphDefinitionWithSeries(series)
         val device = getDeviceFor(name = svgGraphDefinition.logDeviceName, type = "DbLog")
         val command = String.format(GraphService.COMMAND_TEMPLATE, svgGraphDefinition.logDeviceName, fromDateFormatted, toDateFormatted, pattern)
-        given(deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId)).willReturn(device)
-        given(commandExecutionService.executeSync(Command(command, connectionId))).willReturn(dummyResponse)
+        every { deviceListService.getDeviceForName(svgGraphDefinition.logDeviceName, connectionId) } returns device
+        every { commandExecutionService.executeSync(Command(command, connectionId)) } returns dummyResponse
 
         // when
         val result = graphService.getGraphData(

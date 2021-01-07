@@ -24,8 +24,8 @@
 
 package li.klass.fhem.update.backend.fhemweb
 
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
+import io.mockk.every
+import io.mockk.mockk
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.core.FhemDevice
@@ -41,14 +41,12 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     @Test
     fun should_find_no_fhemweb_device_if_none_is_present() {
         // given
-        val applicationProperties = mock<ApplicationProperties>()
+        val applicationProperties: ApplicationProperties = mockk()
         val emptyRoomDeviceList = RoomDeviceList("bla")
-        val connectionService = mock<ConnectionService> {
-            on { getSelectedId() } doReturn "123"
-        }
-        val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList("123") } doReturn emptyRoomDeviceList
-        }
+        val connectionService: ConnectionService = mockk()
+        every { connectionService.getSelectedId() } returns "123"
+        val roomListService: DeviceListService = mockk()
+        every { roomListService.getAllRoomsDeviceList("123") } returns emptyRoomDeviceList
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
@@ -62,16 +60,15 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     @Test
     fun should_find_one_fhemweb_device_if_one_is_present() {
         // given
-        val applicationProperties = mock<ApplicationProperties>()
+        val applicationProperties: ApplicationProperties = mockk()
         val device = fhemwebDeviceFor("device")
         val deviceList = RoomDeviceList("bla")
                 .addDevice(device)
-        val connectionService = mock<ConnectionService> {
-            on { getSelectedId() } doReturn "123"
-        }
-        val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList("123") } doReturn deviceList
-        }
+        val roomListService: DeviceListService = mockk()
+        every { roomListService.getAllRoomsDeviceList("123") } returns deviceList
+
+        val connectionService: ConnectionService = mockk()
+        every { connectionService.getSelectedId() } returns "123"
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
@@ -85,7 +82,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     @Test
     fun should_use_connection_port() {
         // given
-        val applicationProperties = mock<ApplicationProperties>() // returns null as qualifier
+        val applicationProperties: ApplicationProperties = mockk() // returns null as qualifier
+        every { applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME) } returns null
         val port = 123
         val incorrectDevice = fhemwebDeviceFor("incorrectDevice")
         val correctDevice = fhemwebDeviceFor("correctDevice")
@@ -94,13 +92,11 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(incorrectDevice)
                 .addDevice(correctDevice)
 
-        val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList("123") } doReturn deviceList
-        }
-        val connectionService = mock<ConnectionService> {
-            on { getPortOfSelectedConnection() } doReturn port
-            on { getSelectedId() } doReturn "123"
-        }
+        val roomListService: DeviceListService = mockk()
+        every { roomListService.getAllRoomsDeviceList("123") } returns deviceList
+        val connectionService: ConnectionService = mockk()
+        every { connectionService.getPortOfSelectedConnection() } returns port
+        every { connectionService.getSelectedId() } returns "123"
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
@@ -114,7 +110,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     @Test
     fun should_use_some_device_if_connection_port_does_not_match() {
         // given
-        val applicationProperties = mock<ApplicationProperties>() // returns null as qualifier
+        val applicationProperties: ApplicationProperties = mockk() // returns null as qualifier
+        every { applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME) } returns null
         val port = 123
         val device2 = fhemwebDeviceFor("device2")
         val device1 = fhemwebDeviceFor("device1")
@@ -124,13 +121,12 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
                 .addDevice(device2)
                 .addDevice(device1)
 
-        val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList("123") } doReturn deviceList
-        }
-        val connectionService = mock<ConnectionService> {
-            on { getPortOfSelectedConnection() } doReturn port
-            on { getSelectedId() } doReturn "123"
-        }
+        val roomListService: DeviceListService = mockk()
+        every { roomListService.getAllRoomsDeviceList("123") } returns deviceList
+
+        val connectionService: ConnectionService = mockk()
+        every { connectionService.getPortOfSelectedConnection() } returns port
+        every { connectionService.getSelectedId() } returns "123"
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 
@@ -145,21 +141,19 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
     fun should_use_qualifier() {
         // given
         val qualifier = "myQualifier"
-        val applicationProperties = mock<ApplicationProperties> {
-            on { getStringSharedPreference(FHEMWEB_DEVICE_NAME, null) } doReturn qualifier
-        }
+        val applicationProperties: ApplicationProperties = mockk()
+        every { applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null) } returns qualifier
         val device1 = fhemwebDeviceFor("device1")
         val device2 = fhemwebDeviceFor("device2" + qualifier)
         val deviceList = RoomDeviceList("bla")
                 .addDevice(device2)
                 .addDevice(device1)
 
-        val roomListService = mock<DeviceListService> {
-            on { getAllRoomsDeviceList("123") } doReturn deviceList
-        }
-        val connectionService = mock<ConnectionService> {
-            on { getSelectedId() } doReturn "123"
-        }
+        val roomListService: DeviceListService = mockk()
+        every { roomListService.getAllRoomsDeviceList("123") } returns deviceList
+
+        val connectionService: ConnectionService = mockk()
+        every { connectionService.getSelectedId() } returns "123"
 
         val supplier = FhemWebDeviceInRoomDeviceListSupplier(applicationProperties, connectionService, roomListService)
 

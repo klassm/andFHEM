@@ -25,24 +25,25 @@
 package li.klass.fhem.adapter.devices.genericui
 
 import android.content.Context
+import io.mockk.impl.annotations.MockK
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 
 class WebCmdActionRowTest {
 
     @Rule
     @JvmField
-    var mockitoRule = MockitoRule()
+    var mockitoRule = MockRule()
 
-    @Mock
+    @MockK
     private lateinit var context: Context
-    @Mock
+
+    @MockK
     private lateinit var stateUiService: StateUiService
 
     @Test

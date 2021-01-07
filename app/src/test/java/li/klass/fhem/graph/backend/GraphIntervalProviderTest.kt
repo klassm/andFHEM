@@ -1,9 +1,10 @@
 package li.klass.fhem.graph.backend
 
 import android.content.Context
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.spy
-import com.nhaarman.mockito_kotlin.whenever
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.spyk
 import li.klass.fhem.update.backend.command.execution.Command
 import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import li.klass.fhem.util.DateFormatUtil
@@ -12,33 +13,22 @@ import org.joda.time.Hours
 import org.joda.time.Interval
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.given
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 
 class GraphIntervalProviderTest {
-    @Mock
+    @MockK
     private lateinit var commandExecutionService: CommandExecutionService
 
-    @Mock
+    @MockK
     private lateinit var context: Context
 
     private lateinit var graphIntervalProvider: GraphIntervalProvider
 
-    private fun <T> any(): T {
-        Mockito.any<T>()
-        return uninitialized()
-    }
-
-    private fun <T> uninitialized(): T = null as T
-
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        given(commandExecutionService.executeSync(Command("{{ TimeNow() }}"))).willReturn("2020-03-10 20:57:40")
-        graphIntervalProvider = spy(GraphIntervalProvider(commandExecutionService))
-        doReturn(24).whenever(graphIntervalProvider).getChartingDefaultTimespan(any())
+        MockKAnnotations.init(this)
+        every { commandExecutionService.executeSync(Command("{{ TimeNow() }}")) } returns "2020-03-10 20:57:40"
+        graphIntervalProvider = spyk(GraphIntervalProvider(commandExecutionService))
+        every { graphIntervalProvider.getChartingDefaultTimespan(any()) } returns 24
     }
 
     @Test

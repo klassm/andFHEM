@@ -24,17 +24,17 @@
 
 package li.klass.fhem.adapter.devices.toggle
 
-import com.nhaarman.mockito_kotlin.createinstance.createInstance
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.whenever
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.testutil.MockitoRule
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider
 import li.klass.fhem.update.backend.xmllist.DeviceNode
@@ -45,33 +45,27 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.argThat
 
 @RunWith(DataProviderRunner::class)
 class OnOffBehaviorTest {
     @get:Rule
-    val mockitoRule = MockitoRule()
+    val mockitoRule = MockRule()
 
-    @InjectMocks
+    @InjectMockKs
     private lateinit var onOffBehavior: OnOffBehavior
 
-    @Mock
+    @MockK
     private lateinit var deviceHookProvider: DeviceHookProvider
 
-    @Mock
+    @MockK
     private lateinit var deviceConfigurationProvider: DeviceConfigurationProvider
 
-    @Mock
+    @MockK
     private lateinit var deviceConfiguration: DeviceConfiguration
 
     @Before
     fun setUp() {
-        whenever(deviceConfigurationProvider.configurationFor(
-                argThat<FhemDevice> { it is FhemDevice } ?: createInstance())
-        ).doReturn(deviceConfiguration)
+        every { deviceConfigurationProvider.configurationFor(ofType(FhemDevice::class)) } returns deviceConfiguration
     }
 
     @UseDataProvider("isOnProvider")
@@ -86,13 +80,15 @@ class OnOffBehaviorTest {
                     setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
-        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
-        whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
-        whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
+        every { deviceConfiguration.stateAttributeName } returns "state"
+        every { deviceConfiguration.additionalOffStateNames } returns testCase.additionalOffStates
+        every { deviceConfiguration.additionalOnStateNames } returns testCase.additionalOnStates
+        every { deviceHookProvider.getOffStateName(any()) } returns "off"
+        every { deviceHookProvider.getOnStateName(any()) } returns "on"
 
         val device = FhemDevice(xmlListDevice)
         device.xmlListDevice.setInternal("STATE", testCase.internalState)
-        `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
+        every { deviceHookProvider.getOffStateName(device) } returns "off"
 
         // expect
         assertThat(onOffBehavior.isOnByState(device)).isEqualTo(testCase.expected)
@@ -110,14 +106,16 @@ class OnOffBehaviorTest {
                     setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
-        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
-        whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
-        whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
+        every { deviceConfiguration.stateAttributeName } returns "state"
+        every { deviceConfiguration.additionalOffStateNames } returns testCase.additionalOffStates
+        every { deviceConfiguration.additionalOnStateNames } returns testCase.additionalOnStates
+        every { deviceHookProvider.getOffStateName(any()) } returns "off"
+        every { deviceHookProvider.getOnStateName(any()) } returns "on"
 
         val device = FhemDevice(xmlListDevice)
         device.xmlListDevice.setInternal("STATE", testCase.internalState)
-        `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
-        `when`(deviceHookProvider.invertState(device)).thenReturn(false)
+        every { deviceHookProvider.getOffStateName(device) } returns "off"
+        every { deviceHookProvider.invertState(device) } returns false
 
         assertThat(onOffBehavior.isOn(device)).isEqualTo(testCase.expected)
     }
@@ -132,14 +130,16 @@ class OnOffBehaviorTest {
                     setState("state", testCase.readingsState)
                     setHeader("sets", testCase.setList)
                 }
-        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
-        whenever(deviceConfiguration.additionalOffStateNames).doReturn(testCase.additionalOffStates)
-        whenever(deviceConfiguration.additionalOnStateNames).doReturn(testCase.additionalOnStates)
+        every { deviceConfiguration.stateAttributeName } returns "state"
+        every { deviceConfiguration.additionalOffStateNames } returns testCase.additionalOffStates
+        every { deviceConfiguration.additionalOnStateNames } returns testCase.additionalOnStates
+        every { deviceHookProvider.getOffStateName(any()) } returns "off"
+        every { deviceHookProvider.getOnStateName(any()) } returns "on"
 
         val device2 = FhemDevice(xmlListDevice2)
         device2.xmlListDevice.setInternal("STATE", testCase.internalState)
-        `when`(deviceHookProvider.getOffStateName(device2)).thenReturn("off")
-        `when`(deviceHookProvider.invertState(device2)).thenReturn(true)
+        every { deviceHookProvider.getOffStateName(device2) } returns "off"
+        every { deviceHookProvider.invertState(device2) } returns true
 
         // expect
         assertThat(onOffBehavior.isOn(device2)).isEqualTo(!testCase.expected)
@@ -150,9 +150,13 @@ class OnOffBehaviorTest {
     @Throws(Exception::class)
     fun isOnConsideringHooks(testCase: HookProviderTestCase) {
         val device = FhemDevice(XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), HashMap()))
-        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
-        `when`(deviceHookProvider.buttonHookFor(device)).thenReturn(testCase.hook)
-        `when`(deviceHookProvider.getOffStateName(device)).thenReturn("off")
+        every { deviceConfiguration.stateAttributeName } returns "state"
+        every { deviceHookProvider.buttonHookFor(device) } returns testCase.hook
+        every { deviceHookProvider.invertState(any()) } returns false
+        every { deviceHookProvider.getOffStateName(device) } returns "off"
+        every { deviceHookProvider.getOnStateName(device) } returns "on"
+        every { deviceConfiguration.additionalOnStateNames } returns emptySet()
+        every { deviceConfiguration.additionalOffStateNames } returns emptySet()
         device.xmlListDevice.setInternal("STATE", if (testCase.isOn) "on" else "off")
 
         val result = onOffBehavior.isOnConsideringHooks(device)
@@ -168,9 +172,12 @@ class OnOffBehaviorTest {
                 .toMutableMap()
         val device = FhemDevice(XmlListDevice("GENERIC", HashMap(), HashMap(), HashMap(), headers))
 
-        whenever(deviceConfiguration.stateAttributeName).doReturn("state")
-        `when`(deviceHookProvider.getOffStateName(device)).thenReturn(testCase.offStateNameHook)
-        `when`(deviceHookProvider.getOnStateName(device)).thenReturn(testCase.onStateNameHook)
+        every { deviceConfiguration.stateAttributeName } returns "state"
+        every { deviceHookProvider.getOffStateName(device) } returns testCase.offStateNameHook
+        every { deviceHookProvider.getOnStateName(device) } returns testCase.onStateNameHook
+        every { deviceHookProvider.buttonHookFor(device) } returns NORMAL
+        every { deviceConfiguration.additionalOnStateNames } returns emptySet()
+        every { deviceConfiguration.additionalOffStateNames } returns emptySet()
 
         val supports = onOffBehavior.supports(device)
 

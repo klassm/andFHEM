@@ -21,81 +21,84 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.service.intent
 
-package li.klass.fhem.service.intent;
+import android.content.Context
+import android.content.SharedPreferences
+import com.tngtech.java.junit.dataprovider.DataProvider
+import com.tngtech.java.junit.dataprovider.DataProviderRunner
+import com.tngtech.java.junit.dataprovider.DataProviders.testForEach
+import com.tngtech.java.junit.dataprovider.UseDataProvider
+import io.mockk.Called
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.verify
+import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.testutil.MockRule
+import li.klass.fhem.update.backend.command.execution.CommandExecutionService
+import li.klass.fhem.util.preferences.SharedPreferencesService
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
-import android.content.Context;
-import android.content.SharedPreferences;
+@RunWith(DataProviderRunner::class)
+class SendCommandServiceTest {
+    @MockK
+    lateinit var connectionService: ConnectionService
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+    @MockK
+    lateinit var commandExecutionService: CommandExecutionService
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+    @MockK
+    lateinit var sharedPreferencesService: SharedPreferencesService
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+    @MockK
+    lateinit var sharedPreferences: SharedPreferences
 
-import li.klass.fhem.connection.backend.ConnectionService;
-import li.klass.fhem.testutil.MockitoRule;
-import li.klass.fhem.update.backend.command.execution.CommandExecutionService;
-import li.klass.fhem.util.preferences.SharedPreferencesService;
+    @MockK
+    lateinit var editor: SharedPreferences.Editor
 
-import static com.tngtech.java.junit.dataprovider.DataProviders.$;
-import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
-import static li.klass.fhem.service.intent.SendCommandService.Companion;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verifyZeroInteractions;
+    @MockK
+    lateinit var context: Context
 
-@RunWith(DataProviderRunner.class)
-public class SendCommandServiceTest {
-
-    @Mock
-    ConnectionService connectionService;
-    @Mock
-    CommandExecutionService commandExecutionService;
-    @Mock
-    SharedPreferencesService sharedPreferencesService;
-    @Mock
-    SharedPreferences sharedPreferences;
-    @Mock
-    SharedPreferences.Editor editor;
-    @Mock
-    Context context;
-
-    @InjectMocks
-    SendCommandService intentService;
+    @InjectMockKs
+    lateinit var intentService: SendCommandService
 
     @Rule
-    public MockitoRule mockitoRule = new MockitoRule();
-
-    @DataProvider
-    public static Object[][] recentCommandsProvider() {
-        return $$(
-                $(String.format("{%s: %s}", Companion.getCOMMANDS_JSON_PROPERTY(), "['a', 'b', 'c']"), Arrays.asList("a", "b", "c")),
-                $(null, Collections.<String>emptyList()),
-                $("{", Collections.<String>emptyList())
-        );
-    }
+    @JvmField
+    var mockRule: MockRule = MockRule()
 
     @Test
     @UseDataProvider("recentCommandsProvider")
-    public void should_get_recent_commands(String jsonInput, List<String> expectedCommands) {
-        given(sharedPreferencesService.getPreferences(Companion.getPREFERENCES_NAME()))
-                .willReturn(sharedPreferences);
-        given(sharedPreferences.getString(Companion.getCOMMANDS_PROPERTY(), null)).willReturn(jsonInput);
+    fun should_get_recent_commands(testCase: TestCase) {
+        every { sharedPreferencesService.getPreferences(SendCommandService.PREFERENCES_NAME) } returns sharedPreferences
+        every { sharedPreferences.getString(SendCommandService.COMMANDS_PROPERTY, null) } returns testCase.jsonInput
 
-        ArrayList<String> result = intentService.getRecentCommands();
+        val result = intentService.getRecentCommands()
 
-        assertThat(result).containsExactlyElementsOf(expectedCommands);
-        verifyZeroInteractions(commandExecutionService);
-        verifyZeroInteractions(connectionService);
+        assertThat(result).containsExactlyElementsOf(testCase.expectedCommands)
+        verify { listOf(commandExecutionService, connectionService) wasNot Called }
     }
+
+    companion object {
+        @DataProvider
+        @JvmStatic
+        fun recentCommandsProvider(): Array<Array<Any>> {
+            return testForEach(
+                    TestCase(
+                            String.format("{%s: %s}", SendCommandService.COMMANDS_JSON_PROPERTY, "['a', 'b', 'c']"), listOf("a", "b", "c")
+                    ),
+                    TestCase(
+                            null, emptyList<String>()
+                    ),
+                    TestCase(
+                            "{", emptyList<String>()
+                    )
+            )
+        }
+    }
+
+    data class TestCase(val jsonInput: String?, val expectedCommands: List<String?>)
 }

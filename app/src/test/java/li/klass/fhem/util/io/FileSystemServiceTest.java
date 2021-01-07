@@ -26,20 +26,20 @@ package li.klass.fhem.util.io;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 
 import java.io.File;
 
-import li.klass.fhem.testutil.MockitoRule;
+import io.mockk.impl.annotations.InjectMockKs;
+import li.klass.fhem.testutil.MockRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileSystemServiceTest {
 
     @Rule
-    public MockitoRule mockitoRule = new MockitoRule();
+    public MockRule mockRule = new MockRule();
 
-    @InjectMocks
+    @InjectMockKs
     public FileSystemService fileSystemService;
 
     @Test

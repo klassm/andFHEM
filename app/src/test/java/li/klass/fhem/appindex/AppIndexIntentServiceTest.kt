@@ -2,62 +2,63 @@ package li.klass.fhem.appindex
 
 import android.content.Intent
 import com.google.firebase.appindexing.Indexable
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.verify
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.update.backend.DeviceListService
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.given
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
 
 
 class AppIndexIntentServiceTest {
-    @InjectMocks
+    @InjectMockKs
     lateinit var appIndexIntentService: AppIndexIntentService
 
-    @Mock
+    @MockK
     lateinit var indexableCreator: IndexableCreator
-    @Mock
+
+    @MockK
     lateinit var firebaseIndexWrapper: FirebaseIndexWrapper
-    @Mock
+
+    @MockK
     lateinit var deviceListService: DeviceListService
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockKAnnotations.init(this)
     }
 
     @Test
     fun should_update_index() {
         // given
-        val indexableRoomA = mock(Indexable::class.java)
-        val indexableRoomB = mock(Indexable::class.java)
-        val indexableRoomC = mock(Indexable::class.java)
-        given(deviceListService.getRoomNameList())
-                .willReturn(setOf("a", "b", "c"))
-        given(indexableCreator.indexableFor(appIndexIntentService, "a")).willReturn(indexableRoomA)
-        given(indexableCreator.indexableFor(appIndexIntentService, "b")).willReturn(indexableRoomB)
-        given(indexableCreator.indexableFor(appIndexIntentService, "c")).willReturn(indexableRoomC)
+        val indexableRoomA: Indexable = mockk()
+        val indexableRoomB: Indexable = mockk()
+        val indexableRoomC: Indexable = mockk()
+        every { deviceListService.getRoomNameList() } returns setOf("a", "b", "c")
+        every { indexableCreator.indexableFor(appIndexIntentService, "a") } returns indexableRoomA
+        every { indexableCreator.indexableFor(appIndexIntentService, "b") } returns indexableRoomB
+        every { indexableCreator.indexableFor(appIndexIntentService, "c") } returns indexableRoomC
 
-        val device1 = mock(FhemDevice::class.java)
-        val device2 = mock(FhemDevice::class.java)
-        val allRoomDeviceList = mock(RoomDeviceList::class.java)
-        val indexableDevice1 = mock(Indexable::class.java)
-        val indexableDevice2 = mock(Indexable::class.java)
-        given(allRoomDeviceList.allDevices).willReturn(setOf(device1, device2))
-        given(deviceListService.getAllRoomsDeviceList())
-                .willReturn(allRoomDeviceList)
-        given(indexableCreator.indexableFor(appIndexIntentService, device1)).willReturn(indexableDevice1)
-        given(indexableCreator.indexableFor(appIndexIntentService, device2)).willReturn(indexableDevice2)
+        val device1: FhemDevice = mockk()
+        val device2: FhemDevice = mockk()
+        val allRoomDeviceList: RoomDeviceList = mockk()
+        val indexableDevice1: Indexable = mockk()
+        val indexableDevice2: Indexable = mockk()
+        every { allRoomDeviceList.allDevices } returns setOf(device1, device2)
+        every { deviceListService.getAllRoomsDeviceList() } returns allRoomDeviceList
+        every { indexableCreator.indexableFor(appIndexIntentService, device1) } returns indexableDevice1
+        every { indexableCreator.indexableFor(appIndexIntentService, device2) } returns indexableDevice2
+        every { firebaseIndexWrapper.update(any()) } returns Unit
 
         // when
-        appIndexIntentService.onHandleIntent(mock(Intent::class.java))
+        appIndexIntentService.onHandleIntent(Intent())
 
         // then
-        verify(firebaseIndexWrapper).update(listOf(indexableRoomA, indexableRoomB, indexableRoomC, indexableDevice1, indexableDevice2))
+        verify { firebaseIndexWrapper.update(listOf(indexableRoomA, indexableRoomB, indexableRoomC, indexableDevice1, indexableDevice2)) }
     }
 }

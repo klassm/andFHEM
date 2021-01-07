@@ -27,7 +27,10 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht
 import com.tngtech.java.junit.dataprovider.DataProvider
 import com.tngtech.java.junit.dataprovider.DataProviderRunner
 import com.tngtech.java.junit.dataprovider.UseDataProvider
-import li.klass.fhem.testutil.MockitoRule
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.util.DateTimeProvider
 import org.assertj.core.api.Assertions.assertThat
 import org.joda.time.DateTime
@@ -35,22 +38,19 @@ import org.joda.time.DateTimeConstants.JANUARY
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.BDDMockito.given
-import org.mockito.InjectMocks
-import org.mockito.Mock
 
 @RunWith(DataProviderRunner::class)
 class HolidayShortCalculatorTest {
 
-    @Mock
+    @MockK
     private lateinit var dateTimeProvider: DateTimeProvider
 
-    @InjectMocks
+    @InjectMockKs
     private lateinit var holidayShortCalculator: HolidayShortCalculator
 
     @Rule
     @JvmField
-    var mockitoRule = MockitoRule()
+    var mockitoRule = MockRule()
 
     @Test
     @UseDataProvider("holiday1TimeProvider")
@@ -69,7 +69,7 @@ class HolidayShortCalculatorTest {
     @Test
     @UseDataProvider("switchTimeCalculationProvider")
     fun should_calculate_switch_time(testCase: SwitchTimeTestCase) {
-        given(dateTimeProvider.now()).willReturn(testCase.now)
+        every { dateTimeProvider.now() } returns testCase.now
 
         val time = holidayShortCalculator.holiday1SwitchTimeFor(testCase.switchTimeHour, testCase.switchTimeMinute)
 
@@ -78,7 +78,7 @@ class HolidayShortCalculatorTest {
 
     @Test
     fun should_handle_24_hours_when_creating_the_DateTime_object() {
-        given(dateTimeProvider.now()).willReturn(DateTime(2014, JANUARY, 1, 12, 0))
+        every { dateTimeProvider.now() } returns DateTime(2014, JANUARY, 1, 12, 0)
 
         val time = holidayShortCalculator.holiday1SwitchTimeFor(24, 30)
 
