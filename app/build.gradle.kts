@@ -156,7 +156,7 @@ dependencies {
     testImplementation(group = "junit", name = "junit", version = "4.13.1")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.18.1")
-    testImplementation(group = "io.mockk", name = "mockk", version = "1.10.3-jdk8")
+    testImplementation(group = "io.mockk", name = "mockk", version = "1.10.4")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.3.0")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.3.0")
