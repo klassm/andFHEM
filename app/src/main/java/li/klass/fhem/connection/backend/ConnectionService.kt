@@ -39,7 +39,6 @@ import li.klass.fhem.domain.core.DeviceVisibility
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
 import li.klass.fhem.util.ApplicationProperties
 import java.util.*
-import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -202,23 +201,15 @@ constructor(private val applicationProperties: ApplicationProperties,
         return when (spec!!.serverType) {
             TELNET -> spec.port
             DUMMY -> 0
-            FHEMWEB -> getPortOfFHEMWEBSpec(spec)
+            FHEMWEB -> getPortOfFHEMWEBSpec(spec) ?: 0
         }
     }
 
-    private fun getPortOfFHEMWEBSpec(spec: FHEMServerSpec): Int {
+    private fun getPortOfFHEMWEBSpec(spec: FHEMServerSpec): Int? {
         if (spec.serverType != FHEMWEB) {
             throw IllegalArgumentException("expected FHEMWEB, got " + spec.serverType)
         }
-        val explicitPortPattern = Pattern.compile(":([\\d]+)")
-        val url = spec.url
-        val matcher = url?.let { explicitPortPattern.matcher(it) }
-        if (matcher?.find() == true) {
-            return Integer.valueOf(matcher.group(1)!!)
-        }
-
-        if (url?.startsWith("https://") == true) return 443
-        return if (url?.startsWith("http://") == true) 80 else 0
+        return spec.url?.let { extractPortFrom(it) }
     }
 
     private val applicationContext: Context get() = application.applicationContext
