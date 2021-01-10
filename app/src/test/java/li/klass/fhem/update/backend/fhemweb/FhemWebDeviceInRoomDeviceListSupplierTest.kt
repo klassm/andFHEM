@@ -85,8 +85,8 @@ class FhemWebDeviceInRoomDeviceListSupplierTest {
         val applicationProperties: ApplicationProperties = mockk() // returns null as qualifier
         every { applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME) } returns null
         val port = 123
-        val incorrectDevice = fhemwebDeviceFor("incorrectDevice")
-        val correctDevice = fhemwebDeviceFor("correctDevice")
+        val incorrectDevice = fhemwebDeviceFor("a_incorrectDevice")
+        val correctDevice = fhemwebDeviceFor("z_correctDevice")
         correctDevice.xmlListDevice.setInternal(XmllistKey.Internal.FhemWeb.port, port.toString())
         val deviceList = RoomDeviceList("bla")
                 .addDevice(incorrectDevice)

@@ -25,6 +25,7 @@
 package li.klass.fhem.update.backend.fhemweb
 
 import li.klass.fhem.connection.backend.ConnectionService
+import li.klass.fhem.constants.XmllistKey
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys.FHEMWEB_DEVICE_NAME
 import li.klass.fhem.update.backend.DeviceListService
@@ -75,9 +76,9 @@ class FhemWebDeviceInRoomDeviceListSupplier
 
     private fun findDeviceForPort(devices: List<FhemDevice>): FhemDevice? {
         val port = connectionService.getPortOfSelectedConnection()
-        return devices.firstOrNull {
-            it.xmlListDevice.let {
-                it.type == "FHEMWEB" && it.attributeValueFor("port") == port.toString()
+        return devices.firstOrNull { device ->
+            device.xmlListDevice.let {
+                it.type == "FHEMWEB" && it.getInternal(XmllistKey.Internal.FhemWeb.port) == port.toString()
             }
         }
     }
