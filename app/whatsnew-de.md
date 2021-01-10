@@ -1,1 +1,1 @@
-TODO
+* Verwende das PORT Internal (statt eines Attributs) beim Ermitteln der richtigen FHEMWEB Instanz

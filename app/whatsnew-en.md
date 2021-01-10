@@ -1,1 +1,1 @@
-TODO
+* Use the PORT internal (instead of an attribute) when trying to figure out the correct FHEMWEB device for a connection
