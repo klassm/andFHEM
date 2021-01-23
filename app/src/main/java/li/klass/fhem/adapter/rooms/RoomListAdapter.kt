@@ -25,22 +25,19 @@
 package li.klass.fhem.adapter.rooms
 
 import android.content.Context
-import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
-import li.klass.fhem.settings.SettingsKeys.SHOW_HIDDEN_DEVICES
 import org.slf4j.LoggerFactory
 import java.util.*
 
 class RoomListAdapter(
         context: Context,
         resource: Int,
-        data: List<String>,
-        val hiddenRooms: Set<String>
+        data: List<String>
 ) : ListDataAdapter<String>(context, resource, data, CASE_INSENSITIVE_COMPARATOR) {
 
     private var selectedRoom: String? = null
@@ -52,8 +49,6 @@ class RoomListAdapter(
         if (convertedView == null) {
             convertedView = inflater.inflate(resource, null)
         }
-
-        assert(convertedView != null)
 
         val roomNameTextView = convertedView!!.findViewById<View>(R.id.roomName) as TextView
         roomNameTextView.text = roomName
@@ -71,15 +66,7 @@ class RoomListAdapter(
 
         setSelectedRoom(selectedRoom)
 
-        val preferences = getDefaultSharedPreferences(context)
-        val showHiddenDevices = preferences.getBoolean(SHOW_HIDDEN_DEVICES, false)
-
-        val newRooms = when (showHiddenDevices) {
-            true -> newData
-            else -> newData.filterNot { hiddenRooms.contains(it) }
-        }
-
-        updateData(newRooms)
+        updateData(newData)
     }
 
     private fun setSelectedRoom(selectedRoom: String?) {

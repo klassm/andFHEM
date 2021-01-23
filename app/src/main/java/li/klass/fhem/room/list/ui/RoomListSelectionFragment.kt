@@ -68,7 +68,7 @@ abstract class RoomListSelectionFragment constructor(
 
         val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
 
-        val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList(), hiddenRooms)
+        val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList())
         val layout = inflater.inflate(layout, container, false) ?: return null
         advertisementService.addAd(layout, myActivity)
 

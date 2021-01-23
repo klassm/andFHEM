@@ -36,7 +36,10 @@ class ViewableRoomDeviceListProvider @Inject constructor(
 ) {
     fun provideFor(context: Context, roomDeviceList: RoomDeviceList): List<ViewableElementsCalculator.Element> {
         val filteredDeviceList = fhemWebConfigurationService.filterHiddenGroupsFrom(roomDeviceList)
-        val withoutHiddenDevices = hiddenRoomsDeviceFilter.filterHiddenDevicesIfRequired(filteredDeviceList)
+        val withoutHiddenDevices = when (roomDeviceList.roomName) {
+            RoomDeviceList.ALL_DEVICES_ROOM -> hiddenRoomsDeviceFilter.filterHiddenDevicesIfRequired(filteredDeviceList)
+            else -> roomDeviceList
+        }
 
         return viewableElementsCalculator.calculateElements(context, withoutHiddenDevices)
     }
