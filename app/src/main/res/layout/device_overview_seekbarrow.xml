@@ -25,18 +25,23 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent"
-          android:gravity="center_vertical"
-          style="@style/deviceOverviewLayout">
+    style="@style/deviceOverviewLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/description"
-        style="@style/deviceOverviewLayoutDeviceName"
-        android:gravity="center_vertical"
-        android:text="@string/dummy_text"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="20">
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        style="@style/deviceOverviewSeekBar"/>
+        <TextView
+            android:id="@+id/description"
+            style="@style/deviceOverviewLayoutDeviceNameFullWidth"
+            android:gravity="center_vertical"
+            android:text="@string/dummy_text" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/deviceOverviewSeekBar" />
+    </LinearLayout>
 </TableRow>

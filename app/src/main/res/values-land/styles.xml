@@ -23,12 +23,6 @@
   -->
 
 <resources>
-    <style name="deviceOverviewSeekBar" parent="seekBar">
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_weight">3</item>
-        <item name="android:minWidth">220dp</item>
-    </style>
-
     <style name="deviceDetailTable">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>

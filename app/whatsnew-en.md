@@ -1,1 +1,2 @@
 * Use the PORT internal (instead of an attribute) when trying to figure out the correct FHEMWEB device for a connection
+* Give slider rows in the overview a separate line. Otherwise there's always a space conflict between device name and the slider. 
