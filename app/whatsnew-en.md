@@ -1,1 +1,1 @@
-TODO
+* Repair hiddenGroups attribute
