@@ -151,7 +151,7 @@ dependencies {
     implementation(group = "org.jetbrains.anko", name = "anko-coroutines", version = ankoVersion)
 
     implementation(group = "org.reactivestreams", name = "reactive-streams", version = "1.0.3")
-    implementation(group = "io.reactivex.rxjava2", name = "rxjava", version = "2.2.20")
+    implementation(group = "io.reactivex.rxjava2", name = "rxjava", version = "2.2.21")
 
     testImplementation(group = "junit", name = "junit", version = "4.13.1")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
