@@ -40,29 +40,25 @@ class OnOffBehavior
     fun isOnByState(device: FhemDevice): Boolean = !isOffByState(device)
 
     fun isOffByState(device: FhemDevice): Boolean {
-        val onStateName = getOnStateName(device) ?: "on"
-        val offStateName = getOffStateName(device) ?: "off"
-
         val stateAttributeName =
                 deviceConfigurationProvider.configurationFor(device).stateAttributeName
         val readingsState = device.xmlListDevice.getState(stateAttributeName, true) ?: ""
-        val state = when {
-            isValidToggleState(device.internalState, onStateName, offStateName) -> device.internalState
-            isValidToggleState(readingsState, onStateName, offStateName) -> readingsState
-            else -> device.internalState
+
+        val states = setOf(device.internalState, readingsState).flatMap {
+            val additionalState = if (it.contains("-for-timer")) {
+                it.split(" ")[0] // important for on / off-for-timer
+            } else it
+
+            setOf(additionalState, it)
         }
 
-        if (state.equals("???", ignoreCase = true)) {
+        if (states.any { it.equals("???", ignoreCase = true) }) {
             return true
         }
-        val stateToUse = if (state.contains("-for-timer")) {
-            state.split(" ")[0] // important for on / off-for-timer
-        } else state
-        return (getOffStateNames(device) + "off").any { stateToUse.equals(it, ignoreCase = true) }
-    }
 
-    private fun isValidToggleState(state: String, onStateName: String, offStateName: String) =
-            state.startsWith(onStateName) || state.startsWith(offStateName)
+        val offStateNames = getOffStateNames(device) + "off"
+        return offStateNames.any { offName -> states.any { it.equals(offName, ignoreCase = true) } }
+    }
 
     fun isOn(device: FhemDevice): Boolean {
         var isOn = isOnByState(device)
@@ -106,8 +102,7 @@ class OnOffBehavior
 
     private fun existingStatesOfIncludingEventMap(device: FhemDevice, offStateNames: Set<String>): List<String> {
         val states = device.setList.existingStatesOf(offStateNames)
-        val reverseEventMapStates = states
-                .map { device.getReverseEventMapStateFor(it) }.filterNotNull()
+        val reverseEventMapStates = states.mapNotNull { device.getReverseEventMapStateFor(it) }
         val comparator =
                 (compareBy<String>({ it.equals("on", true) }, { it.equals("off", true) }, { it }))
         return (states + reverseEventMapStates).sortedWith(comparator).asReversed()

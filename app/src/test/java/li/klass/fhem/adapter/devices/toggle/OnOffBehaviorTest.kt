@@ -256,7 +256,9 @@ class OnOffBehaviorTest {
                     IsOnTestCase(internalState = "on", setList = "on off", eventMap = "/gpio 12 on:on/gpio 12 off:off/gpio 12 gpio:off/gpio 12 output:off/", expected = true),
                     IsOnTestCase(internalState = "off", readingsState = "on", setList = "on off", expected = false),
                     IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "off", expected = false),
-                    IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "on", expected = true)
+                    IsOnTestCase(internalState = "Temperatur: 26.5 C", readingsState = "on", expected = true),
+                    IsOnTestCase(internalState = "on", expected = true, eventMap = "/on-for-timer 2:on/ /on-for-timer 10:off/"),
+                    IsOnTestCase(internalState = "off", expected = false, eventMap = "/on-for-timer 2:on/ /on-for-timer 10:off/")
             )
         }
 
