@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.verify
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.testutil.MockRule
@@ -40,25 +39,7 @@ class ViewableRoomDeviceListProviderTest {
     var mockRule: MockRule = MockRule()
 
     @Test
-    fun should_filter_out_hidden_groups_in_some_room() {
-        val deviceList = RoomDeviceList("someName").apply {
-            addDevice(FhemDevice(XmlListDevice("bla", attributes = mutableMapOf(
-                    "group" to nodeOf("hiddengroup"),
-                    "room" to nodeOf("someRoom"),
-            ))))
-        }
-        val filteredRoom = RoomDeviceList("filteredGroups")
-        every { fhemWebConfigurationService.filterHiddenGroupsFrom(deviceList) } returns filteredRoom
-        every { viewableElementsCalculator.calculateElements(context, filteredRoom) } returns resultElements
-
-        val result = viewableRoomDeviceListProvider.provideFor(context, deviceList)
-
-        assertThat(result).isEqualTo(resultElements)
-        verify(exactly = 0) { hiddenRoomsDeviceFilter.filterHiddenDevicesIfRequired(any()) }
-    }
-
-    @Test
-    fun should_filter_out_hidden_rooms_in_the_all_room() {
+    fun should_filter_out_hidden_rooms() {
         val deviceList = RoomDeviceList("roomContainingAllDevices").apply {
             addDevice(FhemDevice(XmlListDevice("bla", attributes = mutableMapOf(
                     "group" to nodeOf("hiddengroup"),
