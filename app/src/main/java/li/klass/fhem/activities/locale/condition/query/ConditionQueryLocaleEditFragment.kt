@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import kotlinx.android.synthetic.main.locale_condition_query_edit.*
@@ -61,7 +60,7 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
                 viewModel.attributeValue.value = text?.toString()
             }
             viewModel.attributeValue
-                    .observe(viewLifecycleOwner, Observer {
+                    .observe(viewLifecycleOwner, {
                         updateIfChanged(it)
                     })
         }
@@ -73,7 +72,7 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
             doOnTextChanged { text, _, _, _ ->
                 viewModel.attributeName.value = text?.toString()
             }
-            viewModel.attributeName.observe(viewLifecycleOwner, Observer {
+            viewModel.attributeName.observe(viewLifecycleOwner, {
                 updateIfChanged(it)
             })
         }
@@ -81,12 +80,12 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
 
     private fun bindDeviceName(view: View) {
         view.deviceName.apply {
-            viewModel.deviceName.observe(viewLifecycleOwner, Observer {
+            viewModel.deviceName.observe(viewLifecycleOwner, {
                 text = it
             })
         }
         view.setDevice.onClick { handleDeviceSelection() }
-        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, Observer { device ->
+        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, { device ->
             viewModel.deviceName.value = device.name
         })
     }
@@ -105,8 +104,8 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
                 }
             }
 
-            viewModel.attributeType.observe(viewLifecycleOwner, Observer {
-                setSelection(AttributeType.positionFor(it))
+            viewModel.attributeType.observe(viewLifecycleOwner, { type ->
+                type?.let { setSelection(AttributeType.positionFor(it)) }
             })
         }
     }
@@ -114,7 +113,7 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
     private fun bindSave(view: View) {
         view.save.apply {
             isEnabled = false
-            viewModel.allAttributesSet.observe(viewLifecycleOwner, Observer {
+            viewModel.allAttributesSet.observe(viewLifecycleOwner, {
                 isEnabled = it
             })
             onClick { handleSave() }
