@@ -1,0 +1,78 @@
+{
+  "defaultGroup": "HEATING",
+  "sensorDevice": true,
+  "states": [
+    {
+      "key": "1.SET_POINT_TEMPERATURE",
+      "desc": "desiredTemperature",
+      "showAfter": "temperature",
+      "showInOverview": true,
+      "showDelayNotificationOnSwitch": true,
+      "beforeCommandReplace": [
+        {
+          "search": "5.5",
+          "replaceBy": "off"
+        },
+        {
+          "search": "30.5",
+          "replaceBy": "on"
+        }
+      ]
+    },
+    {
+      "key": "1.ACTUAL_TEMPERATURE",
+      "desc": "temperature",
+      "showInOverview": true
+    },
+    {
+      "key": "activity",
+      "desc": "activity"
+    },
+    {
+      "key": "1.WINDOW_STATE",
+      "desc": "windowOpen"
+    },
+    {
+      "key": "1.HUMIDITY",
+      "desc": "humidity",
+      "showAfter": null,
+      "showDelayNotificationOnSwitch": false,
+      "showInOverview": true,
+      "showInDetail": false,
+      "markers": [
+        "WidgetTemperatureAdditionalField"
+      ],
+      "beforeCommandReplace": []
+    }
+  ],
+  "sanitise": {
+    "deviceValues": {
+      "sets": {
+        "replaceAll": [
+          {
+            "search": "devstate",
+            "replaceBy": "1.SET_POINT_TEMPERATURE:slider,5.5,0.5,30.5"
+          }
+        ]
+      },
+      "desired-temp": {
+        "append": "°C",
+        "extract": "double",
+        "replaceAll": [
+          {
+            "search": "on",
+            "replaceBy": "30.5"
+          },
+          {
+            "search": "off",
+            "replaceBy": "5.5"
+          }
+        ]
+      },
+      "measured-temp": {
+        "append": "°C",
+        "extract": "double"
+      }
+    }
+  }
+}
