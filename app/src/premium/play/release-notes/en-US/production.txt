@@ -1,1 +1,1 @@
-* Repair the condition query plugin for tasker
+* Add some initital support for HMCCUDEV
