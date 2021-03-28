@@ -47,14 +47,6 @@
   ],
   "sanitise": {
     "deviceValues": {
-      "sets": {
-        "replaceAll": [
-          {
-            "search": "devstate",
-            "replaceBy": "1.SET_POINT_TEMPERATURE:slider,5.5,0.5,30.5"
-          }
-        ]
-      },
       "desired-temp": {
         "append": "°C",
         "extract": "double",
