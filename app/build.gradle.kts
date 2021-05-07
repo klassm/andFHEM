@@ -121,7 +121,7 @@ dependencies {
     implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.12.0")
 
 
-    compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
+    compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0-20050927.133100")
     implementation(group = "joda-time", name = "joda-time", version = "2.10.10")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.30")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
