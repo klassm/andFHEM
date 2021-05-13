@@ -66,4 +66,12 @@ constructor(private val application: Application) {
         val preferences = preferences ?: return
         preferences.edit().putString(key, value).apply()
     }
+
+    fun listen(keyToListenFor: String, onChange: () -> Unit) {
+        preferences?.registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (keyToListenFor == key) {
+                onChange()
+            }
+        })
+    }
 }

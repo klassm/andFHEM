@@ -78,7 +78,7 @@ class CulHmDetailActionProvider @Inject constructor(
                 ))
             }
 
-            override fun supports(device: FhemDevice): Boolean = supportsHeating(
+            override suspend fun supports(device: FhemDevice): Boolean = supportsHeating(
                     device.xmlListDevice)
         })
     }
