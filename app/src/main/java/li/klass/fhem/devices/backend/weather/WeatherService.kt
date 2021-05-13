@@ -123,8 +123,8 @@ class WeatherService @Inject constructor() {
                 val moonSet = values.first { it.key == "moonSet" }.value
 
                 val chanceOfRain = values.filter { it.key.contains("chOfRain") }
-                val chanceOfRainMin = chanceOfRain.minBy { it.value }?.value
-                val chanceOfRainMax = chanceOfRain.maxBy { it.value }?.value
+                val chanceOfRainMin = chanceOfRain.minByOrNull { it.value }?.value
+                val chanceOfRainMax = chanceOfRain.maxByOrNull { it.value }?.value
 
                 WeatherForecastInformation(
                         date = day,
