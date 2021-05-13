@@ -25,6 +25,12 @@ jobs:
       - name: Checkout
         run: git clone git@github.com:klassm/andFHEM.git
 
+      - name: set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
       - name: Release
         run: |
           PWD="$(pwd)"
