@@ -30,10 +30,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.coroutines.Dispatchers
@@ -99,8 +96,8 @@ constructor(private val licenseService: LicenseService) {
 
     private fun addListener(activity: Activity, adContainer: LinearLayout, adView: AdView) {
         adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(errorCode: Int) {
-                super.onAdFailedToLoad(errorCode)
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                super.onAdFailedToLoad(error)
 
                 adContainer.removeAllViews()
                 addErrorView(activity, adContainer)
