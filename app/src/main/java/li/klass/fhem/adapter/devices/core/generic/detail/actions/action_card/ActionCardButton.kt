@@ -48,5 +48,5 @@ abstract class ActionCardButton(buttonText: Int, context: Context) : ActionCardA
 
     protected abstract fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController)
 
-    override fun supports(device: FhemDevice): Boolean = true
+    override suspend fun supports(device: FhemDevice): Boolean = true
 }

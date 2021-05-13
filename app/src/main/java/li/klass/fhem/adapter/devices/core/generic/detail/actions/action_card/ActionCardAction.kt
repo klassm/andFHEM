@@ -33,5 +33,5 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 
 interface ActionCardAction {
     fun createView(device: XmlListDevice, connectionId: String?, context: Context, inflater: LayoutInflater, parent: ViewGroup, navController: NavController): View?
-    fun supports(device: FhemDevice): Boolean
+    suspend fun supports(device: FhemDevice): Boolean
 }

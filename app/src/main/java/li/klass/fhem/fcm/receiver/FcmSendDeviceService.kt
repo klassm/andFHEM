@@ -24,32 +24,21 @@
 
 package li.klass.fhem.fcm.receiver
 
-import com.google.firebase.iid.FirebaseInstanceId
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.fcm.AddSelfResult
-import li.klass.fhem.settings.SettingsKeys
+import li.klass.fhem.fcm.FcmTokenService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import li.klass.fhem.util.ApplicationProperties
-import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GCMSendDeviceService @Inject
+class FcmSendDeviceService @Inject
 constructor(val genericDeviceService: GenericDeviceService,
-            val applicationProperties: ApplicationProperties) {
+            private val fcmTokenService: FcmTokenService) {
 
-    private fun getRegistrationId(): String? {
-        val senderId = applicationProperties.getStringSharedPreference(SettingsKeys.FCM_SENDER_ID)
-        if (senderId == null) {
-            LOGGER.info("getRegistrationId - no value for senderId found")
-            return null
-        }
-        LOGGER.debug("getRegistrationId - senderId=$senderId")
-        return FirebaseInstanceId.getInstance().getToken(senderId, "FCM")?.trim()
-    }
+    private suspend fun getRegistrationId(): String? = fcmTokenService.getRegistrationId()
 
-    fun addSelf(device: XmlListDevice): AddSelfResult {
+    suspend fun addSelf(device: XmlListDevice): AddSelfResult {
 
         val registrationId = getRegistrationId() ?: return AddSelfResult.FCM_NOT_ACTIVE
 
@@ -68,14 +57,10 @@ constructor(val genericDeviceService: GenericDeviceService,
         genericDeviceService.setAttribute(device, "regIds", regIdsAttribute)
     }
 
-    fun isDeviceRegistered(device: XmlListDevice): Boolean =
+    suspend fun isDeviceRegistered(device: XmlListDevice): Boolean =
             getRegistrationIdsOf(device).contains(getRegistrationId())
 
     private fun getRegistrationIdsOf(device: XmlListDevice): List<String> =
             (device.getAttribute("regIds") ?: "")
                     .split("|")
-
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(GCMSendDeviceService::class.java)
-    }
 }
