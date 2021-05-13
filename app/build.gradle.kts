@@ -29,11 +29,10 @@ buildscript {
         google()
         mavenCentral()
         maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
-        jcenter()
     }
 
     dependencies {
-        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.7.6")
+        classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.8")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.5")
