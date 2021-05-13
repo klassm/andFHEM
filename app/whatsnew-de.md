@@ -1,1 +1,0 @@
-* Initialer Support für HMCCUDEV

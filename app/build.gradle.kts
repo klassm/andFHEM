@@ -29,11 +29,10 @@ buildscript {
         google()
         mavenCentral()
         maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
-        jcenter()
     }
 
     dependencies {
-        classpath(group = "de.mobilej.unmock", name = "UnMockPlugin", version = "0.7.6")
+        classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.8")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.5")
@@ -66,11 +65,9 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven { setUrl("https://plugins.gradle.org/m2/") }
     maven { setUrl("https://dl.bintray.com/mamohr/maven") }
     maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
-    maven { setUrl("http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots") }
     maven { setUrl("https://jitpack.io") }
     maven { setUrl("https://maven.google.com") }
     maven { setUrl("https://kotlin.bintray.com/kotlinx") }

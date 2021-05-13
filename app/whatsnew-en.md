@@ -1,1 +1,0 @@
-* Add some initital support for HMCCUDEV
