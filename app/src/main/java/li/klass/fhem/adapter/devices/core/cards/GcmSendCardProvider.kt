@@ -36,13 +36,14 @@ import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.Act
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardButton
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.fcm.receiver.GCMSendDeviceService
+import li.klass.fhem.fcm.receiver.FcmSendDeviceService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import org.jetbrains.anko.layoutInflater
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class GcmSendCardProvider @Inject constructor(
-        private val gcmSendDeviceService: GCMSendDeviceService
+        private val fcmSendDeviceService: FcmSendDeviceService
 ) : GenericDetailCardProvider, DeviceDetailActionProvider() {
     override fun ordering(): Int = 0
 
@@ -60,7 +61,8 @@ class GcmSendCardProvider @Inject constructor(
 
     private suspend fun loadCardContent(device: FhemDevice, cardView: CardView) {
         coroutineScope {
-            val isRegistered = withContext(Dispatchers.IO) { gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }
+            val isRegistered = withContext(Dispatchers.IO) { fcmSendDeviceService.isDeviceRegistered(device.xmlListDevice) }
+            LoggerFactory.getLogger(GcmSendCardProvider::class.java).info("isRegistered = $isRegistered")
             if (isRegistered) {
                 cardView.visibility = View.VISIBLE
             }
@@ -71,13 +73,13 @@ class GcmSendCardProvider @Inject constructor(
         return listOf(object : ActionCardButton(R.string.gcmRegisterThis, context) {
             override fun onClick(device: XmlListDevice, connectionId: String?, context: Context, navController: NavController) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    val result = withContext(Dispatchers.IO) { gcmSendDeviceService.addSelf(device) }
+                    val result = withContext(Dispatchers.IO) { fcmSendDeviceService.addSelf(device) }
                     Toast.makeText(context, result.resultText, Toast.LENGTH_LONG).show()
                 }
             }
 
-            override fun supports(device: FhemDevice): Boolean =
-                    !gcmSendDeviceService.isDeviceRegistered(device.xmlListDevice)
+            override suspend fun supports(device: FhemDevice): Boolean =
+                    !fcmSendDeviceService.isDeviceRegistered(device.xmlListDevice)
         })
     }
 
