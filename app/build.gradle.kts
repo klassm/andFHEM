@@ -98,7 +98,7 @@ dependencies {
     implementation(group = "com.google.dagger", name = "dagger-android-support", version = daggerVersion)
     kapt(group = "com.google.dagger", name = "dagger-compiler", version = daggerVersion)
     kapt(group = "com.google.dagger", name = "dagger-android-processor", version = daggerVersion)
-    implementation(group = "com.google.errorprone", name = "error_prone_annotations", version = "2.6.0")
+    implementation(group = "com.google.errorprone", name = "error_prone_annotations", version = "2.7.1")
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "1.3")
 
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
