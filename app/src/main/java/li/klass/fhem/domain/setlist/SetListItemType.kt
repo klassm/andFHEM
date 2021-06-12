@@ -29,60 +29,60 @@ import li.klass.fhem.domain.setlist.typeEntry.DateTimeSetListEntry.Companion.par
 
 enum class SetListItemType(private val supportsType: SupportsType) {
     NO_ARG(SupportsType("noArg", 1)) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                NoArgSetListEntry(key)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            NoArgSetListEntry(key)
     },
     RGB(object : SupportsType("colorpicker") {
         override fun supports(parts: List<String>): Boolean =
                 super.supports(parts) && parts.size > 1 && parts[1].equals("RGB", ignoreCase = true)
     }) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? = RGBSetListEntry(key)
+        override fun entryFor(key: String, parts: List<String>): SetListItem = RGBSetListEntry(key)
     },
     TIME(SupportsType("time", 1)) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                TimeSetListEntry(key)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            TimeSetListEntry(key)
     },
     TEXT_FIELD(SupportsType("textField", 1)) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                TextFieldSetListEntry(key)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            TextFieldSetListEntry(key)
     },
     TEXT_FIELD_LONG(SupportsType("textField-long", 1)) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                TextFieldLongSetListEntry(key)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            TextFieldLongSetListEntry(key)
     },
     SLIDER(SupportsType("slider", 4)) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                SliderSetListEntry(key, parts)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            SliderSetListEntry(key, parts)
     },
     COLORPICKER_SLIDER(object : SupportsType("colorpicker", 5) {
         override fun supports(parts: List<String>): Boolean =
                 super.supports(parts) && !RGB.supports(parts)
     }) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                SliderSetListEntry(key, parts.subList(1, parts.size))
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            SliderSetListEntry(key, parts.subList(1, parts.size))
     },
     MULTIPLE(SupportsType("multiple")) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                MultipleSetListEntry(key, parts)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            MultipleSetListEntry(key, parts)
     },
     MULTIPLE_STRICT(SupportsType("multiple-strict")) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                MultipleStrictSetListEntry(key, parts)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            MultipleStrictSetListEntry(key, parts)
     },
     KNOB(SupportsType("knob")) {
         override fun entryFor(key: String, parts: List<String>): SetListItem? = null
     },
     DATETIME(SupportsType("datetime.*")) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                DateTimeSetListEntry(key, parseConfig(parts))
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            DateTimeSetListEntry(key, parseConfig(parts))
     },
     GROUP(SupportsType("group_dummy_key")) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                GroupSetListEntry(key, parts)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            GroupSetListEntry(key, parts)
     },
     NOT_FOUND(SupportsType("not_found")) {
-        override fun entryFor(key: String, parts: List<String>): SetListItem? =
-                NotFoundSetListEntry(key)
+        override fun entryFor(key: String, parts: List<String>): SetListItem =
+            NotFoundSetListEntry(key)
     };
 
     val type: String
