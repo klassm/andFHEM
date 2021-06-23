@@ -40,7 +40,7 @@ buildscript {
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
         classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.5")
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.4.0")
-        classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.7.0")
+        classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.7.1")
     }
 }
 
