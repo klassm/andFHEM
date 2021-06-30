@@ -157,7 +157,7 @@ dependencies {
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.3.0")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.3.0")
-    androidTestImplementation(group = "androidx.test.espresso", name = "espresso-core", version = "3.3.0")
+    androidTestImplementation(group = "androidx.test.espresso", name = "espresso-core", version = "3.4.0")
     androidTestImplementation(group = "androidx.test.espresso", name = "espresso-contrib", version = "3.4.0")
 }
 
