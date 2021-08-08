@@ -36,8 +36,12 @@ buildscript {
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
         classpath(group = "com.google.gms", name = "google-services", version = "4.3.9")
-        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.4.0")
-        classpath(group = "org.jetbrains.kotlin", name = "kotlin-serialization", version = kotlinVersion)
+        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.6.0")
+        classpath(
+            group = "org.jetbrains.kotlin",
+            name = "kotlin-serialization",
+            version = kotlinVersion
+        )
         classpath(group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version = "2.3.5")
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.4.0")
         classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.7.1")
@@ -56,7 +60,7 @@ val roomVersion = "2.3.0"
 
 plugins {
     id("net.researchgate.release") version "2.8.1"
-    id("com.android.application") version "4.1.0"
+    id("com.android.application") version "7.0.0"
     kotlin("android").version("1.3.31")
     kotlin("android.extensions").version("1.3.31")
     kotlin("kapt").version("1.3.31")
