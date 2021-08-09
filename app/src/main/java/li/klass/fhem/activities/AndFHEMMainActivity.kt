@@ -53,11 +53,9 @@ import kotlinx.android.synthetic.main.main_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.UpdateTimerTask
 import li.klass.fhem.activities.drawer.actions.DrawerActions
-import li.klass.fhem.billing.BillingService
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.ServerType
@@ -140,9 +138,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var applicationProperties: ApplicationProperties
-
-    @Inject
-    lateinit var billingService: BillingService
 
     @Inject
     lateinit var loginUiService: LoginUIService
@@ -261,9 +256,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
             }
             result
         }
-        if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
-            nav_drawer.menu.removeItem(R.id.menu_premium)
-        }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
@@ -298,17 +290,13 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
 
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (!isPremium) {
-                nav_drawer.menu.removeItem(R.id.fcmHistoryFragment)
+            initConnectionSpinner(
+                nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner)
+            ) {
+                if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                    drawer_layout.closeDrawer(GravityCompat.START)
+                }
             }
-
-            initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
-                    Runnable {
-                        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-                            drawer_layout.closeDrawer(GravityCompat.START)
-                        }
-                    })
         }
 
     }
@@ -419,8 +407,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
 
-        billingService.stop()
-
         try {
             unregisterReceiver(broadcastReceiver)
         } catch (e: IllegalArgumentException) {
@@ -466,9 +452,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-        if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
-            menu.removeItem(R.id.menu_premium)
-        }
 
         val refreshItem = menu.findItem(R.id.menu_refresh)
 

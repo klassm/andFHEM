@@ -3,15 +3,13 @@ package li.klass.fhem.activities.startup.actions
 import javax.inject.Inject
 
 class StartupActions @Inject constructor(
-        checkForCorruptedDeviceListStartupAction: CheckForCorruptedDeviceListStartupAction,
-        deleteOldFcmMessagesStartupAction: DeleteOldFcmMessagesStartupAction,
-        googleBillingStartupAction: GoogleBillingStartupAction,
-        deviceListUpdateStartupAction: DeviceListUpdateStartupAction
+    checkForCorruptedDeviceListStartupAction: CheckForCorruptedDeviceListStartupAction,
+    deleteOldFcmMessagesStartupAction: DeleteOldFcmMessagesStartupAction,
+    deviceListUpdateStartupAction: DeviceListUpdateStartupAction
 ) {
     val actions = listOf(
-            googleBillingStartupAction,
-            deleteOldFcmMessagesStartupAction,
-            checkForCorruptedDeviceListStartupAction,
-            deviceListUpdateStartupAction
+        deleteOldFcmMessagesStartupAction,
+        checkForCorruptedDeviceListStartupAction,
+        deviceListUpdateStartupAction
     )
 }

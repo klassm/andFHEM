@@ -44,13 +44,11 @@ import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.room.list.backend.ViewableRoomListService
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import java.util.*
 
 abstract class RoomListSelectionFragment constructor(
-        private val advertisementService: AdvertisementService,
         private val deviceListUpdateService: DeviceListUpdateService,
         private val roomListService: ViewableRoomListService,
         private val appWidgetUpdateService: AppWidgetUpdateService,
@@ -70,7 +68,6 @@ abstract class RoomListSelectionFragment constructor(
 
         val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList())
         val layout = inflater.inflate(layout, container, false) ?: return null
-        advertisementService.addAd(layout, myActivity)
 
         layout.emptyView?.let {
             fillEmptyView(it, emptyTextId, container!!)

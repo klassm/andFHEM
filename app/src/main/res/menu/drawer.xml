@@ -47,10 +47,6 @@
             android:icon="@drawable/ic_menu_help"
             android:title="@string/help" />
         <item
-            android:id="@+id/menu_premium"
-            android:icon="@drawable/ic_menu_premium"
-            android:title="@string/premium" />
-        <item
             android:id="@+id/menu_about"
             android:icon="@drawable/ic_menu_info"
             android:title="@string/about" />

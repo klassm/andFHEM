@@ -6,7 +6,7 @@ Features:
 * Gruppierung der Geräte nach Funktionalität statt nach Gerätetyp.
 * Schalten und Verwalten der Geräte, incl. Heizung, Dimmen, Heizungspläne usw.
 * Graphische Ansicht der Log-Daten in zoombaren Graphen.
-* Umschalten zwischen verschiedenen FHEM-Instanzen (nur Premium)
+* Umschalten zwischen verschiedenen FHEM-Instanzen
 * Erstellung von Zeitschaltuhren ohne Perl-Code schreiben zu müssen
 * Integration in Tasker, Locale und Llama (Ereignisgesteuerte Ausführung von Kommandos)
 * Push-Benachrichtigungen mit Google Cloud Messaging (GCM).
@@ -15,8 +15,4 @@ Features:
 Unterstützte Gerätetypen:
 Die Liste wurde zu lang, um sie hier darzustellen. Die volle Liste befindet sich unter http://andfhem.klass.li!
 
-Die Applikation wird über Werbung finanziert. Sie kann in der Applikation durch den Kauf von andFHEM Premium abgeschaltet werden!
-
 Falls ein Fehler auftritt, schreib bitte eine Mail an andfhem@klass.li.
-
-AndFHEM ist jetzt auch auf Google Plus: https://plus.google.com/b/112111802493777776424/

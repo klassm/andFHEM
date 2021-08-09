@@ -27,7 +27,6 @@ package li.klass.fhem.billing
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import li.klass.fhem.AndFHEMApplication
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,35 +34,8 @@ import javax.security.cert.X509Certificate
 
 @Singleton
 class LicenseService @Inject constructor(
-        private val billingService: BillingService,
         private val application: Application
 ) {
-
-    suspend fun isPremium(): Boolean {
-        val loadSuccessful = billingService.loadInventory(applicationContext)
-        return isPremiumInternal(loadSuccessful)
-    }
-
-    private fun isPremiumInternal(loadSuccessful: Boolean): Boolean {
-        when {
-            applicationContext.packageName == AndFHEMApplication.PREMIUM_PACKAGE -> {
-                LOGGER.info("found package name to be " + AndFHEMApplication.PREMIUM_PACKAGE + " => premium")
-                return true
-            }
-            isDebug() -> {
-                LOGGER.info("running in debug => premium")
-                return true
-            }
-            loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) || billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID)) -> {
-                LOGGER.info("found inapp premium purchase => premium")
-                return true
-            }
-            else -> {
-                LOGGER.info("seems that I am not Premium...")
-                return false
-            }
-        }
-    }
 
     fun isDebug(): Boolean {
         try {
@@ -71,9 +43,8 @@ class LicenseService @Inject constructor(
                     .getPackageInfo(applicationContext.packageName, PackageManager.GET_SIGNATURES)
 
             pkgInfo.signatures
-                    .map { X509Certificate.getInstance(it.toByteArray()) }
-                    .filter { it.subjectDN.name.contains("Android Debug") }
-                    .forEach { return true }
+                .map { X509Certificate.getInstance(it.toByteArray()) }
+                .any { it.subjectDN.name.contains("Android Debug") }
         } catch (e: Exception) {
             LOGGER.error("isDebug() : some exception occurred while reading app signatures", e)
         }

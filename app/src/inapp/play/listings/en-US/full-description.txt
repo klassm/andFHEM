@@ -6,7 +6,7 @@ Features:
 * View devices aggregated by functionality, not by device type.
 * Control and switch your devices, incl. heating, dimming, ...
 * View your FileLog data in zoomable plots.
-* Switch between an arbitrary amount of FHEM servers (Premium only)
+* Switch between an arbitrary amount of FHEM servers
 * Create timers without having to write Perl code within the FHEM config.
 * Switch devices based on Tasker, Locale or Llama
 * Draw data from telnet and FHEMWEB interface
@@ -15,5 +15,3 @@ Features:
 
 Supported Devices:
 The list grew too long to show it right here. See http://andfhem.klass.li for the full list!
-
-The application is financed by showing ads. You can disable the advertisements by buying andFHEM Premium within the application!

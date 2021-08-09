@@ -29,10 +29,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ServerType.*
 import li.klass.fhem.domain.core.DeviceVisibility
@@ -44,9 +40,11 @@ import javax.inject.Singleton
 
 @Singleton
 class ConnectionService @Inject
-constructor(private val applicationProperties: ApplicationProperties,
-            private val licenseService: LicenseService,
-            private val application: Application) {
+constructor(
+    private val applicationProperties: ApplicationProperties,
+    private val application: Application,
+    private val licenseService: LicenseService
+) {
 
     private val dummyData: FHEMServerSpec
         get() = DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml", "DummyData")
@@ -61,15 +59,9 @@ constructor(private val applicationProperties: ApplicationProperties,
 
     fun create(saveData: SaveData) {
         if (exists(saveData.name)) return
-        GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (isPremium || getCountWithoutDummy() < AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-
-                val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
-                saveData.fillServer(server)
-                saveToPreferences(server)
-            }
-        }
+        val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
+        saveData.fillServer(server)
+        saveToPreferences(server)
     }
 
     fun update(id: String, saveData: SaveData) {
@@ -81,13 +73,13 @@ constructor(private val applicationProperties: ApplicationProperties,
     fun update(connection: FHEMServerSpec) = saveToPreferences(connection)
 
     private fun exists(id: String?): Boolean =
-            mayShowDummyConnections(getAll()) && (DUMMY_DATA_ID == id
-                    || TEST_DATA_ID == id)
-                    || getPreferences()!!.contains(id)
+        mayShowDummyConnections(getAll()) && (DUMMY_DATA_ID == id
+                || TEST_DATA_ID == id)
+                || getPreferences()!!.contains(id)
 
     private fun mayShowDummyConnections(all: List<FHEMServerSpec>): Boolean {
         val nonDummies = all.filter { it !is DummyServerSpec }
-                .toList()
+            .toList()
         return nonDummies.isEmpty() || licenseService.isDebug()
     }
 
@@ -99,7 +91,8 @@ constructor(private val applicationProperties: ApplicationProperties,
     private fun newUniqueId(): String {
         var id: String? = null
         while (id == null || exists(id) || DUMMY_DATA_ID == id
-                || TEST_DATA_ID == id || MANAGEMENT_DATA_ID == id) {
+            || TEST_DATA_ID == id || MANAGEMENT_DATA_ID == id
+        ) {
             id = UUID.randomUUID().toString()
         }
 
@@ -113,7 +106,7 @@ constructor(private val applicationProperties: ApplicationProperties,
     }
 
     private fun getPreferences(): SharedPreferences? =
-            applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE)
+        applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE)
 
     fun forId(id: String): FHEMServerSpec? {
         if (DUMMY_DATA_ID == id) return dummyData
@@ -134,7 +127,7 @@ constructor(private val applicationProperties: ApplicationProperties,
 
 
     fun listAll(): ArrayList<FHEMServerSpec> =
-            ArrayList(getAllIncludingDummies())
+        ArrayList(getAllIncludingDummies())
 
     private fun getAll(): List<FHEMServerSpec> {
         val servers = mutableListOf<FHEMServerSpec>()
@@ -145,8 +138,8 @@ constructor(private val applicationProperties: ApplicationProperties,
 
         val values = all.values
         values
-                .map { it as String }
-                .mapTo(servers) { deserialize(it) }
+            .map { it as String }
+            .mapTo(servers) { deserialize(it) }
 
         return servers
     }
@@ -172,10 +165,10 @@ constructor(private val applicationProperties: ApplicationProperties,
     }
 
     fun getCurrentServer(): FHEMServerSpec? =
-            getServerFor(null)
+        getServerFor(null)
 
     fun getServerFor(id: String?): FHEMServerSpec? =
-            forId(id ?: getSelectedId())
+        forId(id ?: getSelectedId())
 
     fun getSelectedId(): String {
         val id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID)
@@ -221,14 +214,14 @@ constructor(private val applicationProperties: ApplicationProperties,
         const val PREFERENCES_NAME = "fhemConnections"
 
         private val deviceTypeVisibility = mapOf(
-                "FLOORPLAN" to DeviceVisibility.FHEMWEB_ONLY,
-                "remotecontrol" to DeviceVisibility.FHEMWEB_ONLY
+            "FLOORPLAN" to DeviceVisibility.FHEMWEB_ONLY,
+            "remotecontrol" to DeviceVisibility.FHEMWEB_ONLY
         )
 
         internal fun serialize(serverSpec: FHEMServerSpec): String = Gson().toJson(serverSpec)
 
         internal fun deserialize(json: String): FHEMServerSpec =
-                Gson().fromJson(json, FHEMServerSpec::class.java)
+            Gson().fromJson(json, FHEMServerSpec::class.java)
 
 
     }

@@ -6,7 +6,7 @@ Features:
 * Gruppierung der Geräte nach Funktionalität statt nach Gerätetyp.
 * Schalten und Verwalten der Geräte, incl. Heizung, Dimmen, Heizungspläne usw.
 * Graphische Ansicht der Log-Daten in zoombaren Graphen.
-* Umschalten zwischen verschiedenen FHEM-Instanzen (nur Premium)
+* Umschalten zwischen verschiedenen FHEM-Instanzen
 * Erstellung von Zeitschaltuhren ohne Perl-Code schreiben zu müssen
 * Integration in Tasker, Locale und Llama (Ereignisgesteuerte Ausführung von Kommandos)
 * Push-Benachrichtigungen mit Google Cloud Messaging (GCM).

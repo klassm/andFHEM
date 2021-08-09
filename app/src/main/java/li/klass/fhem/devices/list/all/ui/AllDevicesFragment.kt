@@ -42,7 +42,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.room.list.ui.RoomListNavigationFragment
 import li.klass.fhem.room.list.ui.RoomListNavigationViewModel
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
@@ -50,19 +49,20 @@ import li.klass.fhem.util.device.DeviceActionUIService
 import javax.inject.Inject
 
 class AllDevicesFragment @Inject constructor(
-        dataConnectionSwitch: DataConnectionSwitch,
-        applicationProperties: ApplicationProperties,
-        viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
-        advertisementService: AdvertisementService,
-        favoritesService: FavoritesService,
-        genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
-        deviceActionUiService: DeviceActionUIService,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val appWidgetUpdateService: AppWidgetUpdateService,
-        private val deviceListService: DeviceListService,
-        private val roomListNavigationFragment: RoomListNavigationFragment
-) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
-        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
+    dataConnectionSwitch: DataConnectionSwitch,
+    applicationProperties: ApplicationProperties,
+    viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+    favoritesService: FavoritesService,
+    genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+    deviceActionUiService: DeviceActionUIService,
+    private val deviceListUpdateService: DeviceListUpdateService,
+    private val appWidgetUpdateService: AppWidgetUpdateService,
+    private val deviceListService: DeviceListService,
+    private val roomListNavigationFragment: RoomListNavigationFragment
+) : DeviceListFragment(
+    dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
+    favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService
+) {
 
     private val navigationViewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
 
@@ -71,7 +71,7 @@ class AllDevicesFragment @Inject constructor(
         navigationViewModel.selectedRoom.observe(viewLifecycleOwner, Observer {
             if (it != null && isResumed) {
                 findNavController().navigate(
-                        actionAllDevicesFragmentToRoomDetailFragment(it)
+                    actionAllDevicesFragmentToRoomDetailFragment(it)
                 )
             }
         })

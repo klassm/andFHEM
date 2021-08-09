@@ -34,7 +34,6 @@ import dagger.android.AndroidInjectionModule;
 import dagger.android.AndroidInjector;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
-import li.klass.fhem.activities.PremiumActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver;
 import li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity;
@@ -121,8 +120,6 @@ public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication
     void inject(MediumWidgetSelectionActivity object);
 
     void inject(BigWidgetSelectionActivity object);
-
-    void inject(PremiumActivity object);
 
 
     void inject(GenericOverviewDetailDeviceAdapter object);

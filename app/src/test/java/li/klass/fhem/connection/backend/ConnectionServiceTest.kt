@@ -57,7 +57,7 @@ class ConnectionServiceTest {
     @Before
     fun setUp() {
         every { application.applicationContext } returns applicationContext
-        connectionService = ConnectionService(applicationProperties, licenseService, application)
+        connectionService = ConnectionService(licenseService)
     }
 
     @Test

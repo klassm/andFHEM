@@ -17,7 +17,10 @@ import li.klass.fhem.domain.core.FhemDevice
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
-class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnectionSwitch, val licenseService: LicenseService) {
+class DevStateIconAdder @Inject constructor(
+    val dataConnectionSwitch: DataConnectionSwitch,
+    val licenseService: LicenseService
+) {
 
     fun addDevStateIconIfRequired(value: String?, device: FhemDevice, imageView: ImageView?) {
         imageView ?: return
@@ -33,20 +36,21 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
         imageView.visibility = View.VISIBLE
 
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (isPremium && currentProvider is FHEMWEBConnection) {
+            if (currentProvider is FHEMWEBConnection) {
                 val url = "${currentProvider.server.url}/images/default/${icon.image}.png"
                 val authHeader = currentProvider.basicAuthHeaders.authorization
-                val glideUrl = GlideUrl(url, LazyHeaders.Builder()
+                val glideUrl = GlideUrl(
+                    url, LazyHeaders.Builder()
                         .addHeader("Authorization", authHeader)
-                        .build())
+                        .build()
+                )
 
                 logger.info("addDevStateIconIfRequired - loading icon from $url")
                 GlideApp.with(imageView.context)
-                        .load(glideUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .error(R.drawable.empty)
-                        .into(imageView)
+                    .load(glideUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.empty)
+                    .into(imageView)
             }
 
         }

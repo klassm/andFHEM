@@ -15,25 +15,25 @@ import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import javax.inject.Inject
 
 class SearchResultsFragment @Inject constructor(
-        private val searchResultsProvider: SearchResultsProvider,
-        dataConnectionSwitch: DataConnectionSwitch,
-        applicationProperties: ApplicationProperties,
-        viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
-        advertisementService: AdvertisementService,
-        favoritesService: FavoritesService,
-        genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
-        deviceActionUiService: DeviceActionUIService,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val appWidgetUpdateService: AppWidgetUpdateService
-) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
-        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
+    private val searchResultsProvider: SearchResultsProvider,
+    dataConnectionSwitch: DataConnectionSwitch,
+    applicationProperties: ApplicationProperties,
+    viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+    favoritesService: FavoritesService,
+    genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+    deviceActionUiService: DeviceActionUIService,
+    private val deviceListUpdateService: DeviceListUpdateService,
+    private val appWidgetUpdateService: AppWidgetUpdateService
+) : DeviceListFragment(
+    dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
+    favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService
+) {
     val args: SearchResultsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

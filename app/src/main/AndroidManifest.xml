@@ -135,9 +135,6 @@
         </activity>
 
         <activity
-            android:name=".activities.PremiumActivity"
-            android:label="@string/premium" />
-        <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/preferences"
             android:theme="@style/PreferencesTheme" />

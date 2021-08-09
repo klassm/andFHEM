@@ -6,11 +6,11 @@
   },
   "listings": {
     "en-US": {
-      "description": "Premium features for andFHEM (removed ads, multiple FHEM connections)",
+      "description": "Premium features for andFHEM",
       "title": "andFHEM Premium"
     },
     "de-DE": {
-      "description": "Premium Features für andFHEM. Momentan enthält das die App ohne Werbung!",
+      "description": "Premium Features für andFHEM",
       "title": "andFHEM Premium"
     }
   },

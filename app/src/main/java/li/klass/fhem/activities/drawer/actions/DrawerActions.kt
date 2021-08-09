@@ -29,19 +29,18 @@ import li.klass.fhem.log.FhemLogDrawerAction
 import javax.inject.Inject
 
 class DrawerActions @Inject constructor(
-        helpDrawerAction: HelpDrawerAction,
-        aboutDrawerAction: AboutDrawerAction,
-        premiumDrawerAction: PremiumDrawerAction,
-        settingsDrawerAction: SettingsDrawerAction,
-        fhemLogDrawerAction: FhemLogDrawerAction
+    helpDrawerAction: HelpDrawerAction,
+    aboutDrawerAction: AboutDrawerAction,
+    settingsDrawerAction: SettingsDrawerAction,
+    fhemLogDrawerAction: FhemLogDrawerAction
 ) : DrawerAction {
     private val allActions = listOf(
-            helpDrawerAction,
-            aboutDrawerAction,
-            premiumDrawerAction,
-            settingsDrawerAction,
-            fhemLogDrawerAction
+        helpDrawerAction,
+        aboutDrawerAction,
+        settingsDrawerAction,
+        fhemLogDrawerAction
     )
 
-    override fun handle(activity: AppCompatActivity, drawerId: Int): Boolean = allActions.any { it.handle(activity, drawerId) }
+    override fun handle(activity: AppCompatActivity, drawerId: Int): Boolean =
+        allActions.any { it.handle(activity, drawerId) }
 }

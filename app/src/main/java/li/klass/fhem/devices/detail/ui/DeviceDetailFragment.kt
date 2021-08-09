@@ -46,7 +46,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragmentViewModel
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.device.DeviceActionUIService
@@ -54,14 +53,13 @@ import li.klass.fhem.widget.notification.NotificationSettingView
 import javax.inject.Inject
 
 class DeviceDetailFragment @Inject constructor(
-        private val favoritesService: FavoritesService,
-        private val advertisementService: AdvertisementService,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val deviceListService: DeviceListService,
-        private val appWidgetUpdateService: AppWidgetUpdateService,
-        private val genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter,
-        private val deviceActionUIService: DeviceActionUIService,
-        deviceNameListNavigationFragment: DeviceNameListNavigationFragment
+    private val favoritesService: FavoritesService,
+    private val deviceListUpdateService: DeviceListUpdateService,
+    private val deviceListService: DeviceListService,
+    private val appWidgetUpdateService: AppWidgetUpdateService,
+    private val genericOverviewDetailAdapter: GenericOverviewDetailDeviceAdapter,
+    private val deviceActionUIService: DeviceActionUIService,
+    deviceNameListNavigationFragment: DeviceNameListNavigationFragment
 ) : BaseFragment() {
     private var device: FhemDevice? = null
     val args: DeviceDetailFragmentArgs by navArgs()
@@ -90,7 +88,6 @@ class DeviceDetailFragment @Inject constructor(
         val myActivity = activity ?: return superView
 
         val view = inflater.inflate(R.layout.device_detail_view_page, container, false)
-        advertisementService.addAd(view, myActivity)
 
         return view
     }

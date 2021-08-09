@@ -43,7 +43,6 @@ import li.klass.fhem.room.detail.ui.RoomDetailFragmentDirections.Companion.actio
 import li.klass.fhem.room.detail.ui.RoomDetailFragmentDirections.Companion.actionToDeviceDetailRedirect
 import li.klass.fhem.room.list.ui.RoomListNavigationFragment
 import li.klass.fhem.room.list.ui.RoomListNavigationViewModel
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys.UPDATE_ON_ROOM_OPEN
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
@@ -52,19 +51,20 @@ import li.klass.fhem.util.device.DeviceActionUIService
 import javax.inject.Inject
 
 class RoomDetailFragment @Inject constructor(
-        dataConnectionSwitch: DataConnectionSwitch,
-        viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
-        advertisementService: AdvertisementService,
-        favoritesService: FavoritesService,
-        genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
-        deviceActionUiService: DeviceActionUIService,
-        private val deviceListService: DeviceListService,
-        private val applicationProperties: ApplicationProperties,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val appWidgetUpdateService: AppWidgetUpdateService,
-        roomListNavigationFragment: RoomListNavigationFragment
-) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
-        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
+    dataConnectionSwitch: DataConnectionSwitch,
+    viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+    favoritesService: FavoritesService,
+    genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+    deviceActionUiService: DeviceActionUIService,
+    private val deviceListService: DeviceListService,
+    private val applicationProperties: ApplicationProperties,
+    private val deviceListUpdateService: DeviceListUpdateService,
+    private val appWidgetUpdateService: AppWidgetUpdateService,
+    roomListNavigationFragment: RoomListNavigationFragment
+) : DeviceListFragment(
+    dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
+    favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService
+) {
 
     val args: RoomDetailFragmentArgs by navArgs()
     private val navigationViewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)

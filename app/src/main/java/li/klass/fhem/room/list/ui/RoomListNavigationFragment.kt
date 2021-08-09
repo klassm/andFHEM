@@ -5,18 +5,21 @@ import androidx.navigation.navGraphViewModels
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.room.list.backend.ViewableRoomListService
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import javax.inject.Inject
 
 class RoomListNavigationFragment @Inject constructor(
-        advertisementService: AdvertisementService,
-        deviceListUpdateService: DeviceListUpdateService,
-        roomListService: ViewableRoomListService,
-        appWidgetUpdateService: AppWidgetUpdateService,
-        fhemWebConfigurationService: FhemWebConfigurationService
-) : RoomListSelectionFragment(advertisementService, deviceListUpdateService, roomListService, appWidgetUpdateService, fhemWebConfigurationService) {
+    deviceListUpdateService: DeviceListUpdateService,
+    roomListService: ViewableRoomListService,
+    appWidgetUpdateService: AppWidgetUpdateService,
+    fhemWebConfigurationService: FhemWebConfigurationService
+) : RoomListSelectionFragment(
+    deviceListUpdateService,
+    roomListService,
+    appWidgetUpdateService,
+    fhemWebConfigurationService
+) {
     private val viewModel by navGraphViewModels<RoomListNavigationViewModel>(R.id.nav_graph)
 
     override fun onClick(roomName: String) {

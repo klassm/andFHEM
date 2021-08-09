@@ -59,7 +59,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.core.RoomDeviceList
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.fragments.device.DeviceNameListFragmentDirections
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
@@ -72,7 +71,6 @@ abstract class DeviceListFragment(
         private val dataConnectionSwitch: DataConnectionSwitch,
         private val applicationProperties: ApplicationProperties,
         private val viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
-        private val advertisementService: AdvertisementService,
         private val favoritesService: FavoritesService,
         private val genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
         private val deviceActionUiService: DeviceActionUIService
@@ -83,11 +81,10 @@ abstract class DeviceListFragment(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
-        val myActivity = activity ?: return superView
+        activity ?: return superView
         if (superView != null) return superView
 
         val view = inflater.inflate(R.layout.room_detail_page, container, false) ?: return null
-        advertisementService.addAd(view, myActivity)
 
         val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, container!!)

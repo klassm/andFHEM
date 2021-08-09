@@ -30,18 +30,21 @@ import kotlinx.android.synthetic.main.room_list.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.room.list.backend.ViewableRoomListService
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import javax.inject.Inject
 
 open class RoomListFragment @Inject constructor(
-        advertisementService: AdvertisementService,
-        deviceListUpdateService: DeviceListUpdateService,
-        roomListService: ViewableRoomListService,
-        appWidgetUpdateService: AppWidgetUpdateService,
-        fhemWebConfigurationService: FhemWebConfigurationService
-) : RoomListSelectionFragment(advertisementService, deviceListUpdateService, roomListService, appWidgetUpdateService, fhemWebConfigurationService) {
+    deviceListUpdateService: DeviceListUpdateService,
+    roomListService: ViewableRoomListService,
+    appWidgetUpdateService: AppWidgetUpdateService,
+    fhemWebConfigurationService: FhemWebConfigurationService
+) : RoomListSelectionFragment(
+    deviceListUpdateService,
+    roomListService,
+    appWidgetUpdateService,
+    fhemWebConfigurationService
+) {
 
     private val viewModel by navGraphViewModels<RoomListViewModel>(R.id.nav_graph)
 

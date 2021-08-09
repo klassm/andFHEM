@@ -36,7 +36,6 @@ import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.devices.list.ui.DeviceListFragment
 import li.klass.fhem.domain.core.FhemDevice
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.Reject
@@ -44,17 +43,18 @@ import li.klass.fhem.util.device.DeviceActionUIService
 import javax.inject.Inject
 
 class FavoritesFragment @Inject constructor(
-        dataConnectionSwitch: DataConnectionSwitch,
-        applicationProperties: ApplicationProperties,
-        viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
-        advertisementService: AdvertisementService,
-        genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
-        deviceActionUiService: DeviceActionUIService,
-        private val favoritesService: FavoritesService,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val appWidgetUpdateService: AppWidgetUpdateService
-) : DeviceListFragment(dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
-        advertisementService, favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService) {
+    dataConnectionSwitch: DataConnectionSwitch,
+    applicationProperties: ApplicationProperties,
+    viewableRoomDeviceListProvider: ViewableRoomDeviceListProvider,
+    genericOverviewDetailDeviceAdapter: GenericOverviewDetailDeviceAdapter,
+    deviceActionUiService: DeviceActionUIService,
+    private val favoritesService: FavoritesService,
+    private val deviceListUpdateService: DeviceListUpdateService,
+    private val appWidgetUpdateService: AppWidgetUpdateService
+) : DeviceListFragment(
+    dataConnectionSwitch, applicationProperties, viewableRoomDeviceListProvider,
+    favoritesService, genericOverviewDetailDeviceAdapter, deviceActionUiService
+) {
 
     override fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val inflater = activity?.layoutInflater

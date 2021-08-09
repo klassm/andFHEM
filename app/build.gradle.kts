@@ -34,8 +34,12 @@ buildscript {
     dependencies {
         classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.8")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
-        classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
-        classpath(group = "com.google.gms", name = "google-services", version = "4.3.9")
+        classpath(
+            group = "org.jetbrains.kotlin",
+            name = "kotlin-gradle-plugin",
+            version = kotlinVersion
+        )
+        classpath(group = "com.google.gms", name = "google-services", version = "4.3.8")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.6.0")
         classpath(
             group = "org.jetbrains.kotlin",
@@ -100,6 +104,7 @@ dependencies {
     }
     implementation(group = "com.google.dagger", name = "dagger", version = daggerVersion)
     implementation(group = "com.google.dagger", name = "dagger-android-support", version = daggerVersion)
+
     kapt(group = "com.google.dagger", name = "dagger-compiler", version = daggerVersion)
     kapt(group = "com.google.dagger", name = "dagger-android-processor", version = daggerVersion)
     implementation(group = "com.google.errorprone", name = "error_prone_annotations", version = "2.8.1")

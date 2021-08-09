@@ -35,27 +35,21 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.connection_list.view.*
 import kotlinx.coroutines.*
-import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
-import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.connection.ui.ConnectionListFragmentDirections.Companion.actionConnectionListFragmentToConnectionDetailFragment
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.util.Reject
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class ConnectionListFragment @Inject constructor(
-       private val advertisementService: AdvertisementService,
-       private val connectionService: ConnectionService,
-       private val licenseService: LicenseService
+    private val connectionService: ConnectionService,
 ) : BaseFragment() {
 
     private var clickedConnectionId: String? = null
@@ -71,14 +65,17 @@ class ConnectionListFragment @Inject constructor(
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
         val myActivity = activity ?: return superView
 
         val adapter = ConnectionListAdapter(activity)
         val layout = inflater.inflate(R.layout.connection_list, container, false)
-        advertisementService.addAd(layout, myActivity)
 
         val emptyView = layout.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView)
@@ -106,20 +103,13 @@ class ConnectionListFragment @Inject constructor(
             val size = adapter.data.size
 
             GlobalScope.launch(Dispatchers.Main) {
-                val isPremium = licenseService.isPremium()
-                if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                    logger.info("onOptionsItemSelected - won't add a new connection as I am not Premium")
-                    activity?.sendBroadcast(Intent(Actions.SHOW_ALERT)
-                            .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
-                            .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
-                } else {
-                    logger.info("onOptionsItemSelected - showing connection detail for a new connection")
-                    findNavController().navigate(
-                            actionConnectionListFragmentToConnectionDetailFragment(
-                                    null
-                            )
+
+                logger.info("onOptionsItemSelected - showing connection detail for a new connection")
+                findNavController().navigate(
+                    actionConnectionListFragmentToConnectionDetailFragment(
+                        null
                     )
-                }
+                )
             }
             return true
         }
@@ -136,15 +126,23 @@ class ConnectionListFragment @Inject constructor(
     }
 
     private fun onClick(connectionId: String) =
-            findNavController().navigate(actionConnectionListFragmentToConnectionDetailFragment(connectionId))
+        findNavController().navigate(
+            actionConnectionListFragmentToConnectionDetailFragment(
+                connectionId
+            )
+        )
 
     private val adapter: ConnectionListAdapter
         get() {
-            val listView = view!!.findViewById<ListView>(R.id.connectionList)
+            val listView = requireView().findViewById<ListView>(R.id.connectionList)
             return listView.adapter as ConnectionListAdapter
         }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         super.onCreateContextMenu(menu, v, menuInfo)
 
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
@@ -192,7 +190,8 @@ class ConnectionListFragment @Inject constructor(
             }
 
             val nonDummyConnections = connectionList.filterNot { it.serverType == ServerType.DUMMY }
-            view!!.emptyView.visibility = if (nonDummyConnections.isEmpty()) View.VISIBLE else View.GONE
+            requireView().emptyView.visibility =
+                if (nonDummyConnections.isEmpty()) View.VISIBLE else View.GONE
 
             adapter.updateData(nonDummyConnections, connectionId)
             scrollToSelected(connectionId, adapter.data)
@@ -224,6 +223,7 @@ class ConnectionListFragment @Inject constructor(
     companion object {
         @JvmStatic
         private val CONTEXT_MENU_DELETE = 1
+
         @JvmStatic
         private val logger = LoggerFactory.getLogger(ConnectionListFragment::class.java)
     }
