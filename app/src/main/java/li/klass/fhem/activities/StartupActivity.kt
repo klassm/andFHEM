@@ -28,17 +28,18 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.startup.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import li.klass.fhem.R
 import li.klass.fhem.activities.startup.actions.StartupActions
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.databinding.StartupBinding
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.login.LoginUIService
@@ -58,14 +59,20 @@ class StartupActivity : Activity() {
     lateinit var deviceListService: DeviceListService
     @Inject
     lateinit var favoritesService: FavoritesService
+
     @Inject
     lateinit var loginUiService: LoginUIService
+
     @Inject
     lateinit var fcmHistoryService: FcmHistoryService
+
     @Inject
     lateinit var appWidgetUpdateService: AppWidgetUpdateService
+
     @Inject
     lateinit var startupActions: StartupActions
+
+    lateinit var viewBinding: StartupBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +83,8 @@ class StartupActivity : Activity() {
             return
         }
 
-        setContentView(R.layout.startup)
+        viewBinding = StartupBinding.inflate(LayoutInflater.from(this))
+        setContentView(viewBinding.root)
     }
 
     override fun onResume() {
@@ -92,10 +100,10 @@ class StartupActivity : Activity() {
 
             loginUiService.doLoginIfRequired(activity, object : LoginUIService.LoginStrategy {
                 override fun requireLogin(context: Context, checkLogin: suspend (String) -> Unit) {
-                    loginStatus.visibility = View.GONE
-                    loginLayout.visibility = View.VISIBLE
+                    viewBinding.loginStatus.visibility = View.GONE
+                    viewBinding.loginForm.visibility = View.VISIBLE
 
-                    login.setOnClickListener {
+                    viewBinding.login.setOnClickListener {
                         val passwordInput = findViewById<EditText>(R.id.password)
                         val password = passwordInput.text.toString()
                         GlobalScope.launch(Dispatchers.Main) {
@@ -115,8 +123,8 @@ class StartupActivity : Activity() {
         get() = findViewById(R.id.loginForm)
 
     private fun handleLoginStatus() {
-        loginLayout.visibility = View.GONE
-        loginStatus.visibility = View.VISIBLE
+        viewBinding.loginStatus.visibility = View.VISIBLE
+        viewBinding.loginForm.visibility = View.GONE
 
         handleStartupActions()
     }

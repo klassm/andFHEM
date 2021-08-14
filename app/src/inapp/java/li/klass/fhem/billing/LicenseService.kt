@@ -50,10 +50,10 @@ class LicenseService @Inject constructor(
                 LOGGER.info("found package name to be " + AndFHEMApplication.PREMIUM_PACKAGE + " => premium")
                 return true
             }
-//            isDebug() -> {
-//                LOGGER.info("running in debug => premium")
-//                return true
-//            }
+            isDebug() -> {
+                LOGGER.info("running in debug => premium")
+                return true
+            }
             loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) || billingService.contains(
                 AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID
             )) -> {
