@@ -34,8 +34,12 @@ buildscript {
     dependencies {
         classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.8")
         classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
-        classpath(group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = kotlinVersion)
-        classpath(group = "com.google.gms", name = "google-services", version = "4.3.9")
+        classpath(
+            group = "org.jetbrains.kotlin",
+            name = "kotlin-gradle-plugin",
+            version = kotlinVersion
+        )
+        classpath(group = "com.google.gms", name = "google-services", version = "4.3.8")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.6.0")
         classpath(
             group = "org.jetbrains.kotlin",
@@ -99,12 +103,23 @@ dependencies {
         exclude(group = "org.apache.httpcomponents")
     }
     implementation(group = "com.google.dagger", name = "dagger", version = daggerVersion)
-    implementation(group = "com.google.dagger", name = "dagger-android-support", version = daggerVersion)
+    implementation(
+        group = "com.google.dagger",
+        name = "dagger-android-support",
+        version = daggerVersion
+    )
+
     kapt(group = "com.google.dagger", name = "dagger-compiler", version = daggerVersion)
     kapt(group = "com.google.dagger", name = "dagger-android-processor", version = daggerVersion)
-    implementation(group = "com.google.errorprone", name = "error_prone_annotations", version = "2.8.1")
+    implementation(
+        group = "com.google.errorprone",
+        name = "error_prone_annotations",
+        version = "2.8.1"
+    )
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "1.3")
 
+    implementation(group = "com.android.billingclient", name = "billing", version = "4.0.0")
+    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "3.0.3")
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.2.1")
@@ -112,9 +127,21 @@ dependencies {
     implementation(group = "androidx.annotation", name = "annotation", version = "1.2.0")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
     kapt(group = "androidx.room", name = "room-compiler", version = roomVersion)
-    implementation(group = "androidx.navigation", name = "navigation-fragment-ktx", version = androidXNavigationVersion)
-    implementation(group = "androidx.navigation", name = "navigation-ui-ktx", version = androidXNavigationVersion)
-    implementation(group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version = androidXNavigationVersion)
+    implementation(
+        group = "androidx.navigation",
+        name = "navigation-fragment-ktx",
+        version = androidXNavigationVersion
+    )
+    implementation(
+        group = "androidx.navigation",
+        name = "navigation-ui-ktx",
+        version = androidXNavigationVersion
+    )
+    implementation(
+        group = "androidx.navigation",
+        name = "navigation-dynamic-features-fragment",
+        version = androidXNavigationVersion
+    )
     implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.3.6")
 
     implementation(group = "commons-net", name = "commons-net", version = "3.8.0")

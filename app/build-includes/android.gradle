@@ -29,6 +29,10 @@ android {
     testBuildType 'debug'
     compileOptions.incremental = true
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     testOptions {
         unitTests.returnDefaultValues = true
     }

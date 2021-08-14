@@ -298,11 +298,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
 
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (!isPremium) {
-                nav_drawer.menu.removeItem(R.id.fcmHistoryFragment)
-            }
-
             initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
                     Runnable {
                         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -418,8 +413,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-
-        billingService.stop()
 
         try {
             unregisterReceiver(broadcastReceiver)

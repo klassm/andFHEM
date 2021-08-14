@@ -26,12 +26,11 @@ package li.klass.fhem.billing
 
 import android.app.Activity
 import android.content.Context
-import com.android.vending.billing.IabHelper
-import com.android.vending.billing.Inventory
-import com.android.vending.billing.Purchase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import android.content.Intent
+import com.android.billingclient.api.*
+import kotlinx.coroutines.runBlocking
 import li.klass.fhem.AndFHEMApplication
+import li.klass.fhem.constants.Actions
 import li.klass.fhem.util.awaitCallback
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -39,138 +38,102 @@ import javax.inject.Singleton
 
 @Singleton
 class BillingService @Inject
-constructor() {
+constructor() : PurchasesUpdatedListener {
+    lateinit var billingClient: BillingClient
 
-    private var iabHelper: IabHelper? = null
-    var inventory: Inventory = Inventory.empty()
-        private set
+    private val ownedSkus = mutableSetOf<String>()
 
-    private val isSetup: Boolean
-        get() = iabHelper?.isSetupDone ?: false
+    fun start(context: Context) {
+        billingClient = BillingClient.newBuilder(context)
+            .enablePendingPurchases()
+            .setListener(this).build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                LOG.info("setup finished -  ${billingResult.debugMessage}, ${billingResult.responseCode}")
+            }
 
-    private val isLoaded: Boolean
-        get() = inventory.allOwnedSkus.isNotEmpty()
-
-    @Synchronized
-    fun stop() = try {
-        iabHelper?.dispose()
-        iabHelper = null
-    } catch (e: Exception) {
-        LOG.debug("stop() - cannot stop", e)
+            override fun onBillingServiceDisconnected() {
+            }
+        })
     }
 
     @Synchronized
-    suspend fun requestPurchase(activity: Activity, itemId: String,
-                                payload: String?): Purchase? {
+    suspend fun requestPurchase(activity: Activity, itemId: String) {
         LOG.info("requestPurchase() - requesting purchase of $itemId")
-        val success = ensureSetup(activity)
-        try {
-            if (!success) {
-                LOG.error("requestPurchase() - cannot initialize purchase flow, setup was not successful");
-                return null
-            }
+        if (!billingClient.isReady) {
+            LOG.error("requestPurchase() - cannot initialize purchase flow, setup was not successful")
+            return
+        }
 
-            val helper = iabHelper ?: return null
-            helper.flagEndAsync()
+        val skuDetails = SkuDetailsParams.newBuilder()
+            .setSkusList(listOf(itemId))
+            .setType(BillingClient.SkuType.INAPP)
+            .build()
+        val details = billingClient.querySkuDetails(skuDetails)
+        val item = details.skuDetailsList?.get(0)
+        if (item == null) {
+            LOG.error("requestPurchase() - cannot find item for $itemId");
+            return
+        }
 
-            return awaitCallback { callback ->
-                helper.launchPurchaseFlow(activity, itemId, 0, { result, info ->
-                    if (result.isSuccess) {
-                        LOG.info("requestPurchase() - purchase result: SUCCESS");
-                        GlobalScope.launch {
-                            loadInventory(activity)
-                            callback.onComplete(info)
-                        }
-                    } else {
-                        LOG.error("requestPurchase() - purchase result: $result");
-                    }
-                }, payload)
-            }
-        } catch (e: Exception) {
-            LOG.error("requestPurchase() - error while launching purchase flow", e)
-            return null
+        billingClient.launchBillingFlow(
+            activity, BillingFlowParams.newBuilder()
+                .setSkuDetails(item)
+                .build()
+        )
+    }
+
+    override fun onPurchasesUpdated(
+        result: BillingResult,
+        purchases: MutableList<Purchase>?
+    ) {
+        LOG.info("onPurchasesUpdated() - purchases: $purchases")
+        if (purchases != null) {
+            acknowledgePurchases(purchases)
+            ownedSkus.addAll(purchases.flatMap { it.skus })
+            val application = AndFHEMApplication.application
+            application?.sendBroadcast(Intent(Actions.DO_UPDATE))
         }
     }
 
     @Synchronized
-    suspend fun loadInventory(context: Context): Boolean {
-        return if (isLoaded) {
-            LOG.debug("loadInventory() - inventory is already setup and loaded, skipping load ($inventory)")
-            true
-        } else {
-            val success = ensureSetup(context)
-            if (success) {
-                LOG.debug("loadInventory() - calling load internal")
-                loadInternal()
-                true
-            } else {
-                LOG.debug("loadInventory() - won't load inventory, setup was not successful")
-                false
+    suspend fun loadInventory(): Boolean {
+        if (!billingClient.isReady) {
+            return false
+        }
+
+        return awaitCallback { queryComplete ->
+            billingClient.queryPurchasesAsync(
+                BillingClient.SkuType.INAPP
+            ) { _, purchases ->
+                LOG.info("found purchases - $purchases")
+                val skus = purchases.flatMap { it.skus }
+                ownedSkus.addAll(skus)
+
+                acknowledgePurchases(purchases)
+
+                queryComplete.onComplete(true)
+            }
+        }
+
+    }
+
+    private fun acknowledgePurchases(purchases: List<Purchase>) {
+        purchases.filterNot { it.isAcknowledged }.forEach { purchase ->
+            runBlocking {
+                LOG.info("acknowledge purchase - $purchase")
+                billingClient.acknowledgePurchase(
+                    AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.purchaseToken)
+                        .build()
+                )
             }
         }
     }
 
     @Synchronized
-    operator fun contains(sku: String): Boolean = inventory.hasPurchase(sku)
+    operator fun contains(sku: String): Boolean = ownedSkus.contains(sku)
 
-    private suspend fun ensureSetup(context: Context): Boolean {
-        return if (isSetup) {
-            LOG.debug("ensureSetup() - I am already setup")
-            true
-        } else {
-            val isSetupDoneMessage = if (iabHelper != null) ",isSetupDone=" + iabHelper!!.isSetupDone else ""
-            LOG.debug("ensureSetup() - Setting up ... (helper=$iabHelper$isSetupDoneMessage)")
-            setup(context)
-        }
-    }
-
-    @Synchronized
-    private suspend fun setup(context: Context): Boolean {
-        return awaitCallback { callback ->
-            try {
-                LOG.debug("setup() - Starting setup")
-                iabHelper = createIabHelper(context)
-                iabHelper!!.startSetup { result ->
-                    try {
-                        if (result.isSuccess) {
-                            LOG.debug("setup() : setup was successful, setupIsDone=" + iabHelper?.isSetupDone)
-                        } else {
-                            LOG.error("setup() : ERROR $result")
-                        }
-                        callback.onComplete(true)
-                    } catch (e: Exception) {
-                        inventory = Inventory.empty()
-                        LOG.error("setup() : error during setup", e)
-                        callback.onComplete(false)
-                    }
-                }
-            } catch (e: Exception) {
-                LOG.info("setup() - Error while trying to start billing", e)
-                callback.onException(e)
-            }
-        }
-    }
-
-    private fun createIabHelper(context: Context): IabHelper =
-            IabHelper(context, AndFHEMApplication.PUBLIC_KEY_ENCODED)
-
-    @Synchronized
-    private fun loadInternal(): Boolean = try {
-        if (isLoaded) {
-            LOG.debug("loadInternal() - inventory was already loaded, skipping load")
-        } else if (!iabHelper!!.isSetupDone) {
-            inventory = Inventory.empty()
-            LOG.error("loadInternal() - setup was not done, initializing with empty inventory")
-        } else {
-            LOG.debug("loadInternal() - loading inventory")
-            inventory = iabHelper!!.queryInventory(false, null)
-            LOG.debug("loadInternal() - query inventory finished, inventory is $inventory")
-        }
-        true
-    } catch (e: Exception) {
-        LOG.error("loadInternal() - cannot load inventory", e)
-        false
-    }
 
     companion object {
         private val LOG = LoggerFactory.getLogger(BillingService::class.java)

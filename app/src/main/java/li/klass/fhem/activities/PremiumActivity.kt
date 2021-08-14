@@ -63,17 +63,16 @@ class PremiumActivity : AppCompatActivity() {
         shop_premium_buy.setOnClickListener {
             Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID)
             GlobalScope.launch(Dispatchers.Main) {
-                val result = billingService.requestPurchase(this@PremiumActivity,
-                        AndFHEMApplication.INAPP_PREMIUM_ID, null)
-                result?.let { update() }
+                billingService.requestPurchase(
+                    this@PremiumActivity,
+                    AndFHEMApplication.INAPP_PREMIUM_ID
+                )
+                update()
             }
         }
-
-        update()
     }
 
     fun update() {
-
         shop_premium_bought.visibility = View.GONE
         shop_premium_buy.visibility = View.GONE
 
@@ -94,6 +93,12 @@ class PremiumActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        update()
     }
 
     companion object {

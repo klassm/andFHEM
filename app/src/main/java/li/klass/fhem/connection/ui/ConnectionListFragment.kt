@@ -140,7 +140,7 @@ class ConnectionListFragment @Inject constructor(
 
     private val adapter: ConnectionListAdapter
         get() {
-            val listView = view!!.findViewById<ListView>(R.id.connectionList)
+            val listView = requireView().findViewById<ListView>(R.id.connectionList)
             return listView.adapter as ConnectionListAdapter
         }
 

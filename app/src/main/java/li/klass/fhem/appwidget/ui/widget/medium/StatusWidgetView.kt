@@ -42,7 +42,10 @@ class StatusWidgetView @Inject constructor() : DeviceAppWidgetView() {
     override fun getContentView(): Int = R.layout.appwidget_state
 
     override fun fillWidgetView(context: Context, view: RemoteViews, device: FhemDevice?, widgetConfiguration: WidgetConfiguration) {
-        setTextViewOrHide(view, R.id.status, device?.state?.toHtml())
+        val state = device?.let {
+            it.getEventMapStateFor(it.state).toHtml()
+        }
+        setTextViewOrHide(view, R.id.status, state)
         if (device != null) {
             openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context)
         }

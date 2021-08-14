@@ -40,8 +40,8 @@ class LicenseService @Inject constructor(
 ) {
 
     suspend fun isPremium(): Boolean {
-        val loadSuccessful = billingService.loadInventory(applicationContext)
-        return isPremiumInternal(loadSuccessful)
+        val success = billingService.loadInventory()
+        return isPremiumInternal(success)
     }
 
     private fun isPremiumInternal(loadSuccessful: Boolean): Boolean {
@@ -50,11 +50,13 @@ class LicenseService @Inject constructor(
                 LOGGER.info("found package name to be " + AndFHEMApplication.PREMIUM_PACKAGE + " => premium")
                 return true
             }
-            isDebug() -> {
-                LOGGER.info("running in debug => premium")
-                return true
-            }
-            loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) || billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID)) -> {
+//            isDebug() -> {
+//                LOGGER.info("running in debug => premium")
+//                return true
+//            }
+            loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) || billingService.contains(
+                AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID
+            )) -> {
                 LOGGER.info("found inapp premium purchase => premium")
                 return true
             }
@@ -71,9 +73,8 @@ class LicenseService @Inject constructor(
                     .getPackageInfo(applicationContext.packageName, PackageManager.GET_SIGNATURES)
 
             pkgInfo.signatures
-                    .map { X509Certificate.getInstance(it.toByteArray()) }
-                    .filter { it.subjectDN.name.contains("Android Debug") }
-                    .forEach { return true }
+                .map { X509Certificate.getInstance(it.toByteArray()) }
+                .any { it.subjectDN.name.contains("Android Debug") }
         } catch (e: Exception) {
             LOGGER.error("isDebug() : some exception occurred while reading app signatures", e)
         }

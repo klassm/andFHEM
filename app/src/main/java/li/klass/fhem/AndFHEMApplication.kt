@@ -37,6 +37,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.activities.StartupActivity
 import li.klass.fhem.alarm.clock.update.AlarmClockUpdateService
+import li.klass.fhem.billing.BillingService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.dagger.DaggerApplicationComponent
@@ -59,6 +60,9 @@ class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
 
     @Inject
     lateinit var connectionService: ConnectionService
+
+    @Inject
+    lateinit var billingService: BillingService
 
     var isUpdate = false
         private set
@@ -86,6 +90,7 @@ class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
         firebaseApp?.setAutomaticResourceManagementEnabled(true)
 
         setApplicationInformation()
+        billingService.start(this)
 
         GlobalScope.launch {
             alarmClockUpdateService.scheduleUpdate()
@@ -153,7 +158,6 @@ class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
         val TAG = AndFHEMApplication::class.java.name
         val ANDFHEM_MAIL = "andfhem@klass.li"
         val AD_UNIT_ID = "a14fae70fa236de"
-        val PUBLIC_KEY_ENCODED = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1umqueNUDXDqFzXEsRi/kvum6VcI8qiF0OWE7ME6Lm3mHsYHH4W/XIpLWXyh/7FeVpGl36c1UJfBhWCjjLi3d0qechVr/+0RJmXX+r5QZYzE6ZR9jr1g+BUCZj8bB2h+kGL6068pWJJMgzP0mvUBwCxHJioSpdIaBUK4FFyJDz/Nuu8PnThxLJsYEzB6ppyZ8gWYYyeSwg1oNdqcTafLPsh4rAyLJAMOBa9m8cQ7dyEqFXrrM+shYB1JDOJICM6fBNEUDh6kY12QEvh5m6vrAiB7q2eO11rCjZQqSzUEg2Qnd8PFR27ZBQ7CF9mF8VTL71bFOCoM6l/6rIe83SfKWQIDAQAB"
         val INAPP_PREMIUM_ID = "li.klass.fhem.premium"
         val INAPP_PREMIUM_DONATOR_ID = "li.klass.fhem.premiumdonator"
         val PREMIUM_PACKAGE = "li.klass.fhempremium"
