@@ -27,40 +27,44 @@ package li.klass.fhem.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.shop_premium.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.R
 import li.klass.fhem.billing.BillingService
 import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.ShopPremiumBinding
 import javax.inject.Inject
 
 class PremiumActivity : AppCompatActivity() {
 
     @Inject
     lateinit var billingService: BillingService
+
     @Inject
     lateinit var licenseService: LicenseService
+
+    lateinit var viewBinding: ShopPremiumBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         AndFHEMApplication.application!!.daggerComponent.inject(this)
 
-        setContentView(R.layout.shop_premium)
+        viewBinding = ShopPremiumBinding.inflate(LayoutInflater.from(this))
+        setContentView(viewBinding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        shop_premium_bought.visibility = View.GONE
-        shop_premium_buy.visibility = View.GONE
+        viewBinding.shopPremiumBought.visibility = View.GONE
+        viewBinding.shopPremiumBuy.visibility = View.GONE
 
-        shop_premium_buy.setOnClickListener {
+        viewBinding.shopPremiumBuy.setOnClickListener {
             Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID)
             GlobalScope.launch(Dispatchers.Main) {
                 billingService.requestPurchase(
@@ -73,15 +77,15 @@ class PremiumActivity : AppCompatActivity() {
     }
 
     fun update() {
-        shop_premium_bought.visibility = View.GONE
-        shop_premium_buy.visibility = View.GONE
+        viewBinding.shopPremiumBought.visibility = View.GONE
+        viewBinding.shopPremiumBuy.visibility = View.GONE
 
         GlobalScope.launch(Dispatchers.Main) {
             val isPremium = licenseService.isPremium()
             if (isPremium) {
-                shop_premium_bought.visibility = View.VISIBLE
+                viewBinding.shopPremiumBought.visibility = View.VISIBLE
             } else {
-                shop_premium_buy.visibility = View.VISIBLE
+                viewBinding.shopPremiumBuy.visibility = View.VISIBLE
             }
         }
         sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
