@@ -24,13 +24,12 @@
 
 package li.klass.fhem.widget
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
-import kotlinx.android.synthetic.main.timepicker_with_seconds_dialog.view.*
 import li.klass.fhem.R
+import li.klass.fhem.databinding.TimepickerWithSecondsDialogBinding
 
 class TimePickerWithSecondsDialog(context: Context, hours: Int, minutes: Int, seconds: Int,
                                   private val listener: TimePickerWithSecondsListener?)
@@ -44,9 +43,9 @@ class TimePickerWithSecondsDialog(context: Context, hours: Int, minutes: Int, se
 
     init {
         val inflater = LayoutInflater.from(context)
-        @SuppressLint("InflateParams") val view = inflater.inflate(R.layout.timepicker_with_seconds_dialog, null)
+        val viewBinding = TimepickerWithSecondsDialogBinding.inflate(inflater)
 
-        timePicker = view.timePickerWithSeconds.apply {
+        timePicker = viewBinding.timePickerWithSeconds.apply {
             this.hours = hours
             this.minutes = minutes
             this.seconds = seconds
@@ -55,7 +54,7 @@ class TimePickerWithSecondsDialog(context: Context, hours: Int, minutes: Int, se
         setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), this)
         setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancelButton), this)
 
-        setView(view)
+        setView(viewBinding.root)
     }
 
     override fun onClick(dialogInterface: DialogInterface, which: Int) {
