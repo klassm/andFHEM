@@ -47,7 +47,7 @@ android {
 
     defaultConfig {
         targetSdkVersion 30
-        minSdkVersion 21
+        minSdkVersion 22
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

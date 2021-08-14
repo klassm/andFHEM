@@ -27,13 +27,8 @@ package li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.fht
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TableLayout
-import android.widget.TableRow
 import android.widget.TextView
-import kotlinx.android.synthetic.main.fht_holiday_short_dialog.view.*
-import kotlinx.android.synthetic.main.fht_holiday_short_dialog_android_bug.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,104 +37,117 @@ import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.devices.FHTDetailActionProvider
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow
+import li.klass.fhem.databinding.FhtHolidayShortDialogBinding
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.domain.fht.FHTMode
-import li.klass.fhem.ui.AndroidBug
-import li.klass.fhem.ui.AndroidBug.handleColorStateBug
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.*
 import java.util.*
 import javax.inject.Inject
 
-class HolidayShort @Inject constructor(private val applicationProperties: ApplicationProperties,
-                                       private val dateTimeProvider: DateTimeProvider,
-                                       private val holidayShortCalculator: HolidayShortCalculator,
-                                       private val genericDeviceService: GenericDeviceService) {
+class HolidayShort @Inject constructor(
+    private val applicationProperties: ApplicationProperties,
+    private val dateTimeProvider: DateTimeProvider,
+    private val holidayShortCalculator: HolidayShortCalculator,
+    private val genericDeviceService: GenericDeviceService
+) {
 
-    fun showDialog(context: Context, parent: ViewGroup, layoutInflater: LayoutInflater,
-                   spinnerActionRow: SpinnerActionRow, device: XmlListDevice, connectionId: String?) {
+    fun showDialog(
+        context: Context, parent: ViewGroup, layoutInflater: LayoutInflater,
+        spinnerActionRow: SpinnerActionRow, device: XmlListDevice, connectionId: String?
+    ) {
         val currentDesiredTemp = device.stateValueFor("desired-temp")
-                ?.let { ValueExtractUtil.extractLeadingDouble(it) }
-                ?: FHTDetailActionProvider.MINIMUM_TEMPERATURE
+            ?.let { ValueExtractUtil.extractLeadingDouble(it) }
+            ?: FHTDetailActionProvider.MINIMUM_TEMPERATURE
         var model = Model(hour = 0, minute = 0, desiredTemp = currentDesiredTemp)
-        val contentView = createContentView(layoutInflater, parent, object : HolidayShort.OnTimeChanged {
-            override fun timeChanged(newHour: Int, newMinute: Int, endTimeValue: TextView) {
-                updateHolidayShortEndTime(endTimeValue, newHour, newMinute)
-                model = model.copy(hour = newHour, minute = newMinute)
-            }
-        })
+        val viewBinding =
+            createContentView(layoutInflater, parent, object : OnTimeChanged {
+                override fun timeChanged(newHour: Int, newMinute: Int, endTimeValue: TextView) {
+                    updateHolidayShortEndTime(endTimeValue, newHour, newMinute)
+                    model = model.copy(hour = newHour, minute = newMinute)
+                }
+            })
 
-        val temperatureUpdateRow = contentView.findViewById<TableRow>(R.id.updateTemperatureRow)
+        val temperatureUpdateRow = viewBinding.updateTemperatureRow
         val temperatureChangeTableRow = object : SeekBarActionRowFullWidthAndButton(
-                context,
-                currentDesiredTemp,
-                0.5,
-                FHTDetailActionProvider.MINIMUM_TEMPERATURE,
-                FHTDetailActionProvider.MAXIMUM_TEMPERATURE,
-                temperatureUpdateRow,
-                applicationProperties) {
-            override fun onProgressChange(context: Context, device: XmlListDevice?, progress: Double) {
+            context,
+            currentDesiredTemp,
+            0.5,
+            FHTDetailActionProvider.MINIMUM_TEMPERATURE,
+            FHTDetailActionProvider.MAXIMUM_TEMPERATURE,
+            temperatureUpdateRow,
+            applicationProperties
+        ) {
+            override fun onProgressChange(
+                context: Context,
+                device: XmlListDevice?,
+                progress: Double
+            ) {
                 model = model.copy(desiredTemp = progress)
             }
         }
 
-        contentView.addView(temperatureChangeTableRow.createRow(layoutInflater, device))
+        viewBinding.root.addView(temperatureChangeTableRow.createRow(layoutInflater, device))
 
         AlertDialog.Builder(context)
-                .setNegativeButton(R.string.cancelButton) { dialogInterface, _ ->
-                    spinnerActionRow.revertSelection()
+            .setNegativeButton(R.string.cancelButton) { dialogInterface, _ ->
+                spinnerActionRow.revertSelection()
+                dialogInterface.dismiss()
+            }
+            .setPositiveButton(R.string.okButton) { dialogInterface, _ ->
+                val switchDate =
+                    holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
+
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) {
+                        genericDeviceService.setSubStates(
+                            device, listOf(
+                                StateToSet("desired-temp", "" + model.desiredTemp),
+                                StateToSet(
+                                    "holiday1",
+                                    "" + holidayShortCalculator.calculateHoliday1ValueFrom(
+                                        switchDate.hourOfDay,
+                                        switchDate.minuteOfHour
+                                    )
+                                ),
+                                StateToSet("holiday2", "" + switchDate.dayOfMonth),
+                                StateToSet(
+                                    "mode",
+                                    FHTMode.HOLIDAY_SHORT.name.lowercase(Locale.getDefault())
+                                )
+                            ), connectionId
+                        )
+                    }
+                    spinnerActionRow.commitSelection()
                     dialogInterface.dismiss()
                 }
-                .setPositiveButton(R.string.okButton) { dialogInterface, _ ->
-                    val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(model.hour, model.minute)
-
-                    GlobalScope.launch(Dispatchers.Main) {
-                        withContext(Dispatchers.IO) {
-                            genericDeviceService.setSubStates(device, listOf(
-                                    StateToSet("desired-temp", "" + model.desiredTemp),
-                                    StateToSet("holiday1", "" + holidayShortCalculator.calculateHoliday1ValueFrom(switchDate.hourOfDay, switchDate.minuteOfHour)),
-                                    StateToSet("holiday2", "" + switchDate.dayOfMonth),
-                                    StateToSet("mode", FHTMode.HOLIDAY_SHORT.name.toLowerCase(Locale.getDefault()))
-                            ), connectionId)
-                        }
-                        spinnerActionRow.commitSelection()
-                        dialogInterface.dismiss()
-                    }
-                }
-                .setView(contentView)
-                .show()
+            }
+            .setView(viewBinding.root)
+            .show()
     }
 
-    private fun createContentView(layoutInflater: LayoutInflater, parent: ViewGroup, onTimeChanged: OnTimeChanged): TableLayout =
-            handleColorStateBug(object : AndroidBug.BugHandler {
-                override fun bugEncountered(): View {
-                    val contentView = layoutInflater.inflate(R.layout.fht_holiday_short_dialog_android_bug, parent, false) as TableLayout
-                    contentView.timePickerAndroidBug.apply {
-                        minutes = 0
-                        hours = dateTimeProvider.now().hourOfDay
-                        setOnValueChangedListener { hours, minutes ->
-                            onTimeChanged.timeChanged(hours, minutes, contentView.findViewById(R.id.endTimeValue))
-                        }
-                    }
+    private fun createContentView(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+        onTimeChanged: OnTimeChanged
+    ): FhtHolidayShortDialogBinding {
+        val viewBinding = FhtHolidayShortDialogBinding.inflate(layoutInflater, parent, false)
+        viewBinding.timePicker
+            .apply {
+                setIs24HourView(true)
+                currentMinute = 0
+                currentHour = dateTimeProvider.now().hourOfDay
 
-                    return contentView
+                setOnTimeChangedListener { _, hourOfDay, minute ->
+                    onTimeChanged.timeChanged(
+                        hourOfDay,
+                        minute,
+                        viewBinding.endTimeValue
+                    )
                 }
-
-                override fun defaultAction(): View {
-                    val contentView = layoutInflater.inflate(R.layout.fht_holiday_short_dialog, parent, false) as TableLayout
-                    contentView.timePicker
-                            .apply {
-                                setIs24HourView(true)
-                                currentMinute = 0
-                                currentHour = dateTimeProvider.now().hourOfDay
-
-                                setOnTimeChangedListener { _, hourOfDay, minute ->
-                                    onTimeChanged.timeChanged(hourOfDay, minute, contentView.findViewById(R.id.endTimeValue))
-                                }
-                            }
-                    return contentView
-                }
-            }) as TableLayout
+            }
+        return viewBinding
+    }
 
     private fun updateHolidayShortEndTime(endTimeValue: TextView, hour: Int, minute: Int) {
         val switchDate = holidayShortCalculator.holiday1SwitchTimeFor(hour, minute)

@@ -32,28 +32,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.TimePicker
-import kotlinx.android.synthetic.main.weekprofile_temperature_time_selector.view.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow
+import li.klass.fhem.databinding.WeekprofileTemperatureTimeSelectorBinding
 import li.klass.fhem.domain.heating.schedule.DayProfile
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingIntervalConfiguration
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
-import li.klass.fhem.ui.AndroidBug
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.ValueDescriptionUtil.appendTemperature
-import li.klass.fhem.widget.FallbackTimePicker
 import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 
-class IntervalWeekProfileAdapter(context: Context, private val applicationProperties: ApplicationProperties) : BaseWeekProfileAdapter<FilledTemperatureInterval>(context) {
+class IntervalWeekProfileAdapter(
+    context: Context,
+    private val applicationProperties: ApplicationProperties
+) : BaseWeekProfileAdapter<FilledTemperatureInterval>(context) {
 
     override val numberOfAdditionalChildrenForParent: Int
         get() = 1
 
-    override fun getChildView(parent: DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>, parentPosition: Int,
-                              child: FilledTemperatureInterval?, v: View?, viewGroup: ViewGroup, relativeChildPosition: Int): View {
+    override fun getChildView(
+        parent: DayProfile<FilledTemperatureInterval, HeatingIntervalConfiguration<FilledTemperatureInterval>>,
+        parentPosition: Int,
+        child: FilledTemperatureInterval?,
+        v: View?,
+        viewGroup: ViewGroup,
+        relativeChildPosition: Int
+    ): View {
 
         if (child == null) {
             return addView(parent, viewGroup)
@@ -68,29 +74,44 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
         intervalTypeTextView.setText(intervalStringId)
 
         setDetailTextView(view, R.id.time, child.changedSwitchTime, child.switchTime, isNew)
-        setDetailTextView(view, R.id.temperature, appendTemperature(child.changedTemperature),
-                appendTemperature(child.temperature), isNew)
+        setDetailTextView(
+            view, R.id.temperature, appendTemperature(child.changedTemperature),
+            appendTemperature(child.temperature), isNew
+        )
 
-        setTemperatureAndInterval(view, R.id.set, child, viewGroup, object : OnIntervalTemperatureChangedListener {
-            override fun onIntervalTemperatureChanged(time: String, temperature: Double) {
-                LOGGER.info("onIntervalTemperatureChanged(time={}, temperature={})", time, temperature)
-                child.changedTemperature = temperature
+        setTemperatureAndInterval(
+            view,
+            R.id.set,
+            child,
+            viewGroup,
+            object : OnIntervalTemperatureChangedListener {
+                override fun onIntervalTemperatureChanged(time: String, temperature: Double) {
+                    LOGGER.info(
+                        "onIntervalTemperatureChanged(time={}, temperature={})",
+                        time,
+                        temperature
+                    )
+                    child.changedTemperature = temperature
 
-                if (!child.isTimeFixed) {
-                    child.changedSwitchTime = time
-                } else {
-                    LOGGER.info("onIntervalTemperatureChanged() - cannot change switch time, time is fixed!")
+                    if (!child.isTimeFixed) {
+                        child.changedSwitchTime = time
+                    } else {
+                        LOGGER.info("onIntervalTemperatureChanged() - cannot change switch time, time is fixed!")
+                    }
+                    notifyWeekProfileChangedListener()
                 }
-                notifyWeekProfileChangedListener()
-            }
-        })
+            })
 
         val deleteButton = view.findViewById<Button>(R.id.delete)
         deleteButton.setOnClickListener {
-            DialogUtil.showConfirmBox(context, R.string.areYouSure, R.string.deleteConfirmIntervalText, Runnable {
+            DialogUtil.showConfirmBox(
+                context,
+                R.string.areYouSure,
+                R.string.deleteConfirmIntervalText
+            ) {
                 parent.deleteHeatingIntervalAt(relativeChildPosition)
                 notifyWeekProfileChangedListener()
-            })
+            }
         }
 
         if (child.isTimeFixed) {
@@ -100,33 +121,51 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
         return view
     }
 
-    private fun addView(parent: DayProfile<FilledTemperatureInterval, *>, viewGroup: ViewGroup): View {
+    private fun addView(
+        parent: DayProfile<FilledTemperatureInterval, *>,
+        viewGroup: ViewGroup
+    ): View {
         val view = layoutInflater.inflate(R.layout.weekprofile_interval_add, viewGroup, false)
 
         val interval = FilledTemperatureInterval()
 
-        setTemperatureAndInterval(view, R.id.addInterval, interval, viewGroup, object : OnIntervalTemperatureChangedListener {
-            override fun onIntervalTemperatureChanged(time: String, temperature: Double) {
-                interval.changedSwitchTime = time
-                interval.changedTemperature = temperature
-                interval.isNew = true
+        setTemperatureAndInterval(
+            view,
+            R.id.addInterval,
+            interval,
+            viewGroup,
+            object : OnIntervalTemperatureChangedListener {
+                override fun onIntervalTemperatureChanged(time: String, temperature: Double) {
+                    interval.changedSwitchTime = time
+                    interval.changedTemperature = temperature
+                    interval.isNew = true
 
-                parent.addHeatingInterval(interval)
-                notifyWeekProfileChangedListener()
-            }
-        })
+                    parent.addHeatingInterval(interval)
+                    notifyWeekProfileChangedListener()
+                }
+            })
 
         return view
     }
 
-    private fun setTemperatureAndInterval(view: View, buttonId: Int, interval: FilledTemperatureInterval,
-                                          viewGroup: ViewGroup, listener: OnIntervalTemperatureChangedListener) {
+    private fun setTemperatureAndInterval(
+        view: View, buttonId: Int, interval: FilledTemperatureInterval,
+        viewGroup: ViewGroup, listener: OnIntervalTemperatureChangedListener
+    ) {
 
         val button = view.findViewById<Button>(buttonId)
-        button.setOnClickListener { IntervalEditHolder(interval, listener).showDialog(context, viewGroup) }
+        button.setOnClickListener {
+            IntervalEditHolder(interval, listener).showDialog(
+                context,
+                viewGroup
+            )
+        }
     }
 
-    private inner class IntervalEditHolder constructor(internal var interval: FilledTemperatureInterval, private val listener: OnIntervalTemperatureChangedListener?) {
+    private inner class IntervalEditHolder constructor(
+        var interval: FilledTemperatureInterval,
+        private val listener: OnIntervalTemperatureChangedListener?
+    ) {
 
         private var hours: Int = 0
         private var minutes: Int = 0
@@ -146,74 +185,63 @@ class IntervalWeekProfileAdapter(context: Context, private val applicationProper
             val builder = AlertDialog.Builder(context)
             val layoutInflater = builder.context.layoutInflater
 
-            val contentView = createContentViewWith(layoutInflater, viewGroup)
+            val viewBinding = createContentViewWith(layoutInflater, viewGroup)
 
-            val tableLayout = contentView.tableLayout
-            val updateRow = contentView.updateRow
-            val temperatureChangeTableRow = object : TemperatureChangeTableRow(context, interval.changedTemperature,
-                    updateRow, 5.5, 30.0, applicationProperties) {
+            val tableLayout = viewBinding.tableLayout
+            val updateRow = viewBinding.updateRow
+            val temperatureChangeTableRow = object : TemperatureChangeTableRow(
+                context, interval.changedTemperature,
+                updateRow, 5.5, 30.0, applicationProperties
+            ) {
                 override fun showButton(): Boolean = false
             }
             tableLayout.addView(temperatureChangeTableRow.createRow(layoutInflater, null))
 
-            val dialog = builder.setView(contentView).show()
-            contentView.okButton
-                    .setOnClickListener {
-                        dialog.dismiss()
-                        val temperature = temperatureChangeTableRow.temperature
+            val dialog = builder.setView(viewBinding.root).show()
+            viewBinding.okButton
+                .setOnClickListener {
+                    dialog.dismiss()
+                    val temperature = temperatureChangeTableRow.temperature
 
-                        val time = timeToTimeString(hours, minutes)
+                    val time = timeToTimeString(hours, minutes)
 
-                        if (listener != null) {
-                            LOGGER.debug("showDialog() - notifying listener")
-                            listener.onIntervalTemperatureChanged(time, temperature)
-                        } else {
-                            LOGGER.error("showDialog() - no listener")
-                        }
-                        notifyWeekProfileChangedListener()
+                    if (listener != null) {
+                        LOGGER.debug("showDialog() - notifying listener")
+                        listener.onIntervalTemperatureChanged(time, temperature)
+                    } else {
+                        LOGGER.error("showDialog() - no listener")
                     }
+                    notifyWeekProfileChangedListener()
+                }
         }
 
-        private fun createContentViewWith(layoutInflater: LayoutInflater, viewGroup: ViewGroup): View {
-            return AndroidBug.handleColorStateBug(object : AndroidBug.BugHandler {
-                override fun bugEncountered(): View {
-                    val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector_android_bug, viewGroup, false)
-                    val timePicker = contentView.timePickerAndroidBug.findViewById<FallbackTimePicker>(R.id.timePickerAndroidBug)
-                    timePicker.hours = hours
-                    timePicker.minutes = minutes
-                    timePicker.setOnValueChangedListener { hours, minutes ->
-                        this@IntervalEditHolder.hours = hours
-                        this@IntervalEditHolder.minutes = minutes
-                    }
-                    timePicker.isEnabled = !interval.isTimeFixed
-                    return contentView
-                }
+        private fun createContentViewWith(
+            layoutInflater: LayoutInflater,
+            viewGroup: ViewGroup
+        ): WeekprofileTemperatureTimeSelectorBinding {
+            val viewBinding =
+                WeekprofileTemperatureTimeSelectorBinding.inflate(layoutInflater, viewGroup, false)
+            val timePicker = viewBinding.timePicker
+            timePicker.setIs24HourView(true)
 
-                override fun defaultAction(): View {
-                    val contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false)
-                    val timePicker = contentView.findViewById<TimePicker>(R.id.timePickerAndroidBug)
-                    timePicker.setIs24HourView(true)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                timePicker.hour = hours
+                timePicker.minute = minutes
+            } else {
+                @Suppress("DEPRECATION")
+                timePicker.currentHour = hours
+                @Suppress("DEPRECATION")
+                timePicker.currentMinute = minutes
+            }
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        timePicker.hour = hours
-                        timePicker.minute = minutes
-                    } else {
-                        @Suppress("DEPRECATION")
-                        timePicker.currentHour = hours
-                        @Suppress("DEPRECATION")
-                        timePicker.currentMinute = minutes
-                    }
+            timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+                hours = hourOfDay
+                minutes = minute
+            }
 
-                    timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
-                        hours = hourOfDay
-                        minutes = minute
-                    }
+            timePicker.isEnabled = !interval.isTimeFixed
 
-                    timePicker.isEnabled = !interval.isTimeFixed
-
-                    return contentView
-                }
-            })
+            return viewBinding
         }
     }
 
