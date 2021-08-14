@@ -37,6 +37,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,7 +50,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.setupWithNavController
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.main_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -65,6 +65,7 @@ import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
 import li.klass.fhem.constants.Actions.*
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.dagger.ScopedFragmentFactory
+import li.klass.fhem.databinding.MainViewBinding
 import li.klass.fhem.login.LoginUIService
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.ui.FragmentType
@@ -175,6 +176,8 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
     private var availableConnectionDataAdapter: AvailableConnectionDataAdapter? = null
 
+    private lateinit var viewBinding: MainViewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         PermissionUtil.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -186,7 +189,8 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
         try {
             saveInstanceStateCalled = false
-            setContentView(R.layout.main_view)
+            viewBinding = MainViewBinding.inflate(LayoutInflater.from(this))
+            setContentView(viewBinding.root)
 
             val navController = navController() ?: return
             navController.updateStartFragment(determineStartupFragmentFromProperties())
@@ -245,31 +249,33 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         mSelectedDrawerId = savedInstanceState.getInt(STATE_DRAWER_ID, -1)
         if (mSelectedDrawerId > 0) {
-            nav_drawer.menu.findItem(mSelectedDrawerId).isChecked = true
+            viewBinding.navDrawer.menu.findItem(mSelectedDrawerId).isChecked = true
         }
     }
 
     private fun initDrawerLayout() {
         val navController = navController() ?: return
-        drawer_layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
+        viewBinding.drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
 
-        nav_drawer.setupWithNavController(navController)
-        nav_drawer.setNavigationItemSelectedListener { item ->
+        viewBinding.navDrawer.setupWithNavController(navController)
+        viewBinding.navDrawer.setNavigationItemSelectedListener { item ->
             val result = drawerActions.handle(this, item.itemId)
             if (result) {
-                drawer_layout.closeDrawer(GravityCompat.START)
+                viewBinding.drawerLayout.closeDrawer(GravityCompat.START)
             }
             result
         }
         if (packageName == AndFHEMApplication.PREMIUM_PACKAGE) {
-            nav_drawer.menu.removeItem(R.id.menu_premium)
+            viewBinding.navDrawer.menu.removeItem(R.id.menu_premium)
         }
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
 
-        actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawer_layout,
-                R.string.drawerOpen, R.string.drawerClose) {
+        actionBarDrawerToggle = object : ActionBarDrawerToggle(
+            this, viewBinding.drawerLayout,
+            R.string.drawerOpen, R.string.drawerClose
+        ) {
             override fun onDrawerClosed(view: View) {
                 invalidateOptionsMenu()
             }
@@ -292,18 +298,19 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         updateDrawerIndicator()
 
         if (connectionService.getCurrentServer()?.serverType != ServerType.FHEMWEB) {
-            nav_drawer.menu.removeItem(R.id.fhem_log)
+            viewBinding.navDrawer.menu.removeItem(R.id.fhem_log)
         }
 
-        drawer_layout.addDrawerListener(actionBarDrawerToggle)
+        viewBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
 
         GlobalScope.launch(Dispatchers.Main) {
-            initConnectionSpinner(nav_drawer.getHeaderView(0).findViewById(R.id.connection_spinner),
-                    Runnable {
-                        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-                            drawer_layout.closeDrawer(GravityCompat.START)
-                        }
-                    })
+            initConnectionSpinner(
+                viewBinding.navDrawer.getHeaderView(0).findViewById(R.id.connection_spinner)
+            ) {
+                if (viewBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    viewBinding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
         }
 
     }
@@ -431,8 +438,8 @@ open class AndFHEMMainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (viewBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            viewBinding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
