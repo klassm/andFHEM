@@ -114,7 +114,7 @@ dependencies {
     implementation(
         group = "com.google.errorprone",
         name = "error_prone_annotations",
-        version = "2.8.1"
+        version = "2.9.0"
     )
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "1.3")
 
