@@ -86,7 +86,7 @@ def setStage(stage) {
     } else if (stage == 'beta') {
         println("releaseBeta")
         play.track = 'beta'
-        release.buildTasks = ['generateWhatsNew', 'build', 'publishApps', 'publishPremium']
+        release.buildTasks = ['generateWhatsNew', 'build', 'publishApps']
         setNewReleaseVersion(getNextVersion(project.version) + "-BETA")
     } else if (stage == null) {
         release.buildTasks = []
