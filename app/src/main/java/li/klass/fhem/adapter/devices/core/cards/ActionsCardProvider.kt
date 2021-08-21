@@ -27,14 +27,13 @@ package li.klass.fhem.adapter.devices.core.cards
 import android.content.Context
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
-import kotlinx.android.synthetic.main.device_detail_card_actions.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchAction
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.databinding.DeviceDetailCardActionsBinding
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
@@ -51,9 +50,9 @@ class ActionsCardProvider @Inject constructor(
             return null
         }
         val layoutInflater = context.layoutInflater
-        val card = layoutInflater.inflate(R.layout.device_detail_card_actions, null) as CardView
+        val binding = DeviceDetailCardActionsBinding.inflate(layoutInflater, null, false)
 
-        val actionsList = card.actionsList
+        val actionsList = binding.actionsList
         actionsList.addView(AvailableTargetStatesSwitchAction(stateUiService).createView(context, layoutInflater, device, actionsList, connectionId))
 
         coroutineScope {
@@ -65,6 +64,6 @@ class ActionsCardProvider @Inject constructor(
                         .map { it.createView(device.xmlListDevice, connectionId, context, layoutInflater, actionsList, navController) }
             }.forEach { actionsList.addView(it) }
         }
-        return card
+        return binding.root
     }
 }

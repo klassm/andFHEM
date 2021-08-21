@@ -36,14 +36,13 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.connection_fhemweb.*
-import kotlinx.android.synthetic.main.connection_fhemweb.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.ConnectionFhemwebBinding
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
@@ -205,7 +204,8 @@ class ConnectionDetailFragment @Inject constructor(
     }
 
     private fun handleFHEMWEBView(view: View) {
-        view.setClientCertificatePath.setOnClickListener(View.OnClickListener { innerView ->
+        val binding = ConnectionFhemwebBinding.bind(view)
+        binding.setClientCertificatePath.setOnClickListener(View.OnClickListener { innerView ->
             if (innerView == null) return@OnClickListener
 
             PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -289,14 +289,17 @@ class ConnectionDetailFragment @Inject constructor(
         if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
             val filePath = (data?.clipData ?: data?.data) as Uri
             val filename = filePath.path?.split("/")?.last()
-                    ?: UUID.randomUUID().toString() + ".cert"
+                ?: UUID.randomUUID().toString() + ".cert"
             LOG.info("handleFHEMWEBView - selected '$filePath' as client certificate")
             val baseDir = context.getDir("certificates", Context.MODE_PRIVATE)
             val certificateFile = File(baseDir, filename)
 
-            context.contentResolver?.openInputStream(filePath)?.copyTo(certificateFile.outputStream())
+            context.contentResolver?.openInputStream(filePath)
+                ?.copyTo(certificateFile.outputStream())
 
-            view?.clientCertificatePath?.text = certificateFile.absolutePath
+            view?.let { ConnectionFhemwebBinding.bind(it) }?.let {
+                it.clientCertificatePath.text = certificateFile.absolutePath
+            }
         }
     }
 

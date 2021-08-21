@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fcm_history_messages.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
@@ -54,8 +53,8 @@ class FcmHistoryMessagesFragment @Inject constructor(
             }
 
             activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
-            showEmptyViewIfRequired(messages.isEmpty(), view.messages, view.fcm_no_messages)
-            (view.messages.adapter as FcmMessagesAdapter).updateWith(messages)
+            showEmptyViewIfRequired(messages.isEmpty(), binding.messages, binding.fcmNoMessages)
+            (binding.messages.adapter as FcmMessagesAdapter).updateWith(messages)
         }
     }
 }

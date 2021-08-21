@@ -12,12 +12,11 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import kotlinx.android.synthetic.main.locale_condition_query_edit.*
-import kotlinx.android.synthetic.main.locale_condition_query_edit.view.*
 import li.klass.fhem.R
 import li.klass.fhem.activities.locale.AttributeType
 import li.klass.fhem.activities.locale.LocaleIntentConstants
 import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.databinding.LocaleConditionQueryEditBinding
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.device.DeviceNameListFragment
 import li.klass.fhem.util.getNavigationResult
@@ -28,18 +27,29 @@ import javax.inject.Inject
 class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
 
     private val viewModel by navGraphViewModels<ConditionQueryLocaleEditViewModel>(R.id.nav_graph)
+    private lateinit var binding: LocaleConditionQueryEditBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            super.onCreateView(inflater, container, savedInstanceState)
-                    ?: inflater.inflate(R.layout.locale_condition_query_edit, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val superView = super.onCreateView(inflater, container, savedInstanceState)
+        if (superView != null) {
+            return superView
+        }
+
+        binding = LocaleConditionQueryEditBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindSave(view)
+        bindSave()
         bindAttributeType(view)
-        bindDeviceName(view)
-        bindAttributeName(view)
+        bindDeviceName()
+        bindAttributeName()
         bindAttributeValue()
 
         activity?.intent?.let {
@@ -55,19 +65,19 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
     }
 
     private fun bindAttributeValue() {
-        attributeValue.apply {
+        binding.attributeValue.apply {
             doOnTextChanged { text, _, _, _ ->
                 viewModel.attributeValue.value = text?.toString()
             }
             viewModel.attributeValue
-                    .observe(viewLifecycleOwner, {
-                        updateIfChanged(it)
-                    })
+                .observe(viewLifecycleOwner, {
+                    updateIfChanged(it)
+                })
         }
     }
 
-    private fun bindAttributeName(view: View) {
-        view.attributeName.apply {
+    private fun bindAttributeName() {
+        binding.attributeName.apply {
 
             doOnTextChanged { text, _, _, _ ->
                 viewModel.attributeName.value = text?.toString()
@@ -78,27 +88,36 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
         }
     }
 
-    private fun bindDeviceName(view: View) {
-        view.deviceName.apply {
+    private fun bindDeviceName() {
+        binding.deviceName.apply {
             viewModel.deviceName.observe(viewLifecycleOwner, {
                 text = it
             })
         }
-        view.setDevice.onClick { handleDeviceSelection() }
+        binding.setDevice.onClick { handleDeviceSelection() }
         getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, { device ->
             viewModel.deviceName.value = device.name
         })
     }
 
     private fun bindAttributeType(view: View) {
-        view.attributeType.apply {
-            adapter = ArrayAdapter(view.context, android.R.layout.simple_dropdown_item_1line, AttributeType.values())
+        binding.attributeType.apply {
+            adapter = ArrayAdapter(
+                view.context,
+                android.R.layout.simple_dropdown_item_1line,
+                AttributeType.values()
+            )
 
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     val type = AttributeType.atPosition(position).description
                     viewModel.attributeType.value = type
                 }
@@ -110,8 +129,8 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
         }
     }
 
-    private fun bindSave(view: View) {
-        view.save.apply {
+    private fun bindSave() {
+        binding.save.apply {
             isEnabled = false
             viewModel.allAttributesSet.observe(viewLifecycleOwner, {
                 isEnabled = it

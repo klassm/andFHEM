@@ -3,9 +3,9 @@ package li.klass.fhem.adapter.rooms
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import kotlinx.android.synthetic.main.room_device_group.view.*
 import li.klass.fhem.R
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator.Element
 import li.klass.fhem.domain.core.FhemDevice
@@ -60,7 +60,7 @@ class DeviceGroupAdapter(
 
                 val layoutParams = itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
                 layoutParams.isFullSpan = true
-                itemView.name.text = parent
+                itemView.findViewById<TextView>(R.id.name).text = parent
                 LOGGER.info("bind - parent=$parent, took=${stopWatch.time}")
             }
         }
