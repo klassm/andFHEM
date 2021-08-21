@@ -34,13 +34,13 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import kotlinx.android.synthetic.main.device_detail_card_weather.view.*
-import kotlinx.android.synthetic.main.weather_forecast_item.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
+import li.klass.fhem.databinding.DeviceDetailCardWeatherBinding
+import li.klass.fhem.databinding.WeatherForecastItemBinding
 import li.klass.fhem.devices.backend.weather.WeatherService
 import li.klass.fhem.devices.backend.weather.WeatherService.WeatherForecastInformation
 import li.klass.fhem.devices.detail.ui.ExpandHandler
@@ -60,19 +60,19 @@ class WeatherDeviceCardProvider @Inject constructor(
         if (type != "Weather" && type != "PROPLANTA") {
             return null
         }
-        val view = context.layoutInflater.inflate(R.layout.device_detail_card_weather, null, false)
-        view.forecast.layoutManager = object : LinearLayoutManager(context) {
+        val binding = DeviceDetailCardWeatherBinding.inflate(context.layoutInflater, null, false)
+        binding.forecast.layoutManager = object : LinearLayoutManager(context) {
             override fun canScrollVertically() = false
         }
-        view.forecast.adapter = Adapter()
+        binding.forecast.adapter = Adapter()
 
         coroutineScope {
             val forecasts = withContext(Dispatchers.IO) { weatherService.forecastsFor(device) }
-            updateListWith(view.forecast, forecasts)
-            view.invalidate()
+            updateListWith(binding.forecast, forecasts)
+            binding.root.invalidate()
         }
 
-        return view as CardView
+        return binding.root
     }
 
     private fun updateListWith(content: RecyclerView,
@@ -89,10 +89,14 @@ class WeatherDeviceCardProvider @Inject constructor(
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
-            holder.apply {
+            val itemBinding = WeatherForecastItemBinding.bind(holder.view)
+            itemBinding.apply {
                 val element = elements[position]
                 holder.view.apply {
-                    date.text = listOfNotNull(element.weekday?.let { "$it." }, DateFormatUtil.ANDFHEM_DATE_FORMAT.print(element.date)).joinToString(separator = " ")
+                    date.text = listOfNotNull(
+                        element.weekday?.let { "$it." },
+                        DateFormatUtil.ANDFHEM_DATE_FORMAT.print(element.date)
+                    ).joinToString(separator = " ")
                     temperature.text = element.temperature
 
                     condition.setTextOrHide(element.condition, tableRowCondition)
