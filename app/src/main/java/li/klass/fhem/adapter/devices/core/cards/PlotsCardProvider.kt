@@ -27,12 +27,14 @@ package li.klass.fhem.adapter.devices.core.cards
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
-import kotlinx.android.synthetic.main.device_detail_card_plots.view.*
-import kotlinx.coroutines.*
-import li.klass.fhem.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import li.klass.fhem.databinding.DeviceDetailCardPlotsBinding
+import li.klass.fhem.databinding.DeviceDetailCardPlotsButtonBinding
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
@@ -48,45 +50,58 @@ class PlotsCardProvider @Inject constructor(
     override fun ordering(): Int = 20
 
     override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
-        val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_plots, null) as CardView
-        cardView.card_progress.visibility = View.VISIBLE
+        val binding = DeviceDetailCardPlotsBinding.inflate(context.layoutInflater, null, false)
+        binding.cardProgress.visibility = View.VISIBLE
 
         GlobalScope.launch(Dispatchers.Main) {
-            loadGraphs(device, cardView, connectionId, context)
+            loadGraphs(device, binding, connectionId, context)
         }
 
-        return cardView
+        return binding.root
     }
 
-    private suspend fun loadGraphs(device: FhemDevice, cardView: CardView, connectionId: String, context: Context) {
+    private suspend fun loadGraphs(
+        device: FhemDevice,
+        binding: DeviceDetailCardPlotsBinding,
+        connectionId: String,
+        context: Context
+    ) {
         val graphs = withContext(Dispatchers.IO) {
             graphDefinitionsForDeviceService.graphDefinitionsFor(device.xmlListDevice, connectionId)
         }
-        fillPlotsCard(cardView, device, graphs, connectionId, context)
-        cardView.card_progress.visibility = View.GONE
-        cardView.invalidate()
+        fillPlotsCard(binding, device, graphs, connectionId, context)
+        binding.cardProgress.visibility = View.GONE
+        binding.root.invalidate()
     }
 
-    private fun fillPlotsCard(plotsCard: CardView, device: FhemDevice,
-                              graphDefinitions: Set<SvgGraphDefinition>,
-                              connectionId: String?, context: Context) {
+    private fun fillPlotsCard(
+        binding: DeviceDetailCardPlotsBinding, device: FhemDevice,
+        graphDefinitions: Set<SvgGraphDefinition>,
+        connectionId: String?, context: Context
+    ) {
         val definitions = graphDefinitions.sortedBy { it.name }
         if (definitions.isEmpty()) {
             return
         }
 
-        val graphLayout = plotsCard.plotsList
-        if (graphLayout == null) {
-            logger.error("fillPlotsCard - cannot find graphLayout, is null")
-            return
-        }
-
+        val graphLayout = binding.plotsList
         graphLayout.removeAllViews()
         definitions.forEach { svgGraphDefinition ->
-            val button = LayoutInflater.from(context).inflate(R.layout.device_detail_card_plots_button, graphLayout, false) as Button
-            button.text = svgGraphDefinition.name
-            button.setOnClickListener { GraphActivity.showChart(context, device, connectionId, svgGraphDefinition) }
-            graphLayout.addView(button)
+            val buttonBinding = DeviceDetailCardPlotsButtonBinding.inflate(
+                LayoutInflater.from(context),
+                graphLayout,
+                false
+            )
+            buttonBinding.button.text = svgGraphDefinition.name
+            buttonBinding.button.setOnClickListener {
+                GraphActivity.showChart(
+                    context,
+                    device,
+                    connectionId,
+                    svgGraphDefinition
+                )
+            }
+            graphLayout.addView(buttonBinding.root)
         }
     }
 
