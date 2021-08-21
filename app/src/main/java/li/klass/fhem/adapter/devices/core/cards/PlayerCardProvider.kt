@@ -29,12 +29,11 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
-import kotlinx.android.synthetic.main.device_detail_card_player.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import li.klass.fhem.R
+import li.klass.fhem.databinding.DeviceDetailCardPlayerBinding
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
@@ -49,22 +48,23 @@ class PlayerCardProvider @Inject constructor(
     override fun ordering(): Int = 29
 
     override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
-        val playerConfiguration = deviceConfigurationProvider.configurationFor(device).playerConfiguration
+        val playerConfiguration =
+            deviceConfigurationProvider.configurationFor(device).playerConfiguration
         if (playerConfiguration == null || playerConfiguration.hasAny()) {
             return null
         }
 
-        val view = context.layoutInflater.inflate(R.layout.device_detail_card_player, null, false)
+        val binding = DeviceDetailCardPlayerBinding.inflate(context.layoutInflater, null, false)
 
         val provider = actionProviderFor(device, connectionId)
 
-        attachActionTo(view.rewind, provider(playerConfiguration.previousCommand))
-        attachActionTo(view.pause, provider(playerConfiguration.pauseCommand))
-        attachActionTo(view.stop, provider(playerConfiguration.stopCommand))
-        attachActionTo(view.play, provider(playerConfiguration.playCommand))
-        attachActionTo(view.forward, provider(playerConfiguration.nextCommand))
+        attachActionTo(binding.rewind, provider(playerConfiguration.previousCommand))
+        attachActionTo(binding.pause, provider(playerConfiguration.pauseCommand))
+        attachActionTo(binding.stop, provider(playerConfiguration.stopCommand))
+        attachActionTo(binding.play, provider(playerConfiguration.playCommand))
+        attachActionTo(binding.forward, provider(playerConfiguration.nextCommand))
 
-        return view as CardView
+        return binding.root
     }
 
     private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
