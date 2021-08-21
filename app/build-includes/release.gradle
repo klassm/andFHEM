@@ -49,13 +49,13 @@ def getNextVersion(version) {
 }
 
 play {
-    userFraction.set(1.0d)
     def hasPlayServiceAccountCredentials = project.hasProperty('andFHEMPlayServiceAccountCredentials')
     enabled.set(hasPlayServiceAccountCredentials)
 
     if (hasPlayServiceAccountCredentials) {
         serviceAccountCredentials.set(file(andFHEMPlayServiceAccountCredentials))
     }
+    releaseStatus.set(ReleaseStatus.COMPLETED)
 }
 
 release {
