@@ -34,12 +34,12 @@ import androidx.navigation.NavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
-import kotlinx.android.synthetic.main.remote_control_layout.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
+import li.klass.fhem.databinding.RemoteControlLayoutBinding
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService
 import li.klass.fhem.devices.detail.ui.ExpandHandler
@@ -58,16 +58,16 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }
-        val view = context.layoutInflater.inflate(R.layout.remote_control_layout, null, false)
+        val binding = RemoteControlLayoutBinding.inflate(context.layoutInflater, null, false)
         val actionProvider = actionProviderFor(device, connectionId)
         coroutineScope {
             val rows = withContext(Dispatchers.Default) {
                 remotecontrolDeviceService.getRowsFor(device)
             }
-            updateTableWith(view.content, rows, context, actionProvider)
+            updateTableWith(binding.content, rows, context, actionProvider)
         }
 
-        return view as androidx.cardview.widget.CardView
+        return binding.root
     }
 
     private fun updateTableWith(table: TableLayout, rows: List<RemotecontrolDeviceService.Row>,
