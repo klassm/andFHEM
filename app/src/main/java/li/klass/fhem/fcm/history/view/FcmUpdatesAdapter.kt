@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fcm_history_change_row.view.*
-import kotlinx.android.synthetic.main.fcm_history_updates_item.view.*
 import li.klass.fhem.R
+import li.klass.fhem.databinding.FcmHistoryChangeRowBinding
+import li.klass.fhem.databinding.FcmHistoryUpdatesItemBinding
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.util.DateFormatUtil
 
@@ -34,13 +34,17 @@ class FcmUpdatesAdapter(elements: List<FcmHistoryService.SavedChange>) : Recycle
         @SuppressLint("InflateParams")
         fun bind(change: FcmHistoryService.SavedChange) {
             val inflater = LayoutInflater.from(view.context)
-            view.apply {
+            val binding = FcmHistoryUpdatesItemBinding.bind(view)
+            binding.apply {
                 sendTime.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(change.time)
                 device.text = change.deviceName
                 receiveTime.apply {
                     if (change.receiveTime != null) {
                         visibility = View.VISIBLE
-                        text = String.format(context.getString(R.string.fcm_history_received), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(change.receiveTime))
+                        text = String.format(
+                            context.getString(R.string.fcm_history_received),
+                            DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(change.receiveTime)
+                        )
                     } else {
                         visibility = View.GONE
                     }
@@ -49,12 +53,12 @@ class FcmUpdatesAdapter(elements: List<FcmHistoryService.SavedChange>) : Recycle
                 changes.removeAllViews()
 
                 change.changes.sortedBy { it.first }
-                        .map {
-                            val row = inflater.inflate(R.layout.fcm_history_change_row, null)
-                            row.attribute.text = it.first
-                            row.value.text = it.second
-                            row
-                        }.forEach { changes.addView(it) }
+                    .map {
+                        val row = FcmHistoryChangeRowBinding.inflate(inflater, null, false)
+                        row.attribute.text = it.first
+                        row.value.text = it.second
+                        row
+                    }.forEach { changes.addView(it.root) }
             }
         }
     }

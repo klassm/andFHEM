@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fcm_history_messages_item.view.*
 import li.klass.fhem.R
+import li.klass.fhem.databinding.FcmHistoryMessagesItemBinding
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import li.klass.fhem.util.DateFormatUtil
 import org.apache.commons.lang3.StringUtils
@@ -32,12 +32,16 @@ class FcmMessagesAdapter(elements: List<FcmHistoryService.SavedMessage>) : Recyc
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(message: FcmHistoryService.SavedMessage) {
-            view.apply {
+            val binding = FcmHistoryMessagesItemBinding.bind(view)
+            binding.apply {
                 sendTime.text = DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.time)
                 receiveTime.apply {
                     if (message.receiveTime != null) {
                         visibility = View.VISIBLE
-                        text = String.format(context.getString(R.string.fcm_history_received), DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.receiveTime))
+                        text = String.format(
+                            context.getString(R.string.fcm_history_received),
+                            DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT.print(message.receiveTime)
+                        )
                     } else {
                         visibility = View.GONE
                     }
