@@ -29,12 +29,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.TableRow
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.timer_detail.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.showSwitchOptionsMenu
@@ -42,6 +38,7 @@ import li.klass.fhem.adapter.devices.genericui.availableTargetStates.OnTargetSta
 import li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG
 import li.klass.fhem.constants.Actions.SHOW_TOAST
 import li.klass.fhem.constants.BundleExtraKeys.STRING_ID
+import li.klass.fhem.databinding.TimerDetailBinding
 import li.klass.fhem.devices.backend.at.*
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -67,45 +64,53 @@ class TimerDetailFragment @Inject constructor(
 
     private val args: TimerDetailFragmentArgs by navArgs()
 
+    private lateinit var binding: TimerDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = super.onCreateView(inflater, container, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         if (view != null) {
+            binding = TimerDetailBinding.bind(view)
             return view
         }
-        view = inflater.inflate(R.layout.timer_detail, container, false)
+
+        binding = TimerDetailBinding.inflate(inflater, container, false)
         val context = activity ?: return null
 
-        bindRepetitionSpinner(view, context)
-        bindSelectDeviceButton(view)
-        bindTimerTypeSpinner(view, context)
-        bindSwitchTimeButton(view)
-        bindIsActiveCheckbox(view)
-        bindTargetStateButton(view)
-        return view
+        bindRepetitionSpinner(context)
+        bindSelectDeviceButton()
+        bindTimerTypeSpinner(context)
+        bindSwitchTimeButton()
+        bindIsActiveCheckbox()
+        bindTargetStateButton()
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val timerNameInput = view.timerNameInput
-        setTimerName("", view)
+        val timerNameInput = binding.timerNameInput
+        setTimerName("")
         if (isModify) {
             timerNameInput.isEnabled = false
         }
-        view.targetDeviceName.text = ""
+        binding.targetDeviceName.text = ""
 
         if (isModify && targetDevice == null && args.deviceName != null) {
             setTimerDeviceValuesForName(args.deviceName!!)
         }
 
-        updateTargetDevice(targetDevice, view)
+        updateTargetDevice(targetDevice)
         updateTimerInformation(timerDevice)
-        updateTargetStateRowVisibility(view)
+        updateTargetStateRowVisibility()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -129,21 +134,25 @@ class TimerDetailFragment @Inject constructor(
         return super.onOptionsItemSelected(item)
     }
 
-    private fun bindTargetStateButton(view: View) {
-        view.targetStateSet.setOnClickListener {
-            onTargetStateClick(view)
+    private fun bindTargetStateButton() {
+        binding.targetStateSet.setOnClickListener {
+            onTargetStateClick()
         }
     }
 
-    private fun onTargetStateClick(view: View) {
+    private fun onTargetStateClick() {
         val context = activity ?: return
         val device = targetDevice ?: return
         showSwitchOptionsMenu(context, device, object : OnTargetStateSelectedCallback {
             override suspend fun onStateSelected(device: FhemDevice, targetState: String) {
-                setTargetState(targetState, view)
+                setTargetState(targetState)
             }
 
-            override suspend fun onSubStateSelected(device: FhemDevice, state: String, subState: String) {
+            override suspend fun onSubStateSelected(
+                device: FhemDevice,
+                state: String,
+                subState: String
+            ) {
                 coroutineScope {
                     onStateSelected(device, "$state $subState")
                 }
@@ -153,55 +162,65 @@ class TimerDetailFragment @Inject constructor(
         })
     }
 
-    private fun bindSelectDeviceButton(view: View) {
-        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, Observer { device ->
-            updateTargetDevice(device, view)
+    private fun bindSelectDeviceButton() {
+        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, { device ->
+            updateTargetDevice(device)
         })
-        view.targetDeviceSet.setOnClickListener {
+        binding.targetDeviceSet.setOnClickListener {
             findNavController()
-                    .navigate(TimerDetailFragmentDirections.actionTimerDetailFragmentToDeviceNameSelectionFragment(
-                            DEVICE_FILTER, null
-                    ))
+                .navigate(
+                    TimerDetailFragmentDirections.actionTimerDetailFragmentToDeviceNameSelectionFragment(
+                        DEVICE_FILTER, null
+                    )
+                )
         }
     }
 
-    private fun bindIsActiveCheckbox(view: View) {
-        val isActiveCheckbox = view.isActive
+    private fun bindIsActiveCheckbox() {
+        val isActiveCheckbox = binding.isActive
         if (!isModify) {
             isActiveCheckbox.isChecked = true
             isActiveCheckbox.isEnabled = false
         }
     }
 
-    private fun bindSwitchTimeButton(view: View) {
-        val switchTimeChangeButton = view.findViewById<Button>(R.id.switchTimeSet)
-        switchTimeChangeButton.setOnClickListener {
-            val switchTime = getSwitchTime(view) ?: LocalTime.now()
+    private fun bindSwitchTimeButton() {
+        binding.switchTimeSet.setOnClickListener {
+            val switchTime = getSwitchTime() ?: LocalTime.now()
             activity?.let {
-                TimePickerWithSecondsDialog(it, switchTime.hourOfDay, switchTime.minuteOfHour, switchTime.secondOfMinute,
-                        object : TimePickerWithSecondsDialog.TimePickerWithSecondsListener {
-                            override fun onTimeChanged(okClicked: Boolean, hours: Int, minutes: Int, seconds: Int, formattedText: String) {
-                                setSwitchTime(LocalTime(hours, minutes, seconds), view)
-                            }
-                        }).show()
+                TimePickerWithSecondsDialog(it,
+                    switchTime.hourOfDay,
+                    switchTime.minuteOfHour,
+                    switchTime.secondOfMinute,
+                    object : TimePickerWithSecondsDialog.TimePickerWithSecondsListener {
+                        override fun onTimeChanged(
+                            okClicked: Boolean,
+                            hours: Int,
+                            minutes: Int,
+                            seconds: Int,
+                            formattedText: String
+                        ) {
+                            setSwitchTime(LocalTime(hours, minutes, seconds))
+                        }
+                    }).show()
             }
         }
     }
 
-    private fun bindTimerTypeSpinner(view: View, context: Context) {
+    private fun bindTimerTypeSpinner(context: Context) {
 
-        view.timerType.adapter = ArrayAdapter<String>(context, R.layout.spinnercontent).apply {
+        binding.timerType.adapter = ArrayAdapter<String>(context, R.layout.spinnercontent).apply {
             TimerType.values()
-                    .map { view.context.getString(it.text) }
-                    .forEach { this.add(it) }
+                .map { context.getString(it.text) }
+                .forEach { this.add(it) }
         }
     }
 
-    private fun bindRepetitionSpinner(view: View, context: Context) {
-        val repetitionSpinner = view.timerRepetition
+    private fun bindRepetitionSpinner(context: Context) {
+        val repetitionSpinner = binding.timerRepetition
         val repetitionAdapter = ArrayAdapter<String>(context, R.layout.spinnercontent)
         AtRepetition.values()
-                .forEach { repetitionAdapter.add(view.context.getString(it.stringId)) }
+            .forEach { repetitionAdapter.add(context.getString(it.stringId)) }
         repetitionSpinner.adapter = repetitionAdapter
     }
 
@@ -209,34 +228,40 @@ class TimerDetailFragment @Inject constructor(
         val view = view ?: return
         val safeContext = context ?: return
 
-        val switchTime = getSwitchTime(view)
-        val timerDeviceName = getTimerName(view)
+        val switchTime = getSwitchTime()
+        val timerDeviceName = getTimerName()
 
-        if (targetDevice == null || isBlank(getTargetState(view)) || switchTime == null || timerDeviceName == null) {
-            activity?.sendBroadcast(Intent(SHOW_TOAST)
-                    .putExtra(STRING_ID, R.string.incompleteConfigurationError))
+        if (targetDevice == null || isBlank(getTargetState()) || switchTime == null || timerDeviceName == null) {
+            activity?.sendBroadcast(
+                Intent(SHOW_TOAST)
+                    .putExtra(STRING_ID, R.string.incompleteConfigurationError)
+            )
             return
         }
 
         if (!isModify) {
             if (timerDeviceName.contains(" ")) {
-                DialogUtil.showAlertDialog(safeContext, R.string.error, R.string.error_timer_name_spaces)
+                DialogUtil.showAlertDialog(
+                    safeContext,
+                    R.string.error,
+                    R.string.error_timer_name_spaces
+                )
                 return
             }
         }
 
         val timerDevice = TimerDevice(
-                name = timerDeviceName,
-                isActive = view.isActive.isChecked,
-                definition = TimerDefinition(
-                        switchTime = switchTime,
-                        repetition = getRepetition(view),
-                        type = getType(view),
-                        targetDeviceName = targetDevice!!.name,
-                        targetState = getTargetState(view),
-                        targetStateAppendix = "" // TODO never set?
-                ),
-                next = timerDevice?.next ?: ""
+            name = timerDeviceName,
+            isActive = binding.isActive.isChecked,
+            definition = TimerDefinition(
+                switchTime = switchTime,
+                repetition = getRepetition(),
+                type = getType(),
+                targetDeviceName = targetDevice!!.name,
+                targetState = getTargetState(),
+                targetStateAppendix = "" // TODO never set?
+            ),
+            next = timerDevice?.next ?: ""
         )
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -251,27 +276,24 @@ class TimerDetailFragment @Inject constructor(
         }
     }
 
-    private fun updateTargetDevice(targetDevice: FhemDevice?, view: View?) {
-        if (view == null || targetDevice == null) {
+    private fun updateTargetDevice(targetDevice: FhemDevice?) {
+        if (targetDevice == null) {
             return
         }
         this@TimerDetailFragment.targetDevice = targetDevice
-        view.targetDeviceName.text = targetDevice.name
+        binding.targetDeviceName.text = targetDevice.name
 
-        if (!updateTargetStateRowVisibility(view)) {
-            setTargetState(getString(R.string.unknown), view)
+        if (!updateTargetStateRowVisibility()) {
+            setTargetState(getString(R.string.unknown))
         }
     }
 
-    private fun updateTargetStateRowVisibility(view: View?): Boolean {
-        if (view == null) return false
-
-        val targetDeviceRow = view.findViewById<TableRow>(R.id.targetStateRow)
+    private fun updateTargetStateRowVisibility(): Boolean {
         return if (targetDevice == null) {
-            targetDeviceRow.visibility = View.GONE
+            binding.targetStateRow.visibility = View.GONE
             false
         } else {
-            targetDeviceRow.visibility = View.VISIBLE
+            binding.targetStateRow.visibility = View.VISIBLE
             true
         }
     }
@@ -298,66 +320,74 @@ class TimerDetailFragment @Inject constructor(
             withContext(Dispatchers.IO) {
                 deviceListService.getDeviceForName(device.definition.targetDeviceName)
             }?.let {
-                updateTargetDevice(it, this@TimerDetailFragment.view)
+                updateTargetDevice(it)
             }
         }
     }
 
     private fun updateTimerInformation(timerDevice: TimerDevice?) {
-        val view = view
-        view ?: return
         timerDevice ?: return
-
         val definition = timerDevice.definition
-        setType(definition.type, view)
-        setRepetition(definition.repetition, view)
-        view.isActive.isChecked = timerDevice.isActive
-        setSwitchTime(definition.switchTime, view)
-        setTimerName(timerDevice.name, view)
-        setTargetState(listOfNotNull(definition.targetState, definition.targetStateAppendix).joinToString(" "), view)
+        setType(definition.type)
+        setRepetition(definition.repetition)
+        binding.isActive.isChecked = timerDevice.isActive
+        setSwitchTime(definition.switchTime)
+        setTimerName(timerDevice.name)
+        setTargetState(
+            listOfNotNull(
+                definition.targetState,
+                definition.targetStateAppendix
+            ).joinToString(" ")
+        )
     }
 
-    private fun setTimerName(timerDeviceName: String, view: View) {
-        view.timerNameInput.setText(timerDeviceName)
+    private fun setTimerName(timerDeviceName: String) {
+        binding.timerNameInput.setText(timerDeviceName)
     }
 
-    private fun getTimerName(view: View): String? = StringUtils.trimToNull(view.timerNameInput.text.toString())
+    private fun getTimerName(): String? =
+        StringUtils.trimToNull(binding.timerNameInput.text.toString())
 
-    private fun setTargetState(targetState: String, view: View) {
-        view.targetState.setText(targetState)
+    private fun setTargetState(targetState: String) {
+        binding.targetState.setText(targetState)
     }
 
-    private fun getTargetState(view: View): String = view.targetState.text.toString()
+    private fun getTargetState(): String = binding.targetState.text.toString()
 
-    private fun setSwitchTime(switchTime: LocalTime, view: View) {
-        view.switchTimeContent.text = getFormattedValue(switchTime.hourOfDay, switchTime.minuteOfHour, switchTime.secondOfMinute)
+    private fun setSwitchTime(switchTime: LocalTime) {
+        binding.switchTimeContent.text = getFormattedValue(
+            switchTime.hourOfDay,
+            switchTime.minuteOfHour,
+            switchTime.secondOfMinute
+        )
     }
 
-    private fun getSwitchTime(view: View): LocalTime? {
-        val text = view.switchTimeContent.text.toString()
+    private fun getSwitchTime(): LocalTime? {
+        val text = binding.switchTimeContent.text.toString()
         val parts = text.split(":").toList()
         if (parts.size != 3) {
             return null
         }
         return LocalTime(
-                Integer.parseInt(parts[0]),
-                Integer.parseInt(parts[1]),
-                Integer.parseInt(parts[2]))
+            Integer.parseInt(parts[0]),
+            Integer.parseInt(parts[1]),
+            Integer.parseInt(parts[2])
+        )
     }
 
-    private fun setRepetition(repetition: AtRepetition, view: View) {
-        view.timerRepetition.setSelection(repetition.ordinal)
+    private fun setRepetition(repetition: AtRepetition) {
+        binding.timerRepetition.setSelection(repetition.ordinal)
     }
 
-    private fun getRepetition(view: View): AtRepetition =
-            AtRepetition.values()[view.timerRepetition.selectedItemPosition]
+    private fun getRepetition(): AtRepetition =
+        AtRepetition.values()[binding.timerRepetition.selectedItemPosition]
 
-    private fun setType(type: TimerType, view: View) {
-        view.timerType.setSelection(type.ordinal)
+    private fun setType(type: TimerType) {
+        binding.timerType.setSelection(type.ordinal)
     }
 
-    private fun getType(view: View): TimerType =
-            TimerType.values()[view.timerType.selectedItemPosition]
+    private fun getType(): TimerType =
+        TimerType.values()[binding.timerType.selectedItemPosition]
 
     override suspend fun update(refresh: Boolean) {}
 
