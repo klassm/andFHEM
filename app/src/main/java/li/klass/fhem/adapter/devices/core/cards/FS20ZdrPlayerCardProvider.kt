@@ -29,12 +29,11 @@ import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
-import kotlinx.android.synthetic.main.device_detail_card_fs20_zdr_player.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import li.klass.fhem.R
+import li.klass.fhem.databinding.DeviceDetailCardFs20ZdrPlayerBinding
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
@@ -50,26 +49,27 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
         if (device.xmlListDevice.type != "fs20_zdr") {
             return null
         }
-        val view = context.layoutInflater.inflate(R.layout.device_detail_card_fs20_zdr_player, null, false)
+        val binding =
+            DeviceDetailCardFs20ZdrPlayerBinding.inflate(context.layoutInflater, null, false)
 
         val provider = actionProviderFor(device, connectionId)
 
-        attachActionTo(view.button_vol_up, provider("volume_up"))
-        attachActionTo(view.button_vol_down, provider("volume_down"))
-        attachActionTo(view.button_left, provider("left"))
-        attachActionTo(view.button_right, provider("right"))
-        attachActionTo(view.button_slp, provider("sleep"))
-        attachActionTo(view.button_ms, provider("ms"))
-        attachActionTo(view.button_prog_1, provider("1"))
-        attachActionTo(view.button_prog_2, provider("2"))
-        attachActionTo(view.button_prog_3, provider("3"))
-        attachActionTo(view.button_prog_4, provider("4"))
-        attachActionTo(view.button_prog_5, provider("5"))
-        attachActionTo(view.button_prog_6, provider("6"))
-        attachActionTo(view.button_prog_7, provider("7"))
-        attachActionTo(view.button_prog_8, provider("8"))
+        attachActionTo(binding.buttonVolUp, provider("volume_up"))
+        attachActionTo(binding.buttonVolDown, provider("volume_down"))
+        attachActionTo(binding.buttonLeft, provider("left"))
+        attachActionTo(binding.buttonRight, provider("right"))
+        attachActionTo(binding.buttonSlp, provider("sleep"))
+        attachActionTo(binding.buttonMs, provider("ms"))
+        attachActionTo(binding.buttonProg1, provider("1"))
+        attachActionTo(binding.buttonProg2, provider("2"))
+        attachActionTo(binding.buttonProg3, provider("3"))
+        attachActionTo(binding.buttonProg4, provider("4"))
+        attachActionTo(binding.buttonProg5, provider("5"))
+        attachActionTo(binding.buttonProg6, provider("6"))
+        attachActionTo(binding.buttonProg7, provider("7"))
+        attachActionTo(binding.buttonProg8, provider("8"))
 
-        return view as CardView
+        return binding.root
     }
 
     private fun actionFor(command: String?, device: FhemDevice, connectionId: String?): View.OnClickListener? {
