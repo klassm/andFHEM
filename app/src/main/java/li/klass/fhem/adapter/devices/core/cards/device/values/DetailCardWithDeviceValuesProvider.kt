@@ -31,7 +31,6 @@ import android.view.animation.AnimationUtils
 import android.widget.TableLayout
 import android.widget.TableRow
 import androidx.cardview.widget.CardView
-import kotlinx.android.synthetic.main.device_detail_card_table.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -50,6 +49,7 @@ import li.klass.fhem.adapter.devices.strategy.DimmableStrategy
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.behavior.dim.DimmableBehavior
+import li.klass.fhem.databinding.DeviceDetailCardTableBinding
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
@@ -71,36 +71,55 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
 
     suspend fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
                            itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler): CardView {
-        val card = context.layoutInflater.inflate(R.layout.device_detail_card_table, null) as CardView
+        val binding = DeviceDetailCardTableBinding.inflate(context.layoutInflater, null, false)
 
-        val captionTextView = card.cardCaption
+        val captionTextView = binding.cardCaption
         captionTextView.setText(caption)
 
-        fillTableWithButton(device, connectionId, caption, itemProvider, context, expandHandler, card)
+        fillTableWithButton(
+            device,
+            connectionId,
+            caption,
+            itemProvider,
+            context,
+            expandHandler,
+            binding
+        )
 
-        return card
+        return binding.root
     }
 
-    private suspend fun fillTableWithButton(device: FhemDevice, connectionId: String?, caption: Int,
-                                            itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler,
-                                            card: View) {
+    private suspend fun fillTableWithButton(
+        device: FhemDevice, connectionId: String?, caption: Int,
+        itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler,
+        binding: DeviceDetailCardTableBinding
+    ) {
         val expandSaveKey = caption.toString()
         val limitedItems = getSortedClassItems(device, itemProvider, false, context)
         val allItems = getSortedClassItems(device, itemProvider, true, context)
         val canExpand = limitedItems.isNotEmpty() && limitedItems.size != allItems.size
         val isExpanded = expandHandler.isExpanded(expandSaveKey)
-        val table = card.table
+        val table = binding.table
         val providers = detailActionProviders.providers
-                .filter { it.supports(device.xmlListDevice) }
-                .toList()
+            .filter { it.supports(device.xmlListDevice) }
+            .toList()
 
-        card.expandButton.apply {
+        binding.expandButton.apply {
             visibility = if (canExpand) View.VISIBLE else View.GONE
-            text = context.getString(if (isExpanded) R.string.detailCardUnexpand else R.string.detailCardExpand)
+            text =
+                context.getString(if (isExpanded) R.string.detailCardUnexpand else R.string.detailCardExpand)
             setOnClickListener {
                 expandHandler.setExpanded(expandSaveKey, !expandHandler.isExpanded(expandSaveKey))
                 GlobalScope.launch(Dispatchers.Main) {
-                    fillTableWithButton(device, connectionId, caption, itemProvider, context, expandHandler, card)
+                    fillTableWithButton(
+                        device,
+                        connectionId,
+                        caption,
+                        itemProvider,
+                        context,
+                        expandHandler,
+                        binding
+                    )
                 }
             }
         }
@@ -108,7 +127,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         fillTable(device, connectionId, table, if (isExpanded) allItems else limitedItems, providers, context)
 
         if (table.childCount == 0) {
-            card.visibility = View.GONE
+            binding.root.visibility = View.GONE
         }
     }
 
@@ -153,7 +172,7 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
                 tableRow,
                 tableRow.findViewById(R.id.description),
                 tableRow.findViewById(R.id.value),
-                tableRow.findViewById(R.id.devStateIcon)
+            tableRow.findViewById(R.id.devStateIcon)
         )
     }
 
@@ -163,17 +182,36 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
     }
 
 
-    private suspend fun addActionIfRequired(device: FhemDevice, connectionId: String?, table: TableLayout,
-                                            item: XmlDeviceViewItem, row: TableRow, providers: List<GenericDetailActionProvider>, context: Context) {
+    private fun addActionIfRequired(
+        device: FhemDevice,
+        connectionId: String?,
+        table: TableLayout,
+        item: XmlDeviceViewItem,
+        row: TableRow,
+        providers: List<GenericDetailActionProvider>,
+        context: Context
+    ) {
         val xmlListDevice = device.xmlListDevice
 
         val attributeActions = providers.mapNotNull { it.stateAttributeActionFor(item) }
-                .toList()
+            .toList()
 
         if (attributeActions.isNotEmpty()) {
             attributeActions
-                    .filter { it.supports(xmlListDevice) }
-                    .forEach { addRow(table, it.createRow(xmlListDevice, connectionId, item.key, item.value, context, table)) }
+                .filter { it.supports(xmlListDevice) }
+                .forEach {
+                    addRow(
+                        table,
+                        it.createRow(
+                            xmlListDevice,
+                            connectionId,
+                            item.key,
+                            item.value,
+                            context,
+                            table
+                        )
+                    )
+                }
         }
 
         if (item.sortKey.equals("state", ignoreCase = true)) {
