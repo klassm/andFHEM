@@ -1,21 +1,49 @@
 package li.klass.fhem.fcm.history.view
 
 import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fcm_history_messages.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.FcmHistoryMessagesBinding
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import org.joda.time.LocalDate
 import javax.inject.Inject
 
 class FcmHistoryMessagesFragment @Inject constructor(
-        private val fcmHistoryService: FcmHistoryService
-): FcmHistoryBaseFragment<FcmMessagesAdapter>(R.layout.fcm_history_messages) {
+    private val fcmHistoryService: FcmHistoryService
+) : FcmHistoryBaseFragment<FcmMessagesAdapter>() {
+
+    private lateinit var binding: FcmHistoryMessagesBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val superView = super.onCreateView(inflater, container, savedInstanceState)
+        if (superView != null) {
+            return superView
+        }
+        binding = FcmHistoryMessagesBinding.inflate(inflater, container, false)
+        fillView()
+        return binding.root
+    }
+
+    override val selectedDateTextView: TextView
+        get() = binding.selectedDate
+    override val changeDateButton: ImageButton
+        get() = binding.changeDateButton
+    override val recyclerView: RecyclerView
+        get() = binding.messages
 
     override fun getAdapter() = FcmMessagesAdapter(emptyList())
 
@@ -30,6 +58,4 @@ class FcmHistoryMessagesFragment @Inject constructor(
             (view.messages.adapter as FcmMessagesAdapter).updateWith(messages)
         }
     }
-
-    override fun getRecyclerViewFrom(view: View): RecyclerView = view.messages
 }

@@ -1,21 +1,49 @@
 package li.klass.fhem.fcm.history.view
 
 import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fcm_history_updates.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.FcmHistoryUpdatesBinding
 import li.klass.fhem.fcm.history.data.FcmHistoryService
 import org.joda.time.LocalDate
 import javax.inject.Inject
 
 class FcmHistoryUpdatesFragment @Inject constructor(
-        private val fcmHistoryService: FcmHistoryService
-) : FcmHistoryBaseFragment<FcmUpdatesAdapter>(R.layout.fcm_history_updates) {
+    private val fcmHistoryService: FcmHistoryService
+) : FcmHistoryBaseFragment<FcmUpdatesAdapter>() {
+
+    private lateinit var binding: FcmHistoryUpdatesBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val superView = super.onCreateView(inflater, container, savedInstanceState)
+        if (superView != null) {
+            return superView
+        }
+        binding = FcmHistoryUpdatesBinding.inflate(inflater, container, false)
+        fillView()
+        return binding.root
+    }
+
+    override val selectedDateTextView: TextView
+        get() = binding.selectedDate
+    override val changeDateButton: ImageButton
+        get() = binding.changeDateButton
+    override val recyclerView: RecyclerView
+        get() = binding.updates
 
     override fun getAdapter() = FcmUpdatesAdapter(emptyList())
 
@@ -30,6 +58,4 @@ class FcmHistoryUpdatesFragment @Inject constructor(
             (view.updates.adapter as FcmUpdatesAdapter).updateWith(updates)
         }
     }
-
-    override fun getRecyclerViewFrom(view: View): RecyclerView = view.updates
 }
