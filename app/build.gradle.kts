@@ -86,7 +86,6 @@ apply(plugin = "de.mobilej.unmock")
 apply(plugin = "co.riiid.gradle")
 apply(plugin = "com.github.triplet.play")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
-apply(plugin = "com.google.firebase.crashlytics")
 
 val unmock = configurations.findByName("unmock")!!
 dependencies {
@@ -202,3 +201,4 @@ apply(from = "build-includes/unmock.gradle")
 apply(from = "build-includes/test-resources.gradle")
 apply(plugin = "com.google.gms.google-services")
 apply(plugin = "com.google.firebase.firebase-perf")
+apply(plugin = "com.google.firebase.crashlytics")
