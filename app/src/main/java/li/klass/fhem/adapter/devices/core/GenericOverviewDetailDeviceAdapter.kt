@@ -27,14 +27,12 @@ package li.klass.fhem.adapter.devices.core
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
-import android.widget.LinearLayout
 import androidx.navigation.NavController
-import kotlinx.android.synthetic.main.device_detail_generic.view.*
-import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
 import li.klass.fhem.adapter.devices.strategy.StrategyProvider
 import li.klass.fhem.adapter.devices.strategy.ViewStrategy
 import li.klass.fhem.dagger.ApplicationComponent
+import li.klass.fhem.databinding.DeviceDetailGenericBinding
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import org.jetbrains.anko.layoutInflater
@@ -51,31 +49,40 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
 
     @SuppressLint("InflateParams")
     suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): View {
-        val linearLayout = context.layoutInflater.inflate(R.layout.device_detail_generic, null) as LinearLayout
+        val binding = DeviceDetailGenericBinding.inflate(context.layoutInflater, null, false)
 
         val measureTime = xmlDeviceItemProvider.getMostRecentMeasureTime(device, context)
         if (measureTime != null) {
-            linearLayout.measureTime.text = measureTime
-            linearLayout.measureTimeRow.visibility = View.VISIBLE
+            binding.measureTime.text = measureTime
+            binding.measureTimeRow.visibility = View.VISIBLE
         } else {
-            linearLayout.measureTimeRow.visibility = View.VISIBLE
+            binding.measureTimeRow.visibility = View.VISIBLE
         }
         val connection = dataConnectionSwitch.getProviderFor(connectionId)
 
         genericDetailCardProviders.providers
-                .sortedBy { it.ordering() }
-                .mapNotNull {
-                    try {
+            .sortedBy { it.ordering() }
+            .mapNotNull {
+                try {
 
-                        it.provideCard(device, context, connection.server.id, navController, expandHandler)
-                    } catch (e: Exception) {
-                        logger.error("getDeviceDetailView(device=${device.name}) - error while providing card of ${it.javaClass.name}", e)
-                        null
-                    }
+                    it.provideCard(
+                        device,
+                        context,
+                        connection.server.id,
+                        navController,
+                        expandHandler
+                    )
+                } catch (e: Exception) {
+                    logger.error(
+                        "getDeviceDetailView(device=${device.name}) - error while providing card of ${it.javaClass.name}",
+                        e
+                    )
+                    null
                 }
-                .forEach { linearLayout.detailLayout.addView(it) }
+            }
+            .forEach { binding.detailLayout.addView(it) }
 
-        return linearLayout
+        return binding.root
     }
 
     override fun fillOverviewStrategies(overviewStrategies: MutableList<ViewStrategy>) {
