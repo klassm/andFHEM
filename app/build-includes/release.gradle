@@ -96,11 +96,11 @@ def setStage(stage) {
 }
 
 task publishInapp {
-    dependsOn("publishInappRelease")
+    dependsOn("publishInapp")
 }
 
 task publishPremium {
-    dependsOn("publishPremiumRelease")
+    dependsOn("publishPremium")
 }
 
 def getNewReleaseVersion() {
