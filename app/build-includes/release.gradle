@@ -80,27 +80,19 @@ def setStage(stage) {
     System.setProperty("release.useAutomaticVersion", "true")
     if (stage == 'production') {
         play.track = 'production'
-        release.buildTasks = ['generateWhatsNew', 'build', 'publishInapp', 'publishPremium', 'githubRelease']
+        release.buildTasks = ['generateWhatsNew', 'build', 'publishApps', 'githubRelease']
         setNewReleaseVersion(getNextVersion(project.version))
         afterReleaseBuild.dependsOn("resetWhatsNew")
     } else if (stage == 'beta') {
         println("releaseBeta")
         play.track = 'beta'
-        release.buildTasks = ['generateWhatsNew', 'build', 'publishInapp', 'publishPremium']
+        release.buildTasks = ['generateWhatsNew', 'build', 'publishApps', 'publishPremium']
         setNewReleaseVersion(getNextVersion(project.version) + "-BETA")
     } else if (stage == null) {
         release.buildTasks = []
     } else {
         throw IllegalArgumentException("don't know how to handle $stage, choose on of 'production', 'beta'")
     }
-}
-
-task publishInapp {
-    dependsOn("publishInapp")
-}
-
-task publishPremium {
-    dependsOn("publishPremium")
 }
 
 def getNewReleaseVersion() {
