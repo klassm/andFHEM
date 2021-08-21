@@ -32,6 +32,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -40,18 +41,16 @@ import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
-import kotlinx.android.synthetic.main.device_view_header.*
-import kotlinx.android.synthetic.main.room_detail.*
-import kotlinx.android.synthetic.main.room_detail.view.*
-import kotlinx.android.synthetic.main.room_device_content.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.RoomDeviceContentBinding
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.devices.list.backend.ViewableRoomDeviceListProvider
 import li.klass.fhem.devices.list.favorites.backend.FavoritesService
@@ -92,15 +91,21 @@ abstract class DeviceListFragment(
         val emptyView = view.findViewById<LinearLayout>(R.id.emptyView)
         fillEmptyView(emptyView, container!!)
 
-        view.devices.adapter = DeviceGroupAdapter(emptyList(),
-                configuration = DeviceGroupAdapter.Configuration(
-                        deviceResourceId = R.layout.room_device_content,
-                        bind = this@DeviceListFragment::createDeviceView))
+        deviceListFor(view)?.adapter = DeviceGroupAdapter(
+            emptyList(),
+            configuration = DeviceGroupAdapter.Configuration(
+                deviceResourceId = R.layout.room_device_content,
+                bind = this@DeviceListFragment::createDeviceView
+            )
+        )
 
-        view.devices.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), VERTICAL)
+        deviceListFor(view)?.layoutManager =
+            StaggeredGridLayoutManager(getNumberOfColumns(), VERTICAL)
 
         return view
     }
+
+    private fun deviceListFor(view: View?): RecyclerView? = view?.findViewById(R.id.devices)
 
     private fun getNumberOfColumns(): Int {
         fun dpFromPx(px: Float): Float = px / Resources.getSystem().displayMetrics.density
@@ -118,13 +123,13 @@ abstract class DeviceListFragment(
 
     override fun onResume() {
         super.onResume()
-        val layoutManager = view?.devices?.layoutManager as StaggeredGridLayoutManager
+        val layoutManager = deviceListFor(view)?.layoutManager as StaggeredGridLayoutManager
         layoutManager.spanCount = getNumberOfColumns()
         LOGGER.info("onResume - fragment {} resumes", javaClass.name)
     }
 
     override fun canChildScrollUp(): Boolean =
-            view?.devices?.canScrollVertically(-1) ?: false || super.canChildScrollUp()
+        deviceListFor(view)?.canScrollVertically(-1) ?: false || super.canChildScrollUp()
 
     protected open fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val emptyView = LayoutInflater.from(activity).inflate(R.layout.empty_view, viewGroup, false)!!
@@ -161,7 +166,7 @@ abstract class DeviceListFragment(
 
             roomNameSaveKey?.let { saveKey ->
                 viewModel.getState(saveKey)?.let {
-                    devices?.layoutManager?.onRestoreInstanceState(it)
+                    deviceListFor(view)?.layoutManager?.onRestoreInstanceState(it)
                     viewModel.setState(saveKey, null)
                 }
             }
@@ -176,7 +181,7 @@ abstract class DeviceListFragment(
     private fun updateWith(elements: List<ViewableElementsCalculator.Element>, view: View) {
         val stopWatch = StopWatch()
         stopWatch.start()
-        (view.devices.adapter as DeviceGroupAdapter).updateWith(elements)
+        (deviceListFor(view)?.adapter as DeviceGroupAdapter).updateWith(elements)
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 
         if (elements.isEmpty()) {
@@ -194,9 +199,9 @@ abstract class DeviceListFragment(
             dummyConnectionNotification.visibility = View.VISIBLE
         }
 
-        configureServers.onClick {
+        view.findViewById<Button>(R.id.configureServers).onClick {
             findNavController().navigate(
-                    DeviceNameListFragmentDirections.actionToConnectionList()
+                DeviceNameListFragmentDirections.actionToConnectionList()
             )
         }
 
@@ -210,18 +215,23 @@ abstract class DeviceListFragment(
 
     private fun createDeviceView(device: FhemDevice, view: View) {
         LOGGER.info("createDeviceView(name=${device.name})")
+        val binding = RoomDeviceContentBinding.bind(view)
 
         val stopWatch = StopWatch()
         stopWatch.start()
 
         LOGGER.debug("bind - getAdapterFor device=${device.name}, time=${stopWatch.time}")
 
-        val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(firstChildOf(view.card), device, view.context)
+        val contentView = genericOverviewDetailDeviceAdapter.createOverviewView(
+            firstChildOf(binding.card),
+            device,
+            view.context
+        )
 
         LOGGER.debug("bind - creating view for device=${device.name}, time=${stopWatch.time}")
 
-        view.card.removeAllViews()
-        view.card.addView(contentView)
+        binding.card.removeAllViews()
+        binding.card.addView(contentView)
 
         LOGGER.debug("bind - adding content view device=${device.name}, time=${stopWatch.time}")
 
@@ -253,7 +263,7 @@ abstract class DeviceListFragment(
 
     override fun onDestroyView() {
         roomNameSaveKey?.let { saveKey ->
-            viewModel.setState(saveKey, devices.layoutManager?.onSaveInstanceState())
+            viewModel.setState(saveKey, deviceListFor(view)?.layoutManager?.onSaveInstanceState())
         }
 
         super.onDestroyView()
