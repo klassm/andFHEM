@@ -229,9 +229,16 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
         val setListEntry = device.setList[item.key, true]
 
         if (setListEntry is SliderSetListEntry) {
-            addRow(table, StateChangingSeekBarFullWidth(
-                    context, stateUiService, applicationProperties, DimmableBehavior.continuousBehaviorFor(device, item.key, connectionId)!!, row)
-                    .createRow(LayoutInflater.from(context), device))
+            addRow(
+                table, StateChangingSeekBarFullWidth(
+                    context,
+                    stateUiService,
+                    applicationProperties,
+                    DimmableBehavior.continuousBehaviorFor(device, item.key, connectionId)!!,
+                    row
+                )
+                    .createRow(LayoutInflater.from(context), device.xmlListDevice)
+            )
         } else if (setListEntry is GroupSetListEntry) {
             val groupStates = setListEntry.groupStates
             if (groupStates.size <= 1) return

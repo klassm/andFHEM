@@ -30,17 +30,19 @@ import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.ValueDescriptionUtil.appendTemperature
 
-open class TemperatureChangeTableRow constructor(context: Context,
-                                                 initialTemperature: Double,
-                                                 updateTableRow: TableRow,
-                                                 minTemperature: Double,
-                                                 maxTemperature: Double,
-                                                 applicationProperties: ApplicationProperties
+open class TemperatureChangeTableRow constructor(
+    context: Context,
+    private val initialTemperature: Double,
+    updateTableRow: TableRow,
+    minTemperature: Double,
+    maxTemperature: Double,
+    applicationProperties: ApplicationProperties
 ) : SeekBarActionRowFullWidthAndButton(context, initialTemperature, 0.5, minTemperature,
         maxTemperature, updateTableRow, applicationProperties) {
     var temperature: Double = initialTemperature
 
-    init {
+    override fun bind(device: XmlListDevice?) {
+        super.bind(device)
         updateView.text = appendTemperature(initialTemperature)
     }
 
@@ -49,5 +51,5 @@ open class TemperatureChangeTableRow constructor(context: Context,
     }
 
     override fun toUpdateText(device: XmlListDevice?, progress: Double): String =
-            appendTemperature(progress)
+        appendTemperature(progress)
 }

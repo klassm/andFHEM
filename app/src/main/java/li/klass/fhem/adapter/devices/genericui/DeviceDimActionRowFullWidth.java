@@ -28,17 +28,17 @@ import android.content.Context;
 import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
+
 import li.klass.fhem.update.backend.xmllist.XmlListDevice;
 
 public abstract class DeviceDimActionRowFullWidth extends SeekBarActionRowFullWidth {
 
-    public DeviceDimActionRowFullWidth(double dimState, double lowerBound, double dimStep, double upperBound, TableRow updateRow, int layoutId) {
+    public DeviceDimActionRowFullWidth(double dimState, double lowerBound, double dimStep, double upperBound, TableRow updateRow) {
         super(
                 dimState,
                 lowerBound,
                 dimStep,
                 upperBound,
-                layoutId,
                 updateRow);
     }
 

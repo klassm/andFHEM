@@ -25,57 +25,53 @@
 package li.klass.fhem.adapter.devices.genericui
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.widget.SeekBar
 import android.widget.TableRow
 import android.widget.TextView
 import li.klass.fhem.R
-import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.DimConversionUtil
 import org.slf4j.LoggerFactory
 
-abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
-                                         private val minimumProgress: Double,
-                                         private val step: Double,
-                                         private val maximumProgress: Double,
-                                         private val layoutId: Int,
-                                         updateRow: TableRow) {
-    var updateView: TextView = updateRow.findViewById(R.id.value)
-
-    fun createRow(inflater: LayoutInflater, device: FhemDevice): TableRow =
-            createRow(inflater, device.xmlListDevice)
-
-    open fun createRow(inflater: LayoutInflater, device: XmlListDevice?): TableRow {
+abstract class SeekBarActionRowFullWidth(
+    protected var initialProgress: Double,
+    private val minimumProgress: Double,
+    private val step: Double,
+    private val maximumProgress: Double,
+    private val updateRow: TableRow
+) {
+    open fun bind(device: XmlListDevice?) {
         val seekbarMax = DimConversionUtil.toSeekbarProgress(maximumProgress, minimumProgress, step)
-        val seekbarProgress = DimConversionUtil.toSeekbarProgress(initialProgress, minimumProgress, step)
+        val seekbarProgress =
+            DimConversionUtil.toSeekbarProgress(initialProgress, minimumProgress, step)
         updateView.text = toUpdateText(device, initialProgress)
-
-        return (inflater.inflate(layoutId, null) as TableRow)
-                .apply {
-                    findSeekbar(this)
-                            .apply {
-                                setOnSeekBarChangeListener(createListener(device))
-                                max = seekbarMax
-                                progress = seekbarProgress
-                            }
-                }
+        seekBar.apply {
+            setOnSeekBarChangeListener(createListener(device))
+            max = seekbarMax
+            progress = seekbarProgress
+        }
     }
 
-    protected fun setSeekBarProgressTo(row: TableRow, progress: Double) {
-        findSeekbar(row).progress = DimConversionUtil.toSeekbarProgress(progress, minimumProgress, step)
+    protected fun setSeekBarProgressTo(progress: Double) {
+        seekBar.progress = DimConversionUtil.toSeekbarProgress(progress, minimumProgress, step)
     }
 
-    private fun findSeekbar(row: TableRow) = row.findViewById<SeekBar>(R.id.seekBar)!!
+    protected abstract val seekBar: SeekBar
+    protected val updateView: TextView
+        get() = updateRow.findViewById(R.id.value)
 
     private fun createListener(device: XmlListDevice?): SeekBar.OnSeekBarChangeListener {
         return object : SeekBar.OnSeekBarChangeListener {
 
-            internal var progress = initialProgress
+            var progress = initialProgress
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 this.progress = DimConversionUtil.toDimState(progress, minimumProgress, step)
-                LOGGER.debug("onProgressChange - progress={}, converted={}", progress, this.progress)
+                LOGGER.debug(
+                    "onProgressChange - progress={}, converted={}",
+                    progress,
+                    this.progress
+                )
                 if (fromUser) {
                     this@SeekBarActionRowFullWidth.onNewValue(device, this.progress)
                     initialProgress = progress.toDouble()
@@ -95,7 +91,8 @@ abstract class SeekBarActionRowFullWidth(protected var initialProgress: Double,
         updateView.text = toUpdateText(device, progress)
     }
 
-    open fun toUpdateText(device: XmlListDevice?, progress: Double): String = progress.toString() + ""
+    open fun toUpdateText(device: XmlListDevice?, progress: Double): String =
+        progress.toString() + ""
 
     abstract fun onProgressChange(context: Context, device: XmlListDevice?, progress: Double)
 

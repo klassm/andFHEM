@@ -63,11 +63,11 @@ constructor(
         val holder = myView.tag as GenericDeviceOverviewViewHolder
         holder.resetHolder()
         holder.deviceName.visibility = View.GONE
-        val row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY) ?: {
+        val row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY) ?: run {
             val newRow = DimActionRow(layoutInflater, stateUiService, layoutInflater.context)
             holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, newRow)
             newRow
-        }()
+        }
         row.fillWith(rawDevice, null, null)
         holder.tableLayout.addView(row.view)
         return myView
@@ -80,7 +80,13 @@ constructor(
 
     fun createDetailView(device: FhemDevice, row: TableRow, context: Context, connectionId: String?): TableRow {
         val dimmableBehavior = DimmableBehavior.behaviorFor(device, connectionId)!!
-        return StateChangingSeekBarFullWidth(context, stateUiService, applicationProperties, dimmableBehavior, row)
-                .createRow(LayoutInflater.from(context), device)
+        return StateChangingSeekBarFullWidth(
+            context,
+            stateUiService,
+            applicationProperties,
+            dimmableBehavior,
+            row
+        )
+            .createRow(LayoutInflater.from(context), device.xmlListDevice)
     }
 }

@@ -28,42 +28,55 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
+import android.widget.SeekBar
 import android.widget.TableRow
-import kotlinx.android.synthetic.main.device_detail_seekbarrow_with_button.view.*
 import li.klass.fhem.R
+import li.klass.fhem.databinding.DeviceDetailSeekbarrowWithButtonBinding
 import li.klass.fhem.settings.SettingsKeys.SHOW_SET_VALUE_BUTTONS
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.NumberUtil.isDecimalNumber
-import org.jetbrains.anko.alignParentEnd
 
-abstract class SeekBarActionRowFullWidthAndButton(protected var context: Context,
-                                                  initialProgress: Double, step: Double,
-                                                  minimumProgress: Double, maximumProgress: Double,
-                                                  updateRow: TableRow,
-                                                  val applicationProperties: ApplicationProperties)
-    : SeekBarActionRowFullWidth(initialProgress, minimumProgress, step,
-        maximumProgress, R.layout.device_detail_seekbarrow_with_button, updateRow) {
+abstract class SeekBarActionRowFullWidthAndButton(
+    protected var context: Context,
+    initialProgress: Double, step: Double,
+    minimumProgress: Double, maximumProgress: Double,
+    updateRow: TableRow,
+    val applicationProperties: ApplicationProperties
+) : SeekBarActionRowFullWidth(
+    initialProgress, minimumProgress, step,
+    maximumProgress, updateRow
+) {
 
-    override fun createRow(inflater: LayoutInflater, device: XmlListDevice?) =
-            super.createRow(inflater, device).apply {
-                applySetButtonIfRequired(this, device)
-            }
+    private lateinit var binding: DeviceDetailSeekbarrowWithButtonBinding
+    fun createRow(inflater: LayoutInflater, device: XmlListDevice?): TableRow {
+        binding = DeviceDetailSeekbarrowWithButtonBinding.inflate(inflater)
+        bind(device)
+        applySetButtonIfRequired(device)
+        return binding.root
+    }
 
-    private fun applySetButtonIfRequired(row: TableRow, device: XmlListDevice?) {
-        val button = row.button
-        val seekBar = row.seekBar
+    override val seekBar: SeekBar
+        get() = binding.seekBar
+
+    private fun applySetButtonIfRequired(device: XmlListDevice?) {
+        val button = binding.button
+        val seekBar = binding.seekBar
         button.setOnClickListener {
             val title = context.getString(R.string.set_value)
 
-            DialogUtil.showInputBox(context, title, initialProgress.toString() + "", object : DialogUtil.InputDialogListener {
-                override fun onClick(text: String) {
-                    if (isDecimalNumber(text)) {
-                        val progress = text.toDouble()
-                        setSeekBarProgressTo(row, progress)
-                        onNewValue(device, progress)
-                        onProgressChange(context, device, progress)
+            DialogUtil.showInputBox(
+                context,
+                title,
+                initialProgress.toString() + "",
+                object : DialogUtil.InputDialogListener {
+                    override fun onClick(text: String) {
+                        if (isDecimalNumber(text)) {
+                            val progress = text.toDouble()
+                            setSeekBarProgressTo(progress)
+                            onNewValue(device, progress)
+                            onProgressChange(context, device, progress)
                     } else {
                         DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput)
                     }

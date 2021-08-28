@@ -28,6 +28,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.SeekBar
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -37,6 +38,7 @@ import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.DeviceDimActionRowFullWidth
 import li.klass.fhem.behavior.dim.DimmableBehavior
+import li.klass.fhem.databinding.DeviceDetailSeekbarrowFullWidthBinding
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
@@ -52,36 +54,47 @@ class SliderSetListTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
         val sliderSetListEntry = entry as SliderSetListEntry
 
         val initialProgress = DimmableBehavior.behaviorFor(device, null)?.currentDimPosition
-                ?: 0.0
+            ?: 0.0
 
         val inflater = LayoutInflater.from(context)
-        @SuppressLint("InflateParams") val tableLayout = inflater.inflate(R.layout.availabletargetstates_action_with_seekbar, null, false) as TableLayout
+        @SuppressLint("InflateParams") val tableLayout = inflater.inflate(
+            R.layout.availabletargetstates_action_with_seekbar,
+            null,
+            false
+        ) as TableLayout
 
         val updateRow = tableLayout.findViewById<TableRow>(R.id.updateRow)
         (updateRow.findViewById<TextView>(R.id.description)).text = ""
         (updateRow.findViewById<TextView>(R.id.value)).text = ""
 
-        tableLayout.addView(object : DeviceDimActionRowFullWidth(initialProgress,
-                sliderSetListEntry.start, sliderSetListEntry.step, sliderSetListEntry.stop,
-                updateRow, R.layout.device_detail_seekbarrow_full_width) {
+        val seekbarBinding = DeviceDetailSeekbarrowFullWidthBinding.inflate(inflater, null, false)
+        val row = object : DeviceDimActionRowFullWidth(
+            initialProgress,
+            sliderSetListEntry.start, sliderSetListEntry.step, sliderSetListEntry.stop,
+            updateRow
+        ) {
 
             override fun onStopDim(context: Context, device: XmlListDevice, progress: Double) {
                 dimProgress = progress
             }
 
+            override val seekBar: SeekBar
+                get() = seekbarBinding.seekBar
+
             override fun toDimUpdateText(device: XmlListDevice, progress: Double): String =
-                    getFormattedDimProgress(progress)
-        }.createRow(inflater, device))
+                getFormattedDimProgress(progress)
+        }.apply { bind(device.xmlListDevice) }
+        tableLayout.addView(seekbarBinding.root)
 
         AlertDialog.Builder(context)
-                .setTitle(device.aliasOrName + " " + sliderSetListEntry.key)
-                .setView(tableLayout)
-                .setNegativeButton(R.string.cancelButton) { dialog, _ ->
-                    GlobalScope.launch(Dispatchers.Main) {
-                        callback.onNothingSelected(device)
-                    }
-                    dialog.dismiss()
+            .setTitle(device.aliasOrName + " " + sliderSetListEntry.key)
+            .setView(tableLayout)
+            .setNegativeButton(R.string.cancelButton) { dialog, _ ->
+                GlobalScope.launch(Dispatchers.Main) {
+                    callback.onNothingSelected(device)
                 }
+                dialog.dismiss()
+            }
                 .setPositiveButton(R.string.okButton) { dialog, _ ->
                     GlobalScope.launch(Dispatchers.Main) {
                         callback.onSubStateSelected(device, sliderSetListEntry.key, getFormattedDimProgress(dimProgress))
