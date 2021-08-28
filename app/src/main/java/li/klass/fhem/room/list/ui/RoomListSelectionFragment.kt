@@ -26,15 +26,11 @@ package li.klass.fhem.room.list.ui
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import android.widget.ListView
-import kotlinx.android.synthetic.main.device_view_header.view.*
-import kotlinx.android.synthetic.main.room_list.*
-import kotlinx.android.synthetic.main.room_list.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
@@ -46,52 +42,46 @@ import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import java.util.*
 
-abstract class RoomListSelectionFragment constructor(
-        private val advertisementService: AdvertisementService,
-        private val deviceListUpdateService: DeviceListUpdateService,
-        private val roomListService: ViewableRoomListService,
-        private val appWidgetUpdateService: AppWidgetUpdateService,
-        private val fhemWebConfigurationService: FhemWebConfigurationService
+abstract class RoomListSelectionFragment(
+    private val advertisementService: AdvertisementService,
+    private val deviceListUpdateService: DeviceListUpdateService,
+    private val roomListService: ViewableRoomListService,
+    private val appWidgetUpdateService: AppWidgetUpdateService
 ) : BaseFragment() {
 
     private var emptyTextId = R.string.noRooms
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val superView = super.onCreateView(inflater, container, savedInstanceState)
-        if (superView != null) return superView
-        val myActivity = activity ?: return superView
-        retainInstance = true
+    fun fillView(rootView: ViewGroup) {
+        val activity = activity ?: return
+        val adapter = RoomListAdapter(activity, R.layout.room_list_name, ArrayList())
+        advertisementService.addAd(layout, activity)
 
-        val hiddenRooms = fhemWebConfigurationService.getHiddenRooms()
 
-        val adapter = RoomListAdapter(myActivity, R.layout.room_list_name, ArrayList())
-        val layout = inflater.inflate(layout, container, false) ?: return null
-        advertisementService.addAd(layout, myActivity)
-
-        layout.emptyView?.let {
-            fillEmptyView(it, emptyTextId, container!!)
+        emptyView?.let {
+            fillEmptyView(it, emptyTextId, rootView)
         }
 
-        layout.roomList.adapter = adapter
+        roomListView.adapter = adapter
 
-        layout.roomList.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
+        roomListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val roomName = view.tag.toString()
             onClick(roomName)
         }
 
         updateAsync(false)
-
-        return layout
     }
 
-    abstract val layout: Int;
+    abstract val layout: View
+
+    abstract val roomListView: ListView
+
+    abstract val emptyView: LinearLayout?
 
     override fun canChildScrollUp(): Boolean {
-        if (roomList?.canScrollVertically(-1) == true) {
+        if (roomListView.canScrollVertically(-1)) {
             return true
         }
         return super.canChildScrollUp()
@@ -127,13 +117,8 @@ abstract class RoomListSelectionFragment constructor(
 
     open val selectedRoomName: String? = null
 
-    private val adapter: RoomListAdapter?
-        get() {
-            if (view == null) return null
-
-            val listView = view!!.findViewById<ListView>(R.id.roomList)
-            return listView.adapter as RoomListAdapter
-        }
+    private val adapter: RoomListAdapter
+        get() = roomListView.adapter as RoomListAdapter
 
     private fun scrollToSelectedRoom(selectedRoom: String?, roomList: List<String>) {
         if (selectedRoom == null) return
@@ -143,7 +128,7 @@ abstract class RoomListSelectionFragment constructor(
         for (i in roomList.indices) {
             val roomName = roomList[i]
             if (roomName == selectedRoom) {
-                view.roomList.setSelection(i)
+                roomListView.setSelection(i)
                 return
             }
         }
@@ -152,7 +137,6 @@ abstract class RoomListSelectionFragment constructor(
     private fun handleUpdateData(roomNameList: List<String>) {
         val selectableRooms = roomNameList.filter { isRoomSelectable(it) }.toList()
 
-        val adapter = adapter ?: return
         if (selectableRooms.isEmpty()) {
             showEmptyView()
             adapter.updateData(selectableRooms)

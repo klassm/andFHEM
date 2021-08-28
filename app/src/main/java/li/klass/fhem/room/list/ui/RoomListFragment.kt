@@ -24,44 +24,76 @@
 
 package li.klass.fhem.room.list.ui
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ListView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import kotlinx.android.synthetic.main.room_list.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.databinding.RoomListPageBinding
 import li.klass.fhem.room.list.backend.ViewableRoomListService
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import li.klass.fhem.update.backend.fhemweb.FhemWebConfigurationService
 import javax.inject.Inject
 
 open class RoomListFragment @Inject constructor(
-        advertisementService: AdvertisementService,
-        deviceListUpdateService: DeviceListUpdateService,
-        roomListService: ViewableRoomListService,
-        appWidgetUpdateService: AppWidgetUpdateService,
-        fhemWebConfigurationService: FhemWebConfigurationService
-) : RoomListSelectionFragment(advertisementService, deviceListUpdateService, roomListService, appWidgetUpdateService, fhemWebConfigurationService) {
+    advertisementService: AdvertisementService,
+    deviceListUpdateService: DeviceListUpdateService,
+    roomListService: ViewableRoomListService,
+    appWidgetUpdateService: AppWidgetUpdateService
+) : RoomListSelectionFragment(
+    advertisementService,
+    deviceListUpdateService,
+    roomListService,
+    appWidgetUpdateService
+) {
 
     private val viewModel by navGraphViewModels<RoomListViewModel>(R.id.nav_graph)
+    private lateinit var viewBinding: RoomListPageBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        if (view != null) {
+            viewBinding = RoomListPageBinding.bind(view)
+            return view
+        }
+
+        viewBinding = RoomListPageBinding.inflate(inflater, container, false)
+
+        fillView(viewBinding.root)
+        return viewBinding.root
+    }
 
     override fun onDestroyView() {
-        viewModel.listState = roomList.onSaveInstanceState()
+        viewModel.listState = roomListView.onSaveInstanceState()
         super.onDestroyView()
     }
 
     override fun onClick(roomName: String) {
         findNavController().navigate(
-                RoomListFragmentDirections.actionRoomListFragmentToRoomDetailFragment(roomName)
+            RoomListFragmentDirections.actionRoomListFragmentToRoomDetailFragment(roomName)
         )
     }
 
     override fun onUpdateDataFinished() {
         super.onUpdateDataFinished()
         viewModel.listState?.let {
-            roomList.onRestoreInstanceState(it)
+            roomListView.onRestoreInstanceState(it)
         }
     }
 
-    override val layout: Int = R.layout.room_list_page
+    override val roomListView: ListView
+        get() = viewBinding.roomList.roomList
+    override val emptyView: LinearLayout
+        get() = viewBinding.deviceViewHeader.emptyView
+    override val layout: View
+        get() = viewBinding.root
 }
