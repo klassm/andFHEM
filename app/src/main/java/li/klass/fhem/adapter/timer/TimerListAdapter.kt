@@ -29,26 +29,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.timer_list_item.view.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
+import li.klass.fhem.databinding.TimerListItemBinding
 import li.klass.fhem.devices.backend.at.TimerDevice
 
-class TimerListAdapter(context: Context, data: List<TimerDevice>) : ListDataAdapter<TimerDevice>(context, R.layout.timer_list_item, data) {
+class TimerListAdapter(context: Context, data: List<TimerDevice>) :
+    ListDataAdapter<TimerDevice>(context, data) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val device = data[position]
 
-        val view: LinearLayout
-        if (convertView != null && convertView is LinearLayout) {
-            view = convertView
-        } else {
-            view = inflater.inflate(resource, null) as LinearLayout
-        }
+        val binding =
+            if (convertView != null && convertView is LinearLayout) TimerListItemBinding.bind(
+                convertView
+            ) else TimerListItemBinding.inflate(inflater)
 
-        view.timerName.text = device.name
+        binding.timerName.text = device.name
 
-        view.timerNameAddition.text = if (device.isActive) "" else "(" + context.getString(R.string.deactivated) + ")"
+        binding.timerNameAddition.text =
+            if (device.isActive) "" else "(" + context.getString(R.string.deactivated) + ")"
 
         val definition = device.definition
         val formatString = context.getString(R.string.timer_overview)
@@ -56,18 +56,21 @@ class TimerListAdapter(context: Context, data: List<TimerDevice>) : ListDataAdap
         val interval = context.getString(definition.type.text)
         val date = definition.switchTime.toString("HH:mm:ss")
         val targetDevice = definition.targetDeviceName
-        val targetState = definition.targetState + (definition.targetStateAppendix?.let { " " + it } ?: "")
+        val targetState =
+            definition.targetState + (definition.targetStateAppendix?.let { " " + it } ?: "")
 
-        view.timerContent.text = String.format(formatString, repetition, interval, date, targetDevice, targetState)
+        binding.timerContent.text =
+            String.format(formatString, repetition, interval, date, targetDevice, targetState)
 
-        view.timerNextTrigger.text = String.format(context.getString(R.string.timer_next_trigger), device.next)
+        binding.timerNextTrigger.text =
+            String.format(context.getString(R.string.timer_next_trigger), device.next)
 
         val color = if (device.isActive) android.R.color.transparent else R.color.inactiveBackground
         val colorResource = ContextCompat.getColor(context, color)
-        view.setBackgroundColor(colorResource)
+        binding.root.setBackgroundColor(colorResource)
 
-        view.tag = device
+        binding.root.tag = device
 
-        return view
+        return binding.root
     }
 }

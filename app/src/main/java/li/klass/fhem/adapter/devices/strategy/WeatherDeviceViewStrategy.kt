@@ -29,11 +29,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import kotlinx.android.synthetic.main.device_overview_weather.view.*
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
+import li.klass.fhem.databinding.DeviceOverviewWeatherBinding
 import li.klass.fhem.devices.backend.weather.WeatherService
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
@@ -47,12 +47,18 @@ class WeatherDeviceViewStrategy @Inject constructor(
 
     @SuppressLint("InflateParams")
     override fun createOverviewView(layoutInflater: LayoutInflater, convertView: View?, rawDevice: FhemDevice, deviceItems: List<XmlDeviceViewItem>, connectionId: String?): View {
-        val view = layoutInflater.inflate(R.layout.device_overview_weather, null)
-        defaultViewStrategy.fillDeviceOverviewView(view, rawDevice, GenericDeviceOverviewViewHolder(view), deviceItems, layoutInflater)
+        val binding = DeviceOverviewWeatherBinding.inflate(layoutInflater, null, false)
+        defaultViewStrategy.fillDeviceOverviewView(
+            binding.root,
+            rawDevice,
+            GenericDeviceOverviewViewHolder(binding.root),
+            deviceItems,
+            layoutInflater
+        )
 
         val url = weatherService.iconFor(rawDevice)
-        setWeatherIconIn(view.weatherImage, url)
-        return view
+        setWeatherIconIn(binding.weatherImage, url)
+        return binding.root
     }
 
     override fun supports(fhemDevice: FhemDevice): Boolean =

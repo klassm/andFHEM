@@ -71,17 +71,22 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
         // dirty hack ... this should be called by Android automatically ...
         onSetInitialValue(true, "")
 
-        deviceTypeListView.adapter = DeviceFunctionalityOrderAdapter(context, R.layout.device_type_list_item, wrappedDevices,
-                listener = object : OrderActionListener {
-                    override fun deviceTypeReordered(wrapper: DeviceFunctionalityPreferenceWrapper, action: OrderAction) {
-                        val currentPosition = wrappedDevices.indexOf(wrapper)
+        deviceTypeListView.adapter = DeviceFunctionalityOrderAdapter(
+            context,
+            wrappedDevices,
+            listener = object : OrderActionListener {
+                override fun deviceTypeReordered(
+                    wrapper: DeviceFunctionalityPreferenceWrapper,
+                    action: OrderAction
+                ) {
+                    val currentPosition = wrappedDevices.indexOf(wrapper)
 
-                        if (action == OrderAction.VISIBILITY_CHANGE) {
-                            wrappedDevices[currentPosition].invertVisibility()
-                        }
-                        callChangeListener(wrappedDevices)
+                    if (action == OrderAction.VISIBILITY_CHANGE) {
+                        wrappedDevices[currentPosition].invertVisibility()
                     }
-                })
+                    callChangeListener(wrappedDevices)
+                }
+            })
 
         return view
     }

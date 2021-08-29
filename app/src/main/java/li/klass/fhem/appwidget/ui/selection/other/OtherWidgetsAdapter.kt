@@ -3,9 +3,9 @@ package li.klass.fhem.appwidget.ui.selection.other
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.simple_list_item.view.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
+import li.klass.fhem.databinding.SimpleListItemBinding
 
 class OtherWidgetsAdapter(elements: List<AppWidgetView>, val callback: (view: AppWidgetView) -> Unit)
     : androidx.recyclerview.widget.RecyclerView.Adapter<OtherWidgetsAdapter.ViewHolder>() {
@@ -23,8 +23,9 @@ class OtherWidgetsAdapter(elements: List<AppWidgetView>, val callback: (view: Ap
 
     class ViewHolder(val view: View, val widgetClickedCallback: (view: AppWidgetView) -> Unit) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         fun bind(appWidgetView: AppWidgetView) {
-            view.text.text = view.context.getString(appWidgetView.getWidgetName())
-            view.setOnClickListener { widgetClickedCallback(appWidgetView) }
+            val binding = SimpleListItemBinding.bind(view)
+            binding.text.text = view.context.getString(appWidgetView.getWidgetName())
+            binding.root.setOnClickListener { widgetClickedCallback(appWidgetView) }
         }
     }
 }

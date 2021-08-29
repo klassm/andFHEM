@@ -32,10 +32,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.other_widgets_list.view.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.selection.WidgetSelectionViewModel
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
+import li.klass.fhem.databinding.OtherWidgetsListBinding
 import li.klass.fhem.fragments.core.BaseFragment
 import javax.inject.Inject
 
@@ -47,22 +47,22 @@ class OtherWidgetsFragment @Inject constructor() : BaseFragment() {
     private val viewModel by activityViewModels<WidgetSelectionViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.other_widgets_list, container, false)
+        val binding = OtherWidgetsListBinding.inflate(inflater, container, false)
         val items = widgetTypeProvider.getOtherWidgetsFor(viewModel.widgetSize)
-        view.list.layoutManager = LinearLayoutManager(activity)
-        view.list.adapter = OtherWidgetsAdapter(items) {
+        binding.list.layoutManager = LinearLayoutManager(activity)
+        binding.list.adapter = OtherWidgetsAdapter(items) {
             viewModel.otherWidgetClicked.postValue(it)
         }.apply { notifyDataSetChanged() }
 
-        val emptyView = view.findViewById<View>(R.id.emptyView) as LinearLayout
+        val emptyView = binding.root.findViewById<View>(R.id.emptyView) as LinearLayout
         fillEmptyView(emptyView, R.string.widgetNoOther, container!!)
         emptyView.apply { if (items.isEmpty()) visibility = View.VISIBLE }
 
-        return view
+        return binding.root
     }
 
     override suspend fun update(refresh: Boolean) {
     }
 
-    override fun getTitle(context: Context): String? = context.getString(R.string.widget_others)
+    override fun getTitle(context: Context): String = context.getString(R.string.widget_others)
 }

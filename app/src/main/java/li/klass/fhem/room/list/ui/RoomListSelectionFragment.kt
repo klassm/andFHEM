@@ -56,7 +56,7 @@ abstract class RoomListSelectionFragment(
 
     fun fillView(rootView: ViewGroup) {
         val activity = activity ?: return
-        val adapter = RoomListAdapter(activity, R.layout.room_list_name, ArrayList())
+        val adapter = RoomListAdapter(activity, ArrayList())
         advertisementService.addAd(layout, activity)
 
 
@@ -122,8 +122,6 @@ abstract class RoomListSelectionFragment(
 
     private fun scrollToSelectedRoom(selectedRoom: String?, roomList: List<String>) {
         if (selectedRoom == null) return
-
-        val view = view ?: return
 
         for (i in roomList.indices) {
             val roomName = roomList[i]

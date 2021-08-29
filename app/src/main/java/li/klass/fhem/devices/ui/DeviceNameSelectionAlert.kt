@@ -10,13 +10,13 @@ import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.domain.core.FhemDevice
 
 class DeviceNameAdapter(context: Context, devices: List<FhemDevice>) :
-        ListDataAdapter<FhemDevice>(context, R.layout.device_name_item, devices) {
+    ListDataAdapter<FhemDevice>(context, devices) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertedView = convertView
         val device = getItem(position) as FhemDevice
 
         if (convertedView == null) {
-            convertedView = inflater.inflate(resource, null)
+            convertedView = inflater.inflate(R.layout.device_name_item, null)
         }
 
         convertedView?.findViewById<TextView>(R.id.deviceName)?.apply {

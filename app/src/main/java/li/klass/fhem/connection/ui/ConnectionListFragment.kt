@@ -33,7 +33,6 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.connection_list.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
@@ -46,6 +45,7 @@ import li.klass.fhem.connection.ui.ConnectionListFragmentDirections.Companion.ac
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID
+import li.klass.fhem.databinding.ConnectionListBinding
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.advertisement.AdvertisementService
 import li.klass.fhem.util.Reject
@@ -192,7 +192,9 @@ class ConnectionListFragment @Inject constructor(
             }
 
             val nonDummyConnections = connectionList.filterNot { it.serverType == ServerType.DUMMY }
-            view!!.emptyView.visibility = if (nonDummyConnections.isEmpty()) View.VISIBLE else View.GONE
+            val binding = ConnectionListBinding.bind(requireView())
+            binding.emptyView.visibility =
+                if (nonDummyConnections.isEmpty()) View.VISIBLE else View.GONE
 
             adapter.updateData(nonDummyConnections, connectionId)
             scrollToSelected(connectionId, adapter.data)

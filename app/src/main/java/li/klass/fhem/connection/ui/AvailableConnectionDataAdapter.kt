@@ -29,7 +29,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Spinner
-import kotlinx.android.synthetic.main.connection_spinner_item.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ListDataAdapter
@@ -38,39 +37,43 @@ import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
+import li.klass.fhem.databinding.ConnectionSpinnerItemBinding
 import org.slf4j.LoggerFactory
 
-class AvailableConnectionDataAdapter(private val parent: Spinner,
-                                     private val onConnectionChanged: Runnable,
-                                     private val connectionService: ConnectionService,
-                                     private val onConnectionManagementSelected: () -> Unit
-)
-    : ListDataAdapter<FHEMServerSpec>(parent.context, R.layout.connection_spinner_item, ArrayList()), AdapterView.OnItemSelectedListener {
+class AvailableConnectionDataAdapter(
+    private val parent: Spinner,
+    private val onConnectionChanged: Runnable,
+    private val connectionService: ConnectionService,
+    private val onConnectionManagementSelected: () -> Unit
+) : ListDataAdapter<FHEMServerSpec>(parent.context, ArrayList()),
+    AdapterView.OnItemSelectedListener {
     private var currentlySelectedPosition = -1
 
-    class ManagementPill : FHEMServerSpec(ConnectionService.MANAGEMENT_DATA_ID, ServerType.DUMMY, "") {
+    class ManagementPill :
+        FHEMServerSpec(ConnectionService.MANAGEMENT_DATA_ID, ServerType.DUMMY, "") {
         override fun compareTo(other: FHEMServerSpec): Int = 1
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var myView = convertView
         val server = data[position]
 
-        if (myView == null) {
-            myView = inflater.inflate(R.layout.connection_spinner_item, parent, false)
-        }
-        myView ?: throw IllegalArgumentException("cannot inflate view")
+        val binding =
+            if (convertView != null) ConnectionSpinnerItemBinding.bind(convertView) else ConnectionSpinnerItemBinding.inflate(
+                inflater,
+                parent,
+                false
+            )
 
         if (server is ManagementPill) {
-            myView.name.setText(R.string.connectionManage)
-            myView.type.visibility = View.GONE
+            binding.name.setText(R.string.connectionManage)
+            binding.type.visibility = View.GONE
         } else {
-            myView.name.text = server.name
-            myView.type.text = server.serverType.name
-            myView.type.visibility = View.VISIBLE
+            binding.name.text = server.name
+            binding.type.text = server.serverType.name
+            binding.type.visibility = View.VISIBLE
         }
 
-        return myView
+        return binding.root
     }
 
     suspend fun doLoad() {
@@ -113,7 +116,12 @@ class AvailableConnectionDataAdapter(private val parent: Spinner,
                 launch {
                     connectionService.setSelectedId(data[pos].id)
                     if (currentlySelectedPosition != -1) {
-                        myContext.sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, false))
+                        myContext.sendBroadcast(
+                            Intent(Actions.DO_UPDATE).putExtra(
+                                BundleExtraKeys.DO_REFRESH,
+                                false
+                            )
+                        )
                     }
                 }
             }

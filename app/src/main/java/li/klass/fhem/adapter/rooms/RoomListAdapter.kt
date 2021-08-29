@@ -35,10 +35,9 @@ import org.slf4j.LoggerFactory
 import java.util.*
 
 class RoomListAdapter(
-        context: Context,
-        resource: Int,
-        data: List<String>
-) : ListDataAdapter<String>(context, resource, data, CASE_INSENSITIVE_COMPARATOR) {
+    context: Context,
+    data: List<String>
+) : ListDataAdapter<String>(context, data, CASE_INSENSITIVE_COMPARATOR) {
 
     private var selectedRoom: String? = null
 
@@ -47,7 +46,7 @@ class RoomListAdapter(
         val roomName = getItem(position) as String
 
         if (convertedView == null) {
-            convertedView = inflater.inflate(resource, null)
+            convertedView = inflater.inflate(R.layout.room_list_name, null)
         }
 
         val roomNameTextView = convertedView!!.findViewById<View>(R.id.roomName) as TextView

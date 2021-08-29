@@ -28,13 +28,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.togglebutton.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.genericui.availableTargetStates.StateChangingTargetStateSelectedCallback
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.databinding.WebcmdRowElementBinding
 import li.klass.fhem.domain.core.FhemDevice
 
 open class WebCmdActionRow(
@@ -48,9 +48,9 @@ open class WebCmdActionRow(
     override fun viewFor(item: String, device: FhemDevice, inflater: LayoutInflater,
                          context: Context, viewGroup: ViewGroup, connectionId: String?): View {
 
-        val container = inflater.inflate(R.layout.webcmd_row_element, viewGroup, false)
+        val binding = WebcmdRowElementBinding.inflate(inflater, viewGroup, false)
 
-        container.toggleButton.apply {
+        binding.toggleButton.apply {
             val eventMapState = device.getEventMapStateFor(item)
             text = eventMapState
             textOn = eventMapState
@@ -59,7 +59,8 @@ open class WebCmdActionRow(
 
             setOnClickListener {
                 val setList = device.setList
-                val callback = StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
+                val callback =
+                    StateChangingTargetStateSelectedCallback(context, stateUiService, connectionId)
                 val result = AvailableTargetStatesDialogUtil.handleSelectedOption(
                         context, device, setList[item, true], callback
                 )
@@ -71,6 +72,6 @@ open class WebCmdActionRow(
             }
         }
 
-        return container
+        return binding.root
     }
 }

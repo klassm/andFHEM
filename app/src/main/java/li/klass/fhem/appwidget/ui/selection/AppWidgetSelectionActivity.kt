@@ -35,7 +35,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.appwidget_selection.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.WidgetConfigurationCreatedCallback
@@ -47,6 +46,7 @@ import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.dagger.ScopedFragmentFactory
+import li.klass.fhem.databinding.AppwidgetSelectionBinding
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
@@ -73,6 +73,8 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
     lateinit var connectionService: ConnectionService
 
     private var widgetId: Int = 0
+
+    private lateinit var binding: AppwidgetSelectionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,7 +107,8 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
             onOtherWidgetSelect(it)
         })
 
-        setContentView(R.layout.appwidget_selection)
+        binding = AppwidgetSelectionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setUpNavigation()
     }
 
@@ -113,7 +116,7 @@ abstract class AppWidgetSelectionActivity(private val widgetSize: WidgetSize) : 
         val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navController = navHostFragment!!.navController
-        NavigationUI.setupWithNavController(bottom_navigation, navController)
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
     }
 
     private fun openWidgetSelection(widgets: List<AppWidgetView>, vararg payload: String) {

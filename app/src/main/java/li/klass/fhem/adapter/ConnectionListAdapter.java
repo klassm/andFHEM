@@ -39,7 +39,7 @@ public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
     private String selectedConnectionId;
 
     public ConnectionListAdapter(Context context) {
-        super(context, R.layout.connection_list_entry, Collections.<FHEMServerSpec>emptyList());
+        super(context, Collections.<FHEMServerSpec>emptyList());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
         FHEMServerSpec server = (FHEMServerSpec) getItem(position);
 
         if (convertView == null) {
-            convertView = inflater.inflate(resource, null);
+            convertView = inflater.inflate(R.layout.connection_list_entry, null);
         }
 
         assert convertView != null;

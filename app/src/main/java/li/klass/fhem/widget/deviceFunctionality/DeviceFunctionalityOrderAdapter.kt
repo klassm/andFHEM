@@ -28,49 +28,54 @@ import android.content.Context
 import android.graphics.Paint
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import com.ericharlow.DragNDrop.DragNDropAdapter
-import kotlinx.android.synthetic.main.device_type_list_item.view.*
 import li.klass.fhem.R
+import li.klass.fhem.databinding.DeviceTypeListItemBinding
 import org.slf4j.LoggerFactory
 
-class DeviceFunctionalityOrderAdapter(context: Context,
-                                      resource: Int,
-                                      data: ArrayList<DeviceFunctionalityPreferenceWrapper>,
-                                      val listener: OrderActionListener)
-    : DragNDropAdapter<DeviceFunctionalityPreferenceWrapper>(context, resource, data) {
+class DeviceFunctionalityOrderAdapter(
+    context: Context,
+    data: ArrayList<DeviceFunctionalityPreferenceWrapper>,
+    val listener: OrderActionListener
+) : DragNDropAdapter<DeviceFunctionalityPreferenceWrapper>(context, data) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val item = getItem(position) as DeviceFunctionalityPreferenceWrapper
-        val myView = convertView ?: inflater.inflate(resource, null)
+        val binding =
+            if (convertView != null) DeviceTypeListItemBinding.bind(convertView) else DeviceTypeListItemBinding.inflate(
+                inflater
+            )
 
-        setOnClickAction(OrderAction.VISIBILITY_CHANGE, item, myView)
-        updateContent(item, myView)
+        updateContent(item, binding)
 
-        return myView
+        return binding.root
     }
 
-    private fun setOnClickAction(action: OrderAction,
-                                 item: DeviceFunctionalityPreferenceWrapper, convertView: View) {
-        val button = convertView.findViewById<ImageButton>(R.id.change_visibility)
-        button.setOnClickListener {
-            listener.deviceTypeReordered(item, action)
+    private fun updateContent(
+        item: DeviceFunctionalityPreferenceWrapper,
+        binding: DeviceTypeListItemBinding
+    ) {
+
+        binding.changeVisibility.setOnClickListener {
+            listener.deviceTypeReordered(item, OrderAction.VISIBILITY_CHANGE)
             notifyDataSetChanged()
         }
-    }
 
-    private fun updateContent(item: DeviceFunctionalityPreferenceWrapper, view: View) {
-        val nameView = view.name
+        val nameView = binding.name
         nameView.text = item.deviceFunctionality.getCaptionText(context)
 
-        logger.debug("updateContent() - drawing content for {}, visibility is {}", item.deviceFunctionality.name, item.isVisible)
+        logger.debug(
+            "updateContent() - drawing content for {}, visibility is {}",
+            item.deviceFunctionality.name,
+            item.isVisible
+        )
 
         if (item.isVisible) {
             nameView.paintFlags = Paint.FAKE_BOLD_TEXT_FLAG
-            view.change_visibility.setImageResource(R.drawable.visible)
+            binding.changeVisibility.setImageResource(R.drawable.visible)
         } else {
             nameView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.FAKE_BOLD_TEXT_FLAG
-            view.change_visibility.setImageResource(R.drawable.invisible)
+            binding.changeVisibility.setImageResource(R.drawable.invisible)
         }
     }
 

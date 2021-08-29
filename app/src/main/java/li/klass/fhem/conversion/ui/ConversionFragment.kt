@@ -44,7 +44,7 @@ class ConversionFragment @Inject constructor(): BaseFragment() {
 
         val inputField = view.input
         val hexToQuatButton = view.hexToQuat
-        val quatToHexButton = view.quatToHex
+        val quadToHexButton = view.quatToHex
 
         hexToQuatButton.setOnClickListener {
             try {
@@ -52,16 +52,16 @@ class ConversionFragment @Inject constructor(): BaseFragment() {
                 val result = NumberSystemUtil.hexToQuaternary(input, 0)
                 setResult(result)
             } catch (e: IllegalArgumentException) {
-                setResult(activity!!.getString(R.string.error))
+                setResult(requireActivity().getString(R.string.error))
             }
         }
-        quatToHexButton.setOnClickListener {
+        quadToHexButton.setOnClickListener {
             try {
                 val input = inputField.text.toString()
                 val result = NumberSystemUtil.quaternaryToHex(input)
                 setResult(result)
             } catch (e: IllegalArgumentException) {
-                setResult(activity!!.getString(R.string.error))
+                setResult(requireActivity().getString(R.string.error))
             }
         }
         return view

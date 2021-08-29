@@ -29,12 +29,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TableRow
-import kotlinx.android.synthetic.main.device_detail_colorpicker_row.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import li.klass.fhem.R
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.databinding.DeviceDetailColorpickerRowBinding
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ColorUtil
@@ -47,16 +46,22 @@ class StateChangingColorPickerRow(private val stateUiService: StateUiService,
 ) {
 
     fun createRow(context: Context, inflater: LayoutInflater, viewGroup: ViewGroup): TableRow {
-        val view = inflater.inflate(R.layout.device_detail_colorpicker_row, viewGroup, false)
+        val binding = DeviceDetailColorpickerRowBinding.inflate(inflater, viewGroup, false)
         val rgb = xmlListDevice.getState(rgbSetListEntry.key, ignoreCase = true)!!
 
-        view.color_value.backgroundColor = ColorUtil.fromRgbString(rgb) or -0x1000000
-        view.description.text = ""
-        view.set.setOnClickListener {
+        binding.colorValue.backgroundColor = ColorUtil.fromRgbString(rgb) or -0x1000000
+        binding.description.text = ""
+        binding.set.setOnClickListener {
             RGBColorPickerDialog(context, rgb, object : RGBColorPickerDialog.Callback {
                 override fun onColorChanged(newRGB: String, dialog: Dialog) {
                     GlobalScope.launch(Dispatchers.Main) {
-                        stateUiService.setSubState(xmlListDevice, rgbSetListEntry.key, newRGB, connectionId, context)
+                        stateUiService.setSubState(
+                            xmlListDevice,
+                            rgbSetListEntry.key,
+                            newRGB,
+                            connectionId,
+                            context
+                        )
                     }
                 }
 
@@ -64,6 +69,6 @@ class StateChangingColorPickerRow(private val stateUiService: StateUiService,
             }).show()
         }
 
-        return view as TableRow
+        return binding.root
     }
 }

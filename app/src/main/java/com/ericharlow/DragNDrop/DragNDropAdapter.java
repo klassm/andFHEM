@@ -16,29 +16,20 @@
 
 package com.ericharlow.DragNDrop;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
 
-public class DragNDropAdapter<T  extends Comparable<T>> extends ListDataAdapter<T> implements RemoveListener, DropListener, DragListener {
+public abstract class DragNDropAdapter<T extends Comparable<T>> extends ListDataAdapter<T> implements RemoveListener, DropListener, DragListener {
 
-    public DragNDropAdapter(Context context, int resource, ArrayList<T> data) {
-        super(context, resource, data);
-    }
-
-    public DragNDropAdapter(Context context, int resource, List<T> data, Comparator<T> tComparator) {
-        super(context, resource, data, tComparator);
+    public DragNDropAdapter(Context context, ArrayList<T> data) {
+        super(context, data);
     }
 
     public void onRemove(int which) {
