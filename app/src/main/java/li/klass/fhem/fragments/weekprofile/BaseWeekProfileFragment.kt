@@ -30,11 +30,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.weekprofile.*
-import kotlinx.android.synthetic.main.weekprofile.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter
+import li.klass.fhem.databinding.WeekprofileBinding
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.ui.DeviceNameSelectionAlert
 import li.klass.fhem.domain.core.FhemDevice
@@ -64,19 +63,26 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
 
     @Inject
     lateinit var deviceListService: DeviceListService
+
     @Inject
     lateinit var deviceListUpdateService: DeviceListUpdateService
+
     @Inject
     lateinit var genericDeviceService: GenericDeviceService
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private lateinit var binding: WeekprofileBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val superView = super.onCreateView(inflater, container, savedInstanceState)
         if (superView != null) return superView
 
         beforeCreateView()
         heatingConfiguration = heatingConfigurationProvider.get()
-        return inflater.inflate(R.layout.weekprofile, container, false)
+        binding = WeekprofileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,18 +91,19 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
         updateAsync(false)
 
         getAdapter().registerWeekProfileChangedListener(object :
-                                                                BaseWeekProfileAdapter.WeekProfileChangedListener {
+            BaseWeekProfileAdapter.WeekProfileChangedListener {
             override fun onWeekProfileChanged(weekProfile: WeekProfile<*, *>) {
                 LOGGER.info("onWeekProfileChanged() - {}", weekProfile.toString())
                 @Suppress("UNCHECKED_CAST") updateChangeButtonsHolderVisibility(
-                        weekProfile as WeekProfile<INTERVAL, *>)
+                    weekProfile as WeekProfile<INTERVAL, *>
+                )
             }
         })
 
-        change_value_button_holder.save_weekprofile_button.setOnClickListener { onSave() }
-        change_value_button_holder.reset_weekprofile_button.setOnClickListener { onReset() }
-        copy_from_device.setOnClickListener { onCopyFromDevice() }
-        weekprofile.adapter = getAdapter()
+        binding.saveWeekprofileButton.setOnClickListener { onSave() }
+        binding.resetWeekprofileButton.setOnClickListener { onReset() }
+        binding.copyFromDevice.setOnClickListener { onCopyFromDevice() }
+        binding.weekprofile.adapter = getAdapter()
     }
 
     private fun onSave() {
@@ -165,9 +172,9 @@ abstract class BaseWeekProfileFragment<INTERVAL : BaseHeatingInterval<INTERVAL>>
     private fun updateChangeButtonsHolderVisibility(weekProfile: WeekProfile<INTERVAL, *>) {
         updateAdapterWith(weekProfile)
 
-        change_value_button_holder.visibility = when {
+        binding.changeValueButtonHolder.visibility = when {
             weekProfile.changedDayProfiles.isEmpty() -> View.GONE
-            else                                     -> View.VISIBLE
+            else -> View.VISIBLE
         }
     }
 

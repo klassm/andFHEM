@@ -31,15 +31,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import kotlinx.android.synthetic.main.device_name_selection.view.*
-import kotlinx.android.synthetic.main.room_detail.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.rooms.DeviceGroupAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
+import li.klass.fhem.databinding.DeviceNameSelectionBinding
 import li.klass.fhem.devices.list.backend.ViewableElementsCalculator
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -77,7 +77,7 @@ abstract class DeviceNameListFragment(
     }
 
     override fun canChildScrollUp(): Boolean {
-        if (view?.devices?.canScrollVertically(-1) == true) {
+        if (view?.findViewById<RecyclerView>(R.id.devices)?.canScrollVertically(-1) == true) {
             return true
         }
         return super.canChildScrollUp()
@@ -110,17 +110,26 @@ abstract class DeviceNameListFragment(
     }
 
     private fun deviceListReceived(elements: List<ViewableElementsCalculator.Element>) {
-        val devicesView = view?.devices ?: return
+        val devicesView = view?.findViewById<RecyclerView>(R.id.devices) ?: return
         devicesView.adapter = DeviceGroupAdapter(elements, DeviceGroupAdapter.Configuration(
                 deviceResourceId = R.layout.device_name_selection,
                 bind = { device, view ->
-                    view.name.text = device.aliasOrName
-                    view.onClick { onDeviceNameClick(device) }
-                    view.card.setBackgroundColor(when (deviceName?.equals(device.name)) {
-                        true -> ContextCompat.getColor(devicesView.context, R.color.android_green)
-                        else -> ContextCompat.getColor(devicesView.context, android.R.color.transparent)
-                    })
-                    view.tag = device.name
+                    val binding = DeviceNameSelectionBinding.bind(view)
+                    binding.name.text = device.aliasOrName
+                    binding.root.onClick { onDeviceNameClick(device) }
+                    binding.card.setBackgroundColor(
+                        when (deviceName?.equals(device.name)) {
+                            true -> ContextCompat.getColor(
+                                devicesView.context,
+                                R.color.android_green
+                            )
+                            else -> ContextCompat.getColor(
+                                devicesView.context,
+                                android.R.color.transparent
+                            )
+                        }
+                    )
+                    binding.root.tag = device.name
                 }
         ))
         devicesView.layoutManager = StaggeredGridLayoutManager(getNumberOfColumns(), StaggeredGridLayoutManager.VERTICAL)
