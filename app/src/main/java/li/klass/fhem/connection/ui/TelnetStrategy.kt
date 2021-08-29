@@ -26,37 +26,42 @@ package li.klass.fhem.connection.ui
 
 import android.content.Context
 import android.view.View
-import kotlinx.android.synthetic.main.connection_detail.view.*
-import kotlinx.android.synthetic.main.connection_telnet.view.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.SaveData
+import li.klass.fhem.databinding.ConnectionDetailBinding
+import li.klass.fhem.databinding.ConnectionTelnetBinding
 import org.apache.commons.lang3.StringUtils.trimToNull
 
 class TelnetStrategy(context: Context) : ConnectionStrategy(context) {
     override fun saveDataFor(view: View): SaveData? {
-        val name = trimToNull(view.connectionName.text.toString())
-        val ip = trimToNull(view.ip.text.toString())
-        val port = trimToNull(view.port.text.toString())
-        val password = trimToNull(view.password.text.toString())
+        val detailBinding = ConnectionDetailBinding.bind(view)
+        val telnetBinding = ConnectionTelnetBinding.bind(view)
+        val name = trimToNull(detailBinding.connectionName.text.toString())
+        val ip = trimToNull(telnetBinding.ip.text.toString())
+        val port = trimToNull(telnetBinding.port.text.toString())
+        val password = trimToNull(telnetBinding.password.text.toString())
 
         if (!enforceNotEmpty(R.string.connectionName, name)
-                || !enforceNotEmpty(R.string.ip, ip)
-                || !enforceNotEmpty(R.string.connectionPort, port)) {
+            || !enforceNotEmpty(R.string.ip, ip)
+            || !enforceNotEmpty(R.string.connectionPort, port)
+        ) {
             return null
         }
         return SaveData.TelnetSaveData(
-                name = name,
-                ip = ip,
-                password = password,
+            name = name,
+            ip = ip,
+            password = password,
                 port = port.toInt()
         )
     }
 
     override fun fillView(view: View, fhemServerSpec: FHEMServerSpec) {
-        view.connectionName.setText(fhemServerSpec.name)
-        view.ip.setText(fhemServerSpec.ip)
-        view.port.setText(fhemServerSpec.port.toString())
-        view.password.setText(fhemServerSpec.password)
+        val detailBinding = ConnectionDetailBinding.bind(view)
+        val telnetBinding = ConnectionTelnetBinding.bind(view)
+        detailBinding.connectionName.setText(fhemServerSpec.name)
+        telnetBinding.ip.setText(fhemServerSpec.ip)
+        telnetBinding.port.setText(fhemServerSpec.port.toString())
+        telnetBinding.password.setText(fhemServerSpec.password)
     }
 }

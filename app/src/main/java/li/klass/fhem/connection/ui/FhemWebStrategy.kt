@@ -26,33 +26,37 @@ package li.klass.fhem.connection.ui
 
 import android.content.Context
 import android.view.View
-import kotlinx.android.synthetic.main.connection_detail.view.*
-import kotlinx.android.synthetic.main.connection_fhemweb.view.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.SaveData
+import li.klass.fhem.databinding.ConnectionDetailBinding
+import li.klass.fhem.databinding.ConnectionFhemwebBinding
 import org.apache.commons.lang3.StringUtils.trimToNull
 
 class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
     override fun saveDataFor(view: View): SaveData? {
-        val name = trimToNull(view.connectionName.text.toString())
-        val username = trimToNull(view.username.text.toString())
-        val url = trimToNull(view.url.text.toString())
-        val alternateUrl = trimToNull(view.alternate_url.text.toString())
-        val clientCertificatePath = trimToNull(view.clientCertificatePath.text.toString())
-        val clientCertificatePassword = trimToNull(view.clientCertificatePassword.text.toString())
-        val password = trimToNull(view.password.text.toString())
-        val csrfToken = trimToNull(view.csrfToken.text.toString())
+        val fhemwebBinding = ConnectionFhemwebBinding.bind(view)
+        val detailBinding = ConnectionDetailBinding.bind(view)
+        val name = trimToNull(detailBinding.connectionName.text.toString())
+        val username = trimToNull(fhemwebBinding.username.text.toString())
+        val url = trimToNull(fhemwebBinding.url.text.toString())
+        val alternateUrl = trimToNull(fhemwebBinding.alternateUrl.text.toString())
+        val clientCertificatePath = trimToNull(fhemwebBinding.clientCertificatePath.text.toString())
+        val clientCertificatePassword =
+            trimToNull(fhemwebBinding.clientCertificatePassword.text.toString())
+        val password = trimToNull(fhemwebBinding.password.text.toString())
+        val csrfToken = trimToNull(fhemwebBinding.csrfToken.text.toString())
 
         if (!enforceNotEmpty(R.string.connectionName, name)
-                || !enforceUrlStartsWithHttp(url)) {
+            || !enforceUrlStartsWithHttp(url)
+        ) {
             return null
         }
         return SaveData.FhemWebSaveData(
-                name = name,
-                username = username,
-                password = password,
-                url = url,
+            name = name,
+            username = username,
+            password = password,
+            url = url,
                 alternateUrl = alternateUrl,
                 clientCertificatePath = clientCertificatePath,
                 clientCertificatePassword = clientCertificatePassword,
@@ -61,14 +65,16 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
     }
 
     override fun fillView(view: View, fhemServerSpec: FHEMServerSpec) {
-        view.connectionName.setText(fhemServerSpec.name)
-        view.url.setText(fhemServerSpec.url)
-        view.alternate_url.setText(fhemServerSpec.alternateUrl)
-        view.username.setText(fhemServerSpec.username)
-        view.password.setText(fhemServerSpec.password)
-        view.clientCertificatePassword.setText(fhemServerSpec.clientCertificatePassword)
-        view.clientCertificatePath.text = fhemServerSpec.clientCertificatePath
-        view.csrfToken.setText(fhemServerSpec.csrfToken)
+        val fhemwebBinding = ConnectionFhemwebBinding.bind(view)
+        val detailBinding = ConnectionDetailBinding.bind(view)
+        detailBinding.connectionName.setText(fhemServerSpec.name)
+        fhemwebBinding.url.setText(fhemServerSpec.url)
+        fhemwebBinding.alternateUrl.setText(fhemServerSpec.alternateUrl)
+        fhemwebBinding.username.setText(fhemServerSpec.username)
+        fhemwebBinding.password.setText(fhemServerSpec.password)
+        fhemwebBinding.clientCertificatePassword.setText(fhemServerSpec.clientCertificatePassword)
+        fhemwebBinding.clientCertificatePath.text = fhemServerSpec.clientCertificatePath
+        fhemwebBinding.csrfToken.setText(fhemServerSpec.csrfToken)
     }
 
     private fun enforceUrlStartsWithHttp(url: String?): Boolean {

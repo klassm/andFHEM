@@ -35,7 +35,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.room_detail_page.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
@@ -117,7 +116,7 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
         broadcastReceiver!!.attach()
 
-        view?.findViewById<FrameLayout>(R.id.navigation)?.navigation?.let {
+        view?.findViewById<FrameLayout>(R.id.navigation)?.let {
             val navFragment = navigationFragment
             when (navFragment == null) {
                 true -> it.visibility = View.GONE
