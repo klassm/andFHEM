@@ -31,14 +31,13 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.command_execution.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.CommandExecutionBinding
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.service.intent.SendCommandService
 import li.klass.fhem.util.DialogUtil
@@ -51,31 +50,31 @@ class SendCommandFragment @Inject constructor(
 ) : BaseFragment() {
 
     val args: SendCommandFragmentArgs by navArgs()
+    lateinit var binding: CommandExecutionBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val view = inflater.inflate(R.layout.command_execution, container, false)
+        binding = CommandExecutionBinding.inflate(inflater, container, false)
         val context = activity ?: return null
-        view.send.setOnClickListener {
-            val editText = view.findViewById<View>(R.id.input) as EditText
-            val command = editText.text.toString()
-
-            sendCommandIntent(command)
+        binding.send.setOnClickListener {
+            sendCommandIntent(binding.input.text.toString())
         }
 
         val recentCommandsAdapter =
-                ArrayAdapter<String>(context, android.R.layout.simple_list_item_1)
-        view.command_history.adapter = recentCommandsAdapter
-        view.command_history.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            val command = recentCommandsAdapter.getItem(position)
-            sendCommandIntent(command)
-        }
-        view.command_history.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, _, position, _ ->
-            val command = recentCommandsAdapter.getItem(position)
-            showContextMenuFor(command)
-            true
-        }
+            ArrayAdapter<String>(context, android.R.layout.simple_list_item_1)
+        binding.commandHistory.adapter = recentCommandsAdapter
+        binding.commandHistory.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                val command = recentCommandsAdapter.getItem(position)
+                sendCommandIntent(command)
+            }
+        binding.commandHistory.onItemLongClickListener =
+            AdapterView.OnItemLongClickListener { _, _, position, _ ->
+                val command = recentCommandsAdapter.getItem(position)
+                showContextMenuFor(command)
+                true
+            }
 
         return view
     }
@@ -115,13 +114,14 @@ class SendCommandFragment @Inject constructor(
 
             view?.let { myView ->
                 @Suppress("UNCHECKED_CAST")
-                val adapter: ArrayAdapter<String> = myView.command_history.adapter as ArrayAdapter<String>
+                val adapter: ArrayAdapter<String> =
+                    binding.commandHistory.adapter as ArrayAdapter<String>
                 adapter.clear()
 
                 adapter.addAll(recentCommands)
                 adapter.notifyDataSetChanged()
 
-                ListViewUtil.setHeightBasedOnChildren(myView.command_history)
+                ListViewUtil.setHeightBasedOnChildren(binding.commandHistory)
 
                 myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
             }

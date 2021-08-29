@@ -44,12 +44,12 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import kotlinx.android.synthetic.main.chart.*
 import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
 import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.databinding.ChartBinding
 import li.klass.fhem.devices.ui.ChartMarkerView
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphEntry
@@ -79,9 +79,12 @@ class GraphActivity : AppCompatActivity(), Updateable {
     @Inject
     lateinit var graphService: GraphService
 
+    private lateinit var binding: ChartBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.chart)
+        binding = ChartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         (application as AndFHEMApplication).daggerComponent.inject(this)
 
@@ -159,11 +162,11 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
         supportActionBar!!.title = title
 
-        chart.apply {
+        binding.chart.apply {
             xAxis.apply {
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String =
-                            ANDFHEM_DATE_TIME_FORMAT.print(value.toLong())
+                        ANDFHEM_DATE_TIME_FORMAT.print(value.toLong())
                 }
                 labelRotationAngle = 300f
                 val labelCount = DisplayUtil.getWidthInDP(applicationContext) / 150

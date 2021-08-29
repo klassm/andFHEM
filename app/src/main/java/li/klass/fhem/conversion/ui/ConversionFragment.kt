@@ -29,22 +29,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.conversion.view.*
 import li.klass.fhem.R
+import li.klass.fhem.databinding.ConversionBinding
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.NumberSystemUtil
 import javax.inject.Inject
 
 class ConversionFragment @Inject constructor(): BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var binding: ConversionBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val view = inflater.inflate(R.layout.conversion, container, false)
+        binding = ConversionBinding.inflate(inflater, container, false)
 
-        val inputField = view.input
-        val hexToQuatButton = view.hexToQuat
-        val quadToHexButton = view.quatToHex
+        val inputField = binding.input
+        val hexToQuatButton = binding.hexToQuat
+        val quadToHexButton = binding.quatToHex
 
         hexToQuatButton.setOnClickListener {
             try {
@@ -64,11 +69,11 @@ class ConversionFragment @Inject constructor(): BaseFragment() {
                 setResult(requireActivity().getString(R.string.error))
             }
         }
-        return view
+        return binding.root
     }
 
     private fun setResult(result: String) {
-        view?.result?.text = result
+        binding.result.text = result
     }
 
     override fun mayPullToRefresh(): Boolean = false

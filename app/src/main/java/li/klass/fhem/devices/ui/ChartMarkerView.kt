@@ -26,10 +26,10 @@ package li.klass.fhem.devices.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.widget.TextView
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
-import kotlinx.android.synthetic.main.chart_marker.view.*
 import li.klass.fhem.R
 import li.klass.fhem.util.DateFormatUtil.ANDFHEM_DATE_TIME_FORMAT
 
@@ -48,7 +48,7 @@ class ChartMarkerView(context: Context) : MarkerView(context, R.layout.chart_mar
 
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
         e ?: return
-        this.time.text = ANDFHEM_DATE_TIME_FORMAT.print(e.x.toLong())
-        this.value.text = e.y.toString()
+        findViewById<TextView>(R.id.time).text = ANDFHEM_DATE_TIME_FORMAT.print(e.x.toLong())
+        findViewById<TextView>(R.id.value).text = e.y.toString()
     }
 }

@@ -31,12 +31,12 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.timer_overview.view.*
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.adapter.timer.TimerListAdapter
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.TimerOverviewBinding
 import li.klass.fhem.devices.backend.at.AtService
 import li.klass.fhem.devices.backend.at.TimerDevice
 import li.klass.fhem.fragments.core.BaseFragment
@@ -57,25 +57,31 @@ class TimerListFragment @Inject constructor(
 
     private var createNewDeviceCalled = false
 
+    private lateinit var binding: TimerOverviewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val activity = activity ?: return null
         val listAdapter = TimerListAdapter(activity, emptyList())
 
-        val layout = inflater.inflate(R.layout.timer_overview, container, false)
+        binding = TimerOverviewBinding.inflate(inflater, container, false)
 
-        layout.list.adapter = listAdapter
-        registerForContextMenu(layout.list)
-        layout.list.onItemClickListener = AdapterView.OnItemClickListener { _, myView, _, _ ->
+        binding.list.adapter = listAdapter
+        registerForContextMenu(binding.list)
+        binding.list.onItemClickListener = AdapterView.OnItemClickListener { _, myView, _, _ ->
             val device = myView.tag as TimerDevice
             findNavController().navigate(actionTimerListFragmentToTimerDetailFragment(device.name))
         }
 
-        return layout
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -107,7 +113,7 @@ class TimerListFragment @Inject constructor(
     }
 
     override fun canChildScrollUp(): Boolean {
-        if (view?.list?.canScrollVertically(-1) == true) {
+        if (binding.list.canScrollVertically(-1)) {
             return true
         }
         return super.canChildScrollUp()
@@ -124,16 +130,20 @@ class TimerListFragment @Inject constructor(
                 atService.getTimerDevices()
 
             }
-            adapter?.updateData(timerDevices)
-            view?.empty?.visibility = if (timerDevices.isEmpty()) View.VISIBLE else View.GONE
+            adapter.updateData(timerDevices)
+            binding.empty.visibility = if (timerDevices.isEmpty()) View.VISIBLE else View.GONE
             myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }
 
-    private val adapter: TimerListAdapter?
-        get() = view?.list?.let { it.adapter as TimerListAdapter? }
+    private val adapter: TimerListAdapter
+        get() = binding.list.adapter as TimerListAdapter
 
-    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        view: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         super.onCreateContextMenu(menu, view, menuInfo)
 
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
