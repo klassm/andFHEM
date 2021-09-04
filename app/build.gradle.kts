@@ -82,7 +82,6 @@ repositories {
 
 
 apply(plugin = "de.mobilej.unmock")
-apply(plugin = "co.riiid.gradle")
 apply(plugin = "com.github.triplet.play")
 apply(plugin = "androidx.navigation.safeargs.kotlin")
 
