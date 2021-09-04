@@ -33,7 +33,6 @@ buildscript {
 
     dependencies {
         classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.8")
-        classpath(group = "co.riiid", name = "gradle-github-plugin", version = "0.4.2")
         classpath(
             group = "org.jetbrains.kotlin",
             name = "kotlin-gradle-plugin",
@@ -194,7 +193,6 @@ dependencies {
 apply(from = "build-includes/whatsnew.gradle.kts")
 apply(from = "build-includes/resourceIdMapper.gradle.kts")
 apply(from = "build-includes/deviceConfiguration.gradle.kts")
-apply(from = "build-includes/github.gradle")
 apply(from = "build-includes/release.gradle")
 apply(from = "build-includes/android.gradle")
 apply(from = "build-includes/unmock.gradle")
