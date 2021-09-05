@@ -33,12 +33,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import javax.security.cert.X509Certificate
 
-enum class PremiumStatus {
-    PREMIUM,
-    NOT_PREMIUM,
-    UNKNOWN
-}
-
 @Singleton
 class LicenseService @Inject constructor(
     private val billingService: BillingService,
