@@ -33,15 +33,24 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import javax.security.cert.X509Certificate
 
+enum class PremiumStatus {
+    PREMIUM,
+    NOT_PREMIUM,
+    UNKNOWN
+}
+
 @Singleton
 class LicenseService @Inject constructor(
-        private val billingService: BillingService,
-        private val application: Application
+    private val billingService: BillingService,
+    private val application: Application
 ) {
 
-    suspend fun isPremium(): Boolean {
-        val success = billingService.loadInventory()
-        return isPremiumInternal(success)
+    suspend fun premiumStatus(): PremiumStatus {
+        val loaded = billingService.loadInventory()
+        if (!loaded) {
+            return PremiumStatus.UNKNOWN
+        }
+        return if (isPremiumInternal(loaded)) PremiumStatus.PREMIUM else PremiumStatus.NOT_PREMIUM
     }
 
     private fun isPremiumInternal(loadSuccessful: Boolean): Boolean {

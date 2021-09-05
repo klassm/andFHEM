@@ -34,6 +34,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.billing.PremiumStatus
 import li.klass.fhem.connection.backend.ServerType.*
 import li.klass.fhem.domain.core.DeviceVisibility
 import li.klass.fhem.settings.SettingsKeys.SELECTED_CONNECTION
@@ -62,8 +63,8 @@ constructor(private val applicationProperties: ApplicationProperties,
     fun create(saveData: SaveData) {
         if (exists(saveData.name)) return
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (isPremium || getCountWithoutDummy() < AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+            val premiumStatus = licenseService.premiumStatus()
+            if (premiumStatus == PremiumStatus.PREMIUM || getCountWithoutDummy() < AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
                 val server = FHEMServerSpec(newUniqueId(), saveData.serverType, saveData.name)
                 saveData.fillServer(server)

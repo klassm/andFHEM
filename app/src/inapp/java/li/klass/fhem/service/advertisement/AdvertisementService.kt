@@ -40,6 +40,7 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.PremiumActivity
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.billing.PremiumStatus
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -51,47 +52,51 @@ constructor(private val licenseService: LicenseService) {
     fun addAd(view: View, activity: Activity) {
 
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            showAdsBasedOnPremium(isPremium, view, activity)
+            val premiumStatus = licenseService.premiumStatus()
+            showAdsBasedOnPremium(premiumStatus, view, activity)
         }
     }
 
-    private fun showAdsBasedOnPremium(isPremium: Boolean, view: View, activity: Activity) {
-        var showAds = true
+    private fun showAdsBasedOnPremium(
+        premiumStatus: PremiumStatus,
+        view: View,
+        activity: Activity
+    ) {
         val adContainer = view.findViewById<View>(R.id.adContainer) as LinearLayout
 
-        Log.i(TAG, "isPremium is $isPremium")
-        if (isPremium) {
-            showAds = false
-            Log.i(TAG, "found premium version, skipping ads")
-        }
+        Log.i(TAG, "premiumStatus is $premiumStatus")
 
         val api = GoogleApiAvailability.getInstance();
-        if (!showAds) {
-            adContainer.visibility = View.GONE
-        } else if (api.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
+        if (api.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
             addErrorView(activity, adContainer)
             Log.e(TAG, "cannot find PlayServices")
-        } else {
-            adContainer.visibility = View.VISIBLE
-            adContainer.removeAllViews()
-
-            if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
-                addErrorView(activity, adContainer)
-                Log.i(TAG, "still in timeout, showing error view")
-                return
-            }
-
-            Log.i(TAG, "showing ad")
-
-            val adView = AdView(activity)
-            adView.adUnitId = AndFHEMApplication.AD_UNIT_ID
-            adView.adSize = AdSize.SMART_BANNER
-
-            addListener(activity, adContainer, adView)
-            adView.loadAd(AdRequest.Builder().build())
-            adContainer.addView(adView)
+            return
         }
+
+        if (premiumStatus == PremiumStatus.PREMIUM || premiumStatus == PremiumStatus.UNKNOWN) {
+            adContainer.visibility = View.GONE
+            Log.i(TAG, "found premium status ${premiumStatus}, skipping ads")
+            return
+        }
+
+        adContainer.visibility = View.VISIBLE
+        adContainer.removeAllViews()
+
+        if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
+            addErrorView(activity, adContainer)
+            Log.i(TAG, "still in timeout, showing error view")
+            return
+        }
+
+        Log.i(TAG, "showing ad")
+
+        val adView = AdView(activity)
+        adView.adUnitId = AndFHEMApplication.AD_UNIT_ID
+        adView.adSize = AdSize.SMART_BANNER
+
+        addListener(activity, adContainer, adView)
+        adView.loadAd(AdRequest.Builder().build())
+        adContainer.addView(adView)
     }
 
     private fun addListener(activity: Activity, adContainer: LinearLayout, adView: AdView) {
@@ -111,7 +116,8 @@ constructor(private val licenseService: LicenseService) {
         private val TAG = AdvertisementService::class.java.name
 
         private fun addErrorView(activity: Activity, container: LinearLayout) {
-            val selfAd = activity.layoutInflater.inflate(R.layout.selfad, container, false) as ImageView
+            val selfAd =
+                activity.layoutInflater.inflate(R.layout.selfad, container, false) as ImageView
             selfAd.setOnClickListener {
                 val intent = Intent(activity, PremiumActivity::class.java)
                 activity.startActivity(intent)

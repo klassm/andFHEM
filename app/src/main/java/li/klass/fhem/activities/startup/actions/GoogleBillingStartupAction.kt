@@ -13,8 +13,8 @@ class GoogleBillingStartupAction @Inject constructor(
 ) : StartupAction(R.string.currentStatus_billing) {
     override suspend fun run() {
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            logger.info("initializeGoogleBilling() : premium=$isPremium")
+            val premiumStatus = licenseService.premiumStatus()
+            logger.info("initializeGoogleBilling() : premium=$premiumStatus")
         }
     }
 

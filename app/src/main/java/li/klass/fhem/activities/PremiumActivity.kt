@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.billing.BillingService
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.billing.PremiumStatus
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.databinding.ShopPremiumBinding
 import javax.inject.Inject
@@ -81,8 +82,8 @@ class PremiumActivity : AppCompatActivity() {
         viewBinding.shopPremiumBuy.visibility = View.GONE
 
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (isPremium) {
+            val premiumStatus = licenseService.premiumStatus()
+            if (premiumStatus == PremiumStatus.PREMIUM) {
                 viewBinding.shopPremiumBought.visibility = View.VISIBLE
             } else {
                 viewBinding.shopPremiumBuy.visibility = View.VISIBLE

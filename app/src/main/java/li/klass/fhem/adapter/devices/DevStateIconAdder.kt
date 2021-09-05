@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.billing.PremiumStatus
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.FHEMWEBConnection
 import li.klass.fhem.domain.core.FhemDevice
@@ -33,18 +34,20 @@ class DevStateIconAdder @Inject constructor(val dataConnectionSwitch: DataConnec
         imageView.visibility = View.VISIBLE
 
         GlobalScope.launch(Dispatchers.Main) {
-            val isPremium = licenseService.isPremium()
-            if (isPremium && currentProvider is FHEMWEBConnection) {
+            val premiumStatus = licenseService.premiumStatus()
+            if (premiumStatus == PremiumStatus.PREMIUM && currentProvider is FHEMWEBConnection) {
                 val url = "${currentProvider.server.url}/images/default/${icon.image}.png"
                 val authHeader = currentProvider.basicAuthHeaders.authorization
-                val glideUrl = GlideUrl(url, LazyHeaders.Builder()
+                val glideUrl = GlideUrl(
+                    url, LazyHeaders.Builder()
                         .addHeader("Authorization", authHeader)
-                        .build())
+                        .build()
+                )
 
                 logger.info("addDevStateIconIfRequired - loading icon from $url")
                 GlideApp.with(imageView.context)
-                        .load(glideUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .load(glideUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .error(R.drawable.empty)
                         .into(imageView)
             }

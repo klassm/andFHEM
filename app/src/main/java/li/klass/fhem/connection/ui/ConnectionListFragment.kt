@@ -38,6 +38,7 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.adapter.ConnectionListAdapter
 import li.klass.fhem.billing.LicenseService
+import li.klass.fhem.billing.PremiumStatus
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
@@ -106,18 +107,23 @@ class ConnectionListFragment @Inject constructor(
             val size = adapter.data.size
 
             GlobalScope.launch(Dispatchers.Main) {
-                val isPremium = licenseService.isPremium()
-                if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                val premiumStatus = licenseService.premiumStatus()
+                if (premiumStatus !== PremiumStatus.PREMIUM && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
                     logger.info("onOptionsItemSelected - won't add a new connection as I am not Premium")
-                    activity?.sendBroadcast(Intent(Actions.SHOW_ALERT)
-                            .putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections)
-                            .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium))
+                    activity?.sendBroadcast(
+                        Intent(Actions.SHOW_ALERT)
+                            .putExtra(
+                                BundleExtraKeys.ALERT_CONTENT_ID,
+                                R.string.premium_multipleConnections
+                            )
+                            .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium)
+                    )
                 } else {
                     logger.info("onOptionsItemSelected - showing connection detail for a new connection")
                     findNavController().navigate(
-                            actionConnectionListFragmentToConnectionDetailFragment(
-                                    null
-                            )
+                        actionConnectionListFragmentToConnectionDetailFragment(
+                            null
+                        )
                     )
                 }
             }
