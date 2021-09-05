@@ -1,2 +1,2 @@
-* Updates bzgl. InApp SDK von Google
-* Zeige den EventMap State im Zustands-AppWidget
+* Repair race condition in app initialization that could lead to ads being shown when they shouldn't
+  be
