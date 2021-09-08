@@ -29,14 +29,13 @@ import android.view.View
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.SaveData
-import li.klass.fhem.databinding.ConnectionDetailBinding
 import li.klass.fhem.databinding.ConnectionTelnetBinding
 import org.apache.commons.lang3.StringUtils.trimToNull
 
 class TelnetStrategy(context: Context) : ConnectionStrategy(context) {
     override fun saveDataFor(view: View): SaveData? {
-        val detailBinding = ConnectionDetailBinding.bind(view)
-        val telnetBinding = ConnectionTelnetBinding.bind(view)
+        val detailBinding = view.connectionDetailBinding
+        val telnetBinding = view.telnetBinding
         val name = trimToNull(detailBinding.connectionName.text.toString())
         val ip = trimToNull(telnetBinding.ip.text.toString())
         val port = trimToNull(telnetBinding.port.text.toString())
@@ -57,11 +56,15 @@ class TelnetStrategy(context: Context) : ConnectionStrategy(context) {
     }
 
     override fun fillView(view: View, fhemServerSpec: FHEMServerSpec) {
-        val detailBinding = ConnectionDetailBinding.bind(view)
-        val telnetBinding = ConnectionTelnetBinding.bind(view)
+        val detailBinding = view.connectionDetailBinding
+        val telnetBinding = view.telnetBinding
         detailBinding.connectionName.setText(fhemServerSpec.name)
         telnetBinding.ip.setText(fhemServerSpec.ip)
         telnetBinding.port.setText(fhemServerSpec.port.toString())
         telnetBinding.password.setText(fhemServerSpec.password)
     }
+
+
+    private val View.telnetBinding
+        get() = ConnectionTelnetBinding.bind(connectionContentView)
 }

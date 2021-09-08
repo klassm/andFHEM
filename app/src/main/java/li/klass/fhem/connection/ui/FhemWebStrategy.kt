@@ -29,15 +29,13 @@ import android.view.View
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.SaveData
-import li.klass.fhem.databinding.ConnectionDetailBinding
 import li.klass.fhem.databinding.ConnectionFhemwebBinding
 import org.apache.commons.lang3.StringUtils.trimToNull
 
 class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
     override fun saveDataFor(view: View): SaveData? {
-        val fhemwebBinding = ConnectionFhemwebBinding.bind(view)
-        val detailBinding = ConnectionDetailBinding.bind(view)
-        val name = trimToNull(detailBinding.connectionName.text.toString())
+        val fhemwebBinding = view.fhemWebBinding
+        val name = trimToNull(view.connectionDetailBinding.connectionName.text.toString())
         val username = trimToNull(fhemwebBinding.username.text.toString())
         val url = trimToNull(fhemwebBinding.url.text.toString())
         val alternateUrl = trimToNull(fhemwebBinding.alternateUrl.text.toString())
@@ -57,16 +55,16 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
             username = username,
             password = password,
             url = url,
-                alternateUrl = alternateUrl,
-                clientCertificatePath = clientCertificatePath,
-                clientCertificatePassword = clientCertificatePassword,
-                csrfToken = csrfToken
+            alternateUrl = alternateUrl,
+            clientCertificatePath = clientCertificatePath,
+            clientCertificatePassword = clientCertificatePassword,
+            csrfToken = csrfToken
         )
     }
 
     override fun fillView(view: View, fhemServerSpec: FHEMServerSpec) {
-        val fhemwebBinding = ConnectionFhemwebBinding.bind(view)
-        val detailBinding = ConnectionDetailBinding.bind(view)
+        val detailBinding = view.connectionDetailBinding
+        val fhemwebBinding = view.fhemWebBinding
         detailBinding.connectionName.setText(fhemServerSpec.name)
         fhemwebBinding.url.setText(fhemServerSpec.url)
         fhemwebBinding.alternateUrl.setText(fhemServerSpec.alternateUrl)
@@ -88,4 +86,7 @@ class FhemWebStrategy(context: Context) : ConnectionStrategy(context) {
         showError(context.getString(R.string.connectionUrlHttp))
         return false
     }
+
+    private val View.fhemWebBinding
+        get() = ConnectionFhemwebBinding.bind(connectionContentView)
 }

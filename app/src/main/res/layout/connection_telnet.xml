@@ -27,7 +27,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="*">
+    android:stretchColumns="*"
+    android:tag="connectionRoot">
 
     <TextView
         android:id="@+id/ipLabel"
@@ -35,7 +36,7 @@
         android:layout_height="wrap_content"
         android:text="@string/connectionIP"
         android:layout_alignParentTop="true"
-        style="@style/formLabel"/>
+        style="@style/formLabel" />
 
     <EditText
         android:id="@+id/ip"

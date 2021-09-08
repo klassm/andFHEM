@@ -29,6 +29,7 @@ import android.view.View
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.SaveData
+import li.klass.fhem.databinding.ConnectionDetailBinding
 import li.klass.fhem.util.DialogUtil.showAlertDialog
 
 abstract class ConnectionStrategy(val context: Context) {
@@ -41,11 +42,22 @@ abstract class ConnectionStrategy(val context: Context) {
             return true
         }
 
-        showError(String.format(context.getString(R.string.connectionEmptyError), context.getString(fieldName)))
+        showError(
+            String.format(
+                context.getString(R.string.connectionEmptyError),
+                context.getString(fieldName)
+            )
+        )
         return false
     }
 
     open fun showError(errorMessage: String) {
         showAlertDialog(context, R.string.error, errorMessage)
     }
+
+    val View.connectionDetailBinding: ConnectionDetailBinding
+        get() = ConnectionDetailBinding.bind(this)
+
+    val View.connectionContentView: View
+        get() = connectionDetailBinding.connectionPreferences.findViewWithTag("connectionRoot")
 }

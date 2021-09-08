@@ -225,7 +225,6 @@ class TimerDetailFragment @Inject constructor(
     }
 
     private fun save() {
-        val view = view ?: return
         val safeContext = context ?: return
 
         val switchTime = getSwitchTime()
