@@ -1,1 +1,1 @@
-* Repariere Race Condition, die dazu führen konnte, dass Werbung eingezeigt wurde
+* Repariere "Kommando senden"
