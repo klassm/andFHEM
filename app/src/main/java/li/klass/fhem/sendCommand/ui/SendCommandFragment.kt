@@ -28,6 +28,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -53,7 +54,11 @@ class SendCommandFragment @Inject constructor(
     lateinit var binding: CommandExecutionBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        if (view != null) {
+            binding = CommandExecutionBinding.bind(view)
+            return view
+        }
 
         binding = CommandExecutionBinding.inflate(inflater, container, false)
         val context = activity ?: return null
@@ -76,7 +81,7 @@ class SendCommandFragment @Inject constructor(
                 true
             }
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,20 +116,19 @@ class SendCommandFragment @Inject constructor(
             val recentCommands = withContext(Dispatchers.IO) {
                 sendCommandService.getRecentCommands()
             }
+            Log.i("SCF", "got commands: " + recentCommands)
 
-            view?.let { myView ->
-                @Suppress("UNCHECKED_CAST")
-                val adapter: ArrayAdapter<String> =
-                    binding.commandHistory.adapter as ArrayAdapter<String>
-                adapter.clear()
+            @Suppress("UNCHECKED_CAST")
+            val adapter: ArrayAdapter<String> =
+                binding.commandHistory.adapter as ArrayAdapter<String>
+            adapter.clear()
 
-                adapter.addAll(recentCommands)
-                adapter.notifyDataSetChanged()
+            adapter.addAll(recentCommands)
+            adapter.notifyDataSetChanged()
 
-                ListViewUtil.setHeightBasedOnChildren(binding.commandHistory)
+            ListViewUtil.setHeightBasedOnChildren(binding.commandHistory)
 
-                myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
-            }
+            myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }
 

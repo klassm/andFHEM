@@ -1,1 +1,1 @@
-TODO
+* Repariere "Kommando senden"
