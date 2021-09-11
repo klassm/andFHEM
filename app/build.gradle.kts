@@ -190,6 +190,7 @@ dependencies {
 }
 
 apply(from = "build-includes/whatsnew.gradle.kts")
+apply(from = "build-includes/github.gradle")
 apply(from = "build-includes/resourceIdMapper.gradle.kts")
 apply(from = "build-includes/deviceConfiguration.gradle.kts")
 apply(from = "build-includes/release.gradle")

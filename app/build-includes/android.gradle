@@ -37,10 +37,6 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    dexOptions {
-        javaMaxHeapSize "3000M"
-    }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
