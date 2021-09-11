@@ -22,8 +22,10 @@
  *   Boston, MA  02110-1301  USA
  */
 
+def token = project.hasProperty('andFHEMGithubToken') ? andFHEMGithubToken : ""
+
 task githubLogin(type: Exec) {
-    commandLine "bash", "-c", "echo $andFHEMGithubToken | gh auth login --with-token"
+    commandLine "bash", "-c", "echo $token | gh auth login --with-token"
 }
 
 task githubAuthStatus(type: Exec) {
