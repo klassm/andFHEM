@@ -1,1 +1,1 @@
-* Repair "send command"
+* Fix app crash when opening "other" widgets

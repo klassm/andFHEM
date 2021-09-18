@@ -1,1 +1,1 @@
-* Repariere "Kommando senden"
+* Fix: App Crash beim Öffnen der "Anderen" Widgets
