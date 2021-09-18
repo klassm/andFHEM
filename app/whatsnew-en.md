@@ -1,1 +1,1 @@
-TODO
+* Fix app crash when opening "other" widgets

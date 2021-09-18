@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.ui.widget.base.AppWidgetView
-import li.klass.fhem.databinding.SimpleListItemBinding
+import li.klass.fhem.databinding.OneLineCardBinding
 
 class OtherWidgetsAdapter(elements: List<AppWidgetView>, val callback: (view: AppWidgetView) -> Unit)
     : androidx.recyclerview.widget.RecyclerView.Adapter<OtherWidgetsAdapter.ViewHolder>() {
@@ -23,7 +23,7 @@ class OtherWidgetsAdapter(elements: List<AppWidgetView>, val callback: (view: Ap
 
     class ViewHolder(val view: View, val widgetClickedCallback: (view: AppWidgetView) -> Unit) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         fun bind(appWidgetView: AppWidgetView) {
-            val binding = SimpleListItemBinding.bind(view)
+            val binding = OneLineCardBinding.bind(view)
             binding.text.text = view.context.getString(appWidgetView.getWidgetName())
             binding.root.setOnClickListener { widgetClickedCallback(appWidgetView) }
         }

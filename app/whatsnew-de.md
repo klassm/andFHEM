@@ -1,1 +1,1 @@
-TODO
+* Fix: App Crash beim Öffnen der "Anderen" Widgets
