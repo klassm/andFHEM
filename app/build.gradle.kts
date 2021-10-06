@@ -32,7 +32,7 @@ buildscript {
     }
 
     dependencies {
-        classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.8")
+        classpath(group = "com.github.bjoernq", name = "unmockplugin", version = "0.7.9")
         classpath(
             group = "org.jetbrains.kotlin",
             name = "kotlin-gradle-plugin",
