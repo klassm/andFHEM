@@ -47,12 +47,13 @@
     <application
         android:name=".AndFHEMApplication"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/ApplicationTheme"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/ApplicationTheme">
         <uses-library
             android:name="com.sec.android.app.multiwindow"
             android:required="false" />
@@ -101,6 +102,7 @@
             android:name=".activities.StartupActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="keyboardHidden|screenSize"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="true"
@@ -117,6 +119,7 @@
             android:name=".activities.AndFHEMMainActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
+            android:exported="true"
             android:launchMode="singleTask">
 
             <intent-filter>
@@ -136,30 +139,44 @@
 
         <activity
             android:name=".activities.PremiumActivity"
+            android:exported="false"
             android:label="@string/premium" />
         <activity
             android:name=".settings.SettingsActivity"
+            android:exported="false"
             android:label="@string/preferences"
             android:theme="@style/PreferencesTheme" />
         <activity
             android:name=".activities.CommandIndicatorActivity"
+            android:exported="false"
             android:theme="@style/transparentDialogTheme" />
-        <activity android:name=".graph.ui.GraphActivity" />
-        <activity android:name=".graph.ui.ChartingDateSelectionActivity" />
+        <activity
+            android:name=".graph.ui.GraphActivity"
+            android:exported="false" />
+        <activity
+            android:name=".graph.ui.ChartingDateSelectionActivity"
+            android:exported="false" />
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
-        <activity android:name=".appwidget.ui.selection.SmallWidgetSelectionActivity">
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:exported="false" />
+        <activity
+            android:name=".appwidget.ui.selection.SmallWidgetSelectionActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".appwidget.ui.selection.MediumWidgetSelectionActivity">
+        <activity
+            android:name=".appwidget.ui.selection.MediumWidgetSelectionActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".appwidget.ui.selection.BigWidgetSelectionActivity">
+        <activity
+            android:name=".appwidget.ui.selection.BigWidgetSelectionActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -222,6 +239,7 @@
         </service>
         <service
             android:name=".appwidget.update.AppWidgetListViewUpdateRemoteViewsService"
+            android:exported="true"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
             android:name=".alarm.clock.update.AlarmClockIntentService"
@@ -249,6 +267,7 @@
 
         <service
             android:name=".device.control.AndroidControlsProviderService"
+            android:exported="true"
             android:permission="android.permission.BIND_CONTROLS">
             <intent-filter>
                 <action android:name="android.service.controls.ControlsProviderService" />
