@@ -37,4 +37,9 @@
     <color name="errorBackground">#B14300</color>
     <color name="accent">#DCAF5F</color>
     <color name="link">#AFDAAD</color>
+
+    <color name="widgetBackground">#AA020202</color>
+    <color name="widgetFont">#AAE4E4E4</color>
+    <color name="widgetButtonBackground">#AA504F4F</color>
+    <color name="widgetButtonBackgroundActive">#337C36</color>
 </resources>

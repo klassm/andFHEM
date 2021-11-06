@@ -40,6 +40,9 @@
     <color name="widgetNewContentBackground">#BBFFFFFF</color>
 
     <color name="widgetBackground">#AAE1E1E1</color>
+    <color name="widgetFont">#AA000000</color>
+    <color name="widgetButtonBackground">@android:color/white</color>
+    <color name="widgetButtonBackgroundActive">@color/android_green</color>
 
     <color name="inactiveBackground">#10000000</color>
     <color name="activeGreen">#E0FFD4</color>

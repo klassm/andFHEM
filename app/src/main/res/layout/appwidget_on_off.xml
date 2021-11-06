@@ -44,10 +44,10 @@
                 android:layout_height="25dp"
                 android:gravity="center"
                 android:text="@string/on"
-                android:textColor="@android:color/black"
+                android:textColor="@color/widgetFont"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
-                android:background="@android:color/white"
+                android:background="@color/widgetButtonBackground"
                 android:contentDescription="@string/switchDevice"
                 />
 
@@ -61,10 +61,9 @@
                 android:text="@string/off"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
-                android:textColor="@android:color/black"
-                android:background="@android:color/white"
-                android:contentDescription="@string/switchDevice"
-                />
+                android:textColor="@color/widgetFont"
+                android:background="@color/widgetButtonBackground"
+                android:contentDescription="@string/switchDevice" />
         </LinearLayout>
     </LinearLayout>
 

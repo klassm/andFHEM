@@ -42,7 +42,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:text="@string/rooms"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:textStyle="bold"
             tools:ignore="NewApi" />
     </RelativeLayout>

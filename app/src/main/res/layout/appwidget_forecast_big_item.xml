@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/day"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:textSize="12sp"
             android:textStyle="bold"/>
 
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temperature"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:textSize="12sp"
             android:maxLines="1" />
 
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/forecast"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:textSize="12sp"
             android:maxLines="1" />
 
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rain"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:textSize="12sp"
             android:maxLines="1" />
     </LinearLayout>

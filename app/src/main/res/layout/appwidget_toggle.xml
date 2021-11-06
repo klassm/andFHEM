@@ -31,30 +31,31 @@
 
         <TextView style="@style/appwidget_caption"/>
 
-        <TextView android:id="@+id/toggleOn"
-                  android:layout_marginTop="10dp"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginRight="10dp"
-                  android:layout_height="25dp"
-                  android:gravity="center"
-                  android:text="@string/on"
-                  android:textColor="@android:color/black"
-                  android:layout_width="fill_parent"
-                  android:background="@color/android_green"
-                  android:contentDescription="@string/switchDevice"
-                />
-        <TextView android:id="@+id/toggleOff"
-                  android:layout_marginTop="10dp"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginRight="10dp"
-                  android:layout_height="25dp"
-                  android:gravity="center"
-                  android:text="@string/off"
-                  android:textColor="@android:color/black"
-                  android:layout_width="fill_parent"
-                  android:background="@android:color/white"
-                  android:contentDescription="@string/switchDevice"
-                />
+        <TextView
+            android:id="@+id/toggleOn"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="@string/on"
+            android:textColor="@color/widgetFont"
+            android:layout_width="fill_parent"
+            android:background="@color/widgetButtonBackgroundActive"
+            android:contentDescription="@string/switchDevice" />
+
+        <TextView
+            android:id="@+id/toggleOff"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="@string/off"
+            android:textColor="@color/widgetButtonBackground"
+            android:layout_width="fill_parent"
+            android:background="@color/widgetFont"
+            android:contentDescription="@string/switchDevice" />
     </LinearLayout>
     <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>

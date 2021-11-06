@@ -36,8 +36,8 @@
             android:id="@+id/temperature"
             style="@style/appwidget_item"
             android:text="@string/dummy_temperature"
-                  android:textColor="@android:color/black"
-                  android:textSize="17sp"/>
+            android:textColor="@color/widgetFont"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/additional"

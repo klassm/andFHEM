@@ -57,7 +57,7 @@
             android:paddingRight="0dp"
             android:paddingStart="10dp"
             android:text="@string/rooms"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:textStyle="bold"
             tools:ignore="NewApi" />
     </RelativeLayout>

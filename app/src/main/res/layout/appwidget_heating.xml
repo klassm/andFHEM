@@ -41,7 +41,7 @@
                 android:id="@+id/temperature"
                 style="@style/appwidget_item"
                 android:text="@string/dummy_temperature"
-                android:textColor="@android:color/black"
+                android:textColor="@color/widgetFont"
                 android:textSize="15sp" />
             <!-- CompoundDrawable is not possible here, as we have to change the image using appwidget APIs -->
             <LinearLayout

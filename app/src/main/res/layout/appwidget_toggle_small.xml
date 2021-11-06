@@ -39,7 +39,7 @@
             android:layout_width="fill_parent"
             android:gravity="center"
             android:text="@string/on"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:background="@drawable/rounded_green"
             android:contentDescription="@string/switchDevice"
             />
@@ -48,7 +48,7 @@
             android:layout_width="fill_parent"
             android:gravity="center"
             android:text="@string/off"
-            android:textColor="@android:color/black"
+            android:textColor="@color/widgetFont"
             android:background="@drawable/rounded_white"
             android:contentDescription="@string/switchDevice"
             />

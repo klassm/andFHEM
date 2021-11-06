@@ -40,7 +40,7 @@
             android:text="@string/state"
             android:textColor="@color/black"
             android:layout_width="fill_parent"
-            android:background="@android:color/white"
+            android:background="@color/widgetButtonBackground"
             android:ellipsize="start"
             android:contentDescription="@string/switchDevice"
             android:singleLine="true" />

@@ -62,20 +62,20 @@
                     android:lines="1"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/widgetFont"
                     android:text="@string/day"/>
                 <TextView android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textSize="12sp"
                     android:text="@string/dummy_temperature"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/widgetFont"
                     android:id="@+id/day_temperature"
                     android:maxLines="1" />
                 <TextView android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textSize="12sp"
                     android:text="@string/dummy_condition"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/widgetFont"
                     android:id="@+id/day_condition"
                     android:maxLines="1" />
             </LinearLayout>
