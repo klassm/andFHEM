@@ -32,12 +32,12 @@ import android.widget.RemoteViews
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys.*
 import li.klass.fhem.domain.core.FhemDevice

@@ -35,7 +35,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import li.klass.fhem.R
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.EventMap

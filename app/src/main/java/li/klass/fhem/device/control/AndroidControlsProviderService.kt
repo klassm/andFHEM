@@ -19,8 +19,8 @@ import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.AndFHEMMainActivity
 import li.klass.fhem.adapter.devices.core.detail.DeviceDetailRedirectFragmentArgs
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.behavior.dim.DimmableBehavior
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.connection.backend.FHEMServerSpec

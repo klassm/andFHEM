@@ -25,8 +25,8 @@
 package li.klass.fhem.update.backend.group
 
 import android.content.Context
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.behavior.dim.DimmableBehavior
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.DeviceFunctionality
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider

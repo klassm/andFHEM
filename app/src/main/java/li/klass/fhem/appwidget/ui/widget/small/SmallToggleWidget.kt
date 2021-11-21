@@ -26,14 +26,13 @@ package li.klass.fhem.appwidget.ui.widget.small
 
 import android.content.Context
 import android.widget.RemoteViews
-
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.medium.ToggleWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 

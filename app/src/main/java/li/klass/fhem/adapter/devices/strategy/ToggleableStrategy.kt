@@ -36,8 +36,8 @@ import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffActionRowForToggleables
 import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.core.FhemDevice
 import org.apache.commons.lang3.time.StopWatch

@@ -33,6 +33,7 @@ import io.mockk.impl.annotations.MockK
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.ButtonHook.*
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.testutil.MockRule
 import li.klass.fhem.update.backend.device.configuration.DeviceConfiguration

@@ -32,20 +32,20 @@ import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver
 import li.klass.fhem.appwidget.ui.widget.WidgetSize
 import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
 class OnOffWidgetView @Inject constructor(
-        val onOffBehavior: OnOffBehavior,
-        val deviceHookProvider: DeviceHookProvider
+    val onOffBehavior: OnOffBehavior,
+    val deviceHookProvider: DeviceHookProvider
 ) : DeviceAppWidgetView() {
 
     override fun getWidgetName(): Int = R.string.widget_onOff

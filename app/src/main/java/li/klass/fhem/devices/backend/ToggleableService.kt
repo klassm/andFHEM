@@ -24,7 +24,7 @@
 
 package li.klass.fhem.devices.backend
 
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.FhemDevice
 import org.slf4j.LoggerFactory
 import javax.inject.Inject

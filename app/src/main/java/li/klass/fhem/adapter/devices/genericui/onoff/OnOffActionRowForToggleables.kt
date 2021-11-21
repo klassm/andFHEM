@@ -29,8 +29,8 @@ import android.view.View
 import android.widget.TableRow
 import li.klass.fhem.adapter.devices.hook.ButtonHook
 import li.klass.fhem.adapter.devices.hook.DeviceHookProvider
-import li.klass.fhem.adapter.devices.toggle.OnOffBehavior
 import li.klass.fhem.adapter.uiservice.StateUiService
+import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.domain.core.FhemDevice
 
 class OnOffActionRowForToggleables(layoutId: Int,
