@@ -42,6 +42,7 @@ import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
+import li.klass.fhem.databinding.ConnectionDetailBinding
 import li.klass.fhem.databinding.ConnectionFhemwebBinding
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.util.PermissionUtil
@@ -285,6 +286,7 @@ class ConnectionDetailFragment @Inject constructor(
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val context = context ?: return
+        val view = view ?: return
 
         if (requestCode == filePickerRequestCode && resultCode == RESULT_OK) {
             val filePath = (data?.clipData ?: data?.data) as Uri
@@ -297,9 +299,10 @@ class ConnectionDetailFragment @Inject constructor(
             context.contentResolver?.openInputStream(filePath)
                 ?.copyTo(certificateFile.outputStream())
 
-            view?.let { ConnectionFhemwebBinding.bind(it) }?.let {
-                it.clientCertificatePath.text = certificateFile.absolutePath
-            }
+            val preferences = ConnectionDetailBinding.bind(view).connectionPreferences
+            val root = preferences.findViewById<RelativeLayout>(R.id.connectionFhemwebRoot)
+            val fhemwebBinding = ConnectionFhemwebBinding.bind(root)
+            fhemwebBinding.clientCertificatePath.text = certificateFile.absolutePath
         }
     }
 
