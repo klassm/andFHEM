@@ -21,23 +21,21 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.util
 
-package li.klass.fhem.util;
+import li.klass.fhem.util.Reject.ifNull
+import org.junit.Assert
+import org.junit.Test
 
-import org.junit.Test;
-
-import static org.junit.Assert.fail;
-
-public class RejectTest {
-
+class RejectTest {
     @Test
-    public void testIfNullWithNotNullValue() {
-        Reject.ifNull("some");
+    fun testIfNullWithNotNullValue() {
+        ifNull("some")
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIfNullWithNullValue() {
-        Reject.ifNull(null);
-        fail();
+    @Test(expected = IllegalArgumentException::class)
+    fun testIfNullWithNullValue() {
+        ifNull<Any>(null)
+        Assert.fail()
     }
 }
