@@ -1,1 +1,1 @@
-TODO
+* Repair selection of certificates
