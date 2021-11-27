@@ -21,46 +21,35 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.constants
 
-package li.klass.fhem.constants;
-
-public class BundleExtraKeys {
-    public static final String ACTION = "ACTION";
-
-    public static final String DO_REFRESH = "DOREFRESH";
-    public static final String UPDATE_PERIOD = "UPDATE_PERIOD";
-    public static final String ROOM_NAME = "ROOMNAME";
-    public static final String DEVICE = "DEVICE";
-    public static final String DEVICE_NAME = "DEVICENAME";
-    public static final String ATTRIBUTE_NAME = "ATTRIBUTE_NAME";
-    public static final String ATTRIBUTE_TYPE = "ATTRIBUTE_TYPE";
-    public static final String RESULT_RECEIVER = "RESULTRECEIVER";
-    public static final String STRING_ID = "STRINGID";
-    public static final String STRING = "STRING";
-    public static final String ALERT_CONTENT_ID = "ALERTCONTENTID";
-    public static final String ALERT_TITLE_ID = "ALERTTITLEID";
-    public static final String HAS_FAVORITES = "HAS_FAVORITES";
-    public static final String ALLOW_REMOTE_UPDATES = "ALLOW_REMOTE_UPDATES";
-
-    public static final String DEVICE_GRAPH_DEFINITION = "DEVICE_GRAPH_DEFINITION";
-    public static final String START_DATE = "STARTDATE";
-    public static final String END_DATE = "ENDDATE";
-    public static final String DEVICE_TARGET_STATE = "TARGETSTATE";
-
-    public static final String CONTENT = "CONTENT";
-
-    public static final String COMMAND = "COMMAND";
-
-    public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
-    public static final String APP_WIDGET_TYPE_NAME = "APP_WIDGET_TYPE_NAME";
-
-    public static final String STATE_NAME = "STATE_NAME";
-    public static final String STATE_VALUE = "STATE_VALUE";
-
-    public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";
-
-    public static final String CONNECTION_ID = "CONNECTION_ID";
-
-    public static final String UPDATED_DEVICE_NAMES = "UPDATED_DEVICE_NAMES";
-
+object BundleExtraKeys {
+    const val ACTION = "ACTION"
+    const val DO_REFRESH = "DOREFRESH"
+    const val UPDATE_PERIOD = "UPDATE_PERIOD"
+    const val ROOM_NAME = "ROOMNAME"
+    const val DEVICE = "DEVICE"
+    const val DEVICE_NAME = "DEVICENAME"
+    const val ATTRIBUTE_NAME = "ATTRIBUTE_NAME"
+    const val ATTRIBUTE_TYPE = "ATTRIBUTE_TYPE"
+    const val RESULT_RECEIVER = "RESULTRECEIVER"
+    const val STRING_ID = "STRINGID"
+    const val STRING = "STRING"
+    const val ALERT_CONTENT_ID = "ALERTCONTENTID"
+    const val ALERT_TITLE_ID = "ALERTTITLEID"
+    const val HAS_FAVORITES = "HAS_FAVORITES"
+    const val ALLOW_REMOTE_UPDATES = "ALLOW_REMOTE_UPDATES"
+    const val DEVICE_GRAPH_DEFINITION = "DEVICE_GRAPH_DEFINITION"
+    const val START_DATE = "STARTDATE"
+    const val END_DATE = "ENDDATE"
+    const val DEVICE_TARGET_STATE = "TARGETSTATE"
+    const val CONTENT = "CONTENT"
+    const val COMMAND = "COMMAND"
+    const val APP_WIDGET_ID = "APP_WIDGET_ID"
+    const val APP_WIDGET_TYPE_NAME = "APP_WIDGET_TYPE_NAME"
+    const val STATE_NAME = "STATE_NAME"
+    const val STATE_VALUE = "STATE_VALUE"
+    const val NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES"
+    const val CONNECTION_ID = "CONNECTION_ID"
+    const val UPDATED_DEVICE_NAMES = "UPDATED_DEVICE_NAMES"
 }

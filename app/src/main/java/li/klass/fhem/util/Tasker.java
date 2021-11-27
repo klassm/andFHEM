@@ -35,7 +35,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 
 public class Tasker {
     public static void sendTaskerNotifyIntent(Context context, String deviceName, String key, String value) {
-        Intent taskerNotifyIntent = new Intent(Actions.EXT_DEVICE_STATE_NOTIFY);
+        Intent taskerNotifyIntent = new Intent(Actions.INSTANCE.getEXT_DEVICE_STATE_NOTIFY());
         taskerNotifyIntent.putExtra(BundleExtraKeys.ACTION, "deviceStateChange");
         taskerNotifyIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);

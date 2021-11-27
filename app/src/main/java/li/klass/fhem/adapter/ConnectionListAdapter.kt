@@ -21,56 +21,37 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.adapter
 
-package li.klass.fhem.adapter;
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import li.klass.fhem.R
+import li.klass.fhem.connection.backend.FHEMServerSpec
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+class ConnectionListAdapter(context: Context?) : ListDataAdapter<FHEMServerSpec>(
+    context!!, mutableListOf()
+) {
+    private var selectedConnectionId: String? = null
 
-import java.util.Collections;
-import java.util.List;
-
-import li.klass.fhem.R;
-import li.klass.fhem.connection.backend.FHEMServerSpec;
-
-public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
-    private String selectedConnectionId;
-
-    public ConnectionListAdapter(Context context) {
-        super(context, Collections.<FHEMServerSpec>emptyList());
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val myView = convertView ?: inflater.inflate(R.layout.connection_list_entry, null)
+        val server = getItem(position) as FHEMServerSpec
+        val nameView = myView.findViewById<TextView>(R.id.connectionListName)
+        nameView.text = server.name
+        val typeView = myView.findViewById<TextView>(R.id.connectionListType)
+        typeView.text = server.serverType.name
+        myView.tag = server.id
+        if (server.id == selectedConnectionId) {
+            myView.setBackgroundColor(context.resources.getColor(R.color.android_green))
+        }
+        return myView
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        FHEMServerSpec server = (FHEMServerSpec) getItem(position);
-
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.connection_list_entry, null);
-        }
-
-        assert convertView != null;
-
-        TextView nameView = convertView.findViewById(R.id.connectionListName);
-        nameView.setText(server.getName());
-
-        TextView typeView = convertView.findViewById(R.id.connectionListType);
-        typeView.setText(server.getServerType().name());
-
-        convertView.setTag(server.getId());
-
-        if (server.getId().equals(selectedConnectionId)) {
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.android_green));
-        }
-
-        return convertView;
-    }
-
-    public void updateData(List<FHEMServerSpec> newData, String selectedConnectionId) {
-        if (newData == null) return;
-
-        this.selectedConnectionId = selectedConnectionId;
-        updateData(newData);
+    fun updateData(newData: List<FHEMServerSpec>?, selectedConnectionId: String?) {
+        if (newData == null) return
+        this.selectedConnectionId = selectedConnectionId
+        updateData(newData.toMutableList())
     }
 }

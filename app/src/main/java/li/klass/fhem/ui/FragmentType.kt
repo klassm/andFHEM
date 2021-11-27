@@ -21,38 +21,18 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.ui
 
-package li.klass.fhem.ui;
+enum class FragmentType {
+    FAVORITES, ROOM_LIST, ALL_DEVICES, CONVERSION, DEVICE_DETAIL, FROM_TO_WEEK_PROFILE, INTERVAL_WEEK_PROFILE, FLOORPLAN, ROOM_DETAIL, SEND_COMMAND, DEVICE_SELECTION, TIMER_OVERVIEW, TIMER_DETAIL, CONNECTION_LIST, CONNECTION_DETAIL, WEB_VIEW, OTHER_WIDGETS_FRAGMENT, SEARCH, FCM_HISTORY;
 
-import androidx.annotation.Nullable;
-
-public enum FragmentType {
-    FAVORITES,
-    ROOM_LIST,
-    ALL_DEVICES,
-    CONVERSION,
-    DEVICE_DETAIL,
-    FROM_TO_WEEK_PROFILE,
-    INTERVAL_WEEK_PROFILE,
-    FLOORPLAN,
-    ROOM_DETAIL,
-    SEND_COMMAND,
-    DEVICE_SELECTION,
-    TIMER_OVERVIEW,
-    TIMER_DETAIL,
-    CONNECTION_LIST,
-    CONNECTION_DETAIL,
-    WEB_VIEW,
-    OTHER_WIDGETS_FRAGMENT,
-    SEARCH,
-    FCM_HISTORY;
-
-    @Nullable
-    public static FragmentType forEnumName(String name) {
-        try {
-            return FragmentType.valueOf(name);
-        } catch (Exception e) {
-            return null;
+    companion object {
+        fun forEnumName(name: String?): FragmentType? {
+            return try {
+                valueOf(name!!)
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }

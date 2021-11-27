@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.ericharlow.DragNDrop;
+package com.ericharlow.DragNDrop
 
 /**
  * Implement to handle an item being dropped.
- * An adapter handling the underlying data 
+ * An adapter handling the underlying data
  * will most likely handle this interface.
- *  
+ *
  * @author Eric Harlow
  */
-public interface DropListener {
-	
-	/**
-	 * Called when an item is to be dropped.
-	 * @param from - index item started at.
-	 * @param to - index to place item at.
-	 */
-	void onDrop(int from, int to);
+interface DropListener {
+    /**
+     * Called when an item is to be dropped.
+     * @param from - index item started at.
+     * @param to - index to place item at.
+     */
+    fun onDrop(from: Int, to: Int)
 }

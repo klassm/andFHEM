@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.intent;
 
+import static li.klass.fhem.constants.BundleExtraKeys.NOTIFICATION_UPDATES;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -35,8 +37,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.service.NotificationService;
-
-import static li.klass.fhem.constants.BundleExtraKeys.NOTIFICATION_UPDATES;
 
 public class NotificationIntentService extends ConvenientIntentService {
 
@@ -52,10 +52,10 @@ public class NotificationIntentService extends ConvenientIntentService {
     protected State handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
 
-        if (intent.getAction().equals(Actions.NOTIFICATION_SET_FOR_DEVICE)) {
+        if (intent.getAction().equals(Actions.INSTANCE.getNOTIFICATION_SET_FOR_DEVICE())) {
             int updateType = intent.getIntExtra(BundleExtraKeys.NOTIFICATION_UPDATES, 0);
             notificationService.setDeviceNotification(deviceName, updateType, this);
-        } else if (intent.getAction().equals(Actions.NOTIFICATION_GET_FOR_DEVICE)) {
+        } else if (intent.getAction().equals(Actions.INSTANCE.getNOTIFICATION_GET_FOR_DEVICE())) {
             int value = notificationService.forDevice(this, deviceName);
 
             Bundle result = new Bundle();

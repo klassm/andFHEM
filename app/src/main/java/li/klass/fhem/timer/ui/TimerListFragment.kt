@@ -130,7 +130,7 @@ class TimerListFragment @Inject constructor(
                 atService.getTimerDevices()
 
             }
-            adapter.updateData(timerDevices)
+            adapter.updateData(timerDevices.toMutableList())
             binding.empty.visibility = if (timerDevices.isEmpty()) View.VISIBLE else View.GONE
             myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }

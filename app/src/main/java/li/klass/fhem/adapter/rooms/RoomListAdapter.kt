@@ -37,7 +37,7 @@ import java.util.*
 class RoomListAdapter(
     context: Context,
     data: List<String>
-) : ListDataAdapter<String>(context, data, CASE_INSENSITIVE_COMPARATOR) {
+) : ListDataAdapter<String>(context, data.toMutableList(), CASE_INSENSITIVE_COMPARATOR) {
 
     private var selectedRoom: String? = null
 

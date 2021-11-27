@@ -39,7 +39,7 @@ import li.klass.fhem.appwidget.ui.widget.base.DeviceAppWidgetView
 import li.klass.fhem.appwidget.update.WidgetConfiguration
 import li.klass.fhem.behavior.toggle.OnOffBehavior
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.domain.core.FhemDevice
 import javax.inject.Inject
 
@@ -83,16 +83,22 @@ open class ToggleWidgetView @Inject constructor(
         val hook = deviceHookProvider.buttonHookFor(device)
 
         return Intent(context, AppWidgetActionBroadcastReceiver::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(APP_WIDGET_ID, widgetConfiguration.widgetId)
-                .putExtra(DEVICE_NAME, device.name)
-                .putExtra(CONNECTION_ID, widgetConfiguration.connectionId)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId)
+            .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
+            .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
                 .apply {
                     when (hook) {
                         ButtonHook.ON_DEVICE -> setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
-                                .putExtra(DEVICE_TARGET_STATE, onOffBehavior.getOnStateName(device))
+                            .putExtra(
+                                BundleExtraKeys.DEVICE_TARGET_STATE,
+                                onOffBehavior.getOnStateName(device)
+                            )
                         ButtonHook.OFF_DEVICE -> setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
-                                .putExtra(DEVICE_TARGET_STATE, onOffBehavior.getOffStateName(device))
+                            .putExtra(
+                                BundleExtraKeys.DEVICE_TARGET_STATE,
+                                onOffBehavior.getOffStateName(device)
+                            )
                         else -> action = Actions.DEVICE_WIDGET_TOGGLE
                     }
                 }

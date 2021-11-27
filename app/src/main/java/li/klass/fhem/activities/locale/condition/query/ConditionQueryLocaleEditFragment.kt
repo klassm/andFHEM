@@ -15,7 +15,7 @@ import androidx.navigation.navGraphViewModels
 import li.klass.fhem.R
 import li.klass.fhem.activities.locale.AttributeType
 import li.klass.fhem.activities.locale.LocaleIntentConstants
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.databinding.LocaleConditionQueryEditBinding
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.device.DeviceNameListFragment
@@ -58,10 +58,10 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
     }
 
     private fun setInitialDataFrom(intent: Intent) {
-        viewModel.deviceName.value = intent.getStringExtra(DEVICE_NAME)
-        viewModel.attributeValue.value = intent.getStringExtra(DEVICE_TARGET_STATE)
-        viewModel.attributeName.value = intent.getStringExtra(ATTRIBUTE_NAME)
-        viewModel.attributeType.value = intent.getStringExtra(ATTRIBUTE_TYPE)
+        viewModel.deviceName.value = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME)
+        viewModel.attributeValue.value = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE)
+        viewModel.attributeName.value = intent.getStringExtra(BundleExtraKeys.ATTRIBUTE_NAME)
+        viewModel.attributeType.value = intent.getStringExtra(BundleExtraKeys.ATTRIBUTE_TYPE)
     }
 
     private fun bindAttributeValue() {
@@ -146,10 +146,10 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
             val name = viewModel.attributeName.value
             val value = viewModel.attributeValue.value
             setResult(Activity.RESULT_OK, Intent()
-                    .putExtra(DEVICE_TARGET_STATE, value)
-                    .putExtra(DEVICE_NAME, deviceName)
-                    .putExtra(ATTRIBUTE_NAME, name)
-                    .putExtra(ATTRIBUTE_TYPE, type)
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, value)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.ATTRIBUTE_NAME, name)
+                .putExtra(BundleExtraKeys.ATTRIBUTE_TYPE, type)
                     .putExtra(LocaleIntentConstants.EXTRA_STRING_BLURB, "$deviceName ($type $name=$value)"))
             finish()
         }

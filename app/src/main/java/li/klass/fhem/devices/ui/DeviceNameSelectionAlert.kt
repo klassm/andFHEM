@@ -10,7 +10,7 @@ import li.klass.fhem.adapter.ListDataAdapter
 import li.klass.fhem.domain.core.FhemDevice
 
 class DeviceNameAdapter(context: Context, devices: List<FhemDevice>) :
-    ListDataAdapter<FhemDevice>(context, devices) {
+    ListDataAdapter<FhemDevice>(context, devices.toMutableList()) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertedView = convertView
         val device = getItem(position) as FhemDevice

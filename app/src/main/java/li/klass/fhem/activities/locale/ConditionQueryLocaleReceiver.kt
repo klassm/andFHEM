@@ -30,7 +30,7 @@ import android.content.Intent
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED
 import li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNSATISFIED
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.update.backend.DeviceListService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -48,12 +48,12 @@ class ConditionQueryLocaleReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         LOG.info("onReceive - " + intent.action)
 
-        val deviceName = intent.getStringExtra(DEVICE_NAME) ?: return
-        val attributeValue = intent.getStringExtra(DEVICE_TARGET_STATE)
-        val attributeType = intent.getStringExtra(ATTRIBUTE_TYPE)
-                ?.let { AttributeType.getFor(it) }
-                ?: AttributeType.STATE
-        val attributeName = intent.getStringExtra(ATTRIBUTE_NAME) ?: "state"
+        val deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME) ?: return
+        val attributeValue = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE)
+        val attributeType = intent.getStringExtra(BundleExtraKeys.ATTRIBUTE_TYPE)
+            ?.let { AttributeType.getFor(it) }
+            ?: AttributeType.STATE
+        val attributeName = intent.getStringExtra(BundleExtraKeys.ATTRIBUTE_NAME) ?: "state"
 
         val device = deviceListService.getDeviceForName(deviceName, null)
         if (device == null) {

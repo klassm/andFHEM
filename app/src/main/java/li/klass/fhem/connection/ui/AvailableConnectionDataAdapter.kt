@@ -55,7 +55,7 @@ class AvailableConnectionDataAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val server = data[position]
+        val server = getData()[position]
 
         val binding =
             if (convertView != null) ConnectionSpinnerItemBinding.bind(convertView) else ConnectionSpinnerItemBinding.inflate(
@@ -88,6 +88,7 @@ class AvailableConnectionDataAdapter(
     }
 
     private fun select(id: String?) {
+        val data = getData()
         for (i in data.indices) {
             LOG.trace("select(id=$id) - data[$i]=${data[i]}")
             if (data[i].id == id) {
@@ -96,16 +97,16 @@ class AvailableConnectionDataAdapter(
         }
     }
 
-    override fun updateData(newData: MutableList<FHEMServerSpec>) {
-        newData.add(MANAGEMENT_PILL)
+    override fun updateData(newData: MutableList<FHEMServerSpec>?) {
+        newData?.add(MANAGEMENT_PILL)
         super.updateData(newData)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-        if (connectionService.getSelectedId() == data[pos].id) {
+        if (connectionService.getSelectedId() == getData()[pos].id) {
             return
         }
-        if (pos == data.size - 1) {
+        if (pos == getData().size - 1) {
             parent.setSelection(currentlySelectedPosition)
             onConnectionManagementSelected()
         } else if (currentlySelectedPosition != pos) {
@@ -114,7 +115,7 @@ class AvailableConnectionDataAdapter(
             val myContext = context
             GlobalScope.launch(Dispatchers.Main) {
                 launch {
-                    connectionService.setSelectedId(data[pos].id)
+                    connectionService.setSelectedId(getData()[pos].id)
                     if (currentlySelectedPosition != -1) {
                         myContext.sendBroadcast(
                             Intent(Actions.DO_UPDATE).putExtra(

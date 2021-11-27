@@ -21,33 +21,27 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package androidx.drawerlayout.widget
 
-package androidx.drawerlayout.widget;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
+class RepairedDrawerLayout : DrawerLayout {
+    constructor(context: Context?) : super(context!!) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(
+        context!!, attrs
+    )
 
-@SuppressWarnings("unused")
-public class RepairedDrawerLayout extends DrawerLayout {
-    public RepairedDrawerLayout(Context context) {
-        super(context);
-    }
+    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
+        context!!, attrs, defStyle
+    )
 
-    public RepairedDrawerLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public RepairedDrawerLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
-    @Override
-    boolean isContentView(View child) {
+    public override fun isContentView(child: View): Boolean {
         if (child == null) {
-            closeDrawers();
-            return false;
+            closeDrawers()
+            return false
         }
-        return super.isContentView(child);
+        return super.isContentView(child)
     }
 }

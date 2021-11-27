@@ -104,7 +104,7 @@ class ConnectionListFragment @Inject constructor(
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.connection_add) {
-            val size = adapter.data.size
+            val size = adapter.getData().size
 
             GlobalScope.launch(Dispatchers.Main) {
                 val premiumStatus = licenseService.premiumStatus()
@@ -203,7 +203,7 @@ class ConnectionListFragment @Inject constructor(
                 if (nonDummyConnections.isEmpty()) View.VISIBLE else View.GONE
 
             adapter.updateData(nonDummyConnections, connectionId)
-            scrollToSelected(connectionId, adapter.data)
+            scrollToSelected(connectionId, adapter.getData())
             activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
         }
     }

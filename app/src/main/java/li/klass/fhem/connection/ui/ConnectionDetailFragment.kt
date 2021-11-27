@@ -206,6 +206,7 @@ class ConnectionDetailFragment @Inject constructor(
 
     private fun handleFHEMWEBView(view: View) {
         val binding = ConnectionFhemwebBinding.bind(view)
+        val activity = activity ?: return
         binding.setClientCertificatePath.setOnClickListener(View.OnClickListener { innerView ->
             if (innerView == null) return@OnClickListener
 

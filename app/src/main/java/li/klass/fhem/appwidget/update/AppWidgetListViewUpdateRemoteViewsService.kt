@@ -33,7 +33,7 @@ import li.klass.fhem.appwidget.ui.widget.WidgetType
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.appwidget.ui.widget.base.DeviceListAppWidgetView
 import li.klass.fhem.appwidget.ui.widget.base.EmptyRemoteViewsFactory
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.update.backend.DeviceListService
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -52,11 +52,12 @@ class AppWidgetListViewUpdateRemoteViewsService : RemoteViewsService() {
     }
 
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory? {
-        val appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1)
-        val widgetTypeName = intent.getStringExtra(APP_WIDGET_TYPE_NAME) ?: return null
+        val appWidgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1)
+        val widgetTypeName =
+            intent.getStringExtra(BundleExtraKeys.APP_WIDGET_TYPE_NAME) ?: return null
         val widgetType = WidgetType.valueOf(widgetTypeName)
-        val deviceName = intent.getStringExtra(DEVICE_NAME) ?: return null
-        val connectionId = intent.getStringExtra(CONNECTION_ID)
+        val deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME) ?: return null
+        val connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID)
         val device = deviceListService.getDeviceForName(deviceName, connectionId)
         if (device == null) {
             LOG.error("device is null, at least in the current connection")

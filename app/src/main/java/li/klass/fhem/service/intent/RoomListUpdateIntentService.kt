@@ -29,7 +29,7 @@ import android.os.ResultReceiver
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.DO_UPDATE
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.update.backend.DeviceListUpdateService
 import li.klass.fhem.update.backend.DeviceListUpdateService.UpdateResult
@@ -48,9 +48,9 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
         val action = intent.action
 
         return if (action == Actions.DO_REMOTE_UPDATE) {
-            val deviceName = intent.getStringExtra(DEVICE_NAME)
-            val roomName = intent.getStringExtra(ROOM_NAME)
-            val connectionId = intent.getStringExtra(CONNECTION_ID)
+            val deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME)
+            val roomName = intent.getStringExtra(BundleExtraKeys.ROOM_NAME)
+            val connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID)
             doRemoteUpdate(deviceName, roomName, connectionId)
         } else {
             State.DONE

@@ -13,51 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.ericharlow.DragNDrop
 
-package com.ericharlow.DragNDrop;
+import android.content.Context
+import android.util.Log
+import android.view.View
+import android.widget.ListView
+import li.klass.fhem.R
+import li.klass.fhem.adapter.ListDataAdapter
+import java.util.*
 
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.ListDataAdapter;
-
-public abstract class DragNDropAdapter<T extends Comparable<T>> extends ListDataAdapter<T> implements RemoveListener, DropListener, DragListener {
-
-    public DragNDropAdapter(Context context, ArrayList<T> data) {
-        super(context, data);
+abstract class DragNDropAdapter<T : Comparable<T>?>(context: Context?, data: ArrayList<T>?) :
+    ListDataAdapter<T>(
+        context!!, data
+    ), RemoveListener, DropListener, DragListener {
+    override fun onRemove(which: Int) {
+        if (which < 0 || which > getData().size) return
+        updateData(getData().toMutableList().apply { removeAt(which) })
     }
 
-    public void onRemove(int which) {
-        if (which < 0 || which > data.size()) return;
-        data.remove(which);
+    override fun onDrop(from: Int, to: Int) {
+        Log.e(DragNDropAdapter::class.java.name, "drop from $from to $to")
+        val temp = getData()[from]
+        updateData(getData().toMutableList().apply {
+            removeAt(from)
+            add(to, temp)
+        })
     }
 
-    public void onDrop(int from, int to) {
-        Log.e(DragNDropAdapter.class.getName(), "drop from " + from + " to " + to);
-        T temp = data.get(from);
-        data.remove(from);
-        data.add(to,temp);
-
-        updateData(data);
+    override fun onStartDrag(itemView: View?) {
+        itemView!!.setBackgroundColor(itemView.context.resources.getColor(R.color.focusedColor))
     }
 
-    @Override
-    public void onStartDrag(View itemView) {
-        itemView.setBackgroundColor(context.getResources().getColor(R.color.focusedColor));
-    }
-
-    @Override
-    public void onDrag(int x, int y, ListView listView) {
-    }
-
-    @Override
-    public void onStopDrag(View itemView) {
-        if (itemView == null) return;
-        itemView.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+    override fun onDrag(x: Int, y: Int, listView: ListView?) {}
+    override fun onStopDrag(itemView: View?) {
+        if (itemView == null) return
+        itemView.setBackgroundColor(itemView.context.resources.getColor(android.R.color.transparent))
     }
 }

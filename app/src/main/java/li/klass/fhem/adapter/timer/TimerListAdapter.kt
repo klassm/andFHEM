@@ -35,10 +35,10 @@ import li.klass.fhem.databinding.TimerListItemBinding
 import li.klass.fhem.devices.backend.at.TimerDevice
 
 class TimerListAdapter(context: Context, data: List<TimerDevice>) :
-    ListDataAdapter<TimerDevice>(context, data) {
+    ListDataAdapter<TimerDevice>(context, data.toMutableList()) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val device = data[position]
+        val device = getData()[position]
 
         val binding =
             if (convertView != null && convertView is LinearLayout) TimerListItemBinding.bind(

@@ -60,7 +60,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
         if (day == null) return;
 
         DayProfile<FromToHeatingInterval, HeatingIntervalConfiguration<FromToHeatingInterval>> dayProfile = weekProfile.getDayProfileFor(day);
-        Reject.ifNull(dayProfile);
+        Reject.INSTANCE.ifNull(dayProfile);
 
         int intervalId = (key.charAt(key.length() - 1) - '0') - 1;
         FromToHeatingInterval interval = dayProfile.getHeatingIntervalAt(intervalId);

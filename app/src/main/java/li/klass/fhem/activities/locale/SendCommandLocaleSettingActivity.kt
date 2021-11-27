@@ -45,7 +45,7 @@ import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions.EXECUTE_COMMAND
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -65,12 +65,12 @@ class SendCommandLocaleSettingActivity : Activity() {
 
         val intent = intent
         val bundle = intent.getBundleExtra(EXTRA_BUNDLE)
-        if (bundle != null && bundle.containsKey(COMMAND)) {
-            if (bundle.containsKey(COMMAND)) {
-                commandView.setText(bundle.getString(COMMAND))
+        if (bundle != null && bundle.containsKey(BundleExtraKeys.COMMAND)) {
+            if (bundle.containsKey(BundleExtraKeys.COMMAND)) {
+                commandView.setText(bundle.getString(BundleExtraKeys.COMMAND))
             }
-            if (bundle.containsKey(CONNECTION_ID)) {
-                selectedId = bundle.getString(CONNECTION_ID)
+            if (bundle.containsKey(BundleExtraKeys.CONNECTION_ID)) {
+                selectedId = bundle.getString(BundleExtraKeys.CONNECTION_ID)
             }
         }
 
@@ -101,20 +101,27 @@ class SendCommandLocaleSettingActivity : Activity() {
             resultIntent.putExtra(EXTRA_STRING_BLURB, command)
 
             val resultBundle = Bundle()
-            resultBundle.putString(ACTION, EXECUTE_COMMAND)
-            resultBundle.putString(COMMAND, command)
+            resultBundle.putString(BundleExtraKeys.ACTION, EXECUTE_COMMAND)
+            resultBundle.putString(BundleExtraKeys.COMMAND, command)
 
             if (selectedId != null && CURRENT_CONNECTION_ID != selectedId) {
-                resultBundle.putString(CONNECTION_ID, selectedId)
+                resultBundle.putString(BundleExtraKeys.CONNECTION_ID, selectedId)
             }
 
             resultIntent.putExtra(EXTRA_BUNDLE, resultBundle)
 
             if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(this@SendCommandLocaleSettingActivity)) {
-                TaskerPlugin.Setting.setVariableReplaceKeys(resultBundle, arrayOf(COMMAND))
+                TaskerPlugin.Setting.setVariableReplaceKeys(
+                    resultBundle,
+                    arrayOf(BundleExtraKeys.COMMAND)
+                )
             }
 
-            LOG.info("onCreate() - result: command={}, action={}", resultBundle.getString(COMMAND), resultBundle.getString(ACTION))
+            LOG.info(
+                "onCreate() - result: command={}, action={}",
+                resultBundle.getString(BundleExtraKeys.COMMAND),
+                resultBundle.getString(BundleExtraKeys.ACTION)
+            )
 
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
@@ -135,7 +142,7 @@ class SendCommandLocaleSettingActivity : Activity() {
 
     private fun selectConnection(connectionListAdapter: ConnectionListAdapter) {
         val spinner = findViewById<Spinner>(R.id.connectionListSpinner)
-        val data = connectionListAdapter.data
+        val data = connectionListAdapter.getData()
         for (i in data.indices) {
             val spec = data[i]
             if (spec.id == selectedId) {

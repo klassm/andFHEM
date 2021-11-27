@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.ericharlow.DragNDrop;
+package com.ericharlow.DragNDrop
 
 /**
  * Implement to handle removing items.
- * An adapter handling the underlying data 
+ * An adapter handling the underlying data
  * will most likely handle this interface.
- * 
+ *
  * @author Eric Harlow
  */
-public interface RemoveListener {
-	
-	/**
-	 * Called when an item is to be removed
-	 * @param which - indicates which item to remove.
-	 */
-	void onRemove(int which);
+interface RemoveListener {
+    /**
+     * Called when an item is to be removed
+     * @param which - indicates which item to remove.
+     */
+    fun onRemove(which: Int)
 }

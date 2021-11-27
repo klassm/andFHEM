@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 import li.klass.fhem.R
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.backend.ToggleableService
 import li.klass.fhem.domain.core.FhemDevice
@@ -58,7 +58,8 @@ class AppWidgetActionHandler @Inject constructor(
             Actions.DEVICE_WIDGET_TARGET_STATE to object : ActionHandler {
                 override fun handle(device: FhemDevice?, connectionId: String?, bundle: Bundle, context: Context) {
                     device ?: return
-                    val targetState = bundle.getString(DEVICE_TARGET_STATE) ?: return
+                    val targetState =
+                        bundle.getString(BundleExtraKeys.DEVICE_TARGET_STATE) ?: return
                     genericDeviceService.setState(device.xmlListDevice, targetState, connectionId, true)
                 }
             },
@@ -72,8 +73,8 @@ class AppWidgetActionHandler @Inject constructor(
 
     fun handle(context: Context, bundle: Bundle, action: String) {
         val handler = handlers[action] ?: return
-        val deviceName = bundle.getString(DEVICE_NAME)
-        val connectionId = bundle.getString(CONNECTION_ID)
+        val deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME)
+        val connectionId = bundle.getString(BundleExtraKeys.CONNECTION_ID)
 
         GlobalScope.launch {
             val device = deviceName?.let { deviceListService.getDeviceForName(it, connectionId) }

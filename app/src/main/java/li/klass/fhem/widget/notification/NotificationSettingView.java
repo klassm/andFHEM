@@ -57,7 +57,7 @@ public class NotificationSettingView {
     }
 
     public void show(Context context) {
-        context.startService(new Intent(Actions.NOTIFICATION_GET_FOR_DEVICE)
+        context.startService(new Intent(Actions.INSTANCE.getNOTIFICATION_GET_FOR_DEVICE())
                 .setClass(context, NotificationIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
@@ -87,7 +87,7 @@ public class NotificationSettingView {
                 .setSingleChoiceItems(descriptions, selected, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        context.startService(new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE)
+                        context.startService(new Intent(Actions.INSTANCE.getNOTIFICATION_SET_FOR_DEVICE())
                                 .setClass(context, NotificationIntentService.class)
                                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
                                 .putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, VALUES[which]));

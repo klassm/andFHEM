@@ -62,8 +62,8 @@ import li.klass.fhem.billing.LicenseService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.connection.ui.AvailableConnectionDataAdapter
-import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.dagger.ScopedFragmentFactory
 import li.klass.fhem.databinding.MainViewBinding
 import li.klass.fhem.login.LoginUIService
@@ -84,14 +84,14 @@ open class AndFHEMMainActivity : AppCompatActivity() {
     inner class Receiver : BroadcastReceiver() {
 
         val intentFilter = IntentFilter().apply {
-            addAction(DO_UPDATE)
-            addAction(SHOW_EXECUTING_DIALOG)
-            addAction(DISMISS_EXECUTING_DIALOG)
-            addAction(SHOW_TOAST)
-            addAction(SHOW_ALERT)
-            addAction(BACK)
-            addAction(CONNECTIONS_CHANGED)
-            addAction(REDRAW)
+            addAction(Actions.DO_UPDATE)
+            addAction(Actions.SHOW_EXECUTING_DIALOG)
+            addAction(Actions.DISMISS_EXECUTING_DIALOG)
+            addAction(Actions.SHOW_TOAST)
+            addAction(Actions.SHOW_ALERT)
+            addAction(Actions.BACK)
+            addAction(Actions.CONNECTIONS_CHANGED)
+            addAction(Actions.REDRAW)
             addAction(ACTION_SEARCH)
             addAction(ACTION_VIEW)
         }
@@ -103,25 +103,39 @@ open class AndFHEMMainActivity : AppCompatActivity() {
                         val action = intent.action ?: return@Runnable
 
                         when (action) {
-                            SHOW_EXECUTING_DIALOG -> {
+                            Actions.SHOW_EXECUTING_DIALOG -> {
                                 updateShowRefreshProgressIcon(true)
                             }
-                            DISMISS_EXECUTING_DIALOG -> {
+                            Actions.DISMISS_EXECUTING_DIALOG -> {
                                 updateShowRefreshProgressIcon(false)
                             }
-                            SHOW_TOAST -> {
-                                var content: String? = intent.getStringExtra(CONTENT)
+                            Actions.SHOW_TOAST -> {
+                                var content: String? =
+                                    intent.getStringExtra(BundleExtraKeys.CONTENT)
                                 if (content == null) {
-                                    content = getString(intent.getIntExtra(STRING_ID, 0))
+                                    content =
+                                        getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0))
                                 }
-                                Toast.makeText(this@AndFHEMMainActivity, content, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@AndFHEMMainActivity,
+                                    content,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                            SHOW_ALERT -> {
-                                DialogUtil.showAlertDialog(this@AndFHEMMainActivity,
-                                        intent.getIntExtra(ALERT_TITLE_ID, R.string.blank),
-                                        intent.getIntExtra(ALERT_CONTENT_ID, R.string.blank))
+                            Actions.SHOW_ALERT -> {
+                                DialogUtil.showAlertDialog(
+                                    this@AndFHEMMainActivity,
+                                    intent.getIntExtra(
+                                        BundleExtraKeys.ALERT_TITLE_ID,
+                                        R.string.blank
+                                    ),
+                                    intent.getIntExtra(
+                                        BundleExtraKeys.ALERT_CONTENT_ID,
+                                        R.string.blank
+                                    )
+                                )
                             }
-                            CONNECTIONS_CHANGED -> {
+                            Actions.CONNECTIONS_CHANGED -> {
                                 if (availableConnectionDataAdapter != null) {
                                     GlobalScope.launch(Dispatchers.Main) {
                                         launch {
@@ -206,10 +220,13 @@ open class AndFHEMMainActivity : AppCompatActivity() {
     }
 
     private fun determineStartupFragmentFromProperties(): Int {
-        val hasFavorites = intent?.extras?.getBoolean(HAS_FAVORITES) ?: false
-        val startupView = applicationProperties.getStringSharedPreference(SettingsKeys.STARTUP_VIEW,
-                FAVORITES.name)
-        var preferencesStartupFragment: FragmentType? = forEnumName(startupView) ?: ALL_DEVICES
+        val hasFavorites = intent?.extras?.getBoolean(BundleExtraKeys.HAS_FAVORITES) ?: false
+        val startupView = applicationProperties.getStringSharedPreference(
+            SettingsKeys.STARTUP_VIEW,
+            FAVORITES.name
+        )
+        var preferencesStartupFragment: FragmentType? =
+            FragmentType.forEnumName(startupView) ?: ALL_DEVICES
         logger.debug("handleStartupFragment() : startup view is $preferencesStartupFragment")
 
         if (preferencesStartupFragment == null) {
@@ -456,7 +473,7 @@ open class AndFHEMMainActivity : AppCompatActivity() {
             onBackPressed()
             return true
         } else if (item.itemId == R.id.menu_refresh) {
-            sendBroadcast(Intent(DO_UPDATE).putExtra(DO_REFRESH, true))
+            sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true))
             return true
         }
 

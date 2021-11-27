@@ -61,7 +61,7 @@ public class UpdatingResultReceiver extends ResultReceiver {
         super.onReceiveResult(resultCode, resultData);
 
         if (resultCode == ResultCodes.SUCCESS) {
-            context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+            context.sendBroadcast(new Intent(Actions.INSTANCE.getDO_UPDATE()));
         }
     }
 }

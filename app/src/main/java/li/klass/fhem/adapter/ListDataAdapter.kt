@@ -21,90 +21,72 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.adapter
 
-package li.klass.fhem.adapter;
+import android.content.Context
+import android.database.DataSetObserver
+import android.view.LayoutInflater
+import android.widget.BaseAdapter
+import java.util.*
 
-import android.content.Context;
-import android.database.DataSetObserver;
-import android.view.LayoutInflater;
-import android.widget.BaseAdapter;
+abstract class ListDataAdapter<T : Comparable<T>?> @JvmOverloads constructor(
+    val context: Context,
+    @Volatile private var contents: MutableList<T>?,
+    private val comparator: Comparator<T>? = null
+) : BaseAdapter() {
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+    val inflater: LayoutInflater = LayoutInflater.from(context)
 
-public abstract class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
-
-    protected volatile List<T> data;
-    protected LayoutInflater inflater;
-    protected Context context;
-    private final Comparator<T> comparator;
-
-    public ListDataAdapter(Context context, List<T> data) {
-        this(context, data, null);
+    init {
+        sortData()
     }
 
-    public ListDataAdapter(Context context, List<T> data, Comparator<T> comparator) {
-        this.comparator = comparator;
-        this.data = data;
-        this.inflater = LayoutInflater.from(context);
-        this.context = context;
-        sortData();
+    open fun updateData(newData: MutableList<T>?) {
+        contents = newData
+
+        sortData()
+        notifyDataSetChanged()
     }
 
-    public void updateData(List<T> newData) {
-        this.data = new ArrayList<>(newData);
-        sortData();
-        notifyDataSetChanged();
+    override fun getCount(): Int {
+        return if (contents == null) 0 else contents!!.size
     }
 
-    @Override
-    public int getCount() {
-        if (data == null) return 0;
-        return data.size();
+    override fun getItem(i: Int): Any {
+        return contents!![i] as Any
     }
 
-    @Override
-    public Object getItem(int i) {
-        return data.get(i);
+    override fun getItemId(i: Int): Long {
+        return i.toLong()
     }
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    private void sortData() {
-        if (!doSort()) return;
-
-        if (data == null || data.size() == 0) return;
+    private fun sortData() {
+        if (!doSort()) return
+        if (contents == null || contents!!.size == 0) return
         if (comparator != null) {
-            Collections.sort(data, comparator);
+            Collections.sort(contents, comparator)
         } else {
-            Collections.sort(data);
+            Collections.sort(contents)
         }
     }
 
-    @Override
-    public boolean isEmpty() {
-        return data == null || data.size() == 0;
+    override fun isEmpty(): Boolean {
+        return contents == null || contents!!.size == 0
     }
 
-    public List<T> getData() {
-        return Collections.unmodifiableList(data);
+    fun getData(): List<T> {
+        return Collections.unmodifiableList(contents)
     }
 
-    protected boolean doSort() {
-        return true;
+    protected open fun doSort(): Boolean {
+        return true
     }
 
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
+    override fun unregisterDataSetObserver(observer: DataSetObserver) {
         // Workaround for a silly bug in Android 4
         // see http://code.google.com/p/android/issues/detail?id=22946 for details
         if (observer != null) {
-            super.unregisterDataSetObserver(observer);
+            super.unregisterDataSetObserver(observer)
         }
     }
 }

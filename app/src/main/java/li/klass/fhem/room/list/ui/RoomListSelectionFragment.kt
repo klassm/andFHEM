@@ -137,11 +137,11 @@ abstract class RoomListSelectionFragment(
 
         if (selectableRooms.isEmpty()) {
             showEmptyView()
-            adapter.updateData(selectableRooms)
+            adapter.updateData(selectableRooms.toMutableList())
 
         } else {
             adapter.updateData(selectableRooms.toMutableList(), selectedRoomName)
-            scrollToSelectedRoom(selectedRoomName, adapter.data)
+            scrollToSelectedRoom(selectedRoomName, adapter.getData())
 
             onUpdateDataFinished()
         }

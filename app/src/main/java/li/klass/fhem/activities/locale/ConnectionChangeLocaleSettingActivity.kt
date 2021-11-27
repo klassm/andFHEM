@@ -74,7 +74,7 @@ class ConnectionChangeLocaleSettingActivity : Activity() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 selectedId = view.tag as String
-                selectedName = connectionListAdapter.data[i].name
+                selectedName = connectionListAdapter.getData()?.get(i)?.name ?: ""
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
@@ -122,7 +122,7 @@ class ConnectionChangeLocaleSettingActivity : Activity() {
 
     private fun selectConnection(connectionListAdapter: ConnectionListAdapter) {
         val spinner = findViewById<Spinner>(R.id.connectionListSpinner)
-        val data = connectionListAdapter.data
+        val data = connectionListAdapter.getData()
         for (i in data.indices) {
             val spec = data[i]
             if (spec.id == selectedId) {

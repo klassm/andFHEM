@@ -1,28 +1,17 @@
-package li.klass.fhem.activities.core;
+package li.klass.fhem.activities.core
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
+import java.util.*
 
-import java.util.TimerTask;
-
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-
-public class UpdateTimerTask extends TimerTask {
-
-    private final Context context;
-
-    public UpdateTimerTask(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public void run() {
-        Log.i(UpdateTimerTask.class.getName(), "send broadcast for device list update");
-
-        Intent updateIntent = new Intent(Actions.DO_UPDATE);
-        updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-        context.sendBroadcast(updateIntent);
+class UpdateTimerTask(private val context: Context) : TimerTask() {
+    override fun run() {
+        Log.i(UpdateTimerTask::class.java.name, "send broadcast for device list update")
+        val updateIntent = Intent(Actions.DO_UPDATE)
+        updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true)
+        context.sendBroadcast(updateIntent)
     }
 }

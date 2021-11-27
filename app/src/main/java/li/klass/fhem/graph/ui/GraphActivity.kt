@@ -48,7 +48,7 @@ import kotlinx.coroutines.*
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.databinding.ChartBinding
 import li.klass.fhem.devices.ui.ChartMarkerView
 import li.klass.fhem.domain.core.FhemDevice
@@ -88,18 +88,19 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
         (application as AndFHEMApplication).daggerComponent.inject(this)
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
-            startDate = savedInstanceState.getSerializable(START_DATE) as DateTime?
+        if (savedInstanceState != null && savedInstanceState.containsKey(BundleExtraKeys.START_DATE)) {
+            startDate = savedInstanceState.getSerializable(BundleExtraKeys.START_DATE) as DateTime?
         }
-        if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
-            endDate = savedInstanceState.getSerializable(END_DATE) as DateTime?
+        if (savedInstanceState != null && savedInstanceState.containsKey(BundleExtraKeys.END_DATE)) {
+            endDate = savedInstanceState.getSerializable(BundleExtraKeys.END_DATE) as DateTime?
         }
 
         val extras = intent.extras ?: return
-        deviceName = extras.getString(DEVICE_NAME)!!
-        connectionId = extras.getString(CONNECTION_ID)
+        deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME)!!
+        connectionId = extras.getString(BundleExtraKeys.CONNECTION_ID)
 
-        svgGraphDefinition = extras.getSerializable(DEVICE_GRAPH_DEFINITION) as SvgGraphDefinition
+        svgGraphDefinition =
+            extras.getSerializable(BundleExtraKeys.DEVICE_GRAPH_DEFINITION) as SvgGraphDefinition
 
 
         supportActionBar!!.navigationMode = ActionBar.NAVIGATION_MODE_STANDARD
@@ -129,7 +130,14 @@ class GraphActivity : AppCompatActivity(), Updateable {
         coroutineScope {
             showDialog(DIALOG_EXECUTING)
             val result = withContext(Dispatchers.IO) {
-                graphService.getGraphData(device, connectionId, svgGraphDefinition, startDate, endDate, myContext)
+                graphService.getGraphData(
+                    device,
+                    connectionId,
+                    svgGraphDefinition,
+                    startDate,
+                    endDate,
+                    myContext
+                )
             }
             dismissDialog(DIALOG_EXECUTING)
 
@@ -210,7 +218,10 @@ class GraphActivity : AppCompatActivity(), Updateable {
         }
     }
 
-    private fun handleDiscreteValue(gPlotSeries: GPlotSeries, values: List<GraphEntry>): List<GraphEntry> {
+    private fun handleDiscreteValue(
+        gPlotSeries: GPlotSeries,
+        values: List<GraphEntry>
+    ): List<GraphEntry> {
         if (!isDiscreteSeries(gPlotSeries)) {
             return values
         }
@@ -243,8 +254,8 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
     private fun createLineDataFor(graphData: Map<GPlotSeries, List<GraphEntry>>): LineData? {
         val lineDataItems = graphData
-                .filter { it.value.isNotEmpty() }
-                .map { lineDataSetFrom(it) }.toList()
+            .filter { it.value.isNotEmpty() }
+            .map { lineDataSetFrom(it) }.toList()
         return if (lineDataItems.isEmpty()) null else LineData(lineDataItems)
     }
 
@@ -259,8 +270,10 @@ class GraphActivity : AppCompatActivity(), Updateable {
                 YAxis.AxisDependency.RIGHT
 
             val seriesColor =
-                    theme.resolveColor((series.viewSpec.color
-                            ?: GPlotSeries.SeriesColor.RED).colorAttribute)
+                theme.resolveColor(
+                    (series.viewSpec.color
+                        ?: GPlotSeries.SeriesColor.RED).colorAttribute
+                )
             color = seriesColor
             setCircleColor(seriesColor)
             fillColor = seriesColor
@@ -295,9 +308,12 @@ class GraphActivity : AppCompatActivity(), Updateable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_changeStartEndDate -> {
-                startActivityForResult(Intent(this, ChartingDateSelectionActivity::class.java)
-                        .putExtra(DEVICE_NAME, deviceName).putExtra(START_DATE, startDate)
-                        .putExtra(END_DATE, endDate), REQUEST_TIME_CHANGE)
+                startActivityForResult(
+                    Intent(this, ChartingDateSelectionActivity::class.java)
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                        .putExtra(BundleExtraKeys.START_DATE, startDate)
+                        .putExtra(BundleExtraKeys.END_DATE, endDate), REQUEST_TIME_CHANGE
+                )
                 return true
             }
         }
@@ -312,8 +328,8 @@ class GraphActivity : AppCompatActivity(), Updateable {
             val bundle = resultIntent.extras ?: return
             when (requestCode) {
                 REQUEST_TIME_CHANGE -> {
-                    startDate = bundle.getSerializable(START_DATE) as DateTime
-                    endDate = bundle.getSerializable(END_DATE) as DateTime
+                    startDate = bundle.getSerializable(BundleExtraKeys.START_DATE) as DateTime
+                    endDate = bundle.getSerializable(BundleExtraKeys.END_DATE) as DateTime
                     GlobalScope.launch(Dispatchers.Main) {
                         update(false)
                     }
@@ -324,8 +340,8 @@ class GraphActivity : AppCompatActivity(), Updateable {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable(START_DATE, startDate)
-        outState.putSerializable(END_DATE, endDate)
+        outState.putSerializable(BundleExtraKeys.START_DATE, startDate)
+        outState.putSerializable(BundleExtraKeys.END_DATE, endDate)
     }
 
     @Suppress("OverridingDeprecatedMember")
@@ -333,7 +349,11 @@ class GraphActivity : AppCompatActivity(), Updateable {
         super.onCreateDialog(id)
 
         when (id) {
-            DIALOG_EXECUTING -> return ProgressDialog.show(this, "", resources.getString(R.string.executing))
+            DIALOG_EXECUTING -> return ProgressDialog.show(
+                this,
+                "",
+                resources.getString(R.string.executing)
+            )
         }
         return null
     }
@@ -356,11 +376,18 @@ class GraphActivity : AppCompatActivity(), Updateable {
          * *
          * @param graphDefinition series descriptions each representing one series in the resulting chart
          */
-        fun showChart(context: Context, device: FhemDevice, connectionId: String?, graphDefinition: SvgGraphDefinition) {
-            context.startActivity(Intent(context, GraphActivity::class.java)
-                    .putExtra(DEVICE_NAME, device.name)
-                    .putExtra(CONNECTION_ID, connectionId)
-                    .putExtra(DEVICE_GRAPH_DEFINITION, graphDefinition))
+        fun showChart(
+            context: Context,
+            device: FhemDevice,
+            connectionId: String?,
+            graphDefinition: SvgGraphDefinition
+        ) {
+            context.startActivity(
+                Intent(context, GraphActivity::class.java)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
+                    .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId)
+                    .putExtra(BundleExtraKeys.DEVICE_GRAPH_DEFINITION, graphDefinition)
+            )
         }
     }
 }

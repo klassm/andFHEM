@@ -20,13 +20,10 @@
  *    Free Software Foundation, Inc.
  *    51 Franklin Street, Fifth Floor
  */
+package li.klass.fhem.util
 
-package li.klass.fhem.util;
-
-public class Reject {
-    public static <T> void ifNull(T toTest) {
-        if (toTest == null) {
-            throw new IllegalArgumentException("object was null, but was expected to be not null");
-        }
+object Reject {
+    fun <T> ifNull(toTest: T?) {
+        requireNotNull(toTest) { "object was null, but was expected to be not null" }
     }
 }

@@ -38,13 +38,12 @@ import androidx.fragment.app.Fragment
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
-import li.klass.fhem.constants.Actions.*
-import li.klass.fhem.constants.BundleExtraKeys.*
+import li.klass.fhem.constants.Actions
+import li.klass.fhem.constants.BundleExtraKeys
 import li.klass.fhem.error.ErrorHolder
 import li.klass.fhem.service.ResendLastFailedCommandService
 import li.klass.fhem.util.navigation.loadFragmentInto
 import li.klass.fhem.widget.SwipeRefreshLayout
-import org.jetbrains.anko.support.v4.onRefresh
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -205,10 +204,10 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
     inner class UIBroadcastReceiver(private val activity: androidx.fragment.app.FragmentActivity) : BroadcastReceiver() {
 
         private val intentFilter: IntentFilter = IntentFilter().apply {
-            addAction(CONNECTION_ERROR)
-            addAction(CONNECTION_ERROR_HIDE)
-            addAction(DO_UPDATE)
-            addAction(DISMISS_EXECUTING_DIALOG)
+            addAction(Actions.CONNECTION_ERROR)
+            addAction(Actions.CONNECTION_ERROR_HIDE)
+            addAction(Actions.DO_UPDATE)
+            addAction(Actions.DISMISS_EXECUTING_DIALOG)
         }
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -218,25 +217,25 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
 
                 try {
                     when (action) {
-                        CONNECTION_ERROR -> {
-                            val content = if (intent.hasExtra(STRING_ID)) {
-                                context.getString(intent.getIntExtra(STRING_ID, -1))
+                        Actions.CONNECTION_ERROR -> {
+                            val content = if (intent.hasExtra(BundleExtraKeys.STRING_ID)) {
+                                context.getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, -1))
                             } else {
-                                intent.getStringExtra(STRING)
+                                intent.getStringExtra(BundleExtraKeys.STRING)
                             } ?: "unknown error"
                             showConnectionError(content)
                         }
-                        CONNECTION_ERROR_HIDE -> {
+                        Actions.CONNECTION_ERROR_HIDE -> {
                             hideConnectionError()
                         }
-                        DO_UPDATE -> {
-                            updateAsync(intent.getBooleanExtra(DO_REFRESH, false))
+                        Actions.DO_UPDATE -> {
+                            updateAsync(intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false))
                         }
-                        DISMISS_EXECUTING_DIALOG -> {
+                        Actions.DISMISS_EXECUTING_DIALOG -> {
                             view?.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
-                                    ?.let {
-                                        it.isRefreshing = false
-                                    }
+                                ?.let {
+                                    it.isRefreshing = false
+                                }
                         }
                     }
                 } catch (e: Exception) {
