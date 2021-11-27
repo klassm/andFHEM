@@ -1,55 +1,52 @@
-package li.klass.fhem.widget;
+package li.klass.fhem.widget
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.ViewConfiguration;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.MotionEvent
+import android.view.ViewConfiguration
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
-public class SwipeRefreshLayout extends androidx.swiperefreshlayout.widget.SwipeRefreshLayout {
-    private int mTouchSlop;
+class SwipeRefreshLayout(context: Context, attrs: AttributeSet?) : SwipeRefreshLayout(
+    context, attrs
+) {
+    private val mTouchSlop: Int
+    private var mDownX = 0f
+    private var mHorizontalSwipe = false
+    private var mChildScrollDelegate: ChildScrollDelegate? = null
 
-    private float mDownX;
-    private boolean mHorizontalSwipe;
-    private ChildScrollDelegate mChildScrollDelegate;
-
-    public SwipeRefreshLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+    fun setChildScrollDelegate(delegate: ChildScrollDelegate?) {
+        mChildScrollDelegate = delegate
     }
 
-    public void setChildScrollDelegate(ChildScrollDelegate delegate) {
-        mChildScrollDelegate = delegate;
-    }
-
-    @Override
-    public boolean canChildScrollUp() {
-        return super.canChildScrollUp()
+    override fun canChildScrollUp(): Boolean {
+        return (super.canChildScrollUp()
                 || (mChildScrollDelegate != null
-                && mChildScrollDelegate.canChildScrollUp());
+                && mChildScrollDelegate!!.canChildScrollUp()))
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mDownX = event.getX();
-                mHorizontalSwipe = false;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                final float eventX = event.getX();
-                float xDiff = Math.abs(eventX - mDownX);
-
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                mDownX = event.x
+                mHorizontalSwipe = false
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val eventX = event.x
+                val xDiff = Math.abs(eventX - mDownX)
                 if (mHorizontalSwipe || xDiff > mTouchSlop) {
-                    mHorizontalSwipe = true;
-                    return false;
+                    mHorizontalSwipe = true
+                    return false
                 }
-                break;
+            }
         }
-
-        return super.onInterceptTouchEvent(event);
+        return super.onInterceptTouchEvent(event)
     }
 
-    public interface ChildScrollDelegate {
-        boolean canChildScrollUp();
+    interface ChildScrollDelegate {
+        fun canChildScrollUp(): Boolean
+    }
+
+    init {
+        mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
     }
 }

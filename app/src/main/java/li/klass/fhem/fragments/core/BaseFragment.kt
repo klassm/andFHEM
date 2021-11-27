@@ -71,12 +71,12 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
 
         view.findViewById<SwipeRefreshLayout>(R.id.refresh_layout)?.let {
-            it.onRefresh {
+            it.setOnRefreshListener {
                 updateAsync(true)
             }
-            it.setChildScrollDelegate {
-                canChildScrollUp()
-            }
+            it.setChildScrollDelegate(object : SwipeRefreshLayout.ChildScrollDelegate {
+                override fun canChildScrollUp(): Boolean = this@BaseFragment.canChildScrollUp()
+            })
         }
 
         updateAsync(false)
