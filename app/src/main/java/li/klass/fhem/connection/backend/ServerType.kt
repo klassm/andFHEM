@@ -21,42 +21,47 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.connection.backend
 
-package li.klass.fhem.connection.backend;
+import li.klass.fhem.util.ApplicationProperties
 
-import li.klass.fhem.util.ApplicationProperties;
-
-public enum ServerType {
-    DUMMY(new ConnectionProvider() {
-        @Override
-        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-            return new DummyDataConnection(fhemServerSpec, applicationProperties);
+enum class ServerType(private val provider: ConnectionProvider) {
+    DUMMY(object : ConnectionProvider {
+        override fun getFor(
+            fhemServerSpec: FHEMServerSpec?,
+            applicationProperties: ApplicationProperties?
+        ): FHEMConnection {
+            return DummyDataConnection(fhemServerSpec, applicationProperties)
         }
     }),
-    FHEMWEB(new ConnectionProvider() {
-        @Override
-        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-            return new FHEMWEBConnection(fhemServerSpec, applicationProperties);
+    FHEMWEB(object : ConnectionProvider {
+        override fun getFor(
+            fhemServerSpec: FHEMServerSpec?,
+            applicationProperties: ApplicationProperties?
+        ): FHEMConnection {
+            return FHEMWEBConnection(fhemServerSpec!!, applicationProperties!!)
         }
     }),
-    TELNET(new ConnectionProvider() {
-        @Override
-        public FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-            return new TelnetConnection(fhemServerSpec, applicationProperties);
+    TELNET(object : ConnectionProvider {
+        override fun getFor(
+            fhemServerSpec: FHEMServerSpec?,
+            applicationProperties: ApplicationProperties?
+        ): FHEMConnection {
+            return TelnetConnection(fhemServerSpec, applicationProperties)
         }
     });
 
-    private final ConnectionProvider provider;
-
-    ServerType(ConnectionProvider provider) {
-        this.provider = provider;
-    }
-
-    public FHEMConnection getConnectionFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties) {
-        return provider.getFor(fhemServerSpec, applicationProperties);
+    fun getConnectionFor(
+        fhemServerSpec: FHEMServerSpec?,
+        applicationProperties: ApplicationProperties?
+    ): FHEMConnection {
+        return provider.getFor(fhemServerSpec, applicationProperties)
     }
 
     private interface ConnectionProvider {
-        FHEMConnection getFor(FHEMServerSpec fhemServerSpec, ApplicationProperties applicationProperties);
+        fun getFor(
+            fhemServerSpec: FHEMServerSpec?,
+            applicationProperties: ApplicationProperties?
+        ): FHEMConnection
     }
 }

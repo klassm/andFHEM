@@ -21,47 +21,32 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.constants
 
-package li.klass.fhem.constants;
-
-public class Actions {
-    private static final String prefix = Actions.class.getName() + ".";
-
-    public static final String SHOW_FRAGMENT = prefix + "SHOW_FRAGMENT";
-
-    public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";
-    public static final String DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG";
-    public static final String BACK = prefix + "BACK";
-
-    public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
-    public static final String SHOW_ALERT = prefix + "SHOW_ALERT";
-
-    public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
-    public static final String DEVICE_WIDGET_TARGET_STATE = prefix + "DEVICE_WIDGET_TARGET_STATE";
-
-    public static final String DO_UPDATE = prefix + "DO_UPDATE";
-    public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";
-    public static final String DEVICES_UPDATED = prefix + "REMOTE_DEVICES_UPDATED";
-    public static final String REDRAW = prefix + "REDRAW";
-
-    public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";
-
-    public static final String REDRAW_WIDGET = prefix + "REDRAW_WIDGET";
-    public static final String WIDGET_REQUEST_UPDATE = prefix + "WIDGET_REQUEST_UPDATE";
-
-    public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
-
-    public static final String NOTIFICATION_SET_FOR_DEVICE = prefix + "NOTIFICATION_SET_FOR_DEVICE";
-    public static final String NOTIFICATION_GET_FOR_DEVICE = prefix + "NOTIFICATION_GET_FOR_DEVICE";
-
-    public static final String CONNECTIONS_CHANGED = prefix + "CONNECTIONS_CHANGED";
-    public static final String CONNECTION_UPDATE = prefix + "CONNECTION_UPDATE";
-
-    public static final String CONNECTION_ERROR = prefix + "CONNECTION_ERROR";
-    public static final String CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE";
-
-
-    public static final String EXT_DEVICE_STATE_NOTIFY = prefix + "EXT_DEVICE_STATE_NOTIFY";
-
-    public static final String UPDATE_NEXT_ALARM_CLOCK = prefix + "NEXT_ALARM_CLOCK";
+object Actions {
+    private val prefix = Actions::class.java.name + "."
+    val SHOW_FRAGMENT = prefix + "SHOW_FRAGMENT"
+    val SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG"
+    val DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG"
+    val BACK = prefix + "BACK"
+    val SHOW_TOAST = prefix + "SHOW_TOAST"
+    val SHOW_ALERT = prefix + "SHOW_ALERT"
+    val DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE"
+    val DEVICE_WIDGET_TARGET_STATE = prefix + "DEVICE_WIDGET_TARGET_STATE"
+    val DO_UPDATE = prefix + "DO_UPDATE"
+    val DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE"
+    val DEVICES_UPDATED = prefix + "REMOTE_DEVICES_UPDATED"
+    val REDRAW = prefix + "REDRAW"
+    val EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND"
+    val REDRAW_WIDGET = prefix + "REDRAW_WIDGET"
+    val WIDGET_REQUEST_UPDATE = prefix + "WIDGET_REQUEST_UPDATE"
+    val TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK"
+    val NOTIFICATION_SET_FOR_DEVICE = prefix + "NOTIFICATION_SET_FOR_DEVICE"
+    val NOTIFICATION_GET_FOR_DEVICE = prefix + "NOTIFICATION_GET_FOR_DEVICE"
+    val CONNECTIONS_CHANGED = prefix + "CONNECTIONS_CHANGED"
+    val CONNECTION_UPDATE = prefix + "CONNECTION_UPDATE"
+    val CONNECTION_ERROR = prefix + "CONNECTION_ERROR"
+    val CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE"
+    val EXT_DEVICE_STATE_NOTIFY = prefix + "EXT_DEVICE_STATE_NOTIFY"
+    val UPDATE_NEXT_ALARM_CLOCK = prefix + "NEXT_ALARM_CLOCK"
 }

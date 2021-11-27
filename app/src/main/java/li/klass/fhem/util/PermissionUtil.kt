@@ -21,26 +21,24 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.util
 
-package li.klass.fhem.util;
+import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
-import android.app.Activity;
-import android.content.pm.PackageManager;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-public class PermissionUtil {
-    public static boolean checkPermission(Activity activity, String permission) {
-        int permissionCheck = ContextCompat.checkSelfPermission(activity, permission);
+object PermissionUtil {
+    fun checkPermission(activity: Activity, permission: String): Boolean {
+        val permissionCheck = ContextCompat.checkSelfPermission(activity, permission)
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            requestPermission(activity, permission);
-            return false;
+            requestPermission(activity, permission)
+            return false
         }
-        return true;
+        return true
     }
 
-    private static void requestPermission(Activity activity, String permission) {
-        ActivityCompat.requestPermissions(activity, new String[]{permission}, 0);
+    private fun requestPermission(activity: Activity, permission: String) {
+        ActivityCompat.requestPermissions(activity, arrayOf(permission), 0)
     }
 }
