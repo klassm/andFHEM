@@ -21,48 +21,30 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.domain.core
 
-package li.klass.fhem.domain.core;
+import android.content.Context
+import li.klass.fhem.R
 
-import android.content.Context;
+enum class DeviceFunctionality(val captionId: Int) {
+    SWITCH(R.string.functionalitySwitch), DIMMER(R.string.functionalityDimmer), WEATHER(R.string.functionalityWeather), HEATING(
+        R.string.functionalityHeating
+    ),
+    TEMPERATURE(R.string.functionalityTemperature), NETWORK(R.string.functionalityNetwork), USAGE(R.string.functionalityUsage), WINDOW(
+        R.string.functionalityWindow
+    ),
+    SMOKE_DETECTOR(R.string.functionalitySmokeDetector), FILL_STATE(R.string.functionalityFillState), MOTION_DETECTOR(
+        R.string.functionalityMotionDetector
+    ),
+    KEY(R.string.functionalityKey), NOTIFY(R.string.functionalityNotify), DUMMY(R.string.functionalityDummy), CALL_MONITOR(
+        R.string.functionalityCallMonitor
+    ),
+    FHEM(R.string.functionalityFHEM), LOG(R.string.functionalityLog), FLOORPLAN(R.string.functionalityFloorplan), REMOTE_CONTROL(
+        R.string.functionalityRemoteControl
+    ),
+    WEB_LINK(R.string.functionalityWebView), UNKNOWN(R.string.functionalityUnknown), PRESENCE(R.string.functionalityPresence);
 
-import li.klass.fhem.R;
-
-public enum DeviceFunctionality {
-    SWITCH(R.string.functionalitySwitch),
-    DIMMER(R.string.functionalityDimmer),
-    WEATHER(R.string.functionalityWeather),
-    HEATING(R.string.functionalityHeating),
-    TEMPERATURE(R.string.functionalityTemperature),
-    NETWORK(R.string.functionalityNetwork),
-    USAGE(R.string.functionalityUsage),
-    WINDOW(R.string.functionalityWindow),
-    SMOKE_DETECTOR(R.string.functionalitySmokeDetector),
-    FILL_STATE(R.string.functionalityFillState),
-    MOTION_DETECTOR(R.string.functionalityMotionDetector),
-    KEY(R.string.functionalityKey),
-    NOTIFY(R.string.functionalityNotify),
-    DUMMY(R.string.functionalityDummy),
-    CALL_MONITOR(R.string.functionalityCallMonitor),
-    FHEM(R.string.functionalityFHEM),
-    LOG(R.string.functionalityLog),
-    FLOORPLAN(R.string.functionalityFloorplan),
-    REMOTE_CONTROL(R.string.functionalityRemoteControl),
-    WEB_LINK(R.string.functionalityWebView),
-    UNKNOWN(R.string.functionalityUnknown),
-    PRESENCE(R.string.functionalityPresence);
-
-    private final int captionId;
-
-    DeviceFunctionality(int captionId) {
-        this.captionId = captionId;
-    }
-
-    public int getCaptionId() {
-        return captionId;
-    }
-
-    public String getCaptionText(Context context) {
-        return context.getString(captionId);
+    fun getCaptionText(context: Context): String {
+        return context.getString(captionId)
     }
 }

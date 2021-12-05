@@ -44,12 +44,15 @@ enum class CulHmSubType(val functionality: DeviceFunctionality) {
     companion object {
 
         fun subTypeFor(value: String): CulHmSubType? = when {
-            "DIMMER".equals(value, ignoreCase = true) || "BLINDACTUATOR".equals(value, ignoreCase = true) -> DIMMER
+            "DIMMER".equals(value, ignoreCase = true) || "BLINDACTUATOR".equals(
+                value,
+                ignoreCase = true
+            ) -> DIMMER
             "SWITCH".equals(value, ignoreCase = true) -> SWITCH
-            "SMOKEDETECTOR".equals(value, ignoreCase = true) -> CulHmSubType.SMOKE_DETECTOR
-            "THREESTATESENSOR".equals(value, ignoreCase = true) -> CulHmSubType.THREE_STATE
-            "THSensor".equals(value, ignoreCase = true) -> CulHmSubType.TH
-            "KFM100".equals(value, ignoreCase = true) -> CulHmSubType.FILL_STATE
+            "SMOKEDETECTOR".equals(value, ignoreCase = true) -> SMOKE_DETECTOR
+            "THREESTATESENSOR".equals(value, ignoreCase = true) -> THREE_STATE
+            "THSensor".equals(value, ignoreCase = true) -> TH
+            "KFM100".equals(value, ignoreCase = true) -> FILL_STATE
             "THERMOSTAT".equals(value, ignoreCase = true) -> THERMOSTAT
             "MOTIONDETECTOR".equals(value, ignoreCase = true) -> MOTION
             "KEYMATIC".equals(value, ignoreCase = true) -> KEYMATIC

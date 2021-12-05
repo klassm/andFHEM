@@ -35,14 +35,22 @@ import javax.inject.Singleton
 class CulHmDeviceGroupProvider @Inject
 constructor() : DeviceGroupProvider("CUL_HM") {
 
-    override fun groupFor(xmlListDevice: XmlListDevice, context: Context): String? {
-        val subTypeAttribute = xmlListDevice.getAttribute("subType") ?: return null
+    private fun getFunctionality(xmlListDevice: XmlListDevice): DeviceFunctionality? {
+        val typeAttribute =
+            xmlListDevice.getAttribute("subType") ?: xmlListDevice.getAttribute("genericDeviceType")
+            ?: return null
         val model = xmlListDevice.getAttribute("model")
-        val functionality = CulHmSubType.subTypeFor(subTypeAttribute)?.functionality
+        val functionality = CulHmSubType.subTypeFor(typeAttribute)?.functionality
+        val channel1 = xmlListDevice.getInternal("channel_01")
+        if (channel1 != null) {
+            return DeviceFunctionality.FHEM
+        }
 
-        return (functionality ?: functionalityForModel(model))
-                ?.getCaptionText(context)
+        return functionality ?: functionalityForModel(model)
     }
+
+    override fun groupFor(xmlListDevice: XmlListDevice, context: Context): String? =
+        getFunctionality(xmlListDevice)?.getCaptionText(context)
 
     private fun functionalityForModel(model: String?): DeviceFunctionality? {
         return when (model) {
