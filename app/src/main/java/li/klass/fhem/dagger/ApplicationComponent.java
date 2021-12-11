@@ -84,7 +84,7 @@ import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandService;
 import li.klass.fhem.settings.SettingsActivity;
-import li.klass.fhem.settings.SettingsFragment;
+import li.klass.fhem.settings.fragments.SettingsBackupFragment;
 import li.klass.fhem.update.backend.DeviceListUpdateService;
 import li.klass.fhem.update.backend.device.configuration.DeviceConfigurationProvider;
 import li.klass.fhem.update.backend.device.configuration.Sanitiser;
@@ -107,6 +107,8 @@ public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication
     Sanitiser getSanitiser();
 
     OnOffBehavior getOnOffBehavior();
+
+    void inject(SettingsBackupFragment object);
 
     void inject(DeviceFunctionalityOrderPreference object);
 
@@ -213,8 +215,6 @@ public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication
     void inject(MySearchSuggestionsProvider mySearchSuggestionsProvider);
 
     void inject(SettingsActivity settingsActivity);
-
-    void inject(SettingsFragment settingsFragment);
 
     void inject(AppWidgetActionBroadcastReceiver appWidgetActionBroadcastReceiver);
 

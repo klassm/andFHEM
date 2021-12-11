@@ -347,9 +347,9 @@
     <string name="settingsWidgetRemoteUpdateSummaryOn">Widgets may request new data from the server</string>
     <string name="settingsWidgetRemoteUpdateSummaryOff">Widgets may not request new data from the server</string>
     <string name="settingsDeviceColumnWidth">Device column width</string>
-    <string name="settingsDeviceColumnWidthSummary">Device columns have a minimum width of %1$s dp</string>
+    <string name="settingsDeviceColumnWidthSummary">Device columns have a minimum width of the given value in dp</string>
     <string name="settingsDeviceListPaddingRight">Device lists right padding</string>
-    <string name="settingsDeviceListPaddingRightSummary">Device lists will keep a right padding of %1$s dp</string>
+    <string name="settingsDeviceListPaddingRightSummary">Device lists will keep a right padding of the given value in dp</string>
     <string name="settingsWidgetUpdateTimeWLAN">WLAN update interval</string>
     <string name="settingsWidgetUpdateTimeWLANSummary">When connected to a WiFi network widgets will be updated every %1$s</string>
     <string name="settingsWidgetUpdateTimeMobile">Mobile update interval</string>
@@ -374,9 +374,9 @@
     <string name="settingsStartupViewSummary">On application start \'%1$s\' will be shown</string>
     <string name="settingsTheme">Theme</string>
     <string name="settingsConnectionTimeout">Connection timeout</string>
-    <string name="settingsConnectionTimeoutSummary">Stop the connection attempt if the server does not respond within %1$s seconds</string>
+    <string name="settingsConnectionTimeoutSummary">Stop the connection attempt if the server does not respond within the given amount in seconds</string>
     <string name="settingsCommandExecutionRetries">Command execution retries</string>
-    <string name="settingsCommandExecutionRetriesSummary">Try to send a command %1$s times if the command execution fails</string>
+    <string name="settingsCommandExecutionRetriesSummary">Try to send a command times if the command execution fails</string>
     <string name="settingsCommandExecutionRetriesTimeDialogEntry">%1$d. try: %2$d s</string>
     <string name="settingsFHEMWEBDeviceName">FHEMWEB Device Name</string>
     <string name="settingsFHEMWEBDeviceNameSummary">If a FHEMWEB device name matches this value (%1$s), the respective FHEMWEB device will be preferred. This can be used to hide or sort rooms for specific devices.</string>

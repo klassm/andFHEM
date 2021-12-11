@@ -24,13 +24,13 @@
 
 package li.klass.fhem.widget.deviceFunctionality
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.preference.DialogPreference
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.Preference
 import com.ericharlow.DragNDrop.DragNDropListView
 import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
@@ -42,34 +42,40 @@ import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderAdapter.
 import org.apache.pig.impl.util.ObjectSerializer
 import javax.inject.Inject
 
-class DeviceFunctionalityOrderPreference : DialogPreference {
+class DeviceFunctionalityOrderPreference(context: Context, attrs: AttributeSet) :
+    Preference(context, attrs) {
 
     @Inject
     lateinit var applicationProperties: ApplicationProperties
     private var wrappedDevices = ArrayList<DeviceFunctionalityPreferenceWrapper>()
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
+    init {
         inject(context)
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        inject(context)
-    }
 
     private fun inject(context: Context) {
         ((context as Activity).application as AndFHEMApplication).daggerComponent.inject(this)
     }
 
-    @SuppressLint("InflateParams")
-    override fun onCreateDialogView(): View {
-        val inflater = LayoutInflater.from(context)
+    override fun onClick() {
+        AlertDialog.Builder(context).apply {
+            setTitle(R.string.settingsDeviceFunctionalityOrder)
+            setView(createView())
+            setCancelable(true)
+            setPositiveButton(R.string.okButton) { dialog, _ ->
+                save()
+                dialog.dismiss()
+            }
+            setNegativeButton(R.string.cancelButton) { dialog, _ -> dialog.cancel() }
+        }.create().show()
+    }
 
-        val view = inflater.inflate(R.layout.device_type_order_layout, null)!!
+    private fun createView(): View {
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.device_type_order_layout, null)
 
-        val deviceTypeListView = view.findViewById<DragNDropListView>(android.R.id.list)
-
-        // dirty hack ... this should be called by Android automatically ...
-        onSetInitialValue(true, "")
+        val deviceTypeListView = view.findViewById(android.R.id.list) as DragNDropListView
 
         deviceTypeListView.adapter = DeviceFunctionalityOrderAdapter(
             context,
@@ -84,15 +90,18 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
                     if (action == OrderAction.VISIBILITY_CHANGE) {
                         wrappedDevices[currentPosition].invertVisibility()
                     }
+
                     callChangeListener(wrappedDevices)
+                    saveVisibleDevices()
+                    saveInvisibleDevices()
                 }
             })
 
         return view
     }
 
-    override fun onSetInitialValue(restore: Boolean, defaultValue: Any?) {
-        super.onSetInitialValue(restore, defaultValue)
+    override fun onSetInitialValue(value: Any?) {
+        super.onSetInitialValue(value)
 
         val deviceTypeHolder = DeviceGroupHolder(applicationProperties)
         val visible = deviceTypeHolder.getVisible(context)
@@ -102,14 +111,9 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
     }
 
     private fun wrapList(
-            toWrap: List<DeviceFunctionality>, isVisible: Boolean): List<DeviceFunctionalityPreferenceWrapper> =
+        toWrap: List<DeviceFunctionality>, isVisible: Boolean
+    ): List<DeviceFunctionalityPreferenceWrapper> =
             toWrap.map { DeviceFunctionalityPreferenceWrapper(it, isVisible) }
-
-    override fun onDialogClosed(positiveResult: Boolean) {
-        if (positiveResult) {
-            save()
-        }
-    }
 
     private fun save() {
         saveVisibleDevices()
@@ -135,6 +139,4 @@ class DeviceFunctionalityOrderPreference : DialogPreference {
 
     private fun unwrapDeviceTypes(toUnwrap: List<DeviceFunctionalityPreferenceWrapper>): Array<DeviceFunctionality> =
             toUnwrap.map { it.deviceFunctionality }.toTypedArray()
-
-    override fun shouldPersist(): Boolean = true
 }

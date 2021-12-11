@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsAppearanceFragment"
+        app:title="@string/settingsAppearancePreferencesCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsWidgetsFragment"
+        app:title="@string/settingsWidgetCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsErrorsFragment"
+        app:title="@string/settingsErrorsCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsCloudMessagingFragment"
+        app:title="@string/settingsCloudMessagingCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsAutoUpdateFragment"
+        app:title="@string/settingsAutoUpdateCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsConnectionsFragment"
+        app:title="@string/settingsConnectionCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsBackupFragment"
+        app:title="@string/settingsBackupCategory"></Preference>
+    <Preference
+        app:fragment="li.klass.fhem.settings.fragments.SettingsOtherFragment"
+        app:title="@string/settingsOthersCategory"></Preference>
+</PreferenceScreen>

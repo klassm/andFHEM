@@ -37,8 +37,6 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ApplicationComponent;
 import li.klass.fhem.update.backend.DeviceListService;
 
-import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
-
 /**
  * Abstract class extending {@link IntentService} to provide some more convenience methods.
  */
@@ -80,7 +78,7 @@ public abstract class ConvenientIntentService extends IntentService {
     }
 
     private void handleTaskInternal(Intent intent) {
-        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
+        ResultReceiver resultReceiver = intent.getParcelableExtra(BundleExtraKeys.RESULT_RECEIVER);
         boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
         long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, DeviceListService.NEVER_UPDATE_PERIOD);
         if (doRefresh) {

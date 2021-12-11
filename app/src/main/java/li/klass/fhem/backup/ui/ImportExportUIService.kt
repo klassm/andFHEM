@@ -33,7 +33,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.Fragment
 import li.klass.fhem.R
 import li.klass.fhem.backup.ImportExportService
 import li.klass.fhem.backup.ImportExportService.ImportStatus
@@ -51,7 +51,8 @@ class ImportExportUIService @Inject constructor(private val importExportService:
         fun backupPasswordSelected(password: String?)
     }
 
-    fun handleImport(activity: Activity) {
+    fun handleImport(fragment: Fragment) {
+        val activity = fragment.activity ?: return
         if (!PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             return
         }
@@ -59,11 +60,17 @@ class ImportExportUIService @Inject constructor(private val importExportService:
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "*/."
             addCategory(Intent.CATEGORY_OPENABLE)
-            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("application/octet-stream", "application/x-zip"))
-            putExtra("android.provider.extra.INITIAL_URI", Uri.fromFile(importExportService.exportDirectory));
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf("application/octet-stream", "application/x-zip")
+            )
+            putExtra(
+                "android.provider.extra.INITIAL_URI",
+                Uri.fromFile(importExportService.exportDirectory)
+            );
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         }
-        startActivityForResult(activity, intent, importBackupFilePickerRequestCode, null)
+        fragment.startActivityForResult(intent, importBackupFilePickerRequestCode, null)
     }
 
     fun onImportFileSelected(file: Uri, activity: Activity) {

@@ -103,6 +103,7 @@ dependencies {
         version = daggerVersion
     )
 
+
     kapt(group = "com.google.dagger", name = "dagger-compiler", version = daggerVersion)
     kapt(group = "com.google.dagger", name = "dagger-android-processor", version = daggerVersion)
     implementation(
@@ -119,6 +120,8 @@ dependencies {
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.2.1")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
     implementation(group = "androidx.annotation", name = "annotation", version = "1.3.0")
+    implementation(group = "androidx.preference", name = "preference", version = "1.1.1")
+    implementation(group = "androidx.preference", name = "preference-ktx", version = "1.1.1")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
     kapt(group = "androidx.room", name = "room-compiler", version = roomVersion)
     implementation(

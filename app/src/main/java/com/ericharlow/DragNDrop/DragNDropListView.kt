@@ -13,175 +13,163 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.ericharlow.DragNDrop
 
-package com.ericharlow.DragNDrop;
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.PixelFormat
+import android.util.AttributeSet
+import android.view.GestureDetector
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.ListAdapter
+import android.widget.ListView
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
-public class DragNDropListView extends ListView {
-
-    private static final String TAG = DragNDropListView.class.getName();
-
-    boolean mDragMode;
-
-    int mStartPosition;
-    int mEndPosition;
-    int mDragPointOffset;		//Used to adjust drag view location
-
-    ImageView mDragView;
-    GestureDetector mGestureDetector;
-
-    DropListener mDropListener;
-    RemoveListener mRemoveListener;
-    DragListener mDragListener;
-
-    public DragNDropListView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+class DragNDropListView(context: Context?, attrs: AttributeSet?) : ListView(context, attrs) {
+    var mDragMode = false
+    var mStartPosition = 0
+    var mEndPosition = 0
+    var mDragPointOffset //Used to adjust drag view location
+            = 0
+    var mDragView: ImageView? = null
+    var mGestureDetector: GestureDetector? = null
+    var mDropListener: DropListener? = null
+    var mRemoveListener: RemoveListener? = null
+    var mDragListener: DragListener? = null
+    fun setDropListener(l: DropListener?) {
+        mDropListener = l
     }
 
-    public void setDropListener(DropListener l) {
-        mDropListener = l;
+    fun setRemoveListener(l: RemoveListener?) {
+        mRemoveListener = l
     }
 
-    public void setRemoveListener(RemoveListener l) {
-        mRemoveListener = l;
+    fun setDragListener(l: DragListener?) {
+        mDragListener = l
     }
 
-    public void setDragListener(DragListener l) {
-        mDragListener = l;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        final int action = event.getAction();
-        final int x = (int) event.getX();
-        final int y = (int) event.getY();
-
-        if (action == MotionEvent.ACTION_DOWN && x < this.getWidth()/4) {
-            mDragMode = true;
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val action = event.action
+        val x = event.x.toInt()
+        val y = event.y.toInt()
+        if (action == MotionEvent.ACTION_DOWN && x < this.width / 4) {
+            mDragMode = true
         }
-
-        if (!mDragMode)
-            return super.onTouchEvent(event);
-
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                mStartPosition = pointToPosition(x,y);
+        if (!mDragMode) return super.onTouchEvent(event)
+        when (action) {
+            MotionEvent.ACTION_DOWN -> {
+                mStartPosition = pointToPosition(x, y)
                 if (mStartPosition != INVALID_POSITION) {
-                    int mItemPosition = mStartPosition - getFirstVisiblePosition();
-                    mDragPointOffset = y - getChildAt(mItemPosition).getTop();
-                    mDragPointOffset -= ((int)event.getRawY()) - y;
-                    startDrag(mItemPosition,y);
-                    drag(0,y);// replace 0 with x if desired
+                    val mItemPosition = mStartPosition - firstVisiblePosition
+                    mDragPointOffset = y - getChildAt(mItemPosition).top
+                    mDragPointOffset -= event.rawY.toInt() - y
+                    startDrag(mItemPosition, y)
+                    drag(0, y) // replace 0 with x if desired
                 }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                drag(0,y);// replace 0 with x if desired
-                int currentPosition = pointToPosition(x, y);
-                if (currentPosition == getLastVisiblePosition()) {
-                    smoothScrollToPosition(currentPosition + 1);
-                } else if (currentPosition == getFirstVisiblePosition()) {
-                    smoothScrollToPosition(currentPosition - 1);
+            }
+            MotionEvent.ACTION_MOVE -> {
+                drag(0, y) // replace 0 with x if desired
+                val currentPosition = pointToPosition(x, y)
+                if (currentPosition == lastVisiblePosition) {
+                    smoothScrollToPosition(currentPosition + 1)
+                } else if (currentPosition == firstVisiblePosition) {
+                    smoothScrollToPosition(currentPosition - 1)
                 }
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-            default:
-                mDragMode = false;
-                mEndPosition = pointToPosition(x,y);
-                stopDrag(mStartPosition - getFirstVisiblePosition());
-                if (mDropListener != null && mStartPosition != INVALID_POSITION && mEndPosition != INVALID_POSITION)
-                    mDropListener.onDrop(mStartPosition, mEndPosition);
-                break;
+            }
+            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
+                mDragMode = false
+                mEndPosition = pointToPosition(x, y)
+                stopDrag(mStartPosition - firstVisiblePosition)
+                if (mDropListener != null && mStartPosition != INVALID_POSITION && mEndPosition != INVALID_POSITION) mDropListener!!.onDrop(
+                    mStartPosition,
+                    mEndPosition
+                )
+            }
+            else -> {
+                mDragMode = false
+                mEndPosition = pointToPosition(x, y)
+                stopDrag(mStartPosition - firstVisiblePosition)
+                if (mDropListener != null && mStartPosition != INVALID_POSITION && mEndPosition != INVALID_POSITION) mDropListener!!.onDrop(
+                    mStartPosition,
+                    mEndPosition
+                )
+            }
         }
-        return true;
+        return true
     }
 
     // move the drag view
-    private void drag(int x, int y) {
+    private fun drag(x: Int, y: Int) {
         if (mDragView != null) {
-            WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) mDragView.getLayoutParams();
-            layoutParams.x = x;
-            layoutParams.y = y - mDragPointOffset;
-            WindowManager mWindowManager = (WindowManager) getContext()
-                    .getSystemService(Context.WINDOW_SERVICE);
-            mWindowManager.updateViewLayout(mDragView, layoutParams);
-
-            if (mDragListener != null)
-                mDragListener.onDrag(x, y, null);// change null to "this" when ready to use
+            val layoutParams = mDragView!!.layoutParams as WindowManager.LayoutParams
+            layoutParams.x = x
+            layoutParams.y = y - mDragPointOffset
+            val mWindowManager = context
+                .getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            mWindowManager.updateViewLayout(mDragView, layoutParams)
+            if (mDragListener != null) mDragListener!!.onDrag(
+                x,
+                y,
+                null
+            ) // change null to "this" when ready to use
         }
     }
 
     // enable the drag view for dragging
-    private void startDrag(int itemIndex, int y) {
-        stopDrag(itemIndex);
-
-        View item = getChildAt(itemIndex);
-        if (item == null) return;
-        item.setDrawingCacheEnabled(true);
-        if (mDragListener != null)
-            mDragListener.onStartDrag(item);
+    private fun startDrag(itemIndex: Int, y: Int) {
+        stopDrag(itemIndex)
+        val item = getChildAt(itemIndex) ?: return
+        item.isDrawingCacheEnabled = true
+        if (mDragListener != null) mDragListener!!.onStartDrag(item)
 
         // Create a copy of the drawing cache so that it does not get recycled
         // by the framework when the list tries to clean up memory
-        Bitmap bitmap = Bitmap.createBitmap(item.getDrawingCache());
-
-        WindowManager.LayoutParams mWindowParams = new WindowManager.LayoutParams();
-        mWindowParams.gravity = Gravity.TOP;
-        mWindowParams.x = 0;
-        mWindowParams.y = y - mDragPointOffset;
-
-        mWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        mWindowParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        mWindowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-        mWindowParams.format = PixelFormat.TRANSLUCENT;
-        mWindowParams.windowAnimations = 0;
-
-        Context context = getContext();
-        ImageView v = new ImageView(context);
-        v.setImageBitmap(bitmap);
-
-        WindowManager mWindowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        mWindowManager.addView(v, mWindowParams);
-        mDragView = v;
+        val bitmap = Bitmap.createBitmap(item.drawingCache)
+        val mWindowParams = WindowManager.LayoutParams()
+        mWindowParams.gravity = Gravity.TOP
+        mWindowParams.x = 0
+        mWindowParams.y = y - mDragPointOffset
+        mWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        mWindowParams.width = WindowManager.LayoutParams.WRAP_CONTENT
+        mWindowParams.flags = (WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        mWindowParams.format = PixelFormat.TRANSLUCENT
+        mWindowParams.windowAnimations = 0
+        val context = context
+        val v = ImageView(context)
+        v.setImageBitmap(bitmap)
+        val mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        mWindowManager.addView(v, mWindowParams)
+        mDragView = v
     }
 
     // destroy drag view
-    private void stopDrag(int itemIndex) {
+    private fun stopDrag(itemIndex: Int) {
         if (mDragView != null) {
-            if (mDragListener != null)
-                mDragListener.onStopDrag(getChildAt(itemIndex));
-            mDragView.setVisibility(GONE);
-            WindowManager wm = (WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE);
-            wm.removeView(mDragView);
-            mDragView.setImageDrawable(null);
-            mDragView = null;
+            if (mDragListener != null) mDragListener!!.onStopDrag(getChildAt(itemIndex))
+            mDragView!!.visibility = GONE
+            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            wm.removeView(mDragView)
+            mDragView!!.setImageDrawable(null)
+            mDragView = null
         }
     }
 
-    @Override
-    public void setAdapter(ListAdapter adapter) {
-        super.setAdapter(adapter);
-        if (adapter instanceof DragNDropAdapter) {
-            DragNDropAdapter dragNDropAdapter  = (DragNDropAdapter) adapter;
-            setDragListener(dragNDropAdapter);
-            setDropListener(dragNDropAdapter);
+    override fun setAdapter(adapter: ListAdapter) {
+        super.setAdapter(adapter)
+        if (adapter is DragNDropAdapter<*>) {
+            val dragNDropAdapter = adapter
+            setDragListener(dragNDropAdapter)
+            setDropListener(dragNDropAdapter)
         }
+    }
+
+    companion object {
+        private val TAG = DragNDropListView::class.java.name
     }
 }

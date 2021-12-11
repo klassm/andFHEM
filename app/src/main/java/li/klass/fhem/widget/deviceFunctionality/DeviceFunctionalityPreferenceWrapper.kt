@@ -21,61 +21,41 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.widget.deviceFunctionality
 
-package li.klass.fhem.widget.deviceFunctionality;
+import li.klass.fhem.domain.core.DeviceFunctionality
+import org.slf4j.LoggerFactory
 
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import li.klass.fhem.domain.core.DeviceFunctionality;
-
-public class DeviceFunctionalityPreferenceWrapper implements Comparable<DeviceFunctionalityPreferenceWrapper> {
-    private final DeviceFunctionality deviceFunctionality;
-    private boolean isVisible = true;
-
-    private static final Logger LOG = LoggerFactory.getLogger(DeviceFunctionalityPreferenceWrapper.class);
-
-    public DeviceFunctionalityPreferenceWrapper(DeviceFunctionality deviceFunctionality, boolean visible) {
-        this.deviceFunctionality = deviceFunctionality;
-        isVisible = visible;
+class DeviceFunctionalityPreferenceWrapper(
+    val deviceFunctionality: DeviceFunctionality,
+    visible: Boolean
+) : Comparable<DeviceFunctionalityPreferenceWrapper?> {
+    var isVisible = true
+    fun invertVisibility() {
+        isVisible = !isVisible
+        LOG.info("changed visibility for {} to {}", deviceFunctionality.name, isVisible)
     }
 
-    public DeviceFunctionality getDeviceFunctionality() {
-        return deviceFunctionality;
+    override fun compareTo(other: DeviceFunctionalityPreferenceWrapper?): Int {
+        return deviceFunctionality.name.compareTo(other?.deviceFunctionality?.name ?: "")
     }
 
-    public boolean isVisible() {
-        return isVisible;
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that = other as DeviceFunctionalityPreferenceWrapper
+        return deviceFunctionality === that.deviceFunctionality
     }
 
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    override fun hashCode(): Int {
+        return deviceFunctionality.hashCode() ?: 0
     }
 
-    public void invertVisibility() {
-        isVisible = !isVisible;
-        LOG.info("changed visibility for {} to {}", deviceFunctionality.name(), isVisible);
+    companion object {
+        private val LOG = LoggerFactory.getLogger(DeviceFunctionalityPreferenceWrapper::class.java)
     }
 
-    @Override
-    public int compareTo(@NotNull DeviceFunctionalityPreferenceWrapper other) {
-        return deviceFunctionality.name().compareTo(other.getDeviceFunctionality().name());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DeviceFunctionalityPreferenceWrapper that = (DeviceFunctionalityPreferenceWrapper) o;
-
-        return deviceFunctionality == that.deviceFunctionality;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return deviceFunctionality != null ? deviceFunctionality.hashCode() : 0;
+    init {
+        isVisible = visible
     }
 }
