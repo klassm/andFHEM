@@ -72,11 +72,9 @@ plugins {
 repositories {
     mavenCentral()
     maven { setUrl("https://plugins.gradle.org/m2/") }
-    maven { setUrl("https://dl.bintray.com/mamohr/maven") }
     maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
     maven { setUrl("https://jitpack.io") }
     maven { setUrl("https://maven.google.com") }
-    maven { setUrl("https://kotlin.bintray.com/kotlinx") }
 }
 
 
