@@ -27,20 +27,26 @@ class SettingsActivity : AppCompatActivity(),
         themeInitializer.init()
 
         setContentView(R.layout.settings_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.settings, SettingsMainFragment())
                 .commit()
-        } else {
-            title = savedInstanceState.getCharSequence(TITLE_TAG)
         }
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
                 setTitle(R.string.preferences)
             }
         }
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        title = getString(R.string.preferences)
+
+        supportActionBar?.apply {
+            show()
+            setDisplayHomeAsUpEnabled(true)
+            setHomeButtonEnabled(true)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -53,7 +59,8 @@ class SettingsActivity : AppCompatActivity(),
         if (supportFragmentManager.popBackStackImmediate()) {
             return true
         }
-        return super.onSupportNavigateUp()
+        finish()
+        return true
     }
 
     override fun onPreferenceStartFragment(
