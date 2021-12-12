@@ -80,6 +80,8 @@ android {
         }
 
         debug {
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
             //shrinkResources true
             //minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-production.txt'

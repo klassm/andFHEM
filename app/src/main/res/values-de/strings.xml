@@ -345,9 +345,9 @@
     <string name="settingsWidgetRemoteUpdateSummaryOn">Widgets können neue Daten vom FHEM-Server anfordern</string>
     <string name="settingsWidgetRemoteUpdateSummaryOff">Widgetupdates holen keine neuen Daten vom FHEM-Server</string>
     <string name="settingsDeviceColumnWidth">Geräte-Spaltenbreite</string>
-    <string name="settingsDeviceColumnWidthSummary">Spalten in den Gerätelisten haben eine Mindestbreite von %1$s dp</string>
+    <string name="settingsDeviceColumnWidthSummary">Spalten in den Gerätelisten haben eine Mindestbreite des gegebenen Wertes in dp</string>
     <string name="settingsDeviceListPaddingRight">Gerätelisten-Abstand rechts</string>
-    <string name="settingsDeviceListPaddingRightSummary">Die Geräteliste beginnt %1$s dp von rechts</string>
+    <string name="settingsDeviceListPaddingRightSummary">Die Geräteliste beginnt mit dem gegebenen Wert in dp von rechts</string>
     <string name="settingsWidgetUpdateTimeWLAN">WLAN-Aktualisierungsintervall</string>
     <string name="settingsWidgetUpdateTimeWLANSummary">Wenn das Gerät mit einem WLAN verbunden ist, werden Widgets alle %1$s aktualisiert</string>
     <string name="settingsWidgetUpdateTimeMobile">Mobilfunk-Aktualisierungsintervall</string>
@@ -372,9 +372,9 @@
     <string name="settingsStartupViewSummary">Beim Start der App \'%1$s\' anzeigen</string>
     <string name="settingsTheme">Theme</string>
     <string name="settingsConnectionTimeout">Verbindungs-Wartezeit</string>
-    <string name="settingsConnectionTimeoutSummary">Verbindung beenden, wenn der Server innerhalb %1$s Sekunden nicht reagiert</string>
+    <string name="settingsConnectionTimeoutSummary">Verbindung beenden, wenn der Server innerhalb der gegebenen Sekunden nicht reagiert</string>
     <string name="settingsCommandExecutionRetries">Kommando-Wiederholungen</string>
-    <string name="settingsCommandExecutionRetriesSummary">Ein Kommando wird bis zu %1$s mal gesendet, falls die Ausführung fehlschlägt.</string>
+    <string name="settingsCommandExecutionRetriesSummary">Ein Kommando wird bis zu n mal senden, falls die Ausführung fehlschlägt.</string>
     <string name="settingsCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
     <string name="settingsFHEMWEBDeviceName">FHEMWEB-Gerätename</string>
     <string name="settingsFHEMWEBDeviceNameSummary">Passt ein FHEMWEB-Gerätename zum Inhalt dieser Einstellung (%1$s), so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>

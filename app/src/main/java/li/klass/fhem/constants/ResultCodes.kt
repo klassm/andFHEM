@@ -21,10 +21,9 @@
  *   51 Franklin Street, Fifth Floor
  *   Boston, MA  02110-1301  USA
  */
+package li.klass.fhem.constants
 
-package li.klass.fhem.constants;
-
-public class ResultCodes {
-    public static final int SUCCESS = 1;
-    public static final int ERROR = 2;
+object ResultCodes {
+    const val SUCCESS = 1
+    const val ERROR = 2
 }

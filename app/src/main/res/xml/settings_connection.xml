@@ -27,7 +27,7 @@
     android:layout_height="fill_parent">
 
     <PreferenceCategory android:title="@string/settingsConnectionCategory">
-        <li.klass.fhem.widget.preference.SeekBarPreference
+        <androidx.preference.SeekBarPreference
             min="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,9 +36,10 @@
             android:key="CONNECTION_TIMEOUT"
             android:max="20"
             android:text="@string/s_suffix"
+            android:summary="@string/settingsConnectionTimeoutSummary"
             android:title="@string/settingsConnectionTimeout" />
 
-        <li.klass.fhem.widget.preference.NumberOfRetriesSeekBarPreference
+        <androidx.preference.SeekBarPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="3"
@@ -46,6 +47,7 @@
             android:key="COMMAND_EXECUTION_RETRIES"
             android:max="20"
             android:text=""
+            android:summary="@string/settingsCommandExecutionRetriesSummary"
             android:title="@string/settingsCommandExecutionRetries" />
         <Preference
             android:key="CLEAR_TRUSTED_CERTIFICATES"
