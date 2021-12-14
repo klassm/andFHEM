@@ -66,7 +66,7 @@ plugins {
     id("com.android.application") version "7.0.4"
     kotlin("android").version("1.3.31")
     kotlin("kapt").version("1.3.31")
-    kotlin("plugin.serialization") version "1.6.0"
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 repositories {
