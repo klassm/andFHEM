@@ -57,7 +57,7 @@ val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.12.0"
 val daggerVersion = "2.40.5"
-val coroutinesVersion = "1.5.2"
+val coroutinesVersion = "1.6.0"
 val androidXNavigationVersion = "2.3.5"
 val roomVersion = "2.4.0"
 
