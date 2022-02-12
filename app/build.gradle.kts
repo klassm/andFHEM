@@ -159,7 +159,7 @@ dependencies {
     implementation(group = "com.github.bumptech.glide", name = "okhttp3-integration", version = glideVersion) {
         exclude(group = "glide-parent")
     }
-    implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "18.2.7")
+    implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "18.2.8")
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.3.2")
