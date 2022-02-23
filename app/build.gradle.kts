@@ -88,7 +88,7 @@ dependencies {
 
     implementation("com.google.firebase", name = "firebase-appindexing", version = "19.1.0")
     implementation(group = "com.google.firebase", name = "firebase-messaging", version = "23.0.0")
-    implementation(group = "com.google.firebase", name = "firebase-ads", version = "20.5.0")
+    implementation(group = "com.google.firebase", name = "firebase-ads", version = "20.6.0")
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "20.0.5")
     implementation(group = "com.google.android.material", name = "material", version = "1.5.0")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.9.0")
