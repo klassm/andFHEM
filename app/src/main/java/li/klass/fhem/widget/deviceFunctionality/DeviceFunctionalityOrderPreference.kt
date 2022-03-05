@@ -124,16 +124,18 @@ class DeviceFunctionalityOrderPreference(context: Context, attrs: AttributeSet) 
         val visibleDevices = wrappedDevices.filter { it.isVisible }
         val toPersist = unwrapDeviceTypes(visibleDevices)
         if (shouldPersist()) persistString(ObjectSerializer.serialize(toPersist))
-
     }
 
     private fun saveInvisibleDevices() {
         val invisibleDevices = wrappedDevices.filter { !it.isVisible }
         val toPersist = unwrapDeviceTypes(invisibleDevices)
         if (shouldPersist()) {
-            sharedPreferences.edit()
-                    .putString(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, ObjectSerializer.serialize(toPersist))
-                    .apply()
+            sharedPreferences?.edit()
+                ?.putString(
+                    DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE,
+                    ObjectSerializer.serialize(toPersist)
+                )
+                ?.apply()
         }
     }
 

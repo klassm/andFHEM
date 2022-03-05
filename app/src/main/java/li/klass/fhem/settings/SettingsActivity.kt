@@ -67,11 +67,12 @@ class SettingsActivity : AppCompatActivity(),
         caller: PreferenceFragmentCompat,
         pref: Preference
     ): Boolean {
+        val fragmentName = pref.fragment ?: return false
         // Instantiate the new Fragment
         val args = pref.extras
         val fragment = supportFragmentManager.fragmentFactory.instantiate(
             classLoader,
-            pref.fragment
+            fragmentName
         ).apply {
             arguments = args
         }
