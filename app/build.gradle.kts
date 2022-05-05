@@ -55,7 +55,7 @@ val kotlinVersion: String by project
 val kotlinSerializationVersion = "1.0.1"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
-val glideVersion = "4.13.1"
+val glideVersion = "4.13.2"
 val daggerVersion = "2.41"
 val coroutinesVersion = "1.6.1"
 val androidXNavigationVersion = "2.3.5"
