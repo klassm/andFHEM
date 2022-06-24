@@ -38,7 +38,7 @@ buildscript {
             name = "kotlin-gradle-plugin",
             version = kotlinVersion
         )
-        classpath(group = "com.google.gms", name = "google-services", version = "4.3.10")
+        classpath(group = "com.google.gms", name = "google-services", version = "4.3.12")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.7.0")
         classpath(
             group = "org.jetbrains.kotlin",
