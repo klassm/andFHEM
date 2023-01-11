@@ -111,7 +111,7 @@ dependencies {
         name = "error_prone_annotations",
         version = "2.18.0"
     )
-    implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "1.3")
+    implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "2.8")
 
     implementation(group = "com.android.billingclient", name = "billing", version = "5.1.0")
     implementation(group = "com.android.billingclient", name = "billing-ktx", version = "5.1.0")
