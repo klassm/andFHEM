@@ -16,7 +16,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise").version("3.2.1")
+    id("com.gradle.enterprise").version("3.12.2")
 }
 
 gradleEnterprise {
