@@ -1,1 +1,1 @@
-TODO
+* Kompatibilität mit Android 13
