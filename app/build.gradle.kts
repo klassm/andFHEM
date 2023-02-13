@@ -59,7 +59,7 @@ val glideVersion = "4.14.2"
 val daggerVersion = "2.44.2"
 val coroutinesVersion = "1.6.4"
 val androidXNavigationVersion = "2.3.5"
-val roomVersion = "2.4.3"
+val roomVersion = "2.5.0"
 
 plugins {
     id("net.researchgate.release") version "2.8.1"
