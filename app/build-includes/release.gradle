@@ -61,6 +61,7 @@ release {
     versionPropertyFile = '../gradle.properties'
     versionProperties = ['version']
     failOnSnapshotDependencies = false
+    failOnPublishNeeded = false
 
     git {
         requireBranch.set("master")
@@ -105,5 +106,11 @@ def setNewReleaseVersion(value) {
         def newVersion = getNextVersion(value) + "-SNAPSHOT"
         println("set new version after $value to $newVersion")
         System.setProperty("release.newVersion", newVersion)
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name.startsWith("generate") && task.name.endsWith("ReleasePlayResources")) {
+        task.dependsOn("generateWhatsNew")
     }
 }
