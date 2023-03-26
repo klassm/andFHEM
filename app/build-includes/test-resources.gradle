@@ -80,6 +80,12 @@ gradle.projectsEvaluated {
         } // Just drop the exception
     }
 
-    tasks.getByName("generateInappReleasePlayResources").dependsOn("generateWhatsNew")
-    tasks.getByName("generatePremiumReleasePlayResources").dependsOn("generateWhatsNew")
+    def inAppTask = tasks.getByName("generateInappReleasePlayResources")
+    if (inAppTask != null) {
+        inAppTask.dependsOn("generateWhatsNew")
+    }
+    def premiumTask = tasks.getByName("generatePremiumReleasePlayResources")
+    if (premiumTask != null) {
+        premiumTask.dependsOn("generateWhatsNew")
+    }
 }
