@@ -77,15 +77,10 @@ gradle.projectsEvaluated {
                 }
             }
         } catch (Exception e) {
-        } // Just drop the exception
+            println(e)
+        }
     }
 
-    def inAppTask = tasks.getByName("generateInappReleasePlayResources")
-    if (inAppTask != null) {
-        inAppTask.dependsOn("generateWhatsNew")
-    }
-    def premiumTask = tasks.getByName("generatePremiumReleasePlayResources")
-    if (premiumTask != null) {
-        premiumTask.dependsOn("generateWhatsNew")
-    }
+    tasks.findByName("generateInappReleasePlayResources")?.dependsOn("generateWhatsNew")
+    tasks.findByName("generatePremiumReleasePlayResources")?.dependsOn("generateWhatsNew")
 }
