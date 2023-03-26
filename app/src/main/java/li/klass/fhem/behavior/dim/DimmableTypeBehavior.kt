@@ -29,7 +29,7 @@ import android.content.Context
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 
-internal interface DimmableTypeBehavior {
+interface DimmableTypeBehavior {
     fun getDimLowerBound(): Double
 
     fun getDimUpperBound(): Double

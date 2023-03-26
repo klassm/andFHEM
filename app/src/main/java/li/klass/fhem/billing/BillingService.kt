@@ -57,7 +57,6 @@ constructor() : PurchasesUpdatedListener {
         })
     }
 
-    @Synchronized
     suspend fun requestPurchase(activity: Activity, itemId: String) {
         LOG.info("requestPurchase() - requesting purchase of $itemId")
         if (!billingClient.isReady) {
@@ -96,7 +95,6 @@ constructor() : PurchasesUpdatedListener {
         }
     }
 
-    @Synchronized
     suspend fun loadInventory(): Boolean {
         if (!billingClient.isReady) {
             return false
