@@ -79,4 +79,7 @@ gradle.projectsEvaluated {
         } catch (Exception e) {
         } // Just drop the exception
     }
+
+    tasks.getByName("generateInappReleasePlayResources").dependsOn("generateWhatsNew")
+    tasks.getByName("generatePremiumReleasePlayResources").dependsOn("generateWhatsNew")
 }

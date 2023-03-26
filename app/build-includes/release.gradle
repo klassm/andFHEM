@@ -79,7 +79,7 @@ def setStage(stage) {
     System.setProperty("release.useAutomaticVersion", "true")
     if (stage == 'production') {
         play.track = 'production'
-        release.buildTasks = ['generateWhatsNew', 'build', 'publishApps', 'githubRelease']
+        release.buildTasks = ['generateWhatsNew', 'build', 'publishApps']
         setNewReleaseVersion(getNextVersion(project.version))
         afterReleaseBuild.dependsOn("resetWhatsNew")
     } else if (stage == 'beta') {
@@ -108,9 +108,3 @@ def setNewReleaseVersion(value) {
         System.setProperty("release.newVersion", newVersion)
     }
 }
-
-//tasks.whenTaskAdded { task ->
-//    if (task.name.startsWith("generate") && task.name.endsWith("ReleasePlayResources")) {
-//        task.dependsOn("generateWhatsNew")
-//    }
-//}
