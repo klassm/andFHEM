@@ -92,7 +92,7 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "20.3.1")
     implementation(group = "com.google.android.material", name = "material", version = "1.8.0")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.10.1")
-    implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.42.3") {
+    implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.43.1") {
         exclude(group = "com.google.code.findbugs")
         exclude(group = "org.apache.httpcomponents")
     }
