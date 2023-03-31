@@ -147,7 +147,7 @@ dependencies {
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
-    implementation(group = "joda-time", name = "joda-time", version = "2.12.4")
+    implementation(group = "joda-time", name = "joda-time", version = "2.12.5")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.36")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
     implementation(group = "net.lingala.zip4j", name = "zip4j", version = "2.11.5")
