@@ -87,7 +87,7 @@ class AndroidControlsProviderService : ControlsProviderService() {
         val pendingIntent =
                 PendingIntent.getActivity(
                         context, 1, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_IMMUTABLE
                 )
 
         val controls = connectionService.listAll()

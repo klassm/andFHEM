@@ -65,13 +65,21 @@ class DimWidgetView @Inject constructor() : DeviceAppWidgetView() {
 
         val dimDownState = behavior.getDimStateForPosition(behavior.currentDimPosition - 1)
         val dimDownIntent = sendTargetDimState(context, device, dimDownState, connectionId)
-        view.setOnClickPendingIntent(R.id.dimDown, PendingIntent.getService(context, (widgetId.toString() + "dimDown").hashCode(), dimDownIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT))
+        view.setOnClickPendingIntent(
+            R.id.dimDown, PendingIntent.getService(
+                context, (widgetId.toString() + "dimDown").hashCode(), dimDownIntent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
 
         val dimUpState = behavior.getDimStateForPosition(behavior.currentDimPosition + 1)
         val dimUpIntent = sendTargetDimState(context, device, dimUpState, connectionId)
-        view.setOnClickPendingIntent(R.id.dimUp, PendingIntent.getBroadcast(context, (widgetId.toString() + "dimUp").hashCode(), dimUpIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT))
+        view.setOnClickPendingIntent(
+            R.id.dimUp, PendingIntent.getBroadcast(
+                context, (widgetId.toString() + "dimUp").hashCode(), dimUpIntent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
     }
 
     override fun supports(device: FhemDevice) = DimmableBehavior.supports(device)

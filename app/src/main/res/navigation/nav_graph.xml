@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/andFHEMMainActivity">
+    app:startDestination="@id/allDevicesFragment">
 
     <action
         android:id="@+id/action_to_all_devices"

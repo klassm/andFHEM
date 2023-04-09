@@ -43,8 +43,10 @@ class FcmMessageHandler @Inject constructor(
         val openIntent = Intent(context, AndFHEMMainActivity::class.java)
         openIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
-        val pendingIntent = PendingIntent.getActivity(context, notifyId, openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(
+            context, notifyId, openIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         NotificationUtil.notify(context, notifyId, pendingIntent, data.title, data.text, data.ticker, data.shouldVibrate())
         fcmHistoryService.addMessage(FcmHistoryService.ReceivedMessage(

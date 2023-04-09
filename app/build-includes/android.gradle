@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         targetSdkVersion 33
-        minSdkVersion 22
+        minSdkVersion 23
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -150,10 +150,3 @@ if (project.hasProperty('andFHEMReleaseStorePassword')) {
 if (project.hasProperty('andFHEMReleaseAliasPassword')) {
     android.signingConfigs.release.keyPassword = andFHEMReleaseAliasPassword
 }
-
-//tasks.whenTaskAdded { task ->
-//    if (task.name.startsWith("generate") && task.name.endsWith("ReleasePlayResources")) {
-//        task.dependsOn("resetWhatsNew")
-//        task.dependsOn("generateWhatsNew")
-//    }
-//}

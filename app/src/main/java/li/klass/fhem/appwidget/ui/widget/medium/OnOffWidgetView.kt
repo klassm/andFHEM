@@ -79,13 +79,15 @@ class OnOffWidgetView @Inject constructor(
     }
 
     private fun targetStatePendingIntent(context: Context, device: FhemDevice, targetState: String, widgetConfiguration: WidgetConfiguration, requestCode: Int) =
-            PendingIntent.getBroadcast(context, requestCode,
-                    Intent(context, AppWidgetActionBroadcastReceiver::class.java)
-                            .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
-                            .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
-                            .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
-                            .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId),
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getBroadcast(
+                context, requestCode,
+                Intent(context, AppWidgetActionBroadcastReceiver::class.java)
+                    .setAction(Actions.DEVICE_WIDGET_TARGET_STATE)
+                    .putExtra(BundleExtraKeys.DEVICE_NAME, device.name)
+                    .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState)
+                    .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId),
+                PendingIntent.FLAG_IMMUTABLE
+            )
 
     override fun supports(device: FhemDevice): Boolean =
             onOffBehavior.supports(device)

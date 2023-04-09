@@ -57,9 +57,13 @@ class DeviceListUpdateWidget @Inject constructor() : OtherAppWidgetView() {
                 .putExtra(BundleExtraKeys.CONNECTION_ID, widgetConfiguration.connectionId)
                 .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime())
 
-        view.setOnClickPendingIntent(R.id.layout, PendingIntent.getBroadcast(context,
+        view.setOnClickPendingIntent(
+            R.id.layout, PendingIntent.getBroadcast(
+                context,
                 widgetConfiguration.widgetId, updateIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT))
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        )
     }
 
     override val widgetSize = WidgetSize.SMALL

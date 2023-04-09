@@ -72,7 +72,12 @@ open class ToggleWidgetView @Inject constructor(
             view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(onOffBehavior.getOffStateName(device)!!))
         }
 
-        val pendingIntent = PendingIntent.getBroadcast(context, widgetConfiguration.widgetId, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            widgetConfiguration.widgetId,
+            actionIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
         view.setOnClickPendingIntent(R.id.toggleOff, pendingIntent)
         view.setOnClickPendingIntent(R.id.toggleOn, pendingIntent)
 

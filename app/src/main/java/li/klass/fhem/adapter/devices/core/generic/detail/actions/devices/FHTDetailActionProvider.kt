@@ -62,7 +62,7 @@ class FHTDetailActionProvider @Inject constructor(
                             override fun get(): HeatingConfiguration<FromToHeatingInterval, *> = FHTConfiguration()
                         }
                         navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToFromToWeekProfileFragment(
-                                device.name, connectionId, device.displayName(), provider
+                            device.name, device.displayName(), provider, connectionId
                         ))
                     }
                 },

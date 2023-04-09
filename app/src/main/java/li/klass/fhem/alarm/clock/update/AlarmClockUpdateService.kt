@@ -29,8 +29,6 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.annotation.RequiresApi
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DummyServerSpec
 import li.klass.fhem.constants.Actions
@@ -47,11 +45,7 @@ class AlarmClockUpdateService @Inject constructor(
         private val deviceListService: DeviceListService,
         private val connectionService: ConnectionService
 ) {
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun updateNextAlarmClock() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return
-        }
         val nextAlarmClock = alarmManager.nextAlarmClock
                 ?.triggerTime
                 ?.let { DateTime(Date(it)).toString(alarmClockPattern) } ?: return
@@ -69,9 +63,6 @@ class AlarmClockUpdateService @Inject constructor(
     }
 
     fun scheduleUpdate() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return
-        }
         val pendingIntent = getNextAlarmClockPendingIntent()
         alarmManager.cancel(pendingIntent)
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 0, alarmClockUpdateInterval, pendingIntent)
@@ -79,7 +70,12 @@ class AlarmClockUpdateService @Inject constructor(
 
     private fun getNextAlarmClockPendingIntent(): PendingIntent {
         val intent = Intent(Actions.UPDATE_NEXT_ALARM_CLOCK)
-        return PendingIntent.getService(applicationContext, "nextAlarmClock".hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getService(
+            applicationContext,
+            "nextAlarmClock".hashCode(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
     }
 
     private val applicationContext get() = application.applicationContext
@@ -87,8 +83,8 @@ class AlarmClockUpdateService @Inject constructor(
 
     companion object {
         private val logger = LoggerFactory.getLogger(AlarmClockUpdateService::class.java)
-        private val alarmClockUpdateInterval = 6 * 60 * 60 * 1000L
-        private val alarmClockPattern = "dd.MM.YYYY HH:mm"
-        private val alarmClockDeviceName = "nextAlarmClock"
+        private const val alarmClockUpdateInterval = 6 * 60 * 60 * 1000L
+        private const val alarmClockPattern = "dd.MM.YYYY HH:mm"
+        private const val alarmClockDeviceName = "nextAlarmClock"
     }
 }

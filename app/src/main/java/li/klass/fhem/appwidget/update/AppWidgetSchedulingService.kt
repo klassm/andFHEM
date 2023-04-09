@@ -88,8 +88,10 @@ class AppWidgetSchedulingService @Inject constructor(
     private fun updatePendingIndentForWidgetId(widgetId: Int): PendingIntent? {
         val updateIntent = getRedrawWidgetIntent(widgetId, true)
 
-        return PendingIntent.getService(applicationContext, widgetId * -1,
-                updateIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getService(
+            applicationContext, widgetId * -1,
+            updateIntent, PendingIntent.FLAG_IMMUTABLE
+        )
     }
 
     @Deprecated(message = "To be removed when cancelling of widget updates is released")

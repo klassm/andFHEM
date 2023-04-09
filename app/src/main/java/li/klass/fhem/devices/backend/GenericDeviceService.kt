@@ -137,7 +137,16 @@ class GenericDeviceService @Inject constructor(
                     .putExtra(CONNECTION_ID, connectionId)
                     .setClass(applicationContext, RoomListUpdateIntentService::class.java)
             val alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.set(AlarmManager.RTC, (delay * 1000).toLong(), PendingIntent.getService(applicationContext, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+            alarmManager.set(
+                AlarmManager.RTC,
+                (delay * 1000).toLong(),
+                PendingIntent.getService(
+                    applicationContext,
+                    0,
+                    updateIntent,
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+            )
         } else {
             deviceListUpdateService.updateSingleDevice(device.name, connectionId)
         }

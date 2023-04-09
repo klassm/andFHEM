@@ -74,7 +74,6 @@ import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.PermissionUtil
 import li.klass.fhem.util.navigation.navController
-import li.klass.fhem.util.navigation.updateStartFragment
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Inject
@@ -204,10 +203,12 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         try {
             saveInstanceStateCalled = false
             viewBinding = MainViewBinding.inflate(LayoutInflater.from(this))
-            setContentView(viewBinding.root)
 
-            val navController = navController() ?: return
-            navController.updateStartFragment(determineStartupFragmentFromProperties())
+            setContentView(viewBinding.root)
+            val startDestId = determineStartupFragmentFromProperties()
+            if (startDestId != R.id.allDevicesFragment) {
+                navController().navigate(startDestId)
+            }
 
             broadcastReceiver = Receiver()
             registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
@@ -247,9 +248,13 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
     private suspend fun initConnectionSpinner(spinner: View, onConnectionChanged: Runnable) {
         val connectionSpinner = spinner as Spinner
-        availableConnectionDataAdapter = AvailableConnectionDataAdapter(connectionSpinner, onConnectionChanged, connectionService, {
-            navController()?.navigate(AndFHEMMainActivityDirections.actionToConnectionList())
-        })
+        availableConnectionDataAdapter = AvailableConnectionDataAdapter(
+            connectionSpinner,
+            onConnectionChanged,
+            connectionService
+        ) {
+            navController().navigate(AndFHEMMainActivityDirections.actionToConnectionList())
+        }
         connectionSpinner.adapter = availableConnectionDataAdapter
         connectionSpinner.onItemSelectedListener = availableConnectionDataAdapter
 
@@ -391,20 +396,20 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         when (intent.action) {
             ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY) ?: ""
-                navController()?.navigate(
-                        AndFHEMMainActivityDirections.actionToSearchResults(query)
+                navController().navigate(
+                    AndFHEMMainActivityDirections.actionToSearchResults(query)
                 )
             }
             ACTION_VIEW -> {
                 intent.getStringExtra(SearchManager.QUERY)?.let { query ->
-                    navController()?.navigate(
-                            AndFHEMMainActivityDirections.actionToDeviceDetailRedirect(query, null)
+                    navController().navigate(
+                        AndFHEMMainActivityDirections.actionToDeviceDetailRedirect(query, null)
                     )
                 }
             }
         }
 
-        navController()?.handleDeepLink(intent)
+        navController().handleDeepLink(intent)
     }
 
     private fun handleTimerUpdates() {

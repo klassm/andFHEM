@@ -74,7 +74,7 @@ class CulHmDetailActionProvider @Inject constructor(
                 }
 
                 navController.navigate(DeviceDetailFragmentDirections.actionDeviceDetailFragmentToIntervalWeekProfileFragment(
-                        device.displayName(), device.name, connectionId, provider
+                    device.displayName(), device.name, provider, connectionId
                 ))
             }
 
