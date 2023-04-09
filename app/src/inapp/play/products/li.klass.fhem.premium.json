@@ -140,10 +140,6 @@
       "currency": "COP",
       "priceMicros": "13000000000"
     },
-    "HR": {
-      "currency": "HRK",
-      "priceMicros": "32000000"
-    },
     "KW": {
       "currency": "USD",
       "priceMicros": "3990000"
