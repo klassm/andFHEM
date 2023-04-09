@@ -55,18 +55,18 @@ val kotlinVersion: String by project
 val kotlinSerializationVersion = "1.0.1"
 val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
-val glideVersion = "4.14.2"
+val glideVersion = "4.15.1"
 val daggerVersion = "2.45"
 val coroutinesVersion = "1.6.4"
 val androidXNavigationVersion = "2.3.5"
-val roomVersion = "2.5.0"
+val roomVersion = "2.5.1"
 
 plugins {
     id("net.researchgate.release") version "3.0.2"
-    id("com.android.application") version "7.4.1"
-    kotlin("android").version("1.3.31")
-    kotlin("kapt").version("1.3.31")
-    kotlin("plugin.serialization") version "1.6.21"
+    id("com.android.application") version "7.4.2"
+    kotlin("android").version("1.8.20")
+    kotlin("kapt").version("1.8.20")
+    kotlin("plugin.serialization") version "1.8.20"
 }
 
 repositories {
@@ -87,12 +87,12 @@ dependencies {
     implementation(project(":external-dep"))
 
     implementation("com.google.firebase", name = "firebase-appindexing", version = "19.1.0")
-    implementation(group = "com.google.firebase", name = "firebase-messaging", version = "23.1.1")
+    implementation(group = "com.google.firebase", name = "firebase-messaging", version = "23.1.2")
     implementation(group = "com.google.firebase", name = "firebase-ads", version = "20.6.0")
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "20.3.1")
     implementation(group = "com.google.android.material", name = "material", version = "1.8.0")
     implementation(group = "com.google.code.gson", name = "gson", version = "2.10.1")
-    implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.42.3") {
+    implementation(group = "com.google.http-client", name = "google-http-client-android", version = "1.43.1") {
         exclude(group = "com.google.code.findbugs")
         exclude(group = "org.apache.httpcomponents")
     }
@@ -113,13 +113,13 @@ dependencies {
     )
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "2.8")
 
-    implementation(group = "com.android.billingclient", name = "billing", version = "5.1.0")
-    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "5.1.0")
+    implementation(group = "com.android.billingclient", name = "billing", version = "5.2.0")
+    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "5.2.0")
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
-    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.2.1")
+    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.3.0")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
-    implementation(group = "androidx.annotation", name = "annotation", version = "1.5.0")
+    implementation(group = "androidx.annotation", name = "annotation", version = "1.6.0")
     implementation(group = "androidx.preference", name = "preference", version = "1.2.0")
     implementation(group = "androidx.preference", name = "preference-ktx", version = "1.2.0")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
@@ -139,7 +139,7 @@ dependencies {
         name = "navigation-dynamic-features-fragment",
         version = androidXNavigationVersion
     )
-    implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.5.5")
+    implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.5.6")
 
     implementation(group = "commons-net", name = "commons-net", version = "3.9.0")
     implementation(group = "commons-codec", name = "commons-codec", version = "20041127.091804")
@@ -147,7 +147,7 @@ dependencies {
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
-    implementation(group = "joda-time", name = "joda-time", version = "2.12.2")
+    implementation(group = "joda-time", name = "joda-time", version = "2.12.5")
     implementation(group = "org.slf4j", name = "slf4j-android", version = "1.7.36")
     implementation(group = "org.apmem.tools", name = "layouts", version = "1.10")
     implementation(group = "net.lingala.zip4j", name = "zip4j", version = "2.11.5")
@@ -159,10 +159,10 @@ dependencies {
     implementation(group = "com.github.bumptech.glide", name = "okhttp3-integration", version = glideVersion) {
         exclude(group = "glide-parent")
     }
-    implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "18.3.5")
+    implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "18.3.6")
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.4.1")
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.5.0")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)
 
@@ -181,7 +181,7 @@ dependencies {
     testImplementation(group = "junit", name = "junit", version = "4.13.2")
     testImplementation(group = "com.tngtech.java", name = "junit-dataprovider", version = "1.13.1")
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.24.2")
-    testImplementation(group = "io.mockk", name = "mockk", version = "1.13.3")
+    testImplementation(group = "io.mockk", name = "mockk", version = "1.13.4")
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.5.2")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.5.0")
