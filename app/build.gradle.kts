@@ -51,7 +51,7 @@ buildscript {
             version = "2.5.3"
         )
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.4.2")
-        classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.9.6")
+        classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.9.7")
     }
 }
 
