@@ -121,7 +121,7 @@ dependencies {
     implementation(group = "com.android.billingclient", name = "billing-ktx", version = "6.0.1")
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
-    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.3.0")
+    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.3.1")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
     implementation(group = "androidx.annotation", name = "annotation", version = "1.6.0")
     implementation(group = "androidx.preference", name = "preference", version = "1.2.1")
