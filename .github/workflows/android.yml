@@ -13,6 +13,6 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: 17
       - name: Build with Gradle
         run: ./gradlew app:clean app:test --no-daemon --scan
