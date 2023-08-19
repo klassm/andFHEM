@@ -1,1 +1,1 @@
-* Kompatibilität mit Android 13
+* Kompatibilität mit Android 14
