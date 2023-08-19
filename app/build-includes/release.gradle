@@ -81,7 +81,6 @@ def setStage(stage) {
         play.track = 'production'
         release.buildTasks = ['generateWhatsNew', 'build', 'publishApps']
         setNewReleaseVersion(getNextVersion(project.version))
-        afterReleaseBuild.dependsOn("resetWhatsNew")
     } else if (stage == 'beta') {
         println("releaseBeta")
         play.track = 'beta'
