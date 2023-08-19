@@ -45,7 +45,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.core.BaseFragment
 import li.klass.fhem.update.backend.DeviceListService
 import li.klass.fhem.update.backend.DeviceListUpdateService
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.io.Serializable
 
 abstract class DeviceNameListFragment(
@@ -116,13 +115,14 @@ abstract class DeviceNameListFragment(
                 bind = { device, view ->
                     val binding = DeviceNameSelectionBinding.bind(view)
                     binding.name.text = device.aliasOrName
-                    binding.root.onClick { onDeviceNameClick(device) }
+                    binding.root.setOnClickListener { onDeviceNameClick(device) }
                     binding.card.setBackgroundColor(
                         when (deviceName?.equals(device.name)) {
                             true -> ContextCompat.getColor(
                                 devicesView.context,
                                 R.color.android_green
                             )
+
                             else -> ContextCompat.getColor(
                                 devicesView.context,
                                 android.R.color.transparent

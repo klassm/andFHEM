@@ -42,7 +42,11 @@ import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceItemProvider
 import li.klass.fhem.adapter.devices.core.deviceItems.XmlDeviceViewItem
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.GenericDetailActionProviders
-import li.klass.fhem.adapter.devices.genericui.*
+import li.klass.fhem.adapter.devices.genericui.HolderActionRow
+import li.klass.fhem.adapter.devices.genericui.StateChangingColorPickerRow
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth
+import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow
+import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow
 import li.klass.fhem.adapter.devices.genericui.onoff.AbstractOnOffActionRow
 import li.klass.fhem.adapter.devices.genericui.onoff.OnOffSubStateActionRow
 import li.klass.fhem.adapter.devices.strategy.DimmableStrategy
@@ -56,7 +60,6 @@ import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.SliderSetListEntry
 import li.klass.fhem.util.ApplicationProperties
-import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class DetailCardWithDeviceValuesProvider @Inject constructor(
@@ -71,7 +74,8 @@ class DetailCardWithDeviceValuesProvider @Inject constructor(
 
     suspend fun createCard(device: FhemDevice, connectionId: String?, caption: Int,
                            itemProvider: ItemProvider, context: Context, expandHandler: ExpandHandler): CardView {
-        val binding = DeviceDetailCardTableBinding.inflate(context.layoutInflater, null, false)
+        val binding =
+            DeviceDetailCardTableBinding.inflate(LayoutInflater.from(context), null, false)
 
         val captionTextView = binding.cardCaption
         captionTextView.setText(caption)

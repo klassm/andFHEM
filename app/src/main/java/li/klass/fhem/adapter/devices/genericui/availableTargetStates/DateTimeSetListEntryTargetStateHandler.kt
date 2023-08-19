@@ -2,6 +2,7 @@ package li.klass.fhem.adapter.devices.genericui.availableTargetStates
 
 import android.app.AlertDialog
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -11,7 +12,6 @@ import li.klass.fhem.databinding.SetlistDatepickerBinding
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.SetListEntry
 import li.klass.fhem.domain.setlist.typeEntry.DateTimeSetListEntry
-import org.jetbrains.anko.layoutInflater
 import org.joda.time.DateTime
 
 class DateTimeSetListEntryTargetStateHandler : SetListTargetStateHandler<FhemDevice> {
@@ -25,7 +25,7 @@ class DateTimeSetListEntryTargetStateHandler : SetListTargetStateHandler<FhemDev
 
     override fun handle(entry: SetListEntry, context: Context, device: FhemDevice, callback: OnTargetStateSelectedCallback) {
         val config = (entry as DateTimeSetListEntry).config
-        val binding = SetlistDatepickerBinding.inflate(context.layoutInflater, null, false)
+        val binding = SetlistDatepickerBinding.inflate(LayoutInflater.from(context), null, false)
         binding.timePicker.setMinutesDisplayedValues(calculateDisplayedMinutes(config.step))
         binding.datePicker.visibility = if (config.datePicker) View.VISIBLE else View.GONE
 

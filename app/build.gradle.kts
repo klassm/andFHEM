@@ -57,7 +57,6 @@ buildscript {
 
 val kotlinVersion: String by project
 val kotlinSerializationVersion = "1.0.1"
-val ankoVersion = "0.10.8"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.15.1"
 val daggerVersion = "2.47"
@@ -169,15 +168,6 @@ dependencies {
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.5.1")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)
-
-    // Anko Layouts
-    implementation(group = "org.jetbrains.anko", name = "anko-sdk25", version = ankoVersion)
-    // sdk15, sdk19, sdk21, sdk23 are also available
-    implementation(group = "org.jetbrains.anko", name = "anko-appcompat-v7", version = ankoVersion)
-    // Coroutine listeners for Anko Layouts
-    implementation(group = "org.jetbrains.anko", name = "anko-sdk25-coroutines", version = ankoVersion)
-    implementation(group = "org.jetbrains.anko", name = "anko-appcompat-v7-coroutines", version = ankoVersion)
-    implementation(group = "org.jetbrains.anko", name = "anko-coroutines", version = ankoVersion)
 
     implementation(group = "org.reactivestreams", name = "reactive-streams", version = "1.0.4")
     implementation(group = "io.reactivex.rxjava2", name = "rxjava", version = "2.2.21")

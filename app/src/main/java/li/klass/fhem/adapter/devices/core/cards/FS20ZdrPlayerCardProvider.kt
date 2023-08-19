@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import androidx.cardview.widget.CardView
@@ -37,7 +38,6 @@ import li.klass.fhem.databinding.DeviceDetailCardFs20ZdrPlayerBinding
 import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class FS20ZdrPlayerCardProvider @Inject constructor(
@@ -50,7 +50,7 @@ class FS20ZdrPlayerCardProvider @Inject constructor(
             return null
         }
         val binding =
-            DeviceDetailCardFs20ZdrPlayerBinding.inflate(context.layoutInflater, null, false)
+            DeviceDetailCardFs20ZdrPlayerBinding.inflate(LayoutInflater.from(context), null, false)
 
         val provider = actionProviderFor(device, connectionId)
 

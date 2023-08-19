@@ -39,7 +39,6 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow
 import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.domain.setlist.typeEntry.GroupSetListEntry
-import org.jetbrains.anko.backgroundDrawable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -67,8 +66,8 @@ class LightSceneDeviceViewStrategy @Inject constructor(val stateUiService: State
                                  connectionId: String?): View {
                 val button = inflater.inflate(R.layout.lightscene_button, viewGroup, false) as Button
                 if (item == device.state) {
-                    button.backgroundDrawable =
-                            context.resources.getDrawable(R.drawable.theme_toggle_on_normal)
+                    button.background =
+                        context.resources.getDrawable(R.drawable.theme_toggle_on_normal)
                 }
                 setSceneButtonProperties(device, item, button, context)
                 return button

@@ -63,7 +63,6 @@ import li.klass.fhem.settings.SettingsKeys
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.slf4j.LoggerFactory
 
 @Suppress("EXPERIMENTAL_FEATURE_WARNING")
@@ -199,7 +198,7 @@ abstract class DeviceListFragment(
             dummyConnectionNotification.visibility = View.VISIBLE
         }
 
-        view.findViewById<Button>(R.id.configureServers).onClick {
+        view.findViewById<Button>(R.id.configureServers).setOnClickListener {
             findNavController().navigate(
                 DeviceNameListFragmentDirections.actionToConnectionList()
             )

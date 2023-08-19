@@ -40,7 +40,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.graph.backend.GraphDefinitionsForDeviceService
 import li.klass.fhem.graph.backend.gplot.SvgGraphDefinition
 import li.klass.fhem.graph.ui.GraphActivity
-import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -50,7 +49,8 @@ class PlotsCardProvider @Inject constructor(
     override fun ordering(): Int = 20
 
     override suspend fun provideCard(device: FhemDevice, context: Context, connectionId: String, navController: NavController, expandHandler: ExpandHandler): CardView? {
-        val binding = DeviceDetailCardPlotsBinding.inflate(context.layoutInflater, null, false)
+        val binding =
+            DeviceDetailCardPlotsBinding.inflate(LayoutInflater.from(context), null, false)
         binding.cardProgress.visibility = View.VISIBLE
 
         GlobalScope.launch(Dispatchers.Main) {

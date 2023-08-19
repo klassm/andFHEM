@@ -25,11 +25,16 @@
 package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.DeviceDetailActionProvider
 import li.klass.fhem.adapter.devices.core.generic.detail.actions.action_card.ActionCardAction
@@ -38,7 +43,6 @@ import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fcm.receiver.FcmSendDeviceService
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
-import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -51,7 +55,8 @@ class GcmSendCardProvider @Inject constructor(
         if (device.xmlListDevice.type != getDeviceType()) {
             return null
         }
-        val cardView = context.layoutInflater.inflate(R.layout.device_detail_card_gcmsend, null) as CardView
+        val cardView = LayoutInflater.from(context)
+            .inflate(R.layout.device_detail_card_gcmsend, null) as CardView
         cardView.visibility = View.GONE
 
         loadCardContent(device, cardView)

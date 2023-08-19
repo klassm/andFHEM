@@ -37,7 +37,6 @@ import li.klass.fhem.databinding.DeviceDetailColorpickerRowBinding
 import li.klass.fhem.domain.setlist.typeEntry.RGBSetListEntry
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ColorUtil
-import org.jetbrains.anko.backgroundColor
 
 class StateChangingColorPickerRow(private val stateUiService: StateUiService,
                                   private val xmlListDevice: XmlListDevice,
@@ -49,7 +48,7 @@ class StateChangingColorPickerRow(private val stateUiService: StateUiService,
         val binding = DeviceDetailColorpickerRowBinding.inflate(inflater, viewGroup, false)
         val rgb = xmlListDevice.getState(rgbSetListEntry.key, ignoreCase = true)!!
 
-        binding.colorValue.backgroundColor = ColorUtil.fromRgbString(rgb) or -0x1000000
+        binding.colorValue.setBackgroundColor(ColorUtil.fromRgbString(rgb) or -0x1000000)
         binding.description.text = ""
         binding.set.setOnClickListener {
             RGBColorPickerDialog(context, rgb, object : RGBColorPickerDialog.Callback {

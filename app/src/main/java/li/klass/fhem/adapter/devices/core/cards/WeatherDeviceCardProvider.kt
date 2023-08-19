@@ -47,7 +47,6 @@ import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.util.DateFormatUtil
 import li.klass.fhem.util.view.setTextOrHide
-import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class WeatherDeviceCardProvider @Inject constructor(
@@ -60,7 +59,8 @@ class WeatherDeviceCardProvider @Inject constructor(
         if (type != "Weather" && type != "PROPLANTA") {
             return null
         }
-        val binding = DeviceDetailCardWeatherBinding.inflate(context.layoutInflater, null, false)
+        val binding =
+            DeviceDetailCardWeatherBinding.inflate(LayoutInflater.from(context), null, false)
         binding.forecast.layoutManager = object : LinearLayoutManager(context) {
             override fun canScrollVertically() = false
         }

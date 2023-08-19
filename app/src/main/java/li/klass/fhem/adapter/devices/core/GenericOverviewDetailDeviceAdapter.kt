@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.core
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import androidx.navigation.NavController
 import li.klass.fhem.adapter.devices.core.cards.GenericDetailCardProviders
@@ -35,7 +36,6 @@ import li.klass.fhem.dagger.ApplicationComponent
 import li.klass.fhem.databinding.DeviceDetailGenericBinding
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
@@ -49,7 +49,7 @@ class GenericOverviewDetailDeviceAdapter @Inject constructor(
 
     @SuppressLint("InflateParams")
     suspend fun getDeviceDetailView(context: Context, device: FhemDevice, connectionId: String?, navController: NavController, expandHandler: ExpandHandler): View {
-        val binding = DeviceDetailGenericBinding.inflate(context.layoutInflater, null, false)
+        val binding = DeviceDetailGenericBinding.inflate(LayoutInflater.from(context), null, false)
 
         val measureTime = xmlDeviceItemProvider.getMostRecentMeasureTime(device, context)
         if (measureTime != null) {

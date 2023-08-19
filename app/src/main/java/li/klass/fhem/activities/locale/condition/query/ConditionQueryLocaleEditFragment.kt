@@ -21,7 +21,6 @@ import li.klass.fhem.domain.core.FhemDevice
 import li.klass.fhem.fragments.device.DeviceNameListFragment
 import li.klass.fhem.util.getNavigationResult
 import li.klass.fhem.util.view.updateIfChanged
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
 
 class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
@@ -70,9 +69,9 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
                 viewModel.attributeValue.value = text?.toString()
             }
             viewModel.attributeValue
-                .observe(viewLifecycleOwner, {
+                .observe(viewLifecycleOwner) {
                     updateIfChanged(it)
-                })
+                }
         }
     }
 
@@ -82,22 +81,22 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
             doOnTextChanged { text, _, _, _ ->
                 viewModel.attributeName.value = text?.toString()
             }
-            viewModel.attributeName.observe(viewLifecycleOwner, {
+            viewModel.attributeName.observe(viewLifecycleOwner) {
                 updateIfChanged(it)
-            })
+            }
         }
     }
 
     private fun bindDeviceName() {
         binding.deviceName.apply {
-            viewModel.deviceName.observe(viewLifecycleOwner, {
+            viewModel.deviceName.observe(viewLifecycleOwner) {
                 text = it
-            })
+            }
         }
-        binding.setDevice.onClick { handleDeviceSelection() }
-        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner, { device ->
+        binding.setDevice.setOnClickListener { handleDeviceSelection() }
+        getNavigationResult<FhemDevice>()?.observe(viewLifecycleOwner) { device ->
             viewModel.deviceName.value = device.name
-        })
+        }
     }
 
     private fun bindAttributeType(view: View) {
@@ -123,19 +122,19 @@ class ConditionQueryLocaleEditFragment @Inject constructor() : Fragment() {
                 }
             }
 
-            viewModel.attributeType.observe(viewLifecycleOwner, { type ->
+            viewModel.attributeType.observe(viewLifecycleOwner) { type ->
                 type?.let { setSelection(AttributeType.positionFor(it)) }
-            })
+            }
         }
     }
 
     private fun bindSave() {
         binding.save.apply {
             isEnabled = false
-            viewModel.allAttributesSet.observe(viewLifecycleOwner, {
+            viewModel.allAttributesSet.observe(viewLifecycleOwner) {
                 isEnabled = it
-            })
-            onClick { handleSave() }
+            }
+            setOnClickListener { handleSave() }
         }
     }
 

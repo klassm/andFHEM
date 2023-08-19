@@ -34,7 +34,11 @@ import androidx.navigation.NavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.GlideApp
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -44,7 +48,6 @@ import li.klass.fhem.devices.backend.GenericDeviceService
 import li.klass.fhem.devices.backend.RemotecontrolDeviceService
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class RemotecontrolDeviceCardProvider @Inject constructor(
@@ -58,7 +61,7 @@ class RemotecontrolDeviceCardProvider @Inject constructor(
         if (device.xmlListDevice.type != "remotecontrol") {
             return null
         }
-        val binding = RemoteControlLayoutBinding.inflate(context.layoutInflater, null, false)
+        val binding = RemoteControlLayoutBinding.inflate(LayoutInflater.from(context), null, false)
         val actionProvider = actionProviderFor(device, connectionId)
         coroutineScope {
             val rows = withContext(Dispatchers.Default) {

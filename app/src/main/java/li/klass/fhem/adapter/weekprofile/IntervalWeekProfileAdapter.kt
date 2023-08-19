@@ -41,7 +41,6 @@ import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval
 import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.DialogUtil
 import li.klass.fhem.util.ValueDescriptionUtil.appendTemperature
-import org.jetbrains.anko.layoutInflater
 import org.slf4j.LoggerFactory
 
 class IntervalWeekProfileAdapter(
@@ -183,7 +182,7 @@ class IntervalWeekProfileAdapter(
 
         fun showDialog(context: Context, viewGroup: ViewGroup) {
             val builder = AlertDialog.Builder(context)
-            val layoutInflater = builder.context.layoutInflater
+            val layoutInflater = LayoutInflater.from(context)
 
             val viewBinding = createContentViewWith(layoutInflater, viewGroup)
 

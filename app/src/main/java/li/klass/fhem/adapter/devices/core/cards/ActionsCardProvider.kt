@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core.cards
 
 import android.content.Context
+import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,6 @@ import li.klass.fhem.adapter.uiservice.StateUiService
 import li.klass.fhem.databinding.DeviceDetailCardActionsBinding
 import li.klass.fhem.devices.detail.ui.ExpandHandler
 import li.klass.fhem.domain.core.FhemDevice
-import org.jetbrains.anko.layoutInflater
 import javax.inject.Inject
 
 class ActionsCardProvider @Inject constructor(
@@ -49,7 +49,7 @@ class ActionsCardProvider @Inject constructor(
         if (device.setList.isEmpty()) {
             return null
         }
-        val layoutInflater = context.layoutInflater
+        val layoutInflater = LayoutInflater.from(context)
         val binding = DeviceDetailCardActionsBinding.inflate(layoutInflater, null, false)
 
         val actionsList = binding.actionsList
