@@ -49,7 +49,9 @@ class AppWidgetSchedulingService @Inject constructor(
     @Deprecated(message = "To be removed when cancelling of widget updates is released")
     fun cancelUpdating(appWidgetId: Int) {
         val updatePendingIntent = updatePendingIndentForWidgetId(appWidgetId)
-        alarmManager.cancel(updatePendingIntent)
+        if (updatePendingIntent != null) {
+            alarmManager.cancel(updatePendingIntent)
+        }
     }
 
     fun shouldUpdateDeviceList(connectionId: String?): Boolean {
