@@ -37,8 +37,8 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17)
     }
 
     defaultConfig {

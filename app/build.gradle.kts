@@ -191,12 +191,6 @@ dependencies {
     )
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-
 apply(from = "build-includes/whatsnew.gradle.kts")
 apply(from = "build-includes/github.gradle")
 apply(from = "build-includes/resourceIdMapper.gradle.kts")
