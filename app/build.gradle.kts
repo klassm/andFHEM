@@ -179,8 +179,22 @@ dependencies {
 
     androidTestImplementation(group = "androidx.test", name = "runner", version = "1.5.2")
     androidTestImplementation(group = "androidx.test", name = "rules", version = "1.5.0")
-    androidTestImplementation(group = "androidx.test.espresso", name = "espresso-core", version = "3.5.1")
-    androidTestImplementation(group = "androidx.test.espresso", name = "espresso-contrib", version = "3.5.1")
+    androidTestImplementation(
+        group = "androidx.test.espresso",
+        name = "espresso-core",
+        version = "3.5.1"
+    )
+    androidTestImplementation(
+        group = "androidx.test.espresso",
+        name = "espresso-contrib",
+        version = "3.5.1"
+    )
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 apply(from = "build-includes/whatsnew.gradle.kts")
