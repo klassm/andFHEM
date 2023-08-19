@@ -23,6 +23,8 @@
  */
 
 android {
+    namespace = "li.klass.fhem"
+
     flavorDimensions "default"
     compileSdkVersion 34
     buildToolsVersion '34.0.0'
@@ -135,7 +137,7 @@ android {
         abortOnError false
     }
 
-    productFlavors.all {
+    productFlavors.configureEach {
         resValue "string", "searchable_suggestion_provider", applicationId + ".MySearchSuggestionsProvider"
     }
 }
