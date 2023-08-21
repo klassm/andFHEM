@@ -58,7 +58,7 @@ buildscript {
 val kotlinVersion: String by project
 val kotlinSerializationVersion = "1.0.1"
 val architectureComponentsVersion = "1.1.1"
-val glideVersion = "4.15.1"
+val glideVersion = "4.16.0"
 val daggerVersion = "2.47"
 val coroutinesVersion = "1.7.3"
 val androidXNavigationVersion = "2.7.0"
