@@ -61,7 +61,7 @@ val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.16.0"
 val daggerVersion = "2.48"
 val coroutinesVersion = "1.7.3"
-val androidXNavigationVersion = "2.7.1"
+val androidXNavigationVersion = "2.7.2"
 val roomVersion = "2.5.2"
 
 plugins {
