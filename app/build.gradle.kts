@@ -144,7 +144,7 @@ dependencies {
     )
     implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.6.1")
 
-    implementation(group = "commons-net", name = "commons-net", version = "3.9.0")
+    implementation(group = "commons-net", name = "commons-net", version = "3.10.0")
     implementation(group = "commons-codec", name = "commons-codec", version = "20041127.091804")
     implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.13.0")
 
