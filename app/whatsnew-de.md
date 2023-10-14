@@ -1,1 +1,1 @@
-* Kompatibilität mit Android 14
+* Fix für einen Crash auf Android 14
