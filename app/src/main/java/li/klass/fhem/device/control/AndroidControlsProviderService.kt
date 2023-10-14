@@ -73,7 +73,15 @@ class AndroidControlsProviderService : ControlsProviderService() {
             }
 
         }
-        registerReceiver(broadcastReceiver, IntentFilter(Actions.DEVICES_UPDATED))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(
+                broadcastReceiver,
+                IntentFilter(Actions.DEVICES_UPDATED),
+                RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            registerReceiver(broadcastReceiver, IntentFilter(Actions.DEVICES_UPDATED))
+        }
     }
 
     override fun onDestroy() {

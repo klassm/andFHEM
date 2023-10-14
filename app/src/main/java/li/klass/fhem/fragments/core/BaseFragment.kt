@@ -26,16 +26,26 @@ package li.klass.fhem.fragments.core
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.RECEIVER_NOT_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import li.klass.fhem.R
 import li.klass.fhem.activities.core.Updateable
 import li.klass.fhem.constants.Actions
@@ -245,7 +255,11 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
         }
 
         fun attach() {
-            activity.registerReceiver(this, intentFilter)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                activity.registerReceiver(this, intentFilter, RECEIVER_NOT_EXPORTED)
+            } else {
+                activity.registerReceiver(this, intentFilter)
+            }
         }
 
         fun detach() {
@@ -254,7 +268,6 @@ abstract class BaseFragment : Fragment(), Updateable, Serializable, SwipeRefresh
             } catch (e: IllegalArgumentException) {
                 Log.e(UIBroadcastReceiver::class.java.name, "error while detaching", e)
             }
-
         }
     }
 

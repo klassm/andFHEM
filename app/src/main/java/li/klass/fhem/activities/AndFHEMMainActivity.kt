@@ -35,6 +35,7 @@ import android.content.Intent.ACTION_SEARCH
 import android.content.Intent.ACTION_VIEW
 import android.content.IntentFilter
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -211,7 +212,15 @@ open class AndFHEMMainActivity : AppCompatActivity() {
             }
 
             broadcastReceiver = Receiver()
-            registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                registerReceiver(
+                    broadcastReceiver,
+                    broadcastReceiver!!.intentFilter,
+                    RECEIVER_NOT_EXPORTED
+                )
+            } else {
+                registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+            }
 
             initDrawerLayout()
 
@@ -374,7 +383,15 @@ open class AndFHEMMainActivity : AppCompatActivity() {
                     saveInstanceStateCalled = false
 
                     if (broadcastReceiver != null) {
-                        registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            registerReceiver(
+                                broadcastReceiver,
+                                broadcastReceiver!!.intentFilter,
+                                RECEIVER_NOT_EXPORTED
+                            )
+                        } else {
+                            registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
+                        }
                     }
 
                     if (availableConnectionDataAdapter != null) {
