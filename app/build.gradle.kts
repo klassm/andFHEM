@@ -146,7 +146,7 @@ dependencies {
 
     implementation(group = "commons-net", name = "commons-net", version = "3.10.0")
     implementation(group = "commons-codec", name = "commons-codec", version = "20041127.091804")
-    implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.13.0")
+    implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.14.0")
 
 
     compileOnly(group = "javax.annotation", name = "jsr250-api", version = "1.0")
