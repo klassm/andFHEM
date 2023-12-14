@@ -122,7 +122,7 @@ dependencies {
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.3.2")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
-    implementation(group = "androidx.annotation", name = "annotation", version = "1.7.0")
+    implementation(group = "androidx.annotation", name = "annotation", version = "1.7.1")
     implementation(group = "androidx.preference", name = "preference", version = "1.2.1")
     implementation(group = "androidx.preference", name = "preference-ktx", version = "1.2.1")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
