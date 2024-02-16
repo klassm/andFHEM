@@ -60,7 +60,7 @@ val kotlinSerializationVersion = "1.0.1"
 val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.16.0"
 val daggerVersion = "2.50"
-val coroutinesVersion = "1.7.3"
+val coroutinesVersion = "1.8.0"
 val androidXNavigationVersion = "2.7.7"
 val roomVersion = "2.6.1"
 
