@@ -165,7 +165,7 @@ dependencies {
     implementation(group = "com.google.firebase", name = "firebase-crashlytics", version = "18.6.2")
 
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.2")
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.3")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)
 
