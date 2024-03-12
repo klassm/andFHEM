@@ -39,7 +39,7 @@ buildscript {
             version = kotlinVersion
         )
         classpath(group = "com.google.gms", name = "google-services", version = "4.4.1")
-        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.9.0")
+        classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.9.1")
         classpath(
             group = "org.jetbrains.kotlin",
             name = "kotlin-serialization",
