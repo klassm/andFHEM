@@ -117,7 +117,7 @@ dependencies {
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "3.0.0")
 
     implementation(group = "com.android.billingclient", name = "billing", version = "6.2.1")
-    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "6.2.0")
+    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "6.2.1")
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
     implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.3.2")
