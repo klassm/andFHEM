@@ -82,7 +82,6 @@ android {
         }
 
         debug {
-            ext.enableCrashlytics = false
             ext.alwaysUpdateBuildId = false
             //shrinkResources true
             //minifyEnabled true

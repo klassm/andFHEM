@@ -24,13 +24,14 @@
 
 package li.klass.fhem.update.backend.device.configuration
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseConfiguration
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseGeneral
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseToAdd
 import li.klass.fhem.update.backend.device.configuration.sanitise.SanitiseValue
 import li.klass.fhem.update.backend.xmllist.DeviceNode
-import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.*
+import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.ATTR
+import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.INT
+import li.klass.fhem.update.backend.xmllist.DeviceNode.DeviceNodeType.STATE
 import li.klass.fhem.update.backend.xmllist.XmlListDevice
 import li.klass.fhem.util.ValueDescriptionUtil
 import li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble
@@ -51,7 +52,6 @@ class Sanitiser @Inject constructor(
             val sanitiseConfiguration = sanitiseConfigurationFor(deviceType) ?: return deviceNode
             sanitise(deviceNode, sanitiseConfiguration)
         } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
             LOGGER.error("cannot sanitise {}", deviceNode, e)
             deviceNode
         }
@@ -64,7 +64,6 @@ class Sanitiser @Inject constructor(
 
             handleGeneral(xmlListDevice, generalOptions)
         } catch (e: JSONException) {
-            FirebaseCrashlytics.getInstance().recordException(e)
             throw RuntimeException(e)
         }
     }

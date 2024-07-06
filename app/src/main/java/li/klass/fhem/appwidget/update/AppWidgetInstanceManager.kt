@@ -28,7 +28,6 @@ import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import li.klass.fhem.appwidget.ui.widget.WidgetTypeProvider
 import li.klass.fhem.util.preferences.SharedPreferencesService
 import org.slf4j.LoggerFactory
@@ -64,7 +63,6 @@ class AppWidgetInstanceManager @Inject constructor(
             val content = widgetView.createView(applicationContext, configuration)
             appWidgetManager.updateAppWidget(widgetId, content)
         } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
             LOG.error("updateWidgetAfterDeviceListReload() - something strange happened during appwidget update", e)
         }
     }

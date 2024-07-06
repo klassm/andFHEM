@@ -24,7 +24,6 @@
 package li.klass.fhem.update.backend.device.configuration
 
 import android.content.Context
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import li.klass.fhem.resources.ResourceIdMapper
 import org.json.JSONObject
 import javax.inject.Inject
@@ -55,7 +54,6 @@ class DeviceDescMapping @Inject constructor() {
             mapping = JSONObject(DeviceDescMapping::class.java.getResource("/deviceDescMapping.json")?.readText(Charsets.UTF_8)
                     ?: "")
         } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
             throw RuntimeException(e)
         }
     }

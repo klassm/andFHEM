@@ -51,7 +51,6 @@ buildscript {
             version = "2.5.3"
         )
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.4.2")
-        classpath(group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "3.0.1")
     }
 }
 
@@ -163,9 +162,6 @@ dependencies {
         exclude(group = "glide-parent")
     }
 
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    implementation("com.google.firebase:firebase-crashlytics")
-
     implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.3")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
@@ -203,4 +199,3 @@ apply(from = "build-includes/unmock.gradle")
 apply(from = "build-includes/postTasks.gradle")
 apply(plugin = "com.google.gms.google-services")
 apply(plugin = "com.google.firebase.firebase-perf")
-apply(plugin = "com.google.firebase.crashlytics")

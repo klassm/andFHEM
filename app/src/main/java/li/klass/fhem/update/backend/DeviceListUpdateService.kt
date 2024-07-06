@@ -27,7 +27,6 @@ package li.klass.fhem.update.backend
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -143,7 +142,6 @@ class DeviceListUpdateService @Inject constructor(
             applicationContext.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
                     .setClass(applicationContext, AppIndexIntentService::class.java))
         } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
             LOG.debug("cannot update app index, probably because we are in background", e)
         }
     }
