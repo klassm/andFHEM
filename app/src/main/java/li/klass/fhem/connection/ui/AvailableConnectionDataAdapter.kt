@@ -121,7 +121,7 @@ class AvailableConnectionDataAdapter(
                             Intent(Actions.DO_UPDATE).putExtra(
                                 BundleExtraKeys.DO_REFRESH,
                                 false
-                            )
+                            ).apply { setPackage(context.packageName) }
                         )
                     }
                 }

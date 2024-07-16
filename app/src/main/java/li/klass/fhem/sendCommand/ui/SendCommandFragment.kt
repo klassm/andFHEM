@@ -111,7 +111,7 @@ class SendCommandFragment @Inject constructor(
 
     override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
-        myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(myActivity.packageName) })
         coroutineScope {
             val recentCommands = withContext(Dispatchers.IO) {
                 sendCommandService.getRecentCommands()
@@ -128,7 +128,7 @@ class SendCommandFragment @Inject constructor(
 
             ListViewUtil.setHeightBasedOnChildren(binding.commandHistory)
 
-            myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(myActivity.packageName) })
         }
     }
 

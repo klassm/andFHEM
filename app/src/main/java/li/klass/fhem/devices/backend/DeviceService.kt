@@ -103,7 +103,7 @@ constructor(
         commandExecutionService.executeSafely(Command("attr " + device.name + " room " + newRoomConcatenated), object : CommandExecutionService.SuccessfulResultListener() {
             override fun onResult(result: String) {
                 device.roomConcatenated = newRoomConcatenated
-                context.sendBroadcast(Intent(Actions.DO_UPDATE))
+                context.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(context.packageName) })
             }
         })
     }

@@ -141,18 +141,18 @@ abstract class DeviceListFragment(
     override suspend fun update(refresh: Boolean) {
         val myActivity = activity ?: return
         if (refresh) {
-            myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+            myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
         }
 
         Log.i(DeviceListFragment::class.java.name, "request device list update (doUpdate=$refresh)")
 
         coroutineScope {
             if (refresh) {
-                myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+                myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
                 withContext(Dispatchers.IO) {
                     executeRemoteUpdate(myActivity)
                 }
-                myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+                myActivity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
             }
             val elements = withContext(Dispatchers.IO) {
                 val deviceList = getRoomDeviceListForUpdate(myActivity)

@@ -42,29 +42,29 @@ import li.klass.fhem.service.NotificationService
 import javax.inject.Inject
 
 class DeviceActionUIService @Inject constructor(
-        private val deviceService: DeviceService,
-        private val notificationService: NotificationService,
-        private val favoritesService: FavoritesService
+    private val deviceService: DeviceService,
+    private val notificationService: NotificationService,
+    private val favoritesService: FavoritesService
 ) {
 
     fun renameDevice(context: Context, device: FhemDevice) {
         val input = EditText(context)
         input.setText(device.name)
         dialogBuilder(context)
-                .setTitle(R.string.context_rename)
-                .setView(input)
-                .setPositiveButton(R.string.okButton) { _, _ ->
-                    GlobalScope.launch(Dispatchers.Main) {
-                        val newName = input.text.toString()
-                        withContext(Dispatchers.IO) {
-                            deviceService.renameDevice(device, newName)
-                            notificationService.rename(device.name, newName, context)
-                            favoritesService.rename(device.name, newName)
-                        }
-                        invokeUpdate(context)
+            .setTitle(R.string.context_rename)
+            .setView(input)
+            .setPositiveButton(R.string.okButton) { _, _ ->
+                GlobalScope.launch(Dispatchers.Main) {
+                    val newName = input.text.toString()
+                    withContext(Dispatchers.IO) {
+                        deviceService.renameDevice(device, newName)
+                        notificationService.rename(device.name, newName, context)
+                        favoritesService.rename(device.name, newName)
                     }
+                    invokeUpdate(context)
+                }
 
-                }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
+            }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
     }
 
 
@@ -83,45 +83,61 @@ class DeviceActionUIService @Inject constructor(
         val input = EditText(context)
         input.setText(device.roomConcatenated)
         dialogBuilder(context)
-                .setTitle(R.string.context_move)
-                .setView(input)
-                .setPositiveButton(R.string.okButton) { _, _ ->
-                    val newRoom = input.text.toString()
-                    GlobalScope.launch(Dispatchers.Main) {
-                        withContext(Dispatchers.IO) { deviceService.moveDevice(device, newRoom, context) }
-                        invokeUpdate(context)
+            .setTitle(R.string.context_move)
+            .setView(input)
+            .setPositiveButton(R.string.okButton) { _, _ ->
+                val newRoom = input.text.toString()
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) {
+                        deviceService.moveDevice(
+                            device,
+                            newRoom,
+                            context
+                        )
                     }
-                }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
+                    invokeUpdate(context)
+                }
+            }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
     }
 
     fun setAlias(context: Context, device: FhemDevice) {
         val input = EditText(context)
         input.setText(device.alias)
         dialogBuilder(context)
-                .setTitle(R.string.context_alias)
-                .setView(input)
-                .setPositiveButton(R.string.okButton) { _, _ ->
-                    val newAlias = input.text.toString()
+            .setTitle(R.string.context_alias)
+            .setView(input)
+            .setPositiveButton(R.string.okButton) { _, _ ->
+                val newAlias = input.text.toString()
 
-                    GlobalScope.launch(Dispatchers.Main) {
-                        withContext(Dispatchers.IO) { deviceService.setAlias(device, newAlias) }
-                        invokeUpdate(context)
-                    }
-                }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) { deviceService.setAlias(device, newAlias) }
+                    invokeUpdate(context)
+                }
+            }.setNegativeButton(R.string.cancelButton) { _, _ -> }.show()
     }
 
-    private fun showConfirmation(context: Context, positiveOnClickListener: DialogInterface.OnClickListener, text: String) {
+    private fun showConfirmation(
+        context: Context,
+        positiveOnClickListener: DialogInterface.OnClickListener,
+        text: String
+    ) {
         dialogBuilder(context)
-                .setTitle(R.string.areYouSure)
-                .setMessage(text)
-                .setPositiveButton(R.string.okButton, positiveOnClickListener)
-                .setNegativeButton(R.string.cancelButton) { _, _ -> context.sendBroadcast(Intent(Actions.DO_UPDATE)) }.show()
+            .setTitle(R.string.areYouSure)
+            .setMessage(text)
+            .setPositiveButton(R.string.okButton, positiveOnClickListener)
+            .setNegativeButton(R.string.cancelButton) { _, _ ->
+                context.sendBroadcast(Intent(Actions.DO_UPDATE).apply {
+                    setPackage(
+                        context.packageName
+                    )
+                })
+            }.show()
     }
 
     private fun dialogBuilder(context: Context): AlertDialog.Builder =
-            AlertDialog.Builder(context, R.style.alertDialog)
+        AlertDialog.Builder(context, R.style.alertDialog)
 
     private fun invokeUpdate(context: Context) {
-        context.sendBroadcast(Intent(Actions.DO_UPDATE))
+        context.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(context.packageName) })
     }
 }

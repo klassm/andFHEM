@@ -110,7 +110,7 @@ class DeviceDetailFragment @Inject constructor(
                 }
                 deviceListService.getDeviceForName(name, args.connectionId)
             }
-            myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+            myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
             device?.let {
                 this@DeviceDetailFragment.device = it
                 val detailView = genericOverviewDetailAdapter.getDeviceDetailView(myActivity, it, args.connectionId, findNavController(), deviceDetailViewModel.expandHandler())

@@ -89,7 +89,7 @@ class PremiumActivity : AppCompatActivity() {
                 viewBinding.shopPremiumBuy.visibility = View.VISIBLE
             }
         }
-        sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+        sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(packageName) })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

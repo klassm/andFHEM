@@ -91,7 +91,7 @@ constructor() : PurchasesUpdatedListener {
             acknowledgePurchases(purchases)
             ownedSkus.addAll(purchases.flatMap { it.skus })
             val application = AndFHEMApplication.application
-            application?.sendBroadcast(Intent(Actions.DO_UPDATE))
+            application?.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(application.packageName) })
         }
     }
 

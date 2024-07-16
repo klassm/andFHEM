@@ -26,6 +26,7 @@ package li.klass.fhem.service.intent
 
 import android.content.Intent
 import android.os.ResultReceiver
+import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appwidget.update.AppWidgetUpdateService
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.constants.Actions.DO_UPDATE
@@ -73,7 +74,7 @@ class RoomListUpdateIntentService : ConvenientIntentService(RoomListUpdateIntent
         when (result) {
             is UpdateResult.Success -> {
                 LOG.info("doRemoteUpdate() - remote device list update finished")
-                sendBroadcast(Intent(DO_UPDATE))
+                sendBroadcast(Intent(DO_UPDATE).apply { setPackage(AndFHEMApplication.application?.packageName) })
                 widgetUpdateService.updateAllWidgets()
             }
             is UpdateResult.Error -> LOG.error("handleResult - update failed")

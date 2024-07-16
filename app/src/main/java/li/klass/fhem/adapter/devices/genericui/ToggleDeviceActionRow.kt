@@ -69,7 +69,7 @@ class ToggleDeviceActionRow(context: Context,
             withContext(Dispatchers.IO) {
                 toggleableService.toggleState(device, connectionId = null)
             }
-            context.sendBroadcast(Intent(Actions.DO_UPDATE))
+            context.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(context.packageName) })
         }
     }
 

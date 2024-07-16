@@ -42,6 +42,7 @@ enum class RequestResultError(val errorStringId: Int) {
 
     fun handleError(context: Context) {
         context.sendBroadcast(Intent(Actions.CONNECTION_ERROR)
-                .putExtra(BundleExtraKeys.STRING_ID, errorStringId))
+                .putExtra(BundleExtraKeys.STRING_ID, errorStringId)
+            .apply { setPackage(context.packageName) })
     }
 }

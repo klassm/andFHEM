@@ -233,7 +233,7 @@ class TimerDetailFragment @Inject constructor(
         if (targetDevice == null || isBlank(getTargetState()) || switchTime == null || timerDeviceName == null) {
             activity?.sendBroadcast(
                 Intent(SHOW_TOAST)
-                    .putExtra(STRING_ID, R.string.incompleteConfigurationError)
+                    .putExtra(STRING_ID, R.string.incompleteConfigurationError).apply { setPackage(activity?.packageName) }
             )
             return
         }
@@ -306,7 +306,7 @@ class TimerDetailFragment @Inject constructor(
                 atService.getTimerDeviceFor(timerDeviceName)
             }?.let {
                 setValuesForCurrentTimerDevice(it)
-                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+                myActivity.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG).apply { setPackage(activity?.packageName) })
             }
         }
     }

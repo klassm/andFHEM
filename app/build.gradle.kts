@@ -38,7 +38,7 @@ buildscript {
             name = "kotlin-gradle-plugin",
             version = kotlinVersion
         )
-        classpath(group = "com.google.gms", name = "google-services", version = "4.4.1")
+        classpath(group = "com.google.gms", name = "google-services", version = "4.4.2")
         classpath(group = "com.github.triplet.gradle", name = "play-publisher", version = "3.9.1")
         classpath(
             group = "org.jetbrains.kotlin",
@@ -65,7 +65,7 @@ val roomVersion = "2.6.1"
 
 plugins {
     id("net.researchgate.release") version "3.0.2"
-    id("com.android.application") version "8.4.1"
+    id("com.android.application") version "8.5.1"
     kotlin("android").version("1.8.20")
     kotlin("kapt").version("1.8.20")
     kotlin("plugin.serialization") version "1.8.20"

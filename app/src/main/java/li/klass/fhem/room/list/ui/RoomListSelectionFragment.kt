@@ -94,7 +94,7 @@ abstract class RoomListSelectionFragment(
 
         hideEmptyView()
         if (refresh) {
-            activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
         }
 
         coroutineScope {

@@ -33,6 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.R
 import li.klass.fhem.activities.drawer.actions.AbstractDrawerAction
 import li.klass.fhem.constants.Actions
@@ -49,12 +50,12 @@ class FhemLogDrawerAction @Inject constructor(
             DialogUtil.showAlertDialog(activity, R.string.fhem_log, R.string.fhem_log_error_permission_external_storage)
             return
         }
-        activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(AndFHEMApplication.application?.packageName) })
         GlobalScope.launch(Dispatchers.Main) {
             val temporaryFile = withContext(Dispatchers.IO) {
                 fhemLogService.getLogAndWriteToTemporaryFile()
             }
-            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(AndFHEMApplication.application?.packageName) })
             handle(activity, temporaryFile)
         }
     }

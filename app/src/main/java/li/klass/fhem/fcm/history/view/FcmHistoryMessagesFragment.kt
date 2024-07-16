@@ -52,7 +52,7 @@ class FcmHistoryMessagesFragment @Inject constructor(
                 fcmHistoryService.getMessages(localDate)
             }
 
-            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
             showEmptyViewIfRequired(messages.isEmpty(), binding.messages, binding.fcmNoMessages)
             (binding.messages.adapter as FcmMessagesAdapter).updateWith(messages)
         }

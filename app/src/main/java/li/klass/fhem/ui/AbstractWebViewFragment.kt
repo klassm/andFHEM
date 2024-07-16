@@ -128,12 +128,14 @@ abstract class AbstractWebViewFragment : BaseFragment() {
 
                         val intent = Intent(Actions.SHOW_TOAST)
                         intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_authentication)
+                            .apply { setPackage(activity?.packageName) }
                         activity!!.sendBroadcast(intent)
                     }
 
                 } catch (e: MalformedURLException) {
                     val intent = Intent(Actions.SHOW_TOAST)
                     intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection)
+                        .apply { setPackage(activity?.packageName) }
                     activity!!.sendBroadcast(intent)
                     LOG.error("malformed URL: " + url!!, e)
 
@@ -202,7 +204,8 @@ abstract class AbstractWebViewFragment : BaseFragment() {
         } catch (e: MalformedURLException) {
             val intent = Intent(Actions.SHOW_TOAST)
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection)
-            activity!!.sendBroadcast(intent)
+                .apply { setPackage(activity?.packageName) }
+            requireActivity().sendBroadcast(intent)
             LOG.error("malformed URL: " + url!!, e)
         }
 

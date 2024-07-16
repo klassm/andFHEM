@@ -144,7 +144,8 @@ class DeviceListParser @Inject constructor(
         val errorMessage = String.format(context.getString(R.string.errorDeviceListLoad), "${parseErrors.size}")
 
         context.sendBroadcast(Intent(Actions.SHOW_TOAST)
-                .putExtra(BundleExtraKeys.CONTENT, errorMessage))
+                .putExtra(BundleExtraKeys.CONTENT, errorMessage)
+            .apply { setPackage(context.packageName) })
     }
 
     private fun deviceFromXmlListDevice(xmlListDevice: XmlListDevice,

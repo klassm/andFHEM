@@ -32,13 +32,22 @@ import li.klass.fhem.update.backend.command.execution.CommandExecutionService
 import javax.inject.Inject
 
 class ResendLastFailedCommandService @Inject constructor(
-        private val commandExecutionService: CommandExecutionService
+    private val commandExecutionService: CommandExecutionService
 ) {
     fun resend(context: Context) {
         val lastFailedCommand = commandExecutionService.lastFailedCommand
-        if (lastFailedCommand != null && "xmllist".equals(lastFailedCommand.command, ignoreCase = true)) {
-            context.sendBroadcast(Intent(Actions.DO_UPDATE)
-                    .putExtra(DO_REFRESH, true))
+        if (lastFailedCommand != null && "xmllist".equals(
+                lastFailedCommand.command,
+                ignoreCase = true
+            )
+        ) {
+            context.sendBroadcast(
+                Intent(Actions.DO_UPDATE)
+                    .putExtra(DO_REFRESH, true).apply {
+                        setPackage(context.packageName)
+                    }
+                    .apply { setPackage(context.packageName) }
+            )
         } else {
             commandExecutionService.resendLastFailedCommand()
         }

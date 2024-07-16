@@ -63,5 +63,5 @@ class StateUiService @Inject constructor(
         }
     }
 
-    private fun invokeUpdate(context: Context) = context.sendBroadcast(Intent(Actions.DO_UPDATE))
+    private fun invokeUpdate(context: Context) = context.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(context.packageName) })
 }

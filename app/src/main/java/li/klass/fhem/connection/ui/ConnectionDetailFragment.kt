@@ -225,7 +225,7 @@ class ConnectionDetailFragment @Inject constructor(
     override suspend fun update(refresh: Boolean) {
         if (!isModify) {
             LOG.info("I can only update if a connection is being modified!")
-            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
             return
         }
 
@@ -236,7 +236,7 @@ class ConnectionDetailFragment @Inject constructor(
             }
             if (result == null) {
                 LOG.error("update - cannot find server with ID ${args.connectionId}")
-                myContext.sendBroadcast(Intent(Actions.BACK))
+                myContext.sendBroadcast(Intent(Actions.BACK).apply { setPackage(myContext.packageName) })
             } else {
                 setValuesForCurrentConnection(result)
             }

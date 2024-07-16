@@ -106,7 +106,7 @@ class CommandExecutionService @Inject constructor(
     }
 
     private fun showExecutingDialog() {
-        applicationContext.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG))
+        applicationContext.sendBroadcast(Intent(SHOW_EXECUTING_DIALOG).apply { setPackage(applicationContext.packageName) })
     }
 
     private fun execute(command: Command, currentTry: Int, resultListener: ResultListener): RequestResult<String> {
@@ -155,7 +155,7 @@ class CommandExecutionService @Inject constructor(
     }
 
     private fun hideExecutingDialog() {
-        applicationContext.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG))
+        applicationContext.sendBroadcast(Intent(DISMISS_EXECUTING_DIALOG).apply { setPackage(applicationContext.packageName) })
     }
 
     private fun getNumberOfRetries(): Int {

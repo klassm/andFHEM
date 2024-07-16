@@ -140,7 +140,9 @@ class FHTModeStateOverwrite @Inject constructor(
                         )
                     }
                     spinnerActionRow.commitSelection()
-                    context.sendBroadcast(Intent(BundleExtraKeys.DO_REFRESH))
+                    context.sendBroadcast(Intent(BundleExtraKeys.DO_REFRESH)
+                        .apply { setPackage(context.packageName) })
+
                 }
             }
         }

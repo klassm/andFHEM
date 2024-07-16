@@ -90,7 +90,7 @@ class FcmNotifyHandler @Inject constructor(
     }
 
     private fun updateUI(context: Context) {
-        context.sendBroadcast(Intent(Actions.DO_UPDATE))
+        context.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(context.packageName) })
     }
 
 
@@ -98,7 +98,8 @@ class FcmNotifyHandler @Inject constructor(
         val connection = connectionId ?: connectionService.getSelectedId()
         context.sendBroadcast(Intent(Actions.DEVICES_UPDATED)
                 .putExtra(BundleExtraKeys.UPDATED_DEVICE_NAMES, ArrayList(listOf(deviceName)))
-                .putExtra(BundleExtraKeys.CONNECTION_ID, connection))
+                .putExtra(BundleExtraKeys.CONNECTION_ID, connection)
+            .apply { setPackage(context.packageName) })
     }
 
 

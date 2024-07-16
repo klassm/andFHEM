@@ -48,6 +48,7 @@ public class AbstractService {
 
         Intent broadcastIntent = new Intent(action);
         broadcastIntent.putExtras(bundle);
+        broadcastIntent.setPackage(context.getPackageName());
         context.sendBroadcast(broadcastIntent);
     }
 }

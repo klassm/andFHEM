@@ -495,7 +495,7 @@ open class AndFHEMMainActivity : AppCompatActivity() {
             onBackPressed()
             return true
         } else if (item.itemId == R.id.menu_refresh) {
-            sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true))
+            sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true).apply { setPackage(packageName) })
             return true
         }
 

@@ -87,6 +87,6 @@ class SettingsActivity : AppCompatActivity(),
 
     override fun onStop() {
         super.onStop()
-        sendBroadcast(Intent(Actions.REDRAW))
+        sendBroadcast(Intent(Actions.REDRAW).apply { setPackage(packageName) })
     }
 }

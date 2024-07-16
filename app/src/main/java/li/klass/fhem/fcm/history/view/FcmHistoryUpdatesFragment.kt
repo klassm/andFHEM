@@ -52,7 +52,7 @@ class FcmHistoryUpdatesFragment @Inject constructor(
                 fcmHistoryService.getChanges(localDate)
             }
 
-            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
             showEmptyViewIfRequired(updates.isEmpty(), binding.updates, binding.fcmNoUpdates)
             (recyclerView.adapter as FcmUpdatesAdapter).updateWith(updates)
         }

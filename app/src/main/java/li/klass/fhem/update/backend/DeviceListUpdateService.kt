@@ -27,6 +27,7 @@ package li.klass.fhem.update.backend
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import li.klass.fhem.AndFHEMApplication
 import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
@@ -44,32 +45,36 @@ import javax.inject.Singleton
 
 @Singleton
 class DeviceListUpdateService @Inject constructor(
-        private val commandExecutionService: CommandExecutionService,
-        private val deviceListParser: DeviceListParser,
-        private val deviceListCacheService: DeviceListCacheService,
-        private val connectionService: ConnectionService,
-        private val dataConnectionSwitch: DataConnectionSwitch,
-        private val application: Application
+    private val commandExecutionService: CommandExecutionService,
+    private val deviceListParser: DeviceListParser,
+    private val deviceListCacheService: DeviceListCacheService,
+    private val connectionService: ConnectionService,
+    private val dataConnectionSwitch: DataConnectionSwitch,
+    private val application: Application
 ) {
 
     fun updateSingleDevice(deviceName: String, connectionId: String? = null): UpdateResult =
-            executeXmllistPartial(connectionId, deviceName, object : BeforeRoomListUpdateModifier {
-                override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
-                    if (newlyLoaded.getDeviceFor(deviceName) != null) {
-                        sendUpdatedBroadcastFor(newlyLoaded, connectionId)
-                        cached.getDeviceFor(deviceName)?.let { cached.removeDevice(it) }
-                    }
+        executeXmllistPartial(connectionId, deviceName, object : BeforeRoomListUpdateModifier {
+            override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
+                if (newlyLoaded.getDeviceFor(deviceName) != null) {
+                    sendUpdatedBroadcastFor(newlyLoaded, connectionId)
+                    cached.getDeviceFor(deviceName)?.let { cached.removeDevice(it) }
                 }
-            })
+            }
+        })
 
     fun updateRoom(roomName: String, connectionId: String? = null): UpdateResult {
         val toUpdate = if (roomName == "Unsorted") "" else roomName
-        return executeXmllistPartial(connectionId, "room=$toUpdate", object : BeforeRoomListUpdateModifier {
-            override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
-                sendUpdatedBroadcastFor(newlyLoaded, connectionId)
-                cached.allDevices.filter { it.isInRoom(roomName) }.forEach { cached.removeDevice(it) }
-            }
-        })
+        return executeXmllistPartial(
+            connectionId,
+            "room=$toUpdate",
+            object : BeforeRoomListUpdateModifier {
+                override fun update(cached: RoomDeviceList, newlyLoaded: RoomDeviceList) {
+                    sendUpdatedBroadcastFor(newlyLoaded, connectionId)
+                    cached.allDevices.filter { it.isInRoom(roomName) }
+                        .forEach { cached.removeDevice(it) }
+                }
+            })
     }
 
     fun updateAllDevices(connectionId: String? = null): UpdateResult {
@@ -82,7 +87,7 @@ class DeviceListUpdateService @Inject constructor(
     }
 
     fun getLastUpdate(connectionId: String?): DateTime? =
-            deviceListCacheService.getLastUpdate(connectionId)
+        deviceListCacheService.getLastUpdate(connectionId)
 
     private fun update(connectionId: String?, result: RoomDeviceList?): Boolean = when {
         result != null -> {
@@ -90,14 +95,21 @@ class DeviceListUpdateService @Inject constructor(
             if (success) LOG.info("update - update was successful, sending result")
             success
         }
+
         else -> {
             LOG.info("update - update was not successful, sending empty device list"); false
         }
     }
 
-    private fun executeXmllistPartial(connectionId: String?, devSpec: String,
-                                      beforeRoomListUpdateModifier: BeforeRoomListUpdateModifier): UpdateResult {
-        LOG.info("executeXmllistPartial(connection={}, devSpec={}) - fetching xmllist from remote", connectionId, devSpec)
+    private fun executeXmllistPartial(
+        connectionId: String?, devSpec: String,
+        beforeRoomListUpdateModifier: BeforeRoomListUpdateModifier
+    ): UpdateResult {
+        LOG.info(
+            "executeXmllistPartial(connection={}, devSpec={}) - fetching xmllist from remote",
+            connectionId,
+            devSpec
+        )
         if (deviceListCacheService.isCorrupted()) {
             LOG.error("executeXmllistPartial - ignoring partial update as device list is broken, updating all devices instead")
             return updateAllDevices(connectionId)
@@ -112,14 +124,23 @@ class DeviceListUpdateService @Inject constructor(
     }
 
     @Synchronized
-    private fun executeXmllist(connectionId: String?, xmllistSuffix: String, updateHandler: UpdateHandler):
+    private fun executeXmllist(
+        connectionId: String?,
+        xmllistSuffix: String,
+        updateHandler: UpdateHandler
+    ):
             UpdateResult {
 
-        applicationContext.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        applicationContext.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply {
+            setPackage(
+                AndFHEMApplication.application?.packageName
+            )
+        })
         try {
             val command = Command("xmllist$xmllistSuffix", connectionId)
             val result = commandExecutionService.executeSync(command)
-            val roomDeviceList = result?.let { parseResult(connectionId, applicationContext, it, updateHandler) }
+            val roomDeviceList =
+                result?.let { parseResult(connectionId, applicationContext, it, updateHandler) }
 
 
             return when (roomDeviceList != null && update(connectionId, roomDeviceList)) {
@@ -127,26 +148,38 @@ class DeviceListUpdateService @Inject constructor(
                     updateIndex()
                     UpdateResult.Success(roomDeviceList)
                 }
+
                 else -> UpdateResult.Error
             }
         } catch (e: Exception) {
             LOG.warn("Error while updating", e)
             return UpdateResult.Error
         } finally {
-            applicationContext.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            applicationContext.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply {
+                setPackage(
+                    AndFHEMApplication.application?.packageName
+                )
+            })
         }
     }
 
     private fun updateIndex() {
         try {
-            applicationContext.startService(Intent("com.google.firebase.appindexing.UPDATE_INDEX")
-                    .setClass(applicationContext, AppIndexIntentService::class.java))
+            applicationContext.startService(
+                Intent("com.google.firebase.appindexing.UPDATE_INDEX")
+                    .setClass(applicationContext, AppIndexIntentService::class.java)
+            )
         } catch (e: Exception) {
             LOG.debug("cannot update app index, probably because we are in background", e)
         }
     }
 
-    private fun parseResult(connectionId: String?, context: Context, result: String, updateHandler: UpdateHandler): RoomDeviceList? {
+    private fun parseResult(
+        connectionId: String?,
+        context: Context,
+        result: String,
+        updateHandler: UpdateHandler
+    ): RoomDeviceList? {
         val connection = dataConnectionSwitch.getProviderFor(connectionId).server.id
         val parsed = deviceListParser.parseAndWrapExceptions(result, context, connection)
         val cached = deviceListCacheService.getCachedRoomDeviceListMap(connectionId)
@@ -161,17 +194,20 @@ class DeviceListUpdateService @Inject constructor(
     fun checkForCorruptedDeviceList() {
         try {
             connectionService.listAll()
-                    .filter { it !is DummyServerSpec }
-                    .forEach { connection ->
-                        val corrupted = deviceListCacheService.isCorrupted(connection.id)
-                        LOG.info("checkForCorruptedDeviceList - checking ${connection.name}, corrupted=$corrupted")
-                        if (corrupted) {
-                            LOG.info("checkForCorruptedDeviceList - could not load device list for ${connection.name}, requesting update")
-                            updateAllDevices(connection.id)
-                        }
+                .filter { it !is DummyServerSpec }
+                .forEach { connection ->
+                    val corrupted = deviceListCacheService.isCorrupted(connection.id)
+                    LOG.info("checkForCorruptedDeviceList - checking ${connection.name}, corrupted=$corrupted")
+                    if (corrupted) {
+                        LOG.info("checkForCorruptedDeviceList - could not load device list for ${connection.name}, requesting update")
+                        updateAllDevices(connection.id)
                     }
+                }
         } catch (e: Exception) {
-            LOG.error("checkForCorruptedDeviceList - error while checking for corrupted device lists", e)
+            LOG.error(
+                "checkForCorruptedDeviceList - error while checking for corrupted device lists",
+                e
+            )
         }
     }
 
@@ -179,8 +215,9 @@ class DeviceListUpdateService @Inject constructor(
         val updatedDevices = roomDeviceList.allDevices.map { it.name }
         val connection = connectionId ?: connectionService.getSelectedId()
         application.sendBroadcast(Intent(Actions.DEVICES_UPDATED)
-                .putExtra(BundleExtraKeys.UPDATED_DEVICE_NAMES, ArrayList(updatedDevices))
-                .putExtra(BundleExtraKeys.CONNECTION_ID, connection))
+            .putExtra(BundleExtraKeys.UPDATED_DEVICE_NAMES, ArrayList(updatedDevices))
+            .putExtra(BundleExtraKeys.CONNECTION_ID, connection)
+            .apply { setPackage(AndFHEMApplication.application?.packageName) })
     }
 
     private val applicationContext: Context get() = application.applicationContext

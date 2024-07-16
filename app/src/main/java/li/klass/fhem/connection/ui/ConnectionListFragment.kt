@@ -117,6 +117,7 @@ class ConnectionListFragment @Inject constructor(
                                 R.string.premium_multipleConnections
                             )
                             .putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium)
+                            .apply { setPackage(context?.packageName) }
                     )
                 } else {
                     logger.info("onOptionsItemSelected - showing connection detail for a new connection")
@@ -186,7 +187,7 @@ class ConnectionListFragment @Inject constructor(
 
         hideEmptyView()
         val myActivity = activity ?: return
-        if (refresh) myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG))
+        if (refresh) myActivity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
 
         doUpdate()
     }
@@ -204,7 +205,7 @@ class ConnectionListFragment @Inject constructor(
 
             adapter.updateData(nonDummyConnections, connectionId)
             scrollToSelected(connectionId, adapter.getData())
-            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG))
+            activity?.sendBroadcast(Intent(Actions.DISMISS_EXECUTING_DIALOG).apply { setPackage(context?.packageName) })
         }
     }
 
@@ -226,7 +227,7 @@ class ConnectionListFragment @Inject constructor(
 
     override fun onDetach() {
         super.onDetach()
-        activity?.sendBroadcast(Intent(Actions.CONNECTIONS_CHANGED))
+        activity?.sendBroadcast(Intent(Actions.CONNECTIONS_CHANGED).apply { setPackage(context?.packageName) })
     }
 
     companion object {
