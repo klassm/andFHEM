@@ -67,7 +67,7 @@ plugins {
     id("net.researchgate.release") version "3.0.2"
     id("com.android.application") version "8.5.1"
     kotlin("android").version("1.8.20")
-    kotlin("kapt").version("1.8.20")
+    kotlin("kapt").version("2.0.10")
     kotlin("plugin.serialization") version "1.8.20"
 }
 
